@@ -1,0 +1,36 @@
+<html><title>Edit NPC Info</title>
+<body>
+<br><center>Caution ! Dont forget that modifying NPC Info can ruin the game...</center><br>
+Note:you only type the values of modifications.!<br>
+<table>
+<tr><td>NPC Name:</td><td>%NpcName%</td></tr>
+<tr><td>Radius(%CollisionRadius%):</td><td><edit var="CollisionRadius" width=80></td></tr>		
+<tr><td>Height(%CollisionHeight%):</td><td><edit var="CollisionHeight" width=80></td></tr>				
+<tr><td>Level(%Level%):</td><td><edit var="Level" width=80></td></tr>		
+<tr><td>Sex(%Sex%):</td><td><edit var="Sex" width=80></td></tr>		
+<tr><td>Type(%Type%):</td><td><edit var="Type" width=80></td></tr>
+<tr><td>Atk-Range(%AttackRange%):</td><td><edit var="AttackRange" width=80></td></tr>
+<tr><td>Max-Hp(%MaxHp%):</td><td><edit var="MaxHp" width=80></td></tr>
+<tr><td>Max-Mp(%MaxBaseMp%):</td><td><edit var="MaxBaseMp" width=80></td></tr>
+<tr><td>Exp(%Exp%):</td><td><edit var="Exp" width=80></td></tr>
+<tr><td>SP(%Sp%):</td><td><edit var="Sp" width=80></td></tr>		
+<tr><td>P-Atk(%Patk%):</td><td><edit var="Patk" width=80></td></tr>		
+<tr><td>P-Def(%Pdef%):</td><td><edit var="Pdef" width=80></td></tr>		
+<tr><td>M-Atk(%Matk%):</td><td><edit var="Matk" width=80></td></tr>		
+<tr><td>M-Def(%Mdef%):</td><td><edit var="Mdef" width=80></td></tr>		
+<tr><td>Atk-speed(%Atkspd%):</td><td><edit var="Atkspd" width=80></td></tr>
+<tr><td>Agro(%Agro%):</td><td><edit var="Agro" width=80></td></tr>	
+<tr><td>M-Atk-Spd(%Matkspd%):</td><td><edit var="Matkspd" width=80></td></tr>	
+<tr><td>R-Hand(%Rhand%):</td><td><edit var="Rhand" width=80></td></tr>
+<tr><td>L-Hand(%Lhand%):</td><td><edit var="Lhand" width=80></td></tr>
+<tr><td>Armor(%Armor%):</td><td><edit var="Armor" width=80></td></tr>
+<tr><td>Walk-Spd(%WalkSpeed%):</td><td><edit var="WalkSpeed" width=80></td></tr>
+<tr><td>Run-Spd(%RunSpeed%):</td><td><edit var="RunSpeed" width=80></td></tr>
+</table>
+<br>
+<center>
+<button value="Save Edit" action="bypass -h admin_save_npc id %NpcId% , CollisionRadius $CollisionRadius , CollisionHeight $CollisionHeight , Level $Level , Sex $Sex , Type $Type , AttackRange $AttackRange , MaxHp $MaxHp , MaxBaseMp $MaxBaseMp , Exp $Exp , Sp $Sp , Patk $Patk , Pdef $Pdef , Matk $Matk , Mdef $Mdef , Atkspd $Atkspd , Agro $Agro , Matkspd $Matkspd , Rhand $Rhand , Lhand $Lhand , Armor $Armor , WalkSpeed $WalkSpeed , RunSpeed $RunSpeed" width=100 height=15 back="sek.cbui94" fore="sek.cbui92">
+</center>
+<br><center><button value="Close" action="bypass -h admin_close_window" width=40 height=15 back="sek.cbui94" fore="sek.cbui92"></center>
+</body>
+</html>
