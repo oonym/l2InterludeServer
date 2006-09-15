@@ -4,11 +4,6 @@
 #  0 normal shutdown
 #  2 reboot attempt
 
-echo "© 2006 L2Jserver.com"
-echo "L2J Game Server comes with ABSOLUTELY NO WARRANTY;"
-echo "This is free software, and you are welcome to redistribute it under certain conditions;"
-echo "see http://www.gnu.org/copyleft/gpl.html for more details."
-
 while :; do
 	[ -f log/java0.log.0 ] && mv log/java0.log.0 "log/`date +%Y-%m-%d_%H-%M-%S`_java.log"
 	[ -f log/stdout.log ] && mv log/stdout.log "log/`date +%Y-%m-%d_%H-%M-%S`_stdout.log"

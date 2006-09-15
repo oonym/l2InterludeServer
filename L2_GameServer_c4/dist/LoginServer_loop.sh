@@ -1,10 +1,5 @@
 #!/bin/bash
 
-echo "© 2006 L2Jserver.com"
-echo "L2J Game Server comes with ABSOLUTELY NO WARRANTY;"
-echo "This is free software, and you are welcome to redistribute it under certain conditions;"
-echo "see http://www.gnu.org/copyleft/gpl.html for more details."
-
 err=1
 until [ $err == 0 ]; 
 do
