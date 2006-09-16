@@ -82,7 +82,7 @@ public class ExEnchantSkillInfo extends ServerBasePacket
         writeD(_id);
         writeD(_level);
         writeD(_spCost);
-        writeD(_xpCost);
+        writeQ(_xpCost);
         writeD(_rate);
 
         writeD(_reqs.size());

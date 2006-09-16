@@ -108,6 +108,14 @@ public abstract class ClientBasePacket extends BasePacket implements Runnable
 	    } catch (Exception e) {e.printStackTrace();}
 	    return 0;
 	}
+    
+    public final long readQ()
+    {
+        try {
+            return _buf.getLong();
+        } catch (Exception e) {e.printStackTrace();}
+        return 0;
+    }
 
 	public final String readS()
 	{

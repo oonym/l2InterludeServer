@@ -84,6 +84,7 @@ public class SkillList extends ServerBasePacket
             writeD(temp.passive ? 1 : 0);
             writeD(temp.level);
             writeD(temp.id);
+            writeC(0x00); //c5
         }
     }
 

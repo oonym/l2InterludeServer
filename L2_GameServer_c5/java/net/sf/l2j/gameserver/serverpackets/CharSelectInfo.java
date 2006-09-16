@@ -115,10 +115,10 @@ public class CharSelectInfo extends ServerBasePacket
             writeF(charInfoPackage.getCurrentMp()); // mp cur
 
             writeD(charInfoPackage.getSp());
-            writeD(charInfoPackage.getExp());
+            writeQ(charInfoPackage.getExp());
             writeD(charInfoPackage.getLevel());
 
-            writeD(charInfoPackage.getKarma());
+            writeD(charInfoPackage.getKarma()); // karma
             writeD(0x00);
             writeD(0x00);
             writeD(0x00);
@@ -184,6 +184,8 @@ public class CharSelectInfo extends ServerBasePacket
             	writeD(0x00); //c3 auto-select char
             
             writeC(charInfoPackage.getEnchantEffect());
+            writeD(0x00); //c5 unk
+            writeD(0x00); //c5 secondary hair slot itemId
         }
     }
 

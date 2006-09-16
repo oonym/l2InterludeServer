@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PledgeInfo;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDeleteAll;
 
 /**
  * This class ...
@@ -69,11 +70,12 @@ public class RequestPledgeInfo extends ClientBasePacket
         {
             activeChar.sendPacket(pc);
             
-            if (clan.getClanId() == activeChar.getClanId())
+            /*if (clan.getClanId() == activeChar.getClanId())
             {
+            	activeChar.sendPacket(new PledgeShowMemberListDeleteAll());
                 PledgeShowMemberListAll pm = new PledgeShowMemberListAll(clan, activeChar);
                 activeChar.sendPacket(pm);
-            }
+            }*/
         }
 	}
 

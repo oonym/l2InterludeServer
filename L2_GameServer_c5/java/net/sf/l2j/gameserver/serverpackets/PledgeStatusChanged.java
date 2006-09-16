@@ -54,6 +54,8 @@ public class PledgeStatusChanged extends ServerBasePacket
         writeD(0);
         writeD(_clan.getLevel());
         writeD(0);
+        writeD(0);
+        writeD(0);
 	}
 	
 	/* (non-Javadoc)

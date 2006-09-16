@@ -66,9 +66,9 @@ public class PetStatusUpdate extends ServerBasePacket
 		writeD((int)_summon.getCurrentMp());
 		writeD(_maxMp);
 		writeD(_summon.getLevel()); 
-		writeD(_summon.getStat().getExp());
-		writeD(_summon.getExpForThisLevel());// 0% absolute value
-		writeD(_summon.getExpForNextLevel());// 100% absolute value
+		writeQ(_summon.getStat().getExp());
+		writeQ(_summon.getExpForThisLevel());// 0% absolute value
+		writeQ(_summon.getExpForNextLevel());// 100% absolute value
 	}
 	
 	public String getType()

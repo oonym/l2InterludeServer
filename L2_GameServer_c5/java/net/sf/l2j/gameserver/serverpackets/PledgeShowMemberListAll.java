@@ -54,7 +54,8 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * 00000000
  * 
  *  
- * format   dSS dddddddddSd d (Sddddd)
+ * format   dSS dddddddddSdd d (Sddddd)
+ *          dddSS dddddddddSdd d (Sdddddd)
  *          
  * @version $Revision: 1.6.2.2.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
@@ -79,9 +80,13 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 	final void writeImpl()
 	{
 		writeC(0x53);
+		
+		writeD(0); //c5
 		writeD(_clan.getClanId());
+		writeD(0); //c5
 		writeS(_clan.getName());
 		writeS(_clan.getLeaderName());
+		
 		writeD(_clan.getCrestId()); // creast id .. is used again
 		writeD(_clan.getLevel());
 		writeD(_clan.getHasCastle());
@@ -104,6 +109,7 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 			writeD(0); 
 			writeD(1);
 			writeD(m.isOnline() ? m.getObjectId() : 0); // 1=online 0=offline
+			writeD(0); //c5 grade/power?
 		}
 	}
 

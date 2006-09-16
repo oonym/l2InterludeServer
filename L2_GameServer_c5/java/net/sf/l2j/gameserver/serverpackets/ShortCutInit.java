@@ -56,15 +56,33 @@ public class ShortCutInit extends ServerBasePacket
 		for (int i = 0; i < _shortCuts.length; i++)
 		{
 		    L2ShortCut sc = _shortCuts[i];
-
-            writeD(sc.getType());	
-		    writeD(sc.getSlot() + sc.getPage() * 12);
-		    writeD(sc.getId());
+            writeD(sc.getType());
+            writeD(sc.getSlot() + sc.getPage() * 12);
             
-		    if (sc.getLevel() > -1)
-		        writeD(sc.getLevel());
+            switch(sc.getType())
+            {
+            case L2ShortCut.TYPE_ITEM: //1
+            	writeD(sc.getId());
+            	break;
+            case L2ShortCut.TYPE_SKILL: //2
+            	writeD(sc.getId());
+            	writeD(sc.getLevel());
+            	writeC(0x01); // ?? c5 
+            	break;
+            case L2ShortCut.TYPE_ACTION: //3
+            	writeD(sc.getId());
+            	break;
+            case L2ShortCut.TYPE_MACRO: //4
+            	writeD(sc.getId());
+            	break;
+            case L2ShortCut.TYPE_RECIPE: //5
+            	writeD(sc.getId());
+            	break;
+            default:
+            	writeD(sc.getId());
+            }
             
-		    writeD(1);
+		    writeD(1); //??
 		}
 	}
 

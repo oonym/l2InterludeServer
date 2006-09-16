@@ -40,6 +40,7 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 import net.sf.l2j.gameserver.serverpackets.PledgeStatusChanged;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -460,6 +461,9 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         //should be update packet only
         PledgeShowInfoUpdate pu = new PledgeShowInfoUpdate(clan, player);
         player.sendPacket(pu);
+        
+        PledgeShowMemberListAll psmla = new PledgeShowMemberListAll(clan, player);
+        player.sendPacket(psmla);
 
         UserInfo ui = new UserInfo(player);
         player.sendPacket(ui);

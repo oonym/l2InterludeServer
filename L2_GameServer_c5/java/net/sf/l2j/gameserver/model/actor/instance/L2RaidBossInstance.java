@@ -79,7 +79,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
             int boxId = 0;
             switch(getNpcId())
             {
-                case 10035: // Shilen’s Messenger Cabrio
+                case 10035: // Shilen?s Messenger Cabrio
                     boxId = 8027;
                     break;
                 case 10054: // Demon Kernon

@@ -82,6 +82,11 @@ public abstract class ServerBasePacket extends BasePacket
 	{
 		_buf.putDouble(value);
 	}
+    
+    protected final void writeQ(long value)
+    {
+        _buf.putLong(value);
+    }
 	
 	protected final void writeS(String text)
 	{

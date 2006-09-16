@@ -103,7 +103,7 @@ public class UserInfo extends ServerBasePacket
         else writeD(_cha.getBaseClass());
 
         writeD(_cha.getLevel());
-        writeD(_cha.getExp());
+        writeQ(_cha.getExp());
         writeD(_cha.getSTR());
         writeD(_cha.getDEX());
         writeD(_cha.getCON());
@@ -228,13 +228,6 @@ public class UserInfo extends ServerBasePacket
         writeC(0x00);
 
         writeD(_cha.getClanPrivileges());
-        writeD(0x00);//writeD(0x100); //swim
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
-        writeD(0x00);
 
         writeH(_cha.getRecomLeft()); //c2  recommendations remaining
         writeH(_cha.getRecomHave()); //c2  recommendations received
@@ -259,6 +252,20 @@ public class UserInfo extends ServerBasePacket
         writeD(_cha.GetFishz()); //fishing z
 
         writeD(_cha.getNameColor());
+        
+		//new c5 
+       	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
+        
+        writeD(0x00); // ??
+        
+        writeD(0x00); // ??
+        
+        writeD(0x00); //changes the text above CP on Status Window
+        writeD(0x00); // ??
+        
+        writeD(_cha.getNameColor());
+        
+        writeD(0x00); // ??
     }
 
     /* (non-Javadoc)

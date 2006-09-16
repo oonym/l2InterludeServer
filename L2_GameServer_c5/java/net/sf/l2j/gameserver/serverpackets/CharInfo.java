@@ -235,13 +235,27 @@ public class CharInfo extends ServerBasePacket
         
 		writeD(_cha.getClanCrestLargeId()); 
 		writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Symbol on char menu ctrl+I  
-		writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura 
+		writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura
 		
 		writeC(_cha.isFishing() ? 1 : 0); //0x01: Fishing Mode (Cant be undone by setting back to 0)
 		writeD(_cha.GetFishx());  
 		writeD(_cha.GetFishy());
 		writeD(_cha.GetFishz());
         writeD(_cha.getNameColor());
+        
+        //c5
+       	writeD(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
+        
+        writeD(0x00); // ??
+        
+        writeD(0x00); // ??
+        
+        writeD(0x00); // ??
+        writeD(0x00); // ??
+        
+        writeD(_cha.getNameColor());
+        
+        writeD(0x00); // ??
 		}
 	}
 	

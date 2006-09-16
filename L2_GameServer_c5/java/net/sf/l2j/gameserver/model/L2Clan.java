@@ -68,6 +68,8 @@ public class L2Clan
 	private boolean _hasCrestLarge;
 
 	private Forum _Forum;
+
+	private List<L2Skill> _skills = new FastList<L2Skill>(); 
     
     //  Clan Privileges  
 	public static final int CP_NOTHING = 0;  
@@ -629,13 +631,13 @@ public class L2Clan
                 
                 int leaderId = (clanData.getInt("leader_id"));          
                 
-                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id FROM characters WHERE clanid=?");
+                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade FROM characters WHERE clanid=?");
                 statement2.setInt(1, getClanId());
                 ResultSet clanMembers = statement2.executeQuery();
                 
                 while (clanMembers.next())
                 {
-                    member = new L2ClanMember(clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"));
+                    member = new L2ClanMember(clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"),clanMembers.getInt("power_grade"),clanMembers.getString("title"));
                     if (member.getObjectId() == leaderId)
                     {
                         setLeader(member);
@@ -760,6 +762,11 @@ public class L2Clan
        return 0;       
     }
     
+    public List<Integer> getWarList()
+    {
+    	return _atWarWith;
+    }
+    
     public void broadcastClanStatus()
     {
         for(L2PcInstance member: this.getOnlineMembers(""))
@@ -768,5 +775,37 @@ public class L2Clan
            member.sendPacket(pm);
         }
     }
+    
+    public void addSkill(L2Skill sk)
+    {
+    	_skills.add(sk);
+    }
+    
+    public void removeSkill(int id)
+    {
+    	L2Skill deleteSkill = null;
+    	for(L2Skill sk : _skills)
+    	{
+    		if(sk.getId() == id)
+    		{
+    			deleteSkill = sk;
+    			return;
+    		}
+    	}
+    	_skills.remove(deleteSkill);
+    }
+    
+    public void removeSkill(L2Skill deleteSkill)
+    {
+    	_skills.remove(deleteSkill);
+    }
+
+	/**
+	 * @return
+	 */
+	public List<L2Skill> getSkills()
+	{
+		return _skills;
+	}
 
 }

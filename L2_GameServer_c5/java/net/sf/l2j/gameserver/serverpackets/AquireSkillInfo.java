@@ -49,7 +49,7 @@ public class AquireSkillInfo extends ServerBasePacket
 		public int _type;
 		public int _unk;
 		
-		private Req(int type, int itemId, int count, int unk)
+		public Req(int type, int itemId, int count, int unk)
 		{
 			_itemId = itemId;
 			_type = type;

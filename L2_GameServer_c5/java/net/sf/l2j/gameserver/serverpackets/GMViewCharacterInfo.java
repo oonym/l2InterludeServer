@@ -62,7 +62,7 @@ public class GMViewCharacterInfo extends ServerBasePacket
 		writeD(_cha.getSex());
 		writeD(_cha.getClassId().getId());
 		writeD(_cha.getLevel());
-		writeD(_cha.getExp());
+		writeQ(_cha.getExp());
 		writeD(_cha.getSTR());
 		writeD(_cha.getDEX());
 		writeD(_cha.getCON());
@@ -163,6 +163,20 @@ public class GMViewCharacterInfo extends ServerBasePacket
 		writeD(_cha.getClassId().getId());
 		writeD(_cha.getMaxCp());
 		writeD((int) _cha.getCurrentCp());
+		
+		//new c5 
+        writeC(0x00); //changes the Speed display on Status Window
+        
+        writeD(0x00);
+        
+        writeD(0x00);
+        
+        writeD(0x00); //changes the text above CP on Status Window
+        writeD(0x00);
+        
+        writeD(0x00);
+        
+        writeD(0x00);
 	}
 
 	/* (non-Javadoc)

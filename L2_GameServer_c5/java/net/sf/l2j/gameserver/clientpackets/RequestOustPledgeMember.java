@@ -61,7 +61,7 @@ public class RequestOustPledgeMember extends ClientBasePacket
 		L2ClanMember member = clan.getClanMember(_target);
 		if (member == null)
 		{
-			_log.warning("target is not member of the clan");
+			_log.warning("Target ("+_target+") is not member of the clan");
 			return;
 		}
 		

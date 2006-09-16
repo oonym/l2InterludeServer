@@ -2,9 +2,6 @@
 <projectDescription>
 	<name>L2_GameServer_c5</name>
 	<comment></comment>
-	<projects>
-		<project>L2_Logging</project>
-	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>

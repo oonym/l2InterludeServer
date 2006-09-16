@@ -83,7 +83,7 @@ public class LoginController
         public int loginOkID1;
         public int loginOkID2;
 
-        public SessionKey(int playOK1, int loginOK2, int loginOK1, int playOK2)
+        public SessionKey(int loginOK1, int loginOK2, int playOK1, int playOK2)
         {
             playOkID1 = playOK1;
             playOkID2 = playOK2;

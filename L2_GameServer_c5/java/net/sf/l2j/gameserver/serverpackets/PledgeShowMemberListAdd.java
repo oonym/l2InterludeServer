@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class PledgeShowMemberListAdd extends ServerBasePacket
 {
-	private static final String _S__6A_PLEDGESHOWMEMBERLISTADD = "[S] 55 PledgeShowMemberListAdd";
+	private static final String _S__55_PLEDGESHOWMEMBERLISTADD = "[S] 55 PledgeShowMemberListAdd";
 	private L2PcInstance _player;
 	
 	public PledgeShowMemberListAdd(L2PcInstance player)
@@ -48,7 +48,8 @@ public class PledgeShowMemberListAdd extends ServerBasePacket
 		writeD(_player.getClassId().getId());
 		writeD(0); 
 		writeD(1);
-		writeD((_player.isOnline() == 1 ? _player.getObjectId() : 0)); // 1=online 0=offline		
+		writeD((_player.isOnline() == 1 ? _player.getObjectId() : 0)); // 1=online 0=offline
+		writeD(0); //c5 must be 0 to display member
 	}
 
 	/* (non-Javadoc)
@@ -56,7 +57,7 @@ public class PledgeShowMemberListAdd extends ServerBasePacket
 	 */
 	public String getType()
 	{
-		return _S__6A_PLEDGESHOWMEMBERLISTADD;
+		return _S__55_PLEDGESHOWMEMBERLISTADD;
 	}
 
 }

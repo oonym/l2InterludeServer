@@ -449,7 +449,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
      * TODO: Manage casting rules to healer mobs (like Ant Nurses)
      * 
      */
-	private void thinkAttack()
+    private void thinkAttack()
     {
         if (_attack_timeout < GameTimeController.getGameTicks())
         {

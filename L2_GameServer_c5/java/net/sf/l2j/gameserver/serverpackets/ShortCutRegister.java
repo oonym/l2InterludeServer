@@ -68,12 +68,30 @@ public class ShortCutRegister extends ServerBasePacket
         
 		writeD(_shortcut.getType());
 		writeD(_shortcut.getSlot() + _shortcut.getPage() * 12); // C4 Client
-		writeD(_shortcut.getId());
+		switch(_shortcut.getType())
+        {
+        case L2ShortCut.TYPE_ITEM: //1
+        	writeD(_shortcut.getId());
+        	break;
+        case L2ShortCut.TYPE_SKILL: //2
+        	writeD(_shortcut.getId());
+        	writeD(_shortcut.getLevel());
+        	writeC(0x01); // ?? c5 
+        	break;
+        case L2ShortCut.TYPE_ACTION: //3
+        	writeD(_shortcut.getId());
+        	break;
+        case L2ShortCut.TYPE_MACRO: //4
+        	writeD(_shortcut.getId());
+        	break;
+        case L2ShortCut.TYPE_RECIPE: //5
+        	writeD(_shortcut.getId());
+        	break;
+        default:
+        	writeD(_shortcut.getId());
+        }
         
-		if (_shortcut.getLevel() > -1)
-			writeD(_shortcut.getLevel());
-        
-		writeD(1);			
+		writeD(1);//??
 	}
 
 	/* (non-Javadoc)

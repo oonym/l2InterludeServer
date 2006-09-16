@@ -536,6 +536,9 @@ public final class L2PcInstance extends L2PlayableInstance
     /** Flag to disable equipment/skills while wearing formal wear **/
     private boolean _IsWearingFormalWear = false;
     
+    private ScheduledFuture _jailTask;
+	private int _powerGrade;
+    
     
 	/** Skill casting information (used to queue when several skills are cast in a short time) **/
     public class SkillDat
@@ -3180,6 +3183,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check if the new target is visible
 		if (newTarget != null && !newTarget.isVisible())
 			newTarget = null;
+        
+        if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 300)
+            newTarget = null;
 		
 		// Can't target and attack festival monsters if not participant
 		if (newTarget instanceof L2FestivalMonsterInstance && !isFestivalParticipant())
@@ -4145,8 +4151,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean isUsingDualWeapon()
 	{
 		L2Weapon weaponItem = getActiveWeaponItem();
-        
-        if (weaponItem == null) return false;
         
 		if (weaponItem.getItemType() == L2WeaponType.DUAL)
 			return true;
@@ -8439,7 +8443,6 @@ public final class L2PcInstance extends L2PlayableInstance
         }
     }
 
-    private ScheduledFuture _jailTask;
     private class JailTask implements Runnable
     {
         L2PcInstance _player;
@@ -8456,4 +8459,20 @@ public final class L2PcInstance extends L2PlayableInstance
             _player.setInJail(false, 0);
         }
     }
+
+	/**
+	 * @return
+	 */
+	public int getPowerGrade()
+	{
+		return _powerGrade;
+	}
+	
+	/**
+	 * @return
+	 */
+	public void setPowerGrade(int power)
+	{
+		_powerGrade = power;
+	}
 }

@@ -552,9 +552,9 @@ public final class Config
     /** Properties file for telnet configuration */
     public static final String  TELNET_FILE					= "./config/telnet.properties";
     /** Properties file for l2j server version configurations */ 
-    public static final String  SERVER_VERSION_FILE				= "./config/l2j-version.properties";
+    public static final String  SERVER_VERSION_FILE		    = "./config/l2j-version.properties";
     /** Properties file for l2j datapack version configurations */ 
-    public static final String  DATAPACK_VERSION_FILE             = "./config/l2jdp-version.properties";
+    public static final String  DATAPACK_VERSION_FILE       = "./config/l2jdp-version.properties";
     /** Properties file for siege configuration */
     public static final String  SIEGE_CONFIGURATION_FILE	= "./config/siege.properties";
     /** XML file for banned IP */
@@ -603,11 +603,11 @@ public final class Config
     public static String     SERVER_VERSION;
     /** Date of server build */
     public static String     SERVER_BUILD_DATE;
-
+    
     // Datapack version
     /** Datapack version */
     public static String     DATAPACK_VERSION;
-    
+
     /** Zone Setting */
     public static int ZONE_TOWN;
     
@@ -900,11 +900,11 @@ public final class Config
     /** Recipebook limits */
     public static int DWARF_RECIPE_LIMIT;
     public static int COMMON_RECIPE_LIMIT;
-
-    /** Grid Options */ 
-    public static boolean GRIDS_ALWAYS_ON; 
-    public static int GRID_NEIGHBOR_TURNON_TIME; 
-    public static int GRID_NEIGHBOR_TURNOFF_TIME;
+    
+    /** Grid Options */
+    public static boolean GRIDS_ALWAYS_ON;
+    public static int GRID_NEIGHBOR_TURNON_TIME;
+    public static int GRID_NEIGHBOR_TURNOFF_TIME;    
     
     /**
      * This class initializes all global variables for configuration.<br>
@@ -1061,10 +1061,10 @@ public final class Config
                 GAMEGUARD_ENFORCE               = Boolean.valueOf(optionsSettings.getProperty("GameGuardEnforce", "False"));
                 GAMEGUARD_PROHIBITACTION        = Boolean.valueOf(optionsSettings.getProperty("GameGuardProhibitAction", "False"));    
                 
-                GRIDS_ALWAYS_ON                 = Boolean.parseBoolean(optionsSettings.getProperty("GridsAlwaysOn", "False")); 
-                GRID_NEIGHBOR_TURNON_TIME       = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOnTime", "30")); 
-                GRID_NEIGHBOR_TURNOFF_TIME      = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));
-
+                GRIDS_ALWAYS_ON                 = Boolean.parseBoolean(optionsSettings.getProperty("GridsAlwaysOn", "False"));
+                GRID_NEIGHBOR_TURNON_TIME       = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOnTime", "30"));
+                GRID_NEIGHBOR_TURNOFF_TIME      = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));    
+                
                 // ---------------------------------------------------
                 // Configuration values not found in config files
                 // ---------------------------------------------------
@@ -1111,7 +1111,7 @@ public final class Config
 	            SERVER_VERSION      = "Unsupported Custom Version.";
                 SERVER_BUILD_DATE   = "Undefined Date.";
 	        }
-            
+	        
             /*
              * Load L2J Datapack Version Properties file (if exists)
              */
@@ -1129,8 +1129,8 @@ public final class Config
                 //Ignore Properties file if it doesnt exist
                 DATAPACK_VERSION      = "Unsupported Custom Version.";
             }
-	        
-	        // telnet
+
+            // telnet
 	        try
 	        {
 	            Properties telnetSettings   = new Properties();
@@ -1235,8 +1235,7 @@ public final class Config
 	            
 	            STORE_SKILL_COOLTIME = Boolean.parseBoolean(otherSettings.getProperty("StoreSkillCooltime", "true"));
                 
-	            PET_RENT_NPC =  otherSettings.getProperty("ListPetRentNpc", "7827"); 	            
-                  LIST_PET_RENT_NPC = new FastList<Integer>();
+	            PET_RENT_NPC =  otherSettings.getProperty("ListPetRentNpc", "7827");	            LIST_PET_RENT_NPC = new FastList<Integer>();
 	            for (String id : PET_RENT_NPC.split(",")) {
 	                LIST_PET_RENT_NPC.add(Integer.parseInt(id));
 	            }

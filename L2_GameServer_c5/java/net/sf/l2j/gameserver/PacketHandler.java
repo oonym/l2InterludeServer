@@ -679,6 +679,45 @@ public class PacketHandler
                     case 0x13:
                     	msg = new RequestOlympiadMatchList(data, client);
                     	break;
+                    case 0x14:
+                        msg = new RequestAskJoinPartyRoom(data, client);
+                        break;
+                    case 0x15:
+                        msg = new AnswerJoinPartyRoom(data, client);
+                        break;
+                    case 0x16:
+                        msg = new RequestListPartyMatchingWaitingRoom(data, client);
+                        break;
+                    case 0x17:
+                        msg = new RequestExitPartyMatchingWaitingRoom(data, client);
+                        break;
+                    case 0x18:
+                        msg = new RequestGetBossRecord(data, client);
+                        break;
+                    case 0x19:
+                        msg = new RequestPledgeSetAcademyMaster(data, client);
+                        break;
+                    case 0x1a:
+                        msg = new RequestPledgePowerGradeList(data, client);
+                        break;
+                    case 0x1b:
+                        msg = new RequestPledgeMemberPowerInfo(data, client);
+                        break;
+                    case 0x1c:
+                        msg = new RequestPledgeSetMemberPowerGrade(data, client);
+                        break;
+                    case 0x1d:
+                        msg = new RequestPledgeMemberInfo(data, client);
+                        break;
+                    case 0x1e:
+                        msg = new RequestPledgeWarList(data, client);
+                        break;
+                    case 0x1f:
+                        msg = new RequestExFishRanking(data, client);
+                        break;
+                    case 0x20:
+                        msg = new RequestPCCafeCouponUse(data, client);
+                        break;
                     default: 
                      	msg = null; 
                      	int size = data.remaining(); 

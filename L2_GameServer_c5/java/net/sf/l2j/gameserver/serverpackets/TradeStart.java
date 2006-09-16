@@ -44,7 +44,7 @@ public class TradeStart extends ServerBasePacket{
 	{//0x2e TradeStart   d h (h dddhh dhhh)
 		if (_player.getActiveTradeList() == null || _player.getActiveTradeList().getPartner() == null)
 			return;
-		
+
 		writeC(0x1E);
 		writeD(_player.getActiveTradeList().getPartner().getObjectId());
 		//writeD((_char != null || _char.getTransactionRequester() != null)? _char.getTransactionRequester().getObjectId() : 0);
