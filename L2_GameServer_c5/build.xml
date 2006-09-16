@@ -210,12 +210,6 @@
 			</fileset>
 		</copy>
 
-    	<copy todir="${build.dist.game}/hibernate-mapping">
-			<fileset dir="dist/hibernate-mapping">
-				<include name="*.xml"/>
-			</fileset>
-        </copy>
-    	
         <mkdir dir="${build.dist.game}/data" />
         <copy todir="${build.dist.game}/data">
             <fileset dir="data">
