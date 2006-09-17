@@ -46,6 +46,12 @@ public class SetPrivateStoreListBuy extends ClientBasePacket
     {
         super(buf, client);
         _count = readD();
+        if (_count <= 0)
+        {
+            _count = 0; 
+            _items = null;
+            return;
+        }
         _items = new int[_count * 3];
         for (int x = 0; x < _count; x++)
         {

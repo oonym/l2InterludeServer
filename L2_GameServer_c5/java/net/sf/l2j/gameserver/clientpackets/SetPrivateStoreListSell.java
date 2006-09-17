@@ -47,7 +47,7 @@ public class SetPrivateStoreListSell extends ClientBasePacket
 		super( buf, client);
 	    _unknow = readD();
 		_count = readD();
-		if (_count < 0)
+		if (_count <= 0)
 		{
 		    _count = 0; 
 		    _items = null;

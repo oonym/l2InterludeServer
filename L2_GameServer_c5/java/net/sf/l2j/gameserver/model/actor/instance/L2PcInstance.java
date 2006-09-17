@@ -4151,6 +4151,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean isUsingDualWeapon()
 	{
 		L2Weapon weaponItem = getActiveWeaponItem();
+		if (weaponItem == null) return false;
         
 		if (weaponItem.getItemType() == L2WeaponType.DUAL)
 			return true;

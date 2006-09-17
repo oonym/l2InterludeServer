@@ -895,14 +895,25 @@ public final class Formulas
 	 */
 	public final double calcCpRegen(L2Character cha)
 	{
-		double cpRegenMultiplier = Config.CP_REGEN_MULTIPLIER;
-		double cpRegenBonus = 0;
+        double init = cha.getTemplate().baseHpReg;
+        double cpRegenMultiplier = Config.CP_REGEN_MULTIPLIER;
+        double cpRegenBonus = 0;
 
-		// FIXME : Dont know corect formulas - it is temporaly one
-		double init = ((cha.getTemplate().baseCpReg + 0.08 * cha.getLevel()) * CONbonus[cha.getCON()]*0.5) * (cpRegenMultiplier / 100) + cpRegenBonus;
-		if (init < 1) init = 1;
+        L2PcInstance player = (L2PcInstance) cha;
 
-		return cha.calcStat(Stats.REGENERATE_CP_RATE, init, null, null);
+        // Calculate correct baseHpReg value for certain level of PC
+        init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10) : 0.5;
+        
+        // Calculate Movement bonus
+        if (player.isSitting()) cpRegenMultiplier *= 1.5;      // Sitting
+        else if (!player.isMoving()) cpRegenMultiplier *= 1.1; // Staying
+        else if (player.isRunning()) cpRegenMultiplier *= 0.7; // Running
+
+        // Apply CON bonus
+        init *= cha.getLevelMod() * CONbonus[cha.getCON()];
+        if (init < 1) init = 1;
+
+        return cha.calcStat(Stats.REGENERATE_CP_RATE, init, null, null) * (cpRegenMultiplier / 100) + cpRegenBonus;
 	}
 
 	@SuppressWarnings("deprecation")
