@@ -134,6 +134,15 @@ public class UseItem extends ClientBasePacket
                 	return;
                 }
                 
+                // Don't allow use weapon/shield when player is stun/sleep
+                if (activeChar.isStunned() ||  activeChar.isSleeping()
+                        && (item.getItem().getBodyPart() == L2Item.SLOT_LR_HAND 
+                            || item.getItem().getBodyPart() == L2Item.SLOT_L_HAND 
+                            || item.getItem().getBodyPart() == L2Item.SLOT_R_HAND))
+                {
+                    return;
+                }
+                
                 // Don't allow weapon/shield equipment if wearing formal wear
                 if (activeChar.isWearingFormalWear()
                 	&& (item.getItem().getBodyPart() == L2Item.SLOT_LR_HAND 

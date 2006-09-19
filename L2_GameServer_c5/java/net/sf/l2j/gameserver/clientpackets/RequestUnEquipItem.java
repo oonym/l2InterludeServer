@@ -62,6 +62,13 @@ public class RequestUnEquipItem extends ClientBasePacket
 		if (activeChar == null)
 		    return;
         
+        // Prevent Stunned player to remove the weapon
+        if (activeChar.isStunned() || activeChar.isSleeping())
+        {
+            activeChar.sendMessage("Your status does not allow you to do that.");
+            return;
+        }
+        
 		L2ItemInstance[] unequiped =
 			activeChar.getInventory().unEquipItemInBodySlotAndRecord(_slot); 
 		
@@ -89,8 +96,7 @@ public class RequestUnEquipItem extends ClientBasePacket
             if (unequiped[0].isWear())
                 return;
         	
-            SystemMessage sm;
-            
+            SystemMessage sm = null;
             if (unequiped[0].getEnchantLevel() > 0)
             {
             	sm = new SystemMessage(SystemMessage.EQUIPMENT_S1_S2_REMOVED);
@@ -102,7 +108,6 @@ public class RequestUnEquipItem extends ClientBasePacket
 	            sm = new SystemMessage(SystemMessage.S1_DISARMED);
 	            sm.addItemName(unequiped[0].getItemId());
             }
-            
             activeChar.sendPacket(sm);
 		}
 	}
