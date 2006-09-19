@@ -23,13 +23,10 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
-import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
  * This class ...
@@ -75,25 +72,15 @@ public class RequestAutoSoulShot extends ClientBasePacket
             
             if (item != null)
             {
-                L2Item tempItem = ItemTable.getInstance().getTemplate(item.getItemId());
-                String tempName = tempItem.getName();
-
                 if (_type == 1)
                 {
-                    if (item == null)
-                    {
-                        _log.warning("Bad item id (" + _itemId + ") was given to RequestAutoSoulShot.");
-                        activeChar.sendPacket(new ActionFailed());
-                        return;
-                    }
-
                     activeChar.addAutoSoulShot(_itemId);
                     ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
                     activeChar.sendPacket(atk);
 
                     //start the auto soulshot use
                     SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
-                    sm.addString(tempName);
+                    sm.addString(item.getItemName());
                     activeChar.sendPacket(sm);
 
                     // Attempt to charge first shot on activation
@@ -110,7 +97,7 @@ public class RequestAutoSoulShot extends ClientBasePacket
 
                     //cancel the auto soulshot use
                     SystemMessage sm = new SystemMessage(SystemMessage.AUTO_USE_OF_S1_CANCELLED);
-                    sm.addString(tempName);
+                    sm.addString(item.getItemName());
                     activeChar.sendPacket(sm);
                 }
             }

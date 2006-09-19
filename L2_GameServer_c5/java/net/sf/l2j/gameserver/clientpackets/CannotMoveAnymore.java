@@ -37,25 +37,28 @@ import net.sf.l2j.gameserver.serverpackets.PartyMemberPosition;
 public class CannotMoveAnymore extends ClientBasePacket
 {
 	private static final String _C__36_STOPMOVE = "[C] 36 CannotMoveAnymore";
-	private static Logger _log = Logger.getLogger(CannotMoveAnymore.class.getName());
-	
+
+	private static Logger _log = Logger.getLogger(CannotMoveAnymore.class
+			.getName());
 
 	private final int _x;
+
 	private final int _y;
+
 	private final int _z;
+
 	private final int _heading;
+
 	/**
 	 * packet type id 0x36
 	 * 
 	 * sample
 	 * 
-	 * 36
-	 * a8 4f 02 00 // x
-	 * 17 85 01 00 // y
-	 * a7 00 00 00 // z
-	 * 98 90 00 00 // heading?
+	 * 36 a8 4f 02 00 // x 17 85 01 00 // y a7 00 00 00 // z 98 90 00 00 //
+	 * heading?
 	 * 
-	 * format:		cdddd
+	 * format: cdddd
+	 * 
 	 * @param decrypt
 	 */
 	public CannotMoveAnymore(ByteBuffer buf, ClientThread client)
@@ -71,32 +74,41 @@ public class CannotMoveAnymore extends ClientBasePacket
 	{
 		L2Character player = getClient().getActiveChar();
 		if (player == null)
-		    return;
-		if (Config.DEBUG)
-			_log.fine("client: x:"+_x+" y:"+_y+" z:"+_z+
-					" server x:"+player.getX()+" y:"+player.getY()+" z:"+player.getZ());
-		if (player != null && player.getAI() != null)
-        {
-		    player.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED_BLOCKED, new L2CharPosition(_x, _y, _z, _heading));
-        }
-		if(player instanceof L2PcInstance && ((L2PcInstance)player).getParty() != null)
-			((L2PcInstance)player).getParty().broadcastToPartyMembers(((L2PcInstance)player),new PartyMemberPosition((L2PcInstance)player));
+			return;
 
-//		player.stopMove();
-//
-//		if (Config.DEBUG)
-//			_log.fine("client: x:"+_x+" y:"+_y+" z:"+_z+
-//					" server x:"+player.getX()+" y:"+player.getZ()+" z:"+player.getZ());
-//		StopMove smwl = new StopMove(player);
-//		getClient().getActiveChar().sendPacket(smwl);
-//		getClient().getActiveChar().broadcastPacket(smwl);
-//		
-//		StopRotation sr = new StopRotation(getClient().getActiveChar(), _heading);
-//		getClient().getActiveChar().sendPacket(sr);
-//		getClient().getActiveChar().broadcastPacket(sr);
+		if (Config.DEBUG)
+			_log.fine("client: x:" + _x + " y:" + _y + " z:" + _z
+					+ " server x:" + player.getX() + " y:" + player.getY()
+					+ " z:" + player.getZ());
+		if (player.getAI() != null)
+		{
+			player.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED_BLOCKED,
+					new L2CharPosition(_x, _y, _z, _heading));
+		}
+		if (player instanceof L2PcInstance
+				&& ((L2PcInstance) player).getParty() != null)
+			((L2PcInstance) player).getParty().broadcastToPartyMembers(
+					((L2PcInstance) player),
+					new PartyMemberPosition((L2PcInstance) player));
+
+		// player.stopMove();
+		//
+		// if (Config.DEBUG)
+		// _log.fine("client: x:"+_x+" y:"+_y+" z:"+_z+
+		// " server x:"+player.getX()+" y:"+player.getZ()+" z:"+player.getZ());
+		// StopMove smwl = new StopMove(player);
+		// getClient().getActiveChar().sendPacket(smwl);
+		// getClient().getActiveChar().broadcastPacket(smwl);
+		//		
+		// StopRotation sr = new StopRotation(getClient().getActiveChar(),
+		// _heading);
+		// getClient().getActiveChar().sendPacket(sr);
+		// getClient().getActiveChar().broadcastPacket(sr);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	public String getType()

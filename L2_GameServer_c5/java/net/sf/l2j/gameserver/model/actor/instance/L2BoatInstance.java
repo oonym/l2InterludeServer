@@ -476,8 +476,8 @@ public class L2BoatInstance extends L2Character
 			}
 			for (int i = 0; i < _inboat.size();i++)
 			{
-				L2PcInstance player= _inboat.get(i);
-				if(player.isInBoat())
+				L2PcInstance player = _inboat.get(i);
+				if(player != null && player.isInBoat())
 				{
 					if(player.getBoat() == this)
 					{

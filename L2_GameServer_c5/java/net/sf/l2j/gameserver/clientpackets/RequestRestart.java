@@ -54,7 +54,6 @@ public class RequestRestart extends ClientBasePacket
 
     void runImpl()
     {
-
         L2PcInstance player = getClient().getActiveChar();
         if (player == null)
         {
@@ -92,36 +91,32 @@ public class RequestRestart extends ClientBasePacket
             return;
         }
 
-        // removing player from the world
-
-        if (player != null)
+        // Prevent player from restarting if they are a festival participant
+        // and it is in progress, otherwise notify party members that the player
+        // is not longer a participant.
+        if (player.isFestivalParticipant())
         {
-            // Prevent player from restarting if they are a festival participant
-            // and it is in progress, otherwise notify party members that the player
-            // is not longer a participant.
-            if (player.isFestivalParticipant())
+            if (SevenSignsFestival.getInstance().isFestivalInitialized())
             {
-                if (SevenSignsFestival.getInstance().isFestivalInitialized())
-                {
-                    player.sendPacket(SystemMessage.sendString("You cannot restart while you are a participant in a festival."));
-                    player.sendPacket(new ActionFailed());
-                    return;
-                }
-                L2Party playerParty = player.getParty();
-
-                if (playerParty != null)
-                    player.getParty().broadcastToPartyMembers(
-                                                              SystemMessage.sendString(player.getName()
-                                                                  + " has been removed from the upcoming festival."));
+                player.sendPacket(SystemMessage.sendString("You cannot restart while you are a participant in a festival."));
+                player.sendPacket(new ActionFailed());
+                return;
             }
+            L2Party playerParty = player.getParty();
 
-            player.deleteMe();
-            ClientThread.saveCharToDisk(getClient().getActiveChar());
-
-            RestartResponse response = new RestartResponse();
-            sendPacket(response);
+            if (playerParty != null)
+                player.getParty().broadcastToPartyMembers(
+                                                          SystemMessage.sendString(player.getName()
+                                                              + " has been removed from the upcoming festival."));
         }
 
+        player.deleteMe();
+        ClientThread.saveCharToDisk(getClient().getActiveChar());
+
+        RestartResponse response = new RestartResponse();
+        sendPacket(response);
+
+        // removing player from the world
         getClient().setActiveChar(null);
         // send char list
         CharSelectInfo cl = new CharSelectInfo(getClient().getLoginName(),

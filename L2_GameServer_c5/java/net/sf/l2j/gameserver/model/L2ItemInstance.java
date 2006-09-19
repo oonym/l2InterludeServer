@@ -379,6 +379,15 @@ public final class L2ItemInstance extends L2Object
 	}
 
 	/**
+	 * Returns the name of the item
+	 * @return String
+	 */
+	public String getItemName()
+	{
+		return _item.getName();
+	}
+
+	/**
 	 * Returns the price of the item for selling
 	 * @return int
 	 */

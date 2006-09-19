@@ -21,10 +21,12 @@ public class Harvester implements IItemHandler
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance _item)
     {
+    	if (playable == null) return;
+    	
         InventoryUpdate iu = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
         player = (L2PcInstance)playable;
 
-        if(player.getTarget() == null || !(player.getTarget() instanceof L2MonsterInstance))
+        if(!(player.getTarget() instanceof L2MonsterInstance))
         {
             player.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
             return;
@@ -35,7 +37,7 @@ public class Harvester implements IItemHandler
         int total = 0;
         int cropId = 0;
         
-        if (target.isSeeded() && target.isDead() && calcSuccess())
+        if (target != null && target.isSeeded() && target.isDead() && calcSuccess())
         {
         	L2Attackable.RewardItem[] items = target.takeHarvest();
             if (items != null && items.length > 0)
