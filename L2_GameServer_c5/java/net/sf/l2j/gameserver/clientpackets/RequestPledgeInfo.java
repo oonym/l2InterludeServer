@@ -27,8 +27,6 @@ import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PledgeInfo;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDeleteAll;
 
 /**
  * This class ...
@@ -38,48 +36,53 @@ import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDeleteAll;
 public class RequestPledgeInfo extends ClientBasePacket
 {
 	private static final String _C__66_REQUESTPLEDGEINFO = "[C] 66 RequestPledgeInfo";
-	private static Logger _log = Logger.getLogger(RequestPledgeInfo.class.getName());
-	
+
+	private static Logger _log = Logger.getLogger(RequestPledgeInfo.class
+			.getName());
+
 	private final int _clanId;
-	
+
 	/**
-	 * packet type id 0x66
-	 * format:		cd
+	 * packet type id 0x66 format: cd
+	 * 
 	 * @param rawPacket
 	 */
 	public RequestPledgeInfo(ByteBuffer buf, ClientThread client)
 	{
 		super(buf, client);
-		_clanId  = readD();
+		_clanId = readD();
 	}
 
 	void runImpl()
 	{
-		if (Config.DEBUG) _log.fine("infos for clan " + _clanId + " requested");
+		if (Config.DEBUG)
+			_log.fine("infos for clan " + _clanId + " requested");
 
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2Clan clan = ClanTable.getInstance().getClan(_clanId);
 		if (clan == null)
 		{
-			_log.warning("Clan data for clanId "+ _clanId + " is missing");
+			_log.warning("Clan data for clanId " + _clanId + " is missing");
 			return; // we have no clan data ?!? should not happen
 		}
-			
+
 		PledgeInfo pc = new PledgeInfo(clan);
-        if(activeChar != null)
-        {
-            activeChar.sendPacket(pc);
-            
-            /*if (clan.getClanId() == activeChar.getClanId())
-            {
-            	activeChar.sendPacket(new PledgeShowMemberListDeleteAll());
-                PledgeShowMemberListAll pm = new PledgeShowMemberListAll(clan, activeChar);
-                activeChar.sendPacket(pm);
-            }*/
-        }
+		if (activeChar != null)
+		{
+			activeChar.sendPacket(pc);
+
+			/*
+			 * if (clan.getClanId() == activeChar.getClanId()) {
+			 * activeChar.sendPacket(new PledgeShowMemberListDeleteAll());
+			 * PledgeShowMemberListAll pm = new PledgeShowMemberListAll(clan,
+			 * activeChar); activeChar.sendPacket(pm); }
+			 */
+		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	public String getType()
