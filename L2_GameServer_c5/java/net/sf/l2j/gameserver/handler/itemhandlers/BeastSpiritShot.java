@@ -123,7 +123,7 @@ public class BeastSpiritShot implements IItemHandler
                 activePet.setChargedSpiritShot(L2ItemInstance.CHARGED_SPIRITSHOT);
         }
         
-        if (!activePet.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
+        if (!activeOwner.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
         {
             if (activeOwner.getAutoSoulShot().contains(itemId))
             {
@@ -147,7 +147,7 @@ public class BeastSpiritShot implements IItemHandler
         // Pet uses the power of spirit.
         activeOwner.sendPacket(new SystemMessage(1576));
         
-        Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, 2061, 1, 0, 0), 360000/*600*/);
+        Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, isBlessed? 2009:2008, 1, 0, 0), 360000/*600*/);
     }
     
     public int[] getItemIds()

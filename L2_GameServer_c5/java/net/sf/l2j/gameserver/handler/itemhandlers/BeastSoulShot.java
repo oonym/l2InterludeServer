@@ -116,7 +116,7 @@ public class BeastSoulShot implements IItemHandler
         }
         
         // If the player doesn't have enough beast soulshot remaining, remove any auto soulshot task.
-        if (!activePet.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
+        if (!activeOwner.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
         {
             if (activeOwner.getAutoSoulShot().contains(itemId))
             {
@@ -140,7 +140,7 @@ public class BeastSoulShot implements IItemHandler
         // Pet uses the power of spirit.
         activeOwner.sendPacket(new SystemMessage(1576));
         
-        Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, 2150, 1, 0, 0), 360000/*600*/);
+        Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, 2033, 1, 0, 0), 360000/*600*/);
     }
     
     public int[] getItemIds()
