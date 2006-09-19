@@ -104,6 +104,7 @@ public class GameTimeController
 	 */
 	public synchronized void registerMovingObject(L2Character cha)
 	{
+		if(cha == null) return;
 		if (!movingObjects.contains(cha)) movingObjects.add(cha);
 	}
 
