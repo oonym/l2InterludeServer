@@ -119,7 +119,7 @@ public class MoveBackwardToLocation extends ClientBasePacket
 			double dx = _targetX-activeChar.getX();
 			double dy = _targetY-activeChar.getY();
 			// Can't move if character is confused, or trying to move a huge distance
-			if (activeChar.isOutOfControl()||((dx*dx+dy*dy) > 9900*9900)) {
+			if (activeChar.isOutOfControl()||((dx*dx+dy*dy) > 98010000)) { // 9900*9900
 				activeChar.sendPacket(new ActionFailed());
 				return;
 			}

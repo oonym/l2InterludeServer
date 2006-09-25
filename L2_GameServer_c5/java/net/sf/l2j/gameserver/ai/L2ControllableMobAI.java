@@ -456,7 +456,9 @@ public class L2ControllableMobAI extends L2AttackableAI
     {
         int aggroRange  = ((L2Attackable)_actor).getAggroRange();
         L2Attackable npc = (L2Attackable)_actor;
-        int npcX, npcY, targetX, targetY, dy, dx;
+        int npcX, npcY, targetX, targetY;
+        double dy, dx;
+        double dblAggroRange = aggroRange*aggroRange;
 
 		List<L2Character> potentialTarget = new FastList<L2Character>();
 
@@ -470,10 +472,10 @@ public class L2ControllableMobAI extends L2AttackableAI
             targetX = obj.getX();
             targetY = obj.getY();
             
-            dx      = Math.abs(npcX - targetX);
-            dy      = Math.abs(npcY - targetY);
+            dx      = npcX - targetX;
+            dy      = npcY - targetY;
             
-            if (dx*dx + dy*dy > aggroRange*aggroRange)
+            if (dx*dx + dy*dy > dblAggroRange)
                 continue;
             
 			L2Character target = (L2Character) obj;

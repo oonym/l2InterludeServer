@@ -175,9 +175,8 @@ public final class Util
 
     public static double convertHeadingToDegree(int heading)
     {
-        double angle = 360.0 * (heading / 64400.0);
-        if (angle == 0) angle = 360;
-        return angle;
+    	if (heading == 0) return 360;
+        return 9.0 * (heading / 1610.0); // = 360.0 * (heading / 64400.0)
     }
     
     /**
