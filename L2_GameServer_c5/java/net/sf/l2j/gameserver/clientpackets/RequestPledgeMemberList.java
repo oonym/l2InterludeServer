@@ -48,8 +48,9 @@ public class RequestPledgeMemberList extends ClientBasePacket
 	void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2Clan clan = activeChar.getClan();
+		if (activeChar == null) return;
 		
+		L2Clan clan = activeChar.getClan();
 		if (clan != null)
 		{
 			PledgeShowMemberListAll pm = new PledgeShowMemberListAll(clan, activeChar);

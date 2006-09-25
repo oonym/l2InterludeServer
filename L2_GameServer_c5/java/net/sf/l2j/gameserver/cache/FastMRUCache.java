@@ -36,9 +36,13 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
             node = object;
         }
         
-        public boolean equals(Object object)
+        public synchronized boolean equals(Object object)
         {
-            return node == object;
+        	boolean ret;
+        	synchronized (object) {
+        		ret = node == object;
+        	}
+        	return ret;
         }
         
     }
@@ -90,7 +94,7 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
     }
     
     // Overrides.
-    public FastCollection setValueComparator(FastComparator comparator) {
+    public synchronized FastCollection setValueComparator(FastComparator comparator) {
         super.setValueComparator(comparator);
         _map.setKeyComparator(comparator);
         _cache.setKeyComparator(comparator);
@@ -98,21 +102,19 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
     }
     
     // Implements Reusable.
-    public void reset() {
+    public synchronized void reset() {
         super.setValueComparator(FastComparator.DIRECT);
         _map.reset();
         _cache.reset();
         _mruList.reset();
     }
     
-    public V get(K key)
+    public synchronized V get(K key)
     {
         V result;
         
         if (!_cache.containsKey(key))
         {
-            synchronized(_cache)
-            {
                 if (_mruList.size() >= _cacheSize)
                 {
                     
@@ -124,7 +126,6 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
                 
                 _cache.put(key, new CacheNode(result)); 
                 _mruList.addFirst(key);
-              }
         }
         else
         {
@@ -132,19 +133,13 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
             
             if ((current.lastModified + _forgetTime) <= System.currentTimeMillis())
             {
-                synchronized(_cache)
-                {
                     current.lastModified = System.currentTimeMillis();
                     current.node = _map.get(key);
                     _cache.put(key,current);
-                }
             }
             
-            synchronized(_cache)
-            {
                 _mruList.remove(key);
                 _mruList.addFirst(key);
-            }
             
             result = current.node;
         }
@@ -152,7 +147,7 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         return result;
     }
     
-    public boolean remove(Object key)
+    public synchronized boolean remove(Object key)
     {
         _cache.remove(key);
         _mruList.remove(key);
@@ -179,7 +174,7 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         return _forgetTime;
     }
     
-    public void clear()
+    public synchronized void clear()
     {
         _cache.clear();
         _mruList.clear();
@@ -187,11 +182,11 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
     }
     
     // Implements FastCollection abstract method.
-    public final Record head() {
+    public final synchronized Record head() {
         return _mruList.head();
     }
 
-    public final Record tail() {
+    public final synchronized Record tail() {
         return _mruList.tail();
     }
 

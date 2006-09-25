@@ -125,7 +125,7 @@ public class AdminBanChat implements IAdminCommandHandler {
 		L2PcInstance _player;
 		L2PcInstance _banner;
 		
-		private SchedChatUnban(L2PcInstance player, L2PcInstance banner)
+		protected SchedChatUnban(L2PcInstance player, L2PcInstance banner)
 		{
 			_player = player;
 			_banner = banner;

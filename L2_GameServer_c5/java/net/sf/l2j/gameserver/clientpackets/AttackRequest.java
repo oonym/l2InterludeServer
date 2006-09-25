@@ -66,14 +66,13 @@ public class AttackRequest extends ClientBasePacket
 		if (activeChar == null || target == null)
 		    return;
 
-		if ((target != null) && (activeChar.getTarget() != target))
+		if (activeChar.getTarget() != target)
 		{
 			target.onAction(activeChar);
 		}
 		else
 		{
-			if ((target != null) 
-					&& (target.getObjectId() != activeChar.getObjectId())
+			if ((target.getObjectId() != activeChar.getObjectId())
 					&& activeChar.getPrivateStoreType() ==0 
 					&& activeChar.getActiveRequester() ==null)
 			{

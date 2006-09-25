@@ -83,7 +83,7 @@ public class RequestBypassToServer extends ClientBasePacket
 			}
 			else if (_command.equals("come_here") && activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL)
 			{
-				comeHere(getClient());
+				comeHere(activeChar);
 			}
 			else if (_command.startsWith("player_help "))
 			{
@@ -141,6 +141,8 @@ public class RequestBypassToServer extends ClientBasePacket
 					return;
 
 				L2PcInstance player = getClient().getActiveChar();
+				if (player == null) return;
+				
 				String p = _command.substring(6).trim();
 				int idx = p.indexOf(' ');
 				if (idx < 0)
@@ -160,16 +162,16 @@ public class RequestBypassToServer extends ClientBasePacket
 	/**
 	 * @param client
 	 */
-	private void comeHere(ClientThread client) 
+	private void comeHere(L2PcInstance activeChar) 
 	{
-		L2Object obj = client.getActiveChar().getTarget();
+		L2Object obj = activeChar.getTarget();
+		if (obj == null) return;
 		if (obj instanceof L2NpcInstance)
 		{
 			L2NpcInstance temp = (L2NpcInstance) obj;
-			L2PcInstance player = client.getActiveChar(); 
-			temp.setTarget(player);
+			temp.setTarget(activeChar);
 			temp.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,
-					new L2CharPosition(player.getX(),player.getY(), player.getZ(), 0 ));
+					new L2CharPosition(activeChar.getX(),activeChar.getY(), activeChar.getZ(), 0 ));
 //			temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
 		

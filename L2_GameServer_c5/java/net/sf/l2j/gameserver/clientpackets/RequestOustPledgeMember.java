@@ -58,6 +58,8 @@ public class RequestOustPledgeMember extends ClientBasePacket
 		}
 		
 		L2Clan clan = activeChar.getClan();
+		if (clan == null) return;
+		
 		L2ClanMember member = clan.getClanMember(_target);
 		if (member == null)
 		{

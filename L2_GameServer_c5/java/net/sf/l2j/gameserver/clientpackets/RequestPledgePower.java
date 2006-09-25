@@ -49,6 +49,8 @@ public class RequestPledgePower extends ClientBasePacket
     void runImpl()
     {
         L2PcInstance player = getClient().getActiveChar();
+        if (player == null) return;
+        
         if(_action == 3)
         {
         	if(player.getClan() != null && player.isClanLeader())
@@ -59,14 +61,10 @@ public class RequestPledgePower extends ClientBasePacket
         			clanPlayer.setClanPrivileges(_privs);
         		}
         	}
-        }
-        else
+        } else
         {
             ManagePledgePower mpp = new ManagePledgePower(_clanOrPlayerId, _action, player);    
-            if(player != null)
-            {
-                player.sendPacket(mpp);
-            }
+             player.sendPacket(mpp);
         }
     }
     

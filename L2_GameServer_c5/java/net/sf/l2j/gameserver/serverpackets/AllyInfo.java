@@ -44,16 +44,17 @@ public class AllyInfo extends ServerBasePacket
 	
 	final void writeImpl()
 	{
-	    SystemMessage sm;
 	    L2PcInstance activeChar = getClient().getActiveChar();
+	    if (activeChar == null) return;
         
-	    if (activeChar.getAllyId() == 0) {
+	    if (activeChar.getAllyId() == 0)
+	    {
 	        _cha.sendPacket(new SystemMessage(SystemMessage.NO_CURRENT_ALLIANCES));
             return;
 	    }
         
 		//======<AllyInfo>======
-		sm = new SystemMessage(SystemMessage.ALLIANCE_INFO_HEAD);
+	    SystemMessage sm = new SystemMessage(SystemMessage.ALLIANCE_INFO_HEAD);
 		_cha.sendPacket(sm);
 		//======<Ally Name>======
 		sm = new SystemMessage(SystemMessage.ALLIANCE_NAME_S1);

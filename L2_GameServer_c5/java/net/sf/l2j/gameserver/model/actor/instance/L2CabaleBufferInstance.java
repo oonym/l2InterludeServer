@@ -24,7 +24,7 @@ public class L2CabaleBufferInstance extends L2NpcInstance
     {
         L2CabaleBufferInstance _caster;
         
-        private CabalaAI(L2CabaleBufferInstance caster) 
+        protected CabalaAI(L2CabaleBufferInstance caster) 
         {
             _caster = caster;
         }

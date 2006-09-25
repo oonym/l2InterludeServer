@@ -571,6 +571,7 @@ public class L2NpcInstance extends L2Character
     {
         // Get the L2PcInstance corresponding to the thread
         L2PcInstance player = client.getActiveChar();
+        if (player == null) return;
         
         // Check if the L2PcInstance is a GM
         if (player.getAccessLevel() >= Config.GM_ACCESSLEVEL)

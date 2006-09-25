@@ -379,7 +379,10 @@ public class L2DoorInstance extends L2Character
     public void onActionShift(ClientThread client) 
     {
         L2PcInstance player = client.getActiveChar();
-        if (player.getAccessLevel() >= 100) {
+        if (player == null) return;
+        
+        if (player.getAccessLevel() >= Config.GM_ACCESSLEVEL)
+        {
             player.setTarget(this);
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player
                     .getLevel());

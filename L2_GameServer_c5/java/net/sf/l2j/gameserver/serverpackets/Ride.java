@@ -64,6 +64,7 @@ public class Ride extends ServerBasePacket
     final void runImpl()
     {
         L2PcInstance cha = getClient().getActiveChar();
+        if (cha == null) return;
 
         // Unequip the weapon
         L2ItemInstance wpn = cha.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);

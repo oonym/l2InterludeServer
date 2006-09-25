@@ -62,7 +62,11 @@ public class RequestGetOnVehicle extends ClientBasePacket
     void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
+        if (activeChar == null) return;
+        
         L2BoatInstance boat = BoatManager.getInstance().GetBoat(_id);
+        if (boat == null) return;
+        
         GetOnVehicle Gon = new GetOnVehicle(activeChar,boat,_x,_y,_z);
         activeChar.setInBoatPosition(new Point3D(_x,_y,_z));
         activeChar.getPosition().setXYZ(boat.getPosition().getX(),boat.getPosition().getY(),boat.getPosition().getZ());

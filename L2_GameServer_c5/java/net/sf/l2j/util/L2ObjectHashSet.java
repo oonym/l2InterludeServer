@@ -321,9 +321,9 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		private int nextIdx;
 		private T nextObj;
 		private T lastRet;
-		Itr(T[] array)
+		Itr(T[] pArray)
 		{
-			this.array = array;
+			this.array = pArray;
 			for (; nextIdx < array.length; nextIdx++)
 			{
 				nextObj = array[nextIdx]; 

@@ -39,9 +39,11 @@ public class MultiSellChoose extends ClientBasePacket
     		return;
 
         MultiSellListContainer list = L2Multisell.getInstance().getList(_listId);
-        L2PcInstance player = getClient().getActiveChar();
-
         if(list == null) return;
+        
+        L2PcInstance player = getClient().getActiveChar();
+        if(player == null) return;
+
         for(MultiSellEntry entry : list.getEntries())
         {
             if(entry.getEntryId() == _entryId)

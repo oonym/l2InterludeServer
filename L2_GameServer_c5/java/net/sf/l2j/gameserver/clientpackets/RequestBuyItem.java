@@ -107,10 +107,10 @@ public class RequestBuyItem extends ClientBasePacket
 			        )) return;
 
 		L2MerchantInstance merchant = (target != null && target instanceof L2MerchantInstance) ? (L2MerchantInstance)target : null;
-
+		
         if (_listId > 1000000) // lease
 		{
-			if (merchant.getTemplate().npcId != _listId-1000000)
+			if (merchant != null && merchant.getTemplate().npcId != _listId-1000000)
 			{
 				sendPacket(new ActionFailed());
 				return;

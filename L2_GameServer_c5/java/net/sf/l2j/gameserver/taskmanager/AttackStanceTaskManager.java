@@ -76,7 +76,12 @@ public class AttackStanceTaskManager
     }
 
     private class FightModeScheduler implements Runnable
-    {   
+    {  
+    	protected FightModeScheduler()
+    	{
+    		// Do nothing
+    	}
+    	
         public void run()
         {
             Long current = System.currentTimeMillis();

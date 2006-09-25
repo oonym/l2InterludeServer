@@ -101,7 +101,7 @@ public class AdminSubClass implements IAdminCommandHandler
         private String _playerName;
         private int _objectId;
         
-        private Matrix(int objectId, String playerName)
+        protected Matrix(int objectId, String playerName)
         {
             _objectId = objectId;
             _playerName = playerName;

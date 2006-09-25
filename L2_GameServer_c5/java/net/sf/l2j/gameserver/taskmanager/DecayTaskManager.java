@@ -53,7 +53,12 @@ public class DecayTaskManager
     }
     
     private class DecayScheduler implements Runnable
-    {   
+    {
+    	protected DecayScheduler()
+    	{
+    		// Do nothing
+    	}
+    	
         public void run()
         {
             Long current = System.currentTimeMillis();

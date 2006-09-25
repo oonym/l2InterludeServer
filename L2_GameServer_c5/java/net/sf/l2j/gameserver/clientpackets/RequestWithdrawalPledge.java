@@ -54,6 +54,8 @@ public class RequestWithdrawalPledge extends ClientBasePacket
 		}
 		
 		L2Clan clan = activeChar.getClan();
+		if (clan == null) return;
+		
         // this also updated the database
 		clan.removeClanMember(activeChar.getName());
 		//player withdrawed.

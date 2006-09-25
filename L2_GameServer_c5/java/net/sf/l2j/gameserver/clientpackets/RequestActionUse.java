@@ -412,6 +412,8 @@ public class RequestActionUse extends ClientBasePacket
     private void useSkill(int skillId, L2Object target)
     {
         L2PcInstance activeChar = getClient().getActiveChar();
+        if (activeChar == null) return;
+        
         L2Summon activeSummon = activeChar.getPet();
         
         if (activeChar.getPrivateStoreType() != 0)
@@ -449,7 +451,6 @@ public class RequestActionUse extends ClientBasePacket
     private void useSkill(int skillId)
     {
         L2PcInstance activeChar = getClient().getActiveChar();
-        
         if (activeChar == null) return;
         
         useSkill(skillId, activeChar.getTarget());

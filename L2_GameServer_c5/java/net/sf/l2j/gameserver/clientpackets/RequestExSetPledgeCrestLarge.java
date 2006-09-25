@@ -69,8 +69,10 @@ public class RequestExSetPledgeCrestLarge extends ClientBasePacket
 	void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null) return;
 		
 		L2Clan clan = activeChar.getClan();
+		if (clan == null) return;
 		
 		if (_data == null)
 		{

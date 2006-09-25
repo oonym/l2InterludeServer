@@ -264,6 +264,7 @@ public class L2MerchantInstance extends L2FolkInstance
     public void onActionShift(ClientThread client)
     {
         L2PcInstance player = client.getActiveChar();
+        if (player == null) return;
 
         if (player.getAccessLevel() >= Config.GM_ACCESSLEVEL)
         {

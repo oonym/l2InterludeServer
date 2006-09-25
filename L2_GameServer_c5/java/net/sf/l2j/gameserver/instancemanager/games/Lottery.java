@@ -123,6 +123,11 @@ public class Lottery
     
     private class startLottery implements Runnable
     {
+    	protected startLottery()
+    	{
+    		// Do nothing
+    	}
+    	
         public void run()
         {
             java.sql.Connection con = null;
@@ -243,6 +248,11 @@ public class Lottery
     
     private class stopSellingTickets implements Runnable
     {
+    	protected stopSellingTickets()
+    	{
+    		// Do nothing
+    	}
+    	
         public void run()
         {
             if (Config.DEBUG) _log.info("Lottery: Stopping ticket sell for lottery #" + getId() + ".");
@@ -254,6 +264,11 @@ public class Lottery
     
     private class finishLottery implements Runnable
     {
+    	protected finishLottery()
+    	{
+    		// Do nothing
+    	}
+    	
         public void run()
         {
             if (Config.DEBUG) _log.info("Lottery: Ending lottery #" + getId() + ".");
