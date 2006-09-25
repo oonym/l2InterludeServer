@@ -56,6 +56,9 @@ public class HtmCache
         }
         else
         {
+        	_cache.clear();
+        	_loadedFiles = 0;
+        	_bytesBuffLen = 0;
             _log.info("Cache[HTML]: Running lazy cache");
         }
     }
