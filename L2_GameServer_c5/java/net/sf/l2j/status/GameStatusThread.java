@@ -284,7 +284,7 @@ public class GameStatusThread extends Thread
                     _print.println("  ---> Server Uptime: " + GetUptime(_uptime));
                     _print.println("  --->      GM Count: " + GetOnlineGMS());
                     _print.println("  --->       Threads: " + Thread.activeCount());
-                    _print.println("  RAM Used: "+((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1024/1024));
+                    _print.println("  RAM Used: "+((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1048576)); // 1024 * 1024 = 1048576
                     _print.flush();
                 }
                 else if (_usrCommand.equals("performance"))

@@ -197,7 +197,7 @@ public class GameServer
     
     public long getUsedMemoryMB()
 	{
-		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024;
+		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1048576; // 1024 * 1024 = 1048576;
 	}
 
     public SelectorThread getSelectorThread()

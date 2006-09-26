@@ -468,7 +468,7 @@ public class L2BoatInstance extends L2Character
 				lastx = x;
 				lasty = y;
 			}
-			else if( (x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) > 1500 * 1500 )
+			else if( (x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) > 2250000) // 1500 * 1500 = 2250000
 			{
 				check = true;
 				lastx = x;
