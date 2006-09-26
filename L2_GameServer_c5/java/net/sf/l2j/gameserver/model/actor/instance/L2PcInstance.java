@@ -1978,12 +1978,12 @@ public final class L2PcInstance extends L2PlayableInstance
     
 	public boolean canJoinClan()
 	{
-		return (_deleteClanTime == 0) || ((System.currentTimeMillis() - _deleteClanTime) >= Config.ALT_CLAN_JOIN_DAYS*24*60*60*1000);
+		return (_deleteClanTime == 0) || ((System.currentTimeMillis() - _deleteClanTime) >= Config.ALT_CLAN_JOIN_DAYS * 86400000); //24*60*60*1000 = 86400000
 	}
     
 	public boolean canCreateClan()
 	{
-		return (_deleteClanTime == 0) || ((System.currentTimeMillis() - _deleteClanTime) >= Config.ALT_CLAN_CREATE_DAYS*24*60*60*1000);
+		return (_deleteClanTime == 0) || ((System.currentTimeMillis() - _deleteClanTime) >= Config.ALT_CLAN_CREATE_DAYS * 86400000); //24*60*60*1000 = 86400000
 	}
 	
 	/**
@@ -7518,10 +7518,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (!isDead() && _taskWater == null)
 		{
-			int timeinwater = 86;
+			int timeinwater = 86000;
 			
-			sendPacket(new SetupGauge(2, timeinwater * 1000));
-			_taskWater = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new WaterTask(), timeinwater * 1000, 1000);
+			sendPacket(new SetupGauge(2, timeinwater));
+			_taskWater = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new WaterTask(), timeinwater, 1000);
 		}    
 	}
 	
@@ -8132,21 +8132,21 @@ public final class L2PcInstance extends L2PlayableInstance
     {
         if (!isDead() && _taskforfish == null)
         {
-            int waittime = 30;
+            int waittime = 30000;
             //Time for fish is dependet to lure type
             if (_lure != null)
             {
                 int lureid = _lure.getItemId();
                 if (lureid == 6519 || lureid == 6522 |lureid == 6525)//low grade
-                    waittime = 25;
+                    waittime = 25000;
                 else if (lureid == 6520 || lureid == 6523 |lureid == 6526)//medium grade
-                    waittime = 20;
+                	waittime = 20000;
                 else if (lureid == 6521 || lureid == 6524 |lureid == 6527)//high grade
-                   waittime = 15;
-                }       
-            _taskforfish = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new LokingForFishTask(), waittime * 1000, waittime * 1000);
+                	waittime = 15000;
+            }      
+            _taskforfish = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new LokingForFishTask(), waittime, waittime);
         }
-    }  
+    }
     public void StartFishCombat()
     {                              
         _fish = new L2Fishing (this);       
@@ -8365,7 +8365,7 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             if (delayInMinutes > 0)
             {
-                _jailTimer = delayInMinutes * 60 * 1000; // in millisec
+                _jailTimer = delayInMinutes * 60000; // in millisec
 
                 // start the countdown
                 _jailTask = ThreadPoolManager.getInstance().scheduleGeneral(new JailTask(this), _jailTimer);

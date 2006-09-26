@@ -141,7 +141,7 @@ public class L2DoorInstance extends L2Character
                 }
                 
                 if (Config.DEBUG)
-                    log.info("Auto " + doorAction + " door ID " + _doorId + " (" + _name + ") for " + (_autoActionDelay / 1000 / 60) + " minute(s).");
+                    log.info("Auto " + doorAction + " door ID " + _doorId + " (" + _name + ") for " + (_autoActionDelay / 60000) + " minute(s).");
             }
             catch (Exception e) {
                 log.warning("Could not auto open/close door ID " + _doorId + " (" + _name + ")");

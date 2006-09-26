@@ -69,7 +69,7 @@ public class AdminBanChat implements IAdminCommandHandler {
             {
                 try
                 {
-                    banLength = Integer.parseInt(cmdParams[2]) * 60 * 1000;
+                    banLength = Integer.parseInt(cmdParams[2]) * 60000;
                 } catch (NumberFormatException nfe) {}
             }
 		} else 

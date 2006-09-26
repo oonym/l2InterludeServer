@@ -368,7 +368,7 @@ public class LoginController
         // ensure that the task will update the keypair only after a keypair is returned.
         synchronized (_keyPairs)
         {
-            if ((System.currentTimeMillis() - _lastKeyPairUpdate) > 1000 * 60) // update a key every minutes
+            if ((System.currentTimeMillis() - _lastKeyPairUpdate) > 60000) // update a key every minutes
             {
                 if (_keyPairToUpdate.get() == 10) _keyPairToUpdate.set(0);
                 UpdateKeyPairTask task = new UpdateKeyPairTask(_keyPairToUpdate.getAndIncrement());

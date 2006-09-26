@@ -37,7 +37,7 @@ public class ItemsAutoDestroy
         _items = new FastList<L2ItemInstance>();
         _sleep	= Config.AUTODESTROY_ITEM_AFTER * 1000;
         if(_sleep == 0) // it should not happend as it is not called when AUTODESTROY_ITEM_AFTER = 0 but we never know..
-        	_sleep = 3600 * 1000;
+        	_sleep = 3600000;
         ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(),_sleep,_sleep);
     }
     

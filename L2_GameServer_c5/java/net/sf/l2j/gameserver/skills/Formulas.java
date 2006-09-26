@@ -37,7 +37,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.ConditionPlayerState.CheckPlayerState;
@@ -937,7 +936,7 @@ public final class Formulas
 		if (Config.DEBUG)
 			_log.info("Distance: " + distToCenter + ", RegenMulti: " + (distToCenter * 2.5) / 50);
 
-		return 1.0 - (distToCenter * 2.5) / 5000; // Maximum Decreased Regen of ~ -65%;
+		return 1.0 - (distToCenter * 0.0005); // Maximum Decreased Regen of ~ -65%;
 	}
 
 	public final double calcSiegeRegenModifer(L2PcInstance activeChar)
@@ -1045,6 +1044,7 @@ public final class Formulas
 			defence += target.getShldDef();
 		}
 		//if (!(attacker instanceof L2RaidBossInstance) && 
+		/*
 		if ((attacker instanceof L2NpcInstance || attacker instanceof L2SiegeGuardInstance))
 		{
 			if (attacker instanceof L2RaidBossInstance) damage *= 1; // was 10 changed for temp fix
@@ -1055,6 +1055,7 @@ public final class Formulas
 			//			damage = damage * attacker.getSTR()*  (attacker.getSTR() + attacker.getLevel()) * 0.025 / defence;
 			//			damage += _rnd.nextDouble() * damage / 10 ;
 		}
+		*/
 		//		else {
 		//if (skill == null)
 		damage = 70 * damage / defence;
@@ -1280,9 +1281,9 @@ public final class Formulas
 				// For normal Stun Attack, with skillType = STUN
 				pDef = 1;
 				pDef = target.calcStat(Stats.STUN_RES, pDef, target, null);
-				value = 48 * 100 + (int) (100 * (player.getLevel() - target.getLevel()) * 0.5 + 51 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 4800 + (int) (50 * (player.getLevel() - target.getLevel()) + 5100 * ((float) skill.getLevel() / maxLevel));
 				if (pDef > 0) value /= pDef;
-				modifier = 100 * target.getCON() / 30;
+				modifier = 10 * target.getCON() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1299,26 +1300,26 @@ public final class Formulas
 			case CONFUSION:
 				mAtk = player.getMAtk(target, skill);
 				mDef = target.getMDef(player, skill);
-				value = 30 * 100 + (int) (70 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 3000 + (int) (7000 * ((float) skill.getLevel() / maxLevel));
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 100 * target.getMEN() / 15;
+				modifier = 20 * target.getMEN() / 3;
 				//_log.fine(player.getName()+" matk:"+mAtk+",mdef="+mDef+",value="+value+",modifier="+modifier+",maxlevel="+maxLevel+",level="+skill.getLevel());
 				break;
 			case MUTE:
 				mAtk = player.getMAtk(target, skill);
 				mDef = target.getMDef(player, skill);
-				value = 30 * 100 + (int) (70 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 3000 + (int) (7000 * ((float) skill.getLevel() / maxLevel));
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 100 * target.getMEN() / 15;
+				modifier = 20 * target.getMEN() / 3;
 				//_log.fine(player.getName()+" matk:"+mAtk+",mdef="+mDef+",value="+value+",modifier="+modifier+",maxlevel="+maxLevel+",level="+skill.getLevel());
 				break;
 			case MDAM:
 			case PARALYZE:
 				mAtk = player.getMAtk(target, skill);
 				mDef = target.getMDef(player, skill);
-				value = 50 * 100 + (int) (50 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 5000 + (int) (5000 * ((float) skill.getLevel() / maxLevel));
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 100 * target.getMEN() / 15;
+				modifier = 20 * target.getMEN() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1335,10 +1336,10 @@ public final class Formulas
 			case SLEEP:
 				mAtk = player.getMAtk(target, skill);
 				mDef = target.getMDef(player, skill);
-				value = 50 * 100 + (int) (50 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 5000 + (int) (5000 * ((float) skill.getLevel() / maxLevel));
 				mDef = target.calcStat(Stats.SLEEP_RES, mDef, target, null);
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 100 * target.getWIT() / 15;
+				modifier = 20 * target.getWIT() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1355,10 +1356,10 @@ public final class Formulas
 			case ROOT:
 				mAtk = player.getMAtk(target, skill);
 				mDef = target.getMDef(player, skill);
-				value = 50 * 100 + (int) (50 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 5000 + (int) (5000 * ((float) skill.getLevel() / maxLevel));
 				mDef = target.calcStat(Stats.ROOT_RES, mDef, target, null);
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 100 * target.getDEX() / 30;
+				modifier = 10 * target.getDEX() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1376,9 +1377,9 @@ public final class Formulas
 				//pAtk = (int)skill.getPower();
 				pDef = 1;
 				pDef = target.calcStat(Stats.STUN_RES, pDef, target, null);
-				value = 50 * 100 + (int) (100 * (player.getLevel() - target.getLevel()) * 0.5 + 50 * 100 * ((float) skill.getLevel() / maxLevel));
+				value = 5000 + (int) (50 * (player.getLevel() - target.getLevel())+ 5000 * ((float) skill.getLevel() / maxLevel));
 				if (pDef > 0) value /= pDef;
-				modifier = 100 * target.getCON() / 30;
+				modifier = 10 * target.getCON() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;

@@ -84,7 +84,7 @@ public final class SelectorThread extends Thread {
 	/** A size of each write buffer */
 	private final int WRITE_BUF_SIZE = 128;
 	/** A size of shared read/write buffer */
-	private final int SHARED_BUF_SIZE = 64*1024;
+	private final int SHARED_BUF_SIZE = 65536; // 64*1024 = 65536
 	
 	/** Stack of write buffers */
 	private final ByteBuffer[] writeBuffers;

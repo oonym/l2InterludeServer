@@ -111,9 +111,9 @@ public class AdminMammon implements IAdminCommandHandler
             long merchRespawn = AutoSpawnHandler.getInstance().getTimeToNextSpawn(merchSpawnInst);
 
             activeChar.sendMessage("The Merchant of Mammon will respawn in "
-                + (merchRespawn / 1000 / 60) + " minute(s).");
+                + (merchRespawn / 60000) + " minute(s).");
             activeChar.sendMessage("The Blacksmith of Mammon will respawn in "
-                + (blackRespawn / 1000 / 60) + " minute(s).");
+                + (blackRespawn / 60000) + " minute(s).");
         }
         
         else if (command.startsWith("admin_list_spawns"))

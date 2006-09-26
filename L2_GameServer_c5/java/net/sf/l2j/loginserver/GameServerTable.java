@@ -398,7 +398,7 @@ public class GameServerTable
 		{
 			if(Config.DEBUG)
 				System.out.println("updtime:"+Config.IP_UPDATE_TIME+" , current:"+_last_IP_Update+" so:"+(System.currentTimeMillis() - _last_IP_Update));
-			if(System.currentTimeMillis() - _last_IP_Update > Config.IP_UPDATE_TIME * 1000 * 60)
+			if(System.currentTimeMillis() - _last_IP_Update > Config.IP_UPDATE_TIME * 60000)
 			{
 				if(gs.gst != null)
 				{
