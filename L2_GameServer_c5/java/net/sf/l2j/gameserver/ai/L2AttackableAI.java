@@ -551,7 +551,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             {
                 // Micht: kepping this one otherwise we should do 2 sqrt
                 double distance2 = _actor.getPlanDistanceSq(getAttackTarget().getX(), getAttackTarget().getY());
-                if (distance2 <= 100 * 100)
+                if (distance2 <= 10000)
                 {
                     int chance = 5;
                     if (chance >= Rnd.get(100))
@@ -585,7 +585,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     {
                         int castRange = sk.getCastRange();
                         
-                        if (((sk.getSkillType() == L2Skill.SkillType.BUFF || sk.getSkillType() == L2Skill.SkillType.HEAL) || (dist2 >= (castRange / 3) * (castRange / 3))
+                        if (((sk.getSkillType() == L2Skill.SkillType.BUFF || sk.getSkillType() == L2Skill.SkillType.HEAL) || (dist2 >= castRange * castRange / 9)
                             && (dist2 <= castRange * castRange) && (castRange > 70))
                             && !_actor.isSkillDisabled(sk.getId())
                             && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk)

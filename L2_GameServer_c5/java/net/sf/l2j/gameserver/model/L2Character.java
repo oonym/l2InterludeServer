@@ -784,7 +784,7 @@ public abstract class L2Character extends L2Object
 		// ===========================================================
 		// Make sure that char is facing selected target
 		angleTarget = Util.calculateAngleFrom(this, getTarget());
-		this.setHeading((int)((angleTarget / 360.0) * 64400.0));
+		this.setHeading((int)((angleTarget / 9.0) * 1610.0)); // = this.setHeading((int)((angleTarget / 360.0) * 64400.0));
 		
 		// Update char's heading degree
 		angleChar = Util.convertHeadingToDegree(this.getHeading());

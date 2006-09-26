@@ -1204,7 +1204,7 @@ public class SevenSignsFestival implements SpawnListener
         if (SevenSigns.getInstance().isSealValidationPeriod()) 
             return -1;
         
-        return Math.round((_nextFestivalCycleStart - System.currentTimeMillis()) / 1000 / 60);
+        return Math.round((_nextFestivalCycleStart - System.currentTimeMillis()) / 60000);
     }
     
     public final int getMinsToNextFestival() 
@@ -1212,7 +1212,7 @@ public class SevenSignsFestival implements SpawnListener
         if (SevenSigns.getInstance().isSealValidationPeriod()) 
             return -1;
         
-        return Math.round((_nextFestivalStart - System.currentTimeMillis()) / 1000 / 60) + 1;
+        return Math.round((_nextFestivalStart - System.currentTimeMillis()) / 60000) + 1;
     }
     
     public final String getTimeToNextFestivalStr() 
@@ -1722,7 +1722,7 @@ public class SevenSignsFestival implements SpawnListener
             sendMessageToAll("Festival Guide", "The main event is now starting.");
             
             if (Config.DEBUG)
-                _log.info("SevenSignsFestival: The current set of festivals will begin in " + (Config.ALT_FESTIVAL_FIRST_SPAWN / 1000 / 60) + " minute(s).");
+                _log.info("SevenSignsFestival: The current set of festivals will begin in " + (Config.ALT_FESTIVAL_FIRST_SPAWN / 60000) + " minute(s).");
             
             // Stand by for a short length of time before starting the festival.
             try {
@@ -1745,7 +1745,7 @@ public class SevenSignsFestival implements SpawnListener
             }
             
             if (Config.DEBUG)
-                _log.info("SevenSignsFestival: Each of the festivals will end in " + (Config.ALT_FESTIVAL_LENGTH / 1000 / 60) + " minutes. New participants can signup then.");
+                _log.info("SevenSignsFestival: Each of the festivals will end in " + (Config.ALT_FESTIVAL_LENGTH / 60000) + " minutes. New participants can signup then.");
             
             
             // After a short time period, move all idle spawns to the center of the arena.
@@ -1771,7 +1771,7 @@ public class SevenSignsFestival implements SpawnListener
             for (L2DarknessFestival festivalInst : _festivalInstances.values())
             {
                 festivalInst.spawnFestivalMonsters(FESTIVAL_DEFAULT_RESPAWN / 2, 2);
-                festivalInst.sendMessageToParticipants("The festival will end in " + ((Config.ALT_FESTIVAL_LENGTH - Config.ALT_FESTIVAL_SECOND_SPAWN) / 1000 / 60) + " minute(s).");
+                festivalInst.sendMessageToParticipants("The festival will end in " + ((Config.ALT_FESTIVAL_LENGTH - Config.ALT_FESTIVAL_SECOND_SPAWN) / 60000) + " minute(s).");
             }
             
             elapsedTime += Config.ALT_FESTIVAL_SECOND_SPAWN - Config.ALT_FESTIVAL_FIRST_SWARM;

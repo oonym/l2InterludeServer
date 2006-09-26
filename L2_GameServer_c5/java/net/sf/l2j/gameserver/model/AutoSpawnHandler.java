@@ -561,7 +561,7 @@ public class AutoSpawnHandler
 					_log.info("AutoSpawnHandler: Spawned NPC ID "
 							+ spawnInst.getNpcId() + " at " + x + ", " + y
 							+ ", " + z + " (Near " + nearestTown + ") for "
-							+ (spawnInst.getRespawnDelay() / 1000 / 60)
+							+ (spawnInst.getRespawnDelay() / 60000)
 							+ " minute(s).");
 
 				// If there is no despawn time, do not create a despawn task.

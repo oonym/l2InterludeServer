@@ -318,7 +318,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                 {
                     int castRange = sk.getCastRange();
                     
-                    if (((sk.getSkillType() == L2Skill.SkillType.BUFF || sk.getSkillType() == L2Skill.SkillType.HEAL) || (dist_2 >= (castRange / 3) * (castRange / 3))
+                    if (((sk.getSkillType() == L2Skill.SkillType.BUFF || sk.getSkillType() == L2Skill.SkillType.HEAL) || (dist_2 >= castRange * castRange / 9)
                         && (dist_2 <= castRange * castRange) && (castRange > 70))
                         && !_actor.isSkillDisabled(sk.getId())
                         && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk) && !sk.isPassive())

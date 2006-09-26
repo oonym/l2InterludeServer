@@ -501,8 +501,8 @@ public class GameServer
 
 		System.gc();
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of the current allocation pool, freeMemory the unused memory in the allocation pool
-		long freeMem = (Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory()) / 1024 / 1024;
-		long totalMem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+		long freeMem = (Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
+		long totalMem = Runtime.getRuntime().maxMemory() / 1048576;
 		_log.info("GameServer Started, free memory "+freeMem+" Mb of "+totalMem+" Mb");
 		
 		_loginThread = LoginServerThread.getInstance();
