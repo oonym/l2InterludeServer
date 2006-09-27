@@ -1499,7 +1499,7 @@ public class L2Attackable extends L2NpcInstance
         }
         
         // ********
-        String[] crystalNFO;
+        String[] crystalNFO = null;
         String   crystalNME = "";
         
         int dice = Rnd.get(100);
@@ -1525,6 +1525,7 @@ public class L2Attackable extends L2NpcInstance
         for (L2PcInstance player : players)
         {
             if (player == null) continue;
+            crystalQTY = 0;
             
             L2ItemInstance[] inv = player.getInventory().getItems();
             for (int index = 0; index < inv.length; index++) 
@@ -1550,12 +1551,23 @@ public class L2Attackable extends L2NpcInstance
                         {
                             try 
                             {
-                                // Split the name of the crystal into 'name' & 'level'
-                                crystalNFO = item.getItem().getName().trim().replace(" Stage ", "").split("-");
-                                // Get Level
-                                crystalLVL = Integer.parseInt(crystalNFO[1].trim());
-                                // Get Name
-                                crystalNME  = crystalNFO[0].toLowerCase();    
+                            	if (item.getItem().getName().contains("Grade"))
+                            	{
+	                                // Split the name of the crystal into 'name' & 'level'
+                            		crystalNFO = item.getItem().getName().trim().replace(" Grade ", "-").split("-");
+                            		// Set Level to 13
+                            		crystalLVL = 13;
+                            		// Get Name
+                            		crystalNME = crystalNFO[0].toLowerCase();
+                            	} else
+                            	{
+	                                // Split the name of the crystal into 'name' & 'level'
+	                                crystalNFO = item.getItem().getName().trim().replace(" Stage ", "").split("-");
+	                                // Get Level
+	                                crystalLVL = Integer.parseInt(crystalNFO[1].trim());
+	                                // Get Name
+	                                crystalNME  = crystalNFO[0].toLowerCase();   
+                            	}
                                 // Allocate current and levelup ids' for higher level crystals
                                 if(crystalLVL > 9)
                                 {
@@ -1603,7 +1615,7 @@ public class L2Attackable extends L2NpcInstance
             }
            
             // If the crystal level is way too high for this mob, say that we can't increase it
-            if (!(crystalLVL >= minAbsorbLevel) && !(crystalLVL <  maxAbsorbLevel))
+            if ((crystalLVL < minAbsorbLevel) || (crystalLVL >= maxAbsorbLevel))
                 doLevelup = false;
 
             // The player doesn't have any crystals with him get to the next player.
@@ -1629,7 +1641,7 @@ public class L2Attackable extends L2NpcInstance
                 doLevelup = false;
             
             // If succeeds or it is a boss mob, level up the crystal.
-            if ((isBossMob && doLevelup) || (dice < SoulCrystal.LEVEL_CHANCE))
+            if ((isBossMob && doLevelup) || (dice <= SoulCrystal.LEVEL_CHANCE))
             {
                 // Give staged crystal
                 exchangeCrystal(player, crystalOLD, crystalNEW, false);
