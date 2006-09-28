@@ -55,7 +55,9 @@ public class SiegeManager
                                                                         {117939,145090,-2550,32768,12154}, //giran
                                                                         {84014,37184,-2277,16384,12242}, //oren
                                                                         {147465,1537,-373,16384,12291}, //aden
-                                                                        {116031,250555,-798,49200,12602}}; //innadril
+                                                                        {116031,250555,-798,49200,12602}, //innadril
+                                                                        {146601,-50441,-1505,32768,12831}, //goddard1
+                                                                        {148353,-50457,-1505,0,12832}}; //goddard2
     private int _ControlTowerLosePenalty                         = 20000; // Time in ms. Changeable in siege.config
     private int _Flag_BuyCost                                    = 50000; // Changeable in siege.config
     private int _Flag_BuyItemId                                  = 57;  // Changeable in siege.config
