@@ -103,11 +103,11 @@ public class L2FestivalMonsterInstance extends L2MonsterInstance
             return;
         
         L2PcInstance partyLeader = associatedParty.getPartyMembers().get(0);
-        L2ItemInstance addedOfferings = partyLeader.getInventory().addItem("Sign", SevenSignsFestival.FESTIVAL_OFFERING_ID, 1 * _bonusMultiplier, partyLeader, this);
+        L2ItemInstance addedOfferings = partyLeader.getInventory().addItem("Sign", SevenSignsFestival.FESTIVAL_OFFERING_ID, _bonusMultiplier, partyLeader, this);
         
         InventoryUpdate iu = new InventoryUpdate();
         
-        if (addedOfferings.getCount() != (1 * _bonusMultiplier)) 
+        if (addedOfferings.getCount() != _bonusMultiplier) 
             iu.addModifiedItem(addedOfferings);
         else 
             iu.addNewItem(addedOfferings);   

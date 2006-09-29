@@ -133,7 +133,7 @@ public class ValidatePosition extends ClientBasePacket
             int realY = activeChar.getY();
             int realZ = activeChar.getZ();
             
-            if (Point3D.distanceSquared(activeChar.getPosition().getWorldPosition(), new Point3D(_x, _y, _z)) < 500 * 500)
+            if (Point3D.distanceSquared(activeChar.getPosition().getWorldPosition(), new Point3D(_x, _y, _z)) < 250000)
                 activeChar.setXYZ(activeChar.getX(),activeChar.getY(),_z);
             int realHeading = activeChar.getHeading();
         

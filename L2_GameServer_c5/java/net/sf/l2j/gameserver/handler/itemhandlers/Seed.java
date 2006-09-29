@@ -133,14 +133,14 @@ public class Seed implements IItemHandler
         // 15% penalty for each level
         if(diffPlayerTarget > 5)//Config.MANOR_DIFF_PLAYER_TARGET)
         {
-            basicSuccess -= (diffPlayerTarget - 5*15);//Config.MANOR_DIFF_PLAYER_TARGET)*Config.MANOR_DIFF_PLAYER_TARGET_PENALTY;
+            basicSuccess -= (diffPlayerTarget - 75);//Config.MANOR_DIFF_PLAYER_TARGET)*Config.MANOR_DIFF_PLAYER_TARGET_PENALTY;
         }
         
         // apply penalty, seed <=> target levels
         // 15% penalty for each level
         if(diffSeedTarget > 5)//Config.MANOR_DIFF_SEED_TARGET)
         {
-            basicSuccess -= (diffSeedTarget - 5*15);//Config.MANOR_DIFF_SEED_TARGET)*Config.MANOR_DIFF_SEED_TARGET_PENALTY;
+            basicSuccess -= (diffSeedTarget - 75);//Config.MANOR_DIFF_SEED_TARGET)*Config.MANOR_DIFF_SEED_TARGET_PENALTY;
         }
         
         // success rate cant be less than 1%

@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class Lottery
 {
     public static long SECOND = 1000;
-    public static long MINUTE = 60 * SECOND;
+    public static long MINUTE = 60000;
     
     private static Lottery _instance;
     protected static Logger _log = Logger.getLogger(Lottery.class.getName());
@@ -426,7 +426,7 @@ public class Lottery
                 try { con.close(); } catch (Exception e) {}
             }
             
-            ThreadPoolManager.getInstance().scheduleGeneral(new startLottery(), 1 * MINUTE);
+            ThreadPoolManager.getInstance().scheduleGeneral(new startLottery(), MINUTE);
             _number++;
             
             _isStarted = false;

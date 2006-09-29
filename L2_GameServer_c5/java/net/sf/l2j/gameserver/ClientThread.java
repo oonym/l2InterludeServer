@@ -43,7 +43,7 @@ import net.sf.l2j.util.EventData;
  */
 public final class ClientThread
 {
-	protected static Logger _log = Logger.getLogger(ClientThread.class.getName());
+	protected static final Logger _log = Logger.getLogger(ClientThread.class.getName());
 	
     
 	public static int devCharId;
@@ -97,7 +97,7 @@ public final class ClientThread
 		_sessionId = new SessionKey(-1,-1,-1,-1);
 		_connection = new Connection(this, socket, _cryptkey);
    		_autoSaveInDB = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(
-   				new AutoSaveTask(), 5*60*1000L, 15*60*1000L
+   				new AutoSaveTask(), 300000L, 900000L
    				);
 	}
     
@@ -212,7 +212,7 @@ public final class ClientThread
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET deletetime=? WHERE obj_id=?");
-			statement.setLong(1, System.currentTimeMillis() + Config.DELETE_DAYS*24*60*60*1000);
+			statement.setLong(1, System.currentTimeMillis() + Config.DELETE_DAYS*86400000); // 24*60*60*1000 = 86400000 
 			statement.setInt(2, objid);
 			statement.execute();
 			statement.close();
