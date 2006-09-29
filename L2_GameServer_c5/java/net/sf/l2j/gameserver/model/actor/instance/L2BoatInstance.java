@@ -27,11 +27,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.clientpackets.Say2;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.BoatKnownList;
@@ -594,11 +594,11 @@ public class L2BoatInstance extends L2Character
 		case 10:
 			if(_cycle == 1)
 			{
-				sm = new CreatureSay(0, 0,_t1._npc1, _t1._sysmess10_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t1._npc1, _t1._sysmess10_1);
 			}
 			else
 			{
-				sm = new CreatureSay(0, 0,_t2._npc1, _t2._sysmess10_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t2._npc1, _t2._sysmess10_1);
 			}
 			ps = new PlaySound(0,"itemsound.ship_arrival_departure",1,this.getObjectId(),this.getX(),this.getY(),this.getZ());
 			if (knownPlayers == null || knownPlayers.isEmpty())
@@ -612,11 +612,11 @@ public class L2BoatInstance extends L2Character
 		case 5:
 			if(_cycle == 1)
 			{
-				sm = new CreatureSay(0, 0,_t1._npc1, _t1._sysmess5_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t1._npc1, _t1._sysmess5_1);
 			}
 			else
 			{
-				sm = new CreatureSay(0, 0,_t2._npc1, _t2._sysmess5_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t2._npc1, _t2._sysmess5_1);
 			}
 			ps = new PlaySound(0,"itemsound.ship_5min",1,this.getObjectId(),this.getX(),this.getY(),this.getZ());
 			if (knownPlayers == null || knownPlayers.isEmpty())
@@ -631,11 +631,11 @@ public class L2BoatInstance extends L2Character
 			
 			if(_cycle == 1)
 			{
-				sm = new CreatureSay(0, 0,_t1._npc1, _t1._sysmess1_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t1._npc1, _t1._sysmess1_1);
 			}
 			else
 			{
-				sm = new CreatureSay(0, 0,_t2._npc1, _t2._sysmess1_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t2._npc1, _t2._sysmess1_1);
 			}
 			ps = new PlaySound(0,"itemsound.ship_1min",1,this.getObjectId(),this.getX(),this.getY(),this.getZ());
 			if (knownPlayers == null || knownPlayers.isEmpty())
@@ -650,11 +650,11 @@ public class L2BoatInstance extends L2Character
 			
 			if(_cycle == 1)
 			{
-				sm = new CreatureSay(0, 0,_t1._npc1, _t1._sysmess0_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t1._npc1, _t1._sysmess0_1);
 			}
 			else
 			{
-				sm = new CreatureSay(0, 0,_t2._npc1, _t2._sysmess0_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t2._npc1, _t2._sysmess0_1);
 			}			
 			if (knownPlayers == null || knownPlayers.isEmpty())
 				return;  
@@ -667,11 +667,11 @@ public class L2BoatInstance extends L2Character
 		case -1:
 			if(_cycle == 1)
 			{
-				sm = new CreatureSay(0, 0,_t1._npc1, _t1._sysmessb_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t1._npc1, _t1._sysmessb_1);
 			}
 			else
 			{
-				sm = new CreatureSay(0, 0,_t2._npc1, _t2._sysmessb_1);
+				sm =new CreatureSay(0, Say2.SHOUT,_t2._npc1, _t2._sysmessb_1);
 			}
 			ps = new PlaySound(0,"itemsound.ship_arrival_departure",1,this.getObjectId(),this.getX(),this.getY(),this.getZ());
 			for (L2PcInstance player : knownPlayers)
