@@ -1867,12 +1867,53 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 		}
 		
+		// Auto-Learn skills if activated
+		if (Config.AUTO_LEARN_SKILLS)
+		{
+			giveAvailableSkills();
+		}
+		
 		// This function gets called on login, so not such a bad place to check weight
 		refreshOverloaded();		// Update the overloaded status of the L2PcInstance
 		refreshExpertisePenalty();  // Update the expertise status of the L2PcInstance
 	}
 	
-	
+	/**
+	 * Give all available skills to the player.<br><br>
+	 *
+	 */
+	private void giveAvailableSkills()
+	{
+		int unLearnable = 0;
+		int skillCounter = 0;
+		
+		// Get available skills
+		L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(this, getClassId());
+		while (skills.length > unLearnable)
+		{
+			for (int i = 0; i < skills.length; i++)
+			{
+				L2SkillLearn s = skills[i];
+				L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
+				if (sk == null || !sk.getCanLearn(getClassId()))
+				{
+					unLearnable++;
+					continue;
+				}
+				
+				if (getSkillLevel(sk.getId()) == -1)
+					skillCounter++;
+				
+				addSkill(sk);
+			}
+			
+			// Get new available skills
+			skills = SkillTreeTable.getInstance().getAvailableSkills(this, getClassId());
+		}
+		
+		sendMessage("You have learned " + skillCounter + " new skills.");
+	}
+
 	/** Set the Experience value of the L2PcInstance. */
 	public void setExp(int exp) { getStat().setExp(exp); }
 	
