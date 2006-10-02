@@ -59,9 +59,10 @@ public class L2SkillChargeDmg extends L2Skill
 		effect.num_charges -= this.num_charges;
         double modifier = 0;
         modifier = effect.num_charges*0.33;
-        effect.num_charges = 0;
+        //effect.num_charges = 0;
 		caster.updateEffectIcons();
-        effect.exit();
+        if (effect.num_charges == 0)
+        	{effect.exit();}
         for(int index = 0;index < targets.length;index++)
         {
         	L2ItemInstance weapon = caster.getActiveWeaponInstance();
