@@ -67,7 +67,7 @@ public class ShortCutInit extends ServerBasePacket
             case L2ShortCut.TYPE_SKILL: //2
             	writeD(sc.getId());
             	writeD(sc.getLevel());
-            	writeC(0x01); // ?? c5 
+            	writeC(0x00); // C5 
             	break;
             case L2ShortCut.TYPE_ACTION: //3
             	writeD(sc.getId());

@@ -76,7 +76,7 @@ public class ShortCutRegister extends ServerBasePacket
         case L2ShortCut.TYPE_SKILL: //2
         	writeD(_shortcut.getId());
         	writeD(_shortcut.getLevel());
-        	writeC(0x01); // ?? c5 
+        	writeC(0x00); // C5
         	break;
         case L2ShortCut.TYPE_ACTION: //3
         	writeD(_shortcut.getId());
