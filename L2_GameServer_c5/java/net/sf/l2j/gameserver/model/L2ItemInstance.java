@@ -488,12 +488,12 @@ public final class L2ItemInstance extends L2Object
 		// this causes the validate position handler to do the pickup if the location is reached.
 		// mercenary tickets can only be picked up by the castle owner.
 		if (
-				(getItemId() >=3960 && getItemId()<=4021 && player.isInParty()) ||
-				(getItemId() >=3960 && getItemId()<=3969 && !player.isCastleLord(1)) ||
-				(getItemId() >=3973 && getItemId()<=3982 && !player.isCastleLord(2)) ||
-				(getItemId() >=3986 && getItemId()<=3995 && !player.isCastleLord(3)) ||
-				(getItemId() >=3999 && getItemId()<=4008 && !player.isCastleLord(4)) ||
-				(getItemId() >=4012 && getItemId()<=4021 && !player.isCastleLord(5))
+				(_itemId >=3960 && _itemId<=4021 && player.isInParty()) ||
+				(_itemId >=3960 && _itemId<=3969 && !player.isCastleLord(1)) ||
+				(_itemId >=3973 && _itemId<=3982 && !player.isCastleLord(2)) ||
+				(_itemId >=3986 && _itemId<=3995 && !player.isCastleLord(3)) ||
+				(_itemId >=3999 && _itemId<=4008 && !player.isCastleLord(4)) ||
+				(_itemId >=4012 && _itemId<=4021 && !player.isCastleLord(5))
 			)
 		{
 			if	(player.isInParty())    //do not allow owner who is in party to pick tickets up
