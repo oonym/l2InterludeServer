@@ -89,7 +89,7 @@ public class PcStatus extends PlayableStatus
 
             if (attacker instanceof L2NpcInstance)
             {
-                int mobId = ((L2NpcInstance)attacker).getTemplate().npcId;
+                int mobId = ((L2NpcInstance)attacker).getTemplate().idTemplate;
                 
                 if (Config.DEBUG) 
                     _log.fine("mob id:" + mobId);
@@ -98,7 +98,7 @@ public class PcStatus extends PlayableStatus
             }
             else if (attacker instanceof L2Summon)
             {
-                int mobId = ((L2Summon)attacker).getTemplate().npcId;
+                int mobId = ((L2Summon)attacker).getTemplate().idTemplate;
                 
                 smsg.addNpcName(mobId);
             }

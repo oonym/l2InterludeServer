@@ -32,7 +32,7 @@ public class PetStatus extends SummonStatus
         {
             SystemMessage sm = new SystemMessage(SystemMessage.S1_GAME_PET_S2_DMG);
             if (attacker instanceof L2NpcInstance)
-                sm.addNpcName(((L2NpcInstance)attacker).getTemplate().npcId);
+                sm.addNpcName(((L2NpcInstance)attacker).getTemplate().idTemplate);
             else
                 sm.addString(attacker.getName());
             sm.addNumber((int)value);
