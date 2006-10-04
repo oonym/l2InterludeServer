@@ -84,16 +84,17 @@ public class UseItem extends ClientBasePacket
                 return;
 
 			// Alt game - Karma punishment // SOE
+			int itemId = item.getItemId();
 			if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT
-				&& (item.getItemId() == 736 || item.getItemId() == 1538 || item.getItemId() == 1829
-					|| item.getItemId() == 1830 || item.getItemId() == 3958 || item.getItemId() == 5858 || item.getItemId() == 5859)
+				&& (itemId == 736 || itemId == 1538 || itemId == 1829
+					|| itemId == 1830 || itemId == 3958 || itemId == 5858 || itemId == 5859)
 				&& activeChar.getKarma() > 0) return;
 
 			// Items that cannot be used
-			if (item.getItemId() == 57) 
+			if (itemId == 57) 
                 return;
             
-            if (activeChar.isFishing() && (item.getItemId() < 6535 || item.getItemId() > 6540))
+            if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
             {
                 // You cannot do anything else while fishing
                 SystemMessage sm = new SystemMessage(1471);
@@ -105,7 +106,7 @@ public class UseItem extends ClientBasePacket
 			if (activeChar.isDead())
 			{
 				SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
-				sm.addItemName(item.getItemId());
+				sm.addItemName(itemId);
 				getClient().getActiveChar().sendPacket(sm);
 				return;
 			}
@@ -115,7 +116,7 @@ public class UseItem extends ClientBasePacket
 				|| item.getItem().isForStrider())
 			{
 				SystemMessage sm = new SystemMessage(600); // You cannot equip a pet item.
-				sm.addItemName(item.getItemId());
+				sm.addItemName(itemId);
 				getClient().getActiveChar().sendPacket(sm);
 				return;
 			}
@@ -126,28 +127,29 @@ public class UseItem extends ClientBasePacket
 			if (item.isEquipable())
 			{
                 // Don't allow weapon/shield equipment if mounted
+				int bodyPart = item.getItem().getBodyPart();
                 if (activeChar.isMounted() 
-                	&& (item.getItem().getBodyPart() == L2Item.SLOT_LR_HAND 
-                        || item.getItem().getBodyPart() == L2Item.SLOT_L_HAND 
-                        || item.getItem().getBodyPart() == L2Item.SLOT_R_HAND))
+                	&& (bodyPart == L2Item.SLOT_LR_HAND 
+                        || bodyPart == L2Item.SLOT_L_HAND 
+                        || bodyPart == L2Item.SLOT_R_HAND))
                 {
                 	return;
                 }
                 
                 // Don't allow use weapon/shield when player is stun/sleep
                 if (activeChar.isStunned() ||  activeChar.isSleeping()
-                        && (item.getItem().getBodyPart() == L2Item.SLOT_LR_HAND 
-                            || item.getItem().getBodyPart() == L2Item.SLOT_L_HAND 
-                            || item.getItem().getBodyPart() == L2Item.SLOT_R_HAND))
+                        && (bodyPart == L2Item.SLOT_LR_HAND 
+                            || bodyPart == L2Item.SLOT_L_HAND 
+                            || bodyPart == L2Item.SLOT_R_HAND))
                 {
                     return;
                 }
                 
                 // Don't allow weapon/shield equipment if wearing formal wear
                 if (activeChar.isWearingFormalWear()
-                	&& (item.getItem().getBodyPart() == L2Item.SLOT_LR_HAND 
-                            || item.getItem().getBodyPart() == L2Item.SLOT_L_HAND 
-                            || item.getItem().getBodyPart() == L2Item.SLOT_R_HAND))
+                	&& (bodyPart == L2Item.SLOT_LR_HAND 
+                            || bodyPart == L2Item.SLOT_L_HAND 
+                            || bodyPart == L2Item.SLOT_R_HAND))
                 {
         				SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR);
         				activeChar.sendPacket(sm);
@@ -164,13 +166,13 @@ public class UseItem extends ClientBasePacket
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED);
 					sm.addNumber(item.getEnchantLevel());
-					sm.addItemName(item.getItemId());
+					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 				}
 				else
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_EQUIPPED);
-					sm.addItemName(item.getItemId());
+					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 				}
 
