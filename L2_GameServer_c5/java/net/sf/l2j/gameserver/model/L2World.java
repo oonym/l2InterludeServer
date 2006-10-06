@@ -565,6 +565,7 @@ public final class L2World
             while (_objects.hasNext())
             {
                 L2Object _object = _objects.next();
+                if (_object == null) continue;
                 if (_object.equals(object)) continue;   // skip our own character
                 
                 int x1 = _object.getX();
