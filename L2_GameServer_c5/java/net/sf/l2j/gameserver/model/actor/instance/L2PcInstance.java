@@ -3595,7 +3595,7 @@ public final class L2PcInstance extends L2PlayableInstance
                     increasePvpKills();
 				}
 			}
-			else                                                                    // Target player doesn't have karma
+			else if (targetPlayer.getPvpFlag() == 0)                                                                    // Target player doesn't have karma
 			{
                 increasePkKillsAndKarma(targetPlayer.getLevel());
 			}
@@ -5678,8 +5678,8 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				
 				// Check if clan is at war
-//				if (this.getClan() != null && ((L2PcInstance)attacker).getClan() != null && (this.getClan().isAtWarWith(((L2PcInstance)attacker).getClanId()) && this.getWantsPeace() == 0 && ((L2PcInstance)attacker).getWantsPeace() == 0))
-//				return true;
+				if (this.getClan() != null && ((L2PcInstance)attacker).getClan() != null && (this.getClan().isAtWarWith(((L2PcInstance)attacker).getClanId()) && this.getWantsPeace() == 0 && ((L2PcInstance)attacker).getWantsPeace() == 0))
+				return true;
 			}
 		}
 		else if (attacker instanceof L2SiegeGuardInstance)
@@ -6153,7 +6153,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				!ZoneManager.getInstance().checkIfInZonePvP(target)         // target is not in PvP zone
 		)
 		{
-			if (
+            if(this.getClan() != null && ((L2PcInstance)target).getClan() != null)
+            {
+                if(this.getClan().isAtWarWith(((L2PcInstance)target).getClan().getClanId()))
+                    return true; // in clan war player can attack whites even with sleep etc.
+            }
+            if (
 					((L2PcInstance)target).getPvpFlag() == 0 &&             //   target's pvp flag is not set and
 					((L2PcInstance)target).getKarma() == 0                  //   target has no karma
 			)
