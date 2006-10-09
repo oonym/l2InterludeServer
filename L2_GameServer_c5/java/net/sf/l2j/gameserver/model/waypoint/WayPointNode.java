@@ -197,9 +197,9 @@ public class WayPointNode extends L2Object
         int modY = y1 - y2 > 0 ? -1 : 1;
         int modZ = z1 - z2 > 0 ? -1 : 1;
 
-        int diffX = x1 - x2;
-        int diffY = y1 - y2;
-        int diffZ = z1 - z2;
+        int diffX = Math.abs(x1 - x2);
+        int diffY = Math.abs(y1 - y2);
+        int diffZ = Math.abs(z1 - z2);
 
         int distance = (int) Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
 
