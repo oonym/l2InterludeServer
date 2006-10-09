@@ -217,7 +217,7 @@ public class PcKnownList extends PlayableKnownList
     // Property - Public
     public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
 
-    public int getDistanceToForgetObject(L2Object object) { return 6000; }
+    public int getDistanceToForgetObject(L2Object object) { return 4500; }
 
-    public int getDistanceToWatchObject(L2Object object) { return 4000; }
+    public int getDistanceToWatchObject(L2Object object) { return 3500; }
 }

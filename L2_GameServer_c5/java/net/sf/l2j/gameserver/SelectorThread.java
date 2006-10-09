@@ -270,7 +270,7 @@ public final class SelectorThread extends Thread {
 
 				if (numKeys==0 && _selector.selectedKeys().size()==0)
 				{
-					sleep(20); // sleep some time to prevent thread from eating all cpu time
+					sleep(30); // sleep some time to prevent thread from eating all cpu time
 					continue;  // only continue if we don't have any keys to process
 				} 
 				
