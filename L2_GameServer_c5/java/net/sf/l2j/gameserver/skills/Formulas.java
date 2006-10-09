@@ -1204,8 +1204,9 @@ public final class Formulas
 	L2Character attacker, @SuppressWarnings("unused")
 	L2Character target, double rate)
 	{
-		//will fix freeze at >1000 atkspd, optimum calcation between 0 to 1400
-		return (int) (3 * Math.pow(rate, 2) / 2000 - 4 * rate + 2700);
+		// measured Oct 2006 by Tank6585, formula by Sami
+		if(rate < 2) return 2700;
+	    else return (int)(460000/rate);
 	}
 
 	/** Calculate delay (in milliseconds) for skills cast */
