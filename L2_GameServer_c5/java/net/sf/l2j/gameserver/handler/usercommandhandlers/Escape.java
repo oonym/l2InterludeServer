@@ -44,7 +44,7 @@ public class Escape implements IUserCommandHandler
      */
     public boolean useUserCommand(@SuppressWarnings("unused") int id, L2PcInstance activeChar)
     {   
-        if (activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() ||
+        if (activeChar.isCastingNow() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() ||
                 activeChar.isInOlympiadMode())
             return false;
         
