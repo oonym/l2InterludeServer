@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import javolution.util.FastMap;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance; 
 
 /**
  * @author la2
@@ -62,10 +63,13 @@ public class DecayTaskManager
         public void run()
         {
             Long current = System.currentTimeMillis();
+            int delay;
             if (_decayTasks != null)
                 for(L2Character actor : _decayTasks.keySet())
                 {
-                    if((current - _decayTasks.get(actor)) > 8500)
+                    if(actor instanceof L2RaidBossInstance) delay = 30000;
+                    else delay = 8500;
+                    if((current - _decayTasks.get(actor)) > delay)
                     {
                         actor.onDecay();
                         _decayTasks.remove(actor);
