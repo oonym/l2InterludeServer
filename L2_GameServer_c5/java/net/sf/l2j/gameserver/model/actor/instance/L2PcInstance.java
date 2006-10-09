@@ -3225,7 +3225,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (newTarget != null && !newTarget.isVisible())
 			newTarget = null;
         
-        if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 300)
+        // Prevents /target exploiting while no geodata
+		if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 1000)
             newTarget = null;
 		
 		// Can't target and attack festival monsters if not participant
