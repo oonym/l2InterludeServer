@@ -66,7 +66,7 @@ public class SevenSignsFestival implements SpawnListener
      * The chest spawn time is for when the bonus festival chests spawn, usually 
      * towards the end of the festival.
      */
-    public static final long FESTIVAL_SIGNUP_TIME = Config.ALT_FESTIVAL_CYCLE_LENGTH - Config.ALT_FESTIVAL_LENGTH;
+    public static final long FESTIVAL_SIGNUP_TIME = Config.ALT_FESTIVAL_CYCLE_LENGTH - Config.ALT_FESTIVAL_LENGTH - 60000;
      
     // Key Constants \\
     private static final int FESTIVAL_MAX_OFFSET_X = 230;
