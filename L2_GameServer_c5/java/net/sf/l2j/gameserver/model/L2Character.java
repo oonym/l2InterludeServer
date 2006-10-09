@@ -271,12 +271,14 @@ public abstract class L2Character extends L2Object
 		
 		if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
 		
-		for (L2PcInstance player : knownPlayers)
-		{
-			if (player == null || player == this) continue;
-			player.sendPacket(mov);
-            if(Config.DEVELOPER && !isInsideRadius(player, 1500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
-		}
+        try {
+        	for (L2PcInstance player : knownPlayers)
+        	{
+        		if (player == null || player == this) continue;
+        		player.sendPacket(mov);
+        		//if(Config.DEVELOPER && !isInsideRadius(player, 3500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
+        	}
+        } catch (Exception e) { } // this catches occasional NPEs while knownlist is unsynchronized
 	}
 	
 	/**
