@@ -50,7 +50,7 @@ public class L2PetData
     private int petID;
     private int petLevel;
     //  private int petExp; 
-    private int petMaxExp;
+    private long petMaxExp;
     //    private int petHP; 
     private int petMaxHP;
     //    private int petMP;         
@@ -157,6 +157,14 @@ public class L2PetData
             this.setPetRegenMP(value);
         }
     }
+    public void setStat(String stat, long value)
+    {
+        //      if (stat.equalsIgnoreCase(PET_EXP)) { this.setPetExp(value); } 
+        if (stat.equalsIgnoreCase(PET_MAX_EXP))
+        {
+            this.setPetMaxExp(value);
+        }
+    }
 
     //  ID   
     public int getPetID()
@@ -185,12 +193,12 @@ public class L2PetData
     //    public void setPetExp(int petExp) { this.petExp = petExp; } 
 
     //  Max Exp     
-    public int getPetMaxExp()
+    public long getPetMaxExp()
     {
         return petMaxExp;
     }
 
-    public void setPetMaxExp(int pPetMaxExp)
+    public void setPetMaxExp(long pPetMaxExp)
     {
         this.petMaxExp = pPetMaxExp;
     }

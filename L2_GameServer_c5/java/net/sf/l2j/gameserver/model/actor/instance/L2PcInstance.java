@@ -254,7 +254,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _charId = 0x00030b7a;
 	
 	/** The Experience of the L2PcInstance before the last Death Penalty */
-	private int _expBeforeDeath = 0;
+	private long _expBeforeDeath = 0;
 	
 	/** The Karma of the L2PcInstance (if higher than 0, the name of the L2PcInstance appears in red) */
 	private int _karma;
@@ -1700,7 +1700,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 	
 	/** Return the Experience of the L2PcInstance. */
-	public int getExp() { return getStat().getExp(); }
+	public long getExp() { return getStat().getExp(); }
 	
 	
 	public void setActiveEnchantItem(L2ItemInstance scroll)
@@ -1915,7 +1915,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/** Set the Experience value of the L2PcInstance. */
-	public void setExp(int exp) { getStat().setExp(exp); }
+	public void setExp(long exp) { getStat().setExp(exp); }
 	
 	/**
 	 * Return the Race object of the L2PcInstance.<BR><BR>
@@ -3666,7 +3666,7 @@ public final class L2PcInstance extends L2PlayableInstance
         sendPacket(new UserInfo(this));
     }
 	
-	public int calculateKarmaLost(int exp)
+	public int calculateKarmaLost(long exp)
 	{
 		// KARMA LOSS
 		// When a PKer gets killed by another player or a L2MonsterInstance, it loses a certain amount of Karma based on their level.
@@ -3674,8 +3674,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		// You lose karma as long as you were not in a pvp zone and you did not kill urself.
 		// NOTE: exp for death (if delevel is allowed) is based on the players level
 		
-		int karmaLost = Math.abs(exp);
-		karmaLost /= Config.KARMA_XP_DIVIDER;
+		long expGained = Math.abs(exp);
+		expGained /= Config.KARMA_XP_DIVIDER;
+		
+		// FIXME Micht : Maybe this code should be fixed and karma set to a long value
+		int karmaLost = 0;
+		if (expGained > Integer.MAX_VALUE)
+			karmaLost = Integer.MAX_VALUE;
+		else
+			karmaLost = (int)expGained;
 		
 		if (karmaLost < Config.KARMA_LOST_BASE) karmaLost = Config.KARMA_LOST_BASE;
 		if (karmaLost > getKarma()) karmaLost = getKarma();
@@ -3744,12 +3751,12 @@ public final class L2PcInstance extends L2PlayableInstance
             percentLost /= 4.0;
 		
 		// Calculate the Experience loss
-		int lostExp = 0;
+		long lostExp = 0;
 		if (!atEvent) 
 			if (lvl < Experience.MAX_LEVEL)
-				lostExp = (int) Math.round((getStat().getExpForLevel(lvl+1) - getStat().getExpForLevel(lvl)) * percentLost /100);
+				lostExp = Math.round((getStat().getExpForLevel(lvl+1) - getStat().getExpForLevel(lvl)) * percentLost /100);
 			else
-				lostExp = (int) Math.round((getStat().getExpForLevel(Experience.MAX_LEVEL) - getStat().getExpForLevel(Experience.MAX_LEVEL - 1)) * percentLost /100);
+				lostExp = Math.round((getStat().getExpForLevel(Experience.MAX_LEVEL) - getStat().getExpForLevel(Experience.MAX_LEVEL - 1)) * percentLost /100);
 		
 		// Get the Experience before applying penalty
 		_expBeforeDeath = getExp();
@@ -4525,7 +4532,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setDouble(33, 1/*getAttackSpeedMultiplier()*/);
 			statement.setDouble(34, getTemplate().collisionRadius/*getCollisionRadius()*/);
 			statement.setDouble(35, getTemplate().collisionHeight/*getCollisionHeight()*/);
-			statement.setInt(36, getExp());
+			statement.setLong(36, getExp());
 			statement.setInt(37, getSp());
 			statement.setInt(38, getKarma());
 			statement.setInt(39, getPvpKills());
@@ -4608,7 +4615,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				catch (Exception e) { player.setBaseClass(activeClassId); }
 				
 				player._classIndex = 0;
-				player.getStat().setExp(rset.getInt("exp"));
+				player.getStat().setExp(rset.getLong("exp"));
 				player.getStat().setLevel(rset.getInt("level"));
 				player.getStat().setSp(rset.getInt("sp"));
 				
@@ -4798,7 +4805,7 @@ public final class L2PcInstance extends L2PlayableInstance
                 SubClass subClass = new SubClass();
                 subClass.setClassId(rset.getInt("class_id"));
                 subClass.setLevel(rset.getInt("level"));
-                subClass.setExp(rset.getInt("exp"));
+                subClass.setExp(rset.getLong("exp"));
                 subClass.setSp(rset.getInt("sp"));
                 subClass.setClassIndex(rset.getInt("class_index"));
                 
@@ -4948,7 +4955,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Get the exp, level, and sp of base class to store in base table
 			int currentClassIndex = getClassIndex();
 			_classIndex = 0;
-			int exp     = getStat().getExp();
+			long exp     = getStat().getExp();
 			int level   = getStat().getLevel();
 			int sp      = getStat().getSp();
 			_classIndex = currentClassIndex;
@@ -4978,7 +4985,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(18, _observerMode ? _obsX : getX());
 			statement.setInt(19, _observerMode ? _obsY : getY());
 			statement.setInt(20, _observerMode ? _obsZ : getZ());
-			statement.setInt(21, exp);
+			statement.setLong(21, exp);
 			statement.setInt(22, sp);
 			statement.setInt(23, getKarma());
 			statement.setInt(24, getPvpKills());
@@ -5038,7 +5045,7 @@ public final class L2PcInstance extends L2PlayableInstance
             	for (SubClass subClass : getSubClasses().values())
             	{
                 	statement = con.prepareStatement(UPDATE_CHAR_SUBCLASS);
-                    statement.setInt(1, subClass.getExp());
+                    statement.setLong(1, subClass.getExp());
                     statement.setInt(2, subClass.getSp());
                     statement.setInt(3, subClass.getLevel());
                     statement.setInt(4, subClass.getClassId());
@@ -7243,7 +7250,7 @@ public final class L2PcInstance extends L2PlayableInstance
             PreparedStatement statement = con.prepareStatement(ADD_CHAR_SUBCLASS);
             statement.setInt(1, getObjectId());
             statement.setInt(2, newClass.getClassId());
-            statement.setInt(3, newClass.getExp());
+            statement.setLong(3, newClass.getExp());
             statement.setInt(4, newClass.getSp());
             statement.setInt(5, newClass.getLevel());
             statement.setInt(6, newClass.getClassIndex()); // <-- Added
@@ -7853,8 +7860,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		return (int)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
 	
-	public void addExpAndSp(int addToExp, int addToSp) { getStat().addExpAndSp(addToExp, addToSp); }
-    public void removeExpAndSp(int removeExp, int removeSp) { getStat().removeExpAndSp(removeExp, removeSp); }
+	public void addExpAndSp(long addToExp, int addToSp) { getStat().addExpAndSp(addToExp, addToSp); }
+    public void removeExpAndSp(long removeExp, int removeSp) { getStat().removeExpAndSp(removeExp, removeSp); }
     public void reduceCurrentHp(double i, L2Character attacker) { getStatus().reduceHp(i, attacker); }
 	public void reduceCurrentHp(double value, L2Character attacker, boolean awake) { getStatus().reduceHp(value, attacker, awake); }
 	

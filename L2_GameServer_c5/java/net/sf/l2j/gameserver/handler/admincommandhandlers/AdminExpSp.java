@@ -208,11 +208,11 @@ public class AdminExpSp implements IAdminCommandHandler {
 		{
     		String exp = st.nextToken();
     		String sp = st.nextToken();
-            int expval = 0;
+            long expval = 0;
             int spval = 0;
             try
             {
-        		expval = Integer.parseInt(exp);
+        		expval = Long.parseLong(exp);
         		spval = Integer.parseInt(sp);
             }
             catch (NumberFormatException e)
@@ -270,11 +270,11 @@ public class AdminExpSp implements IAdminCommandHandler {
         {
             String exp = st.nextToken();
             String sp = st.nextToken();
-            int expval = 0;
+            long expval = 0;
             int spval = 0;
             try
             {
-                expval = Integer.parseInt(exp);
+                expval = Long.parseLong(exp);
                 spval = Integer.parseInt(sp);
             }
             catch (NumberFormatException e)

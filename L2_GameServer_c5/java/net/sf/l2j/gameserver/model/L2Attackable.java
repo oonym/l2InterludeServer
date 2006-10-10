@@ -506,7 +506,7 @@ public class L2Attackable extends L2NpcInstance
         	L2Character attacker;
         	L2Party attackerParty;
         	int damage;
-        	int exp;
+        	long exp;
         	int levelDiff;
         	int partyDmg;
         	float partyMul;
@@ -578,7 +578,7 @@ public class L2Attackable extends L2NpcInstance
                         }
                         
                         // Distribute the Exp and SP between the L2PcInstance and its L2Summon
-                        attacker.addExpAndSp((int)attacker.calcStat(Stats.EXPSP_RATE, exp, null, null), 
+                        attacker.addExpAndSp(Math.round(attacker.calcStat(Stats.EXPSP_RATE, exp, null, null)), 
                                              (int)attacker.calcStat(Stats.EXPSP_RATE, sp, null, null));
                     }
                 }
@@ -1753,7 +1753,7 @@ public class L2Attackable extends L2NpcInstance
         return  tmp;
     }
     
-    public int calculateOverhitExp(int normalExp)
+    public long calculateOverhitExp(long normalExp)
     {
         // Get the percentage based on the total of extra (over-hit) damage done relative to the total (maximum) ammount of HP on the L2Attackable
         double overhitPercentage = ((getOverhitDamage() * 100) / getMaxHp());
@@ -1767,7 +1767,7 @@ public class L2Attackable extends L2NpcInstance
         double overhitExp = ((overhitPercentage / 100) * normalExp);
         
         // Return the rounded ammount of exp points to be added to the player's normal exp reward
-        int bonusOverhit = (int)Math.round(overhitExp);
+        long bonusOverhit = Math.round(overhitExp);
         return bonusOverhit;
     }
     

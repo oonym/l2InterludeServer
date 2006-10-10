@@ -35,7 +35,7 @@ public class PcStat extends PlayableStat
 
     // =========================================================
     // Method - Public
-    public boolean addExp(int value)
+    public boolean addExp(long value)
     {
         // Set new karma
         if (getActiveChar().getKarma() > 0 && (getActiveChar().isGM() || !ZoneManager.getInstance().checkIfInZonePvP(getActiveChar())))
@@ -46,9 +46,12 @@ public class PcStat extends PlayableStat
 
 		if (!super.addExp(value)) return false;
 		
+		/* Micht : Use of UserInfo for C5
         StatusUpdate su = new StatusUpdate(getActiveChar().getObjectId());
         su.addAttribute(StatusUpdate.EXP, getExp());
         getActiveChar().sendPacket(su);
+        */
+        getActiveChar().sendPacket(new UserInfo(getActiveChar()));
 
         return true;
     }
@@ -67,27 +70,27 @@ public class PcStat extends PlayableStat
      * @param addToExp The Experience value to add
      * @param addToSp The SP value to add
      */
-    public boolean addExpAndSp(int addToExp, int addToSp)
+    public boolean addExpAndSp(long addToExp, int addToSp)
     {
     	if (!super.addExpAndSp(addToExp, addToSp)) return false;
 
         // Send a Server->Client System Message to the L2PcInstance
         SystemMessage sm = new SystemMessage(SystemMessage.YOU_EARNED_S1_EXP_AND_S2_SP);
-        sm.addNumber(addToExp);
+        sm.addNumber((int)addToExp);
         sm.addNumber(addToSp);
         getActiveChar().sendPacket(sm);
 
         return true;
     }
     
-    public boolean removeExpAndSp(int addToExp, int addToSp)
+    public boolean removeExpAndSp(long addToExp, int addToSp)
     {
         if (!super.removeExpAndSp(addToExp, addToSp)) return false;
 
         // Send a Server->Client System Message to the L2PcInstance
         //TODO: add right System msg
         SystemMessage sm = new SystemMessage(SystemMessage.YOU_EARNED_S1_EXP_AND_S2_SP);
-        sm.addNumber(addToExp);
+        sm.addNumber((int)addToExp);
         sm.addNumber(addToSp);
         getActiveChar().sendPacket(sm);
 
@@ -193,7 +196,7 @@ public class PcStat extends PlayableStat
         return true;
     }
 
-    public final int getExpForLevel(int level) { return Experience.LEVEL[level]; }
+    public final long getExpForLevel(int level) { return Experience.LEVEL[level]; }
 
     // =========================================================
     // Method - Private
@@ -202,7 +205,7 @@ public class PcStat extends PlayableStat
     // Property - Public
     public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
 
-    public final int getExp()
+    public final long getExp()
     {
         if (getActiveChar().isSubClassActive()) 
 	        return getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).getExp();
@@ -210,7 +213,7 @@ public class PcStat extends PlayableStat
         return super.getExp();
     }
     
-    public final void setExp(int value)
+    public final void setExp(long value)
     {
         if (getActiveChar().isSubClassActive())
             getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).setExp(value);

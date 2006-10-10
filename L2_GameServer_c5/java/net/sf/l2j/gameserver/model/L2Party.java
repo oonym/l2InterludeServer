@@ -548,7 +548,7 @@ public class L2Party {
 	 * @param lastAttacker The L2Character that has killed the L2Attackable
 	 * 
 	 */
-	public void distributeXpAndSp(int xpReward, int spReward, List<L2Character> rewardedMembers, L2Character lastAttacker) 
+	public void distributeXpAndSp(long xpReward, int spReward, List<L2Character> rewardedMembers, L2Character lastAttacker) 
 	{
 		L2SummonInstance summon = null;
 		L2PcInstance owner      = null;
@@ -612,7 +612,7 @@ public class L2Party {
 						preCalculation = (sqLevel / sqLevelSum) * (1 - penalty);
 						
 						// Add the XP/SP points to the requested party member
-						member.addExpAndSp((int)member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null), 
+						member.addExpAndSp(Math.round(member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null)), 
 						                   (int)member.calcStat(Stats.EXPSP_RATE, spReward * preCalculation, null, null));
 					}
 				}

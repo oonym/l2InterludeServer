@@ -24,7 +24,7 @@ package net.sf.l2j.gameserver.model.base;
  */
 public class Experience
 {
-    public final static int LEVEL[]=
+    public final static long LEVEL[]=
     {
         0,  // level 0
         1,        

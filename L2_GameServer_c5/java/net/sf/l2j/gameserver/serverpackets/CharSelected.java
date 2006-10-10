@@ -69,7 +69,7 @@ public class CharSelected extends ServerBasePacket
 		writeF(_cha.getCurrentHp());  
 		writeF(_cha.getCurrentMp());  
 		writeD(_cha.getSp());
-		writeD(_cha.getExp());
+		writeQ(_cha.getExp());
 		writeD(_cha.getLevel());
 		writeD(_cha.getKarma());	// thx evill33t
 		writeD(0x0);	//?

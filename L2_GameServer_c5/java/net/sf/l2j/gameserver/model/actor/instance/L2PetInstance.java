@@ -81,7 +81,7 @@ public final class L2PetInstance extends L2Summon
 	private L2PetData _Data;
 
 	/** The Experience before the last Death Penalty */
-	private int _expBeforeDeath = 0; 
+	private long _expBeforeDeath = 0; 
 	private final int FOOD_ITEM_CONSUME_COUNT = 5;
 	
     public final L2PetData getPetData()
@@ -674,7 +674,7 @@ public final class L2PetInstance extends L2Summon
 			pet.setName(rset.getString("name"));
 
             pet.getStat().setLevel(rset.getInt("level"));
-            pet.getStat().setExp(rset.getInt("exp"));
+            pet.getStat().setExp(rset.getLong("exp"));
             pet.getStat().setSp(rset.getInt("sp"));
 
             pet.getStatus().setCurrentHp(rset.getDouble("curHp"));
@@ -720,7 +720,7 @@ public final class L2PetInstance extends L2Summon
 			statement.setInt(2, getStat().getLevel());
 			statement.setDouble(3, getStatus().getCurrentHp());
 			statement.setDouble(4, getStatus().getCurrentMp());
-			statement.setInt(5, getStat().getExp());
+			statement.setLong(5, getStat().getExp());
 			statement.setInt(6, getStat().getSp());
 			statement.setInt(7, getKarma());
 			statement.setInt(8, getPkKills());
@@ -795,7 +795,7 @@ public final class L2PetInstance extends L2Summon
 		if (_expBeforeDeath > 0)
 		{   
 			// Restore the specified % of lost experience.
-			getStat().addExp((int)Math.round((_expBeforeDeath - getStat().getExp()) * restorePercent / 100));
+			getStat().addExp(Math.round((_expBeforeDeath - getStat().getExp()) * restorePercent / 100));
 			_expBeforeDeath = 0;
 		}
 	}
@@ -809,7 +809,7 @@ public final class L2PetInstance extends L2Summon
         double percentLost = -0.07 * lvl + 6.5;
         
         // Calculate the Experience loss
-        int lostExp = (int) Math.round((getStat().getExpForLevel(lvl+1) - getStat().getExpForLevel(lvl)) * percentLost /100);
+        long lostExp = Math.round((getStat().getExpForLevel(lvl+1) - getStat().getExpForLevel(lvl)) * percentLost /100);
 
 		// Get the Experience before applying penalty
 		_expBeforeDeath = getStat().getExp();
@@ -818,12 +818,12 @@ public final class L2PetInstance extends L2Summon
         getStat().addExp(-lostExp);
     }
 
-    public void addExpAndSp(int addToExp, int addToSp) 
+    public void addExpAndSp(long addToExp, int addToSp) 
     {
     	getStat().addExpAndSp(Math.round(addToExp * Config.PET_XP_RATE), addToSp);
     }
-    public int getExpForThisLevel() { return getStat().getExpForLevel(getLevel()); }
-    public int getExpForNextLevel() { return getStat().getExpForLevel(getLevel() + 1); }
+    public long getExpForThisLevel() { return getStat().getExpForLevel(getLevel()); }
+    public long getExpForNextLevel() { return getStat().getExpForLevel(getLevel() + 1); }
     public final int getLevel() { return getStat().getLevel(); }
     public int getMaxFed() { return getStat().getMaxFeed(); }
     public int getAccuracy() { return getStat().getAccuracy(); }

@@ -28,19 +28,22 @@ public class PetStat extends SummonStat
     {
         if (!super.addExp(value)) return false;
 
+		/* Micht : Use of PetInfo for C5
         StatusUpdate su = new StatusUpdate(getActiveChar().getObjectId());
         su.addAttribute(StatusUpdate.EXP, getExp());
         getActiveChar().broadcastPacket(su);
+        */
+        getActiveChar().broadcastPacket(new PetInfo(getActiveChar()));
 
         return true;
     }
 
-    public boolean addExpAndSp(int addToExp, int addToSp)
+    public boolean addExpAndSp(long addToExp, int addToSp)
     {
     	if (!super.addExpAndSp(addToExp, addToSp)) return false;
 
         SystemMessage sm = new SystemMessage(SystemMessage.PET_EARNED_S1_EXP);
-        sm.addNumber(addToExp);
+        sm.addNumber((int)addToExp);
                 
         getActiveChar().getOwner().sendPacket(sm);
 
@@ -73,7 +76,7 @@ public class PetStat extends SummonStat
         return levelIncreased;
     }
 
-    public final int getExpForLevel(int level) { return L2PetDataTable.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp(); }
+    public final long getExpForLevel(int level) { return L2PetDataTable.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp(); }
     
     // =========================================================
     // Method - Private

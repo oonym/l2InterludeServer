@@ -17,7 +17,7 @@ public class PlayableStat extends CharStat
 
     // =========================================================
     // Method - Public
-    public boolean addExp(int value)
+    public boolean addExp(long value)
     {
 		if ((getExp() + value) < 0 || getExp() == (getExpForLevel(Experience.MAX_LEVEL) - 1)) 
             return true;
@@ -39,7 +39,7 @@ public class PlayableStat extends CharStat
         return true;
     }
     
-    public boolean removeExp(int value)
+    public boolean removeExp(long value)
     {
         if ((getExp() + value) < 0 || getExp() == (getExpForLevel(Experience.MAX_LEVEL) - 1)) 
             return true;
@@ -61,7 +61,7 @@ public class PlayableStat extends CharStat
         return true;
     }
 
-    public boolean addExpAndSp(int addToExp, int addToSp)
+    public boolean addExpAndSp(long addToExp, int addToSp)
     {
     	boolean expAdded = false;
     	boolean spAdded = false;
@@ -71,7 +71,7 @@ public class PlayableStat extends CharStat
     	return expAdded || spAdded;
     }
     
-    public boolean removeExpAndSp(int removeExp, int removeSp)
+    public boolean removeExpAndSp(long removeExp, int removeSp)
     {
         boolean expRemoved = false;
         boolean spRemoved = false;
@@ -125,7 +125,7 @@ public class PlayableStat extends CharStat
         return true;
     }
     
-    public int getExpForLevel(int level) { return level; }
+    public long getExpForLevel(int level) { return level; }
 
     // =========================================================
     // Method - Private

@@ -122,8 +122,8 @@ public class RegionBBSManager extends BaseBBSManager
 		    if (activeChar != null && (activeChar.isGM() || player.getObjectId() == activeChar.getObjectId()
 		            || Config.SHOW_LEVEL_COMMUNITYBOARD))
 		    {
-		        int nextLevelExp = 0;
-		        int nextLevelExpNeeded = 0;
+		        long nextLevelExp = 0;
+		        long nextLevelExpNeeded = 0;
 		        if (player.getLevel() < 75)
 		        {
 		            nextLevelExp = Experience.LEVEL[player.getLevel() + 1];

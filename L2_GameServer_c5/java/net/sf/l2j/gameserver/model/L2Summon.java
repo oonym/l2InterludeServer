@@ -142,7 +142,7 @@ public abstract class L2Summon extends L2PlayableInstance
         }
     }
     
-	public int getExpForThisLevel()
+	public long getExpForThisLevel()
     {
         if(getLevel() >= Experience.LEVEL.length)
         {
@@ -151,7 +151,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		return Experience.LEVEL[getLevel()];
     }
 	
-    public int getExpForNextLevel()
+    public long getExpForNextLevel()
     {
         if(getLevel() >= Experience.LEVEL.length - 1)
         {

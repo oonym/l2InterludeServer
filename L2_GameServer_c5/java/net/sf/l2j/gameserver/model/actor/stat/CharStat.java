@@ -12,7 +12,7 @@ public class CharStat
     // =========================================================
     // Data Field
     private L2Character[] _ActiveChar;          // Use array as a dirty trick to keep object as byref instead of byval
-    private int _Exp                        = 1;
+    private long _Exp                       = 1;
     private int _Sp                         = 1;
     private int _Level                      = 1;
     
@@ -123,8 +123,8 @@ public class CharStat
     /** Return the Attack Evasion rate (base+modifier) of the L2Character. */
     public int getEvasionRate(L2Character target) { return (int)(calcStat(Stats.EVASION_RATE, 0, target, null) / getActiveChar().getArmourExpertisePenalty()); }
 
-    public int getExp() { return _Exp; }
-    public void setExp(int value) { _Exp = value; }
+    public long getExp() { return _Exp; }
+    public void setExp(long value) { _Exp = value; }
 
     /** Return the INT of the L2Character (base+modifier). */
     public int getINT() { return (int)calcStat(Stats.STAT_INT, getActiveChar().getTemplate().baseINT, null, null); }

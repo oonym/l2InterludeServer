@@ -3812,7 +3812,7 @@ public abstract class L2Character extends L2Object
 	 * <li> L2PetInstance</li><BR><BR>
 	 *
 	 */
-	public void addExpAndSp(@SuppressWarnings("unused") int addToExp, @SuppressWarnings("unused") int addToSp)
+	public void addExpAndSp(@SuppressWarnings("unused") long addToExp, @SuppressWarnings("unused") int addToSp)
 	{
 		// Dummy method (overridden by players and pets)
 	}
