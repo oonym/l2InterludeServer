@@ -427,9 +427,9 @@ public class TradeList
                 _log.warning(_partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
                 return false;
             }
-            synchronized (partnerList)
-            {
-                _confirmed = true;
+            //synchronized (partnerList)
+            //{
+            //    _confirmed = true;
                 if (partnerList.isConfirmed())
                 {
                     partnerList.Lock();
@@ -439,8 +439,12 @@ public class TradeList
 
                     doExchange(partnerList);
                 }
-                else _partner.onTradeConfirm(_owner);
-            }
+                else
+                {
+                    _confirmed = true;
+                    _partner.onTradeConfirm(_owner);
+                }
+            //}
         }
         else _confirmed = true;
 
