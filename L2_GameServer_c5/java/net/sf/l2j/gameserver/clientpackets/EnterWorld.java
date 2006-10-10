@@ -194,7 +194,7 @@ public class EnterWorld extends ClientBasePacket
         sm.addString(getText("IEwySiB0ZWFtLg=="));
         sendPacket(sm);
         sm = new SystemMessage(SystemMessage.S1_S2);
-        sm.addString(getText("dmlzaXQgIGwyai5zb3VyY2Vmb3JnZS5uZXQ="));
+        sm.addString(getText("dmlzaXQgbDJqc2VydmVyLmNvbQ=="));
         sm.addString(getText("ICBmb3Igc3VwcG9ydC4="));
         sendPacket(sm);
         sm = new SystemMessage(SystemMessage.S1_S2);
