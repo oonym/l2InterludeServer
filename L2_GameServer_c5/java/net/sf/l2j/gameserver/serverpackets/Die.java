@@ -92,13 +92,22 @@ public class Die extends ServerBasePacket
         if (_clan != null)
         {
             L2SiegeClan siegeClan = null;
+            Boolean isInDefense = false;
             Castle castle = CastleManager.getInstance().getCastle(_cha);
-            if (castle!= null && castle.getSiege().getIsInProgress())
+            if (castle != null && castle.getSiege().getIsInProgress())
+            {
+            	//siege in progress            	
                 siegeClan = castle.getSiege().getAttackerClan(_clan);
+                if (siegeClan == null && castle.getSiege().checkIsDefender(_clan)){
+                	isInDefense = true;
+                }
+            }
 
             writeD(_clan.getHasHideout() > 0 ? 0x01 : 0x00);            // 6d 01 00 00 00 - to hide away
-            writeD(_clan.getHasCastle() > 0 ? 0x01 : 0x00);             // 6d 02 00 00 00 - to castle
-            writeD(siegeClan != null &&
+            writeD(_clan.getHasCastle() > 0 ||
+            	   isInDefense? 0x01 : 0x00);             				// 6d 02 00 00 00 - to castle
+            writeD(siegeClan != null && 
+            	   !isInDefense &&
                    siegeClan.getFlag().size() > 0 ? 0x01 : 0x00);       // 6d 03 00 00 00 - to siege HQ
         }
         else 
