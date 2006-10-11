@@ -41,7 +41,6 @@ import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
-import net.sf.l2j.gameserver.serverpackets.PledgeStatusChanged;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
@@ -570,9 +569,11 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 // upgrade to 1
                 if (player.getSp() >= 35000 && player.getAdena() >= 650000)
                 {
-                    player.reduceAdena("ClanLvl", 650000, this, true);
-                    player.setSp(player.getSp() - 35000);
-                    increaseClanLevel = true;
+                    if (player.reduceAdena("ClanLvl", 650000, this, true))
+                    {
+	                    player.setSp(player.getSp() - 35000);
+	                    increaseClanLevel = true;
+                    }
                 }
                 break;
             }
@@ -581,9 +582,11 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 // upgrade to 2
                 if (player.getSp() >= 150000 && player.getAdena() >= 2500000)
                 {
-                    player.setSp(player.getSp() - 150000);
-                    player.reduceAdena("ClanLvl", 2500000, this, true);
-                    increaseClanLevel = true;
+                    if (player.reduceAdena("ClanLvl", 2500000, this, true))
+                    {
+	                    player.setSp(player.getSp() - 150000);
+	                    increaseClanLevel = true;
+                    }
                 }
                 break;
             }
@@ -593,10 +596,11 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 if (player.getSp() >= 500000 && player.getInventory().getItemByItemId(1419) != null)
                 {
                     // itemid 1419 == proof of blood
-                    player.setSp(player.getSp() - 500000);
-                    player.getInventory().destroyItemByItemId("ClanLvl", 1419, 1, player,
-                                                              player.getTarget());
-                    increaseClanLevel = true;
+                    if (player.destroyItemByItemId("ClanLvl", 1419, 1, player.getTarget(), false))
+                    {
+	                    player.setSp(player.getSp() - 500000);
+	                    increaseClanLevel = true;
+                    }
                 }
                 break;
             }
@@ -606,21 +610,26 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 if (player.getSp() >= 1400000 && player.getInventory().getItemByItemId(3874) != null)
                 {
                     // itemid 3874 == proof of alliance
-                    player.setSp(player.getSp() - 1400000);
-                    player.getInventory().destroyItemByItemId("ClanLvl", 3874, 1, player,
-                                                              player.getTarget());
-                    increaseClanLevel = true;
+                	if (player.destroyItemByItemId("ClanLvl", 3874, 1, player.getTarget(), false))
+                	{
+	                    player.setSp(player.getSp() - 1400000);
+	                    increaseClanLevel = true;
+                	}
                 }
                 break;
             }
             case 4:
             {
                 // upgrade to 5
-                if (player.getSp() >= 3500000
-                    && (player.getInventory().getItemByItemId(3870) != null || player.getAdena() >= 30000000))
+                if (player.getSp() >= 3500000 && player.getInventory().getItemByItemId(3870) != null)
                 {
                     // itemid 3870 == proof of aspiration
-                    player.setSp(player.getSp() - 3500000);
+                	if (player.destroyItemByItemId("ClanLvl", 3870, 1, player.getTarget(), false))
+                	{
+                		player.setSp(player.getSp() - 3500000);
+                        increaseClanLevel = true;
+                	}
+                	/*
                     if (player.getInventory().getItemByItemId(3870) != null)
                     {
                         player.getInventory().destroyItemByItemId("ClanLvl", 3870, 1, player,
@@ -631,6 +640,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                         player.reduceAdena("ClanLvl", 30000000, this, true);
                     }
                     increaseClanLevel = true;
+                    */
                 }
                 break;
             }
@@ -678,14 +688,16 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
             // notify all the members about it
             SystemMessage sm = new SystemMessage(SystemMessage.CLAN_LEVEL_INCREASED);
-            player.sendPacket(sm);
-            L2PcInstance[] members = clan.getOnlineMembers(player.getName());
-            for (int i = 0; i < members.length; i++)
-            {
-                members[i].sendPacket(sm);
-            }
-            clan.broadcastToOnlineMembers(new PledgeStatusChanged(clan));
-            clan.broadcastClanStatus();
+            clan.broadcastToOnlineMembers(sm);
+            clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan, player));
+            /*
+             * Micht :
+             * 	- use PledgeShowInfoUpdate instead of PledgeStatusChanged
+             * 		to update clan level ingame
+             * 	- remove broadcastClanStatus() to avoid members duplication
+             */
+            //clan.broadcastToOnlineMembers(new PledgeStatusChanged(clan));
+            //clan.broadcastClanStatus();
         }
         else
         {

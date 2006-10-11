@@ -50,7 +50,7 @@ public class PledgeShowInfoUpdate extends ServerBasePacket
 		//sending empty data so client will ask all the info in response ;)
 		writeD(_clan.getClanId());
 		writeD(0);
-		writeD(0); //clan level
+		writeD(_clan.getLevel()); //clan level
 		writeD(0);
 		writeD(0);
 		writeD(0); // displayed in the "tree" view (with the clan skills)
