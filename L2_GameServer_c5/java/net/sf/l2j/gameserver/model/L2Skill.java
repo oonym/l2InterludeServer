@@ -998,7 +998,7 @@ public abstract class L2Skill
                 // Go through the L2Character _knownList
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects())
                 {
-                    if (obj instanceof L2Attackable || obj instanceof L2PlayableInstance)
+                    if (obj != null && (obj instanceof L2Attackable || obj instanceof L2PlayableInstance))
                     {
                         // Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
                         if (activeChar instanceof L2PcInstance) 
@@ -1068,7 +1068,8 @@ public abstract class L2Skill
                 
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects())
                 {
-                    if (!(obj instanceof L2Character)) continue;
+                    if (obj == null) continue;
+                	if (!(obj instanceof L2Character)) continue;
                     if (obj == cha) continue;
                     target = (L2Character) obj;
                     
@@ -1167,7 +1168,8 @@ public abstract class L2Skill
 
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects())
                 {
-                    if (!Util.checkIfInRange(radius, activeChar, obj, true)) continue;
+                    if (obj == null) continue;
+                	if (!Util.checkIfInRange(radius, activeChar, obj, true)) continue;
 
                     if (obj instanceof L2Attackable && obj != target) targetList.add((L2Character) obj);
 
@@ -1442,7 +1444,8 @@ public abstract class L2Skill
                 if (target.getKnownList() != null)
                     for (L2Object obj : target.getKnownList().getKnownObjects())
                     {
-                        if (!(obj instanceof L2Attackable) || !((L2Character) obj).isDead()
+                        if (obj == null) continue;
+                    	if (!(obj instanceof L2Attackable) || !((L2Character) obj).isDead()
                             || ((L2Character) obj) == activeChar) continue;
 
                         if (!Util.checkIfInRange(radius, target, obj, true)) continue;
@@ -1514,7 +1517,8 @@ public abstract class L2Skill
                 if (cha != null && cha.getKnownList() != null)
                     for (L2Object obj : cha.getKnownList().getKnownObjects())
                     {
-                        if (!(obj instanceof L2NpcInstance)) continue;
+                        if (obj == null) continue;
+                    	if (!(obj instanceof L2NpcInstance)) continue;
                         target = (L2NpcInstance) obj;
                         if (!target.isAlikeDead()) // If target is not dead/fake death and not self
                         {
