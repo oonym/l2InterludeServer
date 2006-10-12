@@ -77,7 +77,7 @@ public class PetInfo extends ServerBasePacket
 		writeC(0xb1);
 		writeD(_summon.getSummonType()); 
 		writeD(_summon.getObjectId());
-		writeD(_summon.getTemplate().npcId+1000000);  
+		writeD(_summon.getTemplate().idTemplate+1000000);  
 		writeD(0);    // 1=attackable 
 		
 		writeD(_x);
