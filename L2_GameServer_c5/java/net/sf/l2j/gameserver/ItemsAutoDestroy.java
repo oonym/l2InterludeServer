@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.Config;
@@ -28,9 +29,10 @@ import net.sf.l2j.gameserver.model.L2World;
 
 public class ItemsAutoDestroy
 {
-    private static ItemsAutoDestroy _instance;
-    protected List<L2ItemInstance> _items = null;
-    static long _sleep;
+	protected static Logger _log = Logger.getLogger("ItemsAutoDestroy");
+	private static ItemsAutoDestroy _instance;
+	protected List<L2ItemInstance> _items = null;
+	protected static long _sleep;
     
     private ItemsAutoDestroy()
     {
@@ -45,6 +47,7 @@ public class ItemsAutoDestroy
     {
         if (_instance == null)
         {
+			System.out.println("Initializing ItemsAutoDestroy.");
             _instance = new ItemsAutoDestroy();
         }
         return _instance;
@@ -56,10 +59,15 @@ public class ItemsAutoDestroy
         _items.add(item);
     }
     
-    class CheckItemsForDestroy extends Thread
+    protected class CheckItemsForDestroy extends Thread
     {
         public void run()
         {
+        	if (Config.DEBUG)
+        		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items to check.");
+        	
+        	if (_items.isEmpty()) return;
+        	
             long curtime = System.currentTimeMillis();
             for (L2ItemInstance item : _items)
             {
@@ -71,9 +79,13 @@ public class ItemsAutoDestroy
                     {
                         L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
                         L2World.getInstance().removeObject(item);
+                        _items.remove(item);
                     }
                 }
             }
+
+        	if (Config.DEBUG)
+        		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items remaining.");
         }    
     }
 }
