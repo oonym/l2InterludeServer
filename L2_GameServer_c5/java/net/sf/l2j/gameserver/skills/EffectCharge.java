@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 
-class EffectCharge extends L2Effect
+public class EffectCharge extends L2Effect
 {
 	int num_charges;
 	
@@ -48,4 +48,6 @@ class EffectCharge extends L2Effect
     }
 
 	public int getLevel() { return num_charges; }
+	
+	public void addNumCharges(int i) { num_charges = num_charges + i; }
 }

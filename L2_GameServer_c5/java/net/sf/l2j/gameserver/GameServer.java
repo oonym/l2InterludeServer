@@ -98,6 +98,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.CompShotPacks;
 import net.sf.l2j.gameserver.handler.itemhandlers.CompSpiritShotPacks;
 import net.sf.l2j.gameserver.handler.itemhandlers.CrystalCarol;
 import net.sf.l2j.gameserver.handler.itemhandlers.EnchantScrolls;
+import net.sf.l2j.gameserver.handler.itemhandlers.EnergyStone;
 import net.sf.l2j.gameserver.handler.itemhandlers.Firework;
 import net.sf.l2j.gameserver.handler.itemhandlers.FishItem;
 import net.sf.l2j.gameserver.handler.itemhandlers.FishShots;
@@ -344,6 +345,7 @@ public class GameServer
         _itemHandler.registerItemHandler(new RollingDice());
         _itemHandler.registerItemHandler(new MysteryPotion());
 		_itemHandler.registerItemHandler(new EnchantScrolls());
+        _itemHandler.registerItemHandler(new EnergyStone());
 		_itemHandler.registerItemHandler(new Remedy());
 		_itemHandler.registerItemHandler(new Guide());
 		_itemHandler.registerItemHandler(new Scrolls());
