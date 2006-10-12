@@ -47,5 +47,5 @@ class EffectCharge extends L2Effect
     	return true;
     }
 
-	protected int getLevel() { return num_charges; }
+	public int getLevel() { return num_charges; }
 }

@@ -31,6 +31,8 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
+import net.sf.l2j.gameserver.lib.Rnd;
+import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 
 /** 
  * This Handles Disabler skills
@@ -280,13 +282,41 @@ public class Disablers implements ISkillHandler
                     // cancel
                     if (skill.getId() == 1056)
                     {
-                        L2Effect[] effects = target.getAllEffects();
-                        for (L2Effect e : effects)
-                        {
-                            if (e.getSkill().getId() != 4082 && e.getSkill().getId() != 4215
-                                && e.getSkill().getId() != 4515) // Cannot cancel skills 4082, 4215, 4515
-                                e.exit();
-                        }
+                    	int lvlmodifier= 52+skill.getMagicLevel()*2;
+                    	if(skill.getMagicLevel()==12) lvlmodifier = 78;
+                    	int landrate = 90;
+                    	if((target.getLevel() - lvlmodifier)>0) landrate = 90-4*(target.getLevel()-lvlmodifier);
+                    	if(Rnd.get(100) < landrate)
+                    	{
+                    		L2Effect[] effects = target.getAllEffects();
+                    		int maxfive = 5;
+                    		for (L2Effect e : effects)
+                    		{ 
+                    			if (e.getSkill().getId() != 4082 && e.getSkill().getId() != 4215 && e.getSkill().getId() != 4515) // Cannot cancel skills 4082, 4215, 4515
+                    			{
+                    				if(e.getSkill().getSkillType() != SkillType.BUFF) e.exit(); //sleep, slow, surrenders etc
+                    				else
+                    				{
+                    					int rate = 100;
+                    					int level = e.getLevel();
+                    					if (level > 0) rate = (int) 150/(1 + level);
+                    					if (rate > 95) rate = 95;
+                    					else if (rate < 5) rate = 5;
+                    					if(Rnd.get(100) < rate)	{
+                    						e.exit();
+                    						maxfive--;
+                    						if(maxfive == 0) break;
+                    					}
+                    				}
+                    			}
+                    		}
+                    	} else
+                    	{
+                    		SystemMessage sm = new SystemMessage(614);
+                    		sm.addString(skill.getName() + " failed."); 
+                    		if (activeChar instanceof L2PcInstance)
+                    			activeChar.sendPacket(sm);
+                    	}
                         break;
                     }
                     // purify
@@ -321,7 +351,17 @@ public class Disablers implements ISkillHandler
                     // vitalize
                     else if (skill.getId() == 1020)
                     {
-                        L2Effect[] effects = target.getAllEffects();
+                    	// Temporary support fix for this skill: adds healing power
+                    	if(!target.isDead()) 
+                    	{
+                    		int heal_amount = 115 + skill.getLevel()*5; 
+                    		target.setCurrentHp(heal_amount + target.getCurrentHp()); 
+                    		target.setLastHealAmount(heal_amount);            
+                    		StatusUpdate su = new StatusUpdate(target.getObjectId());
+                    		su.addAttribute(StatusUpdate.CUR_HP, (int)target.getCurrentHp());
+                    		target.sendPacket(su);
+                    	}
+                    	L2Effect[] effects = target.getAllEffects();
                         for (L2Effect e : effects)
                         {
                             if (skill.getLevel() < 6)

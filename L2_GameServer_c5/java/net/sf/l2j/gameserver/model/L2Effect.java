@@ -435,7 +435,7 @@ public abstract class L2Effect
         os.addEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
     }
 
-    protected int getLevel()
+    public int getLevel()
     {
         return getSkill().getLevel();
     }
