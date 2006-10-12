@@ -93,6 +93,12 @@ public class RequestDropItem extends ClientBasePacket
         if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
             return;
         
+        if(_count > item.getCount()) 
+        {
+			activeChar.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+			return;
+        }
+        
         if(_count < 0)
         {
         	Util.handleIllegalPlayerAction(activeChar,"[RequestDropItem] count <= 0! ban! oid: "+_objectId+" owner: "+activeChar.getName(),IllegalPlayerAction.PUNISH_KICK);
