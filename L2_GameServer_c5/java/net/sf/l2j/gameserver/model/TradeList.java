@@ -286,6 +286,8 @@ public class TradeList
         if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
             return null;
         
+        if (count > ((L2ItemInstance)item).getCount()) return null;
+        
         if (!((L2ItemInstance) item).isStackable() && count > 1)
         {
             _log.warning(_owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
