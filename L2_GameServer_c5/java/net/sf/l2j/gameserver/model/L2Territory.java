@@ -129,8 +129,8 @@ public class L2Territory
 			    p[2] = _z_min+100;p[3] = _z_max;
 			    for( i=0; i<_points.size(); i++){
 				Point p1 = _points.get(i);
-				long dx = p1.x-p[0];
-				long dy = p1.y-p[1];
+				double dx = p1.x-p[0];
+				double dy = p1.y-p[1];
 				double distance = Math.sqrt(dx*dx+dy*dy);
 				if (curdistance == 0 || distance<curdistance){
 				    curdistance = distance;

@@ -73,7 +73,7 @@ public class RequestSellItem extends ClientBasePacket
 		super(buf, client);
 		_listId = readD();
 		_count = readD();
-		if (_count < 0)
+		if (_count <= 0)
 		{
 		    _count = 0; _items = null;
 		    return;
@@ -84,7 +84,7 @@ public class RequestSellItem extends ClientBasePacket
 			int objectId = readD(); _items[i * 3 + 0] = objectId;
 			int itemId   = readD(); _items[i * 3 + 1] = itemId;
 			long cnt      = readD(); 
-			if (cnt > Integer.MAX_VALUE || cnt < 0)
+			if (cnt > Integer.MAX_VALUE || cnt <= 0)
 			{
 			    _count = 0; _items = null;
 			    return;

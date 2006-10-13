@@ -112,5 +112,7 @@ public class L2SiegeClan
 		return _Flag;
 	}
 
-	public SiegeClanType getType() {return _type; }
+	public SiegeClanType getType() { return _type; }
+    
+    public void setType(SiegeClanType setType) { _type = setType; } 
 }

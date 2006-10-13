@@ -324,7 +324,7 @@ public abstract class L2Skill
         _itemConsumeTime = set.getInteger("itemConsumeTime", 0);
 
         _castRange = set.getInteger("castRange", 0);
-        _effectRange = set.getInteger("castRange", _castRange + 200);
+        _effectRange = set.getInteger("effectRange", _castRange + 200);
         _skillTime = set.getInteger("skillTime", 0);
         _skillInterruptTime = set.getInteger("skillTime", _skillTime / 2);
         _hitTime = set.getInteger("hitTime", 0);
@@ -1132,9 +1132,7 @@ public abstract class L2Skill
                                 		continue;
                                 
                                 }
-                                continue;
                             }
-                              
                         }
                         else
                         // Skill user is not L2PcInstance
