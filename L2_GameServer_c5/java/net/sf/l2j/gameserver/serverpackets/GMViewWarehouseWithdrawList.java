@@ -23,7 +23,8 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-
+import net.sf.l2j.gameserver.templates.L2Item;
+import net.sf.l2j.gameserver.templates.L2Weapon;
 
 /**
  * Sdh(h dddhh [dhhh] d)
@@ -37,51 +38,67 @@ public class GMViewWarehouseWithdrawList extends ServerBasePacket
 	private L2ItemInstance[] _items;
 	@SuppressWarnings("unused")
     private String _playerName;
-    private L2PcInstance _character;
+    private L2PcInstance _cha;
     private int _money;
 
 	public GMViewWarehouseWithdrawList(L2PcInstance cha)
 	{
-		_playerName = cha.getName();
-        _character  = cha;
-        _money = cha.getAdena();
+        _cha  = cha;
 	}	
 
 
 	final void runImpl()
 	{
-		_items = _character.getWarehouse().getItems();
-        int count = _items.length; 
+		_items = _cha.getWarehouse().getItems();
+		_playerName = _cha.getName();
+        _money = _cha.getAdena();
         
-        for (int i = 0; i < count; i++)
-        {
-            L2ItemInstance temp = _items[i];
-            if (Config.DEBUG)
-                _log.fine("item:" + temp.getItem().getName() +
-                        " type1:" + temp.getItem().getType1() + " type2:" + temp.getItem().getType2());
-        }
+        if (Config.DEBUG)
+	        for (L2ItemInstance item : _items)
+	            _log.fine("item:" + item.getItem().getName() +
+	                     " type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
 	}
 	
 	final void writeImpl()
 	{
-        writeC(0x95);
-        writeS(_character.getName());
-        writeD(_money);
-        writeH(_items.length);
-		
-        for (L2ItemInstance temp : _items)
+		try
 		{
-            writeH(temp.getItem().getType1()); // item type1 //unconfirmed, works
-            writeD(temp.getObjectId()); //unconfirmed, works
-            writeD(temp.getItemId()); //unconfirmed, works
-            writeD(temp.getCount()); //unconfirmed, works
-            writeH(temp.getItem().getType2());  // item type2 //unconfirmed, works
-            writeH(0x00);   // ?
-            writeD(temp.getItem().getBodyPart());   // ?
-            writeH(temp.getEnchantLevel()); // enchant level -confirmed
-            writeH(0x00);   // ?
-            writeH(0x00);   // ?
-            writeD(temp.getObjectId()); // item id - confimed     
+	        writeC(0x95);
+	        writeS(_playerName);
+	//	    writeH(0x01); // private WH
+	        writeD(_money);
+	        writeH(_items.length);
+			
+	        for (L2ItemInstance item : _items)
+			{
+	            writeH(item.getItem().getType1()); // item type1 //unconfirmed, works
+	            writeD(item.getObjectId()); //unconfirmed, works
+	            writeD(item.getItemId()); //unconfirmed, works
+	            writeD(item.getCount()); //unconfirmed, works
+                writeH(item.getItem().getType2()); // item type2 //unconfirmed, works
+	            writeH(0x00);  // ?
+	            switch(item.getItem().getType2())
+	            {
+	                case L2Item.TYPE2_WEAPON:
+			            writeD(item.getItem().getBodyPart()); // ?
+			            writeH(item.getEnchantLevel()); // enchant level -confirmed
+			            writeH(((L2Weapon)item.getItem()).getSoulShotCount());  // ?
+			            writeH(((L2Weapon)item.getItem()).getSpiritShotCount());  // ?
+			            break;
+	                case L2Item.TYPE2_SHIELD_ARMOR: 
+	                case L2Item.TYPE2_ACCESSORY:
+			            writeD(item.getItem().getBodyPart()); // ?
+			            writeH(item.getEnchantLevel()); // enchant level -confirmed
+			            writeH(0x00);  // ?
+			            writeH(0x00);  // ?
+			            break;
+	            }
+	            writeD(item.getObjectId()); // item id - confimed
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
 		}
 	}
 	

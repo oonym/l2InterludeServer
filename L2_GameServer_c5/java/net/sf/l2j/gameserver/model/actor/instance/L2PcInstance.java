@@ -265,6 +265,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
 	private int _nameColor;
 	
+	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
+	private int _titleColor;
+	
 	/** The PK counter of the L2PcInstance (= Number of non PvP Flagged player killed) */
 	private int _pkKills;
 	
@@ -691,6 +694,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		_accountName  = accountName;
 		_nameColor    = 0xFFFFFF;
+		_titleColor    = 0xFFFF77;
 		_baseLoad      = template.baseLoad;
 		
 		// Create an AI
@@ -7195,6 +7199,21 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setNameColor(int red, int green, int blue)
 	{
 		_nameColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);
+	}
+	
+	public int getTitleColor()
+	{
+		return _titleColor;
+	}
+	
+	public void setTitleColor(int titleColor)
+	{
+		_titleColor = titleColor;
+	}
+	
+	public void setTitleColor(int red, int green, int blue)
+	{
+		_titleColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);
 	}
 	
 	public void setWantsPeace(int wantsPeace)

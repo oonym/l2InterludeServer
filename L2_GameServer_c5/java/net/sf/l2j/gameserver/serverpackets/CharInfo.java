@@ -223,15 +223,20 @@ public class CharInfo extends ServerBasePacket
 
 //		Code that works for getEnchantEffect()
 
-		writeC(0x00);                       //Changed by Thorgrim
+		writeC(_cha.getRecomLeft());                       //Changed by Thorgrim
 		writeH(_cha.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
-		writeD(0x00);
+		writeD(_cha.getClassId().getId());
 		
-		writeD(0x00); // unknown
-		writeD(0x00); // unknown
-        writeC(_cha.isMounted() ? 0 :_cha.getEnchantEffect());
+		writeD(_cha.getMaxCp());
+		writeD((int) _cha.getCurrentCp());
+        writeC(_cha.isMounted() ? 0 : _cha.getEnchantEffect());
 		
-		writeC(0x00); //??
+        if(_cha.getTeam()==1)
+        	writeC(0x01); //team circle around feet 1= Blue, 2 = red
+        else if(_cha.getTeam()==2)
+        	writeC(0x02); //team circle around feet 1= Blue, 2 = red
+        else
+        	writeC(0x00); //team circle around feet 1= Blue, 2 = red
         
 		writeD(_cha.getClanCrestLargeId()); 
 		writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Symbol on char menu ctrl+I  
@@ -244,7 +249,7 @@ public class CharInfo extends ServerBasePacket
         writeD(_cha.getNameColor());
         
         //c5
-       	writeD(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
+//       	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
         
         writeD(0x00); // ??
         
@@ -253,7 +258,7 @@ public class CharInfo extends ServerBasePacket
         writeD(0x00); // ??
         writeD(0x00); // ??
         
-        writeD(_cha.getNameColor());
+        writeD(_cha.getTitleColor());
         
         writeD(0x00); // ??
 		}
@@ -266,5 +271,4 @@ public class CharInfo extends ServerBasePacket
 	{
 		return _S__03_CHARINFO;
 	}
-	
 }

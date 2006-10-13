@@ -53,10 +53,10 @@ public class GMViewSkillInfo extends ServerBasePacket
 			writeD(skill.isPassive() ? 1 : 0);
 			writeD(skill.getLevel());
 			writeD(skill.getId());
+            writeC(0x00); //c5
 		}
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

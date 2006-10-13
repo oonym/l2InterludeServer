@@ -50,6 +50,10 @@ public class GMViewCharacterInfo extends ServerBasePacket
 
 	final void writeImpl()
 	{
+		float moveMultiplier = _cha.getMovementSpeedMultiplier();
+        int _runSpd = (int) (_cha.getRunSpeed() / moveMultiplier);
+        int _walkSpd = (int) (_cha.getWalkSpeed() / moveMultiplier);
+
 		writeC(0x8f);
 
 		writeD(_cha.getX());
@@ -131,15 +135,15 @@ public class GMViewCharacterInfo extends ServerBasePacket
 		writeD(_cha.getPvpFlag()); // 0-non-pvp  1-pvp = violett name
 		writeD(_cha.getKarma());
 
-		writeD(_cha.getRunSpeed());
-		writeD(_cha.getWalkSpeed());
-		writeD(_cha.getRunSpeed()/*0x32*/);	// swimspeed
-		writeD(_cha.getWalkSpeed()/*0x32*/);	// swimspeed
-		writeD(_cha.getRunSpeed()/*_cha.getFloatingRunSpeed()*/);
-		writeD(_cha.getWalkSpeed()/*_cha.getFloatingWalkSpeed()*/);
-		writeD(_cha.getRunSpeed()/*_cha.getFlyingRunSpeed()*/);
-		writeD(_cha.getWalkSpeed()/*_cha.getFlyingWalkSpeed()*/);
-		writeF(1/*_cha.getProperMultiplier()*/); // move speed 0.7);/
+        writeD(_runSpd);
+        writeD(_walkSpd);
+        writeD(_runSpd); // swimspeed
+        writeD(_walkSpd); // swimspeed
+        writeD(_runSpd);
+        writeD(_walkSpd);
+        writeD(_runSpd);
+        writeD(_walkSpd);
+		writeF(moveMultiplier);
 		writeF(_cha.getAttackSpeedMultiplier()); //2.9);//
 		writeF(_cha.getTemplate().collisionRadius);  // scale
 		writeF(_cha.getTemplate().collisionHeight); // y offset ??!? fem dwarf 4033
@@ -152,20 +156,21 @@ public class GMViewCharacterInfo extends ServerBasePacket
 		writeD(_cha.getClanId());		// pledge id
 		writeD(_cha.getClanCrestId());		// pledge crest id
 		writeD(_cha.getAllyId());		// ally id 
-		writeC(0);				// ??
-		writeC(0);				// ??
-		writeC(0);				// ??
+        writeC(_cha.getMountType()); // mount type
+        writeC(_cha.getPrivateStoreType());
+        writeC(_cha.hasDwarvenCraft() ? 1 : 0);
 		writeD(_cha.getPkKills());
 		writeD(_cha.getPvpKills());
 
 		writeH(_cha.getRecomLeft());
 		writeH(_cha.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
 		writeD(_cha.getClassId().getId());
+		writeD(0x00); // special effects? circles around player...
 		writeD(_cha.getMaxCp());
 		writeD((int) _cha.getCurrentCp());
 		
 		//new c5 
-        writeC(0x00); //changes the Speed display on Status Window
+       	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
         
         writeD(0x00);
         
@@ -174,7 +179,7 @@ public class GMViewCharacterInfo extends ServerBasePacket
         writeD(0x00); //changes the text above CP on Status Window
         writeD(0x00);
         
-        writeD(0x00);
+        writeD(_cha.getNameColor());
         
         writeD(0x00);
 	}

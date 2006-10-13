@@ -181,7 +181,7 @@ public class UserInfo extends ServerBasePacket
         writeD(_flWalkSpd);
         writeD(_flyRunSpd);
         writeD(_flyWalkSpd);
-        writeF(_cha.getMovementSpeedMultiplier());
+        writeF(moveMultiplier);
         writeF(_cha.getAttackSpeedMultiplier());
 
         L2Summon pet = _cha.getPet();
@@ -236,21 +236,26 @@ public class UserInfo extends ServerBasePacket
 
         writeD(_cha.getClassId().getId());
         writeD(0x00); // special effects? circles around player...
+        
         writeD(_cha.getMaxCp());
         writeD((int) _cha.getCurrentCp());
         writeC(_cha.isMounted() ? 0 : _cha.getEnchantEffect());
 
-        writeC(0x00); //team circle around feet 1= Blue, 2 = red
+        if(_cha.getTeam()==1)
+        	writeC(0x01); //team circle around feet 1= Blue, 2 = red
+        else if(_cha.getTeam()==2)
+        	writeC(0x02); //team circle around feet 1= Blue, 2 = red
+        else
+        	writeC(0x00); //team circle around feet 1= Blue, 2 = red
 
         writeD(_cha.getClanCrestLargeId());
         writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); //0x01: symbol on char menu ctrl+I  
         writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); //0x01: Hero Aura
 
-        writeC(0x00); //Fishing Mode -Not Used-
+        writeC(_cha.isFishing() ? 1 : 0); //Fishing Mode
         writeD(_cha.GetFishx()); //fishing x  
         writeD(_cha.GetFishy()); //fishing y
         writeD(_cha.GetFishz()); //fishing z
-
         writeD(_cha.getNameColor());
         
 		//new c5 
@@ -263,9 +268,10 @@ public class UserInfo extends ServerBasePacket
         writeD(0x00); //changes the text above CP on Status Window
         writeD(0x00); // ??
         
-        writeD(_cha.getNameColor());
+        writeD(_cha.getTitleColor());
         
         writeD(0x00); // ??
+
     }
 
     /* (non-Javadoc)
