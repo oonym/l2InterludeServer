@@ -140,127 +140,127 @@ public class CharInfo extends ServerBasePacket
 		}
 		else
 		{
-		writeC(0x03);		
-		writeD(_x);
-		writeD(_y);
-		writeD(_z);
-		writeD(_heading);
-		writeD(_cha.getObjectId());
-		L2PcInstance _cha2 = getClient().getActiveChar();
-		if (_cha2 != null && _cha.getClan() != null && _cha2.getClan() != null && _cha.getClan().isAtWarWith(_cha2.getClanId()))
-		    writeS("*"+_cha.getName());
-		else
-		    writeS(_cha.getName());
-		writeD(_cha.getRace().ordinal());
-		writeD(_cha.getSex());
-		        
-		if (_cha.getClassIndex() == 0)
+			writeC(0x03);		
+			writeD(_x);
+			writeD(_y);
+			writeD(_z);
+			writeD(_heading);
+			writeD(_cha.getObjectId());
+			L2PcInstance _cha2 = getClient().getActiveChar();
+			if (_cha2 != null && _cha.getClan() != null && _cha2.getClan() != null && _cha.getClan().isAtWarWith(_cha2.getClanId()))
+			    writeS("*"+_cha.getName());
+			else
+			    writeS(_cha.getName());
+			writeD(_cha.getRace().ordinal());
+			writeD(_cha.getSex());
+			        
+			if (_cha.getClassIndex() == 0)
+				writeD(_cha.getClassId().getId());
+			else 
+				writeD(_cha.getBaseClass());
+			
+			writeD(0); // unknown, maybe underwear?
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LHAND));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_GLOVES));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_CHEST));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LEGS));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_FEET));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_BACK));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LRHAND));
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HAIR));
+			
+			writeD(_cha.getPvpFlag());
+			writeD(_cha.getKarma());
+	
+			writeD(_mAtkSpd);
+			writeD(_pAtkSpd);
+			
+			writeD(_cha.getPvpFlag());
+			writeD(_cha.getKarma());
+	
+			writeD(_runSpd);
+			writeD(_walkSpd);
+			writeD(_swimRunSpd/*0x32*/);  // swimspeed
+			writeD(_swimWalkSpd/*0x32*/);  // swimspeed
+			writeD(_flRunSpd);
+			writeD(_flWalkSpd);
+			writeD(_flyRunSpd);
+			writeD(_flyWalkSpd);
+			writeF(_cha.getMovementSpeedMultiplier()); // _cha.getProperMultiplier()
+			writeF(_cha.getAttackSpeedMultiplier()); // _cha.getAttackSpeedMultiplier()
+			writeF(_cha.getBaseTemplate().collisionRadius);
+			writeF(_cha.getBaseTemplate().collisionHeight);
+	
+			writeD(_cha.getHairStyle());
+			writeD(_cha.getHairColor());
+			writeD(_cha.getFace());
+			
+			writeS(_cha.getTitle());
+			writeD(_cha.getClanId());
+			writeD(_cha.getClanCrestId());
+			writeD(_cha.getAllyId());
+			writeD(_cha.getAllyCrestId());
+			writeD(0);	// new in rev 417   siege-flags
+			
+			writeC(_cha.isSitting() ? 0 : 1);	// standing = 1  sitting = 0
+			writeC(_cha.isRunning() ? 1 : 0);	// running = 1   walking = 0
+			writeC(_cha.isInCombat() ? 1 : 0);
+			writeC(_cha.isAlikeDead() ? 1 : 0);
+			
+			writeC(_cha.getInvisible());	// invisible = 1  visible =0
+			writeC(_cha.getMountType());	// 1 on strider   2 on wyvern   0 no mount
+			writeC(_cha.getPrivateStoreType());   //  1 - sellshop
+			
+			writeH(_cha.getCubics().size());
+			for (int id : _cha.getCubics().keySet())
+				writeH(id);
+			
+			writeC(0x00);	// find party members
+			
+	        writeD(_cha.getAbnormalEffect());
+	
+	//		Code that works for getEnchantEffect()
+	
+			writeC(_cha.getRecomLeft());                       //Changed by Thorgrim
+			writeH(_cha.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
 			writeD(_cha.getClassId().getId());
-		else 
-			writeD(_cha.getBaseClass());
-		
-		writeD(0); // unknown, maybe underwear?
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LHAND));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_GLOVES));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_CHEST));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LEGS));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_FEET));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_BACK));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LRHAND));
-		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HAIR));
-		
-		writeD(_cha.getPvpFlag());
-		writeD(_cha.getKarma());
-
-		writeD(_mAtkSpd);
-		writeD(_pAtkSpd);
-		
-		writeD(_cha.getPvpFlag());
-		writeD(_cha.getKarma());
-
-		writeD(_runSpd);
-		writeD(_walkSpd);
-		writeD(_swimRunSpd/*0x32*/);  // swimspeed
-		writeD(_swimWalkSpd/*0x32*/);  // swimspeed
-		writeD(_flRunSpd);
-		writeD(_flWalkSpd);
-		writeD(_flyRunSpd);
-		writeD(_flyWalkSpd);
-		writeF(_cha.getMovementSpeedMultiplier()); // _cha.getProperMultiplier()
-		writeF(_cha.getAttackSpeedMultiplier()); // _cha.getAttackSpeedMultiplier()
-		writeF(_cha.getBaseTemplate().collisionRadius);
-		writeF(_cha.getBaseTemplate().collisionHeight);
-
-		writeD(_cha.getHairStyle());
-		writeD(_cha.getHairColor());
-		writeD(_cha.getFace());
-		
-		writeS(_cha.getTitle());
-		writeD(_cha.getClanId());
-		writeD(_cha.getClanCrestId());
-		writeD(_cha.getAllyId());
-		writeD(_cha.getAllyCrestId());
-		writeD(0);	// new in rev 417   siege-flags
-		
-		writeC(_cha.isSitting() ? 0 : 1);	// standing = 1  sitting = 0
-		writeC(_cha.isRunning() ? 1 : 0);	// running = 1   walking = 0
-		writeC(_cha.isInCombat() ? 1 : 0);
-		writeC(_cha.isAlikeDead() ? 1 : 0);
-		
-		writeC(_cha.getInvisible());	// invisible = 1  visible =0
-		writeC(_cha.getMountType());	// 1 on strider   2 on wyvern   0 no mount
-		writeC(_cha.getPrivateStoreType());   //  1 - sellshop
-		
-		writeH(_cha.getCubics().size());
-		for (int id : _cha.getCubics().keySet())
-			writeH(id);
-		
-		writeC(0x00);	// find party members
-		
-        writeD(_cha.getAbnormalEffect());
-
-//		Code that works for getEnchantEffect()
-
-		writeC(_cha.getRecomLeft());                       //Changed by Thorgrim
-		writeH(_cha.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
-		writeD(_cha.getClassId().getId());
-		
-		writeD(_cha.getMaxCp());
-		writeD((int) _cha.getCurrentCp());
-        writeC(_cha.isMounted() ? 0 : _cha.getEnchantEffect());
-		
-        if(_cha.getTeam()==1)
-        	writeC(0x01); //team circle around feet 1= Blue, 2 = red
-        else if(_cha.getTeam()==2)
-        	writeC(0x02); //team circle around feet 1= Blue, 2 = red
-        else
-        	writeC(0x00); //team circle around feet 1= Blue, 2 = red
-        
-		writeD(_cha.getClanCrestLargeId()); 
-		writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Symbol on char menu ctrl+I  
-		writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura
-		
-		writeC(_cha.isFishing() ? 1 : 0); //0x01: Fishing Mode (Cant be undone by setting back to 0)
-		writeD(_cha.GetFishx());  
-		writeD(_cha.GetFishy());
-		writeD(_cha.GetFishz());
-        writeD(_cha.getNameColor());
-        
-        //c5
-//       	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
-        
-        writeD(0x00); // ??
-        
-        writeD(0x00); // ??
-        
-        writeD(0x00); // ??
-        writeD(0x00); // ??
-        
-        writeD(_cha.getTitleColor());
-        
-        writeD(0x00); // ??
+			
+			writeD(_cha.getMaxCp());
+			writeD((int) _cha.getCurrentCp());
+	        writeC(_cha.isMounted() ? 0 : _cha.getEnchantEffect());
+			
+	        if(_cha.getTeam()==1)
+	        	writeC(0x01); //team circle around feet 1= Blue, 2 = red
+	        else if(_cha.getTeam()==2)
+	        	writeC(0x02); //team circle around feet 1= Blue, 2 = red
+	        else
+	        	writeC(0x00); //team circle around feet 1= Blue, 2 = red
+	        
+			writeD(_cha.getClanCrestLargeId()); 
+			writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Symbol on char menu ctrl+I  
+			writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura
+			
+			writeC(_cha.isFishing() ? 1 : 0); //0x01: Fishing Mode (Cant be undone by setting back to 0)
+			writeD(_cha.GetFishx());  
+			writeD(_cha.GetFishy());
+			writeD(_cha.GetFishz());
+	        writeD(_cha.getNameColor());
+	        
+	        //c5
+	//       	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
+	        
+	        writeD(0x00); // ??
+	        
+	        writeD(0x00); // ??
+	        
+	        writeD(0x00); // ??
+	        writeD(0x00); // ??
+	        
+	        writeD(_cha.getTitleColor());
+	        
+	        writeD(0x00); // ??
 		}
 	}
 	
