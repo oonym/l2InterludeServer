@@ -43,16 +43,21 @@ public class BeastSoulShot implements IItemHandler
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
-        L2PcInstance activeOwner;
-        
+    	if (playable == null) return;
+    	
+        L2PcInstance activeOwner = null;
         if (playable instanceof L2Summon)
         {
             activeOwner = ((L2Summon)playable).getOwner();
             activeOwner.sendPacket(new SystemMessage(SystemMessage.PET_CANNOT_USE_ITEM));
             return;
+        } else if (playable instanceof L2PcInstance)
+        {
+        	activeOwner = (L2PcInstance)playable;
         }
         
-        activeOwner = (L2PcInstance)playable;
+        if (activeOwner == null)
+        	return;
         L2Summon activePet = activeOwner.getPet();
         
         if (activePet == null)
