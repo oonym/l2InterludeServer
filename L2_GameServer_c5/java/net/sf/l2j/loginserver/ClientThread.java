@@ -121,9 +121,9 @@ public class ClientThread extends Thread
 				lengthHi = _in.read();
 				length= lengthHi*256 + lengthLo;  
 				
-				if (lengthHi < 0 )
+				if (length < 2 )
 				{
-					_log.finer("LoginServer: Client terminated the connection.");
+					_log.finer("LoginServer: Client terminated the connection or sent illegal packet size.");
 					break;
 				}
 				
