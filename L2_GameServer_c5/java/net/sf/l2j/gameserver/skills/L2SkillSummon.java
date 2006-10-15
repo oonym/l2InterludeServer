@@ -96,9 +96,17 @@ public class L2SkillSummon extends L2Skill {
                         }
 						player.getCubics().clear();
 					}				
-					if (player.getCubics().size() > mastery) continue;				
-					player.addCubic(npcId, getLevel());
-					player.broadcastUserInfo();				
+					if (player.getCubics().size() > mastery) continue;		
+                    if (player.getCubics().containsKey(npcId))
+                    {
+                        player.sendMessage("You already have such cubic");
+                    }
+                    else
+                    {
+
+						player.addCubic(npcId, getLevel());
+						player.broadcastUserInfo();		
+                    }
 				}
 				return;
 			}
@@ -113,6 +121,11 @@ public class L2SkillSummon extends L2Skill {
 					activeChar.sendPacket(new SystemMessage(SystemMessage.CUBIC_SUMMONING_FAILED));
 					return;
 				}
+                if (activeChar.getCubics().containsKey(npcId))
+                {
+                    activeChar.sendMessage("You already have such cubic");
+                    return;
+                }
 				activeChar.addCubic(npcId, getLevel());
 				activeChar.broadcastUserInfo();
 				return;
