@@ -558,11 +558,11 @@ public class GameStatusThread extends Thread
                 			String str = ThreadPoolManager.getInstance().getPacketStats();
                 			_print.println(str);
                 			int i = 0;
-                			File f = new File("./log/StackTarce-PacketTP-"+i+".txt");
+                			File f = new File("./log/StackTrace-PacketTP-"+i+".txt");
                 			while(f.exists())
                 			{
                 				i++;
-                				f = new File("./log/StackTarce-PacketTP-"+i+".txt");
+                				f = new File("./log/StackTrace-PacketTP-"+i+".txt");
                 			}
                 			f.getParentFile().mkdirs();
                 			FileOutputStream fos = new FileOutputStream(f);
@@ -577,11 +577,11 @@ public class GameStatusThread extends Thread
                 			String str = ThreadPoolManager.getInstance().getUrgentPacketStats();
                 			_print.println(str);
                 			int i = 0;
-                			File f = new File("./log/StackTarce-UrgentPacketTP-"+i+".txt");
+                			File f = new File("./log/StackTrace-UrgentPacketTP-"+i+".txt");
                 			while(f.exists())
                 			{
                 				i++;
-                				f = new File("./log/StackTarce-UrgentPacketTP-"+i+".txt");
+                				f = new File("./log/StackTrace-UrgentPacketTP-"+i+".txt");
                 			}
                 			f.getParentFile().mkdirs();
                 			FileOutputStream fos = new FileOutputStream(f);
@@ -596,11 +596,11 @@ public class GameStatusThread extends Thread
                 			String str = ThreadPoolManager.getInstance().getGeneralStats();
                 			_print.println(str);
                 			int i = 0;
-                			File f = new File("./log/StackTarce-GeneralTP-"+i+".txt");
+                			File f = new File("./log/StackTrace-GeneralTP-"+i+".txt");
                 			while(f.exists())
                 			{
                 				i++;
-                				f = new File("./log/StackTarce-GeneralTP-"+i+".txt");
+                				f = new File("./log/StackTrace-GeneralTP-"+i+".txt");
                 			}
                 			f.getParentFile().mkdirs();
                 			FileOutputStream fos = new FileOutputStream(f);
