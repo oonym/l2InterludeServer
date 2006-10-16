@@ -1749,6 +1749,18 @@ public abstract class L2Character extends L2Object
 				_stackedEffects = new FastMap<String, List<Integer>>();
 		}
 		
+        // Remove first Buff if number of buffs > 19
+		L2Skill tempskill = newEffect.getSkill(); 
+		if (getBuffCount() > 19 && !doesStack(tempskill) && ((
+				tempskill.getSkillType() == L2Skill.SkillType.BUFF ||
+                tempskill.getSkillType() == L2Skill.SkillType.DEBUFF ||
+                tempskill.getSkillType() == L2Skill.SkillType.REFLECT ||
+                tempskill.getSkillType() == L2Skill.SkillType.HEAL_PERCENT)&& 
+                tempskill.getId() != 4267 &&
+                tempskill.getId() != 4270 &&
+                !(tempskill.getId() > 4360  && tempskill.getId() < 4367))
+        	) removeFirstBuff(tempskill.getId());
+
 		// Add the L2Effect to all effect in progress on the L2Character
         if (!newEffect.getSkill().isToggle()) {
             int pos=0;
@@ -1832,7 +1844,6 @@ public abstract class L2Character extends L2Object
 		if (stackQueue == null)
 			return;
 		
-		//TODO Verify if it's possible to remove this put function beacuse it will done after updateEffectIcons
 		// Update the Stack Group table _stackedEffects of the L2Character
 		_stackedEffects.put(newEffect.getStackType(), stackQueue);
 		
@@ -1853,9 +1864,6 @@ public abstract class L2Character extends L2Object
 		
 		// Update active skills in progress (In Use and Not In Use because stacked) icones on client
 		updateEffectIcons();
-		
-		// Update the Stack Group table _stackedEffects of the L2Character
-		_stackedEffects.put(newEffect.getStackType(), stackQueue);
 	}
 	
 	/**
@@ -1904,8 +1912,19 @@ public abstract class L2Character extends L2Object
 		// Add the new effect to the Stack list in function of its position in the Stack group
 		stackQueue.add(i, id);
 		
-		if (Config.EFFECT_CANCELING && stackQueue.size() > 1) //TODO: make a better solution
-			stackQueue.remove(1); //only keep the current effect, cancel other effects
+		if (Config.EFFECT_CANCELING && stackQueue.size() > 1) 
+		{
+			// only keep the current effect, cancel other effects
+			for (int n=0; n<_effects.size(); n++) 
+			{
+				if (_effects.get(n).getSkill() == stackQueue.get(1)) 
+				{
+					_effects.remove(n);
+					break;
+				}
+			}
+			stackQueue.remove(1); 
+		}
 		
 		return stackQueue;
 	}
@@ -2119,6 +2138,7 @@ public abstract class L2Character extends L2Object
 		// Go through all active skills effects
 		for(L2Effect e : effects)
 			e.exit();
+		_effects = null; // to be sure
 	}
 	
 	/**
@@ -4537,16 +4557,6 @@ public abstract class L2Character extends L2Object
 				{
 					L2Character target = (L2Character) targets[i];
 
-                    // Remove first Buff if number of buffs > 19
-                    if (target.getBuffCount() > 19 && !doesStack(skill) && ((
-                            skill.getSkillType() == L2Skill.SkillType.BUFF ||
-                            skill.getSkillType() == L2Skill.SkillType.DEBUFF ||
-                            skill.getSkillType() == L2Skill.SkillType.REFLECT ||
-                            skill.getSkillType() == L2Skill.SkillType.HEAL_PERCENT)&& 
-                            skill.getId() != 4267 &&
-                            skill.getId() != 4270 &&
-                            !(skill.getId() > 4360  && skill.getId() < 4367))) target.removeFirstBuff(skill.getId());
-					
 					if (skill.getSkillType() == L2Skill.SkillType.BUFF || skill.getSkillType() == L2Skill.SkillType.SEED)
 					{
 						SystemMessage smsg = new SystemMessage(SystemMessage.YOU_FEEL_S1_EFFECT);
