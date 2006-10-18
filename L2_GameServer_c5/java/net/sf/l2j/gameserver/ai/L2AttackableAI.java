@@ -484,14 +484,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 
             // Cancel target and timeout
             _attack_timeout = Integer.MAX_VALUE;
-            setAttackTarget(null);
-            
-            // Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
-            clientStopAutoAttack();
-
-            // Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
-            clientStopMoving(null);
-
+           
             // Set the AI Intention to AI_INTENTION_ACTIVE
             setIntention(AI_INTENTION_ACTIVE);
 
@@ -499,7 +492,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         }
         else
         {
-            // Call all L2Object of its Faction inside the Faction Range
+            if(_actor.isAttackingDisabled()) return;
+        	
+        	// Call all L2Object of its Faction inside the Faction Range
             if (((L2NpcInstance) _actor).getFactionId() != null)
             {
                 String faction_id = ((L2NpcInstance) _actor).getFactionId();
@@ -515,7 +510,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                             continue;
 
                         // Check if the L2Object is inside the Faction Range of the actor
-                        if (_actor.isInsideRadius(npc, npc.getFactionRange(), false, false) 
+                        if (_actor.isInsideRadius(npc, npc.getFactionRange(), true, false) 
                             && Math.abs(getAttackTarget().getZ() - npc.getZ()) < 600
                             && npc.getAI() != null
                             && _actor.getAttackByList().contains(getAttackTarget())
@@ -543,7 +538,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             }
             catch (NullPointerException e)
             {
-                _log.warning("AttackableAI: Attack target is NULL.");
+                //_log.warning("AttackableAI: Attack target is NULL.");
+                setIntention(AI_INTENTION_ACTIVE);
+                return;
             }
 
             L2Weapon weapon = _actor.getActiveWeaponItem();
@@ -575,12 +572,31 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 }
             }
 
-            // Check if the actor isn't muted and if it is far from target
-            if (!_actor.isMuted() && dist2 > (range + 20) * (range + 20))
+            // Force mobs to attack anybody if confused
+            L2Character hated;
+            if (_actor.isConfused()) hated = getAttackTarget();
+            else hated = ((L2Attackable) _actor).getMostHated();
+
+            if (hated == null)
+            {
+                setIntention(AI_INTENTION_ACTIVE);
+                return;
+            }
+            if (hated != getAttackTarget())
+            {
+                setAttackTarget(hated);
+            }
+            // We should calculate new distance cuz mob can have changed the target
+            dist2 = _actor.getPlanDistanceSq(hated.getX(), hated.getY()); 
+            
+            if (hated.isMoving()) range += 50;  
+            // Check if the actor isn't far from target
+            if (dist2 > range*range)
             {
                 // check for long ranged skills and heal/buff skills
-                if (!Config.ALT_GAME_MOB_ATTACK_AI
-                    || (_actor instanceof L2MonsterInstance && Rnd.nextInt(100) <= 5))
+                if (!_actor.isMuted() && 
+                	(!Config.ALT_GAME_MOB_ATTACK_AI || (_actor instanceof L2MonsterInstance && Rnd.nextInt(100) <= 5))
+                   )
                     for (L2Skill sk : skills)
                     {
                         int castRange = sk.getCastRange();
@@ -627,36 +643,13 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     }
 
                 // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
-                moveToPawn(getAttackTarget(), range);
-
-                return;
-
-            }
-            // Else, if the actor is muted and far from target, just "move to pawn"
-            else if (_actor.isMuted() && dist2 > (range + 20) * (range + 20))
-            {
+                if (hated.isMoving()) range -= 100; if (range < 5) range = 5;  
                 moveToPawn(getAttackTarget(), range);
                 return;
             }
             // Else, if this is close enough to attack
-            else if (dist2 <= (range + 20) * (range + 20))
+            else 
             {
-                // Force mobs to attak anybody if confused
-                L2Character hated;
-                if (_actor.isConfused()) hated = getAttackTarget();
-                else hated = ((L2Attackable) _actor).getMostHated();
-
-                if (hated == null)
-                {
-                    setIntention(AI_INTENTION_ACTIVE);
-                    return;
-                }
-                if (hated != getAttackTarget())
-                {
-                    setAttackTarget(hated);
-                }
-                double dist22 = _actor.getPlanDistanceSq(hated.getX(), hated.getY()); //We should calculate new distance cuz mob can changed the target
-
                 _attack_timeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
 
                 // check for close combat skills && heal/buff skills
@@ -703,16 +696,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     }
                 }
 
-                // Finally, do the physical attack itself
-                if (dist22 > (range + 20) * (range + 20))
-                {
-                    moveToPawn(hated, range); // now if mob is out of range they go to target and not attack from long distance
-                    return;
-                }
-                else
-                {
-                    _accessor.doAttack(hated);
-                }
+                // Finally, physical attacks
+           		clientStopMoving(null);
+           		_accessor.doAttack(hated);
             }
         }
     }

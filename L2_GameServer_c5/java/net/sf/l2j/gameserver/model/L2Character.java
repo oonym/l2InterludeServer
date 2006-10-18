@@ -820,6 +820,9 @@ public abstract class L2Character extends L2Object
 						((L2PetInstance)obj).getOwner() == ((L2PcInstance)this)) continue;
 				
 				if (!Util.checkIfInRange(maxRadius, this, obj, false)) continue;
+                
+				//otherwise hit too high/low. 650 because mob z coord sometimes wrong on hills
+                if(Math.abs(obj.getZ() - this.getZ()) > 650) continue;
 				angleTarget = Util.calculateAngleFrom(this, obj);
 				if (
 						Math.abs(angleChar - angleTarget) > maxAngleDiff &&
@@ -4525,6 +4528,34 @@ public abstract class L2Character extends L2Object
 
             return;
         }
+		
+		int escapeRange = 0;
+		if(skill.getEffectRange() > escapeRange) escapeRange = skill.getEffectRange();
+		else if(skill.getCastRange() < 0 && skill.getSkillRadius() > 80) escapeRange = skill.getSkillRadius();
+			
+		if(escapeRange > 0) 
+		{
+			List<L2Character> targetList = new FastList<L2Character>();
+			for (int i = 0; i < targets.length; i++)
+			{
+				if (targets[i] instanceof L2Character)
+				{
+					if(!this.isInsideRadius(targets[0],escapeRange,true,false)) continue;
+					else targetList.add((L2Character)targets[i]);
+				}
+				//else
+				//{
+				//	if (Config.DEBUG) 
+				//        _log.warning("Class cast bad: "+targets[i].getClass().toString());
+				//}
+			}
+			if(targetList.isEmpty()) 
+			{
+				abortCast();	
+				return;
+			}
+			else targets = targetList.toArray(new L2Character[targetList.size()]);
+		}
         
 		// Check if player is using fake death.
         if (isAlikeDead())
@@ -4577,11 +4608,6 @@ public abstract class L2Character extends L2Object
 						else
 							this.sendPacket(new NpcInfo((L2Summon)target, this));
 					}
-				}
-				else
-				{
-					if (Config.DEBUG) 
-                        _log.warning("Class cast bad: "+targets.getClass().toString());
 				}
 			}
 			

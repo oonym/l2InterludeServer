@@ -324,7 +324,7 @@ public abstract class L2Skill
         _itemConsumeTime = set.getInteger("itemConsumeTime", 0);
 
         _castRange = set.getInteger("castRange", 0);
-        _effectRange = set.getInteger("effectRange", _castRange + 200);
+        _effectRange = set.getInteger("effectRange", -1);
         _skillTime = set.getInteger("skillTime", 0);
         _skillInterruptTime = set.getInteger("skillTime", _skillTime / 2);
         _hitTime = set.getInteger("hitTime", 0);
@@ -995,16 +995,19 @@ public abstract class L2Skill
                 int radius = getSkillRadius();
                 boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar) != null);
 
+                L2PcInstance src = null;
+                if (activeChar instanceof L2PcInstance) src = (L2PcInstance)activeChar;
+                if (activeChar instanceof L2Summon) src = ((L2Summon)activeChar).getOwner();
+                
                 // Go through the L2Character _knownList
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects())
                 {
                     if (obj != null && (obj instanceof L2Attackable || obj instanceof L2PlayableInstance))
                     {
                         // Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
-                        if (activeChar instanceof L2PcInstance) 
+                        if (obj == src) continue;
+                    	if (src != null) 
                         {
-                            L2PcInstance src = (L2PcInstance)activeChar;
-                            
                             // check if both attacker and target are L2PcInstances and if they are in same party 
                             if (obj instanceof L2PcInstance) 
                             {

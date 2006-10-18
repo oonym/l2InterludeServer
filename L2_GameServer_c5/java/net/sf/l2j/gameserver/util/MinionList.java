@@ -136,12 +136,11 @@ public class MinionList
      */
     public void maintainMinions()
     {
-        List<L2MinionData> minions = master.getTemplate().getMinionData();
+    	if(master.isAlikeDead()) return;
+    	List<L2MinionData> minions = master.getTemplate().getMinionData();
 
         synchronized (minionReferences)
         {
-            if (minionReferences.size() != 0) return;
-            
             int minionCount, minionId, minionsToSpawn;
             for (L2MinionData minion : minions)
             {

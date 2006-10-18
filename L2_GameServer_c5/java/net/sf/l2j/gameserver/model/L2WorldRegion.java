@@ -121,8 +121,8 @@ public final class L2WorldRegion
                     // Stop all active skills effects in progress on the L2Character
                     mob.stopAllEffects();
                     
-                    mob.getAggroList().clear();
-                    mob.getKnownList().getKnownPlayers().clear();
+                    mob.clearAggroList();
+                    mob.getKnownList().removeAllKnownObjects();
                     
                     mob.getAI().setIntention(net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE);
 

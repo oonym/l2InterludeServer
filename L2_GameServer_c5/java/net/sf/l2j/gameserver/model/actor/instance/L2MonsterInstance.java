@@ -46,9 +46,9 @@ public class L2MonsterInstance extends L2Attackable
     protected final MinionList minionList;
     
     @SuppressWarnings("unused")
-    private ScheduledFuture minionMaintainTask;
+    private ScheduledFuture minionMaintainTask = null;
     
-    private static final int MONSTER_MAINTENANCE_INTERVAL = 300000;  // 5 minutes
+    private static final int MONSTER_MAINTENANCE_INTERVAL = 1000;
 	
 	/**
 	 * Constructor of L2MonsterInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
@@ -104,29 +104,32 @@ public class L2MonsterInstance extends L2Attackable
         if (getTemplate().getMinionData() != null)
     		try
     		{
-    			minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
+                for (L2MinionInstance minion : getSpawnedMinions())
+                {
+                    if (minion == null) continue;
+                    getSpawnedMinions().remove(minion);
+                }
+                
+                if(this instanceof L2RaidBossInstance) // respawn minions
+                {
+                	minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
+                		public void run()
+                		{
+                			minionList.maintainMinions();
+                		}
+                	}, 60000, getMaintenanceInterval()+Rnd.get(5000));
+                }
+                else minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
                     public void run()
                     {
                         minionList.maintainMinions();
-                        /*
-                        try
-                        {
-                            minionList.maintainMinions();
-    			//must be fixed. class exception.
-                            //for(L2MinionInstance minion : minionList.getSpawnedMinions())
-                            //    minion.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
-                        }
-                        catch (Throwable e) 
-                        {
-                            _log.log(Level.SEVERE, "", e);
-                        }
-                        */
                     }
-                }, 0, getMaintenanceInterval());
+                }, getMaintenanceInterval());
     		}
     		catch ( NullPointerException e )
     		{
-    		}		
+    		}
+
 	}
     
     protected int getMaintenanceInterval() { return MONSTER_MAINTENANCE_INTERVAL; }
@@ -188,7 +191,7 @@ public class L2MonsterInstance extends L2Attackable
     public void doDie(L2Character killer) 
     {
         if (minionMaintainTask != null)
-            minionMaintainTask.cancel(true);
+            minionMaintainTask.cancel(true); // doesn't do it?
         
         super.doDie(killer);
     }
@@ -233,20 +236,19 @@ public class L2MonsterInstance extends L2Attackable
     
     public void deleteMe()
     {
-        if (minionMaintainTask != null)
-            minionMaintainTask.cancel(true);
-        
-        if (getTemplate().getMinionData() != null && getSpawnedMinions().size() != 0)
+        if (hasMinions())
         {
+            if (minionMaintainTask != null)
+                minionMaintainTask.cancel(true);
+            
             for (L2MinionInstance minion : getSpawnedMinions())
             {
                 if (minion == null) continue;
                 minion.deleteMe();
                 
-                notifyMinionDied(minion);
+                getSpawnedMinions().remove(minion);
             }
         }
-        
         super.deleteMe();
     }
 }

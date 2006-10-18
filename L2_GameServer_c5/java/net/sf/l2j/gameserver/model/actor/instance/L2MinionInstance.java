@@ -56,7 +56,7 @@ public final class L2MinionInstance extends L2MonsterInstance
     /** Return True if the L2Character is minion of RaidBoss. */
     public boolean isRaid()
     {
-        return getLeader().isRaid(); 
+        return (getLeader() instanceof L2RaidBossInstance); 
     }
 
 	/**

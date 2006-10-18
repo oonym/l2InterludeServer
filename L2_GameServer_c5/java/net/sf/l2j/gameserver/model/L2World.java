@@ -636,13 +636,13 @@ public final class L2World
                 int y1 = _object.getY();
                 int z1 = _object.getZ();
                 
-                int dx = x1 - x;
+                long dx = x1 - x;
                 //if (dx > radius || -dx > radius)
                 //  continue;
-                int dy = y1 - y;
+                long dy = y1 - y;
                 //if (dy > radius || -dy > radius)
                 //  continue;
-                int dz = z1 - z;
+                long dz = z1 - z;
                 
                 if (dx*dx + dy*dy + dz*dz < sqRadius)
                     result.add(_object);

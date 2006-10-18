@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.AutoAttackStop;
 import net.sf.l2j.gameserver.serverpackets.CharMoveToLocation;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
@@ -198,6 +199,7 @@ public class L2CharacterAI extends AbstractAI
                 notifyEvent(CtrlEvent.EVT_THINK, null);
 
             }
+            else clientActionFailed(); // else client freezes until cancel target
 
         }
         else
@@ -866,15 +868,32 @@ public class L2CharacterAI extends AbstractAI
             return false;
         }
         
-        if (!_actor.isInsideRadius(target, offset + 35, false, false))
+        if (!_actor.isInsideRadius(target, offset, false, false))
         {
             /*
              if (Config.DEBUG)
              _log.warning("L2CharacterAI: maybeMoveToPawn -> moving to catch target. Casting stopped");
              */
-
-            if (getFollowTarget() != null) return true;
-
+   	
+            if (getFollowTarget() != null) { 
+                // prevent attack-follow into peace zones
+            	if(getAttackTarget() != null && _actor instanceof L2PlayableInstance && target instanceof L2PlayableInstance)
+                {
+                    if(getAttackTarget() == getFollowTarget()) 
+                    {
+                        if (((L2PlayableInstance)_actor).isInsidePeaceZone(_actor, target)) 
+                        {
+                            stopFollow();
+                            return true;
+                        }
+                    }
+                }
+                // allow larger hit range when the target is moving (check is run only once per second)
+                if (!_actor.isInsideRadius(target, offset + 100, false, false)) return true;
+                stopFollow();
+                return false;
+            }
+            
             if (_actor.isMovementDisabled()) return true;
 
             // If not running, set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance
@@ -883,7 +902,9 @@ public class L2CharacterAI extends AbstractAI
             stopFollow();
             if ((target instanceof L2Character) && !(target instanceof L2DoorInstance))
             {
-                startFollow((L2Character) target, offset);
+                if (((L2Character)target).isMoving()) offset -= 100;
+                if (offset < 5) offset = 5;
+            	startFollow((L2Character) target, offset);
             }
             else
             {
