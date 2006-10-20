@@ -68,6 +68,11 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        activeChar.sendPacket(jp);
 		        
 		        L2Clan clan = requestor.getClan();
+		        
+//		      L2ClanMember[] members = clan.getMembers();
+		        PledgeShowMemberListAdd la = new PledgeShowMemberListAdd(activeChar);
+		        clan.broadcastToOnlineMembers(la);
+		        
 		        // this also updates the database
 		        clan.addClanMember(activeChar);
 		        activeChar.setClan(clan);
@@ -80,12 +85,11 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        SystemMessage sm = new SystemMessage(SystemMessage.ENTERED_THE_CLAN);
 		        activeChar.sendPacket(sm);
 		        
-		        //L2ClanMember[] members = clan.getMembers();
-		        PledgeShowMemberListAdd la = new PledgeShowMemberListAdd(activeChar);
+		        
 		        sm = new SystemMessage(SystemMessage.S1_HAS_JOINED_CLAN);
 		        sm.addString(activeChar.getName());
 		        
-		        clan.broadcastToOnlineMembers(la);
+		        
 		        clan.broadcastToOnlineMembers(sm);
 		        
 		        // this activates the clan tab on the new member

@@ -107,8 +107,8 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 			writeD(m.getLevel());
 			writeD(m.getClassId());
 			writeD(0); 
-			writeD(1);
-			writeD(m.isOnline() ? m.getObjectId() : 0); // 1=online 0=offline
+			writeD(m.getObjectId());//writeD(1); 
+			writeD(m.isOnline() ? 1 : 0);  // 1=online 0=offline
 			writeD(0); //c5 grade/power?
 		}
 	}

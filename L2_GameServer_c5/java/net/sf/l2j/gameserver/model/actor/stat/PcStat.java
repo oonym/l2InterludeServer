@@ -10,7 +10,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAdd;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -168,7 +168,7 @@ public class PcStat extends PlayableStat
         if (getActiveChar().getClan() != null)
         {
         	getActiveChar().getClan().updateClanMember(getActiveChar());
-        	getActiveChar().getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListAdd(getActiveChar()), getActiveChar());
+        	getActiveChar().getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(getActiveChar()), getActiveChar());
         }
         if (getActiveChar().isInParty()) getActiveChar().getParty().recalculatePartyLevel(); // Recalculate the party level
 

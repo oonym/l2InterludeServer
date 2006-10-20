@@ -46,8 +46,8 @@ public class PledgeShowMemberListUpdate extends ServerBasePacket
 		writeD(_player.getLevel());
 		writeD(_player.getClassId().getId());
 		writeD(0); 
-		writeD(1);
-		writeD((_player.isOnline() == 1 ? _player.getObjectId() : 0)); // 1=online 0=offline
+		writeD(_player.getObjectId());
+		writeD(_player.isOnline()); // 1=online 0=offline
 		writeD(0x00);
 		writeD(0x00);  //sponsor??
 	}

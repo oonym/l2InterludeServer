@@ -140,7 +140,7 @@ import net.sf.l2j.gameserver.serverpackets.ObservationMode;
 import net.sf.l2j.gameserver.serverpackets.ObservationReturn;
 import net.sf.l2j.gameserver.serverpackets.PartySmallWindowUpdate;
 import net.sf.l2j.gameserver.serverpackets.PetInventoryUpdate;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAdd;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreListBuy;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreListSell;
 import net.sf.l2j.gameserver.serverpackets.RecipeShopSellList;
@@ -8119,7 +8119,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			clearPathNodes();
 			
 			if (getClanId() > 0)
-				ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
+				getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
+				//ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
 			
 			for(L2PcInstance player : _SnoopedPlayer)
 				player.removeSnooper(this);

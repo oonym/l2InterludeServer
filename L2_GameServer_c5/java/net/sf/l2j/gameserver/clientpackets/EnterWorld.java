@@ -52,7 +52,7 @@ import net.sf.l2j.gameserver.serverpackets.GameGuardQuery;
 import net.sf.l2j.gameserver.serverpackets.HennaInfo;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAdd;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 import net.sf.l2j.gameserver.serverpackets.PledgeStatusChanged;
 import net.sf.l2j.gameserver.serverpackets.ShortCutInit;
@@ -325,7 +325,7 @@ public class EnterWorld extends ClientBasePacket
                 activeChar.setClanPrivileges(L2Clan.CP_ALL);
 
 			L2PcInstance[] clanMembers = clan.getOnlineMembers(activeChar.getName());
-            PledgeShowMemberListAdd ps = new PledgeShowMemberListAdd(activeChar);
+            PledgeShowMemberListUpdate ps = new PledgeShowMemberListUpdate(activeChar);
 			for (int i = 0; i < clanMembers.length; i++)
 			{
 				clanMembers[i].sendPacket(ps);
