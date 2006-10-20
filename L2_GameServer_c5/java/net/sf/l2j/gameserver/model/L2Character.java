@@ -3496,7 +3496,7 @@ public abstract class L2Character extends L2Object
 		MoveData m = new MoveData();
 		
 		// Caclulate the Nb of ticks between the current position and the destination
-		m._ticksToMove = (int)(GameTimeController.TICKS_PER_SECOND * distance / speed);
+		m._ticksToMove = (int)(GameTimeController.TICKS_PER_SECOND * (distance + 25) / speed);
 		
 		// Calculate the xspeed and yspeed in unit/ticks in function of the movement speed
 		m._xSpeedTicks = (float)(cos * speed / GameTimeController.TICKS_PER_SECOND);

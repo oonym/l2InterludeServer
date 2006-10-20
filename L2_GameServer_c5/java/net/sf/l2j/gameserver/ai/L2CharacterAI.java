@@ -638,10 +638,10 @@ public class L2CharacterAI extends AbstractAI
 
         // Launch actions corresponding to the Event Think
         onEvtThink();
-        if (_actor instanceof L2PcInstance)
+        /*if (_actor instanceof L2PcInstance)
             if (!_actor.isAttackingNow() && !_actor.isCastingNow()
                 && !((L2PcInstance) _actor).isSitting())
-                _actor.broadcastPacket(new CharMoveToLocation(_actor));
+                _actor.broadcastPacket(new CharMoveToLocation(_actor)); */
         //((L2PcInstance)_actor).sendPacket(new CharMoveToLocation(_actor));
         if (_actor instanceof L2BoatInstance)
         {
