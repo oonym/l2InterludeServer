@@ -299,7 +299,7 @@ public class Disablers implements ISkillHandler
                     				{
                     					int rate = 100;
                     					int level = e.getLevel();
-                    					if (level > 0) rate = (int) 150/(1 + level);
+                    					if (level > 0) rate = Integer.valueOf(150/(1 + level));
                     					if (rate > 95) rate = 95;
                     					else if (rate < 5) rate = 5;
                     					if(Rnd.get(100) < rate)	{
