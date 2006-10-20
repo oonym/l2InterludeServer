@@ -234,7 +234,7 @@ public abstract class L2Object
      */
     public final void spawnMe()
     {
-        if (Config.ASSERT) assert getPosition().getWorldRegion() == null && getPosition().getWorldPosition().x != 0 && getPosition().getWorldPosition().y != 0 && getPosition().getWorldPosition().z != 0;
+        if (Config.ASSERT) assert getPosition().getWorldRegion() == null && getPosition().getWorldPosition().getX() != 0 && getPosition().getWorldPosition().getY() != 0 && getPosition().getWorldPosition().getZ() != 0;
         
         synchronized (this) 
         {

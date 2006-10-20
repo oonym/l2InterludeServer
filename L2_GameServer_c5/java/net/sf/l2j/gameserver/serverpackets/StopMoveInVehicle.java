@@ -58,9 +58,9 @@ public class StopMoveInVehicle  extends ServerBasePacket
 		writeC(0x72);
 		writeD(_pci.getObjectId());
 		writeD(_boatid);
-		writeD(_pci.getInBoatPosition().x);
-		writeD(_pci.getInBoatPosition().y);
-		writeD(_pci.getInBoatPosition().z);
+		writeD(_pci.getInBoatPosition().getX());
+		writeD(_pci.getInBoatPosition().getY());
+		writeD(_pci.getInBoatPosition().getZ());
 		writeD(_pci.getPosition().getHeading());
 	}
 

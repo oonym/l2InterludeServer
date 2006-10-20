@@ -135,7 +135,7 @@ public class PcKnownList extends PlayableKnownList
                 {
                 	otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
                 	getActiveChar().sendPacket(new CharInfo(otherPlayer));
-                	getActiveChar().sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().x, otherPlayer.getInBoatPosition().y, otherPlayer.getInBoatPosition().z));
+                	getActiveChar().sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
                 	/*if(otherPlayer.getBoat().GetVehicleDeparture() == null)
                 	{                	
                 		

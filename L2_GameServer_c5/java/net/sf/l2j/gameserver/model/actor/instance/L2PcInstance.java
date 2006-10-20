@@ -7813,42 +7813,38 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void setLastClientPosition(int x, int y, int z)
 	{
-		_lastClientPosition.x = x;
-		_lastClientPosition.y = y;
-		_lastClientPosition.z = z;
+		_lastClientPosition.setXYZ(x,y,z);
 	}
 	
 	public boolean checkLastClientPosition(int x, int y, int z)
 	{
-		return _lastClientPosition.x == x && _lastClientPosition.y == y && _lastClientPosition.z == z;
+		return _lastClientPosition.equals(x,y,z);
 	}
 	
 	public int getLastClientDistance(int x, int y, int z)
 	{
-		double dx = (x - _lastClientPosition.x); 
-		double dy = (y - _lastClientPosition.y); 
-		double dz = (z - _lastClientPosition.z); 
+		double dx = (x - _lastClientPosition.getX()); 
+		double dy = (y - _lastClientPosition.getY()); 
+		double dz = (z - _lastClientPosition.getZ()); 
         
 		return (int)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
 	
 	public void setLastServerPosition(int x, int y, int z)
 	{
-		_lastServerPosition.x = x;
-		_lastServerPosition.y = y;
-		_lastServerPosition.z = z;
+		_lastServerPosition.setXYZ(x,y,z);
 	}
 	
 	public boolean checkLastServerPosition(int x, int y, int z)
 	{
-		return _lastServerPosition.x == x && _lastServerPosition.y == y && _lastServerPosition.z == z;
+		return _lastServerPosition.equals(x,y,z);
 	}
 	
 	public int getLastServerDistance(int x, int y, int z)
 	{
-		double dx = (x - _lastServerPosition.x); 
-		double dy = (y - _lastServerPosition.y); 
-		double dz = (z - _lastServerPosition.z); 
+		double dx = (x - _lastServerPosition.getX()); 
+		double dy = (y - _lastServerPosition.getY()); 
+		double dz = (z - _lastServerPosition.getZ()); 
         
 		return (int)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}

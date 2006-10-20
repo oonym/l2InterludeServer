@@ -124,16 +124,16 @@ public class ObjectPosition
     public final void setHeading(int value) { _Heading = value; }
 
     /** Return the x position of the L2Object. */
-    public final int getX() { return getWorldPosition().x; }
-    public final void setX(int value) { getWorldPosition().x = value; }
+    public final int getX() { return getWorldPosition().getX(); }
+    public final void setX(int value) { getWorldPosition().setX(value); }
     
     /** Return the y position of the L2Object. */
-    public final int getY() { return getWorldPosition().y; }
-    public final void setY(int value) { getWorldPosition().y = value; }
+    public final int getY() { return getWorldPosition().getY(); }
+    public final void setY(int value) { getWorldPosition().setY(value); }
     
     /** Return the z position of the L2Object. */
-    public final int getZ() { return getWorldPosition().z; }
-    public final void setZ(int value) { getWorldPosition().z = value; }
+    public final int getZ() { return getWorldPosition().getZ(); }
+    public final void setZ(int value) { getWorldPosition().setZ(value); }
 
     public final Point3D getWorldPosition()
     {
@@ -142,13 +142,11 @@ public class ObjectPosition
     }
     public final void setWorldPosition(int x, int y, int z)
     {
-        getWorldPosition().x = x;
-        getWorldPosition().y = y;
-        getWorldPosition().z = z;
+        getWorldPosition().setXYZ(x,y,z);
         if (getActiveObject() != null && getActiveObject() instanceof L2PcInstance)
             ((L2PcInstance)getActiveObject()).revalidateZone();
     }
-    public final void setWorldPosition(Point3D newPosition) { setWorldPosition(newPosition.x, newPosition.y, newPosition.z); }
+    public final void setWorldPosition(Point3D newPosition) { setWorldPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ()); }
     
     public final L2WorldRegion getWorldRegion() { return _WorldRegion; }
     public final void setWorldRegion(L2WorldRegion value) { _WorldRegion = value; }

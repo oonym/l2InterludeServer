@@ -47,13 +47,16 @@ public class RequestMoveToLocationInVehicle extends ClientBasePacket
 	public RequestMoveToLocationInVehicle(ByteBuffer buf, ClientThread client)
 	{
 		super(buf, client);
+		int _x, _y, _z;
 		_BoatId  = readD();   //objectId of boat
-		_pos.x  = readD();  
-		_pos.y  = readD(); 
-		_pos.z  = readD(); 
-		_origin_pos.x  = readD();  
-		_origin_pos.y  = readD(); 
-		_origin_pos.z  = readD(); 
+		_x = readD();
+		_y = readD();
+		_z = readD();
+		_pos.setXYZ(_x, _y, _z);
+		_x = readD();
+		_y = readD();
+		_z = readD();
+		_origin_pos.setXYZ(_x, _y, _z);  
 	}
 
 	/* (non-Javadoc)

@@ -90,12 +90,12 @@ public class WayPointNode extends L2Object
 
     public static WayPointNode spawn(boolean isItemId, int id, Point3D point)
     {
-        return spawn(isItemId ? "item" : "npc", id, point.x, point.y, point.z);
+        return spawn(isItemId ? "item" : "npc", id, point.getX(), point.getY(), point.getZ());
     }
 
     public static WayPointNode spawn(Point3D point)
     {
-        return spawn(Config.NEW_NODE_TYPE, Config.NEW_NODE_ID, point.x, point.y, point.z);
+        return spawn(Config.NEW_NODE_TYPE, Config.NEW_NODE_ID, point.getX(), point.getY(), point.getZ());
     }
 
     public static WayPointNode spawn(L2PcInstance player)

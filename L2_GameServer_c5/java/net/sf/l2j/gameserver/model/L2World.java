@@ -663,7 +663,7 @@ public final class L2World
      */
     public L2WorldRegion getRegion(Point3D point)
     {       
-        return _worldRegions[(point.x >> SHIFT_BY) + OFFSET_X][(point.y >> SHIFT_BY) + OFFSET_Y];
+        return _worldRegions[(point.getX() >> SHIFT_BY) + OFFSET_X][(point.getY() >> SHIFT_BY) + OFFSET_Y];
     }
     
     public L2WorldRegion getRegion(int x, int y)
