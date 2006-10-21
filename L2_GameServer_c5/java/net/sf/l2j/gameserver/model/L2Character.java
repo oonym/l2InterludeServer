@@ -1995,12 +1995,13 @@ public abstract class L2Character extends L2Object
                         }
 					}
 				}
+				if (stackQueue.isEmpty())
+					_stackedEffects = null;
+				else
+					// Update the Stack Group table _stackedEffects of the L2Character
+					_stackedEffects.put(effect.getStackType(), stackQueue);
 			}
-			
-			// Update the Stack Group table _stackedEffects of the L2Character
-			_stackedEffects.put(effect.getStackType(), stackQueue);
 		}
-		
 		
 		synchronized (this)
 		{
