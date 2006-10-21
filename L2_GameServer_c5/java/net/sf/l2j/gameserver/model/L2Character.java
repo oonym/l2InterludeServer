@@ -1953,6 +1953,8 @@ public abstract class L2Character extends L2Object
 	 */
 	public final void removeEffect(L2Effect effect)
 	{
+		if(effect == null)
+			return;
 		if (effect.getStackType() == "none")
 		{
 			// Remove Func added by this effect from the L2Character Calculator
@@ -1960,6 +1962,9 @@ public abstract class L2Character extends L2Object
 		}
 		else
 		{
+			if(_stackedEffects == null)
+				return;
+			
 			// Get the list of all stacked effects corresponding to the stack type of the L2Effect to add
 			List<Integer> stackQueue = _stackedEffects.get(effect.getStackType());
 			
