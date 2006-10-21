@@ -2000,8 +2000,11 @@ public abstract class L2Character extends L2Object
                         }
 					}
 				}
-				if (stackQueue.isEmpty())
-					_stackedEffects = null;
+				if (stackQueue.isEmpty()) 
+				{
+					_stackedEffects.remove(effect.getStackType());
+					if(_stackedEffects.isEmpty()) _stackedEffects = null;
+				}
 				else
 					// Update the Stack Group table _stackedEffects of the L2Character
 					_stackedEffects.put(effect.getStackType(), stackQueue);
