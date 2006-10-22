@@ -1068,17 +1068,21 @@ public final class Formulas
 			damage -= target.getShldDef();
 			if (damage < 0) damage = 0;
 		}
+		// Sami: These values are a quick fix to balance dagger gameplay and give
+		// armor resistances vs dagger. daggerWpnRes could also be used if a skill 
+		// was given to all classes. The values here try to be a compromise.
+		// They were added in a late C4 rev (2289).
 		if (target instanceof L2PcInstance && weapon != null && weapon.getItemType() == L2WeaponType.DAGGER && skill != null)
 		{
 			L2Armor armor = ((L2PcInstance)target).getActiveChestArmorItem();
 			if (armor != null)
 			{
 				if(((L2PcInstance)target).isWearingHeavyArmor())
-					damage /= 2.5;
+					damage /= 2; // originally 2.2, 2.5 during early C5
 				if(((L2PcInstance)target).isWearingLightArmor())
-					damage /= 2;
+					damage /= 1.5; // originally 1.5, 2 during early C5
 				if(((L2PcInstance)target).isWearingMagicArmor())
-					damage /= 1.8;
+					damage /= 1.3; // originally 1, 1.8 during early C5
 			}            
 		}
 
