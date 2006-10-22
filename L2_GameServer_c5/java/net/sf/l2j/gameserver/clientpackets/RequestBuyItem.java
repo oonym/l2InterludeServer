@@ -135,7 +135,7 @@ public class RequestBuyItem extends ClientBasePacket
 		{
 			int itemId = _items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
-			int price = 0;
+			int price = -1;
 
             L2Item template = ItemTable.getInstance().getTemplate(itemId);
             if (template == null) continue;
@@ -153,12 +153,7 @@ public class RequestBuyItem extends ClientBasePacket
 				L2TradeList list = TradeController.getInstance().getBuyList(_listId);
 				price = list.getPriceForItemId(itemId);
                 if (itemId >= 3960 && itemId <= 4026) price *= Config.RATE_SIEGE_GUARDS_PRICE;
-				if (price < 0)
-				{
-					_log.warning("ERROR, no price found .. wrong buylist ??");
-                    sendPacket(new ActionFailed());
-                    return;
-				}
+	
 			}
 /* TODO: Disabled until Leaseholders are rewritten ;-)
 			} else {
@@ -174,8 +169,16 @@ public class RequestBuyItem extends ClientBasePacket
 				price = li.getPriceToSell(); // lease holder sells the item
 				weight = li.getItem().getWeight();
 			}
+			
 */
-            subTotal += (long)count * price;	// Before tax
+			if (price < 0)
+			{
+				_log.warning("ERROR, no price found .. wrong buylist ??");
+                sendPacket(new ActionFailed());
+                return;
+			}
+			
+			subTotal += (long)count * price;	// Before tax
 			tax = (int)(subTotal * taxRate);
             if (subTotal + tax > Integer.MAX_VALUE)
             {
