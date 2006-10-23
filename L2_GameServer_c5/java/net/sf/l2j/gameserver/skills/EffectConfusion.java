@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 
 import javolution.util.FastList;
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
@@ -59,7 +60,8 @@ final class EffectConfusion extends L2Effect {
 	
     public boolean onActionTime()
     {
-		System.out.println(getEffected());
+    	if (Config.DEBUG)
+    		System.out.println(getEffected());
 		List<L2Character> targetList = new FastList<L2Character>();
 		
 		// Getting the possible targets
