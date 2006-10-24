@@ -1096,7 +1096,7 @@ public class Siege
     private void spawnControlTower()
     {
         // Npc Id of control tower
-        L2NpcTemplate template = NpcTable.getInstance().getTemplate(12314);
+        L2NpcTemplate template = NpcTable.getInstance().getTemplate(13002);
 
         // Set control tower array size if one does not exist
         if (_ControlTowers == null || _ControlTowers.size() != _ControlTowerSpawnList.length)

@@ -90,7 +90,7 @@ public final class L2BossInstance extends L2MonsterInstance
     {
         switch (getTemplate().npcId)
         {
-            case 12169: // Orfen
+            case 29014: // Orfen
                 if ((getCurrentHp() - damage) < getMaxHp() / 2 && !getTeleported())
                 {
                     clearAggroList();

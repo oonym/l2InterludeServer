@@ -58,7 +58,7 @@ public class MonsterRace
         
         for (int i=0; i<8; i++)
         {
-            int id = 8003;
+            int id = 31003;
             random = Rnd.get(25);
             while(true)
             {

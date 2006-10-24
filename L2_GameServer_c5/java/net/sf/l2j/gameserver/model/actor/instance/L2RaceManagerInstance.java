@@ -236,8 +236,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
             //state++;
             PlaySound SRace = new PlaySound(1, "S_Race", 0, 0, 0, 0, 0);
             broadcast(SRace);
-            PlaySound SRace2 = new PlaySound(0, "ItemSound2.race_start", 1, 121209259, 12125, 182487,
-                                             -3559);
+            PlaySound SRace2 = new PlaySound(0,"ItemSound2.race_start",1,121209259,12125,182487,-3559);
             broadcast(SRace2);
             packet = new MonRaceInfo(codes[1][0], codes[1][1], race.getMonsters(), race.getSpeeds());
             sendMonsterInfo();

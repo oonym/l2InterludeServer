@@ -144,7 +144,7 @@ public class RaidBossSpawnManager {
         {
             L2RaidBossInstance raidboss = null;
             
-            if (bossId == 10328)
+            if (bossId == 25328)
                 raidboss = DayNightSpawnManager.getInstance().handleBoss(_spawns.get(bossId));
             else 
                 raidboss = (L2RaidBossInstance)_spawns.get(bossId).doSpawn();
@@ -222,7 +222,7 @@ public class RaidBossSpawnManager {
         {
             L2RaidBossInstance raidboss = null;
             
-            if (bossId == 10328)
+            if (bossId == 25328)
                 raidboss = DayNightSpawnManager.getInstance().handleBoss(spawnDat);
             else
                 raidboss = (L2RaidBossInstance)spawnDat.doSpawn();

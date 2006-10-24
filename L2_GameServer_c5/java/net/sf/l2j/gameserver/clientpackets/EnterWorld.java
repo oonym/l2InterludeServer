@@ -55,6 +55,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 import net.sf.l2j.gameserver.serverpackets.PledgeStatusChanged;
+import net.sf.l2j.gameserver.serverpackets.QuestList;
 import net.sf.l2j.gameserver.serverpackets.ShortCutInit;
 import net.sf.l2j.gameserver.serverpackets.SignsSky;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -216,6 +217,7 @@ public class EnterWorld extends ClientBasePacket
         Announcements.getInstance().showAnnouncements(activeChar);
 
 		Quest.playerEnter(activeChar);
+		activeChar.sendPacket(new QuestList());
 
 		String serverNews = HtmCache.getInstance().getHtm("data/html/servnews.htm");
 		

@@ -47,8 +47,7 @@ public class L2XmassTreeInstance extends L2NpcInstance
                 setTarget(player);
                 doCast(skill);
 
-                MagicSkillUser msu = new MagicSkillUser(_caster, player, skill.getId(), 1,
-                                                        skill.getSkillTime(), 0);
+                MagicSkillUser msu = new MagicSkillUser(_caster, player, skill.getId(), 1, skill.getSkillTime(), 0);
                 broadcastPacket(msu);
 
                 return true;
@@ -62,8 +61,7 @@ public class L2XmassTreeInstance extends L2NpcInstance
     public L2XmassTreeInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000,
-                                                                            3000);
+        aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 000);
     }
 
     public void deleteMe()

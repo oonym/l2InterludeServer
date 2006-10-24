@@ -18,14 +18,21 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+
 import javolution.lang.TextBuilder;
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.SkillTreeTable;
+import net.sf.l2j.gameserver.TradeController;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
+import net.sf.l2j.gameserver.model.L2TradeList;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
+import net.sf.l2j.gameserver.serverpackets.BuyList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
+import net.sf.l2j.gameserver.serverpackets.SellList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
@@ -61,14 +68,62 @@ public class L2FishermanInstance extends L2FolkInstance
 		
 		return "data/html/fisherman/" + pom + ".htm";
 	}
+	
+	private void showBuyWindow(L2PcInstance player, int val)
+    {
+        double taxRate = 0;
+        if (getIsInTown()) taxRate = getCastle().getTaxRate();
+        player.tempInvetoryDisable();
+        if (Config.DEBUG) _log.fine("Showing buylist");
+        L2TradeList list = TradeController.getInstance().getBuyList(val);
+
+        if (list != null && list.getNpcId().equals(String.valueOf(getNpcId())))
+        {
+            BuyList bl = new BuyList(list, player.getAdena(), taxRate);
+            player.sendPacket(bl);
+        }
+        else
+        {
+            _log.warning("possible client hacker: " + player.getName()
+                + " attempting to buy from GM shop! < Ban him!");
+            _log.warning("buylist id:" + val);
+        }
+
+        player.sendPacket(new ActionFailed());
+    }
+	
+	private void showSellWindow(L2PcInstance player)
+    {
+        if (Config.DEBUG) _log.fine("Showing selllist");
+
+        player.sendPacket(new SellList(player));
+
+        if (Config.DEBUG) _log.fine("Showing sell window");
+
+        player.sendPacket(new ActionFailed());
+    }
     
 	public void onBypassFeedback(L2PcInstance player, String command)
-	{
+	{	
 		if (command.startsWith("FishSkillList"))
 		{
 			player.setSkillLearningClassId(player.getClassId());
 			showSkillList(player);
-		}		
+		}
+
+		StringTokenizer st = new StringTokenizer(command, " ");
+        String command2 = st.nextToken();
+		
+		if (command2.equalsIgnoreCase("Buy"))
+        {
+            if (st.countTokens() < 1) return;
+            int val = Integer.parseInt(st.nextToken());
+            showBuyWindow(player, val);
+        }
+        else if (command2.equalsIgnoreCase("Sell"))
+        {
+        	showSellWindow(player);
+        }
 		else 
 		{
 			super.onBypassFeedback(player, command);

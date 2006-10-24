@@ -68,38 +68,38 @@ public final class L2TeleporterInstance extends L2FolkInstance
 
             switch (npcId)
             {
-                case 8095: //
-                case 8096: //
-                case 8097: //
-                case 8098: // Enter Necropolises
-                case 8099: //
-                case 8100: //
-                case 8101: // 
-                case 8102: //
+                case 31095: //
+                case 31096: //
+                case 31097: //
+                case 31098: // Enter Necropolises
+                case 31099: //
+                case 31100: //
+                case 31101: // 
+                case 31102: //
 
-                case 8114: //
-                case 8115: //
-                case 8116: // Enter Catacombs
-                case 8117: //
-                case 8118: //
-                case 8119: //
+                case 31114: //
+                case 31115: //
+                case 31116: // Enter Catacombs
+                case 31117: //
+                case 31118: //
+                case 31119: //
                     player.setIsIn7sDungeon(true);
                     break;
-                case 8103: //
-                case 8104: //
-                case 8105: //
-                case 8106: // Exit Necropolises
-                case 8107: //
-                case 8108: //
-                case 8109: // 
-                case 8110: //
+                case 31103: //
+                case 31104: //
+                case 31105: //
+                case 31106: // Exit Necropolises
+                case 31107: //
+                case 31108: //
+                case 31109: // 
+                case 31110: //
 
-                case 8120: //
-                case 8121: //
-                case 8122: // Exit Catacombs
-                case 8123: //
-                case 8124: //
-                case 8125: //
+                case 31120: //
+                case 31121: //
+                case 31122: // Exit Catacombs
+                case 31123: //
+                case 31124: //
+                case 31125: //
                     player.setIsIn7sDungeon(false);
                     break;
             }

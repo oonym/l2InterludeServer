@@ -152,12 +152,12 @@ public class L2Spawn
 		 // The Name of the L2NpcInstance type managed by this L2Spawn
 		 String implementationName = _template.type; // implementing class name
         
-		if (mobTemplate.npcId == 7995)
+		if (mobTemplate.npcId == 30995)
             implementationName = "L2RaceManager";
 		
 		// if (mobTemplate.npcId == 8050)
 		
-		if ((mobTemplate.npcId >= 8046)&&(mobTemplate.npcId <= 8053))
+		if ((mobTemplate.npcId >= 31046)&&(mobTemplate.npcId <= 31053))
             implementationName = "L2SymbolMaker";
 		
 		// Create the generic constructor of L2NpcInstance managed by this L2Spawn

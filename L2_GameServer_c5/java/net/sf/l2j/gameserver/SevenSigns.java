@@ -67,15 +67,15 @@ public class SevenSigns
     public static final int ADENA_JOIN_DAWN_COST = 50000;
 
     // NPC Related Constants \\
-	public static final int ORATOR_NPC_ID = 8094;
-	public static final int PREACHER_NPC_ID = 8093;
-    public static final int MAMMON_MERCHANT_ID = 8113;
-    public static final int MAMMON_BLACKSMITH_ID = 8126;
-    public static final int MAMMON_MARKETEER_ID = 8092;
-    public static final int SPIRIT_IN_ID = 8111;
-    public static final int SPIRIT_OUT_ID = 8112;
-    public static final int LILITH_NPC_ID = 10283;
-    public static final int ANAKIM_NPC_ID = 10286;
+	public static final int ORATOR_NPC_ID = 31094;
+	public static final int PREACHER_NPC_ID = 31093;
+    public static final int MAMMON_MERCHANT_ID = 31113;
+    public static final int MAMMON_BLACKSMITH_ID = 31126;
+    public static final int MAMMON_MARKETEER_ID = 31092;
+    public static final int SPIRIT_IN_ID = 31111;
+    public static final int SPIRIT_OUT_ID = 31112;
+    public static final int LILITH_NPC_ID = 25283;
+    public static final int ANAKIM_NPC_ID = 25286;
 
 	// Seal Stone Related Constants \\
 	public static final int SEAL_STONE_BLUE_ID = 6360;
@@ -206,7 +206,7 @@ public class SevenSigns
 					if (!AutoSpawnHandler.getInstance().getAutoSpawnInstance(spawnInst.getObjectId(), true).isSpawnActive())
 						AutoSpawnHandler.getInstance().setSpawnActive(spawnInst, true);
 
-				if (!AutoChatHandler.getInstance().getAutoChatInstance(8093, false).isActive() && !AutoChatHandler.getInstance().getAutoChatInstance(8094, false).isActive())
+				if (!AutoChatHandler.getInstance().getAutoChatInstance(PREACHER_NPC_ID, false).isActive() && !AutoChatHandler.getInstance().getAutoChatInstance(ORATOR_NPC_ID, false).isActive())
 					AutoChatHandler.getInstance().setAutoChatActive(true);
 			}
 	        else

@@ -276,7 +276,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private boolean _inPvpZone;
 	private boolean _inMotherTreeZone;
-	
+
+    /** L2PcInstance's pledge class (knight, Baron, etc.)*/
+    private int _pledgeClass;
+    private int _pledgeType = 0;
 	/** The number of recommandation obtained by the L2PcInstance */
 	private int _recomHave; // how much I was recommended by others
 	
@@ -6866,6 +6869,25 @@ public final class L2PcInstance extends L2PlayableInstance
     {
 		_clanPrivileges = n;
 	}
+
+    public void setPledgeClass(int classId)
+    {
+        _pledgeClass = classId;
+    }
+    public int getPledgeClass()
+    {
+        return _pledgeClass;
+    }
+
+    public void setPledgeType(int typeId)
+    {
+        _pledgeType = typeId;
+    }
+    public int getPledgeType()
+    {
+        return _pledgeType;
+    }
+
 	
 	public void refreshLinks()
 	{

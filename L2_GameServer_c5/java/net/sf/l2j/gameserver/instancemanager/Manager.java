@@ -25,7 +25,7 @@ public class Manager
 		AuctionManager.getInstance().reload();
 		CastleManager.getInstance().reload();
 		ClanHallManager.getInstance().reload();
-		QuestManager.getInstance().reload();
+//		QuestManager.getInstance().reload();
 		TownManager.getInstance().reload();
 		ZoneManager.getInstance().reload();
         OlympiadStadiaManager.getInstance().reload();

@@ -73,23 +73,23 @@ public final class L2RaidBossInstance extends L2MonsterInstance
         
         RaidBossSpawnManager.getInstance().updateStatus(this, true);
         
-        if (getNpcId() == 10035 || getNpcId() == 10054 || getNpcId() == 10126
-                || getNpcId() == 10220)
+        if (getNpcId() == 25035 || getNpcId() == 25054 || getNpcId() == 25126
+                || getNpcId() == 25220)
         {
             int boxId = 0;
             switch(getNpcId())
             {
-                case 10035: // Shilen?s Messenger Cabrio
-                    boxId = 8027;
+                case 25035: // Shilen?s Messenger Cabrio
+                    boxId = 31027;
                     break;
-                case 10054: // Demon Kernon
-                    boxId = 8028;
+                case 25054: // Demon Kernon
+                    boxId = 31028;
                     break;
-                case 10126: // Golkonda, the Longhorn General
-                    boxId = 8029;
+                case 25126: // Golkonda, the Longhorn General
+                    boxId = 31029;
                     break;
-                case 10220: // Death Lord Hallate
-                    boxId = 8030;
+                case 25220: // Death Lord Hallate
+                    boxId = 31030;
                     break;
             }
             
@@ -113,7 +113,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
     {
     	RaidBossSpawnManager.getInstance().updateStatus(this, false);
     	super.OnSpawn();
-        if (getNpcId() == 10286 || getNpcId() == 10283)
+        if (getNpcId() == 25286 || getNpcId() == 25283)
             return;
         else
             getSpawn().stopRespawn();

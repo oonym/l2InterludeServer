@@ -298,31 +298,31 @@ public class L2Fishing implements Runnable
 		{
 		case 0:
 		case 1:
-			npcid = 13245;
+			npcid = 18319;
 			break;
 		case 2:
-			npcid = 13246;
+			npcid = 18320;
 			break;
 		case 3:
-			npcid = 13247;
+			npcid = 18321;
 			break;
 		case 4:
-			npcid = 13248;
+			npcid = 18322;
 			break;
 		case 5:
-			npcid = 13249;
+			npcid = 18323;
 			break;
 		case 6:
-			npcid = 13250;
+			npcid = 18324;
 			break;
 		case 7:
-			npcid = 13251;
+			npcid = 18325;
 			break;
 		case 8:
-			npcid = 13252;
+			npcid = 18326;
 			break;
 		default:
-			npcid = 13245;
+			npcid = 18319;
 		    break;
 		}
 		L2NpcTemplate temp;

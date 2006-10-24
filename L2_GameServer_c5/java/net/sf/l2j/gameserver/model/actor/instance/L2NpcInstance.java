@@ -1608,7 +1608,7 @@ public class L2NpcInstance extends L2Character
     
     public void makeCPRecovery(L2PcInstance player)
     {
-        if (getNpcId()!=8225 && getNpcId()!=8226) return;
+        if (getNpcId()!=31225 && getNpcId()!=31226) return;
         int neededmoney = 100;
         SystemMessage sm;
         if (!player.reduceAdena("RestoreCP", neededmoney, player.getLastFolkNPC(), true)) return;
@@ -1725,16 +1725,16 @@ public class L2NpcInstance extends L2Character
         int compWinner = SevenSigns.getInstance().getCabalHighestScore();
         
         switch (npcId) {
-            case 8078:
-            case 8079:
-            case 8080:
-            case 8081:
-            case 8082: // Dawn Priests
-            case 8083:
-            case 8084:
-            case 8168:
-            case 8692:
-            case 8694:
+            case 31078:
+            case 31079:
+            case 31080:
+            case 31081:
+            case 31082: // Dawn Priests
+            case 31083:
+            case 31084:
+            case 31168:
+            case 31692:
+            case 31694:
                 switch (playerCabal) 
                 {
                     case SevenSigns.CABAL_DAWN:
@@ -1766,16 +1766,16 @@ public class L2NpcInstance extends L2Character
                     break;
                 }
                 break;
-            case 8085:
-            case 8086:
-            case 8087:
-            case 8088: // Dusk Priest
-            case 8089:
-            case 8090:
-            case 8091:
-            case 8169:
-            case 8693:
-            case 8695:
+            case 31085:
+            case 31086:
+            case 31087:
+            case 31088: // Dusk Priest
+            case 31089:
+            case 31090:
+            case 31091:
+            case 31169:
+            case 31693:
+            case 31695:
                 switch (playerCabal) 
                 {
                     case SevenSigns.CABAL_DUSK:
@@ -1807,14 +1807,14 @@ public class L2NpcInstance extends L2Character
                     break;
                 }
                 break;
-            case 8095: //
-            case 8096: //
-            case 8097: //
-            case 8098: // Enter Necropolises
-            case 8099: //
-            case 8100: //
-            case 8101: // 
-            case 8102: //
+            case 31095: //
+            case 31096: //
+            case 31097: //
+            case 31098: // Enter Necropolises
+            case 31099: //
+            case 31100: //
+            case 31101: // 
+            case 31102: //
                 if (isSealValidationPeriod) 
                 {
                     if (compWinner == SevenSigns.CABAL_DAWN && (playerCabal != SevenSigns.CABAL_DAWN || sealAvariceOwner != SevenSigns.CABAL_DAWN)) 
@@ -1837,12 +1837,12 @@ public class L2NpcInstance extends L2Character
                         filename = (getHtmlPath(npcId, val)); // do the default!    
                 }
                 break;
-            case 8114: //
-            case 8115: //
-            case 8116: // Enter Catacombs
-            case 8117: //
-            case 8118: //
-            case 8119: //
+            case 31114: //
+            case 31115: //
+            case 31116: // Enter Catacombs
+            case 31117: //
+            case 31118: //
+            case 31119: //
                 if (isSealValidationPeriod) 
                 {
                     if (compWinner == SevenSigns.CABAL_DAWN && (playerCabal != SevenSigns.CABAL_DAWN || sealGnosisOwner != SevenSigns.CABAL_DAWN)) 
@@ -1865,7 +1865,7 @@ public class L2NpcInstance extends L2Character
                         filename = (getHtmlPath(npcId, val)); // do the default!    
                 }
                 break;
-            case 8111: // Gatekeeper Spirit (Disciples)
+            case 31111: // Gatekeeper Spirit (Disciples)
             	if (playerCabal == sealAvariceOwner && playerCabal == compWinner)
             	{
 	            	switch (sealAvariceOwner)
@@ -1886,27 +1886,27 @@ public class L2NpcInstance extends L2Character
             		filename += "spirit_null.htm";
             	}
                 break;
-            case 8112: // Gatekeeper Spirit (Disciples)
+            case 31112: // Gatekeeper Spirit (Disciples)
             	filename += "spirit_exit.htm";
             	break;
-            case 8127: //
-            case 8128: //
-            case 8129: // Dawn Festival Guides
-            case 8130: //
-            case 8131: //
+            case 31127: //
+            case 31128: //
+            case 31129: // Dawn Festival Guides
+            case 31130: //
+            case 31131: //
                 filename += "festival/dawn_guide.htm";
                 break;
-            case 8137: //
-            case 8138: //
-            case 8139: // Dusk Festival Guides
-            case 8140: //
-            case 8141: //
+            case 31137: //
+            case 31138: //
+            case 31139: // Dusk Festival Guides
+            case 31140: //
+            case 31141: //
                 filename += "festival/dusk_guide.htm";
                 break;
-            case 8092: // Black Marketeer of Mammon
+            case 31092: // Black Marketeer of Mammon
             	filename += "blkmrkt_1.htm";
             	break;
-            case 8113: // Merchant of Mammon
+            case 31113: // Merchant of Mammon
                 switch (compWinner)
                 {
                     case SevenSigns.CABAL_DAWN:
@@ -1926,7 +1926,7 @@ public class L2NpcInstance extends L2Character
                 }
             	filename += "mammmerch_1.htm";
             	break;
-            case 8126: // Blacksmith of Mammon
+            case 31126: // Blacksmith of Mammon
                 switch (compWinner)
                 {
                     case SevenSigns.CABAL_DAWN:
@@ -1946,38 +1946,38 @@ public class L2NpcInstance extends L2Character
                 }
             	filename += "mammblack_1.htm";
             	break;
-            case 8132:
-            case 8133:
-            case 8134:
-            case 8135:
-            case 8136:  // Festival Witches
-            case 8142:
-            case 8143:
-            case 8144:
-            case 8145:
-            case 8146:            
+            case 31132:
+            case 31133:
+            case 31134:
+            case 31135:
+            case 31136:  // Festival Witches
+            case 31142:
+            case 31143:
+            case 31144:
+            case 31145:
+            case 31146:            
                 filename += "festival/festival_witch.htm";
                 break;
-            case 8688:
+            case 31688:
                 if (player.isNoble())
                     filename = Olympiad.OLYMPIAD_HTML_FILE + "noble_main.htm";
                 else
                     filename = (getHtmlPath(npcId, val));
                 break;
-            case 8690:
-            case 8769:
-            case 8770:
-            case 8771:
-            case 8772:
+            case 31690:
+            case 31769:
+            case 31770:
+            case 31771:
+            case 31772:
                 if (player.isHero())
                     filename = Olympiad.OLYMPIAD_HTML_FILE + "hero_main.htm";
                 else
                     filename = (getHtmlPath(npcId, val));
                 break;
             default:
-                if ((npcId >= 8093 && npcId <= 8094) ||
-                        (npcId >= 8172 && npcId <= 8201) ||
-                        (npcId >= 8239 && npcId <= 8254))
+                if ((npcId >= 31093 && npcId <= 31094) ||
+                        (npcId >= 31172 && npcId <= 31201) ||
+                        (npcId >= 31239 && npcId <= 31254))
                     return;
             // Get the text of the selected HTML file in function of the npcId and of the page number
             filename = (getHtmlPath(npcId, val));
