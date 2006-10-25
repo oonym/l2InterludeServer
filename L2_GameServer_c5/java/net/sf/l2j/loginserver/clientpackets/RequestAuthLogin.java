@@ -59,9 +59,9 @@ public class RequestAuthLogin
             //System.out.println("RSA DECRYPTED");
             //System.out.println(printData(decrypted, decrypted.length));
             
-            _user = new String(decrypted, 0x62, 14 ).trim();
+            _user = new String(decrypted, 0x5E, 14 ).trim();
             _user = _user.toLowerCase();
-            _password = new String(decrypted, 0x70, 16).trim();
+            _password = new String(decrypted, 0x6C, 16).trim();
         }
         catch (GeneralSecurityException e)
         {
