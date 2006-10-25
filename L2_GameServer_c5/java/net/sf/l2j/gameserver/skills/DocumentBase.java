@@ -186,12 +186,12 @@ abstract class DocumentBase
             if (abn.equals("flame")) abnormal = L2Character.ABNORMAL_EFFECT_FLAME;
             if (abn.equals("bighead")) abnormal = L2Character.ABNORMAL_EFFECT_BIG_HEAD;
         }
-        int stackOrder = 0;
+        float stackOrder = 0;
         String stackType = "none";
         if (attrs.getNamedItem("stackType") != null)
             stackType = attrs.getNamedItem("stackType").getNodeValue();
         if (attrs.getNamedItem("stackOrder") != null)
-            stackOrder = getNumber(attrs.getNamedItem("stackOrder").getNodeValue(), template).intValue();
+            stackOrder = getNumber(attrs.getNamedItem("stackOrder").getNodeValue(), template).floatValue();
         EffectTemplate lt = new EffectTemplate(attachCond, applayCond, name, lambda, count, time,
                                                abnormal, stackType, stackOrder);
         parseTemplate(n, lt);

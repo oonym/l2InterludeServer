@@ -125,7 +125,7 @@ public abstract class L2Effect
     private final String _stackType;
 
     /** The position of the effect in the stack group */
-    private final int _stackOrder;
+    private final float _stackOrder;
 
     private boolean _inUse = false;
 
@@ -202,7 +202,7 @@ public abstract class L2Effect
         return _stackType;
     }
 
-    public int getStackOrder()
+    public float getStackOrder()
     {
         return _stackOrder;
     }

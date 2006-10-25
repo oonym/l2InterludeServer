@@ -46,11 +46,11 @@ public final class EffectTemplate
 	public FuncTemplate[] _funcTemplates;
 	
 	public final String _stackType;
-	public final int _stackOrder;
+	public final float _stackOrder;
 	
 	public EffectTemplate(Condition attachCond, Condition applayCond,
 			String func, Lambda lambda, int counter, int period, 
-			short abnormalEffect, String stackType, int stackOrder)
+			short abnormalEffect, String stackType, float stackOrder)
 	{
 		_attachCond = attachCond;
 		_applayCond = applayCond;
