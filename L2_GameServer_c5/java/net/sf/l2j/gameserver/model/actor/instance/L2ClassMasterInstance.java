@@ -164,6 +164,56 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 		if(command.startsWith("change_class"))
 		{
             int val = Integer.parseInt(command.substring(13));
+            
+            // Exploit prevention 
+            ClassId classId = player.getClassId();
+            int level = player.getLevel();
+            int jobLevel = 0;
+            int newJobLevel = 0;
+            
+            ClassLevel lvlnow = PlayerClass.values()[classId.getId()].getLevel();  
+            switch (lvlnow)
+            {
+            	case First:
+            		jobLevel = 1;
+            		break;
+            	case Second:
+            		jobLevel = 2;
+            		break;
+            	case Third:
+            		jobLevel = 3;
+            		break;
+            	default:
+            		jobLevel = 4;
+            }
+
+            if(jobLevel == 4) return; // no more job changes
+
+            ClassLevel lvlnext = PlayerClass.values()[val].getLevel();  
+            switch (lvlnext)
+            {
+            	case First:
+            		newJobLevel = 1;
+            		break;
+            	case Second:
+            		newJobLevel = 2;
+            		break;
+            	case Third:
+            		newJobLevel = 3;
+            		break;
+            	default:
+            		newJobLevel = 4;
+            }
+
+            // prevents changing between same level jobs
+            if(newJobLevel == jobLevel) return;
+
+            if (level < 20 && newJobLevel > 1) return;
+            if (level < 40 && newJobLevel > 2) return;
+            if (level < 75 && newJobLevel > 3) return;
+            // -- prevention ends
+            
+            
             changeClass(player, val);
             
             if(val >= 88)
