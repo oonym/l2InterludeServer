@@ -1716,6 +1716,7 @@ public class L2Attackable extends L2NpcInstance
         long xp;
         long sp;
 
+        if(diff < -5) diff = -5; // makes possible to use ALT_GAME_EXPONENT configuration
         xp = (long)getExpReward() * damage / getMaxHp(); 
         if (Config.ALT_GAME_EXPONENT_XP != 0) xp *= Math.pow(2., -diff / Config.ALT_GAME_EXPONENT_XP);
 
