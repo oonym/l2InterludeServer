@@ -18,8 +18,14 @@
  */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.ai.CtrlEvent;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
+import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
@@ -29,6 +35,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.lib.Rnd;
@@ -49,6 +56,10 @@ public class Disablers implements ISkillHandler
                                        L2Skill.SkillType.CONFUSE_MOB_ONLY, L2Skill.SkillType.NEGATE,
                                        L2Skill.SkillType.CANCEL, L2Skill.SkillType.PARALYZE};
 
+    protected static Logger _log = Logger.getLogger(L2Skill.class.getName());
+    private  String[] _negateStats=null;
+    private  float _negatePower=0.f;
+    
     public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
     {
         SkillType type = skill.getSkillType();
@@ -75,17 +86,20 @@ public class Disablers implements ISkillHandler
             if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
             {
                 bss = true;
-                weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+                if (skill.getId() != 1020) // vitalize
+                	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
             }
             else if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT)
             {
                 sps = true;
-                weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+                if (skill.getId() != 1020) // vitalize
+                	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
             }
             else if (weaponInst.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT)
             {
                 ss = true;
-                weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+                if (skill.getId() != 1020) // vitalize
+                	weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
             }
         }
         // If there is no weapon equipped, check for an active summon.
@@ -116,7 +130,10 @@ public class Disablers implements ISkillHandler
             if (!(targets[index] instanceof L2Character)) continue;
 
             L2Character target = (L2Character) targets[index];
-
+            
+            if (target == null || target.isDead()) //bypass if target is null or dead
+        		continue;
+          
             switch (type)
             {
                 case FAKE_DEATH:
@@ -250,30 +267,12 @@ public class Disablers implements ISkillHandler
                 }
                 case UNBLEED:
                 {
-                    L2Effect[] effects = target.getAllEffects();
-                    for (L2Effect e : effects)
-                    {
-                        if (e.getSkill().getSkillType() == SkillType.BLEED
-                            && skill.getPower() >= e.getSkill().getPower())
-                        {
-                            e.exit();
-                            break;
-                        }
-                    }
+                    negateEffect(target,SkillType.BLEED,skill.getPower());
                     break;
                 }
                 case UNPOISON:
                 {
-                    L2Effect[] effects = target.getAllEffects();
-                    for (L2Effect e : effects)
-                    {
-                        if (e.getSkill().getSkillType() == SkillType.POISON
-                            && skill.getPower() >= e.getSkill().getPower())
-                        {
-                            e.exit();
-                            break;
-                        }
-                    }
+                    negateEffect(target,SkillType.POISON,skill.getPower());
                     break;
                 }
                 case CANCEL:
@@ -319,75 +318,59 @@ public class Disablers implements ISkillHandler
                     	}
                         break;
                     }
-                    // purify
-                    else if (skill.getId() == 1018)
+                	// all others negate type skills
+                    else
                     {
-                        L2Effect[] effects = target.getAllEffects();
-                        for (L2Effect e : effects)
-                        {
-                            if (skill.getLevel() == 1)
-                            {
-                                if (e.getSkill().getSkillType() == SkillType.BLEED
-                                    && e.getSkill().getLevel() == 1
-                                    || e.getSkill().getSkillType() == SkillType.POISON
-                                    && e.getSkill().getLevel() == 1
-                                    || e.getSkill().getSkillType() == SkillType.PARALYZE
-                                    && e.getSkill().getLevel() == 1)
-                                {
-                                    e.exit();
-                                }
-                            }
-                            else
-                            {
-                                if (e.getSkill().getSkillType() == SkillType.BLEED
-                                    || e.getSkill().getSkillType() == SkillType.POISON
-                                    || e.getSkill().getSkillType() == SkillType.PARALYZE)
-                                {
-                                    e.exit();
-                                }
-                            }
-                        }
-                    }
-                    // vitalize
-                    else if (skill.getId() == 1020)
-                    {
-                    	// Temporary support fix for this skill: adds healing power
-                    	if(!target.isDead()) 
-                    	{
-                    		int heal_amount = 115 + skill.getLevel()*5; 
-                    		target.setCurrentHp(heal_amount + target.getCurrentHp()); 
-                    		target.setLastHealAmount(heal_amount);            
-                    		StatusUpdate su = new StatusUpdate(target.getObjectId());
-                    		su.addAttribute(StatusUpdate.CUR_HP, (int)target.getCurrentHp());
-                    		target.sendPacket(su);
-                    	}
-                    	L2Effect[] effects = target.getAllEffects();
-                        for (L2Effect e : effects)
-                        {
-                            if (skill.getLevel() < 6)
-                            {
-                                if (e.getSkill().getSkillType() == SkillType.BLEED
-                                    && e.getSkill().getLevel() == 1
-                                    || e.getSkill().getSkillType() == SkillType.POISON
-                                    && e.getSkill().getLevel() == 1)
-                                {
-                                    e.exit();
-                                }
-                            }
-                            else
-                            {
-                                if (e.getSkill().getSkillType() == SkillType.BLEED
-                                    || e.getSkill().getSkillType() == SkillType.POISON)
-                                {
-                                    e.exit();
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+                    	 _negateStats = skill.getNegateStats();
+                    	 _negatePower = skill.getNegatePower();
+                    	 
+                    	 for (String stat : _negateStats)
+                    	 {                                
+                    		 stat = stat.toLowerCase().intern();
+	                    	 if (stat == "buff") negateEffect(target,SkillType.BUFF,-1);
+	                    	 if (stat == "debuff") negateEffect(target,SkillType.DEBUFF,-1);
+	                    	 if (stat == "weakness") negateEffect(target,SkillType.WEAKNESS,-1);
+	                    	 if (stat == "stun") negateEffect(target,SkillType.STUN,-1);
+	                    	 if (stat == "sleep") negateEffect(target,SkillType.SLEEP,-1);
+	                    	 if (stat == "confusion") negateEffect(target,SkillType.CONFUSION,-1);
+	                    	 if (stat == "mute") negateEffect(target,SkillType.MUTE,-1);
+	                    	 if (stat == "fear") negateEffect(target,SkillType.FEAR,-1);
+	                    	 if (stat == "poison") negateEffect(target,SkillType.POISON,_negatePower);
+	                    	 if (stat == "bleed") negateEffect(target,SkillType.BLEED,_negatePower);
+	                    	 if (stat == "paralyze") negateEffect(target,SkillType.PARALYZE,-1);
+	                    	 if (stat == "heal")
+	                    	 {
+	                    		 ISkillHandler Healhandler = SkillHandler.getInstance().getSkillHandler(SkillType.HEAL);
+	                    		 if (Healhandler == null)
+	                    		 {
+		                    		 _log.severe("Couldn't find skill handler for HEAL.");
+		                    		 continue;
+	                    		 }
+	                    		 L2Object tgts[] = new L2Object[]{target};
+	                    		 try {
+	                    			 Healhandler.useSkill(activeChar, skill, tgts);
+	                    		 } catch (IOException e) {
+	                    		 _log.log(Level.WARNING, "", e);
+	                    		 }
+                              }
+                          }//end for                                              	               
+                    }//end else
+                }// end case                                    
+            }//end switch
+        }//end for        
+    } //end void
+    
+    private void negateEffect(L2Character target, SkillType type, double power) {
+        L2Effect[] effects = target.getAllEffects();
+        for (L2Effect e : effects)
+        	if (power == -1) // if power is -1 the effect is always removed without power/lvl check ^^
+        	{
+        		if (e.getSkill().getSkillType() == type || (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type))
+        			e.exit();
+        	}
+        	else if ((e.getSkill().getSkillType() == type && e.getSkill().getPower() <= power) 
+        			|| (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type && e.getSkill().getEffectLvl() <= power))
+                e.exit();
     }
 
     public SkillType[] getSkillIds()

@@ -48,7 +48,6 @@ import net.sf.l2j.gameserver.skills.L2SkillChargeDmg;
 import net.sf.l2j.gameserver.skills.L2SkillCreateItem;
 import net.sf.l2j.gameserver.skills.L2SkillDefault;
 import net.sf.l2j.gameserver.skills.L2SkillDrain;
-import net.sf.l2j.gameserver.skills.L2SkillNegate;
 import net.sf.l2j.gameserver.skills.L2SkillSeed;
 import net.sf.l2j.gameserver.skills.L2SkillSummon;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -91,8 +90,8 @@ public abstract class L2Skill
 
     public static enum SkillType {
         PDAM, MDAM, DOT, BLEED, POISON, HEAL, HOT, COMBATPOINTHEAL, CPHOT, MANAHEAL, MANARECHARGE, MPHOT, AGGDAMAGE, BUFF, DEBUFF, STUN, ROOT, RESURRECT, PASSIVE, CONT, CONFUSION, UNLOCK, CHARGE(
-                L2SkillCharge.class), FEAR, MHOT, DRAIN(L2SkillDrain.class), NEGATE(L2SkillNegate.class), CANCEL(
-                L2SkillNegate.class), SLEEP, AGGREDUCE, AGGREMOVE, AGGREDUCE_CHAR, CHARGEDAM(
+                L2SkillCharge.class), FEAR, MHOT, DRAIN(L2SkillDrain.class), NEGATE, CANCEL,
+                SLEEP, AGGREDUCE, AGGREMOVE, AGGREDUCE_CHAR, CHARGEDAM(
                 L2SkillChargeDmg.class), CONFUSE_MOB_ONLY, DEATHLINK, DETECT_WEAKNESS, ENCHANT_ARMOR, ENCHANT_WEAPON, FEED_PET, HEAL_PERCENT, LUCK, MANADAM, MDOT, MUTE, RECALL, REFLECT, SOULSHOT, SPIRITSHOT, SPOIL, SWEEP, SUMMON(
                 L2SkillSummon.class), WEAKNESS, DEATHLINK_PET, MANA_BY_LEVEL, FAKE_DEATH, UNBLEED, UNPOISON, SIEGEFLAG, TAKECASTLE, UNDEAD_DEFENSE, SEED(
                 L2SkillSeed.class), PARALYZE, DRAIN_SOUL, COMMON_CRAFT, DWARVEN_CRAFT, WEAPON_SA, FISHING, PUMPING, REELING, CREATE_ITEM(
@@ -267,6 +266,8 @@ public abstract class L2Skill
 
     private final double _power;
     private final int _magicLevel;
+    private final String[] _negateStats;
+    private final float _negatePower;
     private final int _levelDepend;
 
     // Effecting area of the skill, in radius.
@@ -277,6 +278,7 @@ public abstract class L2Skill
     private final SkillType _skillType;
     private final SkillType _effectType;
     private final int _effectPower;
+    private final int _effectLvl;
 
     private final boolean _ispotion;
     private final int _element;
@@ -335,6 +337,8 @@ public abstract class L2Skill
 
         _targetType = set.getEnum("target", SkillTargetType.class);
         _power = set.getFloat("power", 0.f);
+        _negateStats = set.getString("negateStats", "").split(" ");
+        _negatePower = set.getFloat("negatePower", 0.f);
         _magicLevel = set.getInteger("magicLvl", SkillTreeTable.getInstance().getMinSkillLevel(_id,
                                                                                                _level));
         _levelDepend = set.getInteger("lvlDepend", 0);
@@ -343,6 +347,7 @@ public abstract class L2Skill
         _skillType = set.getEnum("skillType", SkillType.class);
         _effectType = set.getEnum("effectType", SkillType.class, null);
         _effectPower = set.getInteger("effectPower", 0);
+        _effectLvl = set.getInteger("effectLevel", 0);
 
         _element = set.getInteger("element", 0);
         _savevs = set.getInteger("save", 0);
@@ -477,7 +482,17 @@ public abstract class L2Skill
     {
         return _power;
     }
-
+    
+    public final String[] getNegateStats()
+    {
+        return _negateStats;
+    }
+    
+    public final float getNegatePower()
+    {
+        return _negatePower;
+    }
+    
     public final int getMagicLevel()
     {
         return _magicLevel;
@@ -496,6 +511,14 @@ public abstract class L2Skill
         return _effectPower;
     }
 
+    /**
+     * Return the additional effect level.<BR><BR>
+     */
+    public final int getEffectLvl()
+    {
+        return _effectLvl;
+    }
+    
     /**
      * Return the additional effect skill type (ex : STUN, PARALYZE,...).<BR><BR>
      */
