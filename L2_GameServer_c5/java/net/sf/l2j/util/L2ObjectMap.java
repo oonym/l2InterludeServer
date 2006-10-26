@@ -65,7 +65,7 @@ public abstract class L2ObjectMap<T extends L2Object> implements Iterable<T>
             case WorldObjectMap:
                 return new WorldObjectMap<L2Object>();
             default:
-                return new L2ObjectHashMap<L2Object>();
+                return new WorldObjectTree<L2Object>();
         }
     }
 }
