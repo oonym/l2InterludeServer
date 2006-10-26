@@ -44,6 +44,17 @@ public class RecipeShopManageList  extends ServerBasePacket
 			_recipes = _seller.getDwarvenRecipeBook();
 		else
 			_recipes = _seller.getCommonRecipeBook();
+		
+		// clean previous recipes
+        if (_seller.getCreateList() != null)
+        {
+            L2ManufactureList list = _seller.getCreateList();
+            for (L2ManufactureItem item : list.getList())
+            {
+            	if (item.isDwarven() != _isDwarven)
+            		list.getList().remove(item);
+            }
+        }
 	}
 	
 	final void runImpl()
