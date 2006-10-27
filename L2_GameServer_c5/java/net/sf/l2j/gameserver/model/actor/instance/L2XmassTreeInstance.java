@@ -61,7 +61,7 @@ public class L2XmassTreeInstance extends L2NpcInstance
     public L2XmassTreeInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 000);
+        aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 3000);
     }
 
     public void deleteMe()
