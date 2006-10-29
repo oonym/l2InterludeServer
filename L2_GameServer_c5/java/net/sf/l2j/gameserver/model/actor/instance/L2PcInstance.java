@@ -3214,7 +3214,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		else addItem("Pickup", target, null, true);
 	}
 	
-	
 	/**
 	 * Set a target.<BR><BR>
 	 *
@@ -5667,6 +5666,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getClan() != null && attacker != null && getClan().isMember(attacker.getName()))
 			return false;
 		
+        if(attacker instanceof L2PlayableInstance && ZoneManager.getInstance().checkIfInZonePeace(this))
+            return false;
+        
 		// Check if the L2PcInstance has Karma
 		if (getKarma() > 0 || getPvpFlag() > 0)
 			return true;
