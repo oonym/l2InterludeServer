@@ -171,7 +171,7 @@ final class DocumentSkill extends DocumentBase {
 					Node msg = n.getAttributes().getNamedItem("msg");
 					if (condition != null && msg != null)
 						condition.setMessage(msg.getNodeValue());
-                    currentSkill.currentSkills.get(i).attach(condition);
+                    currentSkill.currentSkills.get(i).attach(condition, false);
 				}
 				if ("for".equalsIgnoreCase(n.getNodeName()))
 				{

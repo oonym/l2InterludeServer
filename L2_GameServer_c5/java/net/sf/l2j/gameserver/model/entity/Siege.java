@@ -51,6 +51,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2ControlTowerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SiegeInfo;
+import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
@@ -1107,9 +1108,13 @@ public class Siege
         {
             StatsSet newStatSet = template.getStatsSet();
             newStatSet.set("baseHpMax", _ControlTowerSpawnList[i][4]);
+            L2NpcTemplate controlTowerTemplate = new L2NpcTemplate(newStatSet);
+            controlTowerTemplate.addResist(Stats.POWER_DEFENCE,100);
+            controlTowerTemplate.addResist(Stats.BOW_WPN_RES,100);
+            controlTowerTemplate.addResist(Stats.BLUNT_WPN_RES,100);
+            controlTowerTemplate.addResist(Stats.DAGGER_WPN_RES,100);
 
-            ct = new L2ControlTowerInstance(IdFactory.getInstance().getNextId(),
-                                            new L2NpcTemplate(newStatSet));
+            ct = new L2ControlTowerInstance(IdFactory.getInstance().getNextId(), controlTowerTemplate);
             ct.setCurrentHpMp(ct.getMaxHp(), ct.getMaxMp());
             ct.spawnMe(_ControlTowerSpawnList[i][0], _ControlTowerSpawnList[i][1],
                        _ControlTowerSpawnList[i][2] + 20);

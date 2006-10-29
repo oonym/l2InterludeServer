@@ -60,7 +60,7 @@ public class L2SkillCreateItem extends L2Skill
             }
 
         }
-        return super.checkCondition(activeChar);
+        return super.checkCondition(activeChar, false);
 
     }
 

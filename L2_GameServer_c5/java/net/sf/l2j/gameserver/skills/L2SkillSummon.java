@@ -60,7 +60,7 @@ public class L2SkillSummon extends L2Skill {
 				}
 			}
 		}
-		return super.checkCondition(activeChar);
+		return super.checkCondition(activeChar, false);
 	}
 	
 	public void useSkill(L2Character caster, L2Object[] targets) {

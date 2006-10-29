@@ -303,6 +303,7 @@ public abstract class L2Skill
     private final boolean _isOffensive;
 
     protected Condition _preCondition;
+    protected Condition _itemPreCondition;
     protected FuncTemplate[] _funcTemplates;
     protected EffectTemplate[] _effectTemplates;
 
@@ -869,7 +870,7 @@ public abstract class L2Skill
         return false;
     }
 
-    public boolean checkCondition(L2Character activeChar)
+    public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
     {
         if ((getCondition() & L2Skill.COND_BEHIND) != 0)
         {
@@ -887,13 +888,16 @@ public abstract class L2Skill
             //TODO add checks for shield here.
         }
 
-        if (_preCondition == null) return true;
+        Condition preCondition = _preCondition;
+        if(itemOrWeapon) preCondition = _itemPreCondition;
+
+        if (preCondition == null) return true;
         Env env = new Env();
         env._player = activeChar;
         env._skill = this;
-        if (!_preCondition.test(env))
+        if (!preCondition.test(env))
         {
-            String msg = _preCondition.getMessage();
+            String msg = preCondition.getMessage();
             if (msg != null)
             {
                 SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
@@ -1672,9 +1676,10 @@ public abstract class L2Skill
         }
     }
 
-    public final void attach(Condition c)
+    public final void attach(Condition c, boolean itemOrWeapon)
     {
-        _preCondition = c;
+    	if(itemOrWeapon) _itemPreCondition = c;
+    	else _preCondition = c;
     }
 
     public String toString()
