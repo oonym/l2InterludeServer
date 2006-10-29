@@ -80,9 +80,12 @@ public class RequestDropItem extends ClientBasePacket
     	if (activeChar == null) return;
         L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
         
-        if (item == null || _count == 0 
-        		|| !Config.ALLOW_DISCARDITEM || Config.LIST_NONDROPPABLE_ITEMS.contains(item.getItemId())
-        		|| !activeChar.validateItemManipulation(_objectId, "drop"))
+        if (item == null || _count == 0 || !activeChar.validateItemManipulation(_objectId, "drop")
+        		|| (
+        				(!Config.ALLOW_DISCARDITEM || Config.LIST_NONDROPPABLE_ITEMS.contains(item.getItemId()))
+        				&& !activeChar.isGM()
+        			)
+        )
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
 			return;
@@ -141,7 +144,7 @@ public class RequestDropItem extends ClientBasePacket
 			}
 		}
         
-		if (L2Item.TYPE2_QUEST == item.getItem().getType2())
+		if (L2Item.TYPE2_QUEST == item.getItem().getType2() && !activeChar.isGM())
 		{
 			if (Config.DEBUG) _log.finest(activeChar.getObjectId()+":player tried to drop quest item");
             activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_EXCHANGE_ITEM));
