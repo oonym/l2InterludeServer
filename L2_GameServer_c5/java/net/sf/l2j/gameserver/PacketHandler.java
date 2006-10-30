@@ -718,6 +718,18 @@ public class PacketHandler
                     case 0x20:
                         msg = new RequestPCCafeCouponUse(data, client);
                         break;
+                    case 0x21:
+                    	// couldnt find it :S
+                    	break;
+                    case 0x22:
+                    	msg = new RequestCursedWeaponList(data, client);
+                    	break;
+                    case 0x23:
+                    	msg = new RequestCursedWeaponLocation(data, client);
+                    	break;
+                    case 0x24:
+                    	msg = new RequestPledgeReorganizeMember(data, client);
+                    	break;
                     default: 
                      	msg = null; 
                      	int size = data.remaining(); 
