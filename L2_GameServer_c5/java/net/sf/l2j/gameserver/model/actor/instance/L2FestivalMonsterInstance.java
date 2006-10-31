@@ -113,5 +113,7 @@ public class L2FestivalMonsterInstance extends L2MonsterInstance
             iu.addNewItem(addedOfferings);   
         
         partyLeader.sendPacket(iu);
+        
+        super.doItemDrop(lastAttacker); // Normal drop
     }
 }
