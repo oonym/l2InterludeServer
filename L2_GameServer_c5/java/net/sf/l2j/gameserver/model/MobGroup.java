@@ -90,18 +90,20 @@ public final class MobGroup
     public boolean isGroupMember(L2ControllableMobInstance mobInst)
     {
         for (L2ControllableMobInstance groupMember : getMobs())
+        {
+        	if (groupMember == null) continue;
+        	
             if (groupMember.getObjectId() == mobInst.getObjectId())
                 return true;
+        }
         
         return false;
     }
     
     public void spawnGroup(int x, int y, int z) 
     {
-        if (getMobs() != null && getActiveMobCount() > 0) // can't spawn mob if already done
+        if (getActiveMobCount() > 0) // can't spawn mob if already done
             return;
-        
-        _mobs = new FastList<L2ControllableMobInstance>();
         
         try 
         {
@@ -137,6 +139,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             if (!mobInst.isDead())
             {
                 int x = player.getX() + _rnd.nextInt(50);
@@ -169,6 +173,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             if (!mobInst.isDead())
                 mobInst.deleteMe();
             
@@ -184,6 +190,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             if (!mobInst.isDead())
                 mobInst.reduceCurrentHp(mobInst.getMaxHp() + 1, activeChar);
             
@@ -199,6 +207,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.setAlternateAI(L2ControllableMobAI.AI_NORMAL);
             ai.setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -211,6 +221,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.forceAttack(target);
         }
@@ -222,6 +234,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.stop();
         }
@@ -233,6 +247,8 @@ public final class MobGroup
 
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             int signX = (_rnd.nextInt(2) == 0) ? -1 : 1;
             int signY = (_rnd.nextInt(2) == 0) ? -1 : 1;
             int randX = _rnd.nextInt(MobGroupTable.RANDOM_RANGE);
@@ -249,6 +265,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.follow(character);
         }
@@ -260,6 +278,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.setAlternateAI(L2ControllableMobAI.AI_CAST);
         }
@@ -271,6 +291,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.setNotMoving(enabled);
         }
@@ -292,7 +314,8 @@ public final class MobGroup
         removeDead();
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
-            mobInst.setInvul(invulState);
+        	if (mobInst != null)
+        		mobInst.setInvul(invulState);
     }
     
     public void setAttackGroup(MobGroup otherGrp) 
@@ -301,6 +324,8 @@ public final class MobGroup
         
         for (L2ControllableMobInstance mobInst : getMobs()) 
         {
+        	if (mobInst == null) continue;
+        	
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.forceAttackGroup(otherGrp);
             ai.setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
