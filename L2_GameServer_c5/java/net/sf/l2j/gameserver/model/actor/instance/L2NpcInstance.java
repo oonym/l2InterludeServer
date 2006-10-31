@@ -517,15 +517,15 @@ public class L2NpcInstance extends L2Character
             
             if(!isAutoAttackable(player)) 
             {
-                // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
-                player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-                
                 // Calculate the distance between the L2PcInstance and the L2NpcInstance
                 if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
                 {
                     // player.setCurrentState(L2Character.STATE_INTERACT);
                     // player.setInteractTarget(this);
                     // player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
+                	
+                    // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+                    player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
                     
                     // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
                     player.sendPacket(new ActionFailed());
