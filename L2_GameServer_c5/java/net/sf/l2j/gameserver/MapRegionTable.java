@@ -109,7 +109,7 @@ public class MapRegionTable
 			try { con.close(); } catch (Exception e) {}
 		}
         
-        _pointsWithKarmas = new int[14][3];
+        _pointsWithKarmas = new int[16][3];
         //Talking Island
         _pointsWithKarmas[0][0] = -79077;
         _pointsWithKarmas[0][1] = 240355;
