@@ -125,7 +125,7 @@ public class CharacterCreate extends ClientBasePacket
 			_log.fine("charname: " + _name + " classId: " + _classId);
 		
 		L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(_classId, _sex!=0);
-		if(template.classBaseLevel > 1) 
+		if(template == null || template.classBaseLevel > 1) 
 		{
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED);
 			sendPacket(ccf);
