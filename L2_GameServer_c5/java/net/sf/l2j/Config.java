@@ -346,6 +346,12 @@ public final class Config
     public static int     GM_TRANSACTION_MIN;
     /** GM transactions disabled to this range */
     public static int     GM_TRANSACTION_MAX;
+    /** Minimum level to allow a GM giving damage */
+    public static int     GM_CAN_GIVE_DAMAGE;
+    /** Minimum level to don't give Exp/Sp in party */
+    public static int     GM_DONT_TAKE_EXPSP;
+    /** Minimum level to don't take aggro */
+    public static int     GM_DONT_TAKE_AGGRO;
     
     public static int GM_REPAIR = 75;
 
@@ -1518,6 +1524,9 @@ public final class Config
                 {
                     GM_DISABLE_TRANSACTION = false; 
                 }
+                GM_CAN_GIVE_DAMAGE = Integer.parseInt(gmSettings.getProperty("GMCanGiveDamage", "90"));
+                GM_DONT_TAKE_AGGRO = Integer.parseInt(gmSettings.getProperty("GMDontTakeAggro", "90"));
+                GM_DONT_TAKE_EXPSP = Integer.parseInt(gmSettings.getProperty("GMDontGiveExpSp", "90"));
                 
 	        }
 	        catch (Exception e)

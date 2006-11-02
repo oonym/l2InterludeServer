@@ -968,6 +968,13 @@ public final class Formulas
 	public final double calcPhysDam(L2Character attacker, L2Character target, L2Skill skill,
 									boolean shld, boolean crit, boolean dual, boolean ss)
 	{
+		if (attacker instanceof L2PcInstance)
+		{
+			L2PcInstance pcInst = (L2PcInstance)attacker;
+			if (pcInst.isGM() && pcInst.getAccessLevel() < Config.GM_CAN_GIVE_DAMAGE)
+					return 0;
+		}
+		
 		double damage = attacker.getPAtk(target);
 		double defence = target.getPDef(attacker);
 		if (ss) damage *= 2;
@@ -1124,6 +1131,13 @@ public final class Formulas
 	public final double calcMagicDam(L2Character attacker, L2Character target, L2Skill skill,
 										boolean ss, boolean bss, boolean mcrit)
 	{
+		if (attacker instanceof L2PcInstance)
+		{
+			L2PcInstance pcInst = (L2PcInstance)attacker;
+			if (pcInst.isGM() && pcInst.getAccessLevel() < Config.GM_CAN_GIVE_DAMAGE)
+				return 0;
+		}
+		
 		double mAtk = attacker.getMAtk(target, skill);
 		double mDef = target.getMDef(attacker, skill);
 		if (bss) mAtk *= 4;

@@ -43,7 +43,10 @@ public class PcStat extends PlayableStat
             int karmaLost = getActiveChar().calculateKarmaLost(value);
             if (karmaLost > 0) getActiveChar().setKarma(getActiveChar().getKarma() - karmaLost);
         }
-
+        //Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
+        if (getActiveChar().isGM() && getActiveChar().getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && getActiveChar().isInParty())
+              return false;
+        
 		if (!super.addExp(value)) return false;
 		
 		/* Micht : Use of UserInfo for C5
@@ -72,6 +75,10 @@ public class PcStat extends PlayableStat
      */
     public boolean addExpAndSp(long addToExp, int addToSp)
     {
+    	//Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp/Sp
+    	if (getActiveChar().isGM() && getActiveChar().getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && getActiveChar().isInParty())
+    	     return false;
+    	
     	if (!super.addExpAndSp(addToExp, addToSp)) return false;
 
         // Send a Server->Client System Message to the L2PcInstance
