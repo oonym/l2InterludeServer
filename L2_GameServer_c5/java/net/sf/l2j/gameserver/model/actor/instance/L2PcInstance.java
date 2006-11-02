@@ -540,8 +540,8 @@ public final class L2PcInstance extends L2PlayableInstance
     private boolean _inJail = false;
     private long _jailTimer = 0;
     
-    /** Flag to disable equipment/skills while wearing formal wear **/
-    private boolean _IsWearingFormalWear = false;
+    /* Flag to disable equipment/skills while wearing formal wear **/
+    //private boolean _IsWearingFormalWear = false;
     
     private ScheduledFuture _jailTask;
 	private int _powerGrade;
@@ -3330,7 +3330,7 @@ public final class L2PcInstance extends L2PlayableInstance
         
 		return false;
 	}
-
+    /*
     public boolean isWearingFormalWear() 
     { 
         return _IsWearingFormalWear; 
@@ -3338,7 +3338,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
     public void setIsWearingFormalWear(boolean value) { 
         _IsWearingFormalWear = value; 
-    }
+    }*/
 	
 	/**
 	 * Return the secondary weapon instance (always equiped in the left hand).<BR><BR>
@@ -5743,7 +5743,7 @@ public final class L2PcInstance extends L2PlayableInstance
             sendPacket(new ActionFailed());
             return;
         }
-        
+        /*
         if (isWearingFormalWear() && !skill.isPotion())
         {
             sendPacket(new SystemMessage(SystemMessage.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR));
@@ -5752,7 +5752,7 @@ public final class L2PcInstance extends L2PlayableInstance
             abortCast();
             return;
         }  
-        
+        */
         if (inObserverMode())
         {
             sendMessage("Cant use magic in observer mode");

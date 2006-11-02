@@ -144,7 +144,7 @@ public class UseItem extends ClientBasePacket
                 {
                     return;
                 }
-                
+                /* Since c5 you can equip weapon again
                 // Don't allow weapon/shield equipment if wearing formal wear
                 if (activeChar.isWearingFormalWear()
                 	&& (bodyPart == L2Item.SLOT_LR_HAND 
@@ -154,7 +154,7 @@ public class UseItem extends ClientBasePacket
         				SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR);
         				activeChar.sendPacket(sm);
                         return;
-                }
+                } */
                 
 				L2ItemInstance[] items = activeChar.getInventory().equipItemAndRecord(item);
 				activeChar.refreshExpertisePenalty();
