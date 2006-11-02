@@ -135,20 +135,20 @@ public class NpcHtmlMessage extends ServerBasePacket
 	//
 	private static final String _S__1B_NPCHTMLMESSAGE = "[S] 0f NpcHtmlMessage";
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
-	private int _messageId;
+	private int _NpcObjId;
 	private String _html;
 
 	/**
 	 * @param _characters
 	 */
-	public NpcHtmlMessage(int messageId, String text)
+	public NpcHtmlMessage(int npcObjId, String text)
 	{
-		_messageId = messageId;
+		_NpcObjId = npcObjId;
 		setHtml(text);
 	}
-	public NpcHtmlMessage(int messageId)
+	public NpcHtmlMessage(int npcObjId)
 	{
-		_messageId = messageId;
+		_NpcObjId = npcObjId;
 	}
 	
 	public void setHtml(String text)
@@ -218,8 +218,9 @@ public class NpcHtmlMessage extends ServerBasePacket
 	{
 		writeC(0x0f);
 
-		writeD(_messageId);
+		writeD(_NpcObjId);
 		writeS(_html);
+		writeD(0x00);
 	}
 	
 	/* (non-Javadoc)

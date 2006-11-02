@@ -270,7 +270,7 @@ public class RequestBuyItem extends ClientBasePacket
 
 		if (html != null)
 		{
-			NpcHtmlMessage boughtMsg = new NpcHtmlMessage(0);
+			NpcHtmlMessage boughtMsg = new NpcHtmlMessage(merchant.getObjectId());
 			boughtMsg.setHtml(html.replaceAll("%objectId%", String.valueOf(merchant.getObjectId())));
 			player.sendPacket(boughtMsg);
 		}

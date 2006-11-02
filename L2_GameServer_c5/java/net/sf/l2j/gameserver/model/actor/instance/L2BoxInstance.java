@@ -228,7 +228,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		if (cmd.length>1)
 			startPos = Integer.parseInt(cmd[1]);
 
-		NpcHtmlMessage html = new NpcHtmlMessage(1);
+		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		int nitems = 0;
 		Set<L2BoxItem> _items = getItems(drawername);
 		if (startPos >= _items.size())
@@ -271,7 +271,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		if (cmd.length>1)
 			startPos = Integer.parseInt(cmd[1]);
 
-		NpcHtmlMessage html = new NpcHtmlMessage(1);
+		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		int nitems = 0;
 		Set<L2BoxItem> _items = new FastSet<L2BoxItem>();
 		for (L2ItemInstance i : player.getInventory().getItems())

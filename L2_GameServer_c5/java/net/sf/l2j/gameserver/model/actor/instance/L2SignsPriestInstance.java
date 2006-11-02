@@ -449,7 +449,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                         content = content.replaceAll("%stoneItemId%", String.valueOf(stoneId));
                         content = content.replaceAll("%objectId%", String.valueOf(getObjectId()));
 
-                        NpcHtmlMessage html = new NpcHtmlMessage(1);
+                        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                         html.setHtml(content);
                         player.sendPacket(html);
                     }
@@ -548,7 +548,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     contentBuffer.append("<a action=\"bypass -h npc_" + getObjectId() + "_SevenSigns 3 "
                         + cabal + "\">Go back.</a></body></html>");
 
-                    NpcHtmlMessage html = new NpcHtmlMessage(1);
+                    NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setHtml(contentBuffer.toString());
                     player.sendPacket(html);
                     break;

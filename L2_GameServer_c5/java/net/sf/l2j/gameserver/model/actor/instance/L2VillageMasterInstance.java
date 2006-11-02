@@ -115,7 +115,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             }
 
             TextBuilder content = new TextBuilder("<html><body>");
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             Set<PlayerClass> subsAvailable;
 
             int paramOne = 0;

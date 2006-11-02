@@ -68,7 +68,7 @@ public class L2SiegeNpcInstance extends L2FolkInstance
             getCastle().getSiege().listRegisterClan(player);
         else
         {
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             html.setFile("data/html/siege/" + getTemplate().npcId + "-busy.htm");
             html.replace("%castlename%",getCastle().getName());
             html.replace("%objectId%",String.valueOf(getObjectId()));

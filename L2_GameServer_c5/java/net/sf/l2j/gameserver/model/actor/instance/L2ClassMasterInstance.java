@@ -109,7 +109,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 				{
 					if (classId.getId() == _secondClassIds[i])
 					{
-                        NpcHtmlMessage html = new NpcHtmlMessage(1);
+                        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                         TextBuilder sb = new TextBuilder();
                         sb.append("<html><body<table width=200>");
                         sb.append("<tr><td><center>"+CharTemplateTable.getClassNameById(classId.getId())+" Class Master:</center></td></tr>");
@@ -126,7 +126,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			}
 			else 
 			{
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
+				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				TextBuilder sb = new TextBuilder();
 				sb.append("<html><head><body>");
 				switch (jobLevel)
@@ -221,7 +221,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             else
             	player.sendPacket(new SystemMessage(1308));    // system sound for 1st and 2nd occupation
 
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();
             sb.append("<html><head><body>");
             sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateTable.getClassNameById(player.getClassId().getId()) + "</font>.");

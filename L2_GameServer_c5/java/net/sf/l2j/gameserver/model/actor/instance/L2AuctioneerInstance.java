@@ -116,7 +116,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
         if (condition == Cond_Busy_Because_Of_Siege) filename = "data/html/auction/auction-busy.htm"; // Busy because of siege
         else filename = "data/html/auction/auction.htm";
 
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         html.replace("%objectId%", String.valueOf(getObjectId()));
         html.replace("%npcId%", String.valueOf(getNpcId()));

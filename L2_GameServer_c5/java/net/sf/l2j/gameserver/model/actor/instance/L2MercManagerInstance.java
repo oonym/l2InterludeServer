@@ -94,7 +94,7 @@ public final class L2MercManagerInstance extends L2FolkInstance
         else if (condition == Cond_Owner) // Clan owns castle
             filename = "data/html/mercmanager/mercmanager.htm"; // Owner message window
 
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         html.replace("%objectId%", String.valueOf(getObjectId()));
         html.replace("%npcId%", String.valueOf(getNpcId()));

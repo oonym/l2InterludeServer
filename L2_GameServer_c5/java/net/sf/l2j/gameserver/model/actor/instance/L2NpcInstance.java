@@ -595,7 +595,7 @@ public class L2NpcInstance extends L2Character
             }
             
             // Send a Server->Client NpcHtmlMessage() containing the GM console about this L2NpcInstance
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(0);
             TextBuilder html1 = new TextBuilder("<html><body><center><font color=\"LEVEL\">NPC Information</font></center>");
             String className = getClass().getName().substring(43);
             
@@ -659,7 +659,7 @@ public class L2NpcInstance extends L2Character
                 player.sendPacket(su);
             }
             
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(0);
             TextBuilder html1 = new TextBuilder("<html><body>");
             
             html1.append("<br><center><font color=\"LEVEL\">[Combat Stats]</font></center>");
@@ -754,7 +754,7 @@ public class L2NpcInstance extends L2Character
             {
                 player.sendPacket( new ActionFailed() );
                 
-                NpcHtmlMessage html = new NpcHtmlMessage(1);
+                NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile("data/html/npcbusy.htm");
                 html.replace("%busymessage%", getBusyMessage());
                 html.replace("%npcname%", getName());
@@ -817,7 +817,7 @@ public class L2NpcInstance extends L2Character
 	                        	ThreadPoolManager.getInstance().scheduleGeneral(new destroyTemporalSummon(summon, player), 6000);
 	                            player.getInventory().addItem("PetUpdate", exchangeItem, 1, player, this);
 	                            
-	                            NpcHtmlMessage adminReply = new NpcHtmlMessage(5);    
+	                            NpcHtmlMessage adminReply = new NpcHtmlMessage(getObjectId());    
 	                            TextBuilder replyMSG = new TextBuilder("<html><body>");
 	                            replyMSG.append("Congratulations, the evolution suceeded.");
 	                            replyMSG.append("</body></html>");
@@ -838,7 +838,7 @@ public class L2NpcInstance extends L2Character
                     }
                     else
                     {
-                        NpcHtmlMessage adminReply = new NpcHtmlMessage(5);      
+                        NpcHtmlMessage adminReply = new NpcHtmlMessage(getObjectId());      
                         TextBuilder replyMSG = new TextBuilder("<html><body>");
                        
                         replyMSG.append("You will need 20.000.000 and have the pet summoned for the ceremony ...");
@@ -905,7 +905,7 @@ public class L2NpcInstance extends L2Character
 	                        {
 	                        	ThreadPoolManager.getInstance().scheduleGeneral(new destroyTemporalSummon(summon, player), 6000);
 	                            player.getInventory().addItem("PetUpdate", exchangeItem, 1, player, this);
-	                            NpcHtmlMessage adminReply = new NpcHtmlMessage(5);      
+	                            NpcHtmlMessage adminReply = new NpcHtmlMessage(getObjectId());      
 	                            TextBuilder replyMSG = new TextBuilder("<html><body>");
 	                          
 	                            replyMSG.append("Congratulations, the evolution suceeded.");
@@ -927,7 +927,7 @@ public class L2NpcInstance extends L2Character
                         }
                     }else
                     {
-                        NpcHtmlMessage adminReply = new NpcHtmlMessage(5);      
+                        NpcHtmlMessage adminReply = new NpcHtmlMessage(getObjectId());      
                         TextBuilder replyMSG = new TextBuilder("<html><body>");
                        
                          replyMSG.append("You will need 6.000.000 and have the pet summoned for the ceremony ...");
@@ -940,7 +940,7 @@ public class L2NpcInstance extends L2Character
             }
             else if (command.equalsIgnoreCase("TerritoryStatus"))
             {
-                NpcHtmlMessage html = new NpcHtmlMessage(1);
+                NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 html.setFile("data/html/territorystaus.htm");
                 html.replace("%objectId%", String.valueOf(getObjectId()));
                 html.replace("%npcname%", getName());
@@ -1148,7 +1148,7 @@ public class L2NpcInstance extends L2Character
     {
         // Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in order to display the message of the L2NpcInstance
         content = content.replaceAll("%objectId%", String.valueOf(getObjectId()));
-        NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
+        NpcHtmlMessage npcReply = new NpcHtmlMessage(getObjectId());
         npcReply.setHtml(content);
         player.sendPacket(npcReply);
     }
@@ -1392,7 +1392,7 @@ public class L2NpcInstance extends L2Character
         int npcId = getTemplate().npcId;
         String filename;
         SystemMessage sm;
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         
         if (val == 0) // 0 - first buy lottery ticket window
         {
@@ -1985,7 +1985,7 @@ public class L2NpcInstance extends L2Character
         }
         
         // Send a Server->Client NpcHtmlMessage containing the text of the L2NpcInstance to the L2PcInstance 
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         
         //String word = "npc-"+npcId+(val>0 ? "-"+val : "" )+"-dialog-append";
@@ -2014,7 +2014,7 @@ public class L2NpcInstance extends L2Character
     public void showChatWindow(L2PcInstance player, String filename)
     {
         // Send a Server->Client NpcHtmlMessage containing the text of the L2NpcInstance to the L2PcInstance 
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         html.replace("%objectId%",String.valueOf(getObjectId()));
         player.sendPacket(html);

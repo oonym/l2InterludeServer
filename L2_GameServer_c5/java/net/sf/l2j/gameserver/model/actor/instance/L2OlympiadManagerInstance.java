@@ -83,7 +83,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
                         
                     }
                     
-                    reply = new NpcHtmlMessage(5);
+                    reply = new NpcHtmlMessage(getObjectId());
                     replyMSG = new TextBuilder("<html><body>");
                     replyMSG.append("The number of people on the waiting list for " +
                             "Grand Olympiad" +
@@ -112,7 +112,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
                     int points = Olympiad.getInstance().getNoblePoints(player.getObjectId());
                     if (points >= 0)
                     {
-                        reply = new NpcHtmlMessage(5);
+                        reply = new NpcHtmlMessage(getObjectId());
                         replyMSG = new TextBuilder("<html><body>");
                         replyMSG.append("There are " + points + " Grand Olympiad " +
                                 "points granted for this event.<br><br>" +
@@ -163,7 +163,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
         { 
             int val = Integer.parseInt(command.substring(9,10));
 
-            NpcHtmlMessage reply = new NpcHtmlMessage(5);
+            NpcHtmlMessage reply = new NpcHtmlMessage(getObjectId());
             TextBuilder replyMSG = new TextBuilder("<html><body>");
             
             switch (val)

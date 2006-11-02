@@ -150,7 +150,7 @@ public class L2FishermanInstance extends L2FolkInstance
         
 		if (counts == 0)
 		{
-		    NpcHtmlMessage html = new NpcHtmlMessage(1);
+		    NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		    int minlevel = SkillTreeTable.getInstance().getMinLevelForNewSkill(player);
             
 		    if (minlevel > 0)

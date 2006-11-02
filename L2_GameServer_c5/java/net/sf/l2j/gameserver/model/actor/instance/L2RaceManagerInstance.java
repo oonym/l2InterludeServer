@@ -302,7 +302,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
         if (state == ACCEPTING_BETS) return;
         int npcId = getTemplate().npcId;
         String filename, search;
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         filename = getHtmlPath(npcId, 5);
         html.setFile(filename);
         for (int i = 0; i < 8; i++)
@@ -321,7 +321,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
     {
         int npcId = getTemplate().npcId;
         String filename, search;
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         filename = getHtmlPath(npcId, 6);
         html.setFile(filename);
         for (int i = 0; i < 8; i++)
@@ -341,7 +341,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
         int npcId = getTemplate().npcId;
         SystemMessage sm;
         String filename, search, replace;
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         if (val < 10)
         {
             filename = getHtmlPath(npcId, 2);

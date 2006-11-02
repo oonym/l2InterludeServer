@@ -194,7 +194,7 @@ public class RequestSellItem extends ClientBasePacket
 
 		if (html != null)
 		{
-			NpcHtmlMessage soldMsg = new NpcHtmlMessage(0);
+			NpcHtmlMessage soldMsg = new NpcHtmlMessage(merchant.getObjectId());
 			soldMsg.setHtml(html.replaceAll("%objectId%", String.valueOf(merchant.getObjectId())));
 			player.sendPacket(soldMsg);
 		}

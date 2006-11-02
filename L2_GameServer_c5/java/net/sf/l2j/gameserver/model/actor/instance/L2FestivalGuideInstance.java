@@ -339,7 +339,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
                     
                     strBuffer.append("<a action=\"bypass -h npc_" + getObjectId() + "_Chat 0\">Go back.</a></body></html>");
                    
-                    NpcHtmlMessage html = new NpcHtmlMessage(1);                    
+                    NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());                    
                     html.setHtml(strBuffer.toString());
                     player.sendPacket(html);
                     break;
@@ -410,7 +410,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
         filename += (suffix != null) ? val + suffix + ".htm" : val + ".htm";
         
         // Send a Server->Client NpcHtmlMessage containing the text of the L2NpcInstance to the L2PcInstance 
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         html.replace("%objectId%",String.valueOf(getObjectId()));
         html.replace("%festivalType%", SevenSignsFestival.getFestivalName(_festivalType));

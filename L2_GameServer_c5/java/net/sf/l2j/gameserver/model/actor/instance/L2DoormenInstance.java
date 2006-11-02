@@ -82,7 +82,7 @@ public class L2DoormenInstance extends L2FolkInstance
                 {
                     getClanHall().openCloseDoors(true);
                     player.sendPacket(new NpcHtmlMessage(
-                                                         1,
+                    		                             getObjectId(),
                                                          "<html><head><body>You have <font color=\"LEVEL\">opened</font> the clan hall door.<br>Outsiders may enter the clan hall while the door is open. Please close it when you've finished your business.<br><center><button value=\"Close\" action=\"bypass -h npc_"
                                                              + getObjectId()
                                                              + "_close_doors\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>"));
@@ -110,7 +110,7 @@ public class L2DoormenInstance extends L2FolkInstance
                 {
                     getClanHall().openCloseDoors(false);
                     player.sendPacket(new NpcHtmlMessage(
-                                                         1,
+                    		                             getObjectId(),
                                                          "<html><head><body>You have <font color=\"LEVEL\">closed</font> the clan hall door.<br>Good day!<br><center><button value=\"To Begining\" action=\"bypass -h npc_"
                                                              + getObjectId()
                                                              + "_Chat\" width=90 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>"));
@@ -164,7 +164,7 @@ public class L2DoormenInstance extends L2FolkInstance
             filename = "data/html/doormen/" + getTemplate().npcId + ".htm"; // Owner message window
 
         // Prepare doormen for clan hall
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         String str;
         if (getClanHall() != null)
         {

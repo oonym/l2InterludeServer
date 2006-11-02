@@ -281,7 +281,7 @@ public class L2MerchantInstance extends L2FolkInstance
                 player.sendPacket(su);
             }
 
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder html1 = new TextBuilder("<html><body><table border=0>");
             html1.append("<tr><td>Current Target:</td></tr>");
             html1.append("<tr><td><br></td></tr>");

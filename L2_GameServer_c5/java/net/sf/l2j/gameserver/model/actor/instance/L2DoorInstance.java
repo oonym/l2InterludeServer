@@ -393,7 +393,7 @@ public class L2DoorInstance extends L2Character
                 player.sendPacket(su);
             }
 
-            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder html1 = new TextBuilder("<html><body><table border=0>");
             html1.append("<tr><td>S.Y.L. Says:</td></tr>");
             html1.append("<tr><td>Current HP  "+getCurrentHp()+ "</td></tr>");

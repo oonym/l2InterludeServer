@@ -163,7 +163,7 @@ public final class L2TeleporterInstance extends L2FolkInstance
                 filename = getHtmlPath(getNpcId(), 0); // Owner message window
         }
 
-        NpcHtmlMessage html = new NpcHtmlMessage(1);
+        NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         html.replace("%objectId%", String.valueOf(getObjectId()));
         html.replace("%npcname%", getName());
