@@ -83,7 +83,7 @@ public class ShortCuts
         {
             con = L2DatabaseFactory.getInstance().getConnection();
         
-            PreparedStatement statement = con.prepareStatement("INSERT INTO character_shortcuts (char_obj_id,slot,page,type,shortcut_id,level,class_index) values(?,?,?,?,?,?,?)");
+            PreparedStatement statement = con.prepareStatement("REPLACE INTO character_shortcuts (char_obj_id,slot,page,type,shortcut_id,level,class_index) values(?,?,?,?,?,?,?)");
             statement.setInt(1, _owner.getObjectId());
             statement.setInt(2, shortcut.getSlot());
             statement.setInt(3, shortcut.getPage());
