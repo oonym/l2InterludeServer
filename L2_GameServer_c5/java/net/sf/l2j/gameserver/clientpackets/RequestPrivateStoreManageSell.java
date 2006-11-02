@@ -59,13 +59,15 @@ public class RequestPrivateStoreManageSell extends ClientBasePacket
             return;
         }
         
-        if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL || player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL +1)
+        if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL 
+        		|| player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL + 1
+        		|| player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
         	player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
 
         if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_NONE)
         {
 			if (player.isSitting()) player.standUp();
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_SELL +1);
+			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_SELL + 1);
 			player.sendPacket(new PrivateStoreManageListSell(player));
         }
 	}

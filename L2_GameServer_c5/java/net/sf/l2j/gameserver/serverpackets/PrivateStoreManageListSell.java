@@ -40,6 +40,7 @@ public class PrivateStoreManageListSell  extends ServerBasePacket
 	private static final String _S__B3_PRIVATESELLLISTSELL = "[S] 9a PrivateSellListSell";
 	private L2PcInstance _player;
 	private int _playerAdena;
+	private boolean _packageSale;
 	private TradeList.TradeItem[] _itemList;
 	private TradeList.TradeItem[] _sellList;
 	
@@ -52,6 +53,7 @@ public class PrivateStoreManageListSell  extends ServerBasePacket
 	{
 		_playerAdena = _player.getAdena();
 		_player.getSellList().updateItems();
+		_packageSale = _player.getSellList().isPackaged();
 		_itemList = _player.getInventory().getAvailableItems(_player.getSellList());
 		_sellList = _player.getSellList().getItems(); 
 	}
@@ -61,7 +63,7 @@ public class PrivateStoreManageListSell  extends ServerBasePacket
 		writeC(0x9a);
 		//section 1 
 		writeD(_player.getObjectId());
-		writeD(0); // Package sell
+		writeD(_packageSale ? 1 : 0); // Package sell
 		writeD(_playerAdena);
 
 		//section2 

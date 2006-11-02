@@ -34,6 +34,7 @@ public class PrivateStoreListSell extends ServerBasePacket
 	private L2PcInstance _storePlayer;
 	private L2PcInstance _player;
 	private int _playerAdena;
+	private boolean _packageSale;
 	private TradeList.TradeItem[] _items;
 	
 	// player's private shop
@@ -55,6 +56,7 @@ public class PrivateStoreListSell extends ServerBasePacket
 		_playerAdena = _player.getAdena();
 //		_storePlayer.getSellList().updateItems();
 		_items = _storePlayer.getSellList().getItems();
+		_packageSale = _storePlayer.getSellList().isPackaged();
 /*		} else {
 			L2MerchantInstance seller = (L2MerchantInstance)_seller;
 			_sellList = new FastList<TradeItem>();
@@ -86,7 +88,7 @@ public class PrivateStoreListSell extends ServerBasePacket
 	{
 		writeC(0x9b);
 		writeD(_storePlayer.getObjectId());
-		writeD(0x00);
+		writeD(_packageSale ? 1 : 0);
 		writeD(_playerAdena);
 		
 		writeD(_items.length);

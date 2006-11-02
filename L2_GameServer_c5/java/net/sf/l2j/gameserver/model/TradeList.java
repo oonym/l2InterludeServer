@@ -125,6 +125,7 @@ public class TradeList
     private L2PcInstance _partner;
     private List<TradeItem> _items;
     private String _title;
+    private boolean _packaged;
 
     private boolean _confirmed = false;
     private boolean _locked = false;
@@ -168,6 +169,16 @@ public class TradeList
     public boolean isConfirmed()
     {
         return _confirmed;
+    }
+
+    public boolean isPackaged()
+    {
+        return _packaged;
+    }
+
+    public void setPackaged(boolean value)
+    {
+    	_packaged = value;
     }
 
     /**
@@ -679,7 +690,6 @@ public class TradeList
                 Lock();
                 return false;
             }
-            ;
 
             // Proceed with item transfer
             L2ItemInstance newItem = ownerInventory.transferItem("PrivateStore", item.getObjectId(), item.getCount(), playerInventory, _owner, player);

@@ -39,13 +39,12 @@ public class SetPrivateStoreListSell extends ClientBasePacket
 	//private static Logger _log = Logger.getLogger(SetPrivateStoreListSell.class.getName());
 
 	private int _count;
-	@SuppressWarnings("unused")
-	private int _unknow;
+	private boolean _packageSale;
 	private int[] _items; // count * 3
 	public SetPrivateStoreListSell(ByteBuffer buf, ClientThread client)
 	{
 		super( buf, client);
-	    _unknow = readD();
+	    _packageSale = (readD() == 1);
 		_count = readD();
 		if (_count <= 0)
 		{
@@ -84,6 +83,7 @@ public class SetPrivateStoreListSell extends ClientBasePacket
         
         TradeList tradeList = player.getSellList();
         tradeList.Clear();
+        tradeList.setPackaged(_packageSale);
 
         for (int i = 0; i < _count; i++)
         {
@@ -110,7 +110,10 @@ public class SetPrivateStoreListSell extends ClientBasePacket
         }
         
 		player.sitDown();
-		player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_SELL);
+		if (_packageSale)
+			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_PACKAGE_SELL);
+		else
+			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_SELL);
 		player.broadcastUserInfo();
 		player.broadcastPacket(new PrivateStoreMsgSell(player));
 	}

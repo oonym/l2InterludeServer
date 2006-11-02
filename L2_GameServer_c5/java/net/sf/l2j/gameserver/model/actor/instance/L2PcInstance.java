@@ -206,6 +206,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public static final int STORE_PRIVATE_SELL = 1;
 	public static final int STORE_PRIVATE_BUY = 3;
 	public static final int STORE_PRIVATE_MANUFACTURE = 5;
+	public static final int STORE_PRIVATE_PACKAGE_SELL = 8;
 
 	/** The table containing all minimum level needed for each Expertise (None, D, C, B, A, S)*/
 	private static final int[] EXPERTISE_LEVELS =
@@ -3103,7 +3104,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			L2PcInstance temp = (L2PcInstance) target;
 			sendPacket(new ActionFailed());
 			
-			if (temp.getPrivateStoreType() == STORE_PRIVATE_SELL)
+			if (temp.getPrivateStoreType() == STORE_PRIVATE_SELL || temp.getPrivateStoreType() == STORE_PRIVATE_PACKAGE_SELL)
 				sendPacket(new PrivateStoreListSell(this, temp));
 			else if (temp.getPrivateStoreType() == STORE_PRIVATE_BUY)
 				sendPacket(new PrivateStoreListBuy(this, temp));

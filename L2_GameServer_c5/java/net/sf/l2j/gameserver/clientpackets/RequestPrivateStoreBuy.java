@@ -69,13 +69,15 @@ public class RequestPrivateStoreBuy extends ClientBasePacket
 
 	void runImpl()
 	{
-		long priceTotal = 0;
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null) return;
+		
 		L2Object object = L2World.getInstance().findObject(_storePlayerId);
 		if (object == null || !(object instanceof L2PcInstance)) return;
+		
 		L2PcInstance storePlayer = (L2PcInstance)object;
-		if (storePlayer.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_SELL) return;
+		if (!(storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL || storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)) return;
+		
 		TradeList storeList = storePlayer.getSellList();
 		if (storeList == null) return;
         
@@ -87,6 +89,7 @@ public class RequestPrivateStoreBuy extends ClientBasePacket
         }
         
         // FIXME: this check should be (and most probabliy is) done in the TradeList mechanics
+		long priceTotal = 0;
         for(ItemRequest ir : _items)
         {
 			if (ir.getCount() > Integer.MAX_VALUE || ir.getCount() < 0)
