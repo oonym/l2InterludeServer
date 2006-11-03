@@ -293,7 +293,7 @@ public class GameServer
            throw new Exception("Could not initialize the Helper Buff Table");
         }
         
-
+        GeoData.getInstance();
 		TeleportLocationTable.getInstance();
 		LevelUpData.getInstance();
 		L2World.getInstance();

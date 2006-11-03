@@ -907,7 +907,10 @@ public final class Config
     /** Grid Options */
     public static boolean GRIDS_ALWAYS_ON;
     public static int GRID_NEIGHBOR_TURNON_TIME;
-    public static int GRID_NEIGHBOR_TURNOFF_TIME;    
+    public static int GRID_NEIGHBOR_TURNOFF_TIME;
+    
+    /** GeoData On/Off */
+    public static boolean GEODATA;
     
     /**
      * This class initializes all global variables for configuration.<br>
@@ -1067,6 +1070,8 @@ public final class Config
                 GRIDS_ALWAYS_ON                 = Boolean.parseBoolean(optionsSettings.getProperty("GridsAlwaysOn", "False"));
                 GRID_NEIGHBOR_TURNON_TIME       = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOnTime", "30"));
                 GRID_NEIGHBOR_TURNOFF_TIME      = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));    
+                
+                GEODATA                         = Boolean.parseBoolean(optionsSettings.getProperty("GeoData", "False"));
                 
                 // ---------------------------------------------------
                 // Configuration values not found in config files
