@@ -879,11 +879,6 @@ public final class Config
     /** Maximum number of petitions pending */
     public static int     MAX_PETITIONS_PENDING;
     
-    // Alternative AI setting
-    /** Enable AI ? */
-    public static boolean AI_ENABLED;
-    /** AI default class */
-    public static String  AI_DEFAULT_CLASS;
     
     /** Bypass exploit protection ? */
     public static boolean BYPASS_VALIDATION;
@@ -1546,24 +1541,7 @@ public final class Config
 	        catch (Exception e)
 	        {
 	        	_log.warning("Could not load HexID file ("+HEXID_FILE+"). Hopefully login will give us one.");
-	        }
-	        
-	        /** AI Config */
-	        try
-	        {
-	        	Properties aiSettings = new Properties();
-	        	InputStream is = new FileInputStream(new File(AI_FILE));
-	        	aiSettings.load(is);
-	        	is.close();
-	        	
-	        	AI_ENABLED = Boolean.valueOf(aiSettings.getProperty("EnableAI", "false"));
-	        	AI_DEFAULT_CLASS = aiSettings.getProperty("DefaultAI");
-	        }
-	        catch (Exception e)
-	        {
-	        	//e.printStackTrace();
-	        	//throw new Error("Failed to Load " + AI_FILE + " File.");
-	        }
+	        }     
 		}
 		else if(Server.SERVER_MODE == Server.MODE_LOGINSERVER)
 		{
