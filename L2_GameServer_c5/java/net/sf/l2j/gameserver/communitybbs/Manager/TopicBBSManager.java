@@ -32,7 +32,6 @@ import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.BB.Post;
 import net.sf.l2j.gameserver.communitybbs.BB.Topic;
-import net.sf.l2j.gameserver.communitybbs.BB.Post.CPost;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ShowBoard;
 
@@ -157,7 +156,7 @@ public class TopicBBSManager extends BaseBBSManager
 				}
 				else
 				{
-					CPost cp = null;
+					//CPost cp = null;
 					Post p = PostBBSManager.getInstance().getGPosttByTopic(t);
 					if (p != null)
 					{
@@ -247,7 +246,7 @@ public class TopicBBSManager extends BaseBBSManager
 				}
 				else
 				{
-					CPost cp = null;
+					//CPost cp = null;
 					Post p = PostBBSManager.getInstance().getGPosttByTopic(t);
 					if (p != null)
 					{

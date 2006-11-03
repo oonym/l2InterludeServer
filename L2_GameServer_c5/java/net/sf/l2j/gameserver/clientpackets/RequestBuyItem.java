@@ -26,7 +26,6 @@ import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.TradeController;
 import net.sf.l2j.gameserver.cache.HtmCache;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2TradeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2FishermanInstance;
@@ -241,7 +240,7 @@ public class RequestBuyItem extends ClientBasePacket
 			if (count < 0) count = 0;
 
 			// Add item to Inventory and adjust update packet
-			L2ItemInstance item = player.getInventory().addItem("Buy", itemId, count, player, merchant);
+			player.getInventory().addItem("Buy", itemId, count, player, merchant);
 
 
 /* TODO: Disabled until Leaseholders are rewritten ;-)

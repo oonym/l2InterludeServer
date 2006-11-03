@@ -30,12 +30,12 @@ public class PledgeShowInfoUpdate extends ServerBasePacket
 {
 	private static final String _S__A1_PLEDGESHOWINFOUPDATE = "[S] 88 PledgeShowInfoUpdate";
 	private L2Clan _clan;
-	private L2PcInstance _activeChar;
+	//private L2PcInstance _activeChar;
 	
 	public PledgeShowInfoUpdate(L2Clan clan, L2PcInstance activeChar)
 	{
 		_clan = clan;
-		_activeChar = activeChar;
+		//_activeChar = activeChar;
 	}	
 	
 	final void runImpl()

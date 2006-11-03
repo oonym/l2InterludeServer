@@ -162,22 +162,22 @@ public class PostBBSManager extends BaseBBSManager
 	 * @param ind
 	 * @param idf
 	 */
-	private void showPost(Topic topic, Forum Forum, L2PcInstance activeChar, int ind)
+	private void showPost(Topic topic, Forum forum, L2PcInstance activeChar, int ind)
 	{	
-		if((Forum == null)||(topic == null))
+		if((forum == null)||(topic == null))
 		{			
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>Error, this forum is not implemented yet</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
 			activeChar.sendPacket(new ShowBoard(null,"103"));  
 		}
-		else if(Forum.getType() == Forum.MEMO)
+		else if(forum.getType() == Forum.MEMO)
 		{
-			ShowMemoPost(topic,activeChar,Forum);
+			ShowMemoPost(topic,activeChar,forum);
 		}
 		else
 		{
-			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the forum: "+Forum.getName()+" is not implemented yet</center><br><br></body></html>","101");
+			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the forum: "+forum.getName()+" is not implemented yet</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
 			activeChar.sendPacket(new ShowBoard(null,"103"));  

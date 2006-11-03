@@ -49,7 +49,7 @@ public class Forum
 	private Map<Integer,Topic> _topic;
 	private int _ForumId;
 	private String _ForumName;
-	private int _ForumParent;
+	//private int _ForumParent;
 	private int _ForumType;
 	private int _ForumPost;
 	private int _ForumPerm;
@@ -82,7 +82,7 @@ public class Forum
 	{
 		_ForumName = name;
 		_ForumId = ForumsBBSManager.getInstance().GetANewID();
-		_ForumParent = parent.getID();
+		//_ForumParent = parent.getID();
 		_ForumType = type;
 		_ForumPost = 0;
 		_ForumPerm = perm;
@@ -111,7 +111,7 @@ public class Forum
 			if (result.next())
 			{
 				_ForumName = result.getString("forum_name");
-				_ForumParent = Integer.parseInt(result.getString("forum_parent"));
+				//_ForumParent = Integer.parseInt(result.getString("forum_parent"));
 				_ForumPost = Integer.parseInt(result.getString("forum_post"));
 				_ForumType = Integer.parseInt(result.getString("forum_type"));
 				_ForumPerm = Integer.parseInt(result.getString("forum_perm"));
