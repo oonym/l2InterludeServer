@@ -266,13 +266,16 @@ public class RequestBuyItem extends ClientBasePacket
 */
 		}
 
-		String html = HtmCache.getInstance().getHtm("data/html/"+ htmlFolder +"/" + merchant.getNpcId() + "-bought.htm");
-
-		if (html != null)
+		if (merchant != null)
 		{
-			NpcHtmlMessage boughtMsg = new NpcHtmlMessage(merchant.getObjectId());
-			boughtMsg.setHtml(html.replaceAll("%objectId%", String.valueOf(merchant.getObjectId())));
-			player.sendPacket(boughtMsg);
+			String html = HtmCache.getInstance().getHtm("data/html/"+ htmlFolder +"/" + merchant.getNpcId() + "-bought.htm");
+
+			if (html != null)
+			{
+				NpcHtmlMessage boughtMsg = new NpcHtmlMessage(merchant.getObjectId());
+				boughtMsg.setHtml(html.replaceAll("%objectId%", String.valueOf(merchant.getObjectId())));
+				player.sendPacket(boughtMsg);
+			}
 		}
 		
 		StatusUpdate su = new StatusUpdate(player.getObjectId());

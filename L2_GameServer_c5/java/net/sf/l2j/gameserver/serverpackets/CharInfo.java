@@ -239,7 +239,7 @@ public class CharInfo extends ServerBasePacket
 	        	writeC(0x00); //team circle around feet 1= Blue, 2 = red
 	        
 			writeD(_cha.getClanCrestLargeId()); 
-			writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Symbol on char menu ctrl+I  
+			writeC(_cha.isNoble() ? 1 : 0); // Symbol on char menu ctrl+I  
 			writeC((_cha.isHero() || (_cha.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura
 			
 			writeC(_cha.isFishing() ? 1 : 0); //0x01: Fishing Mode (Cant be undone by setting back to 0)

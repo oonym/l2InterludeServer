@@ -1756,16 +1756,6 @@ public abstract class L2Character extends L2Object
 		synchronized(_effects) 
 		{
 			L2Effect tempEffect = null;
-			for (int i=0; i<_effects.size(); i++) 
-			{
-				if (_effects.get(i).getSkill() == newEffect.getSkill().getId()) 
-				{
-					tempEffect = _effects.get(i).getEffect();
-					break;
-				}
-			}
-			// Make sure there's no same buff previously 
-			if (tempEffect != null) tempEffect.exit();
 		
 			// Remove first Buff if number of buffs > 19
 			L2Skill tempskill = newEffect.getSkill(); 
@@ -1777,7 +1767,7 @@ public abstract class L2Character extends L2Object
                 tempskill.getId() != 4267 &&
                 tempskill.getId() != 4270 &&
                 !(tempskill.getId() > 4360  && tempskill.getId() < 4367))
-        	) removeFirstBuff(0); // removeFirstBuff(tempskill.getId());
+        	) removeFirstBuff(tempskill.getId());
 
 			// Add the L2Effect to all effect in progress on the L2Character
 			if (!newEffect.getSkill().isToggle()) 
@@ -1929,10 +1919,10 @@ public abstract class L2Character extends L2Object
 		// Add the new effect to the Stack list in function of its position in the Stack group
 		stackQueue.add(i, id);
 		
-		// Currently all effects are cancelled. In this removal, skill.exit() should
-		// actually be used, if the users don't wish to see "effect removed" always
-		// when a timer goes off, even if the buff isn't active any more (has been replaced).
-		if (/*Config.EFFECT_CANCELING &&*/ stackQueue.size() > 1) 
+		// skill.exit() could be used, if the users don't wish to see "effect 
+		// removed" always when a timer goes off, even if the buff isn't active 
+		// any more (has been replaced). but then check e.g. npc hold and raid petrify.
+		if (Config.EFFECT_CANCELING && stackQueue.size() > 1) 
 		{
 			// only keep the current effect, cancel other effects
 			for (int n=0; n<_effects.size(); n++) 
