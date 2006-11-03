@@ -206,7 +206,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             }
 
             // prevents changing between same level jobs
-            if(newJobLevel == jobLevel) return;
+            if(newJobLevel != jobLevel + 1) return;
 
             if (level < 20 && newJobLevel > 1) return;
             if (level < 40 && newJobLevel > 2) return;
