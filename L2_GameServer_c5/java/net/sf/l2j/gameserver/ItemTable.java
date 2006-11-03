@@ -622,7 +622,7 @@ public class ItemTable
         if (process.equalsIgnoreCase("loot") && !Config.AUTO_LOOT)
         {
             item.setOwnerId(actor.getObjectId());
-            ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), 90000);
+            ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), 15000);
         }
         
 		if (Config.DEBUG) _log.fine("ItemTable: Item created  oid:" + item.getObjectId()+ " itemid:" + itemId);
