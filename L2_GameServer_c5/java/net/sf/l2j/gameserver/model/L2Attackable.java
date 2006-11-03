@@ -332,13 +332,15 @@ public class L2Attackable extends L2NpcInstance
      */
     public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
     {
+    	/*
         if ((this instanceof L2SiegeGuardInstance) && (attacker instanceof L2SiegeGuardInstance))
             //if((this.getEffect(L2Effect.EffectType.CONFUSION)!=null) && (attacker.getEffect(L2Effect.EffectType.CONFUSION)!=null))
                 return;
         
         if ((this instanceof L2MonsterInstance)&&(attacker instanceof L2MonsterInstance))
-            //if((this.getEffect(L2Effect.EffectType.CONFUSION)!=null) && (attacker.getEffect(L2Effect.EffectType.CONFUSION)!=null))
+            if((this.getEffect(L2Effect.EffectType.CONFUSION)!=null) && (attacker.getEffect(L2Effect.EffectType.CONFUSION)!=null))
                 return;
+        */
         if (this.isEventMob) return;
         	
         // Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList
