@@ -3413,9 +3413,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		setPvpFlag(0);              // Clear the pvp flag
 		
-		// Unsummon the Pet
-		if (getPet() != null) 
-            getPet().unSummon(this);
 		
 		// Unsummon Cubics
 		if (_cubics.size() > 0) 
