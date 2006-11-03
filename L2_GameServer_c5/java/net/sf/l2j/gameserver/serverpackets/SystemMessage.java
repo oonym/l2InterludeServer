@@ -115,6 +115,7 @@ public class SystemMessage extends ServerBasePacket
 	public static final int CRITICAL_HIT_BY_SUMMONED_MOB       = 1028;
 	public static final int SHIELD_DEFENCE_SUCCESSFULL         =  111;
 	public static final int OVER_HIT                           =  361;
+	public static final int ACQUIRED_BONUS_EXPERIENCE_THROUGH_OVER_HIT  =  362;
 	public static final int SPOIL_SUCCESS                      =  612;
 	public static final int SPOIL_CANNOT_USE                   =  661;
     public static final int SWEEPER_FAILED_TARGET_NOT_SPOILED  =  343;
