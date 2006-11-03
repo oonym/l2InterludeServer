@@ -3734,11 +3734,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				(
 						!ZoneManager.getInstance().checkIfInZonePvP(this) ||       // Player is not inside pvp zone or
 						!ZoneManager.getInstance().checkIfInZonePvP(target)        // Target player is not inside pvp zone
-				) &&
+				)/* &&               // Micht : ALREADY CHECKED IN checkIfPvP(target)
                 (
                         target instanceof L2PcInstance &&                          // Target is a player and
                         !(((L2PcInstance)target).getKarma() > 0)                   // target doesn't have Karma (Attacking a PK doesn't flag you.)
-                )
+                )*/
 		) updatePvPStatus();
 	}
 	
