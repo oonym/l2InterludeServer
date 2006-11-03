@@ -3198,7 +3198,34 @@ public final class L2PcInstance extends L2PlayableInstance
 				sendPacket(new SystemMessage(SystemMessage.SLOTS_FULL));
 				return;
 			}
-			
+            
+	        if (target.getOwnerId() != 0 && target.getOwnerId() != getObjectId() && !isInLooterParty(target.getOwnerId()))
+            {
+                sendPacket(new ActionFailed());
+                
+                if (target.getItemId() == 57)
+                {
+                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1_ADENA);
+                    smsg.addNumber(target.getCount());
+                    sendPacket(smsg);
+                }
+                else if (target.getCount() > 1)
+                {
+                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S2_S1_s);
+                    smsg.addItemName(target.getItemId());
+                    smsg.addNumber(target.getCount());
+                    sendPacket(smsg);
+                }
+                else
+                {
+                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1);
+                    smsg.addItemName(target.getItemId());
+                    sendPacket(smsg);
+                }
+                
+                return;
+            }
+            
 			// Remove the L2ItemInstance from the world and send server->client GetItem packets
 			target.pickupMe(this);
 		}
@@ -6072,7 +6099,7 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             int spoilerId = ((L2Attackable)target).getIsSpoiledBy();
 
-            if ((((L2Attackable)target).isDead() && !((L2Attackable)target).isSpoil()) || (getObjectId() != spoilerId && !isInSpoilerParty(spoilerId)))
+            if ((((L2Attackable)target).isDead() && !((L2Attackable)target).isSpoil()) || (getObjectId() != spoilerId && !isInLooterParty(spoilerId)))
             {
                 // Send a System Message to the L2PcInstance
                 sendPacket(new SystemMessage(SystemMessage.SWEEPER_FAILED_TARGET_NOT_SPOILED));
@@ -6142,12 +6169,12 @@ public final class L2PcInstance extends L2PlayableInstance
         
     }
     
-    public boolean isInSpoilerParty(int SpoilerId)
+    public boolean isInLooterParty(int LooterId)
     {
-    	L2PcInstance spoiler = (L2PcInstance)L2World.getInstance().findObject(SpoilerId);
+    	L2PcInstance looter = (L2PcInstance)L2World.getInstance().findObject(LooterId);
         
-    	if (isInParty() && spoiler != null) 
-            return getParty().getPartyMembers().contains(spoiler);
+    	if (isInParty() && looter != null) 
+            return getParty().getPartyMembers().contains(looter);
         
 		return false;
     }

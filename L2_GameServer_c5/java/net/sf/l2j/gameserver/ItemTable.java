@@ -616,8 +616,15 @@ public class ItemTable
 	 */
 	public L2ItemInstance createItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
 	{
-		// Create and Init the L2ItemInstance corresponding to the Item Identifier
+        // Create and Init the L2ItemInstance corresponding to the Item Identifier
 		L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
+		
+        if (process.equalsIgnoreCase("loot") && !Config.AUTO_LOOT)
+        {
+            item.setOwnerId(actor.getObjectId());
+            ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), 90000);
+        }
+        
 		if (Config.DEBUG) _log.fine("ItemTable: Item created  oid:" + item.getObjectId()+ " itemid:" + itemId);
 		
 		// Add the L2ItemInstance object to _allObjects of L2world
@@ -738,4 +745,19 @@ public class ItemTable
 			_instance = new ItemTable();
 		}
 	}
+	
+    protected class resetOwner implements Runnable
+    {
+        L2ItemInstance _item;
+        
+        public resetOwner(L2ItemInstance item)
+        {
+            _item = item;
+        }
+        
+        public void run()
+        {
+            _item.setOwnerId(0);
+        }
+    }
 }

@@ -244,7 +244,10 @@ public class SystemMessage extends ServerBasePacket
 	public static final int YOU_PICKED_UP_S1 = 30;	
 	public static final int S1_PICKED_UP_S2_S3 = 299;
 	public static final int S1_PICKED_UP_S2 = 300;
-	
+    public static final int FAILED_TO_PICKUP_S1_ADENA = 55;
+    public static final int FAILED_TO_PICKUP_S1 = 56;
+    public static final int FAILED_TO_PICKUP_S2_S1_s = 57;
+    
 	//GM LIST
 	public static final int GM_LIST = 703;
 	public static final int GM_S1 = 704;

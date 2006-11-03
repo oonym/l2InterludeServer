@@ -383,7 +383,34 @@ public final class L2PetInstance extends L2Summon
 				return;
 			}
             
-			target.pickupMe(this);
+            if (target.getOwnerId() != 0 && target.getOwnerId() != getOwner().getObjectId() && !getOwner().isInLooterParty(target.getOwnerId()))
+            {
+                getOwner().sendPacket(new ActionFailed());
+                
+                if (target.getItemId() == 57)
+                {
+                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1_ADENA);
+                    smsg.addNumber(target.getCount());
+                    getOwner().sendPacket(smsg);
+                }
+                else if (target.getCount() > 1)
+                {
+                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S2_S1_s);
+                    smsg.addItemName(target.getItemId());
+                    smsg.addNumber(target.getCount());
+                    getOwner().sendPacket(smsg);
+                }
+                else
+                {
+                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1);
+                    smsg.addItemName(target.getItemId());
+                    getOwner().sendPacket(smsg);
+                }
+                
+                return;
+            }
+            
+            target.pickupMe(this);
 		}
 		
 		getInventory().addItem("Pickup", target, getOwner(), this);
