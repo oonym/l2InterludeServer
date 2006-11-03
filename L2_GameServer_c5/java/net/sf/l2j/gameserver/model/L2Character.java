@@ -4864,6 +4864,10 @@ public abstract class L2Character extends L2Object
                             {
                                 player.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
                                 activeChar.updatePvPStatus(player);
+                            }else if (player instanceof L2Attackable)
+                            {
+                            	// notify the AI that she is attacked
+                            	player.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
                             }
 						}
 						else
