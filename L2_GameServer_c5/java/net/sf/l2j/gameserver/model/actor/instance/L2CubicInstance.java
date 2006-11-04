@@ -203,7 +203,8 @@ public class L2CubicInstance
                                                                                                skill.getSkillType());
 
                             int x, y, z;
-                            int range = skill.getCastRange();
+                            // temporary range check until real behavior of cubics is known/coded
+                            int range = 400; //skill.getCastRange();
 
                             x = (_owner.getX() - _target.getX());
                             y = (_owner.getY() - _target.getY());
@@ -278,7 +279,8 @@ public class L2CubicInstance
                                 List<L2PcInstance> partyList = party.getPartyMembers();
                                 L2Character partyMember = null;
                                 int x, y, z;
-                                int range = skill.getCastRange();
+                                // temporary range check until real behavior of cubics is known/coded
+                                int range = 400; //skill.getCastRange();
                                 for (int i = 0; i < partyList.size(); i++)
                                 {
                                     partyMember = partyList.get(i);
