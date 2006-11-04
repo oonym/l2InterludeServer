@@ -28,7 +28,8 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class MoveToLocationInVehicle extends ServerBasePacket
 {
-	L2PcInstance _pci;
+	int _pciId;
+	int _boatId;
 	L2CharPosition _destination;
 	L2CharPosition _origin;
 	/**
@@ -38,7 +39,14 @@ public class MoveToLocationInVehicle extends ServerBasePacket
 	 */
 	public MoveToLocationInVehicle(L2Character actor, L2CharPosition destination, L2CharPosition origin)
 	{
-		_pci = (L2PcInstance)actor;
+		if (!(actor instanceof L2PcInstance)) return;
+		
+		L2PcInstance player = (L2PcInstance)actor;
+		
+		if (player.getBoat() == null) return;
+		
+		_pciId = player.getObjectId();
+		_boatId = player.getBoat().getObjectId();
 		_destination = destination;
 		_origin = origin;
 	/*	_pci.sendMessage("_destination : x " + x +" y " + y + " z " + z);
@@ -63,8 +71,8 @@ public class MoveToLocationInVehicle extends ServerBasePacket
 	void writeImpl()
 	{
 		writeC(0x71);
-        writeD(_pci.getObjectId());
-        writeD(_pci.getBoat().getObjectId());
+        writeD(_pciId);
+        writeD(_boatId);
 		writeD(_destination.x);
 		writeD(_destination.y);
 		writeD(_destination.z);
