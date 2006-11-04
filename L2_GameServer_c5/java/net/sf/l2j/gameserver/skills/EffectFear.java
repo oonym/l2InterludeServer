@@ -22,6 +22,7 @@ package net.sf.l2j.gameserver.skills;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 
 
@@ -62,7 +63,9 @@ final class EffectFear extends L2Effect {
 	
     public boolean onActionTime()
     {
-		int posX = getEffected().getX();
+    	// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread is the exception.
+    	if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376) return false;
+    	int posX = getEffected().getX();
 		int posY = getEffected().getY();
 		int posZ = getEffected().getZ();
 		

@@ -1268,6 +1268,13 @@ public final class Formulas
 
 	public boolean calcMagicAffected(L2Character actor, L2Character target, L2Skill skill)
 	{
+		SkillType type = skill.getSkillType();
+		if (target.isRaid()
+				&& (type == SkillType.CONFUSION || type == SkillType.MUTE || type == SkillType.PARALYZE
+					|| type == SkillType.ROOT || type == SkillType.FEAR || type == SkillType.SLEEP
+					|| type == SkillType.STUN || type == SkillType.DEBUFF || type == SkillType.AGGDEBUFF))
+			return false; // these skills should have only 1/1000 chance on raid, now it's 0.
+
 		double defence = 0;
 		if (skill.isActive() && skill.isOffensive()) defence = target.getMDef(actor, skill);
 		double attack = 2 * actor.getMAtk(target, skill);

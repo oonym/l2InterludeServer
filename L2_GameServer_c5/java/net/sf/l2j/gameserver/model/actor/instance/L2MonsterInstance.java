@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.knownlist.MonsterKnownList;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.MinionList;
@@ -115,6 +116,10 @@ public class L2MonsterInstance extends L2Attackable
                 	minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
                 		public void run()
                 		{
+                			// teleport raid boss home if it's too far from home location
+                			L2Spawn bossSpawn = getSpawn();
+                			if(!isInsideRadius(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz(), 5000, true, false))
+                				teleToLocation(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz());
                 			minionList.maintainMinions();
                 		}
                 	}, 60000, getMaintenanceInterval()+Rnd.get(5000));

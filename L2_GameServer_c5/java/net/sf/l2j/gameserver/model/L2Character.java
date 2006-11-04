@@ -1962,10 +1962,12 @@ public abstract class L2Character extends L2Object
 	{
 		if(effect == null)
 			return;
-		if(!effect.getInUse()) return;
 
 		synchronized(_effects) 
 		{
+			if(!effect.getInUse()) return;
+			effect.setInUse(false);
+			
 			if (effect.getStackType() == "none")
 			{
 				// Remove Func added by this effect from the L2Character Calculator
