@@ -983,6 +983,7 @@ public final class Formulas
 			damage += skill.getPower();
 			//damage += skill.getPower() * 0.7 * attacker.getPAtk(target)/defence;
 		}
+		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;
 		
 		//		damage = damage * attacker.getSTR()*(1 - attacker.getLevel()/100)/60*1.15;
@@ -1147,6 +1148,7 @@ public final class Formulas
 
 		double damage = 91 * Math.sqrt(mAtk) / mDef * skill.getPower(attacker);
 		
+		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;
 		
 		//		if(attacker instanceof L2PcInstance && target instanceof L2PcInstance) damage *= 0.9; // PvP modifier (-10%)

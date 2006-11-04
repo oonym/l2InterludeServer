@@ -46,7 +46,7 @@ public class SoulShots implements IItemHandler
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
-	{  // why is this synchronized? according to user repoorts it leads to a deadlock (#562)
+	{
 		if (!(playable instanceof L2PcInstance)) return;
         
 		L2PcInstance activeChar = (L2PcInstance)playable;
