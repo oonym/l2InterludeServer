@@ -28,8 +28,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
-import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /** 
@@ -143,10 +141,12 @@ public class ScrollOfResurrection implements IItemHandler
                     {
                     	L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel); 
                     	activeChar.useMagic(skill, true, true);
+                    	/* Micht : Unusefull, already done in useMagic()
                     	MagicSkillUser msu = new MagicSkillUser(activeChar, skillId, skillLevel, skill.getHitTime(),0); 
                     	activeChar.broadcastPacket(msu); 
                     	SetupGauge sg = new SetupGauge(0, skill.getHitTime()); 
                     	activeChar.sendPacket(sg);
+                    	*/
 
                     	SystemMessage sm = new SystemMessage(SystemMessage.S1_DISAPPEARED);
                     	sm.addItemName(itemId);
