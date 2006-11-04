@@ -58,15 +58,12 @@ public class SiegeFlag implements ISkillHandler
         
         try
         {
-        	player.sendMessage("1");
             L2ItemInstance itemToTake = player.getInventory().getItemByItemId(SiegeManager.getInstance().getFlagBuyItemId());
-            player.sendMessage("2");
             if(!player.destroyItem("Consume", itemToTake.getObjectId(), SiegeManager.getInstance().getFlagBuyCost(), null, true))
             	return;
-            player.sendMessage("3");
+
             // Spawn a new flag
             L2SiegeFlagInstance flag = new L2SiegeFlagInstance(player, IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(35062));
-            player.sendMessage("4");
             flag.setTitle(player.getClan().getName());
             flag.setCurrentHpMp(flag.getMaxHp(), flag.getMaxMp());
             flag.setHeading(player.getHeading());
