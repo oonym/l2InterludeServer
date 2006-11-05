@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.LogRecord;
+import java.util.concurrent.ScheduledFuture;
 
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
@@ -622,7 +623,8 @@ public class ItemTable
         if (process.equalsIgnoreCase("loot") && !Config.AUTO_LOOT)
         {
             item.setOwnerId(actor.getObjectId());
-            ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), 15000);
+            ScheduledFuture itemLootShedule  = ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), 15000);
+            item.setItemLootShedule(itemLootShedule);
         }
         
 		if (Config.DEBUG) _log.fine("ItemTable: Item created  oid:" + item.getObjectId()+ " itemid:" + itemId);
@@ -758,6 +760,8 @@ public class ItemTable
         public void run()
         {
             _item.setOwnerId(0);
+            _item.setItemLootShedule(null);
         }
     }
+
 }

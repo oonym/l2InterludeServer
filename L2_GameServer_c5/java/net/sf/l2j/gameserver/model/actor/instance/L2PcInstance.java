@@ -3225,6 +3225,9 @@ public final class L2PcInstance extends L2PlayableInstance
                 
                 return;
             }
+	        if(target.getItemLootShedule() != null
+	        		&& (target.getOwnerId() == getObjectId() || isInLooterParty(target.getOwnerId())))
+	        	target.resetOwnerTimer();
             
 			// Remove the L2ItemInstance from the world and send server->client GetItem packets
 			target.pickupMe(this);
