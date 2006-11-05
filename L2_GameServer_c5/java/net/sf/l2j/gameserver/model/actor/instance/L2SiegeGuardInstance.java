@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
@@ -44,7 +45,8 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public final class L2SiegeGuardInstance extends L2Attackable
 {
-    //private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
+    @SuppressWarnings("hiding")
+	private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
 	private final Random _rnd = new Random();
 
     private int _homeX;
