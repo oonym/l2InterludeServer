@@ -66,7 +66,7 @@ public class ShortCuts
 		return sc;
     }
     
-    public void registerShortCut(L2ShortCut shortcut)
+    public synchronized void registerShortCut(L2ShortCut shortcut)
     {
         L2ShortCut oldShortCut = _shortCuts.put(shortcut.getSlot() + 12 * shortcut.getPage(), shortcut);
         registerShortCutInDb(shortcut, oldShortCut);
@@ -105,6 +105,34 @@ public class ShortCuts
     }
     
     /**
+     * @param slot
+     */
+    public synchronized void deleteShortCut(int slot, int page)
+    {
+        L2ShortCut old = _shortCuts.remove(slot+page*12);
+        
+		if (old != null)
+			deleteShortCutFromDb(old);
+    }
+    
+    public synchronized void deleteShortCutByObjectId(int objectId)
+    {
+        L2ShortCut toRemove = null;
+        
+        for (L2ShortCut shortcut : _shortCuts.values())
+        {
+            if (shortcut.getType() == L2ShortCut.TYPE_ITEM && shortcut.getId() == objectId)
+            {
+                toRemove = shortcut;
+                break;
+            }
+        }
+        
+        if (toRemove != null)
+            deleteShortCut(toRemove.getSlot(), toRemove.getPage());
+    }
+    
+    /**
      * @param shortcut
      */
     private void deleteShortCutFromDb(L2ShortCut shortcut)
@@ -131,34 +159,6 @@ public class ShortCuts
         {
             try { con.close(); } catch (Exception e) {}
         }
-    }
-    
-    /**
-     * @param slot
-     */
-    public void deleteShortCut(int slot, int page)
-    {
-        L2ShortCut old = _shortCuts.remove(slot+page*12);
-        
-		if (old != null)
-        deleteShortCutFromDb(old);
-    }
-    
-    public void deleteShortCutByObjectId(int objectId)
-    {
-        L2ShortCut toRemove = null;
-        
-        for (L2ShortCut shortcut : _shortCuts.values())
-        {
-            if (shortcut.getType() == L2ShortCut.TYPE_ITEM && shortcut.getId() == objectId)
-            {
-                toRemove = shortcut;
-                break;
-            }
-        }
-        
-        if (toRemove != null)
-            deleteShortCut(toRemove.getSlot(), toRemove.getPage());
     }
     
     public void restore()
