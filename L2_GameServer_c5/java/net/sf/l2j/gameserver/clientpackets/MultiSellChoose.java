@@ -2,6 +2,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 //import java.util.logging.Logger;
+import javolution.util.FastList;
 
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.ItemTable;
@@ -59,8 +60,28 @@ public class MultiSellChoose extends ClientBasePacket
     	PcInventory inv = player.getInventory();
         
         L2ItemInstance oldItem = null;
-    	
-    	for(MultiSellIngredient e : entry.getIngredients())
+        
+        // Used only for checking amount of items
+    	FastList<MultiSellIngredient> _ingredientsList = new FastList<MultiSellIngredient>();
+    	boolean newIng = true;
+    	for(MultiSellIngredient e: entry.getIngredients())
+    	{
+    		newIng = true;
+    		
+    		for(MultiSellIngredient ex: _ingredientsList)
+    		{
+    			if(ex.getItemId() == e.getItemId() && ex.getItemEnchant() == e.getItemEnchant())
+    			{
+    				ex.setItemCount(ex.getItemCount() + e.getItemCount());
+    				newIng = false;
+    			}
+    		}
+    		if(newIng)
+    		{
+    			_ingredientsList.add(L2Multisell.getInstance().new MultiSellIngredient(e));
+    		}
+    	}
+    	for(MultiSellIngredient e : _ingredientsList)
     	{
     		L2ItemInstance item = inv.getItemByItemId(e.getItemId(), oldItem);
             

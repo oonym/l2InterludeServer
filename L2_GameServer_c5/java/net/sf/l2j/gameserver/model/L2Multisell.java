@@ -162,7 +162,12 @@ public class L2Multisell
             setItemCount(itemCount);
             setItemEnchant(itemEnchant);
         }
-
+        public MultiSellIngredient(MultiSellIngredient e)
+        {
+        	_itemId = e.getItemId();
+        	_itemCount = e.getItemCount();
+        	_itemEnchant = e.getItemEnchant();
+        }
         /**
          * @param itemId The itemId to set.
          */
