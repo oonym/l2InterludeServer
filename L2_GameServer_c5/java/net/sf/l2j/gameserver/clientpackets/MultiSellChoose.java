@@ -88,17 +88,23 @@ public class MultiSellChoose extends ClientBasePacket
             if((double)e.getItemCount() * (double)_amount > Integer.MAX_VALUE )
             {
                 player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+                _ingredientsList.clear();
+                _ingredientsList = null;
                 return;
             }
     		if(item == null || inv.getInventoryItemCount(item.getItemId(), e.getItemEnchant()) < (e.getItemCount() * _amount))
     		{
     			player.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
+    			_ingredientsList.clear();
+    			_ingredientsList = null;
     			return;
     		}
             
             oldItem = item;
     	}
     	
+    	_ingredientsList.clear();
+    	_ingredientsList = null;
     	/** All ok, remove items and add final product */
     	
     	for(MultiSellIngredient e : entry.getIngredients())
@@ -132,6 +138,7 @@ public class MultiSellChoose extends ClientBasePacket
             sm.addItemName(entry.getProductId());
             sm.addNumber(entry.getProductCount() * _amount);
             player.sendPacket(sm);
+            sm = null;
         }
         else
         {
@@ -147,12 +154,14 @@ public class MultiSellChoose extends ClientBasePacket
                 sm.addItemName(entry.getProductId());
             }
             player.sendPacket(sm);
+            sm = null;
         }
         player.sendPacket(new ItemList(player, false));
         
         StatusUpdate su = new StatusUpdate(player.getObjectId());
         su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
         player.sendPacket(su);
+        su = null;
     }
     
     public String getType()
