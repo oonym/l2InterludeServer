@@ -86,6 +86,7 @@ public class RequestAnswerFriendInvite extends ClientBasePacket
             		msg = new SystemMessage(SystemMessage.S1_JOINED_AS_FRIEND);
         			msg.addString(requestor.getName());
             		player.sendPacket(msg);
+            		msg = null;
         		} 
         		catch (Exception e)
         		{
@@ -99,6 +100,7 @@ public class RequestAnswerFriendInvite extends ClientBasePacket
             {
     			SystemMessage msg = new SystemMessage(SystemMessage.FAILED_TO_INVITE_A_FRIEND);
     			requestor.sendPacket(msg);
+    			msg = null;
     		}
     		
     		player.setActiveRequester(null);

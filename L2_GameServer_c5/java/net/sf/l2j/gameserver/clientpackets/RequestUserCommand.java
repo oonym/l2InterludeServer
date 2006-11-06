@@ -64,6 +64,7 @@ public class RequestUserCommand extends ClientBasePacket
             SystemMessage sm = new SystemMessage(614);
             sm.addString("user commandID "+_command+" not implemented yet");
             player.sendPacket(sm);
+            sm = null;
         }
         else
         {

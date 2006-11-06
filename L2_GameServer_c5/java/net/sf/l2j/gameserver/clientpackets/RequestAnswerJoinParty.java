@@ -67,6 +67,7 @@ public class RequestAnswerJoinParty extends ClientBasePacket
             {
     			SystemMessage msg = new SystemMessage(SystemMessage.PLAYER_DECLINED);
     			requestor.sendPacket(msg);
+                msg = null;
                 
     			//activate garbage collection if there are no other members in party (happens when we were creating new one) 
     			if (requestor.getParty() != null && requestor.getParty().getMemberCount() == 1) requestor.setParty(null);

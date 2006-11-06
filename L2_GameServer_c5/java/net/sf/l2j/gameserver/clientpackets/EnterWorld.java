@@ -185,7 +185,7 @@ public class EnterWorld extends ClientBasePacket
         
         SystemMessage sm = new SystemMessage(34);
         sendPacket(sm);
-	
+	    
         sm = new SystemMessage(SystemMessage.S1_S2);
         sm.addString(getText("VGhpcyBTZXJ2ZXIgaXMgcnVubmluZyBMMko="));
         sm.addString(getText("IHZlcnNpb24gNiBkZXYvdW5zdGFibGU="));
@@ -212,6 +212,7 @@ public class EnterWorld extends ClientBasePacket
             sm.addString(getText("TDJKIFNlcnZlciBCdWlsZCBEYXRlOg==")+" "+Config.SERVER_BUILD_DATE);
             sendPacket(sm);
         }
+        sm = null;
         
         SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);
         Announcements.getInstance().showAnnouncements(activeChar);
@@ -302,6 +303,7 @@ public class EnterWorld extends ClientBasePacket
                     friend.sendPacket(sm);
                 }
 		    }
+            sm = null;
         } 
 		catch (Exception e) {
             _log.warning("could not restore friend data:"+e);
@@ -333,6 +335,8 @@ public class EnterWorld extends ClientBasePacket
 				clanMembers[i].sendPacket(ps);
 				clanMembers[i].sendPacket(msg);
 			}
+			ps = null;
+			msg = null;
 		}
 	}
 

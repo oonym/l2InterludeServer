@@ -66,6 +66,7 @@ public class TradeDone extends ClientBasePacket
 	            player.cancelActiveTrade();
 	            SystemMessage msg = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 	            player.sendPacket(msg);
+	            msg = null;
 	            return;
 	        }
 

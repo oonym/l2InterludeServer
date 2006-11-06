@@ -73,6 +73,7 @@ public class RequestOustPledgeMember extends ClientBasePacket
 		SystemMessage msg = new SystemMessage(SystemMessage.CLAN_MEMBER_S1_EXPELLED);
 		msg.addString(member.getName());
 		clan.broadcastToOnlineMembers(msg);
+		msg = null;
 		
 		clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(_target));
 		

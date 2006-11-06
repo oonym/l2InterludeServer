@@ -109,6 +109,7 @@ public class RequestUnEquipItem extends ClientBasePacket
 	            sm.addItemName(unequiped[0].getItemId());
             }
             activeChar.sendPacket(sm);
+            sm = null;
 		}
 	}
 

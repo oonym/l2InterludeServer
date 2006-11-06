@@ -206,36 +206,42 @@ public class RequestActionUse extends ClientBasePacket
                         //A strider cannot be ridden when dead
                         SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
                         activeChar.sendPacket(msg);
+                        msg = null;
                     }
                     else if (pet.isDead())
                     {   
                         //A dead strider cannot be ridden.
                         SystemMessage msg = new SystemMessage(SystemMessage.DEAD_STRIDER_CANT_BE_RIDDEN);
                         activeChar.sendPacket(msg);
+                        msg = null;
                     }
                     else if (pet.isInCombat())
                     {
                         //A strider in battle cannot be ridden
                         SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
                         activeChar.sendPacket(msg);
+                        msg = null;
                     }
                     else if (activeChar.isInCombat())
                     {
                         //A strider cannot be ridden while in battle
                         SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
-                        activeChar.sendPacket(msg);                        
+                        activeChar.sendPacket(msg);   
+                        msg = null;
                     }                   
                     else if (activeChar.isSitting() || activeChar.isMoving())
                     {
                         //A strider can be ridden only when standing
                         SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
                         activeChar.sendPacket(msg);
+                        msg = null;
                     }
 					else if (activeChar.isFishing())
                     {
                         //You can't mount, dismount, break and drop items while fishing
                         SystemMessage msg = new SystemMessage(1470);
                         activeChar.sendPacket(msg);
+                        msg = null;
                     }
                     else if (!pet.isDead() && !activeChar.isMounted())
                     {

@@ -67,6 +67,7 @@ public class RequestFriendInvite extends ClientBasePacket{
     	    //Target is not found in the game.
     	    sm = new SystemMessage(170);
     	    activeChar.sendPacket(sm);
+    	    sm = null;
     	    return;
     	}
         else if (friend == activeChar)
@@ -74,6 +75,7 @@ public class RequestFriendInvite extends ClientBasePacket{
     	    //You cannot add yourself to your own friend list.
     	    sm = new SystemMessage(165);
     	    activeChar.sendPacket(sm);
+    	    sm = null;
     	    return;
     	}
 
@@ -109,6 +111,7 @@ public class RequestFriendInvite extends ClientBasePacket{
 		    }  
             
 			friend.sendPacket(sm);
+			sm = null;
 			rset.close();
 			statement.close();
 		} 

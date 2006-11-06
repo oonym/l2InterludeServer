@@ -57,6 +57,7 @@ public class AllyDismiss extends ClientBasePacket
             //no current alliance
             msg = new SystemMessage(465);
             player.sendPacket(msg);
+            msg = null;
             return;
         }
         
@@ -64,6 +65,7 @@ public class AllyDismiss extends ClientBasePacket
         {
             msg = new SystemMessage(SystemMessage.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
             player.sendPacket(msg);
+            msg = null;
             return;
         }
         

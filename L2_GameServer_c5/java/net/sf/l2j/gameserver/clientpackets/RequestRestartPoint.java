@@ -182,6 +182,7 @@ public class RequestRestartPoint extends ClientBasePacket
                 sm.addString("You will be re-spawned in " + castle.getSiege().getDefenderRespawnDelay()/1000 + " seconds");
                 activeChar.sendPacket(sm);
             }
+            sm = null;
             return;
         }
         

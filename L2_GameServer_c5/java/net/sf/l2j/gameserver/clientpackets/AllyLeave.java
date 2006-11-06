@@ -53,6 +53,7 @@ public class AllyLeave extends ClientBasePacket
             msg = new SystemMessage(470);
             msg.addString(player.getName());
             player.sendPacket(msg);
+            msg = null;
             return;
         }
         
@@ -61,6 +62,7 @@ public class AllyLeave extends ClientBasePacket
             // no current alliance
             msg = new SystemMessage(465);
             player.sendPacket(msg);
+            msg = null;
             return;
         }
         
@@ -69,6 +71,7 @@ public class AllyLeave extends ClientBasePacket
             //alliance leader cant withdraw
             msg = new SystemMessage(471);
             player.sendPacket(msg);
+            msg = null;
             return;
         }
         
@@ -79,6 +82,7 @@ public class AllyLeave extends ClientBasePacket
         //You have withdrawn from the alliance
         msg = new SystemMessage(519);
         player.sendPacket(msg);
+        msg = null;
         
     }
     

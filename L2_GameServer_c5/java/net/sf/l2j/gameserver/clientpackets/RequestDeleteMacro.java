@@ -37,6 +37,7 @@ public class RequestDeleteMacro extends ClientBasePacket
 	    SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 	    sm.addString("Delete macro id="+_id);
 		sendPacket(sm);
+		sm = null;
 	}
 	
 	/* (non-Javadoc)

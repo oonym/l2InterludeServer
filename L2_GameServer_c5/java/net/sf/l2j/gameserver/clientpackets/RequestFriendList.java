@@ -96,7 +96,7 @@ public class RequestFriendList extends ClientBasePacket
 			
 			//=========================
 			activeChar.sendPacket(new SystemMessage(SystemMessage.FRIEND_LIST_FOOT));
-			
+			sm = null;
 			rset.close();
 			statement.close();
 		}

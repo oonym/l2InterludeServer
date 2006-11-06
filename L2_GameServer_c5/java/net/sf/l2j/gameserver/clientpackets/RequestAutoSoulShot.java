@@ -82,7 +82,8 @@ public class RequestAutoSoulShot extends ClientBasePacket
                     SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
                     sm.addString(item.getItemName());
                     activeChar.sendPacket(sm);
-
+                    sm = null;
+                    
                     // Attempt to charge first shot on activation
                     if (_itemId == 6645 || _itemId == 6646 || _itemId == 6647)
                         activeChar.rechargeAutoSoulShot(true, true, true);
@@ -99,6 +100,7 @@ public class RequestAutoSoulShot extends ClientBasePacket
                     SystemMessage sm = new SystemMessage(SystemMessage.AUTO_USE_OF_S1_CANCELLED);
                     sm.addString(item.getItemName());
                     activeChar.sendPacket(sm);
+                    sm = null;
                 }
             }
         }

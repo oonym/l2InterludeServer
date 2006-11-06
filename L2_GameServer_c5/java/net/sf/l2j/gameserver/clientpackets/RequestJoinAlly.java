@@ -59,6 +59,7 @@ public class RequestJoinAlly extends ClientBasePacket{
 		    //Target is not found in the game.
 		    sm = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 		    activeChar.sendPacket(sm);
+		    sm = null;
 		    return;
 		}
     		if(target.getClan() == null)
@@ -67,6 +68,7 @@ public class RequestJoinAlly extends ClientBasePacket{
 		    //feature available only for alliance leader
 		    sm = new SystemMessage(SystemMessage.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
 		    activeChar.sendPacket(sm);
+		    sm = null;
         	    return;
 		}
 		if (activeChar == target){
@@ -74,6 +76,7 @@ public class RequestJoinAlly extends ClientBasePacket{
             //FIXME: i dont think it's the good msg ID 502 is SystemMessage.ALREADY_JOINED_ALLIANCE
 		    sm = new SystemMessage(502);
 		    activeChar.sendPacket(sm);
+		    sm = null;
         	    return;
 		}
 		if(target.getAllyId() == activeChar.getAllyId()){
@@ -82,6 +85,7 @@ public class RequestJoinAlly extends ClientBasePacket{
 	    sm.addString(activeChar.getClan().getName());
 	    sm.addString(activeChar.getClan().getAllyName());
 	    activeChar.sendPacket(sm);
+	    sm = null;
     	    return;
 		}
 		if(!target.isClanLeader()){
@@ -89,6 +93,7 @@ public class RequestJoinAlly extends ClientBasePacket{
 		    sm = new SystemMessage(9);
 		    sm.addString(target.getName());
 		    activeChar.sendPacket(sm);
+		    sm = null;
         	    return;
 		}
 
@@ -96,6 +101,7 @@ public class RequestJoinAlly extends ClientBasePacket{
         {
 		    sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
 		    activeChar.sendPacket(sm);
+		    sm = null;
 		    return;
         }
 	    activeChar.onTransactionRequest(target);
@@ -104,6 +110,7 @@ public class RequestJoinAlly extends ClientBasePacket{
 	    sm.addString(activeChar.getClan().getAllyName());
 	    sm.addString(activeChar.getName());
 	    target.sendPacket(sm);
+	    sm = null;
 	    AskJoinAlly aja = new AskJoinAlly(activeChar.getObjectId(), activeChar.getClan().getAllyName());
 	    target.sendPacket(aja);
 	    return;

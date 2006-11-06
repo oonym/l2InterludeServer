@@ -77,6 +77,7 @@ public class RequestHennaEquip extends ClientBasePacket
 			SystemMessage sm = new SystemMessage(SystemMessage.S1_DISAPPEARED);
 			sm.addNumber(temp.getItemIdDye());
 			activeChar.sendPacket(sm);
+			sm = null;
 			activeChar.sendPacket(new SystemMessage(SystemMessage.SYMBOL_ADDED));
 			
 			//HennaInfo hi = new HennaInfo(temp,activeChar);

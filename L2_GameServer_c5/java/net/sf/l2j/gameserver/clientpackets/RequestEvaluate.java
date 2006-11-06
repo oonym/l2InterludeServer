@@ -50,6 +50,7 @@ public class RequestEvaluate extends ClientBasePacket {
         {
             sm = new SystemMessage(SystemMessage.TARGET_IS_INCORRECT);
             activeChar.sendPacket(sm);
+            sm =null;
             return;
         }
         
@@ -57,6 +58,7 @@ public class RequestEvaluate extends ClientBasePacket {
         {
             sm = new SystemMessage(SystemMessage.ONLY_LEVEL_SUP_10_CAN_RECOMMEND);
             activeChar.sendPacket(sm);
+            sm =null;
             return;
         }
         
@@ -64,6 +66,7 @@ public class RequestEvaluate extends ClientBasePacket {
         {
             sm = new SystemMessage(SystemMessage.YOU_CANNOT_RECOMMEND_YOURSELF);
             activeChar.sendPacket(sm);
+            sm =null;
             return;
         }
         
@@ -71,6 +74,7 @@ public class RequestEvaluate extends ClientBasePacket {
         {
             sm = new SystemMessage(SystemMessage.NO_MORE_RECOMMENDATIONS_TO_HAVE);
             activeChar.sendPacket(sm);
+            sm =null;
             return;
         }
         
@@ -80,6 +84,7 @@ public class RequestEvaluate extends ClientBasePacket {
         {
             sm = new SystemMessage(SystemMessage.YOU_NO_LONGER_RECIVE_A_RECOMMENDATION);
             activeChar.sendPacket(sm);
+            sm =null;
             return;
         }
         
@@ -87,6 +92,7 @@ public class RequestEvaluate extends ClientBasePacket {
         {
             sm = new SystemMessage(SystemMessage.THAT_CHARACTER_IS_RECOMMENDED);
             activeChar.sendPacket(sm);
+            sm =null;
             return;
         }
         
@@ -100,7 +106,8 @@ public class RequestEvaluate extends ClientBasePacket {
 		sm = new SystemMessage(SystemMessage.YOU_HAVE_BEEN_RECOMMENDED);
 		sm.addString(activeChar.getName());
 		target.sendPacket(sm);
-        
+		sm =null;
+		
         activeChar.sendPacket(new UserInfo(activeChar));
 		target.broadcastUserInfo();
 	}

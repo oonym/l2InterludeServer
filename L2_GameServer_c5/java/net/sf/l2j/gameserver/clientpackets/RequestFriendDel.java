@@ -75,6 +75,7 @@ public class RequestFriendDel extends ClientBasePacket{
     			    sm = new SystemMessage(171);
     			    sm.addString(_name);
     			    activeChar.sendPacket(sm);
+    			    sm = null;
     			    return;
     			}
 		    } else 
@@ -90,6 +91,7 @@ public class RequestFriendDel extends ClientBasePacket{
     				sm = new SystemMessage(171);
     				sm.addString(_name);
     				activeChar.sendPacket(sm);
+    				sm = null;
     				return;
     			}
 		    }
@@ -106,6 +108,8 @@ public class RequestFriendDel extends ClientBasePacket{
 			sm = new SystemMessage(133);
 			sm.addString(_name);
 			activeChar.sendPacket(sm);
+			sm = null;
+			
 			statement.close();
 		} 
 		catch (Exception e)

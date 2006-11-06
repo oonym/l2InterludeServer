@@ -71,6 +71,7 @@ public class AddTradeItem extends ClientBasePacket
             SystemMessage msg = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             player.sendPacket(msg);
             player.cancelActiveTrade();
+            msg = null;
             return;
         }
 

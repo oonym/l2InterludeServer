@@ -59,6 +59,7 @@ public class RequestPetUseItem extends ClientBasePacket
 			SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
 			sm.addItemName(item.getItemId());
 			activeChar.sendPacket(sm);
+			sm = null;
 			return;
 		}
         

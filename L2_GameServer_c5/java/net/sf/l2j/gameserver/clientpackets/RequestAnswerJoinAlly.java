@@ -62,6 +62,7 @@ public class RequestAnswerJoinAlly extends ClientBasePacket
 			//you have accepted alliance
     			msg = new SystemMessage(SystemMessage.YOU_ACCEPTED_ALLIANCE);
     			player.sendPacket(msg);
+    			msg = null;
 			player.getClan().setAllyId(requestor.getAllyId());
 			player.getClan().setAllyName(requestor.getClan().getAllyName());
         		player.getClan().updateClanInDB();
@@ -69,6 +70,7 @@ public class RequestAnswerJoinAlly extends ClientBasePacket
 			//failed to invite
     			SystemMessage msg = new SystemMessage(SystemMessage.FAILED_TO_INVITE_CLAN_IN_ALLIANCE);
     			requestor.sendPacket(msg);
+    			msg = null;
     		}
     		
     		player.setActiveRequester(null);

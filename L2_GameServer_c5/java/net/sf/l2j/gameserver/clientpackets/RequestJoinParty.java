@@ -143,6 +143,7 @@ public class RequestJoinParty extends ClientBasePacket
 		    if (Config.DEBUG)
 		        _log.warning(requestor.getName() + " already received a party invitation");
 		}
+		msg = null;
 	}
 
 

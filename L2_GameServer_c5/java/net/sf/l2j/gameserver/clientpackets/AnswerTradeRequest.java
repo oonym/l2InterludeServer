@@ -66,6 +66,7 @@ public class AnswerTradeRequest extends ClientBasePacket{
             SystemMessage msg = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             player.sendPacket(msg);
 			player.setActiveRequester(null);
+			msg = null;
             return;
         }
 
@@ -75,6 +76,7 @@ public class AnswerTradeRequest extends ClientBasePacket{
 			SystemMessage msg = new SystemMessage(SystemMessage.S1_DENIED_TRADE_REQUEST);
 			msg.addString(player.getName());
 			partner.sendPacket(msg);
+			msg = null;
 		}
 
 		// Clears requesting status

@@ -56,6 +56,7 @@ public class RequestSurrenderPersonally extends ClientBasePacket
         SystemMessage msg = new SystemMessage(SystemMessage.YOU_HAVE_PERSONALLY_SURRENDERED_TO_THE_S1_CLAN);
         msg.addString(_pledgeName);
         player.sendPacket(msg);
+        msg = null;
         ClanTable.getInstance().CheckSurrender(_clan, clan);
     }
     

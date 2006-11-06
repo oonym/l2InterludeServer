@@ -62,6 +62,7 @@ public class RequestWithdrawalPledge extends ClientBasePacket
 		SystemMessage sm = new SystemMessage(223);
 		sm.addString(activeChar.getName());
     	clan.broadcastToOnlineMembers(sm);
+    	sm = null;
         // Remove the Player From the Member list
         clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(activeChar.getName()));
 

@@ -289,9 +289,12 @@ public class RequestEnchantItem extends ClientBasePacket
                 item.updateDatabase();
             }
         }
+        sm = null;
+        
         StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
         su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
         activeChar.sendPacket(su);      
+        su = null;
         
         activeChar.sendPacket(new EnchantResult(item.getEnchantLevel())); //FIXME i'm really not sure about this...
         activeChar.sendPacket(new ItemList(activeChar, false)); //TODO update only the enchanted item

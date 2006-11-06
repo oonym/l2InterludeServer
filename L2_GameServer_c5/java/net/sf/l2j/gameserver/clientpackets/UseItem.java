@@ -99,6 +99,7 @@ public class UseItem extends ClientBasePacket
                 // You cannot do anything else while fishing
                 SystemMessage sm = new SystemMessage(1471);
                 getClient().getActiveChar().sendPacket(sm);
+                sm = null;
                 return;
             }
             
@@ -108,6 +109,7 @@ public class UseItem extends ClientBasePacket
 				SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
 				sm.addItemName(itemId);
 				getClient().getActiveChar().sendPacket(sm);
+				sm = null;
 				return;
 			}
             
@@ -118,6 +120,7 @@ public class UseItem extends ClientBasePacket
 				SystemMessage sm = new SystemMessage(600); // You cannot equip a pet item.
 				sm.addItemName(itemId);
 				getClient().getActiveChar().sendPacket(sm);
+				sm = null;
 				return;
 			}
             
@@ -168,12 +171,14 @@ public class UseItem extends ClientBasePacket
 					sm.addNumber(item.getEnchantLevel());
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
+					sm = null;
 				}
 				else
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_EQUIPPED);
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
+					sm = null;
 				}
 
 				InventoryUpdate iu = new InventoryUpdate();

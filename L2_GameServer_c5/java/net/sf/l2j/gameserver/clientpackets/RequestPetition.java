@@ -88,6 +88,7 @@ public class RequestPetition extends ClientBasePacket
 			SystemMessage sm = new SystemMessage(733);
 			sm.addNumber(totalPetitions);
 			activeChar.sendPacket(sm);
+			sm = null;
 			return;
 		}
 
@@ -111,6 +112,7 @@ public class RequestPetition extends ClientBasePacket
 		sm = new SystemMessage(601);
 		sm.addNumber(PetitionManager.getInstance().getPendingPetitionCount());
 		activeChar.sendPacket(sm);
+		sm = null;
 	}
 
 	/* (non-Javadoc)

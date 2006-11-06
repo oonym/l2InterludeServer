@@ -177,6 +177,7 @@ public class Say2 extends ClientBasePacket
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_NOT_ONLINE);
 					sm.addString(_target);
 					activeChar.sendPacket(sm);
+					sm = null;
 				}
 				break;
 			case SHOUT:

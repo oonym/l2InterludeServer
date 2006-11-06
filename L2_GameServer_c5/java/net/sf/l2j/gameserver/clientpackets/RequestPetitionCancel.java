@@ -72,6 +72,7 @@ public class RequestPetitionCancel extends ClientBasePacket
 					SystemMessage sm = new SystemMessage(736);
 					sm.addString(String.valueOf(numRemaining));
 					activeChar.sendPacket(sm);
+					sm = null;
                     
                     // Notify all GMs that the player's pending petition has been cancelled.
                     String msgContent = activeChar.getName() + " has canceled a pending petition."; 

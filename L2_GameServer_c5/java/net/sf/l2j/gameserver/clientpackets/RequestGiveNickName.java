@@ -60,6 +60,7 @@ public class RequestGiveNickName extends ClientBasePacket
 			{
 				SystemMessage sm = new SystemMessage(SystemMessage.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
                 activeChar.sendPacket(sm);
+                sm = null;
 				return;
 			}
 			
@@ -74,12 +75,14 @@ public class RequestGiveNickName extends ClientBasePacket
     				SystemMessage sm = new SystemMessage(SystemMessage.TITLE_CHANGED);
     				member.sendPacket(sm);
 					member.broadcastUserInfo();
+					sm = null;
                 }
                 else
                 {
                     SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                     sm.addString("Target needs to be online to get a title");
                     activeChar.sendPacket(sm);
+                    sm = null;
                 }
 			}
             else
@@ -87,6 +90,7 @@ public class RequestGiveNickName extends ClientBasePacket
                 SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                 sm.addString("Target does not belong to your clan");
                 activeChar.sendPacket(sm);
+                sm = null;
             }
 		}
 	}

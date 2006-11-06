@@ -71,6 +71,8 @@ public class RequestChangePetName extends ClientBasePacket{
             sm.addString("Your pet's name can be up to 16 characters.");
 			// SystemMessage sm = new SystemMessage(SystemMessage.NAMING_PETNAME_UP_TO_8CHARS);
         	activeChar.sendPacket(sm);
+        	sm = null;
+        	
 			return;
 		}
         else if (!PetNameTable.getInstance().isValidPetName(_name))

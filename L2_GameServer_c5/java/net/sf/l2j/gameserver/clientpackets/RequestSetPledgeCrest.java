@@ -87,6 +87,7 @@ public class RequestSetPledgeCrest extends ClientBasePacket
 			{	
 				SystemMessage sm = new SystemMessage(SystemMessage.CLAN_LVL_3_NEEDED_TO_SET_CREST);
 				activeChar.sendPacket(sm);
+				sm = null;
 				return;
 			}
 			

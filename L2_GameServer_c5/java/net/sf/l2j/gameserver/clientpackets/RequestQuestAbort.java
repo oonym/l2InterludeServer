@@ -66,6 +66,7 @@ public class RequestQuestAbort extends ClientBasePacket
         		SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
         		sm.addString("Quest aborted.");
                 activeChar.sendPacket(sm);
+                sm = null;
         		QuestList ql = new QuestList();
                 activeChar.sendPacket(ql);
             } else

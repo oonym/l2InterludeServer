@@ -63,6 +63,7 @@ public class RequestSocialAction extends ClientBasePacket
         {
             SystemMessage sm = new SystemMessage(1471);
             activeChar.sendPacket(sm);
+            sm = null;
             return;
         }
         

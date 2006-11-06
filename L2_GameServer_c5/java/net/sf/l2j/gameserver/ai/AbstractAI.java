@@ -271,6 +271,7 @@ abstract class AbstractAI implements Ctrl
                 sm.addSkillName(_actor.getEffect(EffectType.SILENT_MOVE).getSkill().getId());
                 _actor.getEffect(EffectType.SILENT_MOVE).exit();
                 _actor.sendPacket(sm);
+                sm = null;
             }
         }
 
