@@ -53,7 +53,6 @@ import net.sf.l2j.gameserver.model.actor.knownlist.AttackableKnownList;
 import net.sf.l2j.gameserver.model.base.SoulCrystal;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
-import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -1533,9 +1532,8 @@ public class L2Attackable extends L2NpcInstance
             crystalQTY = 0;
             
             L2ItemInstance[] inv = player.getInventory().getItems();
-            for (int index = 0; index < inv.length; index++) 
+            for (L2ItemInstance item : inv) 
             {
-                L2ItemInstance item = inv[index];
                 int itemId = item.getItemId();
                 for (int id : SoulCrystal.SoulCrystalTable)
                 {
@@ -1629,12 +1627,11 @@ public class L2Attackable extends L2NpcInstance
                 // Too many crystals in inventory.
                 if  (crystalQTY > 1)
                 {
-                    player.sendMessage("The soul crystal resonated.");
-                    player.sendPacket(new PlaySound("ItemSound2.broken_key"));                    
+                    player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_FAILED_RESONATION));
                 }
                 // The soul crystal stage of the player is way too high
                 else if (!doLevelup)
-                    player.sendMessage("The soul crystal has refused to absorb the soul.");
+                    player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_REFUSED));
                 
                 crystalQTY = 0;
                 continue;
@@ -1652,22 +1649,19 @@ public class L2Attackable extends L2NpcInstance
                 exchangeCrystal(player, crystalOLD, crystalNEW, false);
             }
             // If true and not a boss mob, break the crystal.
-            else if (!isBossMob && (dice >= 100.0 - SoulCrystal.BREAK_CHANCE))
+            else if (!isBossMob && dice >= (100.0 - SoulCrystal.BREAK_CHANCE))
             {
                 // Remove current crystal an give a broken open.
                 if      (crystalNME.startsWith("red"))
-                    exchangeCrystal(player, crystalOLD, SoulCrystal.RED_BROKEN_CRYSTAL, true);
-                
+                	exchangeCrystal(player, crystalOLD, SoulCrystal.RED_BROKEN_CRYSTAL, true);
                 else if (crystalNME.startsWith("gre"))
                     exchangeCrystal(player, crystalOLD, SoulCrystal.GRN_BROKEN_CYRSTAL, true);
-                
                 else if (crystalNME.startsWith("blu"))
                     exchangeCrystal(player, crystalOLD, SoulCrystal.BLU_BROKEN_CRYSTAL, true);
-                
                 resetAbsorbList();
             }
             else
-                player.sendMessage("The soul crystal has failed to absorb the soul.");
+                player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_FAILED));
         }
     }
     
@@ -1687,11 +1681,10 @@ public class L2Attackable extends L2NpcInstance
             // Send a sound event and text message to the player
             if(broke)
             {
-                player.sendPacket(new PlaySound("ItemSound3.sys_enchant_failed"));
-                player.sendMessage("The soul crystal scattered itself.");
+                player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_BROKE));
             }
             else
-                player.sendPacket(new PlaySound("ItemSound.quest_itemget"));
+                player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_SUCCEEDED));
             
             // Send system message
             SystemMessage sms = new SystemMessage(SystemMessage.EARNED_ITEM);

@@ -69,8 +69,6 @@ public class SoulCrystals implements IItemHandler
         // u can use soul crystal only when target hp goest to <50%
         if(((L2MonsterInstance)target).getCurrentHp() > ((L2MonsterInstance)target).getMaxHp()/2)
         {
-            SystemMessage sm = new SystemMessage(975);
-            activeChar.sendPacket(sm);
             ActionFailed af = new ActionFailed();
             activeChar.sendPacket(af);
             return;

@@ -71,6 +71,11 @@ public class SystemMessage extends ServerBasePacket
 	public static final int DISSAPEARED_ITEM = 301;
 	public static final int DISSAPEARED_ADENA = 672;
 
+	public static final int SOUL_CRYSTAL_ABSORBING_SUCCEEDED = 974;
+	public static final int SOUL_CRYSTAL_ABSORBING_FAILED = 975;
+	public static final int SOUL_CRYSTAL_BROKE = 976;
+	public static final int SOUL_CRYSTAL_ABSORBING_FAILED_RESONATION = 977;
+	public static final int SOUL_CRYSTAL_ABSORBING_REFUSED = 978;
 	
 	public static final int YOU_DID_S1_DMG = 0x23;
 	public static final int S1_GAVE_YOU_S2_DMG = 0x24;
