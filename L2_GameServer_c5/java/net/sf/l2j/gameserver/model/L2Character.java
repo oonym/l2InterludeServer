@@ -982,6 +982,11 @@ public abstract class L2Character extends L2Object
             else if (this instanceof L2Summon)
                 ((L2Summon)this).getOwner().rechargeAutoSoulShot(false, true, true);
         }
+        else if (skill.useFishShot())
+        {
+        	if (this instanceof L2PcInstance) 
+        	  ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
+        }
         
 		// Get all possible targets of the skill in a table in function of the skill target type
 		L2Object[] targets = skill.getTargetList(this);

@@ -721,7 +721,10 @@ public abstract class L2Skill
     {
         return isMagic();
     }
-
+    public final boolean useFishShot()
+    {
+    	return ((getSkillType() == SkillType.PUMPING) || (getSkillType() == SkillType.REELING) );
+    }
     public final int getWeaponsAllowed()
     {
         return _weaponsAllowed;

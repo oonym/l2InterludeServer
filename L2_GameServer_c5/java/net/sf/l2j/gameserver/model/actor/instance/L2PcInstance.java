@@ -6550,9 +6550,8 @@ public final class L2PcInstance extends L2PlayableInstance
                 {
                     if (!summon)
                     {
-                        if (itemId == 1463 || itemId == 1464 || itemId == 1465 || 
-                                itemId == 1466 || itemId == 1467 || itemId == 1835 || 
-                                itemId == 5789)
+                    	if (itemId == 1463 || itemId == 1464 || itemId == 1465 || itemId == 1466 || itemId == 1467 || itemId == 1835 || itemId == 5789 || 
+                    		itemId == 6535 || itemId == 6536 || itemId == 6537 || itemId == 6538 || itemId == 6539 || itemId == 6540)
                         {
                             handler = ItemHandler.getInstance().getItemHandler(itemId);
                             
