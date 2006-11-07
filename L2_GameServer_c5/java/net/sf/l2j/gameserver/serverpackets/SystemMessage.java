@@ -548,6 +548,15 @@ public class SystemMessage extends ServerBasePacket
     public static final int SINCE_80_PERCENT_OR_MORE_OF_YOUR_INVENTORY_SLOTS_ARE_FULL_YOU_CANNOT_PARTICIPATE_IN_THE_OLYMPIAD = 1691;
     public static final int SINCE_YOU_HAVE_CHANGED_YOUR_CLASS_INTO_A_SUB_JOB_YOU_CANNOT_PARTICIPATE_IN_THE_OLYMPIAD = 1692;
     public static final int WHILE_YOU_ARE_ON_THE_WAITING_LIST_YOU_ARE_NOT_ALLOWED_TO_WATCH_THE_GAME = 1693;
+    
+    
+    // Cursed weapon related
+    public static final int THERE_IS_S1_HOUR_AND_S2_MINUTE_LEFT_OF_THE_FIXED_USAGE_TIME = 1813;
+    public static final int S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1 = 1814;
+    public static final int S2_WAS_DROPPED_IN_THE_S1_REGION = 1815;
+    public static final int THE_OWNER_OF_S2_HAS_APPEARED_IN_THE_S1_REGION = 1816;
+    public static final int S2_OWNER_HAS_LOGGED_INTO_THE_S1_REGION = 1817;
+    public static final int S1_HAS_DISAPPEARED = 1818;
 
 	/**
 	 * @param _characters
@@ -654,6 +663,11 @@ public class SystemMessage extends ServerBasePacket
 	public String getType()
 	{
 		return _S__7A_SYSTEMMESSAGE;
+	}
+	
+	public int getMessageID()
+	{
+		return _messageId;
 	}
 }
 	

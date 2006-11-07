@@ -569,6 +569,21 @@ public abstract class L2Character extends L2Object
             else
                 if (weaponInst != null)
                     weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+
+            
+        	if (player != null)
+        	{
+        		if (player.isCursedWeaponEquiped())
+        		{
+                	// If hitted by a cursed weapon, Cp is reduced to 0
+        			target.setCurrentCp(0);
+        		} else if (player.isHero())
+        		{
+        			if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
+                    	// If a cursed weapon is hitted by a Hero, Cp is reduced to 0
+                		target.setCurrentCp(0);
+        		}
+        	}
         }
 		
 		// If the Server->Client packet Attack contains at least 1 hit, send the Server->Client packet Attack

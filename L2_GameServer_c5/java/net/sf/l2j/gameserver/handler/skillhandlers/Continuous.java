@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
@@ -68,9 +69,26 @@ public class Continuous implements ISkillHandler
 	{
 		L2Character target = null;
 		
+		L2PcInstance player = null;
+		if (activeChar instanceof L2PcInstance)
+			player = (L2PcInstance)activeChar;
+		
         for(int index = 0;index < targets.length;index++)
         {
             target = (L2Character)targets[index];
+
+            // Player holding a cursed weapon can't be buffed and can't buff
+            if (skill.getSkillType() == L2Skill.SkillType.BUFF)
+            {
+	            if (target != activeChar)
+	            {
+	            	if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
+	            		continue;
+	            	else if (player != null && player.isCursedWeaponEquiped())
+	            		continue;
+	            }
+            }
+            
 			if (skill.isOffensive())
 			{
 

@@ -544,4 +544,15 @@ public class NpcTable
 
 		return list.toArray(new L2NpcTemplate[list.size()]);
 	}
+
+	public L2NpcTemplate[] getAllMonstersOfLevel(int lvl)
+	{
+		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
+        
+		for (L2NpcTemplate t : _npcs.values())
+			if (t.level == lvl && "L2Monster".equals(t.type))
+				list.add(t);
+
+		return list.toArray(new L2NpcTemplate[list.size()]);
+	}
 }

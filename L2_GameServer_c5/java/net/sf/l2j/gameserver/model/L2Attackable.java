@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2AttackableAI;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.ai.L2SiegeGuardAI;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
@@ -1147,6 +1148,9 @@ public class L2Attackable extends L2NpcInstance
                  }
              }
          }
+         
+         // Check the drop of a cursed weapon
+         CursedWeaponsManager.getInstance().checkDrop(this, player);
 
          if (!isSeeded())
          {
@@ -1242,6 +1246,11 @@ public class L2Attackable extends L2NpcInstance
          }
          return ditem;
      }
+     
+	public L2ItemInstance DropItem(L2PcInstance lastAttacker, int itemId, int itemCount)
+	{
+		return DropItem(lastAttacker, new RewardItem(itemId, itemCount));
+	}
      
     /**
      * Return the active weapon of this L2Attackable (= null).<BR><BR>

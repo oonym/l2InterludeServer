@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2PetDataTable;
 import net.sf.l2j.gameserver.model.L2World;
@@ -70,8 +71,8 @@ public class RequestDestroyItem extends ClientBasePacket
 		_count = 0;
 
 	    try {
-		_objectId = readD();
-		_count = readD();
+			_objectId = readD();
+			_count = readD();
 	    } catch (Exception e) {}
 	}
 
@@ -113,6 +114,10 @@ public class RequestDestroyItem extends ClientBasePacket
         
         if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
             return;
+        
+        // Cursed Weapons cannot be destroyed
+        if (CursedWeaponsManager.getInstance().isCursed(itemId))
+        	return;
         
         if(!itemToRemove.isStackable() && count > 1)
         {

@@ -37,11 +37,13 @@ public class PcStat extends PlayableStat
     // Method - Public
     public boolean addExp(long value)
     {
+    	L2PcInstance activeChar = getActiveChar();
+    	
         // Set new karma
-        if (getActiveChar().getKarma() > 0 && (getActiveChar().isGM() || !ZoneManager.getInstance().checkIfInZonePvP(getActiveChar())))
+        if (!activeChar.isCursedWeaponEquiped() && activeChar.getKarma() > 0 && (activeChar.isGM() || !ZoneManager.getInstance().checkIfInZonePvP(activeChar)))
         {
-            int karmaLost = getActiveChar().calculateKarmaLost(value);
-            if (karmaLost > 0) getActiveChar().setKarma(getActiveChar().getKarma() - karmaLost);
+            int karmaLost = activeChar.calculateKarmaLost(value);
+            if (karmaLost > 0) activeChar.setKarma(activeChar.getKarma() - karmaLost);
         }
         //Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
         if (getActiveChar().isGM() && getActiveChar().getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && getActiveChar().isInParty())
@@ -50,11 +52,11 @@ public class PcStat extends PlayableStat
 		if (!super.addExp(value)) return false;
 		
 		/* Micht : Use of UserInfo for C5
-        StatusUpdate su = new StatusUpdate(getActiveChar().getObjectId());
+        StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
         su.addAttribute(StatusUpdate.EXP, getExp());
-        getActiveChar().sendPacket(su);
+        activeChar.sendPacket(su);
         */
-        getActiveChar().sendPacket(new UserInfo(getActiveChar()));
+        activeChar.sendPacket(new UserInfo(activeChar));
 
         return true;
     }

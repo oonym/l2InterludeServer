@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.GmListTable;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -95,6 +96,10 @@ public class RequestDropItem extends ClientBasePacket
         
         if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
             return;
+        
+        // Cursed Weapons cannot be dropped
+        if (CursedWeaponsManager.getInstance().isCursed(itemId))
+        	return;
         
         if(_count > item.getCount()) 
         {

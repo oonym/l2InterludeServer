@@ -73,6 +73,7 @@ import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.BlockList;
@@ -559,6 +560,8 @@ public final class L2PcInstance extends L2PlayableInstance
     
     private ScheduledFuture _jailTask;
 	private int _powerGrade;
+	
+	private int _cursedWeaponEquipedId = 0;
     
     
 	/** Skill casting information (used to queue when several skills are cast in a short time) **/
@@ -2371,10 +2374,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			StatusUpdate su = new StatusUpdate(getObjectId());
 			su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
 			sendPacket(su);
+			
+			// Cursed Weapon
+			if(CursedWeaponsManager.getInstance().isCursed(newitem.getItemId()))
+			{
+				CursedWeaponsManager.getInstance().activate(this, newitem);
+			}
 
 	    	// If over capacity, trop the item 
 	    	if (!isGM() && !_inventory.validateCapacity(0)) 
-                dropItem("InvDrop", item, null, true);
+                dropItem("InvDrop", newitem, null, true);
 		}
 	}
 	
@@ -2444,8 +2453,15 @@ public final class L2PcInstance extends L2PlayableInstance
 			su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
 			sendPacket(su);
 
+			// Cursed Weapon
+			if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+			{
+				CursedWeaponsManager.getInstance().activate(this, item);
+			}
+
 	    	// If over capacity, trop the item 
-	    	if (!isGM() && !_inventory.validateCapacity(0)) dropItem("InvDrop", item, null, true);
+	    	if (!isGM() && !_inventory.validateCapacity(0)) 
+	    		dropItem("InvDrop", item, null, true);
 		}
 	}
 	
@@ -2961,9 +2977,21 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				// Check if this L2PcInstance is autoAttackable
 				if (isAutoAttackable(player))
-					player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-				else
+				{
+					// Player with lvl < 21 can't attack a cursed weapon holder
+					// And a cursed weapon holder  can't attack players with lvl < 21
+					if ((isCursedWeaponEquiped() && player.getLevel() < 21)
+							|| (player.isCursedWeaponEquiped() && this.getLevel() < 21))
+					{
+						player.sendPacket(new ActionFailed());
+					} else
+					{
+						player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+					}
+				} else
+				{
 					player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
+				}
 			}
 		}
 	}
@@ -3433,25 +3461,38 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (killer != null)
 		{
-			if (atEvent && killer instanceof L2PcInstance)
+			L2PcInstance pk = null;
+			if (killer instanceof L2PcInstance)
+				pk = (L2PcInstance) killer;
+			
+			if (atEvent && pk != null)
 			{
-				L2PcInstance pk = (L2PcInstance) killer;
 				pk.kills.add(getName());
 			}
             
-			onDieDropItem(killer);  // Check if any item should be dropped
-			
-			if (!ArenaManager.getInstance().checkIfInZone(this))
+			if (isCursedWeaponEquiped())
 			{
-				if (Config.ALT_GAME_DELEVEL)
+				CursedWeaponsManager.getInstance().drop(_cursedWeaponEquipedId, killer);
+			} else
+			{
+				if (pk == null || !pk.isCursedWeaponEquiped())
 				{
-					// Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty
-					// NOTE: deathPenalty +- Exp will update karma
-					if (getSkillLevel(L2Skill.SKILL_LUCKY) < 0 || getStat().getLevel() > 4)
-						deathPenalty((killer instanceof L2PcInstance && this.getClan() != null && ((L2PcInstance)killer).getClan() != null && ((L2PcInstance)killer).getClan().isAtWarWith(this.getClanId())));
+					onDieDropItem(killer);  // Check if any item should be dropped
+				
+					if (!ArenaManager.getInstance().checkIfInZone(this))
+					{
+						if (Config.ALT_GAME_DELEVEL)
+						{
+							// Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty
+							// NOTE: deathPenalty +- Exp will update karma
+							if (getSkillLevel(L2Skill.SKILL_LUCKY) < 0 || getStat().getLevel() > 4)
+								deathPenalty((pk != null && this.getClan() != null && pk.getClan() != null && pk.getClan().isAtWarWith(this.getClanId())));
+						} else
+						{
+							onDieUpdateKarma(); // Update karma if delevel is not allowed
+						}
+					}
 				}
-				else
-					onDieUpdateKarma(); // Update karma if delevel is not allowed
 			}
 		}
 		
@@ -3599,6 +3640,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (targetPlayer == null) return;                                          // Target player is null
 		if (targetPlayer == this) return;                                          // Target player is self
+		
+		if (isCursedWeaponEquiped())
+		{
+			CursedWeaponsManager.getInstance().increaseKills(_cursedWeaponEquipedId);
+			return;
+		}
 		
         // If in Arena, do nothing
 		if (ArenaManager.getInstance().getArenaIndex(this.getX(),this.getY())!=-1 ||
@@ -4726,6 +4773,8 @@ public final class L2PcInstance extends L2PlayableInstance
                 	player.setJailTimer(rset.getLong("jail_timer"));
                 else
                 	player.setJailTimer(0);
+                
+                CursedWeaponsManager.getInstance().checkPlayer(player);
                 
 				// Add the L2PcInstance object in _allObjects
 				//L2World.getInstance().storeObject(player);
@@ -8022,6 +8071,12 @@ public final class L2PcInstance extends L2PlayableInstance
 			return false;
 		}
 		
+		if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+		{
+			// can not trade a cursed weapon
+			return false;
+		}
+		
 		if (item.isWear())
 		{
 			Util.handleIllegalPlayerAction(this, "Warning!! Character "+getName()+" tried to "+action+" weared item: "+item.getObjectId(),Config.DEFAULT_PUNISH);
@@ -8585,5 +8640,20 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setPowerGrade(int power)
 	{
 		_powerGrade = power;
+	}
+	
+	public boolean isCursedWeaponEquiped()
+	{
+		return _cursedWeaponEquipedId != 0;
+	}
+	
+	public void setCursedWeaponEquipedId(int value)
+	{
+		_cursedWeaponEquipedId = value;
+	}
+	
+	public int getCursedWeaponEquipedId()
+	{
+		return _cursedWeaponEquipedId;
 	}
 }

@@ -18,8 +18,17 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
+import java.util.List;
+
+import javolution.util.FastList;
 
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
+import net.sf.l2j.gameserver.model.CursedWeapon;
+import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.serverpackets.ExCursedWeaponLocation;
+import net.sf.l2j.gameserver.serverpackets.ExCursedWeaponLocation.CursedWeaponInfo;
+import net.sf.l2j.util.Point3D;
 
 /**
  * Format: (ch)
@@ -44,8 +53,27 @@ public class RequestCursedWeaponLocation extends ClientBasePacket
 	@Override
 	void runImpl()
 	{
-		//send a ExCursedWeaponLocation here :)
+		L2Character activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+			return;
+		
+		List<CursedWeaponInfo> list = new FastList<CursedWeaponInfo>();
+		for (CursedWeapon cw : CursedWeaponsManager.getInstance().getCursedWeapons())
+		{
+			if (!cw.isActive()) continue;
+			
+			Point3D pos = cw.getWorldPosition();
+			
+			if (pos != null)
+				list.add(new CursedWeaponInfo(pos, cw.getItemId()));
+		}
+		
 
+		//send the ExCursedWeaponLocation
+		if (!list.isEmpty())
+		{
+			activeChar.sendPacket(new ExCursedWeaponLocation(list));
+		}
 	}
 
 	/**

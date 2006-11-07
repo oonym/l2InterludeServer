@@ -25,6 +25,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.gameserverpackets.ServerStatus;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.LeaveWorld;
@@ -371,6 +372,9 @@ public class Shutdown extends Thread
         }
         catch(Exception e){e.printStackTrace();}
         System.err.println("Olympiad System: Data saved!!");
+        
+        // Save Cursed Weapons data before closing.
+        CursedWeaponsManager.getInstance().saveData();
         
 		System.err.println("Data saved. All players disconnected, shutting down.");
 		

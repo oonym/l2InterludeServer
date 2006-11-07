@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
  * This class ...
@@ -61,6 +62,13 @@ public class RequestUnEquipItem extends ClientBasePacket
         
 		if (activeChar == null)
 		    return;
+		
+		// Prevent of unequiping a cursed weapon
+		if (_slot == L2Item.SLOT_LR_HAND && activeChar.isCursedWeaponEquiped())
+		{
+			// Message ?
+			return;
+		}
         
         // Prevent Stunned player to remove the weapon
         if (activeChar.isStunned() || activeChar.isSleeping())

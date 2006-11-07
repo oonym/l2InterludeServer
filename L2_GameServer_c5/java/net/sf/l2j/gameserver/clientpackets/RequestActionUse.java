@@ -243,6 +243,12 @@ public class RequestActionUse extends ClientBasePacket
                         activeChar.sendPacket(msg);
                         msg = null;
                     }
+					else if (activeChar.isCursedWeaponEquiped())
+                    {
+                        //You can't mount, dismount, break and drop items while weilding a cursed weapon
+                        SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+                        activeChar.sendPacket(msg);
+                    }
                     else if (!pet.isDead() && !activeChar.isMounted())
                     {
                         Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, pet.getTemplate().npcId);

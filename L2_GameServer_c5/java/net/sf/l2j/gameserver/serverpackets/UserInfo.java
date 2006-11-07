@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.NpcTable;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -271,7 +272,11 @@ public class UserInfo extends ServerBasePacket
         writeD(_cha.getTitleColor());
         
         writeD(0x00); // ??
-
+        
+        if (_cha.isCursedWeaponEquiped())
+        	writeD(CursedWeaponsManager.getInstance().getLevel(_cha.getCursedWeaponEquipedId()));
+        else
+        	writeD(0x00);
     }
 
     /* (non-Javadoc)

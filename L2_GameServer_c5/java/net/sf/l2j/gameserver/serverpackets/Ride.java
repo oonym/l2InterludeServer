@@ -65,6 +65,9 @@ public class Ride extends ServerBasePacket
     {
         L2PcInstance cha = getClient().getActiveChar();
         if (cha == null) return;
+        
+        // Don't allow ride with a cursed weapon equiped
+        if (cha.isCursedWeaponEquiped()) return;
 
         // Unequip the weapon
         L2ItemInstance wpn = cha.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);

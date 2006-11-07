@@ -401,6 +401,12 @@ public class Olympiad
             noble.sendPacket(sm);
             return false;
         }
+        
+        if (noble.isCursedWeaponEquiped())
+        {
+        	noble.sendMessage("You can't participate to Olympiad while holding a cursed weapon.");
+        	return false;
+        }
     	
         if (!noble.isNoble())
         {

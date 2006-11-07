@@ -86,6 +86,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTarget;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTeleport;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTest;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminUnblockIp;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminZone;
 import net.sf.l2j.gameserver.handler.itemhandlers.AdvQuestItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSoulShot;
@@ -152,6 +153,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.Manager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
 import net.sf.l2j.gameserver.model.L2PetDataTable;
@@ -322,6 +324,9 @@ public class GameServer
       
         Olympiad.getInstance();
         Hero.getInstance();
+        
+        // Init of a cursed weapon manager
+        CursedWeaponsManager.getInstance();
 
 		_log.config("AutoChatHandler: Loaded " + _autoChatHandler.size() + " handlers in total.");
 		_log.config("AutoSpawnHandler: Loaded " + _autoSpawnHandler.size() + " handlers in total.");
@@ -435,6 +440,7 @@ public class GameServer
         _adminCommandHandler.registerAdminCommandHandler(new AdminQuest());
         _adminCommandHandler.registerAdminCommandHandler(new AdminZone());
         _adminCommandHandler.registerAdminCommandHandler(new AdminSubClass());
+        _adminCommandHandler.registerAdminCommandHandler(new AdminCursedWeapons());
 
         //_adminCommandHandler.registerAdminCommandHandler(new AdminRadar());
         _log.config("AdminCommandHandler: Loaded " + _adminCommandHandler.size() + " handlers.");

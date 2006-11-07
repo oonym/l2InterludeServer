@@ -1635,10 +1635,16 @@ public class L2NpcInstance extends L2Character
      */
     public void makeSupportMagic(L2PcInstance player)
     {
+    	if (player == null)
+    		return;
+    	
+    	// Prevent a cursed weapon weilder of being buffed
+    	if (player.isCursedWeaponEquiped())
+    		return;
+    	
         int player_level = player.getLevel();        
-        int lowestLevel;
-        int higestLevel;
-        L2Skill skill;
+        int lowestLevel = 0;
+        int higestLevel = 0;
         
         
         // Select the player
@@ -1675,7 +1681,8 @@ public class L2NpcInstance extends L2Character
             return;
         }
         
-        
+
+        L2Skill skill = null;
         // Go through the Helper Buff list define in sql table helper_buff_list and cast skill
         for (L2HelperBuff helperBuffItem : HelperBuffTable.getInstance().getHelperBuffTable())
         {

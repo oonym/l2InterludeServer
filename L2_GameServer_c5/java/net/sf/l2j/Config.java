@@ -493,6 +493,8 @@ public final class Config
     public static boolean         ALLOW_RENTPET;
     /** Allow boat ? */
     public static boolean 	      ALLOW_BOAT;
+    /** Allow cursed weapons ? */
+    public static boolean 	      ALLOW_CURSED_WEAPONS;
     
     /** Time after which a packet is considered as lost */
     public static int             PACKET_LIFETIME;
@@ -1007,6 +1009,7 @@ public final class Config
                 ALLOW_DISCARDITEM               = Boolean.valueOf(optionsSettings.getProperty("AllowDiscardItem", "True"));
                 ALLOWFISHING                    = Boolean.valueOf(optionsSettings.getProperty("AllowFishing", "False"));
                 ALLOW_BOAT                      = Boolean.valueOf(optionsSettings.getProperty("AllowBoat", "False"));
+                ALLOW_CURSED_WEAPONS			= Boolean.valueOf(optionsSettings.getProperty("AllowCursedWeapons", "False"));
                 
                 ALLOW_L2WALKER_CLIENT           = L2WalkerAllowed.valueOf(optionsSettings.getProperty("AllowL2Walker", "False"));
                 L2WALKER_REVISION               = Integer.parseInt(optionsSettings.getProperty("L2WalkerRevision", "537"));
@@ -1675,6 +1678,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("AllowWater")) ALLOW_WATER = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AllowRentPet")) ALLOW_RENTPET = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AllowBoat")) ALLOW_BOAT = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("AllowCursedWeapons")) ALLOW_CURSED_WEAPONS = Boolean.valueOf(pValue);
 
         else if (pName.equalsIgnoreCase("CommunityType")) COMMUNITY_TYPE = pValue;
         else if (pName.equalsIgnoreCase("BBSDefault")) BBS_DEFAULT = pValue;
