@@ -286,7 +286,7 @@ public class AdminSpawn implements IAdminCommandHandler
     	boolean ended = true;
     	for (int i=from; i<mobs.length; i++)
     	{
-    		String txt = "<a action=\"bypass -h admin_spawn_monster "+mobs[i].npcId+"\">"+mobs[i].name+"</a><br>";
+    		String txt = "<a action=\"bypass -h admin_spawn_monster "+mobs[i].npcId+"\">"+mobs[i].name+"</a><br1>";
     		
     		if ((tb.length() + txt.length() + end2.length()) > 8192)
     		{
@@ -311,12 +311,10 @@ public class AdminSpawn implements IAdminCommandHandler
     {
     	TextBuilder tb = new TextBuilder();
     	L2NpcTemplate[] mobs = NpcTable.getInstance().getAllNpcStartingWith(starting);
-    	
     	// Start
     	tb.append("<html><title>Spawn Monster:</title><body><p> There are "+mobs.length+" Npcs whose name starts with "+starting+":<br>");
-    	String end1 = "<br><center><button value=\"Next\" action=\"bypass -h admin_spawn_index "+starting+" $from$\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
-    	String end2 = "<br><center><button value=\"Back\" action=\"bypass -h admin_show_spawns\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
-    	
+    	String end1 = "<br><center><button value=\"Next\" action=\"bypass -h admin_npc_index "+starting+" $from$\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
+    	String end2 = "<br><center><button value=\"Back\" action=\"bypass -h admin_show_npcs\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
     	// Loop
     	boolean ended = true;
     	for (int i=from; i<mobs.length; i++)
@@ -331,13 +329,11 @@ public class AdminSpawn implements IAdminCommandHandler
     		}
     		tb.append(txt);
     	}
-    	
     	// End
     	if (ended)
     		tb.append(end2);
     	else
     		tb.append(end1);
-    	
     	activeChar.sendPacket(new NpcHtmlMessage(5, tb.toString()));
     }
 }
