@@ -555,4 +555,16 @@ public class NpcTable
 
 		return list.toArray(new L2NpcTemplate[list.size()]);
 	}
+	
+	public L2NpcTemplate[] getAllNpcStartingWith(String letter)
+	{
+		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
+	        
+		for (L2NpcTemplate t : _npcs.values())
+			if (t.name.startsWith(letter) && "L2Npc".equals(t.type))
+				list.add(t);
+	
+		return list.toArray(new L2NpcTemplate[list.size()]);
+	}
+
 }
