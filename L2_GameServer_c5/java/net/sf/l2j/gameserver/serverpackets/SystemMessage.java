@@ -549,6 +549,10 @@ public class SystemMessage extends ServerBasePacket
     public static final int SINCE_YOU_HAVE_CHANGED_YOUR_CLASS_INTO_A_SUB_JOB_YOU_CANNOT_PARTICIPATE_IN_THE_OLYMPIAD = 1692;
     public static final int WHILE_YOU_ARE_ON_THE_WAITING_LIST_YOU_ARE_NOT_ALLOWED_TO_WATCH_THE_GAME = 1693;
     
+    // Unlock
+    public static final int UNABLE_TO_UNLOCK_DOOR = 319;
+    public static final int FAILED_TO_UNLOCK_DOOR = 320;
+    
     
     // Cursed weapon related
     public static final int THERE_IS_S1_HOUR_AND_S2_MINUTE_LEFT_OF_THE_FIXED_USAGE_TIME = 1813;

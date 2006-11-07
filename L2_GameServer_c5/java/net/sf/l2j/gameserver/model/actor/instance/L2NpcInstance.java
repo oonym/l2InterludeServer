@@ -107,7 +107,7 @@ public class L2NpcInstance extends L2Character
     private String _BusyMessage = "";
     
     /** True if a Dwarf has used Spoil on this L2NpcInstance */
-    private boolean _IsSpoil;
+    private boolean _IsSpoil = false;
     
     /** The castle index in the array of L2Castle this L2NpcInstance belongs to */
     private int _CastleIndex = -2;

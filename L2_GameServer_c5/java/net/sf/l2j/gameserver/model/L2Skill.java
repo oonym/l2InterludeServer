@@ -30,6 +30,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -1489,9 +1490,9 @@ public abstract class L2Skill
             }
             case TARGET_UNLOCKABLE:
             {
-                if (!(target instanceof L2DoorInstance))
+                if (!(target instanceof L2DoorInstance) && !(target instanceof L2ChestInstance))
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                	activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
                     return null;
                 }
 

@@ -93,6 +93,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.BeastSoulShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.BlessedSpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.CharChangePotions;
+import net.sf.l2j.gameserver.handler.itemhandlers.ChestKey;
 import net.sf.l2j.gameserver.handler.itemhandlers.ChristmasTree;
 import net.sf.l2j.gameserver.handler.itemhandlers.CompBlessedSpiritShotPacks;
 import net.sf.l2j.gameserver.handler.itemhandlers.CompShotPacks;
@@ -341,6 +342,7 @@ public class GameServer
 		_itemHandler.registerItemHandler(new BlessedSpiritShot());
         _itemHandler.registerItemHandler(new BeastSoulShot());
         _itemHandler.registerItemHandler(new BeastSpiritShot());
+        _itemHandler.registerItemHandler(new ChestKey());
 		_itemHandler.registerItemHandler(new WorldMap());
 		_itemHandler.registerItemHandler(new Potions());
 		_itemHandler.registerItemHandler(new Recipes());
