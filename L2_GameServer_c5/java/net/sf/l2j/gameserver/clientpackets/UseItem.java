@@ -159,27 +159,50 @@ public class UseItem extends ClientBasePacket
                         return;
                 } */
                 
-				L2ItemInstance[] items = activeChar.getInventory().equipItemAndRecord(item);
+                // Equip or unEquip
+                L2ItemInstance[] items = null;
+                boolean isEquiped = item.isEquipped();
+                if (isEquiped)
+                	items = activeChar.getInventory().unEquipItemInBodySlotAndRecord(bodyPart);
+                else
+                	items = activeChar.getInventory().equipItemAndRecord(item);
 				activeChar.refreshExpertisePenalty();
                 
 				if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
 					activeChar.CheckIfWeaponIsAllowed();
 
-				if (item.getEnchantLevel() > 0)
+				// Messages
+	            SystemMessage sm = null;
+				if (isEquiped)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED);
-					sm.addNumber(item.getEnchantLevel());
-					sm.addItemName(itemId);
-					activeChar.sendPacket(sm);
-					sm = null;
-				}
-				else
+		            if (item.getEnchantLevel() > 0)
+		            {
+		            	sm = new SystemMessage(SystemMessage.EQUIPMENT_S1_S2_REMOVED);
+		            	sm.addNumber(item.getEnchantLevel());
+		            	sm.addItemName(itemId);
+		            }
+		            else
+		            {
+			            sm = new SystemMessage(SystemMessage.S1_DISARMED);
+			            sm.addItemName(itemId);
+		            }
+		            activeChar.sendPacket(sm);
+				} else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.S1_EQUIPPED);
-					sm.addItemName(itemId);
+					if (item.getEnchantLevel() > 0)
+					{
+						sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED);
+						sm.addNumber(item.getEnchantLevel());
+						sm.addItemName(itemId);
+					}
+					else
+					{
+						sm = new SystemMessage(SystemMessage.S1_EQUIPPED);
+						sm.addItemName(itemId);
+					}
 					activeChar.sendPacket(sm);
-					sm = null;
 				}
+				sm = null;
 
 				InventoryUpdate iu = new InventoryUpdate();
 				iu.addItems(Arrays.asList(items));
