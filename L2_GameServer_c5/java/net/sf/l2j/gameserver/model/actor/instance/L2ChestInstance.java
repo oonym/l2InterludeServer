@@ -20,6 +20,7 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.lib.Rnd;
@@ -42,7 +43,7 @@ public final class L2ChestInstance extends L2Attackable
 	public L2ChestInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		_isBox = (Rnd.get(100)<20);
+		_isBox = (Rnd.get(100)<Config.RATE_BOX_SPAWN);
 		_isOpen = false;
 	}
 
@@ -107,7 +108,7 @@ public final class L2ChestInstance extends L2Attackable
 	public void OnSpawn()
 	{
 		super.OnSpawn();
-		_isBox = (Rnd.get(100) < 20 );
+		_isBox = (Rnd.get(100) < Config.RATE_BOX_SPAWN );
 		_isOpen = false;
 	}
 
