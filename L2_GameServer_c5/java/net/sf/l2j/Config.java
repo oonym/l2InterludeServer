@@ -1324,7 +1324,7 @@ public final class Config
                 
                 RATE_DROP_COMMON_HERBS 			= Float.parseFloat(ratesSettings.getProperty("RateCommonHerbs", "15."));
                 RATE_DROP_MP_HP_HERBS           = Float.parseFloat(ratesSettings.getProperty("RateHpMpHerbs", "10."));                
-                RATE_DROP_GREATER_HERBS         = Float.parseFloat(ratesSettings.getProperty("RategGreaterHerbs", "4."));
+                RATE_DROP_GREATER_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateGreaterHerbs", "4."));
                 RATE_DROP_SUPERIOR_HERBS        = Float.parseFloat(ratesSettings.getProperty("RateSuperiorHerbs", "0.8"))*10;                
                 RATE_DROP_SPECIAL_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateSpecialHerbs", "0.2"))*10;
                 
