@@ -279,11 +279,11 @@ public class Siege
                 announceToPlayer("The siege of " + getCastle().getName() + " has ended in a draw.",
                                  false);
 
-            _IsInProgress = false; // Flag so that siege instance can be started 
             removeFlags(); // Removes all flags. Note: Remove flag before teleporting players
             teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
-            teleportPlayer(Siege.TeleportWhoType.Defender, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
+            //teleportPlayer(Siege.TeleportWhoType.Defender, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
             teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
+            _IsInProgress = false; // Flag so that siege instance can be started
             saveCastleSiege(); // Save castle specific data
             clearSiegeClan(); // Clear siege clan from db
             removeArtifact(); // Remove artifact from this castle
@@ -294,6 +294,30 @@ public class Siege
         }
     }
 
+    private void removeDefender(L2SiegeClan sc)
+    {
+        if (sc != null) getDefenderClans().remove(sc);
+    }
+    
+    private void removeAttacker(L2SiegeClan sc)
+    {
+        if (sc != null) getAttackerClans().remove(sc);
+    }
+    
+    private void addDefender(L2SiegeClan sc, SiegeClanType type)
+    {
+        if(sc == null) return; 
+        sc.setType(type);
+        getDefenderClans().add(sc);
+    }
+    
+    private void addAttacker(L2SiegeClan sc)
+    {
+        if(sc == null) return; 
+        sc.setType(SiegeClanType.ATTACKER);
+        getAttackerClans().add(sc);
+    }
+    
     /**
      * When control of castle changed during siege<BR><BR>
      */
@@ -307,17 +331,72 @@ public class Siege
                 getAttackerClans().size() == 1 // Only 1 attacker
             )
             {
+                L2SiegeClan sc_newowner = getAttackerClan(getCastle().getOwnerId());
+                removeAttacker(sc_newowner);
+                addDefender(sc_newowner, SiegeClanType.OWNER);
                 endSiege();
+                return;
             }
-            else if (getDefenderClans().size() > 0) // If defender does exist (Pc vs Pc)
-            {
-                if (_IsNormalSide) _IsNormalSide = false; // Atk is now def
-                else _IsNormalSide = true; // Atk is now atk
-
-                teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
-                teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
-
-                removeFlags(); // Removes all flags
+            if (getCastle().getOwnerId() > 0) {
+                                
+                int allyId = ClanTable.getInstance().getClan(getCastle().getOwnerId()).getAllyId();
+                if (getDefenderClans().size() == 0) // If defender doesn't exist (Pc vs Npc)
+                // and only an alliance attacks
+                {
+                    // The player's clan is in an alliance
+                    if (allyId != 0)
+                    {
+                        boolean allinsamealliance = true;
+                        for (L2SiegeClan sc : getAttackerClans())
+                        {
+                            if(sc != null) 
+                            {
+                                if(ClanTable.getInstance().getClan(sc.getClanId()).getAllyId() != allyId)
+                                    allinsamealliance = false;
+                            }
+                        }
+                        if(allinsamealliance) 
+                        {
+                            L2SiegeClan sc_newowner = getAttackerClan(getCastle().getOwnerId());
+                            removeAttacker(sc_newowner);
+                            addDefender(sc_newowner, SiegeClanType.OWNER);
+                            endSiege();
+                            return;
+                        }
+                    }
+                }
+                
+                for (L2SiegeClan sc : getDefenderClans())
+                {
+                    if(sc != null) {
+                        removeDefender(sc);
+                        addAttacker(sc);
+                    }
+                }
+                
+                L2SiegeClan sc_newowner = getAttackerClan(getCastle().getOwnerId());
+                removeAttacker(sc_newowner);
+                addDefender(sc_newowner, SiegeClanType.OWNER);
+                
+                // The player's clan is in an alliance
+                if (allyId != 0)
+                {
+                    L2Clan[] clanList = ClanTable.getInstance().getClans();
+                    
+                    for (L2Clan clan : clanList) {
+                        if (clan.getAllyId() == allyId) {
+                            L2SiegeClan sc = getAttackerClan(clan.getClanId());
+                            if(sc != null) {
+                                removeAttacker(sc);
+                                addDefender(sc, SiegeClanType.DEFENDER);
+                            }
+                        }
+                    }
+                }
+                teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.SiegeFlag); // Teleport to the second closest town
+                teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town);     // Teleport to the second closest town
+                
+                removeDefenderFlags(); 		 // Removes defenders' flags
                 getCastle().removeUpgrade(); // Remove all castle upgrade
                 getCastle().spawnDoor(true); // Respawn door to castle but make them weaker (50% hp)
             }
@@ -345,7 +424,7 @@ public class Siege
             loadCastleSiege(); // Load castle specific data
             loadSiegeClan(); // Load siege clan from db
             teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the closest town
-            teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
+			//teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town);      // Teleport to the second closest town
             spawnArtifact(); // Spawn artifact
             spawnControlTower(); // Spawn control tower
             getCastle().spawnDoor(); // Spawn door
@@ -443,6 +522,14 @@ public class Siege
             statement.setInt(1, getCastle().getCastleId());
             statement.execute();
             statement.close();
+
+            if (getCastle().getOwnerId() > 0) 
+            {
+            	PreparedStatement statement2 = con.prepareStatement("DELETE FROM siege_clans WHERE clan_id=?");
+            	statement2.setInt(1, getCastle().getOwnerId());
+            	statement2.execute();
+            	statement2.close();
+            }
 
             getAttackerClans().clear();
             getDefenderClans().clear();
@@ -566,11 +653,11 @@ public class Siege
 
         for (L2PcInstance player : L2World.getInstance().getAllPlayers())
         {
-            if (player.getClan() == null
-                || (getAttackerClan(player.getClan()) == null
-                    && getDefenderClan(player.getClan()) == null && checkIfInZone(player.getX(),
-                                                                                  player.getY())))
-                players.add(player);
+            if ( checkIfInZone(player.getX(), player.getY()) &&
+            	 ( player.getClan() == null 
+            	   || (getAttackerClan(player.getClan()) == null && getDefenderClan(player.getClan()) == null) 
+                 )
+               ) players.add(player);
         }
 
         return players;
@@ -670,7 +757,7 @@ public class Siege
     public void removeSiegeClan(L2Clan clan)
     {
         if (clan == null || clan.getHasCastle() == getCastle().getCastleId()
-            || !SiegeManager.getInstance().checkIsRegistered(clan)) return;
+            || !SiegeManager.getInstance().checkIsRegistered(clan, getCastle().getCastleId())) return;
         removeSiegeClan(clan.getClanId());
     }
 
@@ -792,7 +879,7 @@ public class Siege
             + " and higher may register for a castle siege.");
         else if (player.getClan().getHasCastle() > 0) player.sendMessage("You cannot register because your clan already own a castle.");
         else if (player.getClan().getClanId() == getCastle().getOwnerId()) player.sendMessage("The clan that owns the castle is automatically registered on the defending side.");
-        else if (SiegeManager.getInstance().checkIsRegistered(player.getClan())) player.sendMessage("You are already registered in a Siege.");
+        else if (SiegeManager.getInstance().checkIsRegistered(player.getClan(), getCastle().getCastleId())) player.sendMessage("You are already registered in a Siege.");
         else return true;
 
         return false;
@@ -945,7 +1032,16 @@ public class Siege
             if (sc != null) sc.removeFlags();
         }
     }
-
+    
+    /** Remove flags from defenders. */
+    private void removeDefenderFlags()
+    {
+        for (L2SiegeClan sc : getDefenderClans())
+        {
+            if (sc != null) sc.removeFlags();
+        }
+    }
+    
     /** Save castle siege related to database. */
     private void saveCastleSiege()
     {
@@ -1134,12 +1230,13 @@ public class Siege
         if (getSiegeGuardManager().getSiegeGuardSpawn().size() > 0 && _ControlTowers.size() > 0)
         {
             L2ControlTowerInstance closestCt;
-            int distance, x, y, z;
-            int distanceCloset = 0;
+            double distance, x, y, z;
+            double distanceClosest = 0;
             for (L2Spawn spawn : getSiegeGuardManager().getSiegeGuardSpawn())
             {
                 if (spawn == null) continue;
                 closestCt = null;
+                distanceClosest = 0;
                 for (L2ControlTowerInstance ct : _ControlTowers)
                 {
                     if (ct == null) continue;
@@ -1147,13 +1244,12 @@ public class Siege
                     y = (spawn.getLocy() - ct.getY());
                     z = (spawn.getLocz() - ct.getZ());
 
-                    distance = (x * x) + (y * y);
-                    distance = (distance * distance) + (z * z);
+                    distance = (x * x) + (y * y) + (z * z);
 
-                    if (closestCt == null || distance < distanceCloset)
+                    if (closestCt == null || distance < distanceClosest)
                     {
                         closestCt = ct;
-                        distanceCloset = distance;
+                        distanceClosest = distance;
                     }
                 }
 
@@ -1261,7 +1357,7 @@ public class Siege
 
     public final int getDefenderRespawnDelay()
     {
-        return (SiegeManager.getInstance().getDefenderRespawnDelay());
+        return (SiegeManager.getInstance().getDefenderRespawnDelay() + _Defender_RespawnDelay_Penalty);
     }
 
     public final boolean getIsInProgress()

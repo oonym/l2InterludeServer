@@ -638,7 +638,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
      */
     protected void onEvtAggression(L2Character target, int aggro)
     {
-        if (target != null)
+        if (target != null && _actor != null) 
         {
             L2Attackable me = (L2Attackable) _actor;
 
@@ -672,6 +672,12 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         }
     }
     
+    protected void onEvtDead()
+    {
+    	stopAITask();
+    	super.onEvtDead();
+    }
+    
     public void stopAITask()
     {
         if (aiTask != null)
@@ -679,6 +685,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
             aiTask.cancel(false);
             aiTask = null;
         }
+        _accessor.detachAI();
     }
 
 }

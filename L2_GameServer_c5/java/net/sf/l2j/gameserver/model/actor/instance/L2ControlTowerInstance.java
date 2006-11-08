@@ -88,7 +88,7 @@ public class L2ControlTowerInstance extends L2NpcInstance {
                 {
                     if (spawn == null) continue;
                     spawn.stopRespawn();
-                    spawn.getLastSpawn().doDie(spawn.getLastSpawn());
+                    //spawn.getLastSpawn().doDie(spawn.getLastSpawn());
                 }
             }
         }

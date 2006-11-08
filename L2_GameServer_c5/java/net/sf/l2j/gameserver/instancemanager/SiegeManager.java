@@ -102,6 +102,8 @@ public class SiegeManager
             sm.addString("You must be on castle ground to summon this");
         else if (!castle.getSiege().getIsInProgress())
             sm.addString("You can only summon this during a siege.");
+        else if (player.getClanId() != 0 && castle.getSiege().getAttackerClan(player.getClanId()) == null)
+            sm.addString("You can only summon this as a registered attacker.");
         else
             return true;
         
@@ -113,7 +115,7 @@ public class SiegeManager
      * Return true if the clan is registered or owner of a castle<BR><BR>
      * @param clan The L2Clan of the player
      */
-    public final boolean checkIsRegistered(L2Clan clan)
+    public final boolean checkIsRegistered(L2Clan clan, int castleid)
     {
         if (clan == null) return false;
 
@@ -124,8 +126,9 @@ public class SiegeManager
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT clan_id FROM siege_clans where clan_id=?");
+            PreparedStatement statement = con.prepareStatement("SELECT clan_id FROM siege_clans where clan_id=? and castle_id=?");
             statement.setInt(1, clan.getClanId());
+            statement.setInt(2, castleid);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next())

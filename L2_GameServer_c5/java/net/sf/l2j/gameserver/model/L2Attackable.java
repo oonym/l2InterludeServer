@@ -1288,6 +1288,17 @@ public class L2Attackable extends L2NpcInstance
     }
     
     /**
+     * Clears _aggroList hate of the L2Character without removing from the list.<BR><BR>
+     */
+    public void clearHating(L2Character target) 
+    {
+    	if (getAggroList().size() == 0) return;
+    	AggroInfo ai = _aggroList.get(target);
+    	if (ai == null) return;
+    	ai.hate = 0;
+    }
+    
+    /**
      * Return True if a Dwarf use Sweep on the L2Attackable and if item can be spoiled.<BR><BR>
      */
     public boolean isSweepActive()
