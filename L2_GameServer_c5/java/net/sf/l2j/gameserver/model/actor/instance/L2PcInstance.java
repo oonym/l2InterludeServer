@@ -71,9 +71,9 @@ import net.sf.l2j.gameserver.handler.skillhandlers.SiegeFlag;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
-import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.BlockList;
@@ -2458,8 +2458,18 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				CursedWeaponsManager.getInstance().activate(this, item);
 			}
-
-	    	// If over capacity, trop the item 
+            
+			//Auto use herbs - autoloot
+			if ((item.getItemId() > 8599 && item.getItemId() < 8615))
+	        {
+                IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getItemId());                
+                if (handler == null) 
+                    _log.fine("No item handler registered for item ID " + item.getItemId() + ".");
+                else 
+                    handler.useItem(this, item);
+                
+            }
+	    	// If over capacity, drop the item 
 	    	if (!isGM() && !_inventory.validateCapacity(0)) 
 	    		dropItem("InvDrop", item, null, true);
 		}
@@ -3183,6 +3193,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		else addItem("Loot", item.getItemId(), item.getCount(), target, true);
 	}
 	
+	
 	/**
 	 * Manage Pickup Task.<BR><BR>
 	 *
@@ -3274,6 +3285,17 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Remove the L2ItemInstance from the world and send server->client GetItem packets
 			target.pickupMe(this);
 		}
+		
+        //Auto use herbs - pick up
+		if ((target.getItemId() > 8599 && target.getItemId() < 8615))
+        {
+        IItemHandler handler = ItemHandler.getInstance().getItemHandler(target.getItemId());        
+        if (handler == null) 
+            _log.fine("No item handler registered for item ID " + target.getItemId() + ".");
+        else 
+            handler.useItem(this, target);
+            ItemTable.getInstance().destroyItem("Consume", target, this, null);
+        }
 		
 		// Check if a Party is in progress
 		if (isInParty()) getParty().distributeItem(this, target);

@@ -40,7 +40,7 @@ public class ManaHeal implements ISkillHandler
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
- private static SkillType[] _skillIds = {SkillType.MANAHEAL, SkillType.MANARECHARGE};
+ private static SkillType[] _skillIds = {SkillType.MANAHEAL, SkillType.MANARECHARGE, SkillType.MANAHEAL_PERCENT};
 	
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -52,8 +52,14 @@ public class ManaHeal implements ISkillHandler
         for(int index = 0;index < targets.length;index++)
         {
             target = (L2Character)targets[index];
-			
-            double mp = (skill.getSkillType() == SkillType.MANARECHARGE) ? target.calcStat(Stats.RECHARGE_MP_RATE, skill.getPower(), null, null) : skill.getPower(); 
+            double mp = skill.getPower();
+            if (skill.getSkillType() == SkillType.MANAHEAL_PERCENT){
+            	//double mp = skill.getPower();
+             mp = target.getMaxMp() * mp / 100.0;
+            }
+            else {
+             mp = (skill.getSkillType() == SkillType.MANARECHARGE) ? target.calcStat(Stats.RECHARGE_MP_RATE,mp, null, null) : mp;
+            }
 			//int cLev = activeChar.getLevel();
 			//hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/; 
             target.setLastHealAmount((int)mp);

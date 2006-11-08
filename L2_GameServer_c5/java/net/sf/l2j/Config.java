@@ -101,6 +101,7 @@ public final class Config
     
     /** Accept auto-loot ? */
     public static boolean AUTO_LOOT;
+    public static boolean AUTO_LOOT_HERBS;
 
     /** Character name template */
     public static String CNAME_TEMPLATE;
@@ -392,6 +393,17 @@ public final class Config
     public static float   ALT_GAME_EXPONENT_XP;
     /** Alternative Spirit Point rewards */
     public static float   ALT_GAME_EXPONENT_SP;
+
+    /** Rate Common herbs */
+    public static float   RATE_DROP_COMMON_HERBS;
+    /** Rate MP/HP herbs */
+    public static float   RATE_DROP_MP_HP_HERBS;
+    /** Rate Common herbs */
+    public static float   RATE_DROP_GREATER_HERBS;
+    /** Rate Common herbs */
+    public static float   RATE_DROP_SUPERIOR_HERBS;
+    /** Rate Common herbs */
+    public static float   RATE_DROP_SPECIAL_HERBS;
 
     // Player Drop Rate control
     /** Limit for player drop */
@@ -1310,6 +1322,12 @@ public final class Config
                 RATE_KARMA_EXP_LOST             = Float.parseFloat(ratesSettings.getProperty("RateKarmaExpLost", "1."));    
                 RATE_SIEGE_GUARDS_PRICE         = Float.parseFloat(ratesSettings.getProperty("RateSiegeGuardsPrice", "1."));    
                 
+                RATE_DROP_COMMON_HERBS 			= Float.parseFloat(ratesSettings.getProperty("RateCommonHerbs", "15."));
+                RATE_DROP_MP_HP_HERBS           = Float.parseFloat(ratesSettings.getProperty("RateHpMpHerbs", "10."));                
+                RATE_DROP_GREATER_HERBS         = Float.parseFloat(ratesSettings.getProperty("RategGreaterHerbs", "4."));
+                RATE_DROP_SUPERIOR_HERBS        = Float.parseFloat(ratesSettings.getProperty("RateSuperiorHerbs", "0.8"))*10;                
+                RATE_DROP_SPECIAL_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateSpecialHerbs", "0.2"))*10;
+                
                 PLAYER_DROP_LIMIT               = Integer.parseInt(ratesSettings.getProperty("PlayerDropLimit", "3"));
                 PLAYER_RATE_DROP                = Integer.parseInt(ratesSettings.getProperty("PlayerRateDrop", "5"));
                 PLAYER_RATE_DROP_ITEM           = Integer.parseInt(ratesSettings.getProperty("PlayerRateDropItem", "70"));
@@ -1371,6 +1389,7 @@ public final class Config
 	            IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
 	            SP_BOOK_NEEDED          = Boolean.parseBoolean(altSettings.getProperty("SpBookNeeded", "true"));
 	            AUTO_LOOT               = altSettings.getProperty("AutoLoot").equalsIgnoreCase("True");
+	            AUTO_LOOT_HERBS         = altSettings.getProperty("AutoLootHerbs").equalsIgnoreCase("True");
                 ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE    = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanBeKilledInPeaceZone", "false"));
                 ALT_GAME_KARMA_PLAYER_CAN_SHOP                      = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanShop", "true"));
                 ALT_GAME_KARMA_PLAYER_CAN_TELEPORT                  = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanTeleport", "true"));
@@ -1803,6 +1822,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("CraftingEnabled")) IS_CRAFTING_ENABLED = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("SpBookNeeded")) SP_BOOK_NEEDED = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AutoLoot")) AUTO_LOOT = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("AutoLootHerbs")) AUTO_LOOT_HERBS = Boolean.valueOf(pValue);
 
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanBeKilledInPeaceZone")) ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanShop")) ALT_GAME_KARMA_PLAYER_CAN_SHOP = Boolean.valueOf(pValue);

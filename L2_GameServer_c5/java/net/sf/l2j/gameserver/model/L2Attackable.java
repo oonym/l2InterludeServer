@@ -708,7 +708,7 @@ public class L2Attackable extends L2NpcInstance
                     divisor = 1;
                 
 
-                if (skill != null && (skill.getSkillType() == SkillType.HEAL || skill.getSkillType() == SkillType.HEAL_PERCENT || skill.getSkillType() == SkillType.MANAHEAL))
+                if (skill != null && (skill.getSkillType() == SkillType.HEAL || skill.getSkillType() == SkillType.HEAL_PERCENT || skill.getSkillType() == SkillType.MANAHEAL || skill.getSkillType() == SkillType.MANAHEAL_PERCENT))
                 {
                     L2Object[] targetList = skill.getTargetList(actor,true);
 
@@ -1173,6 +1173,115 @@ public class L2Attackable extends L2NpcInstance
                  else DropItem(player, item); // drop the item on the ground
            }
          }
+         //Instant Item Drop :>
+         if (getTemplate().rateHp == 1) //only mob with 1x HP can drop herbs
+         {
+             int random = Rnd.get(100);
+             if (random < Config.RATE_DROP_MP_HP_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8600, 1); // Herb of Life 
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_GREATER_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8601, 1); // Greater Herb of Life
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(1000); // note *10
+             if (random < Config.RATE_DROP_SUPERIOR_HERBS)
+             {                  
+                 RewardItem item = new RewardItem(8602, 1); // Superior Herb of Life
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_MP_HP_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8603, 1); // Herb of Manna
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_GREATER_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8604, 1); // Greater Herb of Mana
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(1000); // note *10
+             if (random < Config.RATE_DROP_SUPERIOR_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8605, 1); // Superior Herb of Mana 
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }             
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_COMMON_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8606, 1); // Herb of Power
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_COMMON_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8607, 1); // Herb of Magic
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_COMMON_HERBS)
+             {                  
+                 RewardItem item = new RewardItem(8608, 1); // Herb of Atk. Spd.
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_COMMON_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8609, 1); // Herb of Casting Spd.
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_COMMON_HERBS)
+             {                 
+                 RewardItem item = new RewardItem(8610, 1); // Herb of Critical Attack
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(100);
+             if (random < Config.RATE_DROP_COMMON_HERBS)
+             {                
+                 RewardItem item = new RewardItem(8611, 1);  // Herb of Speed
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(1000); // note *10
+             if (random < Config.RATE_DROP_SPECIAL_HERBS)
+             {                  
+                 RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);;
+             }
+             random = Rnd.get(1000); // note *10
+             if (random < Config.RATE_DROP_SPECIAL_HERBS)
+             {                  
+                 RewardItem item = new RewardItem(8613, 1); // Herb of Mystic
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+             random = Rnd.get(1000); // note *10
+             if (random < Config.RATE_DROP_SPECIAL_HERBS)
+             {                  
+                 RewardItem item = new RewardItem(8614, 1); // Herb of Recovery       
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 else DropItem(player, item);
+             }
+         }         
          
          // Set the table _sweepItems of this L2Attackable
          if (sweepList.size() > 0) _sweepItems = sweepList.toArray(new RewardItem[sweepList.size()]);

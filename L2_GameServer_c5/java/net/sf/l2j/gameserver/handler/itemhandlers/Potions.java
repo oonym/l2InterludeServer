@@ -39,7 +39,9 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class Potions implements IItemHandler
 {
     private static int[] _itemIds = { 65, 725, 726, 727, 728, 734, 735, 1060, 1061, 1062,
-                                      1374, 1375, 1539, 1540, 5591, 5592, 6035, 6036 };
+                                      1374, 1375, 1539, 1540, 5591, 5592, 6035, 6036, 6652, 
+                                      6553, 6554, 6555, 8600,8601,8602, 8603, 8604, 
+                                      8605, 8606, 8607, 8608, 8609, 8610, 8611, 8612, 8613, 8614 };
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
@@ -227,14 +229,62 @@ public class Potions implements IItemHandler
             res = usePotion(activeChar, 2169, 1);
         else if (itemId == 6036) // Greater Magic Haste Potion, xml: 2169
             res = usePotion(activeChar, 2169, 2);
-
+        
+        //Valakas Amulets  
+        else if (itemId == 6652) // Amulet Protection of Valakas  
+            res = usePotion(activeChar, 2231, 1);  
+        else if (itemId == 6653) // Amulet Flames of Valakas  
+            res = usePotion(activeChar, 2223, 1);  
+        else if (itemId == 6654) // Amulet Flames of Valakas  
+            res = usePotion(activeChar, 2233, 1);  
+        else if (itemId == 6655) // Amulet Slay Valakas  
+            res = usePotion(activeChar, 2232, 1);       
+        
+        //Herbs
+        else if (itemId == 8600) // Herb of Life
+            res = usePotion(activeChar, 2278, 1);
+        else if (itemId == 8601) //Greater Herb of Life
+            res = usePotion(activeChar, 2278, 2);
+        else if (itemId == 8602) //Superior Herb of Life
+            res = usePotion(activeChar, 2278, 3);      
+        else if (itemId == 8603) // Herb of Mana
+            res = usePotion(activeChar, 2279, 1);
+        else if (itemId == 8604) // Greater Herb of Mane
+            res = usePotion(activeChar, 2279, 2);
+        else if (itemId == 8605) // Superior Herb of Mane
+            res = usePotion(activeChar, 2279, 3);
+        else if (itemId == 8606) // Herb of Strength
+            res = usePotion(activeChar, 2280, 1);            
+        else if (itemId == 8607) // Herb of Magic
+            res = usePotion(activeChar, 2281, 1);
+        else if (itemId == 8608) // Herb of Atk. Spd.
+            res = usePotion(activeChar, 2282, 1);
+        else if (itemId == 8609) // Herb of Casting Spd.
+            res = usePotion(activeChar, 2283, 1);
+        else if (itemId == 8610) // Herb of Critical Attack
+            res = usePotion(activeChar, 2284, 1);
+        else if (itemId == 8611) // Herb of Speed
+            res = usePotion(activeChar, 2285, 1);
+        else if (itemId == 8612){ // Herb of Warrior
+            res = usePotion(activeChar, 2280, 1);//Herb of Strength
+            res = usePotion(activeChar, 2282, 1);//Herb of Atk. Spd
+            res = usePotion(activeChar, 2284, 1);//Herb of Critical Attack
+            }
+       else if (itemId == 8613){ // Herb of Mystic
+            res = usePotion(activeChar, 2281, 1);//Herb of Magic
+            res = usePotion(activeChar, 2283, 1);//Herb of Casting Spd.
+            }            
+       else if (itemId == 8614){ // Herb of Warrior
+           res = usePotion(activeChar, 2278, 3);//Superior Herb of Life
+           res = usePotion(activeChar, 2279, 3);//Superior Herb of Mana 
+       }
         if (res)
             playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
     }
     public boolean usePotion(L2PcInstance activeChar, int magicId,int level) {
         L2Skill skill = SkillTable.getInstance().getInfo(magicId,level);
         if (skill != null) {
-            activeChar.useMagic(skill, false, false);
+            activeChar.doCast(skill);
             if (!(activeChar.isSitting() && !skill.isPotion()))
                 return true;
         }
