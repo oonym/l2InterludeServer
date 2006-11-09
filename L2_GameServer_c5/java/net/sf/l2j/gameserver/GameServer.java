@@ -54,6 +54,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEnchant;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEventEngine;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminExpSp;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminFightCalculator;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGeodata;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGm;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGmChat;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminHeal;
@@ -445,6 +446,7 @@ public class GameServer
         _adminCommandHandler.registerAdminCommandHandler(new AdminZone());
         _adminCommandHandler.registerAdminCommandHandler(new AdminSubClass());
         _adminCommandHandler.registerAdminCommandHandler(new AdminCursedWeapons());
+        _adminCommandHandler.registerAdminCommandHandler(new AdminGeodata());
 
         //_adminCommandHandler.registerAdminCommandHandler(new AdminRadar());
         _log.config("AdminCommandHandler: Loaded " + _adminCommandHandler.size() + " handlers.");

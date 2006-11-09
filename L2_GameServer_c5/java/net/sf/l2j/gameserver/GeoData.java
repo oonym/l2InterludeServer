@@ -38,8 +38,7 @@ public class GeoData
         if(_instance == null)
         {        	
         	if (Config.GEODATA)        	 
-        		//_instance = new GeoEngine();
-        		_instance = new GeoData();
+        		_instance = GeoEngine.getInstance();        		
         	else
         		_instance = new GeoData();
         }           
@@ -84,8 +83,8 @@ public class GeoData
      * @param target
      * @return True if cha can see target (LOS) and send usful info to PC
      */
-    public boolean canSeeTargetDebug(L2PcInstance cha, L2Object target)
-    {
+    public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
+    {        
         return true;
     }
     /**
