@@ -10,4 +10,7 @@
 #     /gameserver/data/geodata       #
 #             folder                 #
 #                                    #
+#      Link to geodata files:        #
+# http://www.l2jserver.com/geodata/  #
+#                                    #
 ######################################
