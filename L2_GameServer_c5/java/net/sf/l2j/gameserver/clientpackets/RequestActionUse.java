@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChairSit;
 import net.sf.l2j.gameserver.serverpackets.RecipeShopManageList;
@@ -337,7 +338,7 @@ public class RequestActionUse extends ClientBasePacket
         		activeChar.sendPacket(new RecipeShopManageList(activeChar, false));
         		break;
             case 52: // unsummon
-            	if (pet != null)
+            	if (pet != null && pet instanceof L2SummonInstance)
             		pet.unSummon(activeChar);
             	break;
             case 53: // move to target
