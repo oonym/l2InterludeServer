@@ -22,6 +22,8 @@ public class Unlock implements ISkillHandler
 	L2Object[] targets)
 	{
 		L2Object[] targetList = skill.getTargetList(activeChar);
+		
+		if (targetList == null) return;
 
 		for (int index = 0; index < targetList.length; index++)
 		{
