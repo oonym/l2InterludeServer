@@ -31,21 +31,21 @@ public class ExEnchantSkillList extends ServerBasePacket
     {
         public int id;
         public int nextLevel;
-        public int data2;
-        public int data3;
+        public int sp;
+        public int exp;
 
-        Skill(int pId, int pNextLevel, int pData2, int pData3)
+        Skill(int pId, int pNextLevel, int pSp, int pExp)
         {
             this.id = pId;
             this.nextLevel = pNextLevel;
-            this.data2 = pData2;
-            this.data3 = pData3;
+            this.sp = pSp;
+            this.exp = pExp;
         }
     }
 
-    public void addSkill(int id, int level, int data2, int data3)
+    public void addSkill(int id, int level, int sp, int exp)
     {
-        _skills.add(new Skill(id, level, data2, data3));
+        _skills.add(new Skill(id, level, sp, exp));
     }
 
     public ExEnchantSkillList()
@@ -59,7 +59,7 @@ public class ExEnchantSkillList extends ServerBasePacket
     @Override
     void runImpl()
     {
-        // TODO Auto-generated method stub
+        //there are no long-running tasks
 
     }
 
@@ -77,8 +77,8 @@ public class ExEnchantSkillList extends ServerBasePacket
         {
             writeD(sk.id);
             writeD(sk.nextLevel);
-            writeD(sk.data2);
-            writeQ(sk.data3); //Q? XP
+            writeD(sk.sp);
+            writeQ(sk.exp);
         }
 
     }
