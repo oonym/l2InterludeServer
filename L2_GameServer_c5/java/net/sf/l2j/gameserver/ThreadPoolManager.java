@@ -132,7 +132,7 @@ public class ThreadPoolManager
 		{
 			if (delay < 0) delay = 0;
 			if (initial < 0) initial = 0;
-			return _effectsScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
+			return _aiScheduledThreadPool.scheduleAtFixedRate(r, initial, delay, TimeUnit.MILLISECONDS);
 		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
 	}
 	
