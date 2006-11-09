@@ -372,6 +372,14 @@ public final class L2PetInstance extends L2Summon
 			getOwner().sendPacket(new ActionFailed());
 			return;
 		}
+		// Herbs
+		if ( ((L2ItemInstance)object).getItemId() > 8599 && ((L2ItemInstance)object).getItemId() < 8615 )   
+		{
+	        SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1);
+            smsg.addItemName(((L2ItemInstance)object).getItemId());
+            getOwner().sendPacket(smsg);
+			return;
+		}
 		
 		L2ItemInstance target = (L2ItemInstance) object;
 		
