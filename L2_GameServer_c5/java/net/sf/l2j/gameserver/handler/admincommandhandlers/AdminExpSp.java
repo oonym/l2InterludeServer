@@ -73,11 +73,11 @@ public class AdminExpSp implements IAdminCommandHandler {
 				//listCharacters(client, 0);
 			}			
 		}
-        else if(command.equals("admin_remove_exp_sp"))
+        else if(command.startsWith("admin_remove_exp_sp"))
         {
             try
             {
-                String val = command.substring(16); 
+                String val = command.substring(19); 
                 adminRemoveExpSP(activeChar, val);
                 GMAudit.auditGMAction(activeChar.getName(), command,  val, "");
             }
@@ -134,7 +134,8 @@ public class AdminExpSp implements IAdminCommandHandler {
 		replyMSG.append("<center><table><tr>");
 		replyMSG.append("<td>Exp: <edit var=\"exp_to_add\" width=50></td>");
 		replyMSG.append("<td>SP:  <edit var=\"sp_to_add\" width=50></td>");
-		replyMSG.append("<td>&nbsp;<button value=\"Save Changes\" action=\"bypass -h admin_add_exp_sp $exp_to_add $sp_to_add\" width=80 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+		replyMSG.append("<td>&nbsp;<center><button value=\"Add\" action=\"bypass -h admin_add_exp_sp $exp_to_add $sp_to_add\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></td>");
+		replyMSG.append("<td>&nbsp;<center><button value=\"Remove\" action=\"bypass -h admin_remove_exp_sp $exp_to_add $sp_to_add\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></td>");
 		replyMSG.append("</tr></table></center>");
 		replyMSG.append("</body></html>");
 		
