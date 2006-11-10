@@ -77,18 +77,10 @@ public class ClientThread extends Thread
 		
 		_internalIP = Util.isInternalIP(_csocket.getInetAddress().getHostAddress());
 		
-		String ip = client.getInetAddress().getHostAddress();
-		
 		_in = client.getInputStream();
 		_out = new BufferedOutputStream(client.getOutputStream());
         _crypt = new NewCrypt("_;5.]94-31==-%xT!^[$\000");
 		_ggAuthRecieved = false;
-        
-        if (_bannedIPs.contains(ip))
-        {
-            LoginFail lok = new LoginFail(LoginFail.REASON_ACCOUNT_BANNED);
-            sendPacket(lok);
-        }
         
 		start();
 	}
@@ -183,7 +175,16 @@ public class ClientThread extends Thread
 						RequestAuthLogin ral = new RequestAuthLogin(decrypt, _privateKey);
 						account = ral.getUser().toLowerCase();
 						if (Config.DEBUG) _log.info("RequestAuthLogin from user:" + account);
+
+						String ip = _csocket.getInetAddress().getHostAddress();
 						
+				        if (_bannedIPs.contains(ip))
+				        {
+				            sendPacket(new LoginFail(LoginFail.REASON_ACCOUNT_BANNED));
+				            if (Config.DEBUG) _log.info("Login attempt from banned IP : "+ip);
+				            break;
+				        }
+
 						LoginController lc = LoginController.getInstance();
 						if (LoginController.getInstance().loginValid(account, ral.getPassword(), _csocket.getInetAddress()))
 						{	
@@ -191,6 +192,7 @@ public class ClientThread extends Thread
                             {
                                 //Login BANNED
                                 LoginFail lok = new LoginFail(LoginFail.REASON_ACCOUNT_BANNED);
+    				            if (Config.DEBUG) _log.info("Login attempt from banned account : "+account);
                                 sendPacket(lok);
                             }
                             else
