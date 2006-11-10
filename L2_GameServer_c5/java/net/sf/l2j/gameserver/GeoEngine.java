@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -320,8 +321,8 @@ public class GeoEngine extends GeoData
 	private static void LoadGeodataFile(byte rx, byte ry)
 	{
 		String fname = "./data/geodata/"+rx+"_"+ry+".l2j";
-		short regionoffset = (short)(rx*32 + ry);
-		_log.info("Geo Engine: - Loading: "+fname+" -> region offset: "+regionoffset);		
+		short regionoffset = (short)((rx << 5) + ry);
+		_log.info("Geo Engine: - Loading: "+fname+" -> region offset: "+regionoffset+"X: "+rx+" Y: "+ry);		
 		File Geo = new File(fname);
 		int size;		
 		int index = 0;		
@@ -331,8 +332,8 @@ public class GeoEngine extends GeoData
 	        // Create a read-only memory-mapped file
 	        FileChannel roChannel = new RandomAccessFile(Geo, "r").getChannel();
 			size = (int)roChannel.size();			
-			MappedByteBuffer geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, (int)roChannel.size()).load();
-			_log.info("X: "+rx+" Y: "+ry+"\n");						
+			MappedByteBuffer geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, (int)roChannel.size()).load();								
+			geo.order(ByteOrder.LITTLE_ENDIAN);
 			IntBuffer indexs = IntBuffer.allocate(65536);			
 			
 			//Indexing geo files, so we will know where each block starts
@@ -356,7 +357,7 @@ public class GeoEngine extends GeoData
 		            for(b=0;b<64;b++)
 		            {												
 		                byte layers = geo.get(index);						
-		                index += layers*2+1;						
+		                index += (layers << 1) + 1;						
 		                if (layers > flor)
 		                     flor = layers;               
 		            }            
@@ -394,22 +395,22 @@ public class GeoEngine extends GeoData
 	//Geodata Functions
 	private static short NgetType(int x, int y)
 	{   
-	    int region = getRegionOffset(x,y);
+	    short region = getRegionOffset(x,y);
 		int blockX = getBlock(x);
 		int blockY = getBlock(y);		
 		int index = 0;
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
-		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		else index = Geodata_index.get(region).get((blockX << 8) + blockY);
 		if(Geodata.get(region) == null)
 		{
-			_log.warning("Geo Region: "+x+":"+y+" dosnt exist!!");
+			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return 0;
 		}
 		return Geodata.get(region).get(index);      
 	}
 	private static short NgetHeight(int x, int y, int z)
 	{    
-	    int region = getRegionOffset(x,y);
+	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
 		int cellX = 0;		
@@ -420,7 +421,7 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region: "+x+":"+y+" dosnt exist!!");
+			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return 0;
 		}		
 		byte type = geo.get(index);
@@ -433,10 +434,9 @@ public class GeoEngine extends GeoData
 	    {
 	    	cellX = getCell(x);
 			cellY = getCell(y);
-	        index+=((cellX << 3) + cellY) << 1;
+	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			height = (short)(height&0x0fff0);
-			height /= 2;
+			height = (short)((height&0x0fff0) >> 1);			
 			return height;
 	    }
 	    else
@@ -473,7 +473,7 @@ public class GeoEngine extends GeoData
 	}
 	private static boolean NcanMoveNext(int x, int y, int z, int tx, int ty, int tz)
 	{
-	    int region = getRegionOffset(x,y);
+	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
 		int cellX = 0;		
@@ -486,7 +486,7 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region: "+x+":"+y+" dosnt exist!!");
+			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return false;
 		}
 		byte type = geo.get(index);
@@ -574,7 +574,7 @@ public class GeoEngine extends GeoData
 	}
 	private short NgetNSWE(int x, int y, int z)
 	{
-		int region = getRegionOffset(x,y);
+		short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
 		int cellX = 0;		
@@ -587,7 +587,7 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region: "+x+":"+y+" dosnt exist!!");
+			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return 0;
 		}
 		byte type = geo.get(index);
@@ -612,7 +612,7 @@ public class GeoEngine extends GeoData
 	        while(offset > 0)
 	        {
 	            short lc = geo.getShort(index);		                 
-	            index += (lc << 1) + 2;
+	            index += (lc << 1) + 1;
 	            offset--;
 	        }
 	        byte layers = geo.get(index);
