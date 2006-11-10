@@ -70,11 +70,9 @@ public class RequestJoinParty extends ClientBasePacket
             return;
         }
         
-        SystemMessage msg;
-        
 		if (target.isInParty()) 
         {
-			msg = new SystemMessage(SystemMessage.S1_IS_ALREADY_IN_PARTY);
+			SystemMessage msg = new SystemMessage(SystemMessage.S1_IS_ALREADY_IN_PARTY);
 			msg.addString(target.getName());
 			requestor.sendPacket(msg);
 			return;
@@ -82,11 +80,16 @@ public class RequestJoinParty extends ClientBasePacket
 
 		if (target == requestor) 
         {
-			msg = new SystemMessage(SystemMessage.INCORRECT_TARGET);
-			msg.addString(target.getName());
-			requestor.sendPacket(msg);
+			requestor.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
 			return;
 		}
+
+		if (target.isCursedWeaponEquiped() || requestor.isCursedWeaponEquiped()) 
+        {
+			requestor.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+			return;
+		}
+        
         
         if (target.isInOlympiadMode() || requestor.isInOlympiadMode())
             return;
