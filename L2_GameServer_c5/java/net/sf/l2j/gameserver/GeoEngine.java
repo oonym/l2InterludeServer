@@ -320,7 +320,7 @@ public class GeoEngine extends GeoData
 	private static void LoadGeodataFile(byte rx, byte ry)
 	{
 		String fname = "./data/geodata/"+rx+"_"+ry+".l2j";
-		short regionoffset = getRegionOffset(rx, ry);
+		short regionoffset = (short)(rx*32 + ry);
 		_log.info("Geo Engine: - Loading: "+fname+" -> region offset: "+regionoffset);		
 		File Geo = new File(fname);
 		int size;		
@@ -377,7 +377,7 @@ public class GeoEngine extends GeoData
 	private static short getRegionOffset(int x, int y)
 	{
 	    int rx = x >> 11; // =/(256 * 8)
-	    int ry = y >> 2048;
+	    int ry = y >> 11;
 	    return (short)(((rx+16) << 5) + (ry+10));
 	}
 

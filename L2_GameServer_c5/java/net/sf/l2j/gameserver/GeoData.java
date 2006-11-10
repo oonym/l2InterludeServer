@@ -40,13 +40,12 @@ public class GeoData
         	if (Config.GEODATA)        	 
         		_instance = GeoEngine.getInstance();        		
         	else
+        	{
         		_instance = new GeoData();
+        		_log.info("Geodata Engine: Disabled.");
+        	}        		
         }           
         return _instance;
-    }
-    public GeoData()
-    {    	
-    	_log.info("Geodata Engine: Disabled.");            
     }    
     
     // Public Methods
