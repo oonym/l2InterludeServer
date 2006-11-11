@@ -333,37 +333,40 @@ public class GeoEngine extends GeoData
 	        FileChannel roChannel = new RandomAccessFile(Geo, "r").getChannel();
 			size = (int)roChannel.size();			
 			MappedByteBuffer geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, (int)roChannel.size()).load();								
-			geo.order(ByteOrder.LITTLE_ENDIAN);
-			IntBuffer indexs = IntBuffer.allocate(65536);			
+			geo.order(ByteOrder.LITTLE_ENDIAN);						
 			
-			//Indexing geo files, so we will know where each block starts
-			while(block < 65536)
-		    {	        
-				byte type = geo.get(index);
-		        indexs.put(block,index);
-				block++;
-				index++;								
-		        if(type == 0)
-		        {			
-		        	index += 2; // 1x short					
-		        }
-		        else if(type == 1)
-		        {
-		        	index += 128; // 64 x short					
-		        }       
-		        else
-		        {					
-		            int b;            
-		            for(b=0;b<64;b++)
-		            {												
-		                byte layers = geo.get(index);						
-		                index += (layers << 1) + 1;						
-		                if (layers > flor)
-		                     flor = layers;               
-		            }            
-		        }		        				
-		    }
-			if (size > 196608) Geodata_index.put(regionoffset, indexs);
+			if (size > 196608)
+			{                
+				// Indexing geo files, so we will know where each block starts
+				IntBuffer indexs = IntBuffer.allocate(65536);
+				while(block < 65536)
+			    {	        
+					byte type = geo.get(index);
+			        indexs.put(block,index);
+					block++;
+					index++;								
+			        if(type == 0)
+			        {			
+			        	index += 2; // 1x short					
+			        }
+			        else if(type == 1)
+			        {
+			        	index += 128; // 64 x short					
+			        }       
+			        else
+			        {					
+			            int b;            
+			            for(b=0;b<64;b++)
+			            {												
+			                byte layers = geo.get(index);						
+			                index += (layers << 1) + 1;						
+			                if (layers > flor)
+			                     flor = layers;               
+			            }            
+			        }		        				
+			    }
+				Geodata_index.put(regionoffset, indexs);
+			}		 
 			Geodata.put(regionoffset,geo);
 			
 			_log.info("Geo Engine: - Max Layers: "+flor+" Size: "+size+" Loaded: "+index);					
@@ -458,7 +461,7 @@ public class GeoEngine extends GeoData
 				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);				
 	            return height;
 			}
-	        short temph = -9000;
+	        short temph = -30000;
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
@@ -522,8 +525,8 @@ public class GeoEngine extends GeoData
                 _log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
 	            return false;		 
 	        }		
-	        short tempz = -9000;
-	        short tempz2 = -9000;
+	        short tempz = -30000;
+	        short tempz2 = -30000;
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
@@ -535,7 +538,7 @@ public class GeoEngine extends GeoData
 	                NSWE = geo.getShort(index);
 	                NSWE = (short)(NSWE&0x0F);                           
 	            }
-	            if ((z-tempz2)*(z-tempz2) > (z-height)*(z-height))
+	            if ((tz-tempz2)*(tz-tempz2) > (tz-height)*(tz-height))
 	            {
 	                tempz2 = height;                                          
 	            }                            
@@ -560,14 +563,14 @@ public class GeoEngine extends GeoData
 	    	if ((NSWE & W) == 0)
 	            return false;
 	    }
-	    if (ty > y)//N
-	    {
-	    	if ((NSWE & N) == 0)
-	            return false;
-	    }
-	    else if (ty < y)//S
+	    if (ty > y)//S
 	    {
 	    	if ((NSWE & S) == 0)
+	            return false;
+	    }
+	    else if (ty < y)//N
+	    {
+	    	if ((NSWE & N) == 0)
 	            return false;
 	    }
 	    return true;	
@@ -623,7 +626,7 @@ public class GeoEngine extends GeoData
 	        	_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
 	            return 0;		 
 	        }		
-	        short tempz = -9000;	        
+	        short tempz = -30000;	        
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
@@ -632,7 +635,7 @@ public class GeoEngine extends GeoData
 	            if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
 	            {
 	                tempz = height;
-	                NSWE = geo.getShort(index);
+	                NSWE = geo.get(index);
 	                NSWE = (short)(NSWE&0x0F);                           
 	            }	                                       
 	            layers--;
