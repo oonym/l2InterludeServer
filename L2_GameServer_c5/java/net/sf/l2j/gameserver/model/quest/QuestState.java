@@ -34,9 +34,11 @@ import net.sf.l2j.gameserver.model.L2DropData;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.QuestList;
+import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 
@@ -554,6 +556,11 @@ public final class QuestState
                 getPlayer().sendPacket(smsg);
             }
 		}
+        getPlayer().sendPacket(new ItemList(getPlayer(), false));
+
+        StatusUpdate su = new StatusUpdate(getPlayer().getObjectId());
+        su.addAttribute(StatusUpdate.CUR_LOAD, getPlayer().getCurrentLoad());
+        getPlayer().sendPacket(su);
 	}
 
     /**
@@ -572,7 +579,7 @@ public final class QuestState
     
     public boolean dropQuestItems(int itemId, int minCount, int maxCount, int neededCount, int dropChance, boolean sound) 
     {
-        dropChance *= Config.RATE_DROP_QUEST;
+        dropChance *= Config.RATE_DROP_QUEST / ((getPlayer().getParty() != null) ? getPlayer().getParty().getMemberCount() : 1);
         int currentCount = getQuestItemsCount(itemId);
 
         if (neededCount > 0 && currentCount >= neededCount) 

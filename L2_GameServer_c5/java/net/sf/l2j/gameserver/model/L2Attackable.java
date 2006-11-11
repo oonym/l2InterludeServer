@@ -400,25 +400,52 @@ public class L2Attackable extends L2NpcInstance
         
         // Notify the Quest Engine of the L2Attackable death if necessary
         try {
-            if (killer instanceof L2PcInstance || killer instanceof L2SummonInstance) 
-            {
-                // Get the L2PcInstance that killed the L2Attackable
-                L2PcInstance player = killer instanceof L2PcInstance?(L2PcInstance)killer:((L2SummonInstance)killer).getOwner();
-                
-                // Get a table containing all QuestState to modify after the L2Attackable killing
-                QuestState[] quests = player.getQuestsForKills(this);
-                
-                if (quests != null) 
-                {
-                    // Go through table containing all QuestState to modify
-                    for (QuestState qs : quests) 
-                    {
-                        // Notify the Quest Engine of the L2Attackable death
-                        qs.getQuest().notifyKill(this, qs);
-                    }
-                }
-                
-            }
+
+        	if (killer instanceof L2PcInstance || killer instanceof L2SummonInstance)
+        	{
+        		L2PcInstance player = killer instanceof L2PcInstance ? (L2PcInstance)killer : ((L2SummonInstance)killer).getOwner();
+        		List<QuestState> questList = new FastList<QuestState>(); 
+        		
+        		if (player.getParty() != null)
+        		{
+        			Map<String, List<QuestState>> tempMap = new FastMap<String, List<QuestState>>();
+        			
+	        		for (L2PcInstance pl : player.getParty().getPartyMembers())
+	        		{
+	        			for (QuestState qs : pl.getQuestsForKills(this))
+	        			{
+	        				if (qs.getQuest().isParty())
+	        				{
+	        					if (!qs.isCompleted() && !pl.isDead() && Util.checkIfInRange(1150, this, pl, true))
+	        						if (tempMap.get(qs.getQuest().getName()) != null)
+	        							tempMap.get(qs.getQuest().getName()).add(qs);
+	        						else
+	        						{
+	        							List<QuestState> tempList = new FastList<QuestState>();
+	        							tempList.add(qs);
+	        							tempMap.put(qs.getQuest().getName(), tempList);
+	        						}
+	        				}
+	        				else if (pl == (L2PcInstance)killer)
+	        					questList.add(qs);
+	        			}
+	        		}
+	        		
+	        		for (List<QuestState> list : tempMap.values())
+	        		{
+	        			Random rnd = new Random();
+	        			questList.add((QuestState)list.toArray()[rnd.nextInt(list.size())]);
+	        		}
+        		}
+        		else
+        		{
+        			for (QuestState qs : player.getQuestsForKills(this))
+        				questList.add(qs);
+        		}
+        		
+        		for (QuestState qs : questList)
+        			qs.getQuest().notifyKill(this, qs);
+        	}
         } 
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
 

@@ -53,6 +53,7 @@ public abstract class Quest
 	private final int _questId;
 	private final String _name;
 	private final String _descr;
+	private final boolean _party;
     private State initialState;
     private Map<String, State> states;
 	
@@ -71,10 +72,16 @@ public abstract class Quest
      * @param descr : String for the description of the quest
      */
 	public Quest(int questId, String name, String descr)
+	{
+		this(questId, name, descr, false);
+	}
+	
+	public Quest(int questId, String name, String descr, boolean party)
     {
 		_questId = questId;
 		_name = name;
 		_descr = descr;
+		_party = party;
         states = new FastMap<String, State>();
 		if (questId != 0) {
             QuestManager.getInstance().getQuests().add(Quest.this);
@@ -132,6 +139,11 @@ public abstract class Quest
 	 */
 	public String getDescr() {
 		return _descr;
+	}
+	
+	public boolean isParty()
+	{
+		return _party;
 	}
     
 	/**
