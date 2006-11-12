@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
@@ -51,7 +52,7 @@ public class RequestBuyItem extends ClientBasePacket
 	private static final String _C__1F_REQUESTBUYITEM = "[C] 1F RequestBuyItem";
 	private static Logger _log = Logger.getLogger(RequestBuyItem.class.getName());
 
-	private final int _listId;
+	private int _listId;
 	private int _count;
 	private int[] _items; // count*2
 	/**
@@ -121,11 +122,50 @@ public class RequestBuyItem extends ClientBasePacket
         }
         else
         	ok = false;
+        
+        //necessary to set true for GMShop to work via admin menu :)
+        if (player.isGM()) ok = true;
 
         L2NpcInstance merchant = null;
 
         if (ok)
         	merchant = (L2NpcInstance)target;
+        else
+        {
+        	player.sendMessage("Invalid Target: Seller must be targetted");
+        	return;
+        }
+        
+        L2TradeList list = null;
+        
+        if (merchant != null)
+        {
+        	List<L2TradeList> lists = TradeController.getInstance().getBuyListByNpcId(merchant.getNpcId());
+        	
+        	if (lists == null)
+        	{
+        		Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
+        		return;
+        	}
+        	
+        	for (L2TradeList tradeList : lists)
+        	{
+        		if (tradeList.getListId() == _listId)
+        		{
+        			list = tradeList;
+        		}
+        	}
+        }
+        else
+        	list = TradeController.getInstance().getBuyList(_listId);
+        
+        if (list == null)
+        {
+        	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
+        	return;
+        }
+        
+        _listId = list.getListId();
 
         if (_listId > 1000000) // lease
 		{
@@ -155,8 +195,15 @@ public class RequestBuyItem extends ClientBasePacket
 			int itemId = _items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
 			int price = -1;
+			
+			if (!list.containsItemId(itemId))
+			{
+				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
+				return;
+			}
 
             L2Item template = ItemTable.getInstance().getTemplate(itemId);
+            
             if (template == null) continue;
 
             if (count > Integer.MAX_VALUE || (!template.isStackable() && count > 1))
@@ -171,7 +218,7 @@ public class RequestBuyItem extends ClientBasePacket
 
 			if (_listId < 1000000)
 			{
-				L2TradeList list = TradeController.getInstance().getBuyList(_listId);
+				//list = TradeController.getInstance().getBuyList(_listId);
 				price = list.getPriceForItemId(itemId);
                 if (itemId >= 3960 && itemId <= 4026) price *= Config.RATE_SIEGE_GUARDS_PRICE;
 	
@@ -240,6 +287,12 @@ public class RequestBuyItem extends ClientBasePacket
 			int itemId = _items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
 			if (count < 0) count = 0;
+			
+			if (!list.containsItemId(itemId))
+			{
+				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
+				return;
+			}
 
 			// Add item to Inventory and adjust update packet
 			player.getInventory().addItem("Buy", itemId, count, player, merchant);

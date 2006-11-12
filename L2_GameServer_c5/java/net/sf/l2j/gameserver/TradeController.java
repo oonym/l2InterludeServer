@@ -24,11 +24,13 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
@@ -183,6 +185,20 @@ public class TradeController
 	public L2TradeList getBuyList(int listId)
 	{
 		return _lists.get(new Integer(listId));
+	}
+	
+	public List<L2TradeList> getBuyListByNpcId(int npcId)
+	{
+		List<L2TradeList> lists = new FastList<L2TradeList>();
+		
+		for (L2TradeList list : _lists.values())
+		{
+			if (list.getNpcId().startsWith("gm")) continue;
+			if (npcId == Integer.parseInt(list.getNpcId()))
+				lists.add(list);
+		}
+		
+		return lists;
 	}
 
 

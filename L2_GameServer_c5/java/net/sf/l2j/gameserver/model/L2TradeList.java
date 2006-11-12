@@ -141,6 +141,17 @@ public class L2TradeList
 		}
 		return -1;
 	}
+	
+	public boolean containsItemId(int itemId)
+	{
+		for (L2ItemInstance item : _items)
+		{
+			if (item.getItemId() == itemId)
+				return true;
+		}
+		
+		return false;
+	}
 	public L2ItemInstance getItem(int ObjectId)
 	{
 		for (int i = 0; i < _items.size(); i++)
