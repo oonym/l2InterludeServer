@@ -412,6 +412,8 @@ public class L2Attackable extends L2NpcInstance
         			
 	        		for (L2PcInstance pl : player.getParty().getPartyMembers())
 	        		{
+	        			if (pl.getQuestsForKills(this) == null) continue;
+	        			
 	        			for (QuestState qs : pl.getQuestsForKills(this))
 	        			{
 	        				if (qs.getQuest().isParty())
@@ -439,12 +441,14 @@ public class L2Attackable extends L2NpcInstance
         		}
         		else
         		{
-        			for (QuestState qs : player.getQuestsForKills(this))
-        				questList.add(qs);
+        			if (player.getQuestsForKills(this) != null)
+        				for (QuestState qs : player.getQuestsForKills(this))
+        					questList.add(qs);
         		}
         		
-        		for (QuestState qs : questList)
-        			qs.getQuest().notifyKill(this, qs);
+        		if (questList != null)
+        			for (QuestState qs : questList)
+        				qs.getQuest().notifyKill(this, qs);
         	}
         } 
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
