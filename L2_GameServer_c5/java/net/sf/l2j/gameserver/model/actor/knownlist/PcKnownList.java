@@ -117,7 +117,7 @@ public class PcKnownList extends PlayableKnownList
                 L2Summon summon = (L2Summon) object;
 
                 // Check if the L2PcInstance is the owner of the Pet
-                if (this.equals(summon.getOwner()))
+                if (getActiveChar().equals(summon.getOwner()))
                 {
                     getActiveChar().sendPacket(new PetInfo(summon));
                     if (summon instanceof L2PetInstance)
