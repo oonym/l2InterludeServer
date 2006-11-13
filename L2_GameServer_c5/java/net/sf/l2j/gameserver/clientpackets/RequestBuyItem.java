@@ -122,15 +122,12 @@ public class RequestBuyItem extends ClientBasePacket
         }
         else
         	ok = false;
-        
-        //necessary to set true for GMShop to work via admin menu :)
-        if (player.isGM()) ok = true;
 
         L2NpcInstance merchant = null;
 
         if (ok)
         	merchant = (L2NpcInstance)target;
-        else
+        else if (!ok && !player.isGM())
         {
         	player.sendMessage("Invalid Target: Seller must be targetted");
         	return;
