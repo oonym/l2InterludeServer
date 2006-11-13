@@ -61,6 +61,8 @@ public class ChestKey implements IItemHandler
 				return;
 			}
 			if (!chest.isBox()) {
+				activeChar.sendMessage("Use " + item.getItem().getName() + ".");
+				playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 				activeChar.sendMessage("Failed to open chest");
 				activeChar.sendPacket(new ActionFailed());
 				chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
