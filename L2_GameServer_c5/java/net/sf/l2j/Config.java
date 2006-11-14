@@ -717,6 +717,8 @@ public final class Config
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE;
     /** Allow player with karma to shop ? */
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_SHOP;
+    /** Allow player with karma to use GK ? */
+    public static boolean ALT_GAME_KARMA_PLAYER_CAN_USE_GK;
     /** Allow player with karma to use teleport ? */
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_TELEPORT;
     /** Allow player with karma to trade ? */
@@ -1392,6 +1394,7 @@ public final class Config
 	            AUTO_LOOT_HERBS         = altSettings.getProperty("AutoLootHerbs").equalsIgnoreCase("True");
                 ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE    = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanBeKilledInPeaceZone", "false"));
                 ALT_GAME_KARMA_PLAYER_CAN_SHOP                      = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanShop", "true"));
+                ALT_GAME_KARMA_PLAYER_CAN_USE_GK                    = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanUseGK", "false"));
                 ALT_GAME_KARMA_PLAYER_CAN_TELEPORT                  = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanTeleport", "true"));
                 ALT_GAME_KARMA_PLAYER_CAN_TRADE                     = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanTrade", "true"));
                 ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE             = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanUseWareHouse", "true"));
@@ -1826,6 +1829,7 @@ public final class Config
 
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanBeKilledInPeaceZone")) ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanShop")) ALT_GAME_KARMA_PLAYER_CAN_SHOP = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("AltKarmaPlayerCanUseGK")) ALT_GAME_KARMA_PLAYER_CAN_USE_GK = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanTeleport")) ALT_GAME_KARMA_PLAYER_CAN_TELEPORT = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanTrade")) ALT_GAME_KARMA_PLAYER_CAN_TRADE = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltKarmaPlayerCanUseWareHouse")) ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE = Boolean.valueOf(pValue);

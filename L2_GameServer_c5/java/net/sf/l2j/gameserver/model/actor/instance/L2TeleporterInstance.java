@@ -186,6 +186,13 @@ public final class L2TeleporterInstance extends L2FolkInstance
                 player.sendPacket(new SystemMessage(707));
                 return;
             }
+            else if (player.getKarma() > 0 && !Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK) //karma
+            {
+                SystemMessage sm = new SystemMessage(614);
+                sm.addString("Go away, you're not welcome here.");
+                player.sendPacket(sm);
+                return;
+            }
             else if (player.reduceAdena("Teleport", list.getPrice(), this, true))
             {
                 if (Config.DEBUG)
