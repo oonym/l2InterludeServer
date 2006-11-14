@@ -717,9 +717,9 @@ public final class Config
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE;
     /** Allow player with karma to shop ? */
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_SHOP;
-    /** Allow player with karma to use GK ? */
+    /** Allow player with karma to use gatekeepers ? */
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_USE_GK;
-    /** Allow player with karma to use teleport ? */
+    /** Allow player with karma to use SOE or Return skill ? */
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_TELEPORT;
     /** Allow player with karma to trade ? */
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_TRADE;
