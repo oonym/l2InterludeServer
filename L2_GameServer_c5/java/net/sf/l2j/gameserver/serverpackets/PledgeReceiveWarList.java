@@ -57,7 +57,10 @@ public class PledgeReceiveWarList extends ServerBasePacket
 		writeD(_clan.getWarList().size());
 		for(Integer i : _clan.getWarList())
 		{
-			writeS(ClanTable.getInstance().getClan(i).getName());
+			L2Clan clan = ClanTable.getInstance().getClan(i);
+			if (clan == null) continue;
+			
+			writeS(clan.getName());
 			writeD(0x01); //??
 			writeD(0x00); //??
 		}
