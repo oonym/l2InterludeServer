@@ -4082,7 +4082,7 @@ public abstract class L2Character extends L2Object
                 getAI().clientStartAutoAttack();
 
                 // Manage attack or cast break of the target (calculating rate, sending message...)
-				if (Formulas.getInstance().calcAtkBreak(target, damage))
+				if (!target.isRaid() && Formulas.getInstance().calcAtkBreak(target, damage))
 				{
 					target.breakAttack();
 					target.breakCast();
