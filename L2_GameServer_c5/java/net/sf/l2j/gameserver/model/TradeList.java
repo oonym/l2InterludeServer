@@ -427,7 +427,7 @@ public class TradeList
      * Confirms TradeList
      * @return : boolean
      */
-    public synchronized boolean Confirm()
+    public boolean Confirm()
     {
         if (_confirmed) return true; // Already confirmed
 
@@ -440,24 +440,30 @@ public class TradeList
                 _log.warning(_partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
                 return false;
             }
-            //synchronized (partnerList)
-            //{
-            //    _confirmed = true;
-                if (partnerList.isConfirmed())
-                {
-                    partnerList.Lock();
-                    this.Lock();
-                    if (!partnerList.Validate()) return false;
-                    if (!this.Validate()) return false;
 
-                    doExchange(partnerList);
-                }
-                else
+            // Synchronization order to avoid deadlock
+            TradeList sync1, sync2;
+            if (getOwner().getObjectId() > partnerList.getOwner().getObjectId())
+                { sync1 = partnerList; sync2 = this; }
+            else { sync1 = this; sync2 = partnerList; }
+
+            synchronized (sync1)
+            { 
+                synchronized (sync2) 
                 {
                     _confirmed = true;
-                    _partner.onTradeConfirm(_owner);
+                    if (partnerList.isConfirmed())
+                    {
+                        partnerList.Lock();
+                        this.Lock();
+                        if (!partnerList.Validate()) return false;
+                        if (!this.Validate()) return false;
+
+                        doExchange(partnerList);
+                    }
+                    else _partner.onTradeConfirm(_owner);
                 }
-            //}
+            }
         }
         else _confirmed = true;
 
