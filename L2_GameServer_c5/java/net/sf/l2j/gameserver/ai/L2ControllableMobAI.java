@@ -168,14 +168,15 @@ public class L2ControllableMobAI extends L2AttackableAI
 	
 	protected void thinkAttackGroup() 
     {
-		if (getForcedTarget() == null || getForcedTarget().isAlikeDead()) 
+		L2Character target = getForcedTarget();
+		if (target == null || target.isAlikeDead()) 
         {
 			// try to get next group target
 			setForcedTarget(findNextGroupTarget());
 			clientStopMoving(null);
 		}
 		
-		if (getForcedTarget() == null)
+		if (target == null)
 			return;
 		
 		L2Skill[] skills = null;
@@ -183,15 +184,15 @@ public class L2ControllableMobAI extends L2AttackableAI
 		int range = 0;
 		int max_range = 0;
 		
-		_actor.setTarget(getForcedTarget());
+		_actor.setTarget(target);
 		// as a response, we put the target in a forcedattack mode
-		L2ControllableMobInstance theTarget = (L2ControllableMobInstance)getForcedTarget();
+		L2ControllableMobInstance theTarget = (L2ControllableMobInstance)target;
 		L2ControllableMobAI ctrlAi = (L2ControllableMobAI)theTarget.getAI();
 		ctrlAi.forceAttack(_actor);
 		
 		try {
 			skills = _actor.getAllSkills();
-			dist2 = _actor.getPlanDistanceSq(getForcedTarget().getX(), getForcedTarget().getY());
+			dist2 = _actor.getPlanDistanceSq(target.getX(), target.getY());
 			range = _actor.getPhysicalAttackRange();
 			max_range = range;
 		} 
@@ -219,11 +220,11 @@ public class L2ControllableMobAI extends L2AttackableAI
 			}
             
 			if (!isNotMoving())
-				moveToPawn(getForcedTarget(), range);
+				moveToPawn(target, range);
             
 			return;
 		}
-		_accessor.doAttack(getForcedTarget());
+		_accessor.doAttack(target);
     }
 
 	protected void thinkForceAttack() 
