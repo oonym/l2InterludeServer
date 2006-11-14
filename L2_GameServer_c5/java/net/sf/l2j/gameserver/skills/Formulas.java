@@ -1213,15 +1213,33 @@ public final class Formulas
 	}
 
 	/** Returns true in case when ATTACK is canceled due to hit */
-	public final boolean calcAtkBreak(L2Character cha, double cancel)
+	public final boolean calcAtkBreak(L2Character target, double dmg)
 	{
-		if (Config.ALT_GAME_CANCEL_CAST && cha.isCastingNow()) return cancel > Rnd.get(100);
-		if (Config.ALT_GAME_CANCEL_BOW && cha.isAttackingNow())
+        double init = 0;
+
+		if (Config.ALT_GAME_CANCEL_CAST && target.isCastingNow()) init = 45;
+		if (Config.ALT_GAME_CANCEL_BOW && target.isAttackingNow())
 		{
-			L2Weapon wpn = cha.getActiveWeaponItem();
-			if (wpn != null && wpn.getItemType() == L2WeaponType.BOW) return cancel > Rnd.get(100);
+			L2Weapon wpn = target.getActiveWeaponItem();
+			if (wpn != null && wpn.getItemType() == L2WeaponType.BOW) init = 20;
 		}
-		return false;
+
+        if (init <= 0) return false; // No attack break
+
+        // Chance of break is higher with higher dmg
+        init += 5 * Math.sqrt(dmg);  
+
+        // Chance is affected by target MEN
+        init -= (MENbonus[target.getMEN()] * 100 - 100);
+
+        // Calculate all modifiers for ATTACK_CANCEL
+        double rate = target.calcStat(Stats.ATTACK_CANCEL, init, null, null); 
+
+        // Adjust the rate to be between 1 and 99
+        if (rate > 99) rate = 99;
+        else if (rate < 1) rate = 1;
+
+        return Rnd.get(100) < rate;
 	}
 
 	/** Calculate delay (in milliseconds) before next ATTACK */
@@ -1609,8 +1627,8 @@ public final class Formulas
 		 *  10 - 20      : reduced chance
 		 *  20 and more  : min chance
 		 */
-		int value = target.isRaid() ? 120 : 200; // chance is reduced for RaidBoss
-		int lvlDepend = 8;
+		int value = target.isRaid() ? 130 : 170; // chance is reduced for RaidBoss
+		int lvlDepend = 6;
 
 		// TODO: Temporary fix for NPC skills with MagicLevel not set
 		// int lvlmodifier = (skill.getMagicLevel() - target.getLevel()) * lvlDepend;

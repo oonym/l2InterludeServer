@@ -149,12 +149,7 @@ public class Mdam implements ISkillHandler
                     + activeChar.getLevel() + " lvl did damage " + damage + " with skill "
                     + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_mdam");
             }
-            boolean abort = Formulas.getInstance().calcAtkBreak(target, target.getStat().getAtkCancel());
-            if (abort)
-            {
-                target.breakAttack();
-                target.breakCast();
-            }
+
             // Why are we trying to reduce the current target HP here?
             // Why not inside the below "if" condition, after the effects processing as it should be?
             // It doesn't seem to make sense for me. I'm moving this line inside the "if" condition, right after the effects processing...
@@ -163,6 +158,13 @@ public class Mdam implements ISkillHandler
     
             if (damage > 0)
             {
+                // Manage attack or cast break of the target (calculating rate, sending message...)
+                if (Formulas.getInstance().calcAtkBreak(target, damage))
+                {
+                    target.breakAttack();
+                    target.breakCast();
+                }
+
                 if (activeChar instanceof L2PcInstance)
                 {
                     if (mcrit) activeChar.sendPacket(new SystemMessage(1280));

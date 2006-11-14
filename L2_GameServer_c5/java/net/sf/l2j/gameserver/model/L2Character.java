@@ -4081,11 +4081,8 @@ public abstract class L2Character extends L2Object
                 target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, this);
                 getAI().clientStartAutoAttack();
 
-                // Calculate if attack is broken
-				boolean abort = Formulas.getInstance().calcAtkBreak(target, target.getStat().getAtkCancel());
-				
                 // Manage attack or cast break of the target (calculating rate, sending message...)
-				if (abort)
+				if (Formulas.getInstance().calcAtkBreak(target, damage))
 				{
 					target.breakAttack();
 					target.breakCast();
@@ -5115,7 +5112,6 @@ public abstract class L2Character extends L2Object
 	// Property - Public
 	public int getAccuracy() { return getStat().getAccuracy(); }
 	public final float getAttackSpeedMultiplier() { return getStat().getAttackSpeedMultiplier(); }
-	public final int getAtkCancel() { return getStat().getAtkCancel(); }
 	public int getCON() { return getStat().getCON(); }
 	public int getDEX() { return getStat().getDEX(); }
 	public final double getCriticalDmg(L2Character target, double init) { return getStat().getCriticalDmg(target, init); }
