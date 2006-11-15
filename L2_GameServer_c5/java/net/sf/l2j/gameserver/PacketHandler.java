@@ -258,10 +258,10 @@ public class PacketHandler
 //				break;
 //				THESE ARE NOW TEMPORARY DISABLED 
 			case 0x4a:
-//				new StartRotating(data, _client);  
+				new StartRotating(data, client);  
 				break;
 			case 0x4b:
-//				new FinishRotating(data, _client); 
+				new FinishRotating(data, client); 
 				break;
 			case 0x4d:
 				msg = new RequestStartPledgeWar(data, client);   

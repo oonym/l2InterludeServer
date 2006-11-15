@@ -18,20 +18,21 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.TaskPriority;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
+import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.PartyMemberPosition;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
-//import net.sf.l2j.gameserver.serverpackets.AttackCanceld;
+
 /**
  * This class ...
  * 
@@ -41,16 +42,21 @@ public class MoveBackwardToLocation extends ClientBasePacket
 {
 	private static Logger _log = Logger.getLogger(MoveBackwardToLocation.class.getName());
 	// cdddddd
-	private final int _targetX;
-	private final int _targetY;
-	private final int _targetZ;
+	private       int _targetX;
+	private       int _targetY;
+	private       int _targetZ;
 	@SuppressWarnings("unused")
     private final int _originX;
 	@SuppressWarnings("unused")
     private final int _originY;
 	@SuppressWarnings("unused")
     private final int _originZ;
-	private       int _moveMovement; 
+	private       int _moveMovement;
+	
+    //For geodata
+    private       int _CurX;
+    private       int _CurY;
+    private       int _CurZ;
 	
 	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
 
@@ -70,21 +76,8 @@ public class MoveBackwardToLocation extends ClientBasePacket
 		_originZ  = readD();
 		if (Config.allowL2Walker(client.getActiveChar()) && client.getRevision() == Config.L2WALKER_REVISION) {
             _moveMovement = 1;
-		} else {
-			try {
-				_moveMovement = readD(); // is 0 if cursor keys are used  1 if mouse is used
-			} catch (BufferUnderflowException e) {
-				_log.warning("Incompatible client found: L2Walker? "+client.getActiveChar());
-			    if (Config.AUTOBAN_L2WALKER_ACC){
-				L2PcInstance activeChar = getClient().getActiveChar();
-				if(activeChar == null)
-					return;
-				activeChar.setAccessLevel(-100);
-				activeChar.store();
-				activeChar.deleteMe();
-			    }
-			}
-		}
+		} else
+			_moveMovement = readD(); // is 0 if cursor keys are used  1 if mouse is used
 	}
 
 	
@@ -93,6 +86,11 @@ public class MoveBackwardToLocation extends ClientBasePacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
+        
+		_CurX = activeChar.getX();
+        _CurY = activeChar.getY();
+        _CurZ = activeChar.getZ();
+        
 		if(activeChar.isInBoat())
 		{
 			activeChar.setInBoat(false);
@@ -106,7 +104,7 @@ public class MoveBackwardToLocation extends ClientBasePacket
 			return;
 		}
 		
-		if (_moveMovement == 0) // activeChar.isCastingNow() ||   cursor movement is temporary disabled 
+		if (_moveMovement == 0 && !Config.GEODATA) // activeChar.isCastingNow() ||   cursor movement is temporary disabled 
 		{
 			activeChar.sendPacket(new ActionFailed());
 		}
@@ -116,16 +114,20 @@ public class MoveBackwardToLocation extends ClientBasePacket
 		}
 		else 
 		{
-			double dx = _targetX-activeChar.getX();
-			double dy = _targetY-activeChar.getY();
+			double dx = _targetX-_CurX;
+			double dy = _targetY-_CurY;
 			// Can't move if character is confused, or trying to move a huge distance
 			if (activeChar.isOutOfControl()||((dx*dx+dy*dy) > 98010000)) { // 9900*9900
 				activeChar.sendPacket(new ActionFailed());
 				return;
 			}
-
-			//activeChar.setXYZ(_originX, _originY, _originZ);
-			//activeChar.sendPacket(new CharMoveToLocation(activeChar));
+			if (_moveMovement == 0)
+            {
+                Location destiny = GeoData.getInstance().moveCheck(_CurX, _CurY, _CurZ, _targetX, _targetY, _targetZ);
+                _targetX = destiny.getX();
+                _targetY = destiny.getY();
+                _targetZ = destiny.getZ();
+            }
 			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,
 					new L2CharPosition(_targetX, _targetY, _targetZ, 0));
 			
