@@ -439,7 +439,8 @@ public class GeoEngine extends GeoData
 			cellY = getCell(y);
 	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			height = (short)((height&0x0fff0) >> 1);			
+			height = (short)(height&0x0fff0);
+			height = (short)(height >> 1);
 			return height;
 	    }
 	    else
@@ -465,7 +466,8 @@ public class GeoEngine extends GeoData
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
-	            height = (short)((height&0x0fff0) >> 1); //height / 2
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2				
 	            if ((z-temph)*(z-temph) > (z-height)*(z-height))
 	                temph = height;            
 	            layers--;
@@ -530,7 +532,8 @@ public class GeoEngine extends GeoData
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
-	            height = (short)((height&0x0fff0) >> 1); //height / 2
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2
 
 	            if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
 	            {
@@ -630,7 +633,8 @@ public class GeoEngine extends GeoData
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
-	            height = (short)((height&0x0fff0) >> 1); //height / 2	                      
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2	                      
 
 	            if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
 	            {
