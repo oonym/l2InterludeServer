@@ -136,7 +136,10 @@ public class Unlock implements ISkillHandler
 					{
 						activeChar.sendPacket(SystemMessage.sendString("You open the chest!"));
 						
-						chest.dropReward(activeChar);
+						chest.setSpecialDrop();
+						chest.setHaveToDrop(true);
+						chest.setMustRewardExpSp(false);
+						chest.doItemDrop(activeChar);
 						chest.doDie(activeChar);
 					}
 					else
@@ -144,7 +147,9 @@ public class Unlock implements ISkillHandler
 						activeChar.sendPacket(SystemMessage.sendString("Unlock failed!"));
 
 						if (Rnd.get(100) < chestTrapLimit) chest.chestTrap(activeChar);
-						chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+						chest.setHaveToDrop(false);
+						chest.setMustRewardExpSp(false);
+						chest.doDie(activeChar);
 					}
 				}
 			}

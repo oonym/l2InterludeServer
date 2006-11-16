@@ -22,15 +22,14 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SkillTable;
-import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.gameserver.NpcTable;
 
 /**
  * This class manages all chest. 
@@ -39,14 +38,27 @@ public final class L2ChestInstance extends L2Attackable
 {
 	private volatile boolean _isBox;
 	private volatile boolean _isOpen;
+	private volatile boolean _specialDrop;
 	
 	public L2ChestInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 		_isBox = (Rnd.get(100)<Config.RATE_BOX_SPAWN);
 		_isOpen = false;
+		_specialDrop = false;
 	}
 
+	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
+	{
+		super.reduceCurrentHp(damage,attacker,awake);
+		if (!isAlikeDead() && _isBox)
+		{
+			setHaveToDrop(false);
+			setMustRewardExpSp(false);
+			doDie(attacker);
+		}
+	}
+	
 	public boolean isAutoAttackable(L2Character attacker)
 	{
 		return true;
@@ -57,47 +69,11 @@ public final class L2ChestInstance extends L2Attackable
 		return true;
 	}
 
-	public void doDie(L2Character killer, boolean haveToDrop)
-	{
-		if (haveToDrop)
-		{
-			super.doDie(killer);
-		}
-		else
-		{
-			DecayTaskManager.getInstance().addDecayTask(this);
-			// Set target to null and cancel Attack or Cast
-			setTarget(null);
-			// Stop movement
-			stopMove(null);
-			// Stop HP/MP/CP Regeneration task
-			getStatus().stopHpMpRegeneration();
-			// Stop all active skills effects in progress on the chest
-			stopAllEffects();
-			// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
-			broadcastStatusUpdate();
-			// Notify L2Character AI
-			getAI().notifyEvent(CtrlEvent.EVT_DEAD, null);
-			getAttackByList().clear();
-		}
-	}
-
-	/*
-	 public String getHtmlPath(int npcId, int val)
-	 {
-	 String pom = "";
-
-	 if (val == 0) pom = "" + npcId;
-	 else pom = npcId + "-" + val;
-
-	 return "data/html/treasure_chests/" + pom + ".htm";
-	 }
-	 */
 	public void doDie(L2Character killer)
 	{
 		killer.setTarget(null);
-		setCurrentHpMp(0.0,0.0);
-		doDie(killer, true);
+		setCurrentHpMp(0,0);
+		super.doDie(killer);
 	}
 
 	public boolean isAggressive()
@@ -110,23 +86,51 @@ public final class L2ChestInstance extends L2Attackable
 		super.OnSpawn();
 		_isBox = (Rnd.get(100) < Config.RATE_BOX_SPAWN );
 		_isOpen = false;
+		_specialDrop = false;
+		setMustRewardExpSp(true);
+		setHaveToDrop(true);
 	}
 
-	public boolean isBox() {
+	public synchronized boolean isBox() {
 		return _isBox;
 	}
 	
-	public boolean isOpen() {
+	public synchronized boolean isOpen() {
 		return _isOpen;
 	}
-	public void setOpen() {
+	public synchronized void setOpen() {
 		_isOpen = true;
 	}
-	public void dropReward(L2Character player)
+	
+	public synchronized boolean isSpecialDrop()
 	{
-		super.doItemDrop(player);
+		return _specialDrop;
 	}
-
+	
+	public synchronized void setSpecialDrop()
+	{
+		_specialDrop = true;
+	}
+	
+	public void doItemDrop(L2NpcTemplate npcTemplate, L2Character lastAttacker)
+	{
+		int id = getTemplate().npcId;
+		if (id>=18265 && id<=18286)
+			id = id - 18265;
+		else
+			id = id - 21801;
+		
+		if (_specialDrop)
+		{
+			id = id + 18265;
+			super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
+		}
+		else
+		{
+			id = id + 21801;
+			super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
+		}
+	}
 	//cast - trap chest
 	public void chestTrap(L2Character player)
 	{
@@ -164,29 +168,6 @@ public final class L2ChestInstance extends L2Attackable
 		player.sendPacket(SystemMessage.sendString("There was a trap!"));
 		handleCast(player, trapSkillId);
 	}
-/*
-	public void onAction(L2PcInstance player)
-	{
-		// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
-		player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-
-		player.setTarget(this);
-		if (!player.isInsideRadius(this, INTERACTION_DISTANCE, false, false))
-		{
-			// Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
-			player.sendPacket(new ActionFailed());
-		}
-		else
-		{
-			if (isDead())
-			{
-				player.sendMessage("The chest is empty.");
-				player.setTarget(null);
-				return;
-			}
-		}
-	}
-*/
 	//<--
 	//cast casse
 	//<--

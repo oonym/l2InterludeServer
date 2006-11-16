@@ -427,7 +427,10 @@ public class ChestKey implements IItemHandler
 				activeChar.sendPacket(playSound);
 				activeChar.sendMessage("You open the chest!");
 				
-				chest.dropReward(activeChar);
+				chest.setHaveToDrop(true);
+				chest.setMustRewardExpSp(false);
+				chest.setSpecialDrop();
+				chest.doItemDrop(activeChar);
 				chest.doDie(activeChar);
 			}
 			else
@@ -439,8 +442,9 @@ public class ChestKey implements IItemHandler
 
 				// 50% chance of getting a trap
 				if (Rnd.get(10) < 5) chest.chestTrap(activeChar);
-				chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+				chest.setHaveToDrop(false);
+				chest.setMustRewardExpSp(false);
+				chest.doDie(activeChar);
 			}
 		}
 	}

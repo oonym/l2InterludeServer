@@ -249,6 +249,11 @@ public class L2Attackable extends L2NpcInstance
     /** The table containing all L2PcInstance that successfuly absorbed the soul of this L2Attackable */
     private Map<L2PcInstance, AbsorberInfo> _absorbersList;
 
+    /** Have this L2Attackable to drop somethink on DIE? **/
+    private boolean _haveToDrop;
+    
+    /** Have this L2Attackable to reward Exp and SP on Die? **/
+    private boolean _mustGiveExpSp;
     /**
      * Constructor of L2Attackable (use L2Character and L2NpcInstance constructor).<BR><BR>
      *  
@@ -264,6 +269,8 @@ public class L2Attackable extends L2NpcInstance
     {
         super(objectId, template);
         super.setKnownList(new AttackableKnownList(new L2Attackable[] {this}));
+        _haveToDrop = true;
+        _mustGiveExpSp = true;
     }
 
     public AttackableKnownList getKnownList() { return (AttackableKnownList)super.getKnownList(); }
@@ -371,6 +378,18 @@ public class L2Attackable extends L2NpcInstance
         super.reduceCurrentHp(damage, attacker, awake);
     }
     
+    public synchronized void setHaveToDrop(boolean value) {
+    	_haveToDrop = value;
+    }
+    
+    public synchronized boolean getHaveToDrop() { return _haveToDrop; }
+    
+    public synchronized void setMustRewardExpSp(boolean value) {
+    	_mustGiveExpSp = value;
+    }
+    
+    public synchronized boolean getMustRewardExpSP() { return _mustGiveExpSp; }
+    
     /**
      * Kill the L2Attackable (the corpse disappeared after 7 seconds), distribute rewards (EXP, SP, Drops...) and notify Quest Engine.<BR><BR>
      * 
@@ -396,8 +415,13 @@ public class L2Attackable extends L2NpcInstance
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
         
         // Distribute Exp and SP rewards to L2PcInstance (including Summon owner) that hit the L2Attackable and to their Party members
-        try { calculateRewards(killer); } catch (Exception e) { _log.log(Level.SEVERE, "", e); }
-        
+        if (getHaveToDrop() || getMustRewardExpSP())
+        {
+        	try { 
+        		calculateRewards(killer); 
+        	} catch (Exception e) 
+        		{ _log.log(Level.SEVERE, "", e); }
+        }
         // Notify the Quest Engine of the L2Attackable death if necessary
         try {
 
@@ -474,7 +498,7 @@ public class L2Attackable extends L2NpcInstance
     private void calculateRewards(L2Character lastAttacker)
     {
     	if (getAggroList().size() == 0) return;
-        
+        if (getMustRewardExpSP()) {
         // Get the Identifier of the L2Attackable killed
         int npcID = getTemplate().npcId;
         
@@ -686,9 +710,9 @@ public class L2Attackable extends L2NpcInstance
         }
         
         rewards = null;
-        
+        }
         // Manage Base, Quests and Sweep drops of the L2Attackable
-        doItemDrop(lastAttacker);
+        if (getHaveToDrop()) doItemDrop(lastAttacker);
         // Manage drop of Special Events created by GM for a defined period
         doEventDrop(lastAttacker);
     }
@@ -1103,7 +1127,10 @@ public class L2Attackable extends L2NpcInstance
 
          return 0;
      }
-     
+     public void doItemDrop(L2Character lastAttacker)
+     {
+    	 doItemDrop(getTemplate(),lastAttacker);
+     }
      /**
       * Manage Base, Quests and Special Events drops of L2Attackable (called by calculateRewards).<BR><BR>
       *  
@@ -1123,7 +1150,7 @@ public class L2Attackable extends L2NpcInstance
       * 
       * @param lastAttacker The L2Character that has killed the L2Attackable
       */
-     public void doItemDrop(L2Character lastAttacker)
+     public void doItemDrop(L2NpcTemplate npcTemplate, L2Character lastAttacker)
      {
          L2PcInstance player = null;
          if (lastAttacker instanceof L2PcInstance) player = (L2PcInstance)lastAttacker;
@@ -1135,7 +1162,7 @@ public class L2Attackable extends L2NpcInstance
          
          // Create a table containing all possible drops of this L2Attackable from L2NpcTemplate
          List<L2DropData> drops = new FastList<L2DropData>();
-         drops.addAll(getTemplate().getDropData());
+         drops.addAll(npcTemplate.getDropData());
          if (Config.DEBUG) _log.finer("this npc has "+drops.size()+" drops defined");
 
          // Add Quest drops to the table containing all possible drops of this L2Attackable
@@ -1185,7 +1212,7 @@ public class L2Attackable extends L2NpcInstance
 
          if (!isSeeded())
          {
-           RewardItem item = calculateCategorizedRewardItem(player, getTemplate().getFullDropData(), levelModifier);
+           RewardItem item = calculateCategorizedRewardItem(player, npcTemplate.getFullDropData(), levelModifier);
            if (item != null)
            {
                  if (Config.DEBUG) _log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
@@ -1194,7 +1221,7 @@ public class L2Attackable extends L2NpcInstance
                  if (Config.AUTO_LOOT) player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
                  else DropItem(player, item); // drop the item on the ground
            }
-           item = calculateCategorizedRewardItem(player, getTemplate().getMiscDropData(), levelModifier);
+           item = calculateCategorizedRewardItem(player, npcTemplate.getMiscDropData(), levelModifier);
            if (item != null)
            {
                  if (Config.DEBUG) _log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
@@ -1205,7 +1232,10 @@ public class L2Attackable extends L2NpcInstance
            }
          }
          //Instant Item Drop :>
-         if (getTemplate().rateHp == 1) //only mob with 1x HP can drop herbs
+         int __npcID = npcTemplate.npcId;
+         // Excluding boxes
+         if (npcTemplate.rateHp == 1 && !((__npcID>=18265 && __npcID<=18286) ||
+        		 (__npcID>=21801 && __npcID<=21822))) //only mob with 1x HP can drop herbs
          {
              int random = Rnd.get(100);
              if (random < Config.RATE_DROP_MP_HP_HERBS)
