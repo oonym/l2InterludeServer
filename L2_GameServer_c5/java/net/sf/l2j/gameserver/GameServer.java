@@ -309,7 +309,7 @@ public class GameServer
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
         
-        if (Config.AUTODESTROY_ITEM_AFTER > 0)
+        if (Config.AUTODESTROY_ITEM_AFTER >= 0)
     	    ItemsAutoDestroy.getInstance();
         
         MonsterRace.getInstance();

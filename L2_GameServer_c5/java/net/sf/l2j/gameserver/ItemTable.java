@@ -413,6 +413,7 @@ public class ItemTable
         else if (itemType.equals("seed"))         item.type = L2EtcItemType.SEED;
         else if (itemType.equals("shot"))         item.type = L2EtcItemType.SHOT;
         else if (itemType.equals("spellbook"))    item.type = L2EtcItemType.SPELLBOOK; // Spellbook, Amulet, Blueprint
+        else if (itemType.equals("herb"))		  item.type = L2EtcItemType.HERB; 
         else if (itemType.equals("arrow"))
         {
             item.type = L2EtcItemType.ARROW;

@@ -161,6 +161,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2Armor;
 import net.sf.l2j.gameserver.templates.L2ArmorType;
+import net.sf.l2j.gameserver.templates.L2EtcItemType;
 import net.sf.l2j.gameserver.templates.L2Henna;
 import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.L2PcTemplate;
@@ -3287,7 +3288,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		
         //Auto use herbs - pick up
-		if ((target.getItemId() > 8599 && target.getItemId() < 8615))
+		if (target.getItemType() == L2EtcItemType.HERB)
         {
         IItemHandler handler = ItemHandler.getInstance().getItemHandler(target.getItemId());        
         if (handler == null) 

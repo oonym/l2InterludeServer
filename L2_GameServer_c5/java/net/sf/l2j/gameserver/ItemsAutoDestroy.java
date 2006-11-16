@@ -25,7 +25,7 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
-
+import net.sf.l2j.gameserver.templates.L2EtcItemType;
 
 public class ItemsAutoDestroy
 {
@@ -40,7 +40,7 @@ public class ItemsAutoDestroy
         _sleep	= Config.AUTODESTROY_ITEM_AFTER * 1000;
         if(_sleep == 0) // it should not happend as it is not called when AUTODESTROY_ITEM_AFTER = 0 but we never know..
         	_sleep = 3600000;
-        ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(),_sleep,_sleep);
+        ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(),5000,5000);
     }
     
     public static ItemsAutoDestroy getInstance()
@@ -75,7 +75,16 @@ public class ItemsAutoDestroy
                     _items.remove(item);
                 else
                 {
-                    if ( (curtime - item.getDropTime()) > _sleep)
+                	if(item.getItemType() == L2EtcItemType.HERB )
+                	{
+                		if((curtime - item.getDropTime()) > 5000)
+                		{
+                			L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
+                			L2World.getInstance().removeObject(item);
+                			_items.remove(item);
+                		}
+                	}
+                	else if ( (curtime - item.getDropTime()) > _sleep)
                     {
                         L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
                         L2World.getInstance().removeObject(item);
