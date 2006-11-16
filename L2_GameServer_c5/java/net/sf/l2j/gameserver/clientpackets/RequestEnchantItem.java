@@ -168,7 +168,20 @@ public class RequestEnchantItem extends ClientBasePacket
         SystemMessage sm = new SystemMessage(SystemMessage.ENCHANT_SCROLL_CANCELLED);
         activeChar.sendPacket(sm);
 
-        int chance = Config.ENCHANT_CHANCE;
+        int chance = 0;
+        int maxEnchantLevel = 0;
+
+        if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
+        {
+	        chance = Config.ENCHANT_CHANCE_WEAPON;
+	        maxEnchantLevel = Config.ENCHANT_MAX_WEAPON;
+        }
+        else if (item.getItem().getType2() == L2Item.TYPE2_SHIELD_ARMOR || item.getItem().getType2() == L2Item.TYPE2_ACCESSORY)
+        {
+	        chance = Config.ENCHANT_CHANCE_ARMOR;
+	        maxEnchantLevel = Config.ENCHANT_MAX_ARMOR;
+        }
+        
         if (item.getEnchantLevel() < Config.ENCHANT_SAFE_MAX 
                 || (item.getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR 
                         && item.getEnchantLevel() < Config.ENCHANT_SAFE_MAX_FULL))
@@ -176,7 +189,7 @@ public class RequestEnchantItem extends ClientBasePacket
         
         if (Rnd.get(100) < chance)
         {
-            if (item.getEnchantLevel() >= Config.ENCHANT_MAX)
+            if (item.getEnchantLevel() >= maxEnchantLevel)
             {
                 activeChar.sendMessage("Enchant failed.");
                 return;
