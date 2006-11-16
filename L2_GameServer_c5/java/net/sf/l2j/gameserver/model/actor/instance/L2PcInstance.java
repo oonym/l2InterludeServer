@@ -7441,7 +7441,12 @@ public final class L2PcInstance extends L2PlayableInstance
      */
     public boolean modifySubClass(int classIndex, int newClassId)
     {
-        int oldClassId = getSubClasses().get(classIndex).getClassId();
+    	// cheat prevention, possibly worked
+    	for (L2Skill oldSkill : getAllSkills())
+            super.removeSkill(oldSkill);
+    	// ---
+    	
+    	int oldClassId = getSubClasses().get(classIndex).getClassId();
         
         if (Config.DEBUG)
 	    	_log.info(getName() + " has requested to modify sub class index " + classIndex + " from class ID " + oldClassId + " to " + newClassId + ".");
