@@ -77,7 +77,7 @@ public class ItemsAutoDestroy
                 {
                 	if(item.getItemType() == L2EtcItemType.HERB )
                 	{
-                		if((curtime - item.getDropTime()) > 5000)
+                		if((curtime - item.getDropTime()) > Config.HERB_AUTO_DESTROY_TIME)
                 		{
                 			L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
                 			L2World.getInstance().removeObject(item);
