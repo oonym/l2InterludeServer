@@ -1232,10 +1232,8 @@ public class L2Attackable extends L2NpcInstance
            }
          }
          //Instant Item Drop :>
-         int __npcID = npcTemplate.npcId;
          // Excluding boxes
-         if (npcTemplate.rateHp == 1 && !((__npcID>=18265 && __npcID<=18286) ||
-        		 (__npcID>=21801 && __npcID<=21822))) //only mob with 1x HP can drop herbs
+         if (npcTemplate.rateHp == 1 && !String.valueOf(npcTemplate.type).contentEquals("L2Chest")) //only mob with 1x HP can drop herbs
          {
              int random = Rnd.get(100);
              if (random < Config.RATE_DROP_MP_HP_HERBS)
