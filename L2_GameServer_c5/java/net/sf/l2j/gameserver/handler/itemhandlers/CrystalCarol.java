@@ -32,8 +32,8 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 
 public class CrystalCarol implements IItemHandler
 {
-	private static int[] _itemIds = { 5562, 5563, 5564, 5565, 5566, 5583, 5584, 5585, 5586, 5587
-									 ,4411, 4412, 4413, 4414, 4415, 4416, 4417, 5010};
+	private static int[] _itemIds = { 5562, 5563, 5564, 5565, 5566, 5583, 5584, 5585, 5586, 5587,
+									 4411, 4412, 4413, 4414, 4415, 4416, 4417, 5010, 6903, 7061, 7062, 8555};
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
@@ -130,6 +130,26 @@ public class CrystalCarol implements IItemHandler
 			MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2066, 1, 1, 0);
 			activeChar.broadcastPacket(MSU);
 			//playCrystalSound(activeChar,"SkillSound2.crystal_victory");
+		}
+		else if (itemId == 6903) { //music_box_m
+			MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2187, 1, 1, 0);
+			activeChar.broadcastPacket(MSU);
+			//playCrystalSound(activeChar,"EtcSound.battle");
+		}
+		else if (itemId == 7061) { //crystal_birthday
+			MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2073, 1, 1, 0);
+			activeChar.broadcastPacket(MSU);
+			//playCrystalSound(activeChar,"SkillSound2.crystal_celebration");
+		}
+		else if (itemId == 7062) { //crystal_wedding
+			MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2230, 1, 1, 0);
+			activeChar.broadcastPacket(MSU);
+			//playCrystalSound(activeChar,"SkillSound5.wedding");
+		}
+		else if (itemId == 8555) { //VVKorea
+			MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2272, 1, 1, 0);
+			activeChar.broadcastPacket(MSU);
+			//playCrystalSound(activeChar,"EtcSound.VVKorea");
 		}
 		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 	}
