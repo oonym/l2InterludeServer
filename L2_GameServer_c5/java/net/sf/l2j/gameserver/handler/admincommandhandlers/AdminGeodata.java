@@ -17,8 +17,6 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import java.util.logging.Logger;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -31,7 +29,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminGeodata implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
+	//private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static String[] _adminCommands = {"admin_geo_z", "admin_geo_type", "admin_geo_nswe", "admin_geo_los"};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
