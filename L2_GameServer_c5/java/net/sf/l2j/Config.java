@@ -405,7 +405,7 @@ public final class Config
     /** Rate Common herbs */
     public static float   RATE_DROP_SPECIAL_HERBS;
     /** Audo destroy herb time */
-    public static short   HERB_AUTO_DESTROY_TIME;
+    public static int     HERB_AUTO_DESTROY_TIME;
     
     // Player Drop Rate control
     /** Limit for player drop */
@@ -1328,8 +1328,8 @@ public final class Config
                 RATE_BOX_SPAWN					= Integer.parseInt(ratesSettings.getProperty("RateBoxSpawn","20"));
                 RATE_DROP_QUEST                 = Float.parseFloat(ratesSettings.getProperty("RateDropQuest", "1."));
                 RATE_KARMA_EXP_LOST             = Float.parseFloat(ratesSettings.getProperty("RateKarmaExpLost", "1."));    
-                RATE_SIEGE_GUARDS_PRICE         = Float.parseFloat(ratesSettings.getProperty("RateSiegeGuardsPrice", "1."));    
-                HERB_AUTO_DESTROY_TIME          = Short.parseShort(ratesSettings.getProperty("AutoDestroyHerbTime","15"));
+                RATE_SIEGE_GUARDS_PRICE         = Float.parseFloat(ratesSettings.getProperty("RateSiegeGuardsPrice", "1."));
+                HERB_AUTO_DESTROY_TIME          = Integer.parseInt(ratesSettings.getProperty("AutoDestroyHerbTime","15"))*1000;
                 RATE_DROP_COMMON_HERBS 			= Float.parseFloat(ratesSettings.getProperty("RateCommonHerbs", "15."));
                 RATE_DROP_MP_HP_HERBS           = Float.parseFloat(ratesSettings.getProperty("RateHpMpHerbs", "10."));                
                 RATE_DROP_GREATER_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateGreaterHerbs", "4."));
