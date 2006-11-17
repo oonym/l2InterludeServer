@@ -78,6 +78,7 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		throw new OutOfMemoryError();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public L2ObjectHashSet()
 	{
 		int size = primes[0];
@@ -105,6 +106,7 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectSet#clear()
      */
+	@SuppressWarnings("unchecked")
 	public synchronized void clear()
 	{
 		int size = primes[0];
@@ -267,6 +269,7 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private /*already synchronized in put()*/ void expand()
 	{
 		int newSize = getPrime(table.length+1);

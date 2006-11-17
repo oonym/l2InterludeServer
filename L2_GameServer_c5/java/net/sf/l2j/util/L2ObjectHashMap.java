@@ -78,6 +78,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		throw new OutOfMemoryError();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public L2ObjectHashMap()
 	{
 		int size = primes[0];
@@ -105,6 +106,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#clear()
      */
+	@SuppressWarnings("unchecked")
 	public synchronized void clear()
 	{
 		int size = primes[0];
@@ -272,6 +274,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		return get(obj.getObjectId()) != null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private /*already synchronized in put()*/ void expand()
 	{
 		int newSize = getPrime(table.length+1);

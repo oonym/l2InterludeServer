@@ -290,6 +290,7 @@ public final class StatsSet  {
 	 * @param enumClass : Class designating the class of the value associated with the key in the set
 	 * @return Enum<T>
 	 */
+	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass)
 	{
 		Object val = _set.get(name);
@@ -312,6 +313,7 @@ public final class StatsSet  {
 	 * @param deflt : <T> designating the value by default
 	 * @return Enum<T>
 	 */
+	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass, T deflt)
 	{
 		Object val = _set.get(name);
