@@ -104,13 +104,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             levelUpClan(player, player.getClanId());
         }
         else if (command.startsWith("Subclass"))
-        {
-            if (player.isCursedWeaponEquiped())
-            {
-            	player.sendMessage("You may not change your sub classes while wearing a cursed weapon.");
-            	return;
-            }
-            
+        { 
         	int cmdChoice = Integer.parseInt(command.substring(9, 10).trim());
 
             // Subclasses may not be changed while a skill is in use.
