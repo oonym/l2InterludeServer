@@ -121,9 +121,9 @@ public class DayNightSpawnManager {
                     if (creature == null) continue;
                     
                     creature.getSpawn().startRespawn();
-                    creature.spawnMe();
                     creature.setCurrentHp(creature.getMaxHp());
                     creature.setCurrentMp(creature.getMaxMp());
+                    creature.spawnMe();
                 }
                 i++;
             }
@@ -170,9 +170,9 @@ public class DayNightSpawnManager {
                     if (creature == null) continue;
                     
                     creature.getSpawn().startRespawn();
-                    creature.spawnMe();
                     creature.setCurrentHp(creature.getMaxHp());
                     creature.setCurrentMp(creature.getMaxMp());
+                    creature.spawnMe();
                 }
                 
                 i++;
