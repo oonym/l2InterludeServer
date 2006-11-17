@@ -58,10 +58,17 @@ public class Sweep implements ISkillHandler
             if (!(targets[index] instanceof L2Attackable)) 
             	continue;
 	        L2Attackable target = (L2Attackable)targets[index];
-            
-            if (target.isSweepActive())
+        	L2Attackable.RewardItem[] items = null;
+            boolean isSweeping = false;
+	        synchronized (target) {
+	        	if (target.isSweepActive())
+	        	{
+	        		items = target.takeSweep();
+	        		isSweeping = true;
+	        	}
+	        }
+            if (isSweeping)
             {
-            	L2Attackable.RewardItem[] items = target.takeSweep();
 				if (items == null || items.length == 0) 
 					continue;
 				for (L2Attackable.RewardItem ritem : items)
