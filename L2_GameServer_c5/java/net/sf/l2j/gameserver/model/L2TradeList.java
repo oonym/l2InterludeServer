@@ -124,21 +124,6 @@ public class L2TradeList
 		return _items;
 	}
 	
-	/**
-	 * @return Returns the IDs of the items.
-	 */
-	public List<Integer> getItemsIds()
-	{
-		List<Integer> itemsIds = new FastList<Integer>();
-		
-		for (int i = 0; i < _items.size(); i++)
-		{
-			L2ItemInstance item = _items.get(i);
-			itemsIds.add(item.getItemId());
-		}
-		return itemsIds;
-	}
-	
     public List<L2ItemInstance> getItems(int start, int end)
     {
         return _items.subList(start, end);
