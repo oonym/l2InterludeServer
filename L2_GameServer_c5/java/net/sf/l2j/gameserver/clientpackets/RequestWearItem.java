@@ -157,6 +157,11 @@ public class RequestWearItem extends ClientBasePacket
         	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to wear items using packets manipulation.", Config.DEFAULT_PUNISH);
             return;
         }
+        if ("gm".equals(list.getNpcId()) && !player.isGM())
+        {
+        	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to wear items from GM buylist using packets manipulation.", Config.DEFAULT_PUNISH);
+            return;
+        }
         List<Integer> itemList = list.getItemsIds();
         
 		for (int i = 0; i < _count; i++)
