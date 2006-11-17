@@ -160,13 +160,15 @@ public class RequestEnchantItem extends ClientBasePacket
         scroll = activeChar.getInventory().destroyItem("Enchant", scroll, activeChar, item);
         if(scroll == null)
         {
-            activeChar.sendMessage("You dont have such an enchant scroll");
+            activeChar.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
             Util.handleIllegalPlayerAction(activeChar,"Player "+activeChar.getName()+" tried to enchant with a scroll he doesnt have", Config.DEFAULT_PUNISH);
             return;
         }
         
-        SystemMessage sm = new SystemMessage(SystemMessage.ENCHANT_SCROLL_CANCELLED);
-        activeChar.sendPacket(sm);
+        // SystemMessage sm = new SystemMessage(SystemMessage.ENCHANT_SCROLL_CANCELLED);
+        // activeChar.sendPacket(sm);
+        
+        SystemMessage sm;
 
         int chance = 0;
         int maxEnchantLevel = 0;
@@ -176,10 +178,15 @@ public class RequestEnchantItem extends ClientBasePacket
 	        chance = Config.ENCHANT_CHANCE_WEAPON;
 	        maxEnchantLevel = Config.ENCHANT_MAX_WEAPON;
         }
-        else if (item.getItem().getType2() == L2Item.TYPE2_SHIELD_ARMOR || item.getItem().getType2() == L2Item.TYPE2_ACCESSORY)
+        else if (item.getItem().getType2() == L2Item.TYPE2_SHIELD_ARMOR)
         {
 	        chance = Config.ENCHANT_CHANCE_ARMOR;
 	        maxEnchantLevel = Config.ENCHANT_MAX_ARMOR;
+        }
+        else if (item.getItem().getType2() == L2Item.TYPE2_ACCESSORY)
+        {
+        	chance = Config.ENCHANT_CHANCE_JEWELRY;
+        	maxEnchantLevel = Config.ENCHANT_MAX_JEWELRY;
         }
         
         if (item.getEnchantLevel() < Config.ENCHANT_SAFE_MAX 
@@ -189,9 +196,9 @@ public class RequestEnchantItem extends ClientBasePacket
         
         if (Rnd.get(100) < chance)
         {
-            if (item.getEnchantLevel() >= maxEnchantLevel)
+            if (item.getEnchantLevel() >= maxEnchantLevel && maxEnchantLevel != 0)
             {
-                activeChar.sendMessage("Enchant failed.");
+                activeChar.sendPacket(new SystemMessage(SystemMessage.INAPPROPRIATE_ENCHANT_CONDITION));
                 return;
             }
             if (item.getEnchantLevel() == 0)

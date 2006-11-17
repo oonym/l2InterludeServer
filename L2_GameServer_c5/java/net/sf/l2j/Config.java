@@ -788,9 +788,11 @@ public final class Config
     /** Chance that an item will succesfully be enchanted */
     public static int ENCHANT_CHANCE_WEAPON;
     public static int ENCHANT_CHANCE_ARMOR;
+    public static int ENCHANT_CHANCE_JEWELRY;
     /** Maximum level of enchantment */
     public static int ENCHANT_MAX_WEAPON;
     public static int ENCHANT_MAX_ARMOR;
+    public static int ENCHANT_MAX_JEWELRY;
     /** maximum level of safe enchantment for normal items*/
     public static int ENCHANT_SAFE_MAX;
     /** maximum level of safe enchantment for full body armor*/
@@ -1224,11 +1226,13 @@ public final class Config
 
 	            
 	            /* chance to enchant an item over +3 */
-                ENCHANT_CHANCE_WEAPON  = Integer.parseInt(otherSettings.getProperty("EnchantChanceWeapon", "65"));
-                ENCHANT_CHANCE_ARMOR  = Integer.parseInt(otherSettings.getProperty("EnchantChanceArmor", "65"));
+                ENCHANT_CHANCE_WEAPON  = Integer.parseInt(otherSettings.getProperty("EnchantChanceWeapon", "68"));
+                ENCHANT_CHANCE_ARMOR  = Integer.parseInt(otherSettings.getProperty("EnchantChanceArmor", "52"));
+                ENCHANT_CHANCE_JEWELRY  = Integer.parseInt(otherSettings.getProperty("EnchantChanceJewelry", "54"));
 	            /* limit on enchant */
                 ENCHANT_MAX_WEAPON = Integer.parseInt(otherSettings.getProperty("EnchantMaxWeapon", "255"));
                 ENCHANT_MAX_ARMOR = Integer.parseInt(otherSettings.getProperty("EnchantMaxArmor", "255"));
+                ENCHANT_MAX_JEWELRY = Integer.parseInt(otherSettings.getProperty("EnchantMaxJewelry", "255"));
                 /*limit of safe enchant normal */
                 ENCHANT_SAFE_MAX = Integer.parseInt(otherSettings.getProperty("EnchantSafeMax", "3"));
                 /*limit of safe enchant full */
@@ -1756,8 +1760,10 @@ public final class Config
 
         else if (pName.equalsIgnoreCase("EnchantChanceWeapon")) ENCHANT_CHANCE_WEAPON = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("EnchantChanceArmor")) ENCHANT_CHANCE_ARMOR = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("EnchantChanceJewelry")) ENCHANT_CHANCE_JEWELRY = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("EnchantMaxWeapon")) ENCHANT_MAX_WEAPON = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("EnchantMaxArmor")) ENCHANT_MAX_ARMOR = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("EnchantMaxJewelry")) ENCHANT_MAX_JEWELRY = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("EnchantSafeMax")) ENCHANT_SAFE_MAX = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("EnchantSafeMaxFull")) ENCHANT_SAFE_MAX_FULL = Integer.parseInt(pValue);
 
