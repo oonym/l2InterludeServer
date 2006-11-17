@@ -85,7 +85,8 @@ public class DayNightSpawnManager {
     
     public void spawnDayCreatures()
     {
-        try {
+        try
+        {
             if (_nightCreatures.size() != 0)
             {
                 int i = 0;
@@ -101,14 +102,14 @@ public class DayNightSpawnManager {
             }
             
             int i = 0;
-            
+            L2NpcInstance creature = null;
             for (L2Spawn spawnDat : _dayCreatures.keySet())
             {
-                L2NpcInstance creature;
-                
                 if (_dayCreatures.get(spawnDat) == null)
                 {
                     creature = spawnDat.doSpawn();
+                    if (creature == null) continue;
+                    
                     creature.setCurrentHp(creature.getMaxHp());
                     creature.setCurrentMp(creature.getMaxMp());
                     _dayCreatures.remove(spawnDat);
@@ -117,6 +118,8 @@ public class DayNightSpawnManager {
                 else
                 {
                     creature = _dayCreatures.get(spawnDat);
+                    if (creature == null) continue;
+                    
                     creature.getSpawn().startRespawn();
                     creature.spawnMe();
                     creature.setCurrentHp(creature.getMaxHp());
@@ -131,13 +134,15 @@ public class DayNightSpawnManager {
     
     public void spawnNightCreatures()
     {
-        try{
+        try
+        {
             if (_dayCreatures.size() != 0)
             {
                 int i = 0;
                 for (L2NpcInstance dayCreature : _dayCreatures.values())
                 {
                     if (dayCreature == null) continue;
+                    
                     dayCreature.getSpawn().stopRespawn();
                     dayCreature.deleteMe();
                     i++;
@@ -146,14 +151,14 @@ public class DayNightSpawnManager {
             }
             
             int i = 0;
-            
+            L2NpcInstance creature = null;
             for (L2Spawn spawnDat : _nightCreatures.keySet())
             {
-                L2NpcInstance creature;
-                
                 if (_nightCreatures.get(spawnDat) == null)
                 {
                     creature = spawnDat.doSpawn();
+                    if (creature == null) continue;
+                    
                     _nightCreatures.remove(spawnDat);
                     _nightCreatures.put(spawnDat, creature);
                     creature.setCurrentHp(creature.getMaxHp());
@@ -162,6 +167,8 @@ public class DayNightSpawnManager {
                 else
                 {
                     creature = _nightCreatures.get(spawnDat);
+                    if (creature == null) continue;
+                    
                     creature.getSpawn().startRespawn();
                     creature.spawnMe();
                     creature.setCurrentHp(creature.getMaxHp());
