@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,8 +28,10 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.TradeController;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.L2TradeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2MercManagerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MerchantInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
@@ -147,10 +150,24 @@ public class RequestWearItem extends ClientBasePacket
 		// Check for buylist validity and calculates summary values
 		int slots = 0;
 		int weight = 0;
+
+        L2TradeList list = TradeController.getInstance().getBuyList(_listId);
+        if (list == null)
+        {
+        	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to wear items using packets manipulation.", Config.DEFAULT_PUNISH);
+            return;
+        }
+        List<Integer> itemList = list.getItemsIds();
         
 		for (int i = 0; i < _count; i++)
 		{
 			int itemId = _items[i];
+			
+			if (!itemList.contains(itemId))
+	        {
+	        	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to wear items using packets manipulation.", Config.DEFAULT_PUNISH);
+	            return;
+	        }
 
             L2Item template = ItemTable.getInstance().getTemplate(itemId);
             weight += template.getWeight();
