@@ -127,6 +127,7 @@ import net.sf.l2j.gameserver.model.waypoint.WayPointNode;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChangeWaitType;
 import net.sf.l2j.gameserver.serverpackets.CharInfo;
+import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.serverpackets.ExFishingEnd;
 import net.sf.l2j.gameserver.serverpackets.ExFishingStart;
 import net.sf.l2j.gameserver.serverpackets.ExOlympiadMode;
@@ -1678,6 +1679,34 @@ public final class L2PcInstance extends L2PlayableInstance
             
             continue;
         }
+    }
+    
+    public void checkSSMatch(L2ItemInstance equipped, L2ItemInstance unequipped)
+    {
+    	if (unequipped == null)
+    		return;
+    	
+		if (unequipped.getItem().getType2() == L2Item.TYPE2_WEAPON &&
+				(equipped == null ? true : equipped.getItem().getCrystalType() != unequipped.getItem().getCrystalType()))
+		{
+			for (L2ItemInstance ss : getInventory().getItems())
+			{
+				int _itemId = ss.getItemId();
+				
+				if (((_itemId >= 2509 && _itemId <= 2514) || 
+						(_itemId >= 3947 && _itemId <= 3952) || 
+						(_itemId <= 1804 && _itemId >= 1808) || 
+						_itemId == 5789 || _itemId == 5790 || _itemId == 1835) &&
+						ss.getItem().getCrystalType() == unequipped.getItem().getCrystalType())
+				{
+                    sendPacket(new ExAutoSoulShot(_itemId, 0));
+                    
+                    SystemMessage sm = new SystemMessage(SystemMessage.AUTO_USE_OF_S1_CANCELLED);
+                    sm.addString(ss.getItemName());
+                    sendPacket(sm);
+				}
+			}
+		}
     }
 	
 	/**

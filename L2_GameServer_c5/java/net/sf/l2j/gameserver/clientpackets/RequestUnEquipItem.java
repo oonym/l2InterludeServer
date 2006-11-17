@@ -88,6 +88,8 @@ public class RequestUnEquipItem extends ClientBasePacket
             if (unequiped[i].isWear())
                 return;
             
+            activeChar.checkSSMatch(null, unequiped[i]);
+			
 			iu.addModifiedItem(unequiped[i]);
 		}
         

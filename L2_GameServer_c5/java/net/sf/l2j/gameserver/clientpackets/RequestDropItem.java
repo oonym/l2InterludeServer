@@ -171,7 +171,9 @@ public class RequestDropItem extends ClientBasePacket
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
 			{
-			 iu.addModifiedItem(unequiped[i]);
+				activeChar.checkSSMatch(null, unequiped[i]);
+				
+				iu.addModifiedItem(unequiped[i]);
 			}
 			activeChar.sendPacket(iu);
 			activeChar.broadcastUserInfo();

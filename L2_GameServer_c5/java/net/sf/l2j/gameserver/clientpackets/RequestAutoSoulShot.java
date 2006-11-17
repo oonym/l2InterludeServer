@@ -74,21 +74,42 @@ public class RequestAutoSoulShot extends ClientBasePacket
             {
                 if (_type == 1)
                 {
-                    activeChar.addAutoSoulShot(_itemId);
-                    ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
-                    activeChar.sendPacket(atk);
-
-                    //start the auto soulshot use
-                    SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
-                    sm.addString(item.getItemName());
-                    activeChar.sendPacket(sm);
-                    sm = null;
-                    
                     // Attempt to charge first shot on activation
                     if (_itemId == 6645 || _itemId == 6646 || _itemId == 6647)
+                    {
+                        activeChar.addAutoSoulShot(_itemId);
+                        ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
+                        activeChar.sendPacket(atk);
+
+                        //start the auto soulshot use
+                        SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
+                        sm.addString(item.getItemName());
+                        activeChar.sendPacket(sm);
+                        sm = null;
+                        
                         activeChar.rechargeAutoSoulShot(true, true, true);
+                    }
                     else
-                        activeChar.rechargeAutoSoulShot(true, true, false);
+                    	if (item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType() && 
+                    			activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem())
+                    	{
+                            activeChar.addAutoSoulShot(_itemId);
+                            ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
+                            activeChar.sendPacket(atk);
+
+                            //start the auto soulshot use
+                            SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
+                            sm.addString(item.getItemName());
+                            activeChar.sendPacket(sm);
+                            sm = null;
+                            
+                            activeChar.rechargeAutoSoulShot(true, true, false);
+                    	}
+                    	else
+                    		if ((_itemId >= 2509 && _itemId <= 2514) || (_itemId >= 3947 && _itemId <= 3952) || _itemId == 5790)
+                    			activeChar.sendPacket(new SystemMessage(SystemMessage.SPIRITSHOTS_GRADE_MISMATCH));
+                    		else
+                    			activeChar.sendPacket(new SystemMessage(SystemMessage.SOULSHOTS_GRADE_MISMATCH));
                 }
                 else if (_type == 0)
                 {
