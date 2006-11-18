@@ -21,6 +21,10 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.nio.ByteBuffer;
 
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.model.L2Clan;
+import net.sf.l2j.gameserver.model.L2Clan.RankPrivs;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.PledgePowerGradeList;
 
 /**
  * Format: (ch)
@@ -46,8 +50,14 @@ public class RequestPledgePowerGradeList extends ClientBasePacket
     @Override
     void runImpl()
     {
-        // TODO
-        System.out.println("C5: RequestPledgePowerGradeList");
+    	L2PcInstance player = getClient().getActiveChar();
+        L2Clan clan = player.getClan();
+        if (clan != null)
+        {
+            RankPrivs[] privs = clan.getAllRankPrivs();
+            player.sendPacket(new PledgePowerGradeList(privs));
+            //_log.warning("plegdepowergradelist send, privs length: "+privs.length);
+        }
     }
 
     /**

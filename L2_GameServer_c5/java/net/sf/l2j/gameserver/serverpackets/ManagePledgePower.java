@@ -18,8 +18,7 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.L2Clan;
 
 
 public class ManagePledgePower extends ServerBasePacket
@@ -27,15 +26,15 @@ public class ManagePledgePower extends ServerBasePacket
     private static final String _S__30_MANAGEPLEDGEPOWER = "[S] 30 ManagePledgePower";
     
     private int _action;
-    private int _clanId;
-    private L2PcInstance _player;
+    private L2Clan _clan;
+    private int _rank;
     private int privs;
     
-    public ManagePledgePower(int clanId, int action, L2PcInstance player)
+    public ManagePledgePower(L2Clan clan, int action, int rank)
     {
-        _clanId = clanId;
+        _clan = clan;
         _action = action;
-        _player = player;
+        _rank = rank;
     }   
     
     final void runImpl()
@@ -46,13 +45,16 @@ public class ManagePledgePower extends ServerBasePacket
     final void writeImpl()
     {
         if(_action == 1)
-			privs = _player.getClanPrivileges();
+        	privs = _clan.getRankPrivs(_rank);
         else
         {
+            return;
+        	/*
             if (L2World.getInstance().findObject(_clanId) == null)
                 return;
             
 			privs = ((L2PcInstance)L2World.getInstance().findObject(_clanId)).getClanPrivileges();
+			*/
         }
         writeC(0x30);
         writeD(0);

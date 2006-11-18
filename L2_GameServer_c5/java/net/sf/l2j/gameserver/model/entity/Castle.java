@@ -42,7 +42,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.SeedProduction;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 
 public class Castle
 {
@@ -69,6 +69,7 @@ public class Castle
 	private int _Treasury                      = 0;
     private Zone _Zone;
     private List<Zone> _ZoneTown;
+    private L2Clan _formerOwner				   = null;
 
 	// =========================================================
 	// Constructor
@@ -205,7 +206,9 @@ public class Castle
 	        L2Clan oldOwner = ClanTable.getInstance().getClan(getOwnerId());			// Try to find clan instance 
 			if (oldOwner != null)
 			{
-			    oldOwner.setHasCastle(0);												// Unset has castle flag for old owner
+				if (_formerOwner == null)
+                    _formerOwner = oldOwner;
+				oldOwner.setHasCastle(0);												// Unset has castle flag for old owner
         		new Announcements().announceToAll(oldOwner.getName() + " has lost " + getName() + " castle!");
 			}							
 	    }
@@ -214,6 +217,8 @@ public class Castle
 
 	    if (getSiege().getIsInProgress())												// If siege in progress
         	getSiege().midVictory();													// Mid victory phase of siege
+	    
+	    updateClansReputation();
 	}
 
 	// This method updates the castle tax rate
@@ -503,7 +508,7 @@ public class Castle
         		{
         			if (member.isOnline() && member.getPlayerInstance() != null)
         			{
-        				member.getPlayerInstance().sendPacket(new PledgeShowMemberListAll(clan, member.getPlayerInstance()));
+        				member.getPlayerInstance().sendPacket(new PledgeShowInfoUpdate(clan, member.getPlayerInstance()));
         			}
         		}
 
@@ -698,5 +703,24 @@ public class Castle
     public List<CropProcure> getCropProcure()
     {
         return _procure;
+    }
+    
+    public void updateClansReputation()
+    {
+        if (_formerOwner != null )
+        {
+            if (_formerOwner != ClanTable.getInstance().getClan(getOwnerId()))
+                _formerOwner.setReputationScore(_formerOwner.getReputationScore()-2000, true);
+            else
+            {
+                _formerOwner.setReputationScore(_formerOwner.getReputationScore()+500, true);
+            }
+        }
+        else 
+        {
+
+            L2Clan owner = ClanTable.getInstance().getClan(getOwnerId());
+            owner.setReputationScore(owner.getReputationScore()+1000, true);
+        }
     }
 }

@@ -40,11 +40,13 @@ public class RequestJoinPledge extends ClientBasePacket
 	static Logger _log = Logger.getLogger(RequestJoinPledge.class.getName());
 
 	private final int _target;
+	private final int _pledgetype;
 	
 	public RequestJoinPledge(ByteBuffer buf, ClientThread client)
 	{
 		super(buf, client);
 		_target  = readD();
+		_pledgetype = readD();
 	}
 
 	void runImpl()
@@ -93,6 +95,21 @@ public class RequestJoinPledge extends ClientBasePacket
                     limit   = 40;
                 break;
                 }
+                
+                switch (_pledgetype)
+                {
+                    case -1:
+                    case 100:
+                    case 200:
+                        limit   = 20;
+                        break;
+                    case 1001:
+                    case 1002:
+                    case 2001:
+                    case 2002:
+                        limit   = 10;
+                        break;
+                }
 
 				if (member.getClanId() != 0)
 				{
@@ -102,6 +119,11 @@ public class RequestJoinPledge extends ClientBasePacket
 					sm = null;
 					return;				
 				}
+				else if ((member.getLevel() > 40 || member.getClassId().level() >= 2) && _pledgetype == -1)
+                {
+                    activeChar.sendMessage("A player can't join an Accademy if his/her level is higher than 40 OR he/she has already completed the second class clange");
+                    return;
+                }
 				else if (member.isProcessingRequest())
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
@@ -110,7 +132,7 @@ public class RequestJoinPledge extends ClientBasePacket
 					sm = null;
 					return;
 				} 
-				else if (clan.getMembers().length >= limit)
+				else if (_pledgetype == 0 && clan.getMembers().length >= limit)
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 					sm.addString("The clan is full, you cannot invite any more players."); // haven't found a sysmsg for this one
@@ -118,12 +140,20 @@ public class RequestJoinPledge extends ClientBasePacket
 					sm = null;
 					return;
 				}
+				else if (clan.getSubPledgeMembersCount(_pledgetype) >= limit)
+                {
+                    SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                    sm.addString("The clan is full, you cannot invite any more players."); 
+                    activeChar.sendPacket(sm);
+                    return;
+                }
 				else
 				{
 					activeChar.onTransactionRequest(member);
-					
+					activeChar.tempJoinPledgeType = _pledgetype;
 					AskJoinPledge ap = new AskJoinPledge(activeChar.getObjectId(), activeChar.getClan().getName()); 
 					member.sendPacket(ap);
+					
 				}
 			}
 		}

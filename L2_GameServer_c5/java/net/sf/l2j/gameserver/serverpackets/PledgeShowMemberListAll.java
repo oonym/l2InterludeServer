@@ -19,8 +19,10 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.L2Clan;
+import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.UserInfo;
 
 /**
  * 
@@ -75,26 +77,34 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 	final void runImpl()
 	{
 		_members = _clan.getMembers();
+		//temporary solution to show subpledges...
+		SubPledge[] subPledge = _clan.getAllSubPledges();
+		for (int i = 0; i<subPledge.length; i++)
+		{
+			_activeChar.sendPacket(new PledgeReceiveSubPledgeCreated(subPledge[i]));
+		}
+		// unless this is sent sometimes, the client doesn't recognise the player as the leader
+		_activeChar.sendPacket(new UserInfo(_activeChar));
 	}
 	
 	final void writeImpl()
 	{
 		writeC(0x53);
 		
-		writeD(0); //c5
+		writeD(0); //c5 0
 		writeD(_clan.getClanId());
-		writeD(0); //c5
+		writeD(0); //c5 0
 		writeS(_clan.getName());
 		writeS(_clan.getLeaderName());
 		
-		writeD(_clan.getCrestId()); // creast id .. is used again
+		writeD(_clan.getCrestId()); // crest id .. is used again
 		writeD(_clan.getLevel());
 		writeD(_clan.getHasCastle());
 		writeD(_clan.getHasHideout());
-		writeD(0);
-		writeD(_activeChar.getLevel()); 
-		writeD(0);
-		writeD(0);
+		writeD(_clan.getRank()); // not confirmed
+		writeD(_clan.getReputationScore()); //was activechar lvl
+		writeD(0); //0
+		writeD(0); //0
 		
 		writeD(_clan.getAllyId());
 		writeS(_clan.getAllyName());
@@ -103,13 +113,14 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 		writeD(_members.length);
 		for (L2ClanMember m : _members)
 		{
+			//subpledge value somehow missing. one option is to use many pledgeshowmemberlistadd packets
 			writeS(m.getName());
 			writeD(m.getLevel());
 			writeD(m.getClassId());
-			writeD(0); 
+			writeD(0); // no visible effect
 			writeD(m.getObjectId());//writeD(1); 
 			writeD(m.isOnline() ? 1 : 0);  // 1=online 0=offline
-			writeD(0); //c5 grade/power?
+			writeD(0); //makes the name yellow. member has a sponsor
 		}
 	}
 

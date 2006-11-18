@@ -32,10 +32,12 @@ import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.PledgeReceiveSubPledgeCreated;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 import net.sf.l2j.gameserver.serverpackets.PledgeStatusChanged;
 import net.sf.l2j.gameserver.serverpackets.ServerBasePacket;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.serverpackets.UserInfo;
 
 /**
  * This class ...
@@ -71,20 +73,40 @@ public class L2Clan
 
 	private List<L2Skill> _skills = new FastList<L2Skill>(); 
     
-    //  Clan Privileges  
-	public static final int CP_NOTHING = 0;  
-	public static final int CP_CL_JOIN_CLAN = 1; // Join clan  
-	public static final int CP_CL_GIVE_TITLE = 2; // Give a title  
-	public static final int CP_CL_VIEW_WAREHOUSE = 4; // View warehouse content  
-	public static final int CP_CL_REGISTER_CREST = 8; // Register clan crest  
-	public static final int CP_CH_OPEN_DOOR = 16; // open a door  
-	public static final int CP_CH_OTHER_RIGHTS = 32; //??  
-	public static final int CP_CH_DISMISS = 64; //??  
-	public static final int CP_CS_OPEN_DOOR = 128;  
-	public static final int CP_CS_OTHER_RIGHTS = 256; //???  
-	public static final int CP_CS_DISMISS = 512; //???  
-	public static final int CP_ALL = 1023;  
+	//  Clan Privileges  
+    public static final int CP_NOTHING = 0;  
+    public static final int CP_CL_JOIN_CLAN = 2; // Join clan  
+    public static final int CP_CL_GIVE_TITLE = 4; // Give a title  
+    public static final int CP_CL_VIEW_WAREHOUSE = 8; // View warehouse content 
+    public static final int CP_CL_MANAGE_RANKS = 16; // Manage clan ranks 
+    public static final int CP_CL_PLEDGE_WAR = 32;  
+    public static final int CP_CL_DISMISS = 64; 
+    public static final int CP_CL_REGISTER_CREST = 128; // Register clan crest
+    public static final int CP_CL_MASTER_RIGHTS = 256;
+    public static final int CP_CL_MANAGE_LEVELS = 512;
+    public static final int CP_CH_OPEN_DOOR = 1024; // open a door  
+    public static final int CP_CH_OTHER_RIGHTS = 2048; 
+    public static final int CP_CH_AUCTION = 4096;    
+    public static final int CP_CH_DISMISS = 8192; 
+    public static final int CP_CH_SET_FUNCTIONS = 16384;
+    public static final int CP_CS_OPEN_DOOR = 32768;  
+    public static final int CP_CS_MANOR_ADMIN = 65536;  
+    public static final int CP_CS_MANAGE_SIEGE = 131072;
+    public static final int CP_CS_USE_FUNCTIONS = 262144;
+    public static final int CP_CS_DISMISS = 524288;  
+    public static final int CP_CS_TAXES =1048576;
+    public static final int CP_CS_MERCENARIES =2097152;
+    public static final int CP_CS_SET_FUNCTIONS =4194304;
+    public static final int CP_ALL = 8388606;
 
+    /** FastMap(Integer, L2Skill) containing all skills of the L2Clan */
+    protected final Map<Integer, L2Skill> _Skills = new FastMap<Integer, L2Skill>();
+    protected final Map<Integer, RankPrivs> _Privs = new FastMap<Integer, RankPrivs>();
+    protected final Map<Integer, SubPledge> _SubPledges = new FastMap<Integer, SubPledge>();
+    
+    private int _reputationScore = 0;
+    private int _rank = 0;
+    
     /**
      * called if a clan is referenced only by id.
      * in this case all other data needs to be fetched from db
@@ -232,7 +254,18 @@ public class L2Clan
 	        PreparedStatement statement = con.prepareStatement("DELETE FROM clan_data WHERE clan_id=?");
 	        statement.setInt(1, getClanId());
 	        statement.execute();
-	        statement.close();                  
+	        statement.close(); 
+	        
+	        statement = con.prepareStatement("DELETE FROM clan_privs WHERE clan_id=?");
+            statement.setInt(1, getClanId());
+            statement.execute();
+            statement.close();
+
+            statement = con.prepareStatement("DELETE FROM clan_subpledges WHERE clan_id=?");
+            statement.setInt(1, getClanId());
+            statement.execute();
+            statement.close();
+	        
 	        if (Config.DEBUG) _log.fine("clan removed in db: "+getClanId());
 	    }
 	    catch (Exception e)
@@ -253,6 +286,13 @@ public class L2Clan
 			_log.warning("Member "+name+" not found in clan while trying to remove");
 			return;
 		}
+		int leadssubpledge = getLeaderSubPledge(name);
+		if (leadssubpledge != 0)
+		{
+			// Sub-unit leader withdraws, position becomes vacant and leader
+			// should appoint new via NPC
+			getSubPledge(leadssubpledge).setLeaderName("");
+		}
 		if (exMember.getName().equals(getLeaderName()))
         {
             setNewLeader();
@@ -272,6 +312,16 @@ public class L2Clan
 	public int getMembersCount()
 	{
 		return _members.size();
+	}
+	
+	public int getSubPledgeMembersCount(int subpl)
+	{
+		int result = 0;
+		for (L2ClanMember temp : _members.values())
+		{
+			if (temp.getPledgeType() == subpl) result++;
+		}
+		return result;
 	}
 	
 	public L2PcInstance[] getOnlineMembers(String exclude)
@@ -433,11 +483,12 @@ public class L2Clan
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET leader_id=?,ally_id=?,ally_name=? WHERE clan_id=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET leader_id=?,ally_id=?,ally_name=?,reputation_score=? WHERE clan_id=?");
 			statement.setInt(1, getLeaderId());
 			statement.setInt(2, getAllyId());
 			statement.setString(3, getAllyName());
-			statement.setInt(4, getClanId());
+			statement.setInt(4, getReputationScore());
+			statement.setInt(5, getClanId());
 			statement.execute();
 			statement.close();
 			if (Config.DEBUG) _log.fine("New clan leader saved in db: "+getClanId());
@@ -497,9 +548,10 @@ public class L2Clan
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=? WHERE obj_Id=?");
+            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=?,subpledge=? WHERE obj_Id=?");
             statement.setInt(1, getClanId());
-            statement.setInt(2, member.getObjectId());
+            statement.setInt(2, member.getPledgeType());
+            statement.setInt(3, member.getObjectId());
             statement.execute();
             statement.close();                  
             if (Config.DEBUG) _log.fine("New clan member saved in db: "+getClanId());
@@ -520,7 +572,7 @@ public class L2Clan
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=0, allyId=0, title=?, clan_privs=0, wantspeace=0 WHERE obj_Id=?");
+            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=0, allyId=0, title=?, clan_privs=0, wantspeace=0, subpledge=0 WHERE obj_Id=?");
             statement.setString(1, "");
             statement.setInt(2, member.getObjectId());
             statement.execute();
@@ -602,13 +654,13 @@ public class L2Clan
             L2ClanMember member;
             
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,hasHideout,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id FROM clan_data where clan_id=?");
+            PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,hasHideout,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score FROM clan_data where clan_id=?");
             statement.setInt(1, getClanId());
             ResultSet clanData = statement.executeQuery();
-            
+
             if (clanData.next())
             {
-                setName(clanData.getString("clan_name"));
+            	setName(clanData.getString("clan_name"));
                 setLevel(clanData.getInt("clan_level"));
                 setHasCastle(clanData.getInt("hasCastle"));
                 setHasHideout(clanData.getInt("hasHideout"));
@@ -628,19 +680,20 @@ public class L2Clan
                 }
                 
                 setAllyCrestId(clanData.getInt("ally_crest_id"));
+                setReputationScore(clanData.getInt("reputation_score"), false);
                 
                 int leaderId = (clanData.getInt("leader_id"));          
-                
-                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade FROM characters WHERE clanid=?");
+
+                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge FROM characters WHERE clanid=?");
                 statement2.setInt(1, getClanId());
                 ResultSet clanMembers = statement2.executeQuery();
                 
                 while (clanMembers.next())
                 {
-                    member = new L2ClanMember(clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"),clanMembers.getInt("power_grade"),clanMembers.getString("title"));
+                	member = new L2ClanMember(this, clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"),clanMembers.getInt("subpledge"), clanMembers.getInt("power_grade"), clanMembers.getString("title"));
                     if (member.getObjectId() == leaderId)
                     {
-                        setLeader(member);
+                    	setLeader(member);
                     }
                     else
                     {
@@ -650,13 +703,15 @@ public class L2Clan
                 clanMembers.close();
                 statement2.close();              
             }
-            
+
             clanData.close();
             statement.close();
             
             if (getName() != null)
             	_log.config("Restored clan data for \"" + getName() + "\" from database.");
             restorewars();
+            restoreSubPledges();
+            restoreRankPrivs();
         }
         catch (Exception e)
         {
@@ -807,5 +862,362 @@ public class L2Clan
 	{
 		return _skills;
 	}
+	
+	public class SubPledge
+    {
+       private int _Id;
+       private String _Name;
+       private String _LeaderName;
+       
+       public SubPledge(int id, String name, String leaderName)
+       {
+           _Id = id;
+           _Name = name;
+           _LeaderName = leaderName;
+       }
+       
+       public int getId()
+       {
+           return _Id;
+       }
+       public String getName()
+       {
+           return _Name;
+       }
+       public String getLeaderName()
+       {
+           return _LeaderName;
+       }
+       
+       public void setLeaderName(String leaderName)
+       {
+           _LeaderName = leaderName;
+       }
+    }
+    public class RankPrivs
+    {
+       @SuppressWarnings("hiding")
+       private int _rank;
+       private int _party;// TODO find out what this stuff means and implement it
+       private int _privs;
+       
+       public RankPrivs(int rank, int party, int privs)
+       {
+           _rank = rank;
+           _party = party;
+           _privs = privs;
+       }
+       
+       public int getRank()
+       {
+           return _rank;
+       }
+       public int getParty()
+       {
+           return _party;
+       }
+       public int getPrivs()
+       {
+           return _privs;
+       }
+       public void setPrivs(int privs)
+       {
+           _privs = privs;
+       }
+    }
+    
+    private void restoreSubPledges()
+    {
+        java.sql.Connection con = null;
+        
+        try
+        {
+            // Retrieve all skills of this L2PcInstance from the database
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT sub_pledge_id,name,leader_name FROM clan_subpledges WHERE clan_id=?");
+            statement.setInt(1, getClanId());
+            _log.warning("subPledge restore for ClanId : "+getClanId());
+            ResultSet rset = statement.executeQuery();
+            
+            // Go though the recordset of this SQL query
+            while (rset.next())
+            {
+                int id = rset.getInt("sub_pledge_id");
+                String name = rset.getString("name");
+                String leaderName = rset.getString("leader_name");
+                // Create a SubPledge object for each record
+                SubPledge pledge = new SubPledge(id, name, leaderName);
+                _SubPledges.put(id, pledge);
+            }
+            
+            rset.close();
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.warning("Could not restore clan sub-units: " + e);
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+    }
+    
+    /** used to retrieve all subPledges */
+    public final SubPledge getSubPledge(int pledgeType)
+    {
+        if (_SubPledges == null)
+            return null;
+        
+        return _SubPledges.get(pledgeType);
+    }
+    
+    /** used to retrieve all subPledges */
+    public final SubPledge[] getAllSubPledges()
+    {
+        if (_SubPledges == null)
+            return new SubPledge[0];
+        
+        return _SubPledges.values().toArray(new SubPledge[_SubPledges.values().size()]);
+    }
+    
+    public int createSubPledge(int pledgeType, String leaderName, String subPledgeName)
+    {
+        pledgeType = getAvailablePledgeTypes(pledgeType);
+        if (pledgeType == 0)
+        {
+            return 0;
+        }
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement = con.prepareStatement("INSERT INTO clan_subpledges (clan_id,sub_pledge_id,name,leader_name) values (?,?,?,?)");
+            statement.setInt(1, getClanId());
+            statement.setInt(2, pledgeType);
+            statement.setString(3, subPledgeName);
+            if (pledgeType != -1)
+                statement.setString(4, leaderName);
+            else
+                statement.setString(4, "");
+            statement.execute();
+            statement.close();
+            
+            _SubPledges.put(pledgeType, new SubPledge(pledgeType, subPledgeName, leaderName));
+            
+            if (Config.DEBUG) _log.fine("New sub_clan saved in db: "+getClanId()+"; "+pledgeType);
+        }
+        catch (Exception e)
+        {
+            _log.warning("error while saving new sub_clan to db "+e);
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+        broadcastToOnlineMembers(new PledgeReceiveSubPledgeCreated(new SubPledge(pledgeType, subPledgeName, leaderName)));
+        return 1;
+    }
+    
+    public int getAvailablePledgeTypes(int pledgeType)
+    {
+    	if (_SubPledges.get(pledgeType) != null)
+    	{
+    		_log.warning("found sub-unit with id: "+pledgeType);
+    		switch(pledgeType)
+    		{
+    			case -1:
+    				return 0;
+    			case 100:
+    				pledgeType = getAvailablePledgeTypes(200);
+    				break;
+    			case 200:
+    				return 0;
+    			case 1001:
+    				pledgeType = getAvailablePledgeTypes(1002);
+    				break;
+    			case 1002:
+    				pledgeType = getAvailablePledgeTypes(2001);
+    				break;
+                case 2001:
+                	pledgeType = getAvailablePledgeTypes(2002);
+                	break;
+                case 2002:
+                	return 0;
+    		}
+    	}
+        return pledgeType;
+    }
+    
+    private void restoreRankPrivs()
+    {
+        java.sql.Connection con = null;
+        
+        try
+        {
+            // Retrieve all skills of this L2PcInstance from the database
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?");
+            statement.setInt(1, getClanId());
+            _log.warning("clanPrivs restore for ClanId : "+getClanId());
+            ResultSet rset = statement.executeQuery();
+            
+            InitializePrivs();
+            // Go though the recordset of this SQL query
+            while (rset.next())
+            {
+                int rank = rset.getInt("rank");
+                int party = rset.getInt("party");
+                int privileges = rset.getInt("privs");
+                // Create a SubPledge object for each record
+                //RankPrivs privs = new RankPrivs(rank, party, privileges);
+                //_Privs.put(rank, privs);
+                _Privs.get(rank).setPrivs(privileges);
+            }
+            
+            rset.close();
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.warning("Could not restore clan privs by rank: " + e);
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+    }
+    
+    public void InitializePrivs()
+    {
+    	RankPrivs privs;
+    	for (int i=1; i < 10; i++) 
+    	{
+    		privs = new RankPrivs(i, 0, CP_NOTHING);
+    		_Privs.put(i, privs);
+    	}
+    		
+    }
+    
+    public int getRankPrivs(int rank)
+    {
+        if (_Privs.get(rank) != null)
+            return _Privs.get(rank).getPrivs();
+        else
+            return CP_NOTHING;
+    }
+    public void setRankPrivs(int rank, int privs)
+    {
+        if (_Privs.get(rank)!= null)
+        {
+            _Privs.get(rank).setPrivs(privs);
+            
+            
+            java.sql.Connection con = null;
+            
+            try
+            {
+                //_log.warning("requested store clan privs in db for rank: "+rank+", privs: "+privs);
+                // Retrieve all skills of this L2PcInstance from the database
+                con = L2DatabaseFactory.getInstance().getConnection();
+                PreparedStatement statement = con.prepareStatement("INSERT INTO clan_privs (clan_id,rank,party,privs) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE privs = ?");
+                statement.setInt(1, getClanId());
+                statement.setInt(2, rank);
+                statement.setInt(3, 0);
+                statement.setInt(4, privs);
+                statement.setInt(5, privs);
+                
+                statement.execute();
+                statement.close();
+            }
+            catch (Exception e)
+            {
+                _log.warning("Could not store clan privs for rank: " + e);
+            }
+            finally
+            {
+                try { con.close(); } catch (Exception e) {}
+            }
+            for (L2ClanMember cm : getMembers())
+            {
+                if (cm.isOnline())
+                    if (cm.getPowerGrade() == rank)
+                        if (cm.getPlayerInstance() != null)
+                        {
+                            cm.getPlayerInstance().setClanPrivileges(privs);
+                            cm.getPlayerInstance().sendPacket(new UserInfo(cm.getPlayerInstance()));
+                        }
+            }
+        }
+        else
+        {
+            _Privs.put(rank, new RankPrivs(rank, 0, privs));
+            
+            java.sql.Connection con = null;
+            
+            try
+            {
+                //_log.warning("requested store clan new privs in db for rank: "+rank);
+                // Retrieve all skills of this L2PcInstance from the database
+                con = L2DatabaseFactory.getInstance().getConnection();
+                PreparedStatement statement = con.prepareStatement("INSERT INTO clan_privs (clan_id,rank,party,privs) VALUES (?,?,?,?)");
+                statement.setInt(1, getClanId());
+                statement.setInt(2, rank);
+                statement.setInt(3, 0);
+                statement.setInt(4, privs);
+                statement.execute();
+                statement.close();
+            }
+            catch (Exception e)
+            {
+                _log.warning("Could not create new rank and store clan privs for rank: " + e);
+            }
+            finally
+            {
+                try { con.close(); } catch (Exception e) {}
+            }
+        }
+    }
+    
+    /** used to retrieve all RankPrivs */
+    public final RankPrivs[] getAllRankPrivs()
+    {
+        if (_Privs == null)
+            return new RankPrivs[0];
+        
+        return _Privs.values().toArray(new RankPrivs[_Privs.values().size()]);
+    }
+    
+    public int getLeaderSubPledge(String name)
+    {
+        int id = 0;
+        for (SubPledge sp : _SubPledges.values())
+        {
+            if (sp.getLeaderName() == name)
+                id = sp.getId();
+        }
+        return id;
+    }
+
+    public void setReputationScore(int value, boolean save)
+    {
+    	_reputationScore = value;
+    	if (save) updateClanInDB();
+    }
+    
+    public int getReputationScore()
+    {
+    	return _reputationScore;
+    }
+    
+    public void setRank(int rank) 
+    { 
+    	_rank = rank; 
+    } 	
+    
+    public int getRank() 
+    { 
+    	return _rank; 
+    } 
 
 }

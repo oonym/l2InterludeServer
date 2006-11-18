@@ -190,8 +190,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
-    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,allyId=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,deleteclan=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?, nobless=? WHERE obj_id=?";
-    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, deleteclan, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless FROM characters WHERE obj_id=?";
+    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,allyId=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,deleteclan=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=? WHERE obj_id=?";
+    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, deleteclan, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge FROM characters WHERE obj_id=?";
     private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
     private static final String ADD_CHAR_SUBCLASS = "INSERT INTO character_subclasses (char_obj_id,class_id,exp,sp,level,class_index) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CHAR_SUBCLASS = "UPDATE character_subclasses SET exp=?,sp=?,level=?,class_id=? WHERE char_obj_id=? AND class_index =?";
@@ -296,8 +296,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private boolean _inMotherTreeZone;
 
     /** L2PcInstance's pledge class (knight, Baron, etc.)*/
-    private int _pledgeClass;
+    private int _pledgeClass = 0;
     private int _pledgeType = 0;
+    public int tempJoinPledgeType = 0; // temp variable for join requests, TODO better argument passing and remove this
+    
 	/** The number of recommandation obtained by the L2PcInstance */
 	private int _recomHave; // how much I was recommended by others
 	
@@ -400,6 +402,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/** The Clan Leader Flag of the L2PcInstance (True : the L2PcInstance is the leader of the clan) */
 	private boolean _clanLeader;
+	
+	/** Apprentice's name or ID, TODO*/
+    private int _apprentice = 0;
 	
 	private long _deleteClanTime;
 	
@@ -561,7 +566,7 @@ public final class L2PcInstance extends L2PlayableInstance
     //private boolean _IsWearingFormalWear = false;
     
     private ScheduledFuture _jailTask;
-	private int _powerGrade;
+	private int _powerGrade = 0;
 	
 	private int _cursedWeaponEquipedId = 0;
     
@@ -4642,8 +4647,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			                                 "movement_multiplier,attack_speed_multiplier,colRad,colHeight," +
 			                                 "exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime," +
 			                                 "cancraft,title,allyId,accesslevel,online,isin7sdungeon,clan_privs,wantspeace,deleteclan," +
-			                                 "base_class,newbie,nobless) " +
-			"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			                                 "base_class,newbie,nobless,power_grade) " +
+			"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			statement.setString(1, _accountName);
 			statement.setInt(2, getObjectId());
 			statement.setString(3, getName());
@@ -4701,6 +4706,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(55, getBaseClass());
 			statement.setInt(56, isNewbie() ? 1 : 0);
 			statement.setInt(57, isNoble() ? 1 :0);
+			statement.setLong(58, 0);
 			statement.executeUpdate();
 			statement.close();
 		}
@@ -4770,7 +4776,8 @@ public final class L2PcInstance extends L2PlayableInstance
 				player.setFace(rset.getInt("face"));
 				player.setHairStyle(rset.getInt("hairStyle"));
 				player.setHairColor(rset.getInt("hairColor"));
-				player.setClanPrivileges(rset.getInt("clan_privs"));
+				//player.setClanPrivileges(rset.getInt("clan_privs"));
+				
 				player.setWantsPeace(rset.getInt("wantspeace"));
 				
 				player.setHeading(rset.getInt("heading"));
@@ -4787,9 +4794,29 @@ public final class L2PcInstance extends L2PlayableInstance
 					player.setDeleteClanTime(0);
 				
 				int clanId	= rset.getInt("clanid");
+				player.setPowerGrade((int)rset.getLong("power_grade"));
+				player.setPledgeType(rset.getInt("subpledge"));
+				//player.setApprentice(rset.getInt("apprentice"));
 				
 				if (clanId > 0)
 					player.setClan(ClanTable.getInstance().getClan(clanId));
+				
+				if (player.getClan()!=null)
+                {
+                    if (player.getClan().getLeaderId() != player.getObjectId())
+                    {
+                        if(player.getPowerGrade() == 0) {
+                        	player.setPowerGrade(5);
+                        }
+                    	player.setClanPrivileges(player.getClan().getRankPrivs(player.getPowerGrade()));
+                    }
+                    else 
+                    {
+                    	player.setClanPrivileges(L2Clan.CP_ALL);
+                    	player.setPowerGrade(1);
+                    }
+                }
+                else player.setClanPrivileges(L2Clan.CP_NOTHING);
 				
 				player.setDeleteTimer(rset.getLong("deletetime"));
 				
@@ -5174,8 +5201,10 @@ public final class L2PcInstance extends L2PlayableInstance
             statement.setLong(44, getJailTimer());
             statement.setInt(45, isNewbie() ? 1 : 0);
             statement.setInt(46, isNoble() ? 1 : 0);
-            statement.setInt(47, getObjectId());
-			
+            statement.setLong(47, getPowerGrade());
+            statement.setInt(48, getPledgeType());
+            statement.setInt(49, getObjectId());
+            
 			statement.execute();
 			statement.close();
 		}
@@ -7014,10 +7043,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		_clanPrivileges = n;
 	}
 
-    public void setPledgeClass(int classId)
+    // baron etc
+	public void setPledgeClass(int classId)
     {
         _pledgeClass = classId;
     }
+    
     public int getPledgeClass()
     {
         return _pledgeClass;
@@ -7027,9 +7058,20 @@ public final class L2PcInstance extends L2PlayableInstance
     {
         _pledgeType = typeId;
     }
+    
     public int getPledgeType()
     {
         return _pledgeType;
+    }
+    
+    public int getApprentice()
+    {
+    	return _apprentice;
+    }
+    
+    public void setApprentice(int apprentice_id)
+    {
+    	_apprentice = apprentice_id;
     }
 
 	

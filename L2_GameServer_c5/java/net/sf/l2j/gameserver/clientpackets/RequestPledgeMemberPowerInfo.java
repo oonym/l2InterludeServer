@@ -53,8 +53,8 @@ public class RequestPledgeMemberPowerInfo extends ClientBasePacket
     @Override
     void runImpl()
     {
-        System.out.println("C5: RequestPledgeMemberPowerInfo d:"+_unk1);
-        System.out.println("C5: RequestPledgeMemberPowerInfo S:"+_player);
+        //System.out.println("C5: RequestPledgeMemberPowerInfo d:"+_unk1);
+        //System.out.println("C5: RequestPledgeMemberPowerInfo S:"+_player);
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null)
         	return;

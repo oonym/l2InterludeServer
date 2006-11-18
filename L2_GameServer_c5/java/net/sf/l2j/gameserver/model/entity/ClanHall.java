@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 
 public class ClanHall
 {
@@ -231,7 +231,7 @@ public class ClanHall
         		{
         			if (member.isOnline() && member.getPlayerInstance() != null)
         			{
-        				member.getPlayerInstance().sendPacket(new PledgeShowMemberListAll(clan, member.getPlayerInstance()));
+        				member.getPlayerInstance().sendPacket(new PledgeShowInfoUpdate(clan, member.getPlayerInstance()));
         			}
         		}
             }

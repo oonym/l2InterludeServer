@@ -266,7 +266,7 @@ public class UserInfo extends ServerBasePacket
         
         writeD(0x00); // ??
         
-        writeD(0x00); //changes the text above CP on Status Window
+        writeD(_cha.getPledgeClass()); //changes the text above CP on Status Window
         writeD(0x00); // ??
         
         writeD(_cha.getTitleColor());

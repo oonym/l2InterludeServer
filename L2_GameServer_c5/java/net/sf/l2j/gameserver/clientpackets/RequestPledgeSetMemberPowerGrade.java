@@ -52,8 +52,8 @@ public class RequestPledgeSetMemberPowerGrade extends ClientBasePacket
     @Override
     void runImpl()
     {
-        System.out.println("C5: RequestPledgeSetMemberPowerGrade S:"+_member);
-        System.out.println("C5: RequestPledgeSetMemberPowerGrade d:"+_powerGrade);
+        //System.out.println("C5: RequestPledgeSetMemberPowerGrade S:"+_member);
+        //System.out.println("C5: RequestPledgeSetMemberPowerGrade d:"+_powerGrade);
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null)
         	return;

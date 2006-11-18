@@ -256,7 +256,7 @@ public class CharInfo extends ServerBasePacket
 	        
 	        writeD(0x00); // ??
 	        
-	        writeD(0x00); // ??
+	        writeD(_cha.getPledgeClass()); 
 	        writeD(0x00); // ??
 	        
 	        writeD(_cha.getTitleColor());

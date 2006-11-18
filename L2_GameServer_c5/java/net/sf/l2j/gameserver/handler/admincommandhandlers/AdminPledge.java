@@ -104,6 +104,17 @@ public class AdminPledge implements IAdminCommandHandler
                     statement.setInt(1, target.getClanId());
                     statement.execute();
                     statement.close();
+                    
+                    statement = con.prepareStatement("DELETE FROM clan_privs WHERE clan_id=?");
+                    statement.setInt(1, target.getClanId());
+                    statement.execute();
+                    statement.close();
+
+                    statement = con.prepareStatement("DELETE FROM clan_subpledges WHERE clan_id=?");
+                    statement.setInt(1, target.getClanId());
+                    statement.execute();
+                    statement.close();
+                    
                     target.sendPacket(sm);
                     target.broadcastUserInfo();
                     

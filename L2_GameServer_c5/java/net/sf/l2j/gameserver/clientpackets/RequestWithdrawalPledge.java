@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.model.L2Clan;
@@ -36,7 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class RequestWithdrawalPledge extends ClientBasePacket
 {
 	private static final String _C__26_REQUESTWITHDRAWALPLEDGE = "[C] 26 RequestWithdrawalPledge";
-	static Logger _log = Logger.getLogger(RequestWithdrawalPledge.class.getName());
+	//static Logger _log = Logger.getLogger(RequestWithdrawalPledge.class.getName());
 			
 	public RequestWithdrawalPledge(ByteBuffer buf, ClientThread client)
 	{
@@ -49,6 +48,11 @@ public class RequestWithdrawalPledge extends ClientBasePacket
 		
 		//is the guy in a clan  ?
 		if (activeChar == null || activeChar.getClanId() == 0) 
+		{	
+			return;
+		}
+		// leader may not leave
+		if (activeChar.isClanLeader()) 
 		{	
 			return;
 		}

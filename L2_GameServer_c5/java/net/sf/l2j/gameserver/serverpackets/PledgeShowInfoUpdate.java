@@ -51,10 +51,10 @@ public class PledgeShowInfoUpdate extends ServerBasePacket
 		writeD(_clan.getClanId());
 		writeD(0);
 		writeD(_clan.getLevel()); //clan level
-		writeD(0);
-		writeD(0);
+		writeD(_clan.getHasCastle()); 
+		writeD(_clan.getHasHideout()); 
 		writeD(0); // displayed in the "tree" view (with the clan skills)
-		writeD(0x00); // clan reputation score
+		writeD(_clan.getReputationScore()); // clan reputation score
 		writeD(0);
 		writeD(0);
 		

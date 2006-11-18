@@ -244,7 +244,15 @@ public class SQLAccountManager
 					// Delete Clan
 					statement = con.prepareStatement("DELETE FROM clan_data WHERE clan_id=?;");
 					statement.setString(1, rset.getString("clanid"));
-					statement.executeUpdate();					
+					statement.executeUpdate();
+					
+					statement = con.prepareStatement("DELETE FROM clan_privs WHERE clan_id=?;");
+					statement.setString(1, rset.getString("clanid"));
+					statement.executeUpdate();
+					
+					statement = con.prepareStatement("DELETE FROM clan_subpledges WHERE clan_id=?;");
+					statement.setString(1, rset.getString("clanid"));
+					statement.executeUpdate();
 					
 				} else {
 					rcln.close();				

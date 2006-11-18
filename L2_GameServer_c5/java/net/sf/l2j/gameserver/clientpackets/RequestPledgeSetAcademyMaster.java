@@ -53,9 +53,9 @@ public class RequestPledgeSetAcademyMaster extends ClientBasePacket
     void runImpl()
     {
         // TODO
-        System.out.println("C5:RequestAskJoinPartyRoom: d: " + _unk1);
-        System.out.println("C5:RequestAskJoinPartyRoom: S: " + _unk2);
-        System.out.println("C5:RequestAskJoinPartyRoom: S: " + _unk3);
+        System.out.println("C5:RequestPledgeSetAcademyMaster: d: " + _unk1); // 0 delete
+        System.out.println("C5:RequestPledgeSetAcademyMaster: S: " + _unk2); // curr player
+        System.out.println("C5:RequestPledgeSetAcademyMaster: S: " + _unk3); // master
     }
 
     /**

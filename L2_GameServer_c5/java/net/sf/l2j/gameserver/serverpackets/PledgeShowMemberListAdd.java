@@ -49,7 +49,7 @@ public class PledgeShowMemberListAdd extends ServerBasePacket
 		writeD(0); 
 		writeD(1);
 		writeD((_player.isOnline() == 1 ? _player.getObjectId() : 0)); // 1=online 0=offline
-		writeD(0); //c5 must be 0 to display member
+		writeD(_player.getPledgeType()); 
 	}
 
 	/* (non-Javadoc)

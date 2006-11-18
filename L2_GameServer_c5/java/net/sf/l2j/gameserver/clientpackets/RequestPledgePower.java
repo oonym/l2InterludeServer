@@ -30,16 +30,16 @@ public class RequestPledgePower extends ClientBasePacket
 {
     static Logger _log = Logger.getLogger(ManagePledgePower.class.getName());
     private static final String _C__C0_REQUESTPLEDGEPOWER = "[C] C0 RequestPledgePower";
-    private final int _clanOrPlayerId;
+    private final int _rank;
     private final int _action;
     private final int _privs;
     
     public RequestPledgePower(ByteBuffer buf, ClientThread client)
     {
         super(buf, client);
-        _clanOrPlayerId = readD();
+        _rank = readD();
         _action = readD();
-        if(_action == 3)
+        if(_action == 2)
         {
             _privs = readD();
         }
@@ -51,20 +51,18 @@ public class RequestPledgePower extends ClientBasePacket
         L2PcInstance player = getClient().getActiveChar();
         if (player == null) return;
         
-        if(_action == 3)
+        if(_action == 2)
         {
         	if(player.getClan() != null && player.isClanLeader())
         	{
-        		L2PcInstance clanPlayer = (L2PcInstance)L2World.getInstance().findObject(_clanOrPlayerId);
-        		if(clanPlayer != null)
-        		{
-        			clanPlayer.setClanPrivileges(_privs);
-        		}
+        		// TODO: There are many rights that cannot be bestowed upon adademy
+        		// members: join/leave, title, clan war, auction etc... Not checked now.
+        		player.getClan().setRankPrivs(_rank, _privs);
         	}
         } else
         {
-            ManagePledgePower mpp = new ManagePledgePower(_clanOrPlayerId, _action, player);    
-             player.sendPacket(mpp);
+            ManagePledgePower mpp = new ManagePledgePower(getClient().getActiveChar().getClan(), _action, _rank);    
+            player.sendPacket(mpp);
         }
     }
     

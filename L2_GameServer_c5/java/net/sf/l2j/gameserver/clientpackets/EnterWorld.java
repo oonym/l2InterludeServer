@@ -267,6 +267,8 @@ public class EnterWorld extends ClientBasePacket
                 Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
             activeChar.setHero(true);
         
+        setPledgeClass(activeChar);
+        
         if(Config.GAMEGUARD_ENFORCE)
             activeChar.sendPacket(new GameGuardQuery());
 	}
@@ -325,9 +327,6 @@ public class EnterWorld extends ClientBasePacket
 			SystemMessage msg = new SystemMessage(SystemMessage.CLAN_MEMBER_S1_LOGGED_IN);
 			msg.addString(activeChar.getName());
 
-            if(activeChar.isClanLeader()) 
-                activeChar.setClanPrivileges(L2Clan.CP_ALL);
-
 			L2PcInstance[] clanMembers = clan.getOnlineMembers(activeChar.getName());
             PledgeShowMemberListUpdate ps = new PledgeShowMemberListUpdate(activeChar);
 			for (int i = 0; i < clanMembers.length; i++)
@@ -363,4 +362,147 @@ public class EnterWorld extends ClientBasePacket
 	{
 		return _C__03_ENTERWORLD;
 	}
+	
+	/**
+    * @param activeChar
+    * @return
+    */
+	private void setPledgeClass(L2PcInstance activeChar)
+	{
+       int pledgeClass = 0;
+       L2Clan clan = activeChar.getClan();
+       if (clan != null)
+       {
+           switch (activeChar.getClan().getLevel())
+           {
+               case 4:
+                   if (activeChar.isClanLeader())
+                       pledgeClass = 3;
+                   break;
+               case 5:
+                   if (activeChar.isClanLeader())
+                       pledgeClass = 4;
+                   else
+                       pledgeClass = 2;
+                   break;
+               case 6:
+                   switch (activeChar.getPledgeType())
+                   {
+                       case -1:
+                         pledgeClass = 1;
+                         break;
+                       case 100:
+                       case 200:
+                           pledgeClass = 2;
+                           break;
+                       case 0:
+                           if (activeChar.isClanLeader())
+                               pledgeClass = 5;
+                           else
+                               switch (clan.getLeaderSubPledge(activeChar.getName()))
+                               {
+                                   case 100:
+                                   case 200:
+                                       pledgeClass = 4;
+                                       break;
+                                   case -1:
+                                   default:
+                                       pledgeClass = 3;
+                                       break;
+                               }
+                           break;
+                   }
+                   break;
+               case 7:
+                   switch (activeChar.getPledgeType())
+                   {
+                       case -1:
+                         pledgeClass = 1;
+                         break;
+                       case 100:
+                       case 200:
+                               pledgeClass = 3;
+                           break;
+                       case 1001:
+                       case 1002:
+                       case 2001:
+                       case 2002:
+                               pledgeClass = 2;
+                           break;
+                       case 0:
+                           if (activeChar.isClanLeader())
+                               pledgeClass = 7;
+                           else
+                               switch (clan.getLeaderSubPledge(activeChar.getName()))
+                               {
+                                   case 100:
+                                   case 200:
+                                       pledgeClass = 6;
+                                       break;
+                                   case 1001:
+                                   case 1002:
+                                   case 2001:
+                                   case 2002:
+                                       pledgeClass = 5;
+                                       break;
+                                   case -1:
+                                   default:
+                                       pledgeClass = 4;
+                                       break;
+                               }
+                           break;
+                   }
+                   break;
+               case 8:
+                   switch (activeChar.getPledgeType())
+                   {
+                       case -1:
+                         pledgeClass = 1;
+                         break;
+                       case 100:
+                       case 200:
+                               pledgeClass = 4;
+                           break;
+                       case 1001:
+                       case 1002:
+                       case 2001:
+                       case 2002:
+                               pledgeClass = 3;
+                           break;
+                       case 0:
+                           if (activeChar.isClanLeader())
+                               pledgeClass = 8;
+                           else
+                               switch (clan.getLeaderSubPledge(activeChar.getName()))
+                               {
+                                   case 100:
+                                   case 200:
+                                       pledgeClass = 7;
+                                       break;
+                                   case 1001:
+                                   case 1002:
+                                   case 2001:
+                                   case 2002:
+                                       pledgeClass = 6;
+                                       break;
+                                   case -1:
+                                   default:
+                                       pledgeClass = 5;
+                                       break;
+                               }
+                           break;
+                   }
+                   break;
+               default:
+                   pledgeClass = 1;
+               break;
+           }
+       }
+       if (pledgeClass < 5 && activeChar.isNoble())
+           pledgeClass = 5;
+       else if (activeChar.isHero())
+           pledgeClass = 8;
+       activeChar.setPledgeClass(pledgeClass);
+	}
+ 
 }

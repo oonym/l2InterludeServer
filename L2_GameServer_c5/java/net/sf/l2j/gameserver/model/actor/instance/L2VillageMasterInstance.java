@@ -76,14 +76,34 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         String actualCommand = commandStr[0]; // Get actual command
 
         String cmdParams = "";
+        String cmdParams2 = "";
 
         if (commandStr.length >= 2) cmdParams = commandStr[1];
+        if (commandStr.length >= 3) cmdParams2 = commandStr[2];
 
         if (actualCommand.equalsIgnoreCase("create_clan"))
         {
             if (cmdParams.equals("")) return;
 
             createClan(player, cmdParams);
+        }
+        else if (actualCommand.equalsIgnoreCase("create_academy"))
+        {
+            if (cmdParams.equals("")) return;
+
+            createSubPledge(player, cmdParams, null, -1, 5);
+        }
+        else if (actualCommand.equalsIgnoreCase("create_royal"))
+        {
+            if (cmdParams.equals("")) return;
+
+            createSubPledge(player, cmdParams, cmdParams2, 100, 6);
+        }
+        else if (actualCommand.equalsIgnoreCase("create_knight"))
+        {
+            if (cmdParams.equals("")) return;
+
+            createSubPledge(player, cmdParams, cmdParams2, 1001, 7);
         }
         else if (actualCommand.equalsIgnoreCase("create_ally"))
         {
@@ -524,6 +544,17 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             statement.setInt(1, clanId);
             statement.execute();
             statement.close();
+            
+            statement = con.prepareStatement("DELETE FROM clan_privs WHERE clan_id=?");
+            statement.setInt(1, clanId);
+            statement.execute();
+            statement.close();
+
+            statement = con.prepareStatement("DELETE FROM clan_subpledges WHERE clan_id=?");
+            statement.setInt(1, clanId);
+            statement.execute();
+            statement.close();
+            
             player.sendPacket(sm);
             player.broadcastUserInfo();
 
@@ -644,6 +675,30 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 }
                 break;
             }
+            case 5:
+                if(clan.getReputationScore() >= 10000 && clan.getMembersCount() >= 30)
+                {
+                    clan.setReputationScore(clan.getReputationScore()-10000, true);
+                    increaseClanLevel = true;
+                }
+                break;
+            	
+            case 6:
+                if(clan.getReputationScore() >= 20000 && clan.getMembersCount() >= 80)
+                {
+                    clan.setReputationScore(clan.getReputationScore()-20000, true);
+                    increaseClanLevel = true;
+                }
+                break;
+            case 7:
+                if(clan.getReputationScore() >= 40000 && clan.getMembersCount() >= 120)
+                {
+                    clan.setReputationScore(clan.getReputationScore()-40000, true);
+                    increaseClanLevel = true;
+                }
+                break;
+            default:
+            	return;
         }
 
         if (increaseClanLevel)
@@ -842,6 +897,65 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             }
         }
     }
+    
+    public void createSubPledge(L2PcInstance player, String clanName, String leaderName, int pledgeType, int minClanLvl)
+    {
+        //if (Config.DEBUG)
+            _log.fine(player.getObjectId() + "(" + player.getName() + ") requested sub clan creation from "
+                + getObjectId() + "(" + getName() + ")");
+        
+        if (player.getClanId() == 0)
+        {
+            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
+            player.sendPacket(sm);
+            return;
+        }
+        
+        if (!player.isClanLeader())
+        {
+            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
+            player.sendPacket(sm);
+            return;
+        }
+        
+        if (player.getClan().getLevel() <= minClanLvl)
+        {
+            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
+            player.sendPacket(sm);
+            return;
+        }
+
+        if (clanName.length() > 16)
+        {
+            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_NAME_TOO_LONG);
+            player.sendPacket(sm);
+            return;
+        }
+        
+        if(!(pledgeType == -1))
+            if(player.getClan().getClanMember(leaderName) == null || player.getClan().getClanMember(leaderName).getPledgeType() != 0)
+            {
+                player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
+                return;
+            }
+
+        if (player.getClan().createSubPledge(pledgeType, leaderName, clanName) == 0)
+        {
+            player.sendMessage("You can't create any more sub-units of this type");
+            return;
+        }
+
+        /*//should be update packet only
+        PledgeShowInfoUpdate pu = new PledgeShowInfoUpdate(clan, player);
+        player.sendPacket(pu);
+
+        UserInfo ui = new UserInfo(player);
+        player.sendPacket(ui);*/
+
+        SystemMessage sm = new SystemMessage(SystemMessage.CLAN_CREATED);
+        player.sendPacket(sm);
+    }
+
 
     private final Set<PlayerClass> getAvailableSubClasses(L2PcInstance player)
     {

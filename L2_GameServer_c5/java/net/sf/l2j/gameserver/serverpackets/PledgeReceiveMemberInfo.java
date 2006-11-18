@@ -55,12 +55,20 @@ public class PledgeReceiveMemberInfo extends ServerBasePacket
 		writeC(0xfe);
 		writeH(0x3d);
 //		 dislay le truc a coté de la mention se raportant au clan (peu etre le status du membre d sle clan)
-		writeD(0x00); //displays "Clan controled by" on the side of 'Relation'
+		writeD(_member.getPledgeType()); 
 		writeS(_member.getName());
 		writeS(_member.getTitle()); // title
 		writeD(_member.getPowerGrade()); // power
-		writeS("unk2"); // on the side of the 'member status in clan'?, the 'relation'
-		writeS("unk3"); // this memeber's apprentice name
+		
+		//clan or subpledge name??
+		if(_member.getPledgeType() != 0)
+		{
+			writeS("Subp_name");
+			//writeS((_member.getClan().getSubPledge(_member.getPledgeType())).getName());
+		}
+		else writeS(_member.getClan().getName());
+		
+		writeS(_member.getApprentice()); // this member's apprentice name
 	}
 
 	/**

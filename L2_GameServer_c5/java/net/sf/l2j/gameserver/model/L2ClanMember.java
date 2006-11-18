@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class L2ClanMember
 {
+	private L2Clan _clan;
 	private int _objectId;
 	private String _name;
 	private String _title;
@@ -34,25 +35,33 @@ public class L2ClanMember
 	private int _level;
 	private int _classId;
 	private L2PcInstance _player;
+	private int _pledgeType;
+	private String _apprentice;
 	
-	public L2ClanMember(String name, int level, int classId, int objectId, int powerGrade, String title)
+	public L2ClanMember(L2Clan clan, String name, int level, int classId, int objectId, int pledgeType, int powerGrade, String title)
 	{
+		_clan = clan;
 		_name = name;
 		_level = level;
 		_classId = classId;
 		_objectId = objectId;
 		_powerGrade = powerGrade;
 		_title = title;
+		_pledgeType = pledgeType;
+		_apprentice = "None";
+
 	}
 	
 	public L2ClanMember(L2PcInstance player)
 	{
+		_clan = player.getClan();
 		_player = player;
 		_name = _player.getName();
 		_level = _player.getLevel();
 		_classId = _player.getClassId().getId();
 		_objectId = _player.getObjectId();
 		_powerGrade = _player.getPowerGrade();
+		_pledgeType = _player.getPledgeType();
 		_title = _player.getTitle();
 	}
 
@@ -137,6 +146,15 @@ public class L2ClanMember
         return _title;
 	}
 	
+	public int getPledgeType()
+    {
+        if (_player != null)
+        {
+            return _player.getPledgeType();
+        }
+        return _pledgeType;
+    }
+	
 	public int getPowerGrade()
 	{
 		if(_player != null)
@@ -156,7 +174,21 @@ public class L2ClanMember
 		}
 		else
 		{
-			
+			//TODO: there's a need for db save if char not logged in, but not when loading these values
 		}
 	}
+	
+	public String getApprentice() 
+	{ 
+		if (_player != null) 
+		{ 
+			return _apprentice;//_player.getApprentice(); 
+		} 
+		return _apprentice; 
+	} 
+	
+	public L2Clan getClan() 
+	{ 
+		return _clan; 
+	} 
 }

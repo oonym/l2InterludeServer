@@ -43,7 +43,6 @@ public class PledgeReceivePowerInfo extends ServerBasePacket
 	@Override
 	void runImpl()
 	{
-
 	}
 
 	/**
@@ -57,7 +56,7 @@ public class PledgeReceivePowerInfo extends ServerBasePacket
 
 		writeD(_member.getPowerGrade()); //power grade
 		writeS(_member.getName());
-		writeD(0x00); //privileges
+		writeD(_member.getClan().getRankPrivs(_member.getPowerGrade())); //privileges
 	}
 
 	/**
