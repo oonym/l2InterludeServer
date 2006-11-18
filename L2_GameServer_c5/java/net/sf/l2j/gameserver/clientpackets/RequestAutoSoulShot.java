@@ -90,8 +90,8 @@ public class RequestAutoSoulShot extends ClientBasePacket
                         activeChar.rechargeAutoSoulShot(true, true, true);
                     }
                     else
-                    	if (item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType() && 
-                    			activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem())
+                    	if (activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem()
+                    			&& item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType())
                     	{
                             activeChar.addAutoSoulShot(_itemId);
                             ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
