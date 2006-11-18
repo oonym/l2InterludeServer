@@ -4096,14 +4096,23 @@ public abstract class L2Character extends L2Object
 				activeWeapon.getSkillEffects(this, target, crit);
 			
 			// Check Raidboss attack
-			if (target.isRaid() && getLevel() > target.getLevel() + 8)
+			if (target.isRaid())
 			{
-				L2Skill skill = SkillTable.getInstance().getInfo(4515, 99);
-                
-				if (skill != null)
-					skill.getEffects(target, this);
-				else
-					_log.warning("Skill 4515 at level 99 is missing in DP.");
+				int level = 0;
+				if (this instanceof L2PcInstance)
+					level = getLevel();
+				else if (this instanceof L2Summon)
+					level = ((L2Summon)this).getOwner().getLevel();
+				
+				if (level > target.getLevel() + 8)
+				{
+					L2Skill skill = SkillTable.getInstance().getInfo(4515, 99);
+	                
+					if (skill != null)
+						skill.getEffects(target, this);
+					else
+						_log.warning("Skill 4515 at level 99 is missing in DP.");
+				}
 			}
             
             /* COMMENTED OUT BY nexus - 2006-08-17
