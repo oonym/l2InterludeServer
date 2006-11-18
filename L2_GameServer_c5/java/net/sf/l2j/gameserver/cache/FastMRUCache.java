@@ -16,7 +16,11 @@ import javolution.util.FastMap;
  */
 public class FastMRUCache<K,V> extends FastCollection implements Reusable
 {
-    public static final int DEFAULT_CAPACITY = 50;
+    /**
+	 * Comment for <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 1L;
+	public static final int DEFAULT_CAPACITY = 50;
     public static final int DEFAULT_FORGET_TIME = 300000; //5 Minutes
     
     FastMap<K,CacheNode> _cache = new FastMap<K,CacheNode>();

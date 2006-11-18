@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.communitybbs.Manager;
 
 import java.util.StringTokenizer;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;

@@ -23,7 +23,7 @@ import java.util.logging.LogRecord;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 /**
  * This class ...

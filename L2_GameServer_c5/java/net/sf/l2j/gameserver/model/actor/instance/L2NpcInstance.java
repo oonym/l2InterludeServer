@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.text.DateFormat;
 import java.util.List;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;

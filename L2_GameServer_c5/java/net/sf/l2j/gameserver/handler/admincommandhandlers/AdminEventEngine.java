@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SpawnTable;

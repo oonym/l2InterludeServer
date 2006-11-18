@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-import javolution.xml.ObjectWriter;
+import javolution.xml.XMLObjectWriter;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.clientpackets.ClientBasePacket;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -840,15 +840,18 @@ public final class SelectorThread extends Thread {
      */
     private static final void doPacketHistoryDump()
     {
-        ObjectWriter<List<PacketHistory>> ow = new ObjectWriter<List<PacketHistory>>();
+        XMLObjectWriter ow = new XMLObjectWriter();
+        
         try
         {
             synchronized (packetHistory)
             {
                 long currentTimeMillis = System.currentTimeMillis();
                 
-                ow.write(packetHistory, new FileOutputStream("log/packetCount_"+currentTimeMillis+".xml"));
-                ow.write(byteHistory, new FileOutputStream("log/packetBytes_"+currentTimeMillis+".xml"));
+                ow.setOutput(new FileOutputStream("log/packetCount_"+currentTimeMillis+".xml"));
+                ow.write(packetHistory);
+                ow.setOutput(new FileOutputStream("log/packetBytes_"+currentTimeMillis+".xml"));
+                ow.write(byteHistory);
                 
                 packetHistory.clear();
                 byteHistory.clear();

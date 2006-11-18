@@ -28,7 +28,7 @@
  */
 package net.sf.l2j.util;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 /**
  * This class ...

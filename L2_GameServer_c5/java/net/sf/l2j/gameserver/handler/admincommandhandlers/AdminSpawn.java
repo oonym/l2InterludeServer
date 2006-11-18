@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GmListTable;

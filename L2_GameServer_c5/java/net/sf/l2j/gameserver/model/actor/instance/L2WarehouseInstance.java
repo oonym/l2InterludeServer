@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.Iterator;
 import java.util.Map;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Clan;

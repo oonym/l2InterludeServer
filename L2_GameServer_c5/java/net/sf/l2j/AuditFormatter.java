@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 /**
  * @author zabbix

@@ -3,7 +3,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.model.CropProcure;

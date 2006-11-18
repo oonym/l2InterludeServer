@@ -30,7 +30,6 @@ package net.sf.l2j.loginserver;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
@@ -51,8 +50,8 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-import javolution.xml.pull.XmlPullParserException;
-import javolution.xml.pull.XmlPullParserImpl;
+import javolution.xml.stream.XMLStreamException;
+import javolution.xml.stream.XMLStreamReaderImpl;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
@@ -121,7 +120,7 @@ public class GameServerTable
 		PreparedStatement statement = null;
 		int id = 0;
 		int number = 0;
-		int previousID = 0;
+		//int previousID = 0;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -130,14 +129,14 @@ public class GameServerTable
 			while(rset.next())
 			{
 				id = rset.getInt("server_id");
-				for(int i = 1;id-i > previousID; i++) //fill with dummy servers to keep
-				{
-					GameServer gs = new GameServer(previousID+i);
-					_gameServerList.add(gs);
-				}
+				//for(int i = 1;id-i > previousID; i++) //fill with dummy servers to keep
+				//{
+				//	GameServer gs = new GameServer(previousID+i);
+				//	_gameServerList.add(gs);
+				//}
 				GameServer gs =  new GameServer(stringToHex(rset.getString("hexid")),id);
 				_gameServerList.add(gs);
-				previousID = id;
+				//previousID = id;
 				number++;
 			}
 			_log.info("GameServerTable: Loaded "+number+" servers (max id:"+id+")");
@@ -170,13 +169,13 @@ public class GameServerTable
 		try
 		{
 			in = new FileInputStream("servername.xml");
-			XmlPullParserImpl xpp = new XmlPullParserImpl();
+			XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
 			xpp.setInput(in);
-			for (int e = xpp.getEventType(); e != XmlPullParserImpl.END_DOCUMENT; e = xpp.next())
+			for (int e = xpp.getEventType(); e != XMLStreamReaderImpl.END_DOCUMENT; e = xpp.next())
 			{
-				if (e == XmlPullParserImpl.START_TAG)
+				if (e == XMLStreamReaderImpl.START_ELEMENT)
 				{
-					if(xpp.getName().toString().equals("server"))
+					if(xpp.getLocalName().toString().equals("server"))
 					{
 						Integer id = new Integer(xpp.getAttributeValue(null,"id").toString());
 						String name = xpp.getAttributeValue(null,"name").toString();
@@ -190,11 +189,7 @@ public class GameServerTable
 		{
             _log.warning("servername.xml could not be loaded : file not found");
 		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-		}
-		catch (XmlPullParserException xppe)
+		catch (XMLStreamException xppe)
 		{
 			xppe.printStackTrace();
 		}

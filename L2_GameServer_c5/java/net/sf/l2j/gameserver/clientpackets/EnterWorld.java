@@ -187,32 +187,36 @@ public class EnterWorld extends ClientBasePacket
         sendPacket(sm);
 	    
         sm = new SystemMessage(SystemMessage.S1_S2);
-        sm.addString(getText("VGhpcyBTZXJ2ZXIgaXMgcnVubmluZyBMMko="));
-        sm.addString(getText("IHZlcnNpb24gNiBkZXYvdW5zdGFibGU="));
+        sm.addString(getText("V2VsY29tZSB0byBhIEwySiBTZXJ2ZXIsIGZvdW5kZWQgYnkgTDJDaGVmLg=="));
+
         sendPacket(sm);
         sm = new SystemMessage(SystemMessage.S1_S2);
-        sm.addString(getText("Y3JlYXRlZCBieSBMMkNoZWYgYW5kIHRoZQ=="));
-        sm.addString(getText("IEwySiB0ZWFtLg=="));
+        sm.addString(getText("RGV2ZWxvcGVkIGJ5IHRoZSBMMkogRGV2IFRlYW0gYXQgbDJqc2VydmVyLmNvbS4="));
+
         sendPacket(sm);
+
+        if (Config.SERVER_VERSION != null)
+        {
+            sm = new SystemMessage(SystemMessage.S1_S2);
+            sm.addString(getText("TDJKIFNlcnZlciBWZXJzaW9uOg==")+"      "+Config.SERVER_VERSION);
+            sendPacket(sm);
+        }
+        
+        if (Config.DATAPACK_VERSION != null)
+        {
+            sm = new SystemMessage(SystemMessage.S1_S2);
+            sm.addString(getText("TDJKIERhdGFwYWNrIFZlcnNpb246")+"  "+Config.DATAPACK_VERSION);
+            sendPacket(sm);
+        }
+        sm = null;
+        
         sm = new SystemMessage(SystemMessage.S1_S2);
-        sm.addString(getText("dmlzaXQgbDJqc2VydmVyLmNvbQ=="));
-        sm.addString(getText("ICBmb3Igc3VwcG9ydC4="));
+        sm.addString(getText("Q29weXJpZ2h0IDIwMDQtMjAwNg=="));
         sendPacket(sm);
         sm = new SystemMessage(SystemMessage.S1_S2);
         sm.addString(getText("V2VsY29tZSB0byA="));
         sm.addString(LoginServerThread.getInstance().getServerName());
         sendPacket(sm);
-        
-        if (Config.SERVER_VERSION != null)
-        {
-            sm = new SystemMessage(SystemMessage.S1_S2);
-            sm.addString(getText("TDJKIFNlcnZlciBWZXJzaW9uOg==")+"   "+Config.SERVER_VERSION);
-            sendPacket(sm);
-            sm = new SystemMessage(SystemMessage.S1_S2);
-            sm.addString(getText("TDJKIFNlcnZlciBCdWlsZCBEYXRlOg==")+" "+Config.SERVER_BUILD_DATE);
-            sendPacket(sm);
-        }
-        sm = null;
         
         SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);
         Announcements.getInstance().showAnnouncements(activeChar);

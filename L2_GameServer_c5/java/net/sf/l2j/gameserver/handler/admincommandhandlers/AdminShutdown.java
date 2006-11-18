@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;

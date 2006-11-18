@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import net.sf.l2j.Config;

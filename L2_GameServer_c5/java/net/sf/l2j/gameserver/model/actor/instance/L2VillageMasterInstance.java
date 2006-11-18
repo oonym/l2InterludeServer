@@ -22,7 +22,7 @@ import java.sql.PreparedStatement;
 import java.util.Iterator;
 import java.util.Set;
 
-import javolution.lang.TextBuilder;
+import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;

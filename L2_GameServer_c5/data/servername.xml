@@ -1,7 +1,7 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <servers_list>
-	<!-- server list from c3 (only english names-->
-	<server id="0" name="Bartz" />
+	<!-- server list from c3 (only english names) -->
+	<server id="0" name="Bartz" ></server>
 	<server id="1" name="Sieghardt" />
 	<server id="2" name="Kain" />
 	<server id="3" name="Lionna" />

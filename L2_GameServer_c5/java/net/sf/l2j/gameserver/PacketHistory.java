@@ -31,34 +31,59 @@ package net.sf.l2j.gameserver;
 import java.util.Date;
 import java.util.Map;
 
-import javolution.xml.XmlElement;
+import javolution.xml.XMLFormat;
+import javolution.xml.stream.XMLStreamException;
 
 class PacketHistory
 {
-    protected static final javolution.xml.XmlFormat<PacketHistory> PACKET_HISTORY_XML = new javolution.xml.XmlFormat<PacketHistory>(PacketHistory.class)
+    protected static final XMLFormat<PacketHistory> PACKET_HISTORY_XML = new XMLFormat<PacketHistory>(PacketHistory.class)
     {
-        public void format(PacketHistory packetHistory, XmlElement xml)
-        {
-            xml.setAttribute("time-stamp", new Date(packetHistory.timeStamp).toString());
-           
-            for (Class cls : packetHistory.info.keySet())
-            {
-                xml.setAttribute(cls.getSimpleName(), packetHistory.info.get(cls));
-            }
-        }
-        
-        public PacketHistory parse(XmlElement xml)
-        {
-            PacketHistory packetHistory = new PacketHistory();
-            packetHistory.timeStamp     = xml.getAttribute("time-stamp", (long) 0);
-            packetHistory.info          = xml.<Map<Class, Long>> get("info");
-            return packetHistory;
-        }
-        
-        public String defaultName()
-        {
-            return "packet-history";
-        }
+        /**
+		 * @see javolution.xml.XMLFormat#read(javolution.xml.XMLFormat.InputElement, java.lang.Object)
+		 */
+		@Override
+		public void read(InputElement xml, PacketHistory packetHistory) throws XMLStreamException
+		{
+			// TODO Auto-generated method stub
+			packetHistory.timeStamp = xml.getAttribute("time-stamp", 0);
+			packetHistory.info = xml.<Map<Class, Long>> get("info");
+		}
+
+		/**
+		 * @see javolution.xml.XMLFormat#write(java.lang.Object, javolution.xml.XMLFormat.OutputElement)
+		 */
+		@Override
+		public void write(PacketHistory packetHistory, OutputElement xml) throws XMLStreamException
+		{
+			// TODO Auto-generated method stub
+			xml.setAttribute("time-stamp", new Date(packetHistory.timeStamp).toString());
+			
+			for (Class cls : packetHistory.info.keySet())
+				xml.setAttribute(cls.getSimpleName(), packetHistory.info.get(cls));
+		}
+
+//		public void format(PacketHistory packetHistory, XmlElement xml)
+//        {
+//            xml.setAttribute("time-stamp", new Date(packetHistory.timeStamp).toString());
+//           
+//            for (Class cls : packetHistory.info.keySet())
+//            {
+//                xml.setAttribute(cls.getSimpleName(), packetHistory.info.get(cls));
+//            }
+//        }
+//        
+//        public PacketHistory parse(XmlElement xml)
+//        {
+//            PacketHistory packetHistory = new PacketHistory();
+//            packetHistory.timeStamp     = xml.getAttribute("time-stamp", (long) 0);
+//            packetHistory.info          = xml.<Map<Class, Long>> get("info");
+//            return packetHistory;
+//        }
+//        
+//        public String defaultName()
+//        {
+//            return "packet-history";
+//        }
     };
     
     public Map<Class, Long> info;
