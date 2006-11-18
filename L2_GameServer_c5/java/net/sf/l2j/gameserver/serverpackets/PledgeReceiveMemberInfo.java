@@ -54,7 +54,7 @@ public class PledgeReceiveMemberInfo extends ServerBasePacket
 	{
 		writeC(0xfe);
 		writeH(0x3d);
-//		 dislay le truc a coté de la mention se raportant au clan (peu etre le status du membre d sle clan)
+
 		writeD(_member.getPledgeType()); 
 		writeS(_member.getName());
 		writeS(_member.getTitle()); // title

@@ -47,10 +47,17 @@ import javolution.util.FastList;
 public class AquireSkillList extends ServerBasePacket
 {
 	//private static Logger _log = Logger.getLogger(AquireSkillList.class.getName());
-    
+    public enum skillType
+    {
+    	Usual,
+    	Fishing,
+    	Clan
+    }
+	
 	private static final String _S__A3_AQUIRESKILLLIST = "[S] 8a AquireSkillList";
+	
 	private List<Skill> _skills;
-	private boolean _fishingskills;
+	private skillType _fishingskills;
 	
 	private class Skill
 	{
@@ -70,10 +77,10 @@ public class AquireSkillList extends ServerBasePacket
 		}
 	}
 
-	public AquireSkillList(boolean FishingSkill)
+	public AquireSkillList(skillType type)
 	{
 		_skills = new FastList<Skill>();
-		_fishingskills = FishingSkill;
+		_fishingskills = type;
 	}	
 	
 	public void addSkill(int id, int nextLevel, int maxLevel, int spCost, int requirements)
@@ -89,7 +96,7 @@ public class AquireSkillList extends ServerBasePacket
 	final void writeImpl()
 	{
 		writeC(0x8a);
-        writeD(_fishingskills ? 1 : 0);   //c4
+        writeD(_fishingskills.ordinal());   //c4 : C5 : 0: usuall  1: fishing 2: clans
 		writeD(_skills.size());
 
 		for (Skill temp : _skills)

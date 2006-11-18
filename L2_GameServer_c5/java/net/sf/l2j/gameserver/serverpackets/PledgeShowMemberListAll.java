@@ -91,9 +91,9 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 	{
 		writeC(0x53);
 		
-		writeD(0); //c5 0
+		writeD(0); //c5 pledge(1) or subpledge(0) 
 		writeD(_clan.getClanId());
-		writeD(0); //c5 0
+		writeD(0); //c5
 		writeS(_clan.getName());
 		writeS(_clan.getLeaderName());
 		
@@ -120,7 +120,7 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 			writeD(0); // no visible effect
 			writeD(m.getObjectId());//writeD(1); 
 			writeD(m.isOnline() ? 1 : 0);  // 1=online 0=offline
-			writeD(0); //makes the name yellow. member has a sponsor
+			writeD(0); //c5 makes the name yellow. member has a sponsor. grade/power 
 		}
 	}
 
