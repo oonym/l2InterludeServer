@@ -56,17 +56,12 @@ public class Init
         (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00
      };
 
-    private static boolean _keySet;
-
     public Init(byte[] publickey)
     {
-        if (!_keySet)
-        {
             for (int i = 0; i < publickey.length; i++)
             {
                 _content[9+i] = publickey[i];
             }
-        }
     }
 	
 	public byte[] getContent()
