@@ -280,18 +280,18 @@ public class EnterWorld extends ClientBasePacket
 	/**
 	 * @param activeChar
 	 */
-	private void notifyFriends(final L2PcInstance cha)
+	private void notifyFriends(L2PcInstance cha)
 	{
 		java.sql.Connection con = null;
 		
 		try {
 		    con = L2DatabaseFactory.getInstance().getConnection();
 		    PreparedStatement statement;
-		    statement = con.prepareStatement("SELECT char_id FROM character_friends WHERE friend_id=?");
+		    statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id=?");
 		    statement.setInt(1, cha.getObjectId());
 		    ResultSet rset = statement.executeQuery();
 
-            L2PcInstance friend;
+		    L2PcInstance friend;
             int objectId;
             
             SystemMessage sm = new SystemMessage(SystemMessage.FRIEND_S1_HAS_LOGGED_IN);
@@ -299,7 +299,7 @@ public class EnterWorld extends ClientBasePacket
 
             while (rset.next())
             {
-                objectId = rset.getInt("char_id");
+                objectId = rset.getInt("friend_id");
 
                 friend = (L2PcInstance)L2World.getInstance().findObject(objectId);
 

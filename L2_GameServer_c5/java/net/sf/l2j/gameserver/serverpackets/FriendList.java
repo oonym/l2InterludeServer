@@ -47,7 +47,7 @@ public class FriendList extends ServerBasePacket
 	private static Logger _log = Logger.getLogger(FriendList.class.getName());
 	private static final String _S__FA_FRIENDLIST = "[S] FA FriendList";
 	
-    private static L2PcInstance _cha;
+    private L2PcInstance _cha;
     
     public FriendList(L2PcInstance cha)
     {
@@ -70,7 +70,7 @@ public class FriendList extends ServerBasePacket
 		{
 			String sqlQuery = "SELECT friend_id, friend_name FROM character_friends WHERE " +
                     "char_id=" + _cha.getObjectId() + " ORDER BY friend_name ASC";
-			
+
 			con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement = con.prepareStatement(sqlQuery);
 			ResultSet rset = statement.executeQuery(sqlQuery);
@@ -80,7 +80,8 @@ public class FriendList extends ServerBasePacket
             
             if (rset.getRow() > 0)
             {
-                writeC(0xfa);
+
+            	writeC(0xfa);
     			writeH(rset.getRow());
                 
     			rset.beforeFirst();
@@ -89,14 +90,14 @@ public class FriendList extends ServerBasePacket
     			{
                     int friendId = rset.getInt("friend_id");
     				String friendName = rset.getString("friend_name");
-                    
-                    if (friendId == _cha.getObjectId())
+
+    				if (friendId == _cha.getObjectId())
                         continue;
     				
     				L2PcInstance friend = (L2PcInstance)L2World.getInstance().findObject(friendId);
     
     				writeH(0); // ??
-    				writeD(_cha.getObjectId());
+    				writeD(friendId);
     				writeS(friendName);
     				
     				if (friend == null)
