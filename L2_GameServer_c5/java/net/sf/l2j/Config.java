@@ -404,8 +404,6 @@ public final class Config
     public static float   RATE_DROP_SUPERIOR_HERBS;
     /** Rate Common herbs */
     public static float   RATE_DROP_SPECIAL_HERBS;
-    /** Audo destroy herb time */
-    public static int     HERB_AUTO_DESTROY_TIME;
     
     // Player Drop Rate control
     /** Limit for player drop */
@@ -439,6 +437,8 @@ public final class Config
     
     /** Time after which item will auto-destroy */
     public static int     AUTODESTROY_ITEM_AFTER;
+    /** Auto destroy herb time */
+    public static int     HERB_AUTO_DESTROY_TIME;
     /** Accept precise drop calculation ? */
     public static boolean PRECISE_DROP_CALCULATION;
     /** Accept multi-items drop ? */
@@ -1014,6 +1014,7 @@ public final class Config
                 SERVER_GMONLY                   = Boolean.valueOf(optionsSettings.getProperty("ServerGMOnly", "false"));
                 
                 AUTODESTROY_ITEM_AFTER          = Integer.parseInt(optionsSettings.getProperty("AutoDestroyDroppedItemAfter", "0"));
+                HERB_AUTO_DESTROY_TIME          = Integer.parseInt(optionsSettings.getProperty("AutoDestroyHerbTime","15"))*1000;
                 PRECISE_DROP_CALCULATION        = Boolean.valueOf(optionsSettings.getProperty("PreciseDropCalculation", "True"));
                 MULTIPLE_ITEM_DROP              = Boolean.valueOf(optionsSettings.getProperty("MultipleItemDrop", "True"));
              
@@ -1333,7 +1334,6 @@ public final class Config
                 RATE_DROP_QUEST                 = Float.parseFloat(ratesSettings.getProperty("RateDropQuest", "1."));
                 RATE_KARMA_EXP_LOST             = Float.parseFloat(ratesSettings.getProperty("RateKarmaExpLost", "1."));    
                 RATE_SIEGE_GUARDS_PRICE         = Float.parseFloat(ratesSettings.getProperty("RateSiegeGuardsPrice", "1."));
-                HERB_AUTO_DESTROY_TIME          = Integer.parseInt(ratesSettings.getProperty("AutoDestroyHerbTime","15"))*1000;
                 RATE_DROP_COMMON_HERBS 			= Float.parseFloat(ratesSettings.getProperty("RateCommonHerbs", "15."));
                 RATE_DROP_MP_HP_HERBS           = Float.parseFloat(ratesSettings.getProperty("RateHpMpHerbs", "10."));                
                 RATE_DROP_GREATER_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateGreaterHerbs", "4."));

@@ -1408,7 +1408,10 @@ public class L2Attackable extends L2NpcInstance
              ditem.dropMe(this, newX, newY, newZ); 
 
              // Add drop to auto destroy item task
-             if (Config.AUTODESTROY_ITEM_AFTER > 0 || ditem.getItemType() == L2EtcItemType.HERB) ItemsAutoDestroy.getInstance().addItem(ditem);
+             if (Config.AUTODESTROY_ITEM_AFTER > 0 && ditem.getItemType() != L2EtcItemType.HERB
+            		 || Config.HERB_AUTO_DESTROY_TIME > 0 && ditem.getItemType() == L2EtcItemType.HERB
+                 )
+            	 ItemsAutoDestroy.getInstance().addItem(ditem);
              
 
              // If stackable, end loop as entire count is included in 1 instance of item  

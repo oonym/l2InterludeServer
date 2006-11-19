@@ -165,6 +165,7 @@ import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.taskmanager.TaskManager;
 import net.sf.l2j.gameserver.util.DynamicExtension;
 import net.sf.l2j.status.Status;
+ 
 
 /**
  * This class ...
@@ -309,7 +310,7 @@ public class GameServer
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
         
-        if (Config.AUTODESTROY_ITEM_AFTER >= 0)
+		if (Config.AUTODESTROY_ITEM_AFTER > 0 || Config.HERB_AUTO_DESTROY_TIME > 0)
     	    ItemsAutoDestroy.getInstance();
         
         MonsterRace.getInstance();
@@ -469,7 +470,7 @@ public class GameServer
         _log.config("VoicedCommandHandler: Loaded " + _voicedCommandHandler.size() + " handlers.");
 
         TaskManager.getInstance();
-        
+ 
 		GmListTable.getInstance();
 
         // read pet stats from db
