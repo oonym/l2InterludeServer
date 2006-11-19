@@ -67,6 +67,7 @@ public class L2ClanMember
 		_powerGrade = _player.getPowerGrade();
 		_pledgeType = _player.getPledgeType();
 		_title = _player.getTitle();
+		_apprentice = "None";
 	}
 
 		
