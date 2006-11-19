@@ -196,11 +196,12 @@ public class ClanTable
         if (!clanExists)
         {
             // no clan with same name exists
-            L2ClanMember leader = new L2ClanMember(player);
-            clan = new L2Clan(IdFactory.getInstance().getNextId(), clanName, leader);
-            clan.store();
+            clan = new L2Clan(IdFactory.getInstance().getNextId(), clanName);
             player.setClan(clan);
-            player.setClanPrivileges(L2Clan.CP_ALL);
+            L2ClanMember leader = new L2ClanMember(player);
+            clan.setLeader(leader);
+            clan.store();
+            player.setClanPrivileges(L2Clan.CP_ALL);            
 
             if (Config.DEBUG) _log.fine("New clan created: "+clan.getClanId() + " " +clan.getName());
             

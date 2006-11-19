@@ -125,11 +125,10 @@ public class L2Clan
      * @param clanName
      * @param leader
      */
-    public L2Clan(int clanId, String clanName, L2ClanMember leader)
+    public L2Clan(int clanId, String clanName)
     {
         _clanId = clanId;
         _name = clanName;
-        setLeader(leader);
     }
     
 	/**
