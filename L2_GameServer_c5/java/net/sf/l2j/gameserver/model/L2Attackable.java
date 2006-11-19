@@ -444,6 +444,7 @@ public class L2Attackable extends L2NpcInstance
 	        				if (qs.getQuest().isParty())
 	        				{
 	        					if (!qs.isCompleted() && !pl.isDead() && Util.checkIfInRange(1150, this, pl, true))
+	        					{
 	        						if (tempMap.get(qs.getQuest().getName()) != null)
 	        							tempMap.get(qs.getQuest().getName()).add(qs);
 	        						else
@@ -452,8 +453,9 @@ public class L2Attackable extends L2NpcInstance
 	        							tempList.add(qs);
 	        							tempMap.put(qs.getQuest().getName(), tempList);
 	        						}
+	        					}
 	        				}
-	        				else if (pl == (L2PcInstance)killer)
+	        				else if (pl == player)
 	        					questList.add(qs);
 	        			}
 	        		}
@@ -471,9 +473,8 @@ public class L2Attackable extends L2NpcInstance
         					questList.add(qs);
         		}
         		
-        		if (questList != null)
-        			for (QuestState qs : questList)
-        				qs.getQuest().notifyKill(this, qs);
+       			for (QuestState qs : questList)
+       				qs.getQuest().notifyKill(this, qs);
         	}
         } 
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
