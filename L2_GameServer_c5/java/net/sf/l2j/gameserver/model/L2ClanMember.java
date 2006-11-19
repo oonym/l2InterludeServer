@@ -40,6 +40,8 @@ public class L2ClanMember
 	
 	public L2ClanMember(L2Clan clan, String name, int level, int classId, int objectId, int pledgeType, int powerGrade, String title)
 	{
+		if(clan == null)
+			throw new IllegalArgumentException("Can not create a ClanMember with a null clan.");
 		_clan = clan;
 		_name = name;
 		_level = level;
@@ -54,6 +56,8 @@ public class L2ClanMember
 	
 	public L2ClanMember(L2PcInstance player)
 	{
+		if(player.getClan() == null)
+			throw new IllegalArgumentException("Can not create a ClanMember if player has a null clan.");
 		_clan = player.getClan();
 		_player = player;
 		_name = _player.getName();
