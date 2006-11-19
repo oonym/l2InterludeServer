@@ -89,7 +89,15 @@ public class RequestRestartPoint extends ClientBasePacket
                 }                    
                 else if (requestedPointType == 2) // to castle
                 {
-                    if (activeChar.getClan().getHasCastle() == 0)
+                    Boolean isInDefense = false;
+                    Castle castle = CastleManager.getInstance().getCastle(activeChar);                	
+                	if (castle != null && castle.getSiege().getIsInProgress())
+                	{
+                    	//siege in progress            	
+                        if (castle.getSiege().checkIsDefender(activeChar.getClan()))
+                        	isInDefense = true;
+                    }
+                    if (activeChar.getClan().getHasCastle() == 0 && !isInDefense)
                     {
                         //cheater
                         activeChar.sendMessage("Ohh Cheat dont work? You have a problem now!");
@@ -103,7 +111,7 @@ public class RequestRestartPoint extends ClientBasePacket
                 {
                     L2SiegeClan siegeClan = null;
                     Castle castle = CastleManager.getInstance().getCastle(activeChar);
-                    if (castle!= null && castle.getSiege().getIsInProgress())
+                    if (castle != null && castle.getSiege().getIsInProgress())
                         siegeClan = castle.getSiege().getAttackerClan(activeChar.getClan());
                     if (siegeClan == null || siegeClan.getFlag().size() == 0)
                     {
