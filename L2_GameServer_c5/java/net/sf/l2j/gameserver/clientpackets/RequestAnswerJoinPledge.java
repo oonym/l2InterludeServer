@@ -69,16 +69,12 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        
 		        L2Clan clan = requestor.getClan();
 		        
-//		      L2ClanMember[] members = clan.getMembers();
-		        PledgeShowMemberListAdd la = new PledgeShowMemberListAdd(activeChar);
-		        clan.broadcastToOnlineMembers(la);
-		        
 		        // this also updates the database
 		        clan.addClanMember(activeChar);
 		        activeChar.setClan(clan);
 		        activeChar.setPledgeType(requestor.tempJoinPledgeType);
 
-		        activeChar.setPowerGrade(5); // not sure where he should start...
+		        activeChar.setPowerGrade(5); // actually it looks to the clan leader that the new one starts with 0
 		        activeChar.setClanPrivileges(activeChar.getClan().getRankPrivs(activeChar.getPowerGrade()));
 		        
 		        //should be update packet only
@@ -92,10 +88,13 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        sm = new SystemMessage(SystemMessage.S1_HAS_JOINED_CLAN);
 		        sm.addString(activeChar.getName());
 		        
-		        
 		        clan.broadcastToOnlineMembers(sm);
 		        sm = null;
-		        
+
+		        PledgeShowMemberListAdd la = new PledgeShowMemberListAdd(activeChar);
+		        clan.broadcastToOnlineMembers(la);
+		        clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan, activeChar));
+
 		        // this activates the clan tab on the new member
 		        activeChar.sendPacket(new PledgeShowMemberListAll(clan, activeChar));
 		        activeChar.setDeleteClanTime(0);

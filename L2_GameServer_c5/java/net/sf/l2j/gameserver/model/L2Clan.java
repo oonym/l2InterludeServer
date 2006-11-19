@@ -935,7 +935,7 @@ public class L2Clan
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement = con.prepareStatement("SELECT sub_pledge_id,name,leader_name FROM clan_subpledges WHERE clan_id=?");
             statement.setInt(1, getClanId());
-            _log.warning("subPledge restore for ClanId : "+getClanId());
+            //_log.warning("subPledge restore for ClanId : "+getClanId());
             ResultSet rset = statement.executeQuery();
             
             // Go though the recordset of this SQL query
@@ -1022,7 +1022,7 @@ public class L2Clan
     {
     	if (_SubPledges.get(pledgeType) != null)
     	{
-    		_log.warning("found sub-unit with id: "+pledgeType);
+    		//_log.warning("found sub-unit with id: "+pledgeType);
     		switch(pledgeType)
     		{
     			case -1:
@@ -1058,7 +1058,7 @@ public class L2Clan
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?");
             statement.setInt(1, getClanId());
-            _log.warning("clanPrivs restore for ClanId : "+getClanId());
+            //_log.warning("clanPrivs restore for ClanId : "+getClanId());
             ResultSet rset = statement.executeQuery();
             
             InitializePrivs();
