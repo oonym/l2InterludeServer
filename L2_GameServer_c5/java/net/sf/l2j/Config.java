@@ -936,6 +936,9 @@ public final class Config
     /** GeoData On/Off */
     public static boolean GEODATA;
     
+    /** Max amount of buffs */
+    public static byte BUFFS_MAX_AMOUNT;
+    
     /**
      * This class initializes all global variables for configuration.<br>
      * If key doesn't appear in properties file, a default value is setting on by this class.
@@ -1434,6 +1437,7 @@ public final class Config
                 ALT_LOTTERY_4_NUMBER_RATE        = Float.parseFloat(altSettings.getProperty("AltLottery4NumberRate","0.2"));
                 ALT_LOTTERY_3_NUMBER_RATE        = Float.parseFloat(altSettings.getProperty("AltLottery3NumberRate","0.2"));
                 ALT_LOTTERY_2_AND_1_NUMBER_PRIZE = Integer.parseInt(altSettings.getProperty("AltLottery2and1NumberPrize","200"));
+                BUFFS_MAX_AMOUNT                 = Byte.parseByte(altSettings.getProperty("maxbuffamount","24"));
 	        }
 	        catch (Exception e)
 	        {
