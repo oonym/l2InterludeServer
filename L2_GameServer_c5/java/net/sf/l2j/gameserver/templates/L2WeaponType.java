@@ -35,7 +35,8 @@ public enum L2WeaponType {
 	DUALFIST  (10, "Dual Fist"),
     BIGSWORD  (11, "Big Sword"), // Two Handed Swords
     PET       (12, "Pet"),
-	ROD       (13, "Rod");
+	ROD       (13, "Rod"),
+	BIGBLUNT  (14, "Big Blunt"); // Two handed blunt
 	
 	private final int _id;
 	private final String _name;

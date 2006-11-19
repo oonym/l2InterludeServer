@@ -118,7 +118,7 @@ public class ItemTable
         _weaponTypes.put("bigsword",       L2WeaponType.BIGSWORD); //Two-Handed Swords
         _weaponTypes.put("pet",            L2WeaponType.PET); //Pet Weapon 
         _weaponTypes.put("rod",            L2WeaponType.ROD); //Fishing Rods
-        
+        _weaponTypes.put("bigblunt",       L2WeaponType.BIGBLUNT); //Two handed blunt
 		_armorTypes.put("none",            L2ArmorType.NONE);
 		_armorTypes.put("light",           L2ArmorType.LIGHT);
 		_armorTypes.put("heavy",           L2ArmorType.HEAVY);
