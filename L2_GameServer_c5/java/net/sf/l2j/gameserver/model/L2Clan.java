@@ -115,6 +115,7 @@ public class L2Clan
     public L2Clan(int clanId)
     {
         _clanId = clanId;
+        InitializePrivs();
         restore();
         getWarehouse().restore();
     }
@@ -129,6 +130,7 @@ public class L2Clan
     {
         _clanId = clanId;
         _name = clanName;
+        InitializePrivs();
     }
     
 	/**
@@ -1061,7 +1063,6 @@ public class L2Clan
             //_log.warning("clanPrivs restore for ClanId : "+getClanId());
             ResultSet rset = statement.executeQuery();
             
-            InitializePrivs();
             // Go though the recordset of this SQL query
             while (rset.next())
             {
