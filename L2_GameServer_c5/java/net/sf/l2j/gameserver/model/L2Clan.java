@@ -217,7 +217,7 @@ public class L2Clan
 	
 	public void addClanMember(L2PcInstance player)
 	{
-		L2ClanMember member = new L2ClanMember(player);
+		L2ClanMember member = new L2ClanMember(this,player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle());
         // store in db
         storeNewMemberInDatabase(member);
         // store in memory

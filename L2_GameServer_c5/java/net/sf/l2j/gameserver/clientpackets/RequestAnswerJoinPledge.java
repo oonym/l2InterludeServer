@@ -74,12 +74,12 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        clan.broadcastToOnlineMembers(la);
 		        
 		        // this also updates the database
+		        clan.addClanMember(activeChar);
 		        activeChar.setClan(clan);
 		        activeChar.setPledgeType(requestor.tempJoinPledgeType);
 
 		        activeChar.setPowerGrade(5); // not sure where he should start...
 		        activeChar.setClanPrivileges(activeChar.getClan().getRankPrivs(activeChar.getPowerGrade()));
-		        clan.addClanMember(activeChar);
 		        
 		        //should be update packet only
 		        activeChar.sendPacket(new PledgeShowInfoUpdate(clan, activeChar));
