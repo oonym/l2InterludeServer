@@ -3534,7 +3534,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				if (pk == null || !pk.isCursedWeaponEquiped())
 				{
-					if (getKarma() > 0)
+					//if (getKarma() > 0)
 						onDieDropItem(killer);  // Check if any item should be dropped
 				
 					if (!ArenaManager.getInstance().checkIfInZone(this))
