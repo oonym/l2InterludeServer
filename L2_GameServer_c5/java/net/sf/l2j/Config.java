@@ -938,6 +938,10 @@ public final class Config
     
     /** Max amount of buffs */
     public static byte BUFFS_MAX_AMOUNT;
+
+    /** Alt Settings for devs */
+    public static boolean ALT_DEV_NO_QUESTS;
+    public static boolean ALT_DEV_NO_SPAWNS;
     
     /**
      * This class initializes all global variables for configuration.<br>
@@ -1438,6 +1442,9 @@ public final class Config
                 ALT_LOTTERY_3_NUMBER_RATE        = Float.parseFloat(altSettings.getProperty("AltLottery3NumberRate","0.2"));
                 ALT_LOTTERY_2_AND_1_NUMBER_PRIZE = Integer.parseInt(altSettings.getProperty("AltLottery2and1NumberPrize","200"));
                 BUFFS_MAX_AMOUNT                 = Byte.parseByte(altSettings.getProperty("maxbuffamount","24"));
+                
+                ALT_DEV_NO_QUESTS                = Boolean.parseBoolean(altSettings.getProperty("AltDevNoQuests", "False"));
+                ALT_DEV_NO_SPAWNS                = Boolean.parseBoolean(altSettings.getProperty("AltDevNoSpawns", "False"));
 	        }
 	        catch (Exception e)
 	        {

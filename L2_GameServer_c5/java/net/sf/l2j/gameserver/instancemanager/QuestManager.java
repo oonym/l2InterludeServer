@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.jython.QuestJython;
 
@@ -19,7 +20,8 @@ public class QuestManager
         {
     		System.out.println("Initializing QuestManager");
             _Instance = new QuestManager();
-            _Instance.load();
+            if (!Config.ALT_DEV_NO_QUESTS)
+            	_Instance.load();
         }
         return _Instance;
     }

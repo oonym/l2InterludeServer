@@ -55,8 +55,8 @@ public class SpawnTable
 
     private SpawnTable()
     {
-
-        fillSpawnTable();
+    	if (!Config.ALT_DEV_NO_SPAWNS)
+    		fillSpawnTable();
     }
 
     public Map<Integer, L2Spawn> getSpawnTable()
