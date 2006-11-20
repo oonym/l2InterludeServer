@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2ControllableMobInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -112,10 +113,7 @@ public class AdminKill implements IAdminCommandHandler
             }
         }
         
-        if (obj == null)
-        	obj = activeChar;
-        
-        if (obj instanceof L2ControllableMobInstance)
+        if (obj == null || obj instanceof L2ControllableMobInstance || !(obj instanceof L2PlayableInstance))
         {
             activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
             return;
@@ -138,7 +136,7 @@ public class AdminKill implements IAdminCommandHandler
 	{
         L2Object obj = activeChar.getTarget();
         
-		if (!radiusStr.equals(""))
+		if (!"".equals(radiusStr))
 		{
 			try {
 				int radius = Integer.parseInt(radiusStr);
