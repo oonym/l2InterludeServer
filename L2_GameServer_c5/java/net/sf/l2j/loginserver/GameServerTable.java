@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import javolution.io.UTF8StreamReader;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.xml.stream.XMLStreamException;
@@ -170,7 +171,7 @@ public class GameServerTable
 		{
 			in = new FileInputStream("servername.xml");
 			XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
-			xpp.setInput(in);
+			xpp.setInput(new UTF8StreamReader().setInput(in));
 			for (int e = xpp.getEventType(); e != XMLStreamReaderImpl.END_DOCUMENT; e = xpp.next())
 			{
 				if (e == XMLStreamReaderImpl.START_ELEMENT)
