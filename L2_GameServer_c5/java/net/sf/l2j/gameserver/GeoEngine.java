@@ -297,8 +297,10 @@ public class GeoEngine extends GeoData
 		{
 			_log.info("Geo Engine: - Loading Geodata...");			
 			File Data = new File("./data/geodata/geo_index.txt");
+			if (!Data.exists()) return;
+			
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(Data)));	
-		} catch (Exception e) {		
+		} catch (Exception e) {
 			e.printStackTrace();		
 			throw new Error("Failed to Load geo_index File.");	
 		}
@@ -313,9 +315,9 @@ public class GeoEngine extends GeoData
 				byte ry = Byte.parseByte(st.nextToken());
 				LoadGeodataFile(rx,ry);
 			}
-		} catch (Exception e) {		
-			e.printStackTrace();		
-			throw new Error("Failed to Read geo_index File.");	
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Error("Failed to Read geo_index File.");
 		}		
 	}
 	private static void LoadGeodataFile(byte rx, byte ry)

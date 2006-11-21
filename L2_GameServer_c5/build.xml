@@ -218,32 +218,11 @@
 			</fileset>
         </copy>
     	
-    	<copy todir="${build.dist.login}">
-            <fileset dir="data">
-            	<include name="servername.xml"/>
-			</fileset>
-        </copy>
-        
-        <mkdir dir="${build.dist.game}/data/html" />
-        <copy todir="${build.dist.game}/data/html">
-            <fileset dir="data/html">
-                <include name="**/*.htm"/>
-                <include name="**/*.html"/>
-            </fileset>
-        </copy>
-    	
         <mkdir dir="${build.dist.game}/data/geodata" />
         <copy todir="${build.dist.game}/data/geodata">
             <fileset dir="data/geodata">
                 <include name="*.txt"/>
                 <include name="*.l2j"/>
-            </fileset>
-        </copy>
-        
-        <mkdir dir="${build.dist.game}/data/stats" />
-        <copy todir="${build.dist.game}/data/stats">
-            <fileset dir="data/stats">
-                <include name="**/*.xml"/>
             </fileset>
         </copy>
 
