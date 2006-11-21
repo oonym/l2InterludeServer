@@ -305,7 +305,10 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         }
         catch (NullPointerException e)
         {
-            _log.warning("AttackableAI: Attack target is NULL.");
+        	//_log.warning("AttackableAI: Attack target is NULL.");
+        	_actor.setTarget(null);
+        	setIntention(AI_INTENTION_IDLE, null, null);
+        	return;
         }
 
         // Check if the actor isn't muted and if it is far from target
@@ -374,7 +377,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                 double homeY = _attack_target.getY() - sGuard.getHomeY();
 
                 // Check if the L2SiegeGuardInstance isn't too far from it's home location
-                if ((dx * dx + dy * dy > 10000) && (homeX * homeX + homeY * homeY > 1440000)
+                if ((dx * dx + dy * dy > 10000) && (homeX * homeX + homeY * homeY > 3240000) // 1800 * 1800
                     && (_actor.getKnownList().knowsObject(_attack_target)))
                 {
                     // Cancel the target
@@ -515,10 +518,6 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
             // Cancel target and timeout
             _attack_timeout = Integer.MAX_VALUE;
             _attack_target = null;
-            clientStopAutoAttack();
-
-            // Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
-            clientStopMoving(null);
 
             // Set the AI Intention to AI_INTENTION_ACTIVE
             setIntention(AI_INTENTION_ACTIVE, null, null);
@@ -662,7 +661,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                 double homeY = target.getY() - sGuard.getHomeY();
 
                 // Check if the L2SiegeGuardInstance is not too far from its home location
-                if (homeX * homeX + homeY * homeY < 1440000) // 1200 * 1200 = 1440000
+                if (homeX * homeX + homeY * homeY < 3240000) // 1800 * 1800 
                     setIntention(CtrlIntention.AI_INTENTION_ATTACK, target, null);
             }
         }
