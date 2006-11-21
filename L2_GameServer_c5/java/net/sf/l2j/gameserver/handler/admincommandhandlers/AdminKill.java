@@ -18,6 +18,7 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
@@ -28,7 +29,6 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2ControllableMobInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -46,6 +46,11 @@ public class AdminKill implements IAdminCommandHandler
 	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static String[] _adminCommands = {"admin_kill", "admin_kill_monster"};
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
+	
+	private boolean checkLevel(int level) 
+	{
+		return (level >= REQUIRED_LEVEL);
+	}
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
 	{
@@ -56,111 +61,94 @@ public class AdminKill implements IAdminCommandHandler
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
-        if (command.startsWith("admin_kill ")) 
-        	handleKill(activeChar, command.split(" ")[1]);
-        else if (command.equals("admin_kill")) 
-        	handleKill(activeChar);
-        else if (command.startsWith("admin_kill_monster ")) 
-        	handleNonPlayerKill(activeChar, command.split(" ")[1]);
-        else if (command.equals("admin_kill_monster")) 
-        	handleNonPlayerKill(activeChar);
+        if (command.startsWith("admin_kill")) 
+        {
+        	StringTokenizer st = new StringTokenizer(command, " ");
+        	st.nextToken(); // skip command
+
+        	if (st.hasMoreTokens())
+        	{
+	        	String firstParam = st.nextToken();
+	            L2PcInstance plyr = L2World.getInstance().getPlayer(firstParam);
+	            if (plyr != null)
+	            {
+	            	if (st.hasMoreTokens())
+	            	{
+	                	try 
+	                	{
+	                		int radius  = Integer.parseInt(st.nextToken());
+	
+	                		for (L2Character knownChar : plyr.getKnownList().getKnownCharactersInRadius(radius))
+	                		{
+	                			if (knownChar == null || knownChar instanceof L2ControllableMobInstance || knownChar.equals(activeChar)) continue;
+	                			
+	                			kill(activeChar, knownChar);
+	                		}
+
+		            		activeChar.sendMessage("Killed all characters within a " + radius + " unit radius.");
+		            		return true;
+	                	}
+	    				catch (NumberFormatException e) {
+	    					activeChar.sendMessage("Invalid radius.");
+	    					return false;
+	    				}
+	            	} else
+	            	{
+            			kill(activeChar, plyr);
+	            	}
+	            }
+	            else
+	            {
+	            	try 
+	            	{
+	            		int radius  = Integer.parseInt(firstParam);
+
+                		for (L2Character knownChar : activeChar.getKnownList().getKnownCharactersInRadius(radius))
+                		{
+                			if (knownChar == null || knownChar instanceof L2ControllableMobInstance || knownChar.equals(activeChar)) continue;
+                			
+                			kill(activeChar, knownChar);
+                		}
+	            		
+	            		activeChar.sendMessage("Killed all characters within a " + radius + " unit radius.");
+	            		return true;
+	            	}
+					catch (NumberFormatException e) {
+						activeChar.sendMessage("Enter a valid player name or radius.");
+						return false;
+					}
+	            }
+        	} else
+        	{
+        		L2Object obj = activeChar.getTarget();
+
+                if (obj == null || obj instanceof L2ControllableMobInstance || !(obj instanceof L2Character))
+                {
+                    activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+                } else
+                {
+                	kill(activeChar, (L2Character)obj);
+                }
+        	}
+        }
         
 		return true;
 	}
+    
+    private void kill(L2PcInstance activeChar, L2Character target)
+    {
+    	if (target instanceof L2PcInstance)
+    		target.reduceCurrentHp(target.getMaxHp() + target.getMaxCp() + 1, activeChar);
+    	else
+    		target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
+
+		if (Config.DEBUG) 
+		    _log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+")"+
+		              " killed character "+target.getObjectId());
+    }
 	
 	public String[] getAdminCommandList() 
 	{
 		return _adminCommands;
-	}
-	
-	private boolean checkLevel(int level) 
-	{
-		return (level >= REQUIRED_LEVEL);
-	}
-	
-    private void handleKill(L2PcInstance activeChar)
-    {
-        handleKill(activeChar, null);
-    }
-	
-	private void handleKill(L2PcInstance activeChar, String killParam) 
-	{
-		L2Object obj = activeChar.getTarget();
-		
-        if (killParam != null)
-        {
-            L2PcInstance plyr = L2World.getInstance().getPlayer(killParam);
-            
-            if (plyr != null)
-            {
-                obj = plyr;
-            }
-            else
-            {
-            	try {
-            		int radius  = Integer.parseInt(killParam);
-            		
-            		for (L2PcInstance knownPlayer : activeChar.getKnownList().getKnownPlayersInRadius(radius))
-            		    knownPlayer.reduceCurrentHp(knownPlayer.getMaxHp() + knownPlayer.getMaxCp() + 1, knownPlayer);
-            		
-            		activeChar.sendMessage("Killed all players within a " + radius + " unit radius.");
-            		return;
-            	}
-				catch (NumberFormatException e) {
-					activeChar.sendMessage("Enter a valid player name or radius.");
-					return;
-				}
-            }
-        }
-        
-        if (obj == null || obj instanceof L2ControllableMobInstance || !(obj instanceof L2PlayableInstance))
-        {
-            activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
-            return;
-        }
-        
-		L2Character target = (L2Character)obj;
-		target.reduceCurrentHp(target.getMaxHp() + target.getMaxCp() + 1, activeChar);
-			
-		if (Config.DEBUG) 
-		    _log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+")"+
-		              " killed character "+target.getObjectId());
-	}
-	
-    private void handleNonPlayerKill(L2PcInstance activeChar)
-    {
-        handleNonPlayerKill(activeChar, "");
-    }
-    
-	private void handleNonPlayerKill(L2PcInstance activeChar, String radiusStr) 
-	{
-        L2Object obj = activeChar.getTarget();
-        
-		if (!"".equals(radiusStr))
-		{
-			try {
-				int radius = Integer.parseInt(radiusStr);
-				
-				for (L2Character knownChar : activeChar.getKnownList().getKnownCharactersInRadius(radius))
-					if (!(knownChar instanceof L2PcInstance) 
-                            && !(knownChar instanceof L2ControllableMobInstance))
-						knownChar.reduceCurrentHp(knownChar.getMaxHp() + 1, activeChar);
-				
-				activeChar.sendMessage("Killed all non-players within a " + radius + " unit radius.");
-			}
-			catch (NumberFormatException e) {
-				activeChar.sendMessage("Enter a valid radius.");
-				return;
-			}
-		}
-		
-        if (obj == null || obj instanceof L2PcInstance || obj instanceof L2ControllableMobInstance)
-        {
-            activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
-            return;
-        }
-            			
-        L2Character character = (L2Character)obj;
-        character.reduceCurrentHp(character.getMaxHp() + 1, activeChar);
 	}
 }
