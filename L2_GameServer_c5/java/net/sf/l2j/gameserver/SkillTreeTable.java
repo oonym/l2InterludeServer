@@ -351,7 +351,7 @@ public class SkillTreeTable
         
         for (L2SkillLearn temp: skills)
         {           
-            if (temp.getMinLevel() > cha.getLevel())
+            if (temp.getMinLevel() > cha.getLevel() && temp.getSpCost() != 0)
                 if (minLevel==0 || temp.getMinLevel()<minLevel)
                     minLevel = temp.getMinLevel();
 		}
@@ -381,7 +381,7 @@ public class SkillTreeTable
         for (L2SkillLearn s : skills)
         {
             if (s.getMinLevel() > cha.getLevel())
-                if (minlevel ==0 || s.getMinLevel() < minlevel)
+                if (minlevel == 0 || s.getMinLevel() < minlevel)
                     minlevel = s.getMinLevel();
         }
         

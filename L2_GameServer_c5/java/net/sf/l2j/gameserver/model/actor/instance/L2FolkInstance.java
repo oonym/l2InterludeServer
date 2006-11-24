@@ -85,7 +85,7 @@ public class L2FolkInstance extends L2NpcInstance
 		    
 		    if (minlevel > 0)
 		    {
-		        SystemMessage sm = new SystemMessage(607);
+		        SystemMessage sm = new SystemMessage(SystemMessage.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN);
 		        sm.addNumber(minlevel);
 		        player.sendPacket(sm);
 		    }
@@ -148,7 +148,7 @@ public class L2FolkInstance extends L2NpcInstance
 						text +=
 							"Skills of your class are the easiest to learn.<br>\n"+
 							"Skills of another class are harder.<br>\n"+
-							"Skills for another race are event more harder to learn.<br>\n"+
+							"Skills for another race are even more harder to learn.<br>\n"+
 							"You can also learn skills of "+mages+", and they are"+
 							" the harders to learn!<br>\n"+
 							"<br>\n";
