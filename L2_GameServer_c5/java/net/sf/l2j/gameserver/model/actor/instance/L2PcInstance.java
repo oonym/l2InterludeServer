@@ -190,8 +190,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
-    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,allyId=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,deleteclan=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=? WHERE obj_id=?";
-    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, deleteclan, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge FROM characters WHERE obj_id=?";
+    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,allyId=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,deleteclan=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=? WHERE obj_id=?";
+    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, deleteclan, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge,last_recom_date FROM characters WHERE obj_id=?";
     private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
     private static final String ADD_CHAR_SUBCLASS = "INSERT INTO character_subclasses (char_obj_id,class_id,exp,sp,level,class_index) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CHAR_SUBCLASS = "UPDATE character_subclasses SET exp=?,sp=?,level=?,class_id=? WHERE char_obj_id=? AND class_index =?";
@@ -306,6 +306,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** The number of recommandation that the L2PcInstance can give */
 	private int _recomLeft; // how many recomendations I can give to others
 	
+	/** Date when recom points were updated last time */
+	private long _lastRecomUpdate;
 	/** List with the recomendations that I've give */
 	private List<Integer> _recomChars = new FastList<Integer>();
 	
@@ -1478,6 +1480,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int getCurrentLoad()
 	{
 		return _inventory.getTotalWeight();
+	}
+	/**
+	 * Return date of las update of recomPoints
+	 */
+	public long getLastRecomUpdate()
+	{
+		return _lastRecomUpdate;
+	}
+	public void setLastRecomUpdate(long date)
+	{
+		_lastRecomUpdate = date;
 	}
 	/**
 	 * Return the number of recommandation obtained by the L2PcInstance.<BR><BR>
@@ -4648,8 +4661,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			                                 "movement_multiplier,attack_speed_multiplier,colRad,colHeight," +
 			                                 "exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime," +
 			                                 "cancraft,title,allyId,accesslevel,online,isin7sdungeon,clan_privs,wantspeace,deleteclan," +
-			                                 "base_class,newbie,nobless,power_grade) " +
-			"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			                                 "base_class,newbie,nobless,power_grade,last_recom_date) " +
+			"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			statement.setString(1, _accountName);
 			statement.setInt(2, getObjectId());
 			statement.setString(3, getName());
@@ -4708,6 +4721,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(56, isNewbie() ? 1 : 0);
 			statement.setInt(57, isNoble() ? 1 :0);
 			statement.setLong(58, 0);
+			statement.setLong(59,System.currentTimeMillis());
 			statement.executeUpdate();
 			statement.close();
 		}
@@ -4797,6 +4811,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				int clanId	= rset.getInt("clanid");
 				player.setPowerGrade((int)rset.getLong("power_grade"));
 				player.setPledgeType(rset.getInt("subpledge"));
+				player.setLastRecomUpdate(rset.getLong("last_recom_date"));
 				//player.setApprentice(rset.getInt("apprentice"));
 				
 				if (clanId > 0)
@@ -5204,7 +5219,8 @@ public final class L2PcInstance extends L2PlayableInstance
             statement.setInt(46, isNoble() ? 1 : 0);
             statement.setLong(47, getPowerGrade());
             statement.setInt(48, getPledgeType());
-            statement.setInt(49, getObjectId());
+            statement.setLong(49,getLastRecomUpdate());
+            statement.setInt(50, getObjectId());
             
 			statement.execute();
 			statement.close();
@@ -7872,22 +7888,15 @@ public final class L2PcInstance extends L2PlayableInstance
 	private void checkRecom(int recsHave, int recsLeft)
 	{
 		Calendar check = Calendar.getInstance();
-		check.setTimeInMillis(_lastAccess);
+		check.setTimeInMillis(_lastRecomUpdate);
 		check.add(Calendar.DAY_OF_MONTH,1);
 		
 		Calendar min = Calendar.getInstance();
-		min.set(Calendar.HOUR_OF_DAY, 13);
-		min.set(Calendar.MINUTE, 0);
-		
-		Calendar max = Calendar.getInstance();
-		max.add(Calendar.DAY_OF_MONTH,1);
-		max.set(Calendar.HOUR_OF_DAY, 13);
-		max.set(Calendar.MINUTE, 0);
 
 		_recomHave = recsHave;
 		_recomLeft = recsLeft;
 		
-		if (getStat().getLevel() < 10 || !(check.after(min) && check.before(max)) )
+		if (getStat().getLevel() < 10 || check.after(min) )
 			return;
 		
 		restartRecom();
@@ -7904,17 +7913,26 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		else if (getStat().getLevel() < 40) 
         {
-			_recomLeft = 3;
+			_recomLeft = 6;
 			_recomHave -= 2;
 		}
 		else
 		{
-			_recomLeft = 6;
+			_recomLeft = 9;
 			_recomHave -= 3;
 		}
 		
 		if (_recomHave < 0) 
 			_recomHave = 0;
+		
+		Calendar update = Calendar.getInstance();
+		 // If we have to update last update time, but it's now before 13, we should set it to yesterday
+		if(update.get(Calendar.HOUR_OF_DAY) < 13)
+		{
+			update.add(Calendar.DAY_OF_MONTH,-1);
+		}
+		update.set(Calendar.HOUR_OF_DAY,13);
+		_lastRecomUpdate = update.getTimeInMillis();
 	}
 	
 	public int getBoatId()
