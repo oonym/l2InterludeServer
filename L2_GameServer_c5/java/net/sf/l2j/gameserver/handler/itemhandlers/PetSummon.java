@@ -58,6 +58,11 @@ public class PetSummon implements IItemHandler
 		L2PcInstance activeChar = (L2PcInstance)playable;
 		int npcId;
         
+		if(activeChar.isSitting())
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_MOVE_SITTING));
+			return;
+		}
         if (activeChar.isInOlympiadMode())
         {
             activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
