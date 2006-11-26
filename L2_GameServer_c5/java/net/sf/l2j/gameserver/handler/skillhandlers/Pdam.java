@@ -144,7 +144,8 @@ public class Pdam implements ISkillHandler
                     }
                 }
                 
-                if(skill.getId() == 30 || skill.getId() == 321 || skill.getId() == 263 || skill.getId() == 409) 
+                if((skill.getId() == 30 || skill.getId() == 321 || skill.getId() == 263 || skill.getId() == 409) 
+                		&& !target.isRaid()) //TODO check if lethal effect should affect Bosses
                 {
                 	//Skill is Backstab, deadly or blinding
                 	double Hpdam = 0;
