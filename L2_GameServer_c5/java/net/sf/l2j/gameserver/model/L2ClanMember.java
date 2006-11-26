@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.model;
 
+import java.sql.PreparedStatement;
+import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -179,7 +181,34 @@ public class L2ClanMember
 		}
 		else
 		{
-			//TODO: there's a need for db save if char not logged in, but not when loading these values
+			// db save if char not logged in
+			updatePowerGrade();
+		}
+	}
+	
+	/**
+	 * Update the characters table of the database with power grade.<BR><BR>
+	 */
+	public void updatePowerGrade()
+	{
+		java.sql.Connection con = null;
+		
+		try 
+        {
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET power_grade=? WHERE obj_id=?");
+			statement.setLong(1, _powerGrade);
+			statement.setInt(2, getObjectId());
+			statement.execute();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			//_log.warning("could not set char power_grade:"+e);
+		}
+		finally
+		{
+			try { con.close(); } catch (Exception e) {}
 		}
 	}
 	
