@@ -187,8 +187,8 @@ public class L2NpcInstance extends L2Character
         // and link _calculators to NPC_STD_CALCULATOR
         super(objectId, template);
         super.setKnownList(new NpcKnownList(new L2NpcInstance[] {this}));
-        super.setStat(new NpcStat(new L2NpcInstance[] {this}));
-        super.setStatus(new NpcStatus(new L2NpcInstance[] {this}));
+        super.setStat(new NpcStat(this));
+        super.setStatus(new NpcStatus(this));
         
         if (template == null)
         {

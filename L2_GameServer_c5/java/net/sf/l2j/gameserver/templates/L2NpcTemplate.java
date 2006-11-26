@@ -57,7 +57,7 @@ public final class L2NpcTemplate extends L2CharTemplate
     public final String  title;
     public final boolean serverSideTitle;
 	public final String  sex;
-	public final int     level;
+	public final byte    level;
 	public final int     revardExp;
 	public final int     revardSp;
 	public final int     aggroRange;
@@ -106,7 +106,7 @@ public final class L2NpcTemplate extends L2CharTemplate
         title     = set.getString("title");
         serverSideTitle = set.getBool("serverSideTitle");
 		sex       = set.getString("sex");
-		level     = set.getInteger("level");
+		level     = set.getByte("level");
 		revardExp = set.getInteger("revardExp");
 		revardSp  = set.getInteger("revardSp");
 		aggroRange= set.getInteger("aggroRange");

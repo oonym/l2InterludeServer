@@ -178,7 +178,7 @@ public final class L2PetInstance extends L2Summon
 	public L2PetInstance(int objectId, L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)
 	{
 		super(objectId, template, owner);
-        super.setStat(new PetStat(new L2PetInstance[] {this}));
+        super.setStat(new PetStat(this));
 
         _controlItemId = control.getObjectId();
         
@@ -715,7 +715,7 @@ public final class L2PetInstance extends L2Summon
             pet._respawned = true;
 			pet.setName(rset.getString("name"));
 
-            pet.getStat().setLevel(rset.getInt("level"));
+            pet.getStat().setLevel(rset.getByte("level"));
             pet.getStat().setExp(rset.getLong("exp"));
             pet.getStat().setSp(rset.getInt("sp"));
 

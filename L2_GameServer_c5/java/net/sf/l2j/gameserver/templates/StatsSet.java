@@ -93,6 +93,86 @@ public final class StatsSet  {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Boolean value required, but found: "+val);
 		}
+	}	
+	
+	/**
+	 * Returns the int associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
+	 * deflt.
+	 * @param name : String designating the key in the set
+	 * @param deflt : byte designating the default value if value associated with the key is null
+	 * @return byte : value associated to the key
+	 */
+	public byte     getByte(String name, byte deflt)
+	{
+		Object val = _set.get(name);
+		if (val == null)
+			return deflt;
+		if (val instanceof Number)
+			return ((Number)val).byteValue();
+		try {
+			return Byte.parseByte((String)val);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Byte value required, but found: "+val);
+		}
+	}
+	
+	/**
+	 * Returns the byte associated to the key put in parameter ("name").
+	 * @param name : String designating the key in the set
+	 * @return byte : value associated to the key
+	 */
+	public byte     getByte(String name)
+	{
+		Object val = _set.get(name);
+		if (val == null)
+			throw new IllegalArgumentException("Byte value required, but not specified");
+		if (val instanceof Number)
+			return ((Number)val).byteValue();
+		try {
+			return Byte.parseByte((String)val);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Byte value required, but found: "+val);
+		}
+	}
+	
+	/**
+	 * Returns the short associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
+	 * deflt.
+	 * @param name : String designating the key in the set
+	 * @param deflt : short designating the default value if value associated with the key is null
+	 * @return short : value associated to the key
+	 */
+	public short     getShort(String name, short deflt)
+	{
+		Object val = _set.get(name);
+		if (val == null)
+			return deflt;
+		if (val instanceof Number)
+			return ((Number)val).shortValue();
+		try {
+			return Short.parseShort((String)val);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Short value required, but found: "+val);
+		}
+	}
+	
+	/**
+	 * Returns the short associated to the key put in parameter ("name").
+	 * @param name : String designating the key in the set
+	 * @return short : value associated to the key
+	 */
+	public short     getShort(String name)
+	{
+		Object val = _set.get(name);
+		if (val == null)
+			throw new IllegalArgumentException("Short value required, but not specified");
+		if (val instanceof Number)
+			return ((Number)val).shortValue();
+		try {
+			return Short.parseShort((String)val);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Short value required, but found: "+val);
+		}
 	}
 	
 	/**

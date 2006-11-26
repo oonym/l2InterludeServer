@@ -28,7 +28,7 @@ public class PcStat extends PlayableStat
     
     // =========================================================
     // Constructor
-    public PcStat(L2PcInstance[] activeChar)
+    public PcStat(L2PcInstance activeChar)
     {
         super(activeChar);
     }
@@ -106,7 +106,7 @@ public class PcStat extends PlayableStat
         return true;
     }
 
-    public final boolean addLevel(int value)
+    public final boolean addLevel(byte value)
     {
 		if (getLevel() + value > Experience.MAX_LEVEL - 1) return false;
 
@@ -230,14 +230,14 @@ public class PcStat extends PlayableStat
             super.setExp(value);
     }
 
-    public final int getLevel()
+    public final byte getLevel()
     {
         if (getActiveChar().isSubClassActive()) 
         	return getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).getLevel();
         	
         return super.getLevel();
     }
-    public final void setLevel(int value)
+    public final void setLevel(byte value)
     {
 		if (value > Experience.MAX_LEVEL - 1) 
 			value = Experience.MAX_LEVEL - 1;

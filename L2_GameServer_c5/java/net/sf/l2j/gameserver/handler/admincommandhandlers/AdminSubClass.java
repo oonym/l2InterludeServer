@@ -242,7 +242,7 @@ public class AdminSubClass implements IAdminCommandHandler
                         {
                             SubClass subClass = new SubClass();
                             subClass.setClassId(rset.getInt("class_id"));
-                            subClass.setLevel(rset.getInt("level"));
+                            subClass.setLevel(rset.getByte("level"));
                             subClass.setExp(rset.getLong("exp"));
                             subClass.setSp(rset.getInt("sp"));
                             subClass.setClassIndex(playerMatrix.getNumSubClasses() + 1);

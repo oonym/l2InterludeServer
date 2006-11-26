@@ -11,14 +11,14 @@ public class CharStat
 {
     // =========================================================
     // Data Field
-    private L2Character[] _ActiveChar;          // Use array as a dirty trick to keep object as byref instead of byval
+    private L2Character _ActiveChar;
     private long _Exp                       = 1;
     private int _Sp                         = 1;
-    private int _Level                      = 1;
+    private byte _Level                     = 1;
     
     // =========================================================
     // Constructor
-    public CharStat(L2Character[] activeChar)
+    public CharStat(L2Character activeChar)
     {
         _ActiveChar = activeChar;
     }
@@ -97,9 +97,8 @@ public class CharStat
     public int getAccuracy() { return (int)(calcStat(Stats.ACCURACY_COMBAT, 0, null, null) / getActiveChar().getWeaponExpertisePenalty()); }
 
     public L2Character getActiveChar()
-    {
-        if (_ActiveChar == null || _ActiveChar.length <= 0) return null;
-        return _ActiveChar[0];
+    {        
+        return _ActiveChar;
     }
     
     /** Return the Attack Speed multiplier (base+modifier) of the L2Character to get proper animations. */
@@ -126,8 +125,8 @@ public class CharStat
     /** Return the INT of the L2Character (base+modifier). */
     public int getINT() { return (int)calcStat(Stats.STAT_INT, getActiveChar().getTemplate().baseINT, null, null); }
 
-    public int getLevel() { return _Level; }
-    public void setLevel(int value) { _Level = value; }
+    public byte getLevel() { return _Level; }
+    public void setLevel(byte value) { _Level = value; }
     
     /** Return the Magical Attack range (base+modifier) of the L2Character. */
     public final int getMagicalAttackRange(L2Skill skill)

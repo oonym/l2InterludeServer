@@ -9,7 +9,7 @@ public class DoorStatus extends CharStatus
     
     // =========================================================
     // Constructor
-    public DoorStatus(L2DoorInstance[] activeChar)
+    public DoorStatus(L2DoorInstance activeChar)
     {
         super(activeChar);
     }

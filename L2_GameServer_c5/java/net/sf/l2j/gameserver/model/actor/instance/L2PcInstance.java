@@ -722,8 +722,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		super(objectId, template);
 		super.setKnownList(new PcKnownList(new L2PcInstance[] {this}));
-		super.setStat(new PcStat(new L2PcInstance[] {this}));
-		super.setStatus(new PcStatus(new L2PcInstance[] {this}));
+		super.setStat(new PcStat(this));
+		super.setStatus(new PcStatus(this));
 		
 		_accountName  = accountName;
 		_nameColor    = 0xFFFFFF;
@@ -747,8 +747,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		super(objectId, null);
 		super.setKnownList(new PcKnownList(new L2PcInstance[] {this}));
-		super.setStat(new PcStat(new L2PcInstance[] {this}));
-		super.setStatus(new PcStatus(new L2PcInstance[] {this}));
+		super.setStat(new PcStat(this));
+		super.setStatus(new PcStatus(this));
 		
 		_baseLoad = 0;
 	}
@@ -4788,7 +4788,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				player._classIndex = 0;
 				player.getStat().setExp(rset.getLong("exp"));
-				player.getStat().setLevel(rset.getInt("level"));
+				player.getStat().setLevel(rset.getByte("level"));
 				player.getStat().setSp(rset.getInt("sp"));
 				
 				player.setFace(rset.getInt("face"));
@@ -5001,7 +5001,7 @@ public final class L2PcInstance extends L2PlayableInstance
             {
                 SubClass subClass = new SubClass();
                 subClass.setClassId(rset.getInt("class_id"));
-                subClass.setLevel(rset.getInt("level"));
+                subClass.setLevel(rset.getByte("level"));
                 subClass.setExp(rset.getLong("exp"));
                 subClass.setSp(rset.getInt("sp"));
                 subClass.setClassIndex(rset.getInt("class_index"));

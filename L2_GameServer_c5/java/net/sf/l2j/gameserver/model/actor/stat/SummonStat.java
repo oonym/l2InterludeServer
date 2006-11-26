@@ -9,7 +9,7 @@ public class SummonStat extends PlayableStat
     
     // =========================================================
     // Constructor
-    public SummonStat(L2Summon[] activeChar)
+    public SummonStat(L2Summon activeChar)
     {
         super(activeChar);
     }

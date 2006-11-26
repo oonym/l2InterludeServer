@@ -76,8 +76,8 @@ public abstract class L2Summon extends L2PlayableInstance
 	{
 		super(objectId, template);
         super.setKnownList(new SummonKnownList(new L2Summon[] {this}));
-        super.setStat(new SummonStat(new L2Summon[] {this}));
-        super.setStatus(new SummonStatus(new L2Summon[] {this}));
+        super.setStat(new SummonStat(this));
+        super.setStatus(new SummonStatus(this));
         
         _showSummonAnimation = true;
 		_owner = owner;

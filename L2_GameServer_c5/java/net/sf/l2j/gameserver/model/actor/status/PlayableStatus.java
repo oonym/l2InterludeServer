@@ -10,7 +10,7 @@ public class PlayableStatus extends CharStatus
     
     // =========================================================
     // Constructor
-    public PlayableStatus(L2PlayableInstance[] activeChar)
+    public PlayableStatus(L2PlayableInstance activeChar)
     {
         super(activeChar);
     }

@@ -6,17 +6,17 @@ public class CharAppearance
 {
     // =========================================================
     // Data Field
-    private L2Character[] _ActiveChar;          // Use array as a dirty trick to keep object as byref instead of byval
-    private int _ClassId;
-    private int _Face;
-    private int _HairColor;
-    private int _HairStyle;
-    private int _RaceId;
-    private int _Sex;
+    private L2Character _ActiveChar;
+    private byte _ClassId;
+    private byte _Face;
+    private byte _HairColor;
+    private byte _HairStyle;
+    private byte _RaceId;
+    private byte _Sex;
     
     // =========================================================
     // Constructor
-    public CharAppearance(L2Character[] activeChar)
+    public CharAppearance(L2Character activeChar)
     {
         _ActiveChar = activeChar;
     }
@@ -30,26 +30,25 @@ public class CharAppearance
     // =========================================================
     // Property - Public
     public final L2Character getActiveChar()
-    {
-        if (_ActiveChar == null || _ActiveChar.length <= 0) return null;
-        return _ActiveChar[0];
+    {        
+        return _ActiveChar;
     }
     
-    public final int getClassId() { return _ClassId; }
-    public final void setClassId(int value) { _ClassId = value; }
+    public final byte getClassId() { return _ClassId; }
+    public final void setClassId(byte value) { _ClassId = value; }
 
-    public final int getFace() { return _Face; }
-    public final void setFace(int value) { _Face = value; }
+    public final byte getFace() { return _Face; }
+    public final void setFace(byte value) { _Face = value; }
 
-    public final int getHairColor() { return _HairColor; }
-    public final void setHairColor(int value) { _HairColor = value; }
+    public final byte getHairColor() { return _HairColor; }
+    public final void setHairColor(byte value) { _HairColor = value; }
 
-    public final int getHairStyle() { return _HairStyle; }
-    public final void setHairStyle(int value) { _HairStyle = value; }
+    public final byte getHairStyle() { return _HairStyle; }
+    public final void setHairStyle(byte value) { _HairStyle = value; }
     
-    public final int getRaceId() { return _RaceId; }
-    public final void setRaceId(int value) { _RaceId = value; }
+    public final byte getRaceId() { return _RaceId; }
+    public final void setRaceId(byte value) { _RaceId = value; }
 
-    public final int getSex() { return _Sex; }
-    public final void setSex(int value) { _Sex = value; }
+    public final byte getSex() { return _Sex; }
+    public final void setSex(byte value) { _Sex = value; }
 }

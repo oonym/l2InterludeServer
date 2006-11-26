@@ -17,7 +17,7 @@ public class PetStat extends SummonStat
     
     // =========================================================
     // Constructor
-    public PetStat(L2PetInstance[] activeChar)
+    public PetStat(L2PetInstance activeChar)
     {
         super(activeChar);
     }
@@ -50,7 +50,7 @@ public class PetStat extends SummonStat
         return true;
     }
 
-    public final boolean addLevel(int value)
+    public final boolean addLevel(byte value)
     {
         if (getLevel() + value > 78) return false;
 
@@ -89,7 +89,7 @@ public class PetStat extends SummonStat
 
     public final int getFeedNormal() { return getActiveChar().getPetData().getPetFeedNormal(); }
 
-    public void setLevel(int value)
+    public void setLevel(byte value)
     {
         getActiveChar().stopFeed();
         super.setLevel(value);

@@ -17,7 +17,7 @@ public class PcStatus extends PlayableStatus
     
     // =========================================================
     // Constructor
-    public PcStatus(L2PcInstance[] activeChar)
+    public PcStatus(L2PcInstance activeChar)
     {
         super(activeChar);
     }

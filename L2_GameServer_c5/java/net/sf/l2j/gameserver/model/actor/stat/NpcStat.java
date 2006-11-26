@@ -10,7 +10,7 @@ public class NpcStat extends CharStat
     
     // =========================================================
     // Constructor
-    public NpcStat(L2NpcInstance[] activeChar)
+    public NpcStat(L2NpcInstance activeChar)
     {
         super(activeChar);
 

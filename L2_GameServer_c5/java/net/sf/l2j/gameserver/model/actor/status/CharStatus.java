@@ -24,7 +24,7 @@ public class CharStatus
 
     // =========================================================
     // Data Field
-    private L2Character[] _ActiveChar;          // Use array as a dirty trick to keep object as byref instead of byval
+    private L2Character _ActiveChar;
     private double _CurrentCp               = 0; //Current CP of the L2Character
     private double _CurrentHp               = 0; //Current HP of the L2Character
     private double _CurrentMp               = 0; //Current MP of the L2Character
@@ -34,14 +34,14 @@ public class CharStatus
     private Set<L2Character> _StatusListener;
     
     private Future _RegTask;
-    private int _flagsRegenActive           = 0;
-    private static final int REGEN_FLAG_CP  = 4;
-    private static final int REGEN_FLAG_HP  = 1;
-    private static final int REGEN_FLAG_MP  = 2;
+    private byte _flagsRegenActive           = 0;
+    private static final byte REGEN_FLAG_CP  = 4;
+    private static final byte REGEN_FLAG_HP  = 1;
+    private static final byte REGEN_FLAG_MP  = 2;
     
     // =========================================================
     // Constructor
-    public CharStatus(L2Character[] activeChar)
+    public CharStatus(L2Character activeChar)
     {
         _ActiveChar = activeChar;
     }
@@ -263,9 +263,8 @@ public class CharStatus
     // =========================================================
     // Property - Public
     public L2Character getActiveChar()
-    {
-        if (_ActiveChar == null || _ActiveChar.length <= 0) return null;
-        return _ActiveChar[0];
+    {        
+        return _ActiveChar;
     }
     
     public final double getCurrentCp() { return _CurrentCp; }

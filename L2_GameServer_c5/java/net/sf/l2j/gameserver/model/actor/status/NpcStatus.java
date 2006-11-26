@@ -10,7 +10,7 @@ public class NpcStatus extends CharStatus
     
     // =========================================================
     // Constructor
-    public NpcStatus(L2NpcInstance[] activeChar)
+    public NpcStatus(L2NpcInstance activeChar)
     {
         super(activeChar);
     }

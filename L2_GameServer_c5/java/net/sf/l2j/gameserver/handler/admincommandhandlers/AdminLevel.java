@@ -67,7 +67,7 @@ public class AdminLevel implements IAdminCommandHandler
         {
             try
             {
-                if (activeChar.getTarget() instanceof L2PlayableInstance) ((L2PlayableInstance)activeChar.getTarget()).getStat().addLevel(Integer.parseInt(val));
+                if (activeChar.getTarget() instanceof L2PlayableInstance) ((L2PlayableInstance)activeChar.getTarget()).getStat().addLevel(Byte.parseByte(val));
             }
             catch (NumberFormatException e) { activeChar.sendMessage("Wrong Number Format"); }
         }

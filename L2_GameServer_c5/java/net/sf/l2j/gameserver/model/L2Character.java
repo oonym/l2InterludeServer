@@ -1343,7 +1343,7 @@ public abstract class L2Character extends L2Object
 	
 	public final CharAppearance getAppearance()
 	{
-		if (_Appearance == null) _Appearance = new CharAppearance(new L2Character[]{this});
+		if (_Appearance == null) _Appearance = new CharAppearance(this);
 		return _Appearance;
 	}
 	
@@ -1472,14 +1472,14 @@ public abstract class L2Character extends L2Object
 	
 	public CharStat getStat()
 	{
-		if (_Stat == null) _Stat = new CharStat(new L2Character[]{this});
+		if (_Stat == null) _Stat = new CharStat(this);
 		return _Stat;
 	}
 	public final void setStat(CharStat value) { _Stat = value; }
 	
 	public CharStatus getStatus()
 	{
-		if (_Status == null) _Status = new CharStatus(new L2Character[]{this});
+		if (_Status == null) _Status = new CharStatus(this);
 		return _Status;
 	}
 	public final void setStatus(CharStatus value) { _Status = value; }

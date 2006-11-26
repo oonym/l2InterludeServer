@@ -114,8 +114,8 @@ public class Experience
 	 * This is the first UNREACHABLE level.<BR>
 	 *   ex: If you want a max at 78 & 100%, you have to put 79.<BR><BR>
 	 */
-	public final static int MAX_LEVEL = 79;
+	public final static byte MAX_LEVEL = 79;
 	
-	public final static int MIN_NEWBIE_LEVEL = 6;
-	public final static int MAX_NEWBIE_LEVEL = 25;
+	public final static byte MIN_NEWBIE_LEVEL = 6;
+	public final static byte MAX_NEWBIE_LEVEL = 25;
 }

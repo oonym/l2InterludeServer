@@ -10,7 +10,7 @@ public class PlayableStat extends CharStat
     
     // =========================================================
     // Constructor
-    public PlayableStat(L2PlayableInstance[] activeChar)
+    public PlayableStat(L2PlayableInstance activeChar)
     {
         super(activeChar);
     }
@@ -27,14 +27,14 @@ public class PlayableStat extends CharStat
 
         setExp(getExp() + value);
 
-		int level = 0;
+		byte level = 0;
 		for (level = 1; level <= Experience.MAX_LEVEL; level++)
         {
         	if (getExp() >= getExpForLevel(level)) continue;
         	level--;
         	break;
         }
-        if (level != getLevel()) addLevel(level - getLevel());
+        if (level != getLevel()) addLevel((byte)(level - getLevel()));
 
         return true;
     }
@@ -46,7 +46,7 @@ public class PlayableStat extends CharStat
 
         setExp(getExp() - value);
 
-        int level = 0;
+        byte level = 0;
         for (level = 1; level <= Experience.MAX_LEVEL; level++)
         {
             if (getExp() >= getExpForLevel(level)) 
@@ -55,7 +55,7 @@ public class PlayableStat extends CharStat
             break;
         }
         if (level != getLevel())
-        	addLevel(level - getLevel());
+        	addLevel((byte)(level - getLevel()));
         return true;
     }
 
@@ -79,12 +79,12 @@ public class PlayableStat extends CharStat
         return expRemoved || spRemoved;
     }
     
-    public boolean addLevel(int value)
+    public boolean addLevel(byte value)
     {
 		if (getLevel() + value > Experience.MAX_LEVEL - 1)
         {
 			if (getLevel() < Experience.MAX_LEVEL - 1)
-				value = Experience.MAX_LEVEL - 1 - getLevel();
+				value = (byte)(Experience.MAX_LEVEL - 1 - getLevel());
         	else
         		return false;
         }

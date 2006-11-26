@@ -14,7 +14,7 @@ public class PetStatus extends SummonStatus
     
     // =========================================================
     // Constructor
-    public PetStatus(L2PetInstance[] activeChar)
+    public PetStatus(L2PetInstance activeChar)
     {
         super(activeChar);
     }

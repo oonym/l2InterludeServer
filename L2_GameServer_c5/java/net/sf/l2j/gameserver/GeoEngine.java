@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
@@ -43,14 +44,11 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class GeoEngine extends GeoData
 {
 	private static Logger _log = Logger.getLogger(GeoData.class.getName());
-	private static GeoEngine _instance;
-	
-	private final static int WORLD_X = -131072;
-    private final static int WORLD_Y = -262144;
-    private final static int E = 1;
-    private final static int W = 2;
-    private final static int S = 4;
-    private final static int N = 8;
+	private static GeoEngine _instance; 
+    private final static byte E = 1;
+    private final static byte W = 2;
+    private final static byte S = 4;
+    private final static byte N = 8;
 	private static Map<Short, MappedByteBuffer> Geodata = new FastMap<Short, MappedByteBuffer>();
 	private static Map<Short, IntBuffer> Geodata_index = new FastMap<Short, IntBuffer>();
 
@@ -72,8 +70,8 @@ public class GeoEngine extends GeoData
      * @return Geo Block Type
      */
     public short getType  (int x, int y)         
-    {
-        return NgetType((x - WORLD_X) >> 4, (y - WORLD_Y) >> 4);        
+    {    	
+        return NgetType((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4);        
     }
     /**
      * @param x
@@ -83,7 +81,7 @@ public class GeoEngine extends GeoData
      */
     public short getHeight(int x, int y, int z)
     {
-        return NgetHeight((x - WORLD_X) >> 4,(y - WORLD_Y) >> 4,z);        
+        return NgetHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);        
     }
     /**
      * @param cha
@@ -101,7 +99,7 @@ public class GeoEngine extends GeoData
      */
     public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
     {
-        return canSeeDebug(gm,(gm.getX() - WORLD_X) >> 4,(gm.getY() - WORLD_Y) >> 4,gm.getZ(),(target.getX() - WORLD_X) >> 4,(target.getY() - WORLD_Y) >> 4,target.getZ());
+        return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ(),(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ());
     }
     /**
      * @param x
@@ -111,7 +109,7 @@ public class GeoEngine extends GeoData
      */
     public short getNSWE(int x, int y, int z)  
     {
-        return NgetNSWE((x - WORLD_X) >> 4,(y - WORLD_Y) >> 4,z);
+        return NgetNSWE((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);
     }    
     /**
      * @param x
@@ -125,13 +123,13 @@ public class GeoEngine extends GeoData
     public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
     {
     	Location destiny = new Location(tx,ty,tz);
-        return MoveCheck(destiny,(x - WORLD_X) >> 4,(y - WORLD_Y) >> 4,z,(tx - WORLD_X) >> 4,(ty - WORLD_Y) >> 4,tz);
+        return MoveCheck(destiny,(x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
     }
     
     // Private Methods
     private boolean canSeeTarget(int x, int y, int z, int tx, int ty, int tz)
     {
-        return canSee((x - WORLD_X) >> 4,(y - WORLD_Y) >> 4,z,(tx - WORLD_X) >> 4,(ty - WORLD_Y) >> 4,tz);
+        return canSee((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
     }
     private static boolean canSee(double x, double y, double z, int tx, int ty, int tz)
     {
@@ -281,7 +279,7 @@ public class GeoEngine extends GeoData
                 z += plus_z;
                 if (!NcanMoveNext(last_x,last_y,(int)z,new_x,new_y,tz))
                 {
-                    return new Location((last_x << 4) + WORLD_X,(last_y << 4) + WORLD_Y,(int)z);
+                    return new Location((last_x << 4) + L2World.MAP_MIN_X,(last_y << 4) + L2World.MAP_MIN_Y,(int)z);
                 }                
             }            
         }
@@ -334,7 +332,7 @@ public class GeoEngine extends GeoData
 	        // Create a read-only memory-mapped file
 	        FileChannel roChannel = new RandomAccessFile(Geo, "r").getChannel();
 			size = (int)roChannel.size();			
-			MappedByteBuffer geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, (int)roChannel.size()).load();								
+			MappedByteBuffer geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size).load();								
 			geo.order(ByteOrder.LITTLE_ENDIAN);						
 			
 			if (size > 196608)

@@ -30,10 +30,10 @@ public final class SubClass
     private PlayerClass _class;
     private long _exp = Experience.LEVEL[40];
     private int _sp = 0;
-    private int _level = 40;    
+    private byte _level = 40;    
     private int _classIndex = 1;
     
-    public SubClass(int classId, long exp, int sp, int level, int classIndex)
+    public SubClass(int classId, long exp, int sp, byte level, int classIndex)
     {
         _class = PlayerClass.values()[classId];
         _exp = exp;
@@ -75,7 +75,7 @@ public final class SubClass
         return _sp;
     }
     
-    public int getLevel()
+    public byte getLevel()
     {
         return _level;
     }
@@ -108,7 +108,7 @@ public final class SubClass
         _classIndex = classIndex;
     }
     
-    public void setLevel(int levelValue)
+    public void setLevel(byte levelValue)
     {
         if (levelValue > 78)
             levelValue = 78;

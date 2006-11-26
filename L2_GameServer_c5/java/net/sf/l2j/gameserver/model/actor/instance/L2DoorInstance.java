@@ -155,8 +155,8 @@ public class L2DoorInstance extends L2Character
     {
         super(objectId, template);
         super.setKnownList(new DoorKnownList(new L2DoorInstance[] {this}));
-        super.setStat(new DoorStat(new L2DoorInstance[] {this}));
-        super.setStatus(new DoorStatus(new L2DoorInstance[] {this}));
+        super.setStat(new DoorStat(this));
+        super.setStatus(new DoorStatus(this));
         _doorId = doorId;
         _name = name;
         _unlockable = unlockable;
