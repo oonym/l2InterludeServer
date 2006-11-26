@@ -23,11 +23,14 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.lib.Log;
+import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.model.actor.instance.L2BossInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
@@ -141,7 +144,89 @@ public class Pdam implements ISkillHandler
                     }
                 }
                 
-                target.reduceCurrentHp(damage, activeChar);
+                if(skill.getId() == 30 || skill.getId() == 321 || skill.getId() == 263 || skill.getId() == 409) 
+                {
+                	//Skill is Backstab, deadly or blinding
+                	double Hpdam = 0;
+                	int chance = 0;
+                	chance = Rnd.get(100);
+                	// Lethal Strike effect chance
+                	if (chance <= 5) 
+                	{
+                		// Msg: Lethal Strike
+                		SystemMessage sm = new SystemMessage(1667);
+                        activeChar.sendPacket(sm);
+                		
+                        if (chance < 2) 
+                        {       
+                        	// If is a monster damage is (CurrentHp - 1) so HP = 1
+                                if (target instanceof L2NpcInstance)
+                                    target.reduceCurrentHp(target.getCurrentHp()-1, activeChar);
+                           // If is a active player set his HP and CP to 1
+                    			else if (target instanceof L2PcInstance)
+                    			{
+                    				target.setCurrentHp(1);
+                    				target.setCurrentCp(1);
+                    			}           	        	             	        	
+                		} 			
+                		else //Chance <=5 and >=2
+                		{                                    
+                     		   if (target instanceof L2PcInstance) 
+                     		   {
+                    			   // Set CP to 1
+                    			   target.setCurrentCp(1);
+                    			   // if skill is Backstab remove HP
+                               	  if (skill.getId() == 30)
+                               	  {
+                            	    if (damage >= target.getCurrentHp()) 
+                            	    {
+                            		    target.setCurrentHp(0);
+                            		    target.doDie(activeChar);
+                            	    }
+                            	    else 
+                            	    {
+                            		    Hpdam = (target.getCurrentHp() - damage);
+                            		    target.setCurrentHp(Hpdam);
+                            	    }
+                                  }
+                               	  //Else skill is deadly or blinding and remove first 1 CP and after HP
+                               	  else 
+                               		  target.reduceCurrentHp(damage, activeChar);                		   
+                    		   }
+                     		   // If is a monster remove first damage and after 50% of current hp
+                     		   else if (target instanceof L2MonsterInstance)
+                     		   {
+                     			  target.reduceCurrentHp(damage, activeChar);
+                     			  target.reduceCurrentHp(target.getCurrentHp()/2, activeChar);
+                     		   }                			
+                	     }
+                        // Lethal Strike was succefful!
+                		sm = new SystemMessage(1668);
+                        activeChar.sendPacket(sm);
+                	}               	
+                	else //Chance > 5 (Not Lethal effect)
+                    	if (skill.getId() == 30)
+                    	{
+                    		if (target instanceof L2PcInstance)
+                    		{
+                    	       if (damage >= target.getCurrentHp()) 
+                    	       {
+                    		      target.setCurrentHp(0);
+                    		      target.doDie(activeChar);
+                    	       }
+                    	       else 
+                    	       {
+                    		      Hpdam = (target.getCurrentHp() - damage);
+                    		      target.setCurrentHp(Hpdam);
+                    	       }
+                            }
+                    		else
+                    			target.reduceCurrentHp(damage, activeChar);
+                    	}
+                    	else
+                    		target.reduceCurrentHp(damage, activeChar); 
+                }
+                else target.reduceCurrentHp(damage, activeChar);
             }
             else activeChar.sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
         }
