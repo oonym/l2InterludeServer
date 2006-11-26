@@ -82,9 +82,9 @@ public class ItemsOnGroundManager
             try {
             	 String str = null;
 				if (!Config.DESTROY_EQUIPABLE_PLAYER_ITEM) //Recycle misc. items only
-            		str="update ItemsOnGround set drop_time=? where drop_time=-1 and equipable=0";		
+            		str="update itemsonground set drop_time=? where drop_time=-1 and equipable=0";		
 				else if (Config.DESTROY_EQUIPABLE_PLAYER_ITEM) //Recycle all items including equipable
-           		 	str="update ItemsOnGround set drop_time=? where drop_time=-1";
+           		 	str="update itemsonground set drop_time=? where drop_time=-1";
         	 con = L2DatabaseFactory.getInstance().getConnection();
              PreparedStatement statement = con.prepareStatement(str);
              statement.setLong(1, System.currentTimeMillis());
@@ -108,7 +108,7 @@ public class ItemsOnGroundManager
             Statement s = con.createStatement();
             ResultSet result;
             int count=0;
-            result = s.executeQuery("select object_id,item_id,count,enchant_level,x,y,z,drop_time from ItemsOnGround");
+            result = s.executeQuery("select object_id,item_id,count,enchant_level,x,y,z,drop_time from itemsonground");
             while (result.next())
             {
                 L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
@@ -210,7 +210,7 @@ public class ItemsOnGroundManager
         	java.sql.Connection con = null;
             try {
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("insert into ItemsOnGround(object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable) values(?,?,?,?,?,?,?,?,?)");
+            PreparedStatement statement = con.prepareStatement("insert into itemsonground(object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable) values(?,?,?,?,?,?,?,?,?)");
             statement.setInt(1, item.getObjectId());
             statement.setInt(2, item.getItemId());
             statement.setInt(3, item.getCount());
