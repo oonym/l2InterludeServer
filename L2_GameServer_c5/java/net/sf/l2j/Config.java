@@ -439,6 +439,24 @@ public final class Config
     public static int     AUTODESTROY_ITEM_AFTER;
     /** Auto destroy herb time */
     public static int     HERB_AUTO_DESTROY_TIME;
+    /** List of items that will not be destroyed (seperated by ",") */
+    public static String  PROTECTED_ITEMS;
+    /** List of items that will not be destroyed */
+    public static List<Integer> LIST_PROTECTED_ITEMS = new FastList<Integer>();
+        
+    /** Auto destroy nonequipable items dropped by players */
+    public static boolean 	DESTROY_DROPPED_PLAYER_ITEM;
+    /** Auto destroy equipable items dropped by players */
+    public static boolean 	DESTROY_EQUIPABLE_PLAYER_ITEM;
+    /** Save items on ground for restoration on server restart */
+    public static boolean 	SAVE_DROPPED_ITEM;
+    /** Empty table ItemsOnGround after load all items */
+    public static boolean 	EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD;
+    /** Time interval to save into db items on ground */
+    public static int 		SAVE_DROPPED_ITEM_INTERVAL;
+    /** Clear all items stored in ItemsOnGround table */
+    public static boolean 	CLEAR_DROPPED_ITEM_TABLE;
+
     /** Accept precise drop calculation ? */
     public static boolean PRECISE_DROP_CALCULATION;
     /** Accept multi-items drop ? */
@@ -1022,6 +1040,18 @@ public final class Config
                 
                 AUTODESTROY_ITEM_AFTER          = Integer.parseInt(optionsSettings.getProperty("AutoDestroyDroppedItemAfter", "0"));
                 HERB_AUTO_DESTROY_TIME          = Integer.parseInt(optionsSettings.getProperty("AutoDestroyHerbTime","15"))*1000;
+                PROTECTED_ITEMS        			= optionsSettings.getProperty("ListOfProtectedItems");
+                LIST_PROTECTED_ITEMS = new FastList<Integer>();
+                for (String id : PROTECTED_ITEMS.split(",")) {
+                	LIST_PROTECTED_ITEMS.add(Integer.parseInt(id));
+                     }
+                DESTROY_DROPPED_PLAYER_ITEM		= Boolean.valueOf(optionsSettings.getProperty("DestroyPlayerDroppedItem", "false"));
+                DESTROY_EQUIPABLE_PLAYER_ITEM	= Boolean.valueOf(optionsSettings.getProperty("DestroyEquipableItem", "false"));
+                SAVE_DROPPED_ITEM				= Boolean.valueOf(optionsSettings.getProperty("SaveDroppedItem", "false"));
+                EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD	= Boolean.valueOf(optionsSettings.getProperty("EmptyDroppedItemTableAfterLoad", "false"));
+                SAVE_DROPPED_ITEM_INTERVAL		= Integer.parseInt(optionsSettings.getProperty("SaveDroppedItemInterval", "0"))*60000;
+                CLEAR_DROPPED_ITEM_TABLE		= Boolean.valueOf(optionsSettings.getProperty("ClearDroppedItemTable", "false"));
+                
                 PRECISE_DROP_CALCULATION        = Boolean.valueOf(optionsSettings.getProperty("PreciseDropCalculation", "True"));
                 MULTIPLE_ITEM_DROP              = Boolean.valueOf(optionsSettings.getProperty("MultipleItemDrop", "True"));
              
@@ -1711,6 +1741,13 @@ public final class Config
         else if (pName.equalsIgnoreCase("KarmaRateDropEquipWeapon")) KARMA_RATE_DROP_EQUIP_WEAPON = Integer.parseInt(pValue);
 
         else if (pName.equalsIgnoreCase("AutoDestroyDroppedItemAfter")) AUTODESTROY_ITEM_AFTER = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("DestroyPlayerDroppedItem")) DESTROY_DROPPED_PLAYER_ITEM = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("DestroyEquipableItem")) DESTROY_EQUIPABLE_PLAYER_ITEM = Boolean.valueOf(pValue);        
+        else if (pName.equalsIgnoreCase("SaveDroppedItem")) SAVE_DROPPED_ITEM = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("EmptyDroppedItemTableAfterLoad")) EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("SaveDroppedItemInterval")) SAVE_DROPPED_ITEM_INTERVAL = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("ClearDroppedItemTable")) CLEAR_DROPPED_ITEM_TABLE = Boolean.valueOf(pValue);
+
         else if (pName.equalsIgnoreCase("PreciseDropCalculation")) PRECISE_DROP_CALCULATION = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("MultipleItemDrop")) MULTIPLE_ITEM_DROP = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("CoordSynchronize")) COORD_SYNCHRONIZE = Integer.parseInt(pValue);

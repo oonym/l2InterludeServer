@@ -154,6 +154,7 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.Time;
 import net.sf.l2j.gameserver.handler.voicedcommandhandlers.stats;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.Manager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
@@ -309,6 +310,9 @@ public class GameServer
 		Announcements.getInstance();
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
+		
+		if (Config.SAVE_DROPPED_ITEM)
+		ItemsOnGroundManager.getInstance();  
         
 		if (Config.AUTODESTROY_ITEM_AFTER > 0 || Config.HERB_AUTO_DESTROY_TIME > 0)
     	    ItemsAutoDestroy.getInstance();

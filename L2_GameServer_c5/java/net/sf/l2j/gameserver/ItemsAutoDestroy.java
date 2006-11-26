@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.templates.L2EtcItemType;
@@ -82,6 +83,8 @@ public class ItemsAutoDestroy
                 			L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
                 			L2World.getInstance().removeObject(item);
                 			_items.remove(item);
+                			if (Config.SAVE_DROPPED_ITEM)
+                    			ItemsOnGroundManager.getInstance().removeObject(item);
                 		}
                 	}
                 	else if ( (curtime - item.getDropTime()) > _sleep)
@@ -89,6 +92,8 @@ public class ItemsAutoDestroy
                         L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
                         L2World.getInstance().removeObject(item);
                         _items.remove(item);
+                        if (Config.SAVE_DROPPED_ITEM)
+                        	ItemsOnGroundManager.getInstance().removeObject(item);
                     }
                 }
             }

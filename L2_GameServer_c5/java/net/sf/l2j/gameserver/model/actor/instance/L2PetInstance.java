@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -422,6 +423,9 @@ public final class L2PetInstance extends L2Summon
 	        	target.resetOwnerTimer();
             
             target.pickupMe(this);
+            
+            if(Config.SAVE_DROPPED_ITEM) // item must be removed from ItemsOnGroundManager if is active
+        	ItemsOnGroundManager.getInstance().removeObject(target);
 		}
 		
 		getInventory().addItem("Pickup", target, getOwner(), this);

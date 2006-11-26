@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.model;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.MercTicketManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList;
@@ -152,6 +153,8 @@ public abstract class L2Object
         // synchronized, to avoid deadlocks
         // Remove the L2Object from the world
         L2World.getInstance().removeVisibleObject(this, reg);
+        if (Config.SAVE_DROPPED_ITEM)
+        ItemsOnGroundManager.getInstance().removeObject(this);
     }
 
 

@@ -58,6 +58,7 @@ public abstract class IdFactory
 		"UPDATE clan_data             SET leader_id = ?   WHERE leader_id = ?",
 		"UPDATE pets                  SET item_obj_id = ? WHERE item_obj_id = ?",
 		"UPDATE character_hennas     SET char_obj_id = ? WHERE char_obj_id = ?",
+		"UPDATE ItemsOnGround         SET object_id = ?   WHERE object_id = ?"
 	};
 
     protected static String[] id_checks = 
@@ -81,6 +82,7 @@ public abstract class IdFactory
 		"SELECT ally_id     FROM clan_data             WHERE ally_id >= ?     AND ally_id < ?",
 		"SELECT leader_id   FROM clan_data             WHERE leader_id >= ?   AND leader_id < ?",
 		"SELECT item_obj_id FROM pets                  WHERE item_obj_id >= ? AND item_obj_id < ?",
+		"SELECT object_id   FROM ItemsOnGround        WHERE object_id >= ?   AND object_id < ?"
 	};
 	
     protected boolean initialized;
@@ -210,6 +212,7 @@ public abstract class IdFactory
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select object_id from items");
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select clan_id from clan_data");
 //            s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select crest_id from clan_data where crest_id > 0");
+            s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select object_id from ItemsOnGround");
             
             ResultSet result = s.executeQuery("select count(object_id) from temporaryObjectTable");
             

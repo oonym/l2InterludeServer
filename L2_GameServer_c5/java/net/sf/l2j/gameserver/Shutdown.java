@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.gameserverpackets.ServerStatus;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.L2World;
@@ -376,6 +377,12 @@ public class Shutdown extends Thread
         // Save Cursed Weapons data before closing.
         CursedWeaponsManager.getInstance().saveData();
         
+        //Save items on ground before closing
+        if(Config.SAVE_DROPPED_ITEM){
+        ItemsOnGroundManager.getInstance().saveInDb();        
+        ItemsOnGroundManager.getInstance().cleanUp();
+        System.err.println("ItemsOnGroundManager: All items on ground saved!!");
+        }
 		System.err.println("Data saved. All players disconnected, shutting down.");
 		
 		try {

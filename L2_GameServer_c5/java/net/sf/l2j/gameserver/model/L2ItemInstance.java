@@ -30,6 +30,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.NullKnownList;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -732,6 +733,8 @@ public final class L2ItemInstance extends L2Object
             
             // Add the L2ItemInstance dropped to _visibleObjects of its L2WorldRegion
             getPosition().getWorldRegion().addVisibleObject(this);
+            if (Config.SAVE_DROPPED_ITEM)
+            ItemsOnGroundManager.getInstance().Save(this);
         }
         setDropTime(System.currentTimeMillis());
         
