@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.model;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1121,6 +1122,9 @@ public abstract class L2Character extends L2Object
 			sendPacket(sm);
 		}
 		
+		// Skill reuse check
+		if (reuseDelay > 30000) addTimeStamp(skill.getId(),reuseDelay);
+		
 		// Check if this skill consume mp on start casting
 		int initmpcons = getStat().getMpInitialConsume(skill);
 		if (initmpcons > 0)
@@ -1134,8 +1138,7 @@ public abstract class L2Character extends L2Object
 		// Disable the skill during the re-use delay and create a task EnableSkill with Medium priority to enable it at the end of the re-use delay
 		if (reuseDelay > 10)
 		{
-			disableSkill(skill.getId());
-			ThreadPoolManager.getInstance().scheduleAi(new EnableSkill(skill.getId()), reuseDelay);
+			disableSkill(skill.getId(), reuseDelay);
 		}
 		
 		// launch the magic in skillTime milliseconds
@@ -1166,7 +1169,24 @@ public abstract class L2Character extends L2Object
 			onMagicUseTimer(targets, skill);
 		}
 	}
-	
+
+	/**
+	 * Index according to skill id the current timestamp of use.<br><br>
+	 * 
+	 * @param skill id
+	 * @param reuse delay
+	 * <BR><B>Overriden in :</B>  (L2PcInstance)
+	 */
+	public void addTimeStamp(int s, int r) {/***/}
+
+	/**
+	 * Index according to skill id the current timestamp of use.<br><br>
+	 * 
+	 * @param skill id
+	 * <BR><B>Overriden in :</B>  (L2PcInstance)
+	 */
+	public void removeTimeStamp(int s) {/***/}
+
 	/**
 	 * Kill the L2Character.<BR><BR>
 	 *
@@ -4737,13 +4757,17 @@ public abstract class L2Character extends L2Object
 	 * @param skillId The identifier of the L2Skill to enable
 	 *
 	 */
-	public synchronized void enableSkill(int skillId)
+	public void enableSkill(int skillId)
 	{
-		if (_disabledSkills == null)
-			return;
+		if (_disabledSkills == null) return;
 		
-		_disabledSkills.remove(new Integer(skillId));
-		
+		synchronized (_disabledSkills)
+		{
+			_disabledSkills.remove(new Integer(skillId));
+			
+			if (this instanceof L2PcInstance)
+				removeTimeStamp(skillId);
+		}
 	}
 	
 	/**
@@ -4755,14 +4779,25 @@ public abstract class L2Character extends L2Object
 	 * @param skillId The identifier of the L2Skill to disable
 	 *
 	 */
-	public synchronized void disableSkill(int skillId)
+	public void disableSkill(int skillId)
 	{
-		if (_disabledSkills == null)
+		if (_disabledSkills == null) _disabledSkills = Collections.synchronizedList(new FastList<Integer>());
+		
+		synchronized (_disabledSkills)
 		{
-			_disabledSkills = new FastList<Integer>();
-			
+			_disabledSkills.add(skillId);
 		}
-		_disabledSkills.add(skillId);
+	}
+
+	/**
+	 * Disable this skill id for the duration of the delay in milliseconds.
+	 * @param skillId
+	 * @param delay (seconds * 1000)
+	 */
+	public void disableSkill(int skillId, long delay)
+	{
+	    disableSkill(skillId);
+	    if (delay > 10) ThreadPoolManager.getInstance().scheduleAi(new EnableSkill(skillId), delay);
 	}
 	
 	/**
@@ -4776,16 +4811,14 @@ public abstract class L2Character extends L2Object
 	 */
 	public boolean isSkillDisabled(int skillId)
 	{
-		if (isAllSkillsDisabled())
-			return true;
+		if (isAllSkillsDisabled()) return true;
 		
-		if (_disabledSkills == null)
-			return false;
+		if (_disabledSkills == null) return false;
         
-        try {
+		synchronized (_disabledSkills)
+        {
             return _disabledSkills.contains(skillId);
-        } catch (Exception e) {return false;}
-		
+        }
 	}
 	
 	/**
