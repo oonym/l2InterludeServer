@@ -179,7 +179,7 @@ public class ItemsOnGroundManager
         try
 		{
 			conn = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement del = conn.prepareStatement("delete from ItemsOnGround");
+			PreparedStatement del = conn.prepareStatement("delete from itemsonground");
             del.execute();
             del.close();
 		} catch (Exception e1){
