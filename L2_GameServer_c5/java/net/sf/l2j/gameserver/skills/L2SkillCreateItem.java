@@ -33,48 +33,33 @@ public class L2SkillCreateItem extends L2Skill
         need_item_count = set.getInteger("need_item_count", 0);
         create_item_id = set.getInteger("create_item_id", 0);
         create_item_count = set.getInteger("create_item_count", 0);
-        random_count = set.getInteger("random_count", 0);
+        random_count = set.getInteger("random_count", 1);
 
     }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.l2j.gameserver.model.L2Skill#checkCondition(net.sf.l2j.gameserver.mo
-     del.L2Character)
+    /**
+     * @see net.sf.l2j.gameserver.model.L2Skill#checkCondition(net.sf.l2j.gameserver.model.L2Character, boolean)
      */
-    public boolean checkCondition(L2Character activeChar)
+    public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
     {
         if (activeChar instanceof L2PcInstance)
         {
             L2PcInstance player = (L2PcInstance) activeChar;
-            {
-                //boolean have_item = false;
-                if (!CheckItems(player, need_item_id, need_item_count))
-                {
-                    SystemMessage sm = new SystemMessage(701);
-                    activeChar.sendPacket(sm);
-                    return false;
-                }
-
+            if (!CheckItems(player, need_item_id, need_item_count))           
+            {                    
+            	SystemMessage sm = new SystemMessage(701);                    
+            	activeChar.sendPacket(sm);                    
+            	return false;                
             }
-
         }
-        return super.checkCondition(activeChar, false);
-
+        return super.checkCondition(activeChar, itemOrWeapon);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see net.sf.l2j.gameserver.model.L2Skill#useSkill(net.sf.l2j.gameserver.model.L2
-     Character,
-     * net.sf.l2j.gameserver.model.L2Object[])
+    /**
+     * @see net.sf.l2j.gameserver.model.L2Skill#useSkill(net.sf.l2j.gameserver.model.L2Character, net.sf.l2j.gameserver.model.L2Object[])
      */
     public void useSkill(L2Character activeChar, L2Object[] targets)
     {
         if (activeChar.isAlikeDead()) return;
-
         if (need_item_id == 0 || create_item_id == 0 || create_item_count == 0 || need_item_count == 0)
         {
             SystemMessage sm = new SystemMessage(SystemMessage.SKILL_NOT_AVAILABLE);
@@ -83,14 +68,12 @@ public class L2SkillCreateItem extends L2Skill
         }
         L2PcInstance player = (L2PcInstance) activeChar;
         if (activeChar instanceof L2PcInstance)
-        {
-            int number = 0;
-            int check = _rnd.nextInt(random_count) + 1;
-            number = create_item_count * check;
+        {            
+            int rnd = _rnd.nextInt(random_count) + 1;
+            int count = create_item_count * rnd;
             takeItems(player, need_item_id, need_item_count);
-            giveItems(player, create_item_id, number);
+            giveItems(player, create_item_id, count);
         }
-
     }
 
     /**
@@ -103,23 +86,11 @@ public class L2SkillCreateItem extends L2Skill
     {
         if (activeChar.getInventory().getItemByItemId(itemId) != null)
         {
-            boolean check = false;
             int item_count = activeChar.getInventory().getItemByItemId(itemId).getCount();
-            if (item_count >= count)
-            {
-                check = true;
-            }
-            else
-            {
-                check = false;
-            }
-            return check;
+            if (item_count >= count)            
+            	return true;            
         }
-        else
-        {
-            return false;
-        }
-
+        return false;
     }
 
     /**
@@ -129,7 +100,6 @@ public class L2SkillCreateItem extends L2Skill
      */
     public void giveItems(L2PcInstance activeChar, int itemId, int count)
     {
-        //L2Item item = ItemTable.getInstance().getTemplate(itemId);
         L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
         if (item == null) return;
         item.setCount(count);
@@ -141,13 +111,13 @@ public class L2SkillCreateItem extends L2Skill
             smsg.addItemName(item.getItemId());
             smsg.addNumber(count);
             activeChar.sendPacket(smsg);
-        } else
+        }
+        else
         {
             SystemMessage smsg = new SystemMessage(SystemMessage.EARNED_ITEM);
             smsg.addItemName(item.getItemId());
             activeChar.sendPacket(smsg);
-        }
-        
+        }        
         ItemList il = new ItemList(activeChar, false);
         activeChar.sendPacket(il);
     }
