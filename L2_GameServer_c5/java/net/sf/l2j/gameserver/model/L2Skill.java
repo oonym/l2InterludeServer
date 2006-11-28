@@ -1278,8 +1278,7 @@ public abstract class L2Skill
 							&& target instanceof L2PcInstance
 							&& activeChar == target.getPet()))
 				{
-					if (!target.isDead()
-							&& Util.checkIfInRange(getSkillRadius(), activeChar, target, true))
+					if (!target.isDead())
 					{
 						// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
 						return new L2Character[]{target};
