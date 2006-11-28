@@ -16,6 +16,7 @@ import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
+import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.gameserver.util.IllegalPlayerAction;
 import net.sf.l2j.gameserver.util.Util;
 
@@ -56,6 +57,13 @@ public class RequestEnchantItem extends ClientBasePacket
         activeChar.setActiveEnchantItem(null);
         if (item == null || scroll == null) return;
         
+         // can't enchant rods and hero weapons
+        if(item.getItem().getItemType() == L2WeaponType.ROD 
+        		|| item.getItemId() >= 6611 && item.getItemId() <= 6621)
+        {
+        	activeChar.sendPacket(new SystemMessage(SystemMessage.INAPPROPRIATE_ENCHANT_CONDITION));
+            return;
+        }
         if(item.isWear())
         {
             Util.handleIllegalPlayerAction(activeChar,"Player "+activeChar.getName()+" tried to enchant a weared Item", IllegalPlayerAction.PUNISH_KICK);
