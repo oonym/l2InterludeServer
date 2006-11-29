@@ -142,11 +142,8 @@ public class RequestDropItem extends ClientBasePacket
 		// Cannot discard item that the skill is consumming
 		if (activeChar.isCastingNow())
 		{
-			if (activeChar.getCurrentSkill() != null && activeChar.getCurrentSkill().getSkill().getItemConsumeId() == item.getItemId())
-			{
-	            activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_THIS_ITEM));
-	            return;
-			}
+	    	activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_THIS_ITEM));
+	    	return;			
 		}
         
 		if (L2Item.TYPE2_QUEST == item.getItem().getType2() && !activeChar.isGM())
