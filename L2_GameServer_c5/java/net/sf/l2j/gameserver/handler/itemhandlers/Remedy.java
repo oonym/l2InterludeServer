@@ -58,8 +58,10 @@ public class Remedy implements IItemHandler
 	    if (itemId == 1831) // antidote
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			for (L2Effect e : effects) {
-				if (e.getSkill().getSkillType() == L2Skill.SkillType.POISON && e.getSkill().getLevel() == 1) {
+			for (L2Effect e : effects)
+			{
+				 if (e.getSkill().getSkillType() == L2Skill.SkillType.POISON && e.getSkill().getLevel() <= 3)
+				 {
 					e.exit();
 					break;
 				}
@@ -72,8 +74,10 @@ public class Remedy implements IItemHandler
 	    else if (itemId == 1832) // advanced antidote
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			for (L2Effect e : effects) {
-				if (e.getSkill().getSkillType() == L2Skill.SkillType.POISON) {
+			for (L2Effect e : effects)
+			{
+				if (e.getSkill().getSkillType() == L2Skill.SkillType.POISON && e.getSkill().getLevel() <= 7)
+				{
 					e.exit();
 					break;
 				}
@@ -86,8 +90,10 @@ public class Remedy implements IItemHandler
 		else if (itemId == 1833) // bandage
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			for (L2Effect e : effects) {
-				if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED && e.getSkill().getLevel() == 1) {
+			for (L2Effect e : effects) 
+			{
+				 if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED && e.getSkill().getLevel() <= 3)
+				 {
 					e.exit();
 					break;
 				}
@@ -100,8 +106,10 @@ public class Remedy implements IItemHandler
 		else if (itemId == 1834) // emergency dressing
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			for (L2Effect e : effects) {
-				if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED) {
+			for (L2Effect e : effects) 
+			{
+				if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED && e.getSkill().getLevel() <= 7) 
+				{
 					e.exit();
 					break;
 				}
