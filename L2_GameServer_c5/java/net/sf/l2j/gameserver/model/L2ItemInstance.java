@@ -112,6 +112,8 @@ public final class L2ItemInstance extends L2Object
 	
 	private boolean _chargedFishtshot =	false; 
 	
+	private boolean _protected;
+	
 	public static final int UNCHANGED = 0;
 	public static final int ADDED = 1;
 	public static final int REMOVED = 3;
@@ -733,8 +735,6 @@ public final class L2ItemInstance extends L2Object
             
             // Add the L2ItemInstance dropped to _visibleObjects of its L2WorldRegion
             getPosition().getWorldRegion().addVisibleObject(this);
-            if (Config.SAVE_DROPPED_ITEM)
-            ItemsOnGroundManager.getInstance().Save(this);
         }
         setDropTime(System.currentTimeMillis());
         
@@ -742,6 +742,8 @@ public final class L2ItemInstance extends L2Object
         // synchronized, to avoid deadlocks
         // Add the L2ItemInstance dropped in the world as a visible object
         L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion(), dropper);
+        if (Config.SAVE_DROPPED_ITEM)		
+        	ItemsOnGroundManager.getInstance().Save(this);
     }
 
 	/**
@@ -868,5 +870,13 @@ public final class L2ItemInstance extends L2Object
     public ScheduledFuture getItemLootShedule()
     {
     	return itemLootShedule;
+    }
+    public void setProtected(boolean is_protected)
+    {
+    	_protected = is_protected;
+    }
+    public boolean isProtected()
+    {
+    	return _protected;
     }
 }

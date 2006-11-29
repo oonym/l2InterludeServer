@@ -50,9 +50,9 @@ public class ItemsOnGroundManager
     private ItemsOnGroundManager()
     {
     	if(!Config.SAVE_DROPPED_ITEM) return;
-	_items = new FastList<L2ItemInstance>();
-	if (Config.SAVE_DROPPED_ITEM_INTERVAL >0)
-	ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new storeInDb(), Config.SAVE_DROPPED_ITEM_INTERVAL, Config.SAVE_DROPPED_ITEM_INTERVAL);
+    		_items = new FastList<L2ItemInstance>();
+    	if (Config.SAVE_DROPPED_ITEM_INTERVAL >0)
+    			ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new storeInDb(), Config.SAVE_DROPPED_ITEM_INTERVAL, Config.SAVE_DROPPED_ITEM_INTERVAL);
     }
 
     public static final ItemsOnGroundManager getInstance()
@@ -68,35 +68,39 @@ public class ItemsOnGroundManager
     private void load()
     {
     	// If SaveDroppedItem is false, may want to delete all items previously stored to avoid add old items on reactivate
-        if(!Config.SAVE_DROPPED_ITEM && Config.CLEAR_DROPPED_ITEM_TABLE){ 
+        if(!Config.SAVE_DROPPED_ITEM && Config.CLEAR_DROPPED_ITEM_TABLE)  
         	emptyTable();        	 	        	        	        	        
-        }
+ 
 
-        if(!Config.SAVE_DROPPED_ITEM) return;
+        if(!Config.SAVE_DROPPED_ITEM) 
+        	return;
+        
         // if DestroyPlayerDroppedItem was previously  false, items curently protected will be added to ItemsAutoDestroy
         if (Config.DESTROY_DROPPED_PLAYER_ITEM)
         {
         	java.sql.Connection con = null;
-        try
-        {
-            try {
-            	 String str = null;
+            try 
+            {
+            	String str = null;
 				if (!Config.DESTROY_EQUIPABLE_PLAYER_ITEM) //Recycle misc. items only
-            		str="update itemsonground set drop_time=? where drop_time=-1 and equipable=0";		
+            		str = "update itemsonground set drop_time=? where drop_time=-1 and equipable=0";		
 				else if (Config.DESTROY_EQUIPABLE_PLAYER_ITEM) //Recycle all items including equipable
-           		 	str="update itemsonground set drop_time=? where drop_time=-1";
-        	 con = L2DatabaseFactory.getInstance().getConnection();
-             PreparedStatement statement = con.prepareStatement(str);
-             statement.setLong(1, System.currentTimeMillis());
-             statement.execute();
-             statement.close();
-             } catch (Exception e) {
+           		 	str = "update itemsonground set drop_time=? where drop_time=-1";
+				con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement(str);
+				statement.setLong(1, System.currentTimeMillis());
+				statement.execute();
+				statement.close();
+             } 
+             catch (Exception e)
+             {
                  _log.log(Level.SEVERE,"error while updating table ItemsOnGround " + e);
                  e.printStackTrace();
              }
-         } finally {
-             try { con.close(); } catch (Exception e) {}
-         }
+             finally 
+             {
+            	  try { con.close(); } catch (Exception e) {}
+            }
         }
 
         //Add items to world
@@ -108,7 +112,7 @@ public class ItemsOnGroundManager
             Statement s = con.createStatement();
             ResultSet result;
             int count=0;
-            result = s.executeQuery("select object_id,item_id,count,enchant_level,x,y,z,drop_time from itemsonground");
+            result = s.executeQuery("select object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable from itemsonground");
             while (result.next())
             {
                 L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
@@ -121,16 +125,22 @@ public class ItemsOnGroundManager
                 item.getPosition().setWorldRegion(L2World.getInstance().getRegion(item.getPosition().getWorldPosition()));
                 item.getPosition().getWorldRegion().addVisibleObject(item);
                 item.setDropTime(result.getLong(8));
+                if (result.getLong(8) == -1)
+                	item.setProtected(true);
+                else
+                	item.setProtected(false);
                 item.setIsVisible(true);
-                _items.add(item);
-                L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion(), null);                
+                L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion(), null);
+                _items.add(item);                
                 count++;                
                 // add to ItemsAutoDestroy only items not protected
                 if (!Config.LIST_PROTECTED_ITEMS.contains(item.getItemId())){
-                		if(result.getLong(8)>-1
-                				||(Config.AUTODESTROY_ITEM_AFTER > 0 && item.getItemType() != L2EtcItemType.HERB)
-                				||(Config.HERB_AUTO_DESTROY_TIME > 0 && item.getItemType() == L2EtcItemType.HERB))
+                	if(result.getLong(8) > -1)
+                	{
+                		if((Config.AUTODESTROY_ITEM_AFTER > 0 && item.getItemType() != L2EtcItemType.HERB)
+                		   ||(Config.HERB_AUTO_DESTROY_TIME > 0 && item.getItemType() == L2EtcItemType.HERB))
                 			ItemsAutoDestroy.getInstance().addItem(item);
+                	}
                 }                
             }
             result.close();
@@ -153,7 +163,6 @@ public class ItemsOnGroundManager
     public void Save(L2ItemInstance item)
     {
         if(!Config.SAVE_DROPPED_ITEM) return;
-        item.setDropTime(System.currentTimeMillis()); //for some reason getDropTime return allways 0 so I set drop time here
         _items.add(item);
     }
 
@@ -218,24 +227,16 @@ public class ItemsOnGroundManager
             statement.setInt(5, item.getX());
             statement.setInt(6, item.getY());
             statement.setInt(7, item.getZ());
-          if (item.getOwnerId()== 0) // is dropped by a player
-          {
-        	  if (Config.DESTROY_DROPPED_PLAYER_ITEM){
-        		  if (!item.isEquipable() || (item.isEquipable()  && Config.DESTROY_EQUIPABLE_PLAYER_ITEM ))
-        			  statement.setLong(8,item.getDropTime()); //item is added to ItemsAutoDestroy
-        	  	}
-        		  else
-        			  statement.setLong(8,-1); //item will be protected
-        	  }          
-          	else if (item.getOwnerId()!= 0)
-          		statement.setLong(8,item.getDropTime()); //item is added to ItemsAutoDestroy
-          
-          if (item.getOwnerId()== 0 && item.isEquipable())
-        	  statement.setLong(9,1); //set equipable item if is dropped by a player (no need to do this for mobs)
-          else
-        	  statement.setLong(9,0);
-            
-          statement.execute();
+
+            if (item.isProtected())
+            	statement.setLong(8,-1); //item will be protected
+            else
+            	statement.setLong(8,item.getDropTime()); //item will be added to ItemsAutoDestroy          
+            if (item.isEquipable())
+            	statement.setLong(9,1); //set equipable
+            else
+            	statement.setLong(9,0);         
+            statement.execute();
             statement.close();
             } catch (Exception e) {
                 _log.log(Level.SEVERE,"error while inserting into table ItemsOnGround " + e);

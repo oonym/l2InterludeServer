@@ -50,6 +50,7 @@ import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.HennaTable;
 import net.sf.l2j.gameserver.ItemTable;
+import net.sf.l2j.gameserver.ItemsAutoDestroy;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.MapRegionTable;
 import net.sf.l2j.gameserver.Olympiad;
@@ -75,6 +76,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
+import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
@@ -2813,9 +2815,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		
 		item.dropMe(this, getClientX() + Rnd.get(50) - 25, getClientY() + Rnd.get(50) - 25, getClientZ() + 20);
-		// Avoids it from beeing removed by the auto item destroyer
-		item.setDropTime(0); 
-		
+
+		 if (Config.AUTODESTROY_ITEM_AFTER >0 && Config.DESTROY_DROPPED_PLAYER_ITEM && !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
+			 {
+			 if ( (item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM) || !item.isEquipable()) 
+			 ItemsAutoDestroy.getInstance().addItem(item);
+			 }
+		 if (Config.DESTROY_DROPPED_PLAYER_ITEM){
+		 	if (!item.isEquipable() || (item.isEquipable()  && Config.DESTROY_EQUIPABLE_PLAYER_ITEM ))
+		 		item.setProtected(false);
+			else
+				item.setProtected(true);
+		 	}
+	   		else
+	   			item.setProtected(true);
+		 		
 		// Send inventory update packet
 		if (!Config.FORCE_INVENTORY_UPDATE)
 		{
@@ -2867,9 +2881,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		
 		item.dropMe(this, x, y, z);
-		// Avoids it from beeing removed by the auto item destroyer
-		item.setDropTime(0); 
 		
+		 if (Config.AUTODESTROY_ITEM_AFTER >0 && Config.DESTROY_DROPPED_PLAYER_ITEM && !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
+			 {
+			 if ( (item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM) || !item.isEquipable()) 
+			 ItemsAutoDestroy.getInstance().addItem(item);
+			 }
+		 if (Config.DESTROY_DROPPED_PLAYER_ITEM){
+		 	if (!item.isEquipable() || (item.isEquipable()  && Config.DESTROY_EQUIPABLE_PLAYER_ITEM ))
+		 		item.setProtected(false);
+		 	else
+		 		item.setProtected(true);
+		 }
+	   	 else
+	   		 item.setProtected(true);
+		 	
 		// Send inventory update packet
 		if (!Config.FORCE_INVENTORY_UPDATE)
 		{
@@ -3337,6 +3363,9 @@ public final class L2PcInstance extends L2PlayableInstance
             
 			// Remove the L2ItemInstance from the world and send server->client GetItem packets
 			target.pickupMe(this);
+			 if(Config.SAVE_DROPPED_ITEM) // item must be removed from ItemsOnGroundManager if is active
+				 ItemsOnGroundManager.getInstance().removeObject(target);
+
 		}
 		
         //Auto use herbs - pick up

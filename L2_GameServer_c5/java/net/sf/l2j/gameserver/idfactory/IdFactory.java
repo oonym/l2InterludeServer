@@ -205,7 +205,7 @@ public abstract class IdFactory
             catch (SQLException e)
             {
             }
-            
+            s.executeUpdate("delete from itemsonground where object_Id in (select object_Id from items)");
             s.executeUpdate("create table temporaryObjectTable" + " (object_id int NOT NULL PRIMARY KEY)");
             
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select obj_id from characters");

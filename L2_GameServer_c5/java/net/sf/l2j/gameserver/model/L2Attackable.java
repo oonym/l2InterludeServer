@@ -1414,6 +1414,7 @@ public class L2Attackable extends L2NpcInstance
             	  || (Config.HERB_AUTO_DESTROY_TIME > 0 && ditem.getItemType() == L2EtcItemType.HERB))
             	 ItemsAutoDestroy.getInstance().addItem(ditem);
              }
+             ditem.setProtected(false);
              // If stackable, end loop as entire count is included in 1 instance of item  
              if (ditem.isStackable() || !Config.MULTIPLE_ITEM_DROP) break;
          }
