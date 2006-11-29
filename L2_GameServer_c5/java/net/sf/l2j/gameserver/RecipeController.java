@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
+import net.sf.l2j.gameserver.util.Util;
 
 public class RecipeController
 {
@@ -177,6 +179,16 @@ public class RecipeController
 		
 		if (recipeList == null) return;
 		
+		List<L2RecipeList> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
+		List<L2RecipeList> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
+		
+		if (!dwarfRecipes.contains(recipeList) && !commonRecipes.contains(recipeList))
+		{
+			Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false recipe id.",Config.DEFAULT_PUNISH);
+    		return;
+		}
+		
+		
 		RecipeItemMaker maker;
 		
 		if (Config.ALT_GAME_CREATION && (maker = activeMakers.get(manufacturer)) != null) // check if busy
@@ -202,6 +214,15 @@ public class RecipeController
 		L2RecipeList recipeList = getValidRecipeList(player, recipeListId);
 		
 		if (recipeList == null)	return;
+		
+		List<L2RecipeList> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
+		List<L2RecipeList> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
+		
+		if (!dwarfRecipes.contains(recipeList) && !commonRecipes.contains(recipeList))
+		{
+			Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false recipe id.",Config.DEFAULT_PUNISH);
+    		return;
+		}
 		
 		RecipeItemMaker maker;
 		
