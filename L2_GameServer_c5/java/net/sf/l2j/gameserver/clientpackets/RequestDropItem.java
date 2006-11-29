@@ -32,6 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
+import net.sf.l2j.gameserver.templates.L2EtcItemType;
 import net.sf.l2j.gameserver.util.IllegalPlayerAction;
 import net.sf.l2j.gameserver.util.Util;
 
@@ -91,7 +92,10 @@ public class RequestDropItem extends ClientBasePacket
 			activeChar.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
 			return;
 		}
-        
+        if(item.getItemType() == L2EtcItemType.QUEST)
+        {
+        	return;
+        }
         int itemId = item.getItemId();
         
         if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
