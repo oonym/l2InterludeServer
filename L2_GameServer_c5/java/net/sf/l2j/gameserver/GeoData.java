@@ -69,6 +69,17 @@ public class GeoData
         return (short)z;        
     }
     /**
+     * @param x
+     * @param y
+     * @param zmin
+     * @param zmax
+     * @return
+     */
+    public short getSpawnHeight(int x, int y, int zmin, int zmax)
+    {
+        return (short)zmin;        
+    }
+    /**
      * @param cha
      * @param target
      * @return True if cha can see target (LOS)

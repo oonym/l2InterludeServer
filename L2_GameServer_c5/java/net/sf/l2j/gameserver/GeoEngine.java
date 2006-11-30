@@ -65,60 +65,49 @@ public class GeoEngine extends GeoData
 	
     //Public Methods
     /**
-     * @param x
-     * @param y
-     * @return Geo Block Type
+     * @see net.sf.l2j.gameserver.GeoData#getType(int, int)
      */
-    public short getType  (int x, int y)         
+    public short getType(int x, int y)         
     {    	
         return NgetType((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4);        
     }
     /**
-     * @param x
-     * @param y
-     * @param z
-     * @return Nearles Z
+     * @see net.sf.l2j.gameserver.GeoData#getHeight(int, int, int)
      */
     public short getHeight(int x, int y, int z)
     {
         return NgetHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);        
     }
     /**
-     * @param cha
-     * @param target
-     * @return True if cha can see target (LOS)
+     * @see net.sf.l2j.gameserver.GeoData#getSpawnHeight(int, int, int, int)
+     */
+    public short getSpawnHeight(int x, int y, int zmin, int zmax)
+    {
+    	return NgetSpawnHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,zmin,zmax);        
+    }
+    /**
+     * @see net.sf.l2j.gameserver.GeoData#canSeeTarget(net.sf.l2j.gameserver.model.L2Object, net.sf.l2j.gameserver.model.L2Object)
      */
     public boolean canSeeTarget(L2Object cha, L2Object target)
     {
         return canSeeTarget(cha.getX(),cha.getY(),cha.getZ(),target.getX(),target.getY(),target.getZ());
     }    
     /**
-     * @param cha
-     * @param target
-     * @return True if cha can see target (LOS) and send usful info to PC
+     * @see net.sf.l2j.gameserver.GeoData#canSeeTargetDebug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, net.sf.l2j.gameserver.model.L2Object)
      */
     public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
     {
         return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ(),(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ());
     }
     /**
-     * @param x
-     * @param y
-     * @param z
-     * @return Geo NSWE (0-15)
+     * @see net.sf.l2j.gameserver.GeoData#getNSWE(int, int, int)
      */
     public short getNSWE(int x, int y, int z)  
     {
         return NgetNSWE((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);
     }    
     /**
-     * @param x
-     * @param y
-     * @param z
-     * @param tx
-     * @param ty
-     * @param tz
-     * @return Last Location (x,y,z) where player can walk - just befor wall
+     * @see net.sf.l2j.gameserver.GeoData#moveCheck(int, int, int, int, int, int)
      */
     public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
     {
@@ -474,6 +463,84 @@ public class GeoEngine extends GeoData
 	            index += 2;
 	        }	        
 		 return temph;
+	    }
+	}
+	private static short NgetSpawnHeight(int x, int y, int zmin, int zmax)
+	{    
+	    short region = getRegionOffset(x,y);
+	    int blockX = getBlock(x);
+		int blockY = getBlock(y);
+		int cellX = 0;		
+		int cellY = 0;		
+		int index = 0;
+		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		ByteBuffer geo = Geodata.get(region);
+		if(geo == null)
+		{
+			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			return 0;
+		}		
+		byte type = geo.get(index);
+		index++;
+	    if(type == 0)
+	    {
+	    	short height = (short)(geo.getShort(index)&0x0fff0);
+	    	//Check if this z is correct
+	    	if (height < zmin || height > zmax)
+	    	{
+	    		_log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
+	    		return (short)(zmin+8);
+	    	}	    		
+	        return height;
+	    }
+	    else if(type == 1)
+	    {
+	    	cellX = getCell(x);
+			cellY = getCell(y);
+	        index += ((cellX << 3) + cellY) << 1;
+	        short height = geo.getShort(index);
+			height = (short)(height&0x0fff0);
+			height = (short)(height >> 1);
+            //Check if this z is correct
+	    	if (height < zmin || height > zmax)
+	    	{
+	    		_log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
+	    		return (short)(zmin+8);
+	    	}	    		
+	        return height;
+	    }
+	    else
+	    {
+	    	cellX = getCell(x);
+			cellY = getCell(y);
+	        int offset = (cellX << 3) + cellY;
+	        while(offset > 0)
+	        {
+	            byte lc = geo.get(index);		                
+	            index += (lc << 1) + 1;
+	            offset--;
+	        }
+	        byte layers = geo.get(index);
+	        index++;
+	        short height=-1;
+			if(layers <= 0 || layers > 60)
+			{
+				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);				
+	            return (short)(zmin+8);
+			}
+	        while(layers > 0)
+	        {	            
+	            height = geo.getShort(index);
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2				
+	            if (height >= zmin &&  height <= zmax)
+	                return height;            
+	            layers--;
+	            index += 2;
+	        }
+	        _log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
+	        return (short)(zmin+8);		 
 	    }
 	}
 	private static boolean NcanMoveNext(int x, int y, int z, int tx, int ty, int tz)

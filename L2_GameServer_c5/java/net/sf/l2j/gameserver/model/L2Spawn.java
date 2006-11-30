@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Territory;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
@@ -437,14 +438,16 @@ public class L2Spawn
             // Set the calculated position of the L2NpcInstance
             newlocx = p[0];
             newlocy = p[1];
-            newlocz = p[2];
+            newlocz = GeoData.getInstance().getSpawnHeight(newlocx, newlocy, p[2], p[3]);
         } 
         else 
         {
             // The L2NpcInstance is spawned at the exact position (Lox, Locy, Locz)
             newlocx = getLocx();
             newlocy = getLocy();
-            newlocz = getLocz();
+            if (Config.GEODATA)            
+            	newlocz = GeoData.getInstance().getSpawnHeight(newlocx,newlocy,getLocz()-8,getLocz()+8);
+            else newlocz = getLocz();
         }
         
         for(L2Effect f : mob.getAllEffects())
