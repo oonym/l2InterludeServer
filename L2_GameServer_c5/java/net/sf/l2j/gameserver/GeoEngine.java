@@ -149,7 +149,7 @@ public class GeoEngine extends GeoData
             if (last_x != new_x || last_y != new_y)
             {                
                 z += plus_z;
-                if (!NcanMoveNext(last_x,last_y,(int)z,new_x,new_y,tz))
+                if (!NLOS(last_x,last_y,(int)z,new_x,new_y,tz))
                 {
                     return false;
                 }                
@@ -229,7 +229,7 @@ public class GeoEngine extends GeoData
             {
                 count++;
                 z += plus_z;
-                if (!NcanMoveNext(last_x,last_y,(int)z,new_x,new_y,tz))
+                if (!NLOS(last_x,last_y,(int)z,new_x,new_y,tz))
                 {
                     return false;
                 }
@@ -367,6 +367,11 @@ public class GeoEngine extends GeoData
 	}
 	
 	//Geodata Methods
+	/**
+	 * @param x
+	 * @param y
+	 * @return Region Offset
+	 */
 	private static short getRegionOffset(int x, int y)
 	{
 	    int rx = x >> 11; // =/(256 * 8)
@@ -374,17 +379,31 @@ public class GeoEngine extends GeoData
 	    return (short)(((rx+16) << 5) + (ry+10));
 	}
 
+	/**
+	 * @param pos
+	 * @return Block Index: 0-255
+	 */
 	private  static int getBlock(int pos)
 	{
 	    return (pos >> 3) % 256;	    
 	}
 	
+	/**
+	 * @param pos
+	 * @return Cell Index: 0-7
+	 */
 	private static int getCell(int pos)
 	{
 	    return pos % 8;	    
 	}
 	
 	//Geodata Functions
+	
+	/**
+	 * @param x
+	 * @param y
+	 * @return Type of geo_block: 0-2
+	 */
 	private static short NgetType(int x, int y)
 	{   
 	    short region = getRegionOffset(x,y);
@@ -400,6 +419,12 @@ public class GeoEngine extends GeoData
 		}
 		return Geodata.get(region).get(index);      
 	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return Nearlest Z
+	 */
 	private static short NgetHeight(int x, int y, int z)
 	{    
 	    short region = getRegionOffset(x,y);
@@ -465,6 +490,13 @@ public class GeoEngine extends GeoData
 		 return temph;
 	    }
 	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param zmin
+	 * @param zmax
+	 * @return Z betwen zmin and zmax
+	 */
 	private static short NgetSpawnHeight(int x, int y, int zmin, int zmax)
 	{    
 	    short region = getRegionOffset(x,y);
@@ -543,6 +575,15 @@ public class GeoEngine extends GeoData
 	        return (short)(zmin+8);		 
 	    }
 	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param tx
+	 * @param ty
+	 * @param tz
+	 * @return True if char can move to (tx,ty,tz)
+	 */
 	private static boolean NcanMoveNext(int x, int y, int z, int tx, int ty, int tz)
 	{
 	    short region = getRegionOffset(x,y);
@@ -619,32 +660,108 @@ public class GeoEngine extends GeoData
 	        {
 	        	return false;		 
 	        }	 
-	    }                
-	    //Check NSWE
-	    if(NSWE == 15)
-	       return true;
-	    if(tx > x)//E
-	    {
-	    	if ((NSWE & E) == 0)
-	            return false;
 	    }
-	    else if (tx < x)//W
-	    {
-	    	if ((NSWE & W) == 0)
-	            return false;
-	    }
-	    if (ty > y)//S
-	    {
-	    	if ((NSWE & S) == 0)
-	            return false;
-	    }
-	    else if (ty < y)//N
-	    {
-	    	if ((NSWE & N) == 0)
-	            return false;
-	    }
-	    return true;	
+	    return CheckNSWE(NSWE,x,y,tx,ty);
 	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param tx
+	 * @param ty
+	 * @param tz
+	 * @return True if Char can see target
+	 */
+	private static boolean NLOS(int x, int y, int z, int tx, int ty, int tz)
+	{
+	    short region = getRegionOffset(x,y);
+	    int blockX = getBlock(x);
+		int blockY = getBlock(y);
+		int cellX = 0;		
+		int cellY = 0;		
+	    short NSWE = -1;
+	    short NSWE2 = -1;
+	    
+		int index = 0;
+		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		ByteBuffer geo = Geodata.get(region);
+		if(geo == null)
+		{
+			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			return false;
+		}
+		byte type = geo.get(index);
+		index++;
+	    if(type == 0)
+	    {
+	        return true;
+	    }
+	    else if(type == 1)
+	    {
+	    	cellX = getCell(x);
+			cellY = getCell(y);
+	        index += ((cellX << 3) + cellY) << 1;
+	        short height = geo.getShort(index);
+			NSWE = (short)(height&0x0F);		
+	    }
+	    else
+	    {		 
+	    	cellX = getCell(x);
+			cellY = getCell(y);
+	        int offset = (cellX << 3) + cellY;
+	        while(offset > 0)
+	        {
+	            byte lc = geo.get(index);		                 
+	            index += (lc << 1) + 1;
+	            offset--;
+	        }
+	        byte layers = geo.get(index);
+	        index++;
+	        short height=-1;		 
+	        if(layers <= 0 || layers > 60)		 
+	        {		     
+                _log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
+	            return false;		 
+	        }		
+	        short tempz = -30000;
+	        short tempz2 = -30000;
+	        while(layers > 0)
+	        {	            
+	            height = geo.getShort(index);
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2
+
+	            if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
+	            {
+	                tempz = height;
+	                NSWE = geo.getShort(index);
+	                NSWE = (short)(NSWE&0x0F);                           
+	            }
+	            if ((tz-tempz2)*(tz-tempz2) > (tz-height)*(tz-height))
+	            {
+	                tempz2 = height;
+	                NSWE = geo.getShort(index);
+	                NSWE = (short)(NSWE&0x0F);
+	            }                            
+	            layers--;
+	            index += 2;
+	        }
+	        if(Math.abs((z-tz)) < 32)		 
+	        {
+	        	if (CheckNSWE(NSWE,x,y,tx,ty)|| CheckNSWE(NSWE2,x,y,tx,ty))
+	        		return true;
+	        	else return false;
+	        }	        
+	    }
+	    return CheckNSWE(NSWE,x,y,tx,ty);
+	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return NSWE: 0-15
+	 */
 	private short NgetNSWE(int x, int y, int z)
 	{
 		short region = getRegionOffset(x,y);
@@ -713,6 +830,42 @@ public class GeoEngine extends GeoData
 	            index += 2;
 	        }	        	 
 	    }
-	    return NSWE;
-	}	
+	    return NSWE;	    
+	}
+	
+	/**
+	 * @param NSWE
+	 * @param x
+	 * @param y
+	 * @param tx
+	 * @param ty
+	 * @return True if NSWE dont block given direction
+	 */
+	private static boolean CheckNSWE(short NSWE, int x, int y, int tx, int ty)
+    {
+        //Check NSWE
+	    if(NSWE == 15)
+	       return true;
+	    if(tx > x)//E
+	    {
+	    	if ((NSWE & E) == 0)
+	            return false;
+	    }
+	    else if (tx < x)//W
+	    {
+	    	if ((NSWE & W) == 0)
+	            return false;
+	    }
+	    if (ty > y)//S
+	    {
+	    	if ((NSWE & S) == 0)
+	            return false;
+	    }
+	    else if (ty < y)//N
+	    {
+	    	if ((NSWE & N) == 0)
+	            return false;
+	    }
+	    return true;
+    }
 }
