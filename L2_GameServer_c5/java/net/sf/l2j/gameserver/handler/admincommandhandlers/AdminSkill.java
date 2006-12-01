@@ -63,7 +63,8 @@ public class AdminSkill implements IAdminCommandHandler {
 			"admin_remove_skill",
 			"admin_get_skills",
 			"admin_reset_skills",
-			"admin_give_all_skills"
+			"admin_give_all_skills",
+			"admin_remove_all_skills"
 			};
 	private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
 	private static final int REQUIRED_LEVEL2 = Config.GM_CHAR_EDIT_OTHER;
@@ -150,6 +151,17 @@ public class AdminSkill implements IAdminCommandHandler {
             adminGiveAllSkills(activeChar);
         }
 		
+		else if (command.equals("admin_remove_all_skills"))
+		{
+	        if (activeChar.getTarget() instanceof L2PcInstance)
+	        {
+		        L2PcInstance player = (L2PcInstance)activeChar.getTarget();
+	        	for (L2Skill skill : player.getAllSkills())
+	        		player.removeSkill(skill);
+		        activeChar.sendMessage("You removed all skills from " + player.getName());
+		        player.sendMessage("Admin removed all skills from you.");
+	        }
+		}
 		return true;
 	}
 	
