@@ -214,6 +214,36 @@ public final class StatsSet  {
 			throw new IllegalArgumentException("Integer value required, but found: "+val);
 		}
 	}
+	
+	/**
+	 * Returns the int[] associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
+	 * deflt.
+	 * @param name : String designating the key in the set
+	 * @return int[] : value associated to the key
+	 */
+	public int[]     getIntegerArray(String name)
+	{
+		Object val = _set.get(name);
+		if (val == null)
+			throw new IllegalArgumentException("Integer value required, but not specified");
+		if (val instanceof Number){
+			int[] result = {((Number)val).intValue()};
+			return result;
+		}
+		int c = 0;
+		String[] vals = ((String)val).split(";");		
+		int[] result = new int[vals.length];
+		for(String v: vals)
+		{
+			try {
+				result[c] = Integer.parseInt(v);
+				c++;
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Integer value required, but found: "+val);
+			}
+		}
+		return result;
+	}
     
     /**
      * Returns the long associated to the key put in parameter ("name").

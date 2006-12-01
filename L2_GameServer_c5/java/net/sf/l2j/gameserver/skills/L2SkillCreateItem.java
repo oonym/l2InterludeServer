@@ -19,14 +19,14 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 public class L2SkillCreateItem extends L2Skill
 {
     private static final Random _rnd = new Random();
-    private final int create_item_id;
+    private final int[] create_item_id;
     private final int create_item_count;
     private final int random_count;
 
     public L2SkillCreateItem(StatsSet set)
     {
         super(set);
-        create_item_id = set.getInteger("create_item_id", 0);
+        create_item_id = set.getIntegerArray("create_item_id");
         create_item_count = set.getInteger("create_item_count", 0);
         random_count = set.getInteger("random_count", 1);
     }  
@@ -37,7 +37,7 @@ public class L2SkillCreateItem extends L2Skill
     public void useSkill(L2Character activeChar, L2Object[] targets)
     {
         if (activeChar.isAlikeDead()) return;
-        if (create_item_id == 0 || create_item_count == 0)
+        if (create_item_id == null || create_item_count == 0)
         {
             SystemMessage sm = new SystemMessage(SystemMessage.SKILL_NOT_AVAILABLE);
             activeChar.sendPacket(sm);
@@ -48,7 +48,8 @@ public class L2SkillCreateItem extends L2Skill
         {            
             int rnd = _rnd.nextInt(random_count) + 1;
             int count = create_item_count * rnd;
-            giveItems(player, create_item_id, count);
+            int rndid = _rnd.nextInt(create_item_id.length);
+            giveItems(player, create_item_id[rndid], count);
         }
     }
 
