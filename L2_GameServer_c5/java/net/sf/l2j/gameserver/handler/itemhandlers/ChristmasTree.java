@@ -20,8 +20,8 @@ public class ChristmasTree implements IItemHandler
                                      };
 
     private static int[] _npcIds = {
-                                    12619, //Christmas tree w. flashing lights and snow
-                                    12620
+    	                            13006, //Christmas tree w. flashing lights and snow
+    	                            13007
                                     };
 
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
