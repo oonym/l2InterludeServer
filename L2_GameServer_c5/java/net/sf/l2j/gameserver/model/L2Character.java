@@ -130,6 +130,7 @@ public abstract class L2Character extends L2Object
 	private boolean _IsFakeDeath                            = false; // Fake death
 	private boolean _IsFlying                               = false; //Is flying Wyvern?
 	private boolean _IsMuted                                = false; // Cannot use magic
+	private boolean _IsPsychicalMuted                       = false; // Cannot use psychical skills
 	private boolean _IsKilledAlready                        = false;
 	private boolean _IsImobilised                           = false;
 	private boolean _IsOverloaded                           = false; // the char is carrying too much
@@ -967,7 +968,13 @@ public abstract class L2Character extends L2Object
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
-		
+        // Check if the skill is psychical and if the L2Character is not psychical_muted
+        if (!skill.isMagic() && isPsychicalMuted())
+        {
+            getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
+            return;
+        }
+
         //Recharge AutoSoulShot
         if (skill.useSoulShot())
         {
@@ -1416,6 +1423,9 @@ public abstract class L2Character extends L2Object
 	public final boolean isMuted() { return _IsMuted; }
 	public final void setIsMuted(boolean value) { _IsMuted = value; }
 	
+	public final boolean isPsychicalMuted() { return _IsPsychicalMuted; }
+    public final void setIsPsychicalMuted(boolean value) { _IsPsychicalMuted = value; }
+
 	/** Return True if the L2Character can't move (stun, root, sleep, overload, paralyzed). */
 	public final boolean isMovementDisabled() { return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImobilised() || isFakeDeath(); }
 	
@@ -2101,6 +2111,16 @@ public abstract class L2Character extends L2Object
 	}
 	
 	/**
+     * Active the abnormal effect Psychical_Muted flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
+     */
+    public final void startPsychicalMuted()
+    {
+        setIsPsychicalMuted(true);
+        getAI().notifyEvent(CtrlEvent.EVT_MUTED);
+        updateAbnormalEffect();
+    }
+
+	/**
 	 * Active the abnormal effect Root flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
 	public final void startRooted()
@@ -2297,6 +2317,17 @@ public abstract class L2Character extends L2Object
 		updateAbnormalEffect();
 	}
 	
+	public final void stopPsychicalMuted(L2Effect effect)
+    {
+        if (effect == null)
+            stopEffects(L2Effect.EffectType.PSYCHICAL_MUTE);
+        else
+            removeEffect(effect);
+        
+        setIsPsychicalMuted(false);
+        updateAbnormalEffect();
+    }
+
 	/**
 	 * Stop a specified/all Root abnormal L2Effect.<BR><BR>
 	 *
