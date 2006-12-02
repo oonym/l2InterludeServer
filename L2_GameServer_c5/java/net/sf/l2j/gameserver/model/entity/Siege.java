@@ -696,7 +696,20 @@ public class Siege
 
     public void registerAttacker(L2PcInstance player, boolean force)
     {
-        if (force || this.checkIfCanRegister(player)) saveSiegeClan(player.getClan(), 1, false); // Save to database
+        
+    	if(player.getClan() == null) return;
+    	int allyId = 0;
+    	if (getCastle().getOwnerId() != 0)
+    		allyId = ClanTable.getInstance().getClan(getCastle().getOwnerId()).getAllyId();
+    	if (allyId != 0) 
+    	{
+    		if(player.getClan().getAllyId() == allyId && !force)
+    		{
+    			player.sendMessage("You cannot register as an attacker because your alliance owns the castle");
+    			return;
+    		}
+    	}
+    	if (force || this.checkIfCanRegister(player)) saveSiegeClan(player.getClan(), 1, false); // Save to database
     }
 
     /**

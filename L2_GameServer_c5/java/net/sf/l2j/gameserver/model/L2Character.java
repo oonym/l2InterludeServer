@@ -1978,7 +1978,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final void removeEffect(L2Effect effect)
 	{
-		if(effect == null)
+		if(effect == null || _effects == null)
 			return;
 
 		synchronized(_effects) 
