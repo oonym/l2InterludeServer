@@ -158,8 +158,8 @@ public class RequestActionUse extends ClientBasePacket
 
                     if (target.isAutoAttackable(activeChar) || _ctrlPressed)
                     {
-                        // Siege Golem (12251)
-                        if ((pet.getNpcId() != 12251) || (target instanceof L2DoorInstance))
+                    	// AI doesn't support attacking other than doors at the moment
+                        if ((pet.getNpcId() != L2Summon.SIEGE_GOLEM_ID) || (target instanceof L2DoorInstance))
                             pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
                     }
 				}
@@ -365,7 +365,7 @@ public class RequestActionUse extends ClientBasePacket
             	//PartyCommandManager.getInstance().getActiveChannelInfo(activeChar);
             	break;
             case 1000: // Siege Golem - Siege Hammer
-				useSkill(4079);
+            	if (target instanceof L2DoorInstance) useSkill(4079);
                 break;
             case 1003: // Wind Hatchling/Strider - Wild Stun
 				useSkill(4710); //TODO use correct skill lvl based on pet lvl
@@ -449,7 +449,11 @@ public class RequestActionUse extends ClientBasePacket
 
         	L2Skill skill = _skills.get(skillId);
             
-        	if (skill == null) return;
+        	if (skill == null) 
+        	{
+        		_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon.");
+        		return;
+        	}
         	
        		activeSummon.setTarget(target);
         	activeSummon.useMagic(skill, _ctrlPressed, _shiftPressed);
