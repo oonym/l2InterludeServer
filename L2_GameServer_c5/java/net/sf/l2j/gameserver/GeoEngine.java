@@ -511,7 +511,7 @@ public class GeoEngine extends GeoData
 		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
-			return 0;
+			return (short)zmin;
 		}		
 		byte type = geo.get(index);
 		index++;
@@ -519,10 +519,10 @@ public class GeoEngine extends GeoData
 	    {
 	    	short height = (short)(geo.getShort(index)&0x0fff0);
 	    	//Check if this z is correct
-	    	if (height < zmin || height > zmax)
+	    	if (height < zmin - 102 || height > zmax + 102)
 	    	{
 	    		_log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
-	    		return (short)(zmin+8);
+	    		return (short)zmin;
 	    	}	    		
 	        return height;
 	    }
@@ -535,11 +535,11 @@ public class GeoEngine extends GeoData
 			height = (short)(height&0x0fff0);
 			height = (short)(height >> 1);
             //Check if this z is correct
-	    	if (height < zmin || height > zmax)
+	    	if (height < zmin - 102 || height > zmax + 102)
 	    	{
 	    		_log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
-	    		return (short)(zmin+8);
-	    	}	    		
+	    		return (short)zmin;
+	    	}	    	
 	        return height;
 	    }
 	    else
@@ -559,20 +559,20 @@ public class GeoEngine extends GeoData
 			if(layers <= 0 || layers > 60)
 			{
 				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);				
-	            return (short)(zmin+8);
+	            return (short)zmin;
 			}
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
 	            height = (short)(height&0x0fff0);
 				height = (short)(height >> 1); //height / 2				
-	            if (height >= zmin &&  height <= zmax)
+	            if (height >= zmin - 102 &&  height <= zmax + 102)
 	                return height;            
 	            layers--;
 	            index += 2;
 	        }
 	        _log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
-	        return (short)(zmin+8);		 
+	        return (short)zmin;		 
 	    }
 	}
 	/**

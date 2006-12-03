@@ -266,6 +266,7 @@ public class GameServer
 		FishTable.getInstance();
 		SkillSpellbookTable.getInstance();
 		CharTemplateTable.getInstance();
+		NobleSkillTable.getInstance();
         
         //Call to load caches
         HtmCache.getInstance();

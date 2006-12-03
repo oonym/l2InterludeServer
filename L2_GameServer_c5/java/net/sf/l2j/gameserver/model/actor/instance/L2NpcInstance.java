@@ -995,6 +995,26 @@ public class L2NpcInstance extends L2Character
                 } catch (NumberFormatException nfe) {}
                 showChatWindow(player, val);
             }
+            else if (command.startsWith("NobleTeleport"))
+            {
+            	if (!player.isNoble())
+            	{
+            		String filename = "data/html/teleporter/nobleteleporter-no.htm";
+                	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+                    html.setFile(filename);
+                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    html.replace("%npcname%", getName());
+                    player.sendPacket(html);
+            		return;
+            	}
+                int val = 0;
+                try 
+                {
+                	val = Integer.parseInt(command.substring(5));
+                } catch (IndexOutOfBoundsException ioobe) {
+                } catch (NumberFormatException nfe) {}
+                showChatWindow(player, val);
+            }            
             else if (command.startsWith("Loto"))
             {
                 int val = 0;

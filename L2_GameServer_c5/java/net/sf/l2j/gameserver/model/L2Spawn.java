@@ -446,7 +446,7 @@ public class L2Spawn
             newlocx = getLocx();
             newlocy = getLocy();
             if (Config.GEODATA)            
-            	newlocz = GeoData.getInstance().getSpawnHeight(newlocx,newlocy,getLocz()-8,getLocz()+8);
+            	newlocz = GeoData.getInstance().getSpawnHeight(newlocx,newlocy,getLocz(),getLocz());
             else newlocz = getLocz();
         }
         

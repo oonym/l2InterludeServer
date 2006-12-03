@@ -53,6 +53,7 @@ import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.ItemsAutoDestroy;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.MapRegionTable;
+import net.sf.l2j.gameserver.NobleSkillTable;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.RecipeController;
 import net.sf.l2j.gameserver.SevenSigns;
@@ -7491,6 +7492,20 @@ public final class L2PcInstance extends L2PlayableInstance
 	
     public void setNoble(boolean val)
     {
+    	if (val)
+    	{
+    		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
+    		{
+    			addSkill(s);
+    		}
+    	}
+    	else
+    	{
+    		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
+    		{
+    			this.removeSkill(s);
+    		}
+    	}
     	_noble = val;
     }
 	public void setTeam(int team)
