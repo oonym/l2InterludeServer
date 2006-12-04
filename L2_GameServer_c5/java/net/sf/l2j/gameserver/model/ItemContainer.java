@@ -176,7 +176,7 @@ public abstract class ItemContainer
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item or the updated item in inventory
      */
-    public L2ItemInstance addItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
+    public L2ItemInstance addItem(String process, short itemId, int count, L2PcInstance actor, L2Object reference)
     {
 		L2ItemInstance item = getItemByItemId(itemId);
 		
@@ -228,7 +228,7 @@ public abstract class ItemContainer
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new weared item
      */
-    public L2ItemInstance addWearItem(String process, int itemId, L2PcInstance actor, L2Object reference)
+    public L2ItemInstance addWearItem(String process, short itemId, L2PcInstance actor, L2Object reference)
     {
         // Surch the item in the inventory of the player
 		L2ItemInstance item = getItemByItemId(itemId);

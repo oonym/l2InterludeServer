@@ -9,7 +9,7 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 public class Guide implements IItemHandler {
-	private static int[] _itemIds = { 5588, 6317, 7561 };
+	private static short[] _itemIds = { 5588, 6317, 7561 };
 	//private static Logger _log = Logger.getLogger(L2NpcInstance.class.getName());
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -39,7 +39,7 @@ public class Guide implements IItemHandler {
 		activeChar.sendPacket( new ActionFailed() );
 	}
 
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

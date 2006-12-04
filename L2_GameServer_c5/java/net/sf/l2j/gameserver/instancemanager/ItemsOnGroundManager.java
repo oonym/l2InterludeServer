@@ -115,7 +115,7 @@ public class ItemsOnGroundManager
             result = s.executeQuery("select object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable from itemsonground");
             while (result.next())
             {
-                L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
+                L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getShort(2));
                 L2World.getInstance().storeObject(item);
                 if (item.isStackable() && result.getInt(3) > 1) //this check and..
                 	item.setCount(result.getInt(3));                

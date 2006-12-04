@@ -60,14 +60,14 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final byte    level;
 	public final int     revardExp;
 	public final int     revardSp;
-	public final int     aggroRange;
-	public final int     rhand;
-	public final int     lhand;
-	public final int     armor;
+	public final short   aggroRange;
+	public final short   rhand;
+	public final short   lhand;
+	public final short   armor;
 	public final String  factionId;
-	public final int     factionRange;
+	public final short   factionRange;
 	public final boolean isUndead;
-    public final int     absorb_level;
+    public final byte    absorb_level;
 	
 	private final StatsSet npcStatsSet;
 
@@ -109,18 +109,18 @@ public final class L2NpcTemplate extends L2CharTemplate
 		level     = set.getByte("level");
 		revardExp = set.getInteger("revardExp");
 		revardSp  = set.getInteger("revardSp");
-		aggroRange= set.getInteger("aggroRange");
-		rhand     = set.getInteger("rhand");
-		lhand     = set.getInteger("lhand");
-		armor     = set.getInteger("armor");
+		aggroRange= set.getShort("aggroRange");
+		rhand     = set.getShort("rhand");
+		lhand     = set.getShort("lhand");
+		armor     = set.getShort("armor");
 		String f  = set.getString("factionId", null);
 		if (f == null)
 			factionId = null;
 		else
 			factionId = f.intern();
-		factionRange  = set.getInteger("factionRange");
+		factionRange  = set.getShort("factionRange");
 		isUndead      = (set.getInteger("isUndead", 0) == 1);
-        absorb_level  = set.getInteger("absorb_level", 0);
+        absorb_level  = set.getByte("absorb_level", (byte)0);
 		//String r = set.getString("race", null);
 		//if (r == null)
 		//	race = null;

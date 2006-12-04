@@ -17,11 +17,11 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class FishItem implements IItemHandler
 {
-	private static int[] _itemIds = null;
+	private static short[] _itemIds = null;
 	public FishItem()
 	{
 		FishTable ft = FishTable.getInstance();
-        _itemIds = new int[ft.GetFishItemCount()];
+        _itemIds = new short[ft.GetFishItemCount()];
         for (int i = 0; i < ft.GetFishItemCount(); i++)
         {
             _itemIds[i] = ft.getFishIdfromList(i);
@@ -55,7 +55,7 @@ public class FishItem implements IItemHandler
 			activeChar.sendMessage("Fish failed to open!");
 		}
 	}
-	public void giveItems(L2PcInstance activeChar, int itemId, int count)
+	public void giveItems(L2PcInstance activeChar, short itemId, int count)
     {
         activeChar.addItem("FishItem", itemId, count, null, false);
         
@@ -77,7 +77,7 @@ public class FishItem implements IItemHandler
     {
 		player.destroyItemByItemId("FishItem", itemId, 1, null, false);
     }
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

@@ -28,30 +28,30 @@ public class L2Henna
 
 	public final int symbol_id;
 	public final String symbol_name;
-	public final int dye;
+	public final short dye;
 	public final int price;
-	public final int amount;
-	public final int stat_INT;
-	public final int stat_STR;
-	public final int stat_CON;
-	public final int stat_MEM;
-	public final int stat_DEX;
-	public final int stat_WIT;
+	public final byte amount;
+	public final byte stat_INT;
+	public final byte stat_STR;
+	public final byte stat_CON;
+	public final byte stat_MEM;
+	public final byte stat_DEX;
+	public final byte stat_WIT;
 	
 	public L2Henna(StatsSet set)
 	{
 		
 		symbol_id          = set.getInteger("symbol_id");
 		symbol_name		   = ""; //set.getString("symbol_name");
-		dye                = set.getInteger("dye");
+		dye                = set.getShort("dye");
 		price              = set.getInteger("price");
-		amount			   = set.getInteger("amount");   
-		stat_INT           = set.getInteger("stat_INT");
-		stat_STR           = set.getInteger("stat_STR");
-		stat_CON           = set.getInteger("stat_CON");
-		stat_MEM           = set.getInteger("stat_MEM");
-		stat_DEX	       = set.getInteger("stat_DEX");
-		stat_WIT           = set.getInteger("stat_WIT");
+		amount			   = set.getByte("amount");   
+		stat_INT           = set.getByte("stat_INT");
+		stat_STR           = set.getByte("stat_STR");
+		stat_CON           = set.getByte("stat_CON");
+		stat_MEM           = set.getByte("stat_MEM");
+		stat_DEX	       = set.getByte("stat_DEX");
+		stat_WIT           = set.getByte("stat_WIT");
 		
 	}
 	
@@ -62,7 +62,7 @@ public class L2Henna
 	/**
 	 * @return
 	 */
-	public int getDyeId()
+	public short getDyeId()
 	{
 		return dye;
 	}
@@ -76,49 +76,49 @@ public class L2Henna
 	/**
 	 * @return
 	 */
-	public int getAmountDyeRequire()
+	public byte getAmountDyeRequire()
 	{
 		return amount;
 	}
 	/**
 	 * @return
 	 */
-	public int getStatINT()
+	public byte getStatINT()
 	{
 		return stat_INT;
 	}
 	/**
 	 * @return
 	 */
-	public int getStatSTR()
+	public byte getStatSTR()
 	{
 		return stat_STR;
 	}
 	/**
 	 * @return
 	 */
-	public int getStatCON()
+	public byte getStatCON()
 	{
 		return stat_CON;
 	}
 	/**
 	 * @return
 	 */
-	public int getStatMEM()
+	public byte getStatMEM()
 	{
 		return stat_MEM;
 	}
 	/**
 	 * @return
 	 */
-	public int getStatDEX()
+	public byte getStatDEX()
 	{
 		return stat_DEX;
 	}
 	/**
 	 * @return
 	 */
-	public int getStatWIT()
+	public byte getStatWIT()
 	{
 		return stat_WIT;
 	}

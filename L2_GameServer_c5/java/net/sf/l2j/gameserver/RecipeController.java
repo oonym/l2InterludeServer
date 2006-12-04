@@ -271,7 +271,7 @@ public class RecipeController
 			
 			String recipeName = st.nextToken();
 			int id = Integer.parseInt(st.nextToken());
-			int recipeId = Integer.parseInt(st.nextToken());
+			short recipeId = Short.parseShort(st.nextToken());
 			int level = Integer.parseInt(st.nextToken());
 			
 			//material
@@ -285,7 +285,7 @@ public class RecipeController
 				recipePartList.add(rp);
 			}
 			
-			int itemId = Integer.parseInt(st.nextToken());
+			short itemId = Short.parseShort(st.nextToken());
 			int count = Integer.parseInt(st.nextToken());
 			
 			//npc fee
@@ -767,7 +767,7 @@ public class RecipeController
 		
 		private void RewardPlayer()
 		{
-			int itemId = recipeList.getItemId();
+			short itemId = recipeList.getItemId();
 			int itemCount = recipeList.getCount();
 			
 			L2ItemInstance createdItem = target.getInventory().addItem("Manufacture", itemId, itemCount,

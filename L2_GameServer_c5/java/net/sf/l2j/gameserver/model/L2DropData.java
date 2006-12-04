@@ -32,7 +32,7 @@ public class L2DropData
 {
 	public static final int MAX_CHANCE = 1000000;
 
-	private int _itemId;
+	private short _itemId;
 	private int _mindrop;
 	private int _maxdrop;
 	private boolean _sweep;
@@ -44,7 +44,7 @@ public class L2DropData
      * Returns the ID of the item dropped
      * @return int
      */
-	public int getItemId()
+	public short getItemId()
 	{
 		return _itemId;
 	}
@@ -53,7 +53,7 @@ public class L2DropData
 	 * Sets the ID of the item dropped
 	 * @param itemId : int designating the ID of the item
 	 */
-	public void setItemId(int itemId)
+	public void setItemId(short itemId)
 	{
 		_itemId = itemId;
 	}

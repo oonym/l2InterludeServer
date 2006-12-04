@@ -72,7 +72,7 @@ public class RequestEnchantItem extends ClientBasePacket
         int itemType2 = item.getItem().getType2();
         boolean enchantItem = false;
         boolean blessedScroll = false;
-        int crystalId = 0;
+        short crystalId = 0;
         
         /** pretty code ;D */
         switch (item.getItem().getCrystalType())

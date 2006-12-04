@@ -277,7 +277,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
             
             String id = st0.nextToken();
             while(st.hasMoreElements()){
-                regardTeam(activeChar, Integer.parseInt(st.nextToken()),Integer.parseInt(n), Integer.parseInt(id), type);
+                regardTeam(activeChar, Integer.parseInt(st.nextToken()),Integer.parseInt(n), Short.parseShort(id), type);
             }
             showEventControl(activeChar);
         }
@@ -604,7 +604,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
        }
        
    }
-   private void createItem(L2PcInstance activeChar, L2PcInstance player, int id, int num)
+   private void createItem(L2PcInstance activeChar, L2PcInstance player, short id, int num)
     {
 	   player.getInventory().addItem("Event", id, num, player, activeChar);
         ItemList il = new ItemList(player, true);
@@ -620,7 +620,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
         player.sendPacket(adminReply);
     }
    
-   void regardTeam(L2PcInstance activeChar, int team, int n, int id, String type){
+   void regardTeam(L2PcInstance activeChar, int team, int n, short id, String type){
        LinkedList linked = L2Event.players.get(team);
        int temp = n;
        Iterator it = linked.iterator();

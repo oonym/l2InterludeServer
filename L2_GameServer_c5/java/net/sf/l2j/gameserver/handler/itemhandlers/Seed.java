@@ -16,7 +16,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Seed implements IItemHandler
 {
-    private static int[] _itemIds = { // generic seeds (lo-grade)
+    private static short[] _itemIds = { // generic seeds (lo-grade)
                                       5016,5017,5018,5019,5020,5021,5022,5023,5024,
                                       5025,5026,5027,5028,5029,5030,5031,5032,5033,
                                       5034,5035,5036,5037,5038,5039,5040,5041,5042,
@@ -85,7 +85,7 @@ public class Seed implements IItemHandler
         }
     }
     
-    public int[] getItemIds()
+    public short[] getItemIds()
     {
         return _itemIds;
     }

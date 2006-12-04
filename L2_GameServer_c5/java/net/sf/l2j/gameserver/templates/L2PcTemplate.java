@@ -42,11 +42,11 @@ public class L2PcTemplate extends L2CharTemplate {
 	
 	public final int    spawnX;
 	public final int    spawnY;
-	public final int    spawnZ;
+	public final short    spawnZ;
 	
 	public final boolean isMale;
 	
-	public final int     classBaseLevel;
+	public final byte     classBaseLevel;
 	public final float   lvlHpAdd;
 	public final float   lvlHpMod;
 	public final float   lvlCpAdd;
@@ -67,11 +67,11 @@ public class L2PcTemplate extends L2CharTemplate {
 		
 		spawnX    = set.getInteger("spawnX");
 		spawnY    = set.getInteger("spawnY");
-		spawnZ    = set.getInteger("spawnZ");
+		spawnZ    = set.getShort("spawnZ");
 		
 		isMale    = set.getBool  ("isMale", true);
 
-		classBaseLevel = set.getInteger("classBaseLevel");
+		classBaseLevel = set.getByte("classBaseLevel");
 		lvlHpAdd  = set.getFloat("lvlHpAdd");
 		lvlHpMod  = set.getFloat("lvlHpMod");
         lvlCpAdd  = set.getFloat("lvlCpAdd");
@@ -84,7 +84,7 @@ public class L2PcTemplate extends L2CharTemplate {
 	 * add starter equipment
 	 * @param i
 	 */
-	public void addItem(int itemId)
+	public void addItem(short itemId)
 	{
 		L2Item item = ItemTable.getInstance().getTemplate(itemId);
 		if (item != null)

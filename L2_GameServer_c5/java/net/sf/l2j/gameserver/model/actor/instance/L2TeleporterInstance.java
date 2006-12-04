@@ -193,6 +193,16 @@ public final class L2TeleporterInstance extends L2FolkInstance
                 player.sendPacket(sm);
                 return;
             }
+            else if (list.getIsForNoble() && !player.isNoble())
+            {
+            	String filename = "data/html/teleporter/nobleteleporter-no.htm";
+            	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+                html.setFile(filename);
+                html.replace("%objectId%", String.valueOf(getObjectId()));
+                html.replace("%npcname%", getName());
+                player.sendPacket(html);
+            	return;
+            }
             else if (player.reduceAdena("Teleport", list.getPrice(), this, true))
             {
                 if (Config.DEBUG)

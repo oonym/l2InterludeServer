@@ -35,7 +35,7 @@ public class L2RecipeList
 	private int _level;
 
 	/** The Identifier of the L2RecipeList */
-	private int _recipeId;
+	private short _recipeId;
 
 	/** The name of the L2RecipeList */
 	private String _recipeName;
@@ -47,7 +47,7 @@ public class L2RecipeList
 	private int _mpCost;
 
 	/** The Identifier of the Item crafted with this L2RecipeList */
-	private int _itemId;
+	private short _itemId;
 
 	/** The quantity of Item crafted when using this L2RecipeList */
 	private int _count;
@@ -58,7 +58,7 @@ public class L2RecipeList
 	/**
 	 * Constructor of L2RecipeList (create a new Recipe).<BR><BR>
 	 */
-	public L2RecipeList(int id, int level, int recipeId, String recipeName, int successRate, int mpCost, int itemId, int count, boolean isDwarvenRecipe)
+	public L2RecipeList(int id, int level, short recipeId, String recipeName, int successRate, int mpCost, short itemId, int count, boolean isDwarvenRecipe)
 	{
 		_id = id;
 		_recipes = new L2RecipeInstance[0];
@@ -104,7 +104,7 @@ public class L2RecipeList
 	/**
 	 * Return the Identifier of the L2RecipeList.<BR><BR>
 	 */
-	public int getRecipeId()
+	public short getRecipeId()
 	{
 		return _recipeId;
 	}
@@ -148,7 +148,7 @@ public class L2RecipeList
 	/**
 	 * Return the Identifier of the Item crafted with this L2RecipeList.<BR><BR>
 	 */
-	public int getItemId()
+	public short getItemId()
 	{
 		return _itemId;
 	}

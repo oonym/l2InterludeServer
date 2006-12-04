@@ -57,7 +57,7 @@ public class EventDroplist
         DateRange dateRange;
 		
 		/** The table containing Item identifier that can be dropped as extra Items during the Event */
-	    public int[] items;
+	    public short[] items;
 	    
 		/** The min number of Item dropped in one time during this Event */
 		public int min;
@@ -90,7 +90,7 @@ public class EventDroplist
 	 * @param range The DateRange object to add to this DateDrop
 	 * 
 	 */
-	public void addGlobalDrop(int[] items, int[] count, int chance, DateRange range)
+	public void addGlobalDrop(short[] items, int[] count, int chance, DateRange range)
 	{
 		
 	    DateDrop date = new DateDrop();

@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.util.Broadcast;
 
 public class RollingDice implements IItemHandler
 {
-	private static int[] _itemIds = { 4625, 4626, 4627, 4628 };
+	private static short[] _itemIds = { 4625, 4626, 4627, 4628 };
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
@@ -73,7 +73,7 @@ public class RollingDice implements IItemHandler
 			    activeChar.getParty().broadcastToPartyMembers(activeChar,sm);
 		}
 	}
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

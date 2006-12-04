@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.script.IntList;
 import net.sf.l2j.gameserver.script.Parser;
 import net.sf.l2j.gameserver.script.ParserFactory;
 import net.sf.l2j.gameserver.script.ScriptEngine;
+import net.sf.l2j.gameserver.script.ShortList;
 
 import org.apache.bsf.BSFManager;
 import org.w3c.dom.Node;
@@ -106,7 +107,7 @@ public class FaenorEventParser extends FaenorParser
         
         try
         {
-            int[] items         = IntList.parse(attribute(drop, "Items"));
+            short[] items         = ShortList.parse(attribute(drop, "Items"));
             int[] count         = IntList.parse(attribute(drop, "Count"));
             double chance       = getPercent(attribute(drop, "Chance"));
             

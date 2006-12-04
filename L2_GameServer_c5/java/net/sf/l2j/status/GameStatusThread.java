@@ -458,7 +458,7 @@ public class GameStatusThread extends Thread
                     try
                     {
                         L2PcInstance player = L2World.getInstance().getPlayer(st.nextToken());
-                        int itemId = Integer.parseInt(st.nextToken());
+                        short itemId = Short.parseShort(st.nextToken());
                         int amount = Integer.parseInt(st.nextToken());
                         
                         if(player != null)

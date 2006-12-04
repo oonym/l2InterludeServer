@@ -32,7 +32,7 @@ public abstract class BasePacket implements Cloneable {
 	public static class ItemRequest
 	{
 		int _objectId;
-		int _itemId;
+		short _itemId;
 		int _count;
 		int _price;
 
@@ -43,7 +43,7 @@ public abstract class BasePacket implements Cloneable {
 			_price = price;
 		}
 
-		public ItemRequest(int objectId, int itemId, int count, int price)
+		public ItemRequest(int objectId, short itemId, int count, int price)
 		{
 			_objectId = objectId;
 			_itemId = itemId;
@@ -52,7 +52,7 @@ public abstract class BasePacket implements Cloneable {
 		}
 
 		public int getObjectId(){return _objectId;}
-		public int getItemId(){return _itemId;}
+		public short getItemId(){return _itemId;}
 		public void setCount(int count){_count = count;}
 		public int getCount(){return _count;}
 		public int getPrice(){return _price;}

@@ -7,13 +7,13 @@ package net.sf.l2j.gameserver.model;
  */
 public class FishDropData
 {
-	private final int _fishId;
-	private final int _rewarditemId;
+	private final short _fishId;
+	private final short _rewarditemId;
 	private final int _drop;
 	private final int _minchance;
 	private final int _maxchance;
 
-	public FishDropData(int fishid, int itemid, int drop, int minchance, int maxchance)
+	public FishDropData(short fishid, short itemid, int drop, int minchance, int maxchance)
 	{
 		_fishId = fishid;
 		_rewarditemId = itemid;
@@ -22,11 +22,11 @@ public class FishDropData
 		_maxchance = maxchance;
 
 	}
-	public int getFishId()
+	public short getFishId()
 	{
 		return _fishId;
 	}
-	public int getRewardItemId()
+	public short getRewardItemId()
 	{
 		return _rewarditemId;
 	}

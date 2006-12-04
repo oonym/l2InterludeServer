@@ -9,16 +9,16 @@ package net.sf.l2j.gameserver.templates;
 public class L2HelperBuff
 {
     /** Min level that the player must achieve to obtain this buff from Newbie Helper */
-    private int _lowerLevel;
+    private byte _lowerLevel;
     
     /** Max level that the player mustn't exceed if it want to obtain this buff from Newbie Helper */
-    private int _upperLevel;
+    private byte _upperLevel;
     
     /** Identifier of the skill (buff) that the Newbie Helper must cast */
     private int _skillID;
     
     /** Level of the skill (buff) that the Newbie Helper must cast */
-    private int _skillLevel;
+    private byte _skillLevel;
     
     /** If True only Magus class will obtain this Buff <BR>
      *  If False only Fighter class will obtain this Buff */
@@ -31,10 +31,10 @@ public class L2HelperBuff
     public L2HelperBuff(StatsSet set)
     {
         
-        _lowerLevel          = set.getInteger("lowerLevel");
-        _upperLevel          = set.getInteger("upperLevel");
+        _lowerLevel          = set.getByte("lowerLevel");
+        _upperLevel          = set.getByte("upperLevel");
         _skillID             = set.getInteger("skillID");
-        _skillLevel          = set.getInteger("skillLevel");
+        _skillLevel          = set.getByte("skillLevel");
         
         if("false".equals(set.getString("isMagicClass")))
             _isMagicClass = false;
@@ -59,7 +59,7 @@ public class L2HelperBuff
      */
     public void setLowerLevel(int lowerLevel)
     {
-        _lowerLevel = lowerLevel;
+        _lowerLevel = (byte)lowerLevel;
     }
     
 
@@ -78,7 +78,7 @@ public class L2HelperBuff
      */
     public void setUpperLevel(int upperLevel)
     {
-        _upperLevel = upperLevel;
+        _upperLevel = (byte)upperLevel;
     }
     
     
@@ -116,7 +116,7 @@ public class L2HelperBuff
      */
     public void setSkillLevel(int skillLevel)
     {
-        _skillLevel = skillLevel;
+        _skillLevel = (byte)skillLevel;
     }
     
     

@@ -213,7 +213,7 @@ public class NpcTable
                     }
 			        dropDat = new L2DropData();
 			        
-			        dropDat.setItemId(dropData.getInt("itemId"));
+			        dropDat.setItemId(dropData.getShort("itemId"));
 			        dropDat.setMinDrop(dropData.getInt("min"));
 			        dropDat.setMaxDrop(dropData.getInt("max"));
 			        dropDat.setSweep(dropData.getInt("sweep") == 1);

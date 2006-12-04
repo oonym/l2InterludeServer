@@ -39,8 +39,8 @@ public class RequestAutoSoulShot extends ClientBasePacket
     private static Logger _log = Logger.getLogger(RequestAutoSoulShot.class.getName());
 
     // format  cd
-    private final int _itemId;
-    private final int _type; // 1 = on : 0 = off;
+    private final short _itemId;
+    private final byte _type; // 1 = on : 0 = off;
 
     /**
      * packet type id 0xcf
@@ -50,8 +50,8 @@ public class RequestAutoSoulShot extends ClientBasePacket
     public RequestAutoSoulShot(ByteBuffer buf, ClientThread client)
     {
         super(buf, client);
-        _itemId = readD();
-        _type = readD();
+        _itemId = (short)readD();
+        _type = (byte)readD();
     }
 
     void runImpl()

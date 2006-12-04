@@ -35,15 +35,15 @@ public class L2HennaInstance
 	
 	private L2Henna _template;
 	private int _symbolId;
-	private int _itemIdDye;
+	private short _itemIdDye;
 	private int _price;
-	private int _statINT;
-	private int _statSTR;
-	private int _statCON;
-	private int _statMEM;
-	private int _statDEX;
-	private int _statWIT;
-	private int _amountDyeRequire;
+	private byte _statINT;
+	private byte _statSTR;
+	private byte _statCON;
+	private byte _statMEM;
+	private byte _statDEX;
+	private byte _statWIT;
+	private byte _amountDyeRequire;
 	
 	public L2HennaInstance(L2Henna template)
 	{
@@ -95,23 +95,23 @@ public class L2HennaInstance
 		_symbolId = SymbolId;
 	}
 	
-	public int getItemIdDye()
+	public short getItemIdDye()
     {
         return _itemIdDye;
     }
 	
-	public void setItemIdDye(int ItemIdDye)
+	public void setItemIdDye(short ItemIdDye)
 	{
 		_itemIdDye = ItemIdDye;
 	}
 	
 	
-	public int getAmountDyeRequire()
+	public byte getAmountDyeRequire()
 	{
 		return _amountDyeRequire;
 	}
 	
-	public void setAmountDyeRequire(int AmountDyeRequire)
+	public void setAmountDyeRequire(byte AmountDyeRequire)
 	{
 		_amountDyeRequire = AmountDyeRequire;
 	}
@@ -127,62 +127,62 @@ public class L2HennaInstance
 	}
 	
 	
-	public int getStatINT()
+	public byte getStatINT()
 	{
 		return _statINT;
 	}
 	
-	public void setStatINT(int StatINT)
+	public void setStatINT(byte StatINT)
 	{
 		_statINT = StatINT;
 	}
 
-	public int getStatSTR()
+	public byte getStatSTR()
 	{
 		return _statSTR;
 	}
 	
-	public void setStatSTR(int StatSTR)
+	public void setStatSTR(byte StatSTR)
 	{
 		_statSTR = StatSTR;
 	}
 	
-	public int getStatCON()
+	public byte getStatCON()
 	{
 		return _statCON;
 	}
 	
-	public void setStatCON(int StatCON)
+	public void setStatCON(byte StatCON)
 	{
 		_statCON = StatCON;
 	}
 	
-	public int getStatMEM()
+	public byte getStatMEM()
 	{
 		return _statMEM;
 	}
 	
-	public void setStatMEM(int StatMEM)
+	public void setStatMEM(byte StatMEM)
 	{
 		_statMEM = StatMEM;
 	}
 	
-	public int getStatDEX()
+	public byte getStatDEX()
 	{
 		return _statDEX;
 	}
 	
-	public void setStatDEX(int StatDEX)
+	public void setStatDEX(byte StatDEX)
 	{
 		_statDEX = StatDEX;
 	}
 	
-	public int getStatWIT()
+	public byte getStatWIT()
 	{
 		return _statWIT;
 	}
 	
-	public void setStatWIT(int StatWIT)
+	public void setStatWIT(byte StatWIT)
 	{
 		_statWIT = StatWIT;
 	}

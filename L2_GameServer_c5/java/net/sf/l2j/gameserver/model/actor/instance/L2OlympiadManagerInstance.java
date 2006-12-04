@@ -42,7 +42,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
 {
     private static Logger _logOlymp = Logger.getLogger(L2OlympiadManagerInstance.class.getName());
     
-    private static final int _gatePass = 6651;
+    private static final short _gatePass = 6651;
     
     public L2OlympiadManagerInstance (int objectId, L2NpcTemplate template)
     {

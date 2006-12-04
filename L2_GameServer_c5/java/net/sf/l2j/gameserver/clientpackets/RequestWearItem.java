@@ -65,7 +65,7 @@ public class RequestWearItem extends ClientBasePacket
     private int _count;
     
     /** Table of ItemId containing all Item to Wear */
-    private final int[] _items;
+    private final short[] _items;
     
     /** Player that request a Try on */
     protected final L2PcInstance _player;
@@ -103,13 +103,13 @@ public class RequestWearItem extends ClientBasePacket
 		if (_count < 0) _count = 0;
 
         // Create _items table that will contain all ItemID to Wear
-        _items = new int[_count];
+        _items = new short[_count];
         
         // Fill _items table with all ItemID to Wear
         for (int i = 0; i < _count; i++)
         {
             int itemId = readD(); 
-            _items[i] = itemId;
+            _items[i] = (short)itemId;
         }
     }
     
@@ -187,7 +187,7 @@ public class RequestWearItem extends ClientBasePacket
 				return;
 			}
 			
-            L2Item template = ItemTable.getInstance().getTemplate(itemId);
+            L2Item template = ItemTable.getInstance().getTemplate((short)itemId);
             weight += template.getWeight();
             slots++;
 
@@ -224,7 +224,7 @@ public class RequestWearItem extends ClientBasePacket
 		InventoryUpdate playerIU = new InventoryUpdate();
 		for (int i=0; i < _count; i++)
 		{
-			int itemId = _items[i];
+			short itemId = _items[i];
 			
 			if (!list.containsItemId(itemId))
 			{

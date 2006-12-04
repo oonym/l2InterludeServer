@@ -73,7 +73,7 @@ public class RequestPrivateStoreSell extends ClientBasePacket
 			    _items = null;
 			    return;
 			}
-			_items[i] = new ItemRequest(objectId, itemId, (int)count, price);
+			_items[i] = new ItemRequest(objectId, (short)itemId, (int)count, price);
 			priceTotal += price * count;
 		}
         

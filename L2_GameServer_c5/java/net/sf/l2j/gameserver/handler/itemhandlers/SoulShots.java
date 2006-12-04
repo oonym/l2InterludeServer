@@ -39,8 +39,8 @@ import net.sf.l2j.gameserver.util.Broadcast;
 public class SoulShots implements IItemHandler
 {
     // All the item IDs that this handler knows.
-	private static int[] _itemIds = {5789, 1835, 1463, 1464, 1465, 1466, 1467 };
-	private static int[] _skillIds = {2039, 2150, 2151, 2152, 2153, 2154 };
+	private static short[] _itemIds = {5789, 1835, 1463, 1464, 1465, 1466, 1467 };
+	private static short[] _skillIds = {2039, 2150, 2151, 2152, 2153, 2154 };
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -52,7 +52,7 @@ public class SoulShots implements IItemHandler
 		L2PcInstance activeChar = (L2PcInstance)playable;
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
 		L2Weapon weaponItem = activeChar.getActiveWeaponItem();
-        int itemId = item.getItemId();
+        short itemId = item.getItemId();
 		
         // Check if Soulshot can be used
 		if (weaponInst == null || weaponItem.getSoulShotCount() == 0)
@@ -106,7 +106,7 @@ public class SoulShots implements IItemHandler
         Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUser(activeChar, activeChar, _skillIds[weaponGrade], 1, 0, 0), 360000/*600*/);
 	}
 	
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

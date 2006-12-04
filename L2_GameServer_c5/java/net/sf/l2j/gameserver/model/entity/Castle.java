@@ -644,7 +644,7 @@ public class Castle
             
             while(rs.next())
             {
-                _procure.add(new CropProcure(rs.getInt("cropId"),rs.getInt("canBuy"),rs.getInt("rewardType")));
+                _procure.add(new CropProcure(rs.getShort("cropId"),rs.getInt("canBuy"),rs.getInt("rewardType")));
             }
             
             statement.close();

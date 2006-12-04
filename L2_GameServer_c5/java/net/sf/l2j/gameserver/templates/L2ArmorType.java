@@ -30,7 +30,7 @@ public enum L2ArmorType {
 	MAGIC     ( 4, "Magic"),
     PET       ( 5, "Pet");
 	
-	final int _id;
+	final byte _id;
 	final String _name;
 	
 	/**
@@ -40,7 +40,7 @@ public enum L2ArmorType {
 	 */
 	L2ArmorType(int id, String name)
 	{
-		_id = id;
+		_id = (byte)id;
 		_name = name;
 	}
 	

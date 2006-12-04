@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.skills.EffectCharge;
 
 public class EnergyStone implements IItemHandler 
 {
-    private static int[] _itemIds = { 5589 };
+    private static short[] _itemIds = { 5589 };
     private EffectCharge effect;
     private L2SkillCharge skill;
 
@@ -149,7 +149,7 @@ public class EnergyStone implements IItemHandler
     return null;
     }
 
-    public int[] getItemIds()
+    public short[] getItemIds()
     {
         return _itemIds;
     }

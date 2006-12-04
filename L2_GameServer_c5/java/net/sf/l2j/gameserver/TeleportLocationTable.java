@@ -61,7 +61,7 @@ public class TeleportLocationTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT Description, id, loc_x, loc_y, loc_z, price FROM teleport");
+			PreparedStatement statement = con.prepareStatement("SELECT Description, id, loc_x, loc_y, loc_z, price, fornoble FROM teleport");
 			ResultSet rset = statement.executeQuery();
 			L2TeleportLocation teleport;
 			
@@ -74,6 +74,7 @@ public class TeleportLocationTable
 				teleport.setLocY(rset.getInt("loc_y"));
 				teleport.setLocZ(rset.getInt("loc_z"));
 				teleport.setPrice(rset.getInt("price"));
+				teleport.setIsForNoble(rset.getInt("fornoble")==1);
 
 				_teleports.put(teleport.getTeleId(), teleport);
 			}

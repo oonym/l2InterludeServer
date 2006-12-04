@@ -199,7 +199,7 @@ public class RequestBuyItem extends ClientBasePacket
 				return;
 			}
 
-            L2Item template = ItemTable.getInstance().getTemplate(itemId);
+            L2Item template = ItemTable.getInstance().getTemplate((short)itemId);
             
             if (template == null) continue;
 
@@ -281,7 +281,7 @@ public class RequestBuyItem extends ClientBasePacket
 		// Proceed the purchase
 		for (int i=0; i < _count; i++)
 		{
-			int itemId = _items[i * 2 + 0];
+			short itemId = (short)_items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
 			if (count < 0) count = 0;
 			

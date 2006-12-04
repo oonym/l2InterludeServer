@@ -28,7 +28,7 @@ public class L2Fishing implements Runnable
 	private boolean thinking;
 	private int stop = 0;
 	// Fish datas
-	private int _FishID;
+	private short _FishID;
 	private int _FishMaxHP;
 	private int _FishCurHP;
 	private double _regenHP;

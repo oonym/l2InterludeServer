@@ -86,7 +86,7 @@ public class SetPrivateStoreListBuy extends ClientBasePacket
         int cost = 0;
         for (int i = 0; i < _count; i++)
         {
-            int itemId = _items[i * 3 + 0];
+            short itemId = (short)_items[i * 3 + 0];
             int count    = _items[i * 3 + 1];
             int price    = _items[i * 3 + 2];
 

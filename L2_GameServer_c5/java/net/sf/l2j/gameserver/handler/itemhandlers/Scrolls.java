@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Scrolls implements IItemHandler
 {
-   private static int[] _itemIds = { 3926, 3927, 3928, 3929, 3930, 3931, 3932, 
+   private static short[] _itemIds = { 3926, 3927, 3928, 3929, 3930, 3931, 3932, 
                                      3933, 3934, 3935, 4218, 5593, 5594, 5595, 6037 };
 
    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -192,7 +192,7 @@ public class Scrolls implements IItemHandler
 			activeChar.doCast(skill);
 		}
    }
-   public int[] getItemIds()
+   public short[] getItemIds()
    {
        return _itemIds;
    }

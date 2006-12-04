@@ -67,14 +67,14 @@ public class CursedWeaponsManager
 
 	// =========================================================
 	// Data Field
-	private Map<Integer, CursedWeapon> _cursedWeapons;
+	private Map<Short, CursedWeapon> _cursedWeapons;
 
 	// =========================================================
 	// Constructor
 	public CursedWeaponsManager()
 	{
 		_log.info("Initializing CursedWeaponsManager");
-		_cursedWeapons = new FastMap<Integer, CursedWeapon>();
+		_cursedWeapons = new FastMap<Short, CursedWeapon>();
 		
 		if (!Config.ALLOW_CURSED_WEAPONS) return;
 		
@@ -119,7 +119,7 @@ public class CursedWeaponsManager
                         if ("item".equalsIgnoreCase(d.getNodeName()))
                         {
                     		NamedNodeMap attrs = d.getAttributes();
-                        	int id = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
+                        	short id = Short.parseShort(attrs.getNamedItem("id").getNodeValue());
                         	int skillId = Integer.parseInt(attrs.getNamedItem("skillId").getNodeValue());
                         	String name = attrs.getNamedItem("name").getNodeValue();
                         	
@@ -419,7 +419,7 @@ public class CursedWeaponsManager
     	return _cursedWeapons.values();
     }
     
-    public Set<Integer> getCursedWeaponsIds()
+    public Set<Short> getCursedWeaponsIds()
     {
     	return _cursedWeapons.keySet();
     }

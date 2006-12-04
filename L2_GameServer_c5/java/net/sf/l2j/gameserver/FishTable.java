@@ -42,8 +42,8 @@ public class FishTable
 
 				while (Fishes.next())
 				{
-					int id = Fishes.getInt("id");
-					int lvl = Fishes.getInt("level");
+					short id = Fishes.getShort("id");
+					byte lvl = Fishes.getByte("level");
 					String name = Fishes.getString("name");
 					int hp = Fishes.getInt("hp");					
 					int hpreg = Fishes.getInt("hpregen");
@@ -77,8 +77,8 @@ public class FishTable
 
 				while (FishReward.next())
 				{
-					int fishid = FishReward.getInt("fishid");
-					int rewardid = FishReward.getInt("rewardid");
+					short fishid = FishReward.getShort("fishid");
+					short rewardid = FishReward.getShort("rewardid");
 					int drop = FishReward.getInt("count");
 					int minchance = FishReward.getInt("minchance");
 					int maxchance = FishReward.getInt("maxchance");
@@ -151,7 +151,7 @@ public class FishTable
 	{
 		return _FishRewards.size();
 	}
-	public int getFishIdfromList(int i)
+	public short getFishIdfromList(int i)
 	{
 		return _FishRewards.get(i).getFishId();
 	}

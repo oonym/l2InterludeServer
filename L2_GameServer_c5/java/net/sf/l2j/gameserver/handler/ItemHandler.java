@@ -32,7 +32,7 @@ public class ItemHandler
 	
 	private static ItemHandler _instance;
 	
-	private Map<Integer, IItemHandler> _datatable;
+	private Map<Short, IItemHandler> _datatable;
 	
 	/**
 	 * Create ItemHandler if doesn't exist and returns ItemHandler
@@ -61,7 +61,7 @@ public class ItemHandler
      */
 	private ItemHandler()
 	{
-		_datatable = new TreeMap<Integer, IItemHandler>();
+		_datatable = new TreeMap<Short, IItemHandler>();
 	}
 	
 	/**
@@ -74,20 +74,20 @@ public class ItemHandler
 	public void registerItemHandler(IItemHandler handler)
 	{
 		// Get all ID corresponding to the item type of the handler
-		int[] ids = handler.getItemIds();
+		short[] ids = handler.getItemIds();
 		// Add handler for each ID found
-		for (int i = 0; i < ids.length; i++)
+		for (short i = 0; i < ids.length; i++)
 		{
-			_datatable.put(new Integer(ids[i]), handler);
+			_datatable.put(new Short(ids[i]), handler);
 		}
 	}
 	
 	/**
 	 * Returns the handler of the item
-	 * @param itemId : int designating the itemID
+	 * @param itemId : short designating the itemID
 	 * @return IItemHandler
 	 */
-	public IItemHandler getItemHandler(int itemId)
+	public IItemHandler getItemHandler(short itemId)
 	{
 		return _datatable.get(new Integer(itemId));
 	}

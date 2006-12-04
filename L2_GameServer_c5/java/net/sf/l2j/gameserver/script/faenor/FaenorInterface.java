@@ -81,7 +81,7 @@ public class FaenorInterface implements EngineInterface
             throw new NullPointerException();
         }
         L2DropData drop = new L2DropData();
-        drop.setItemId(itemID);
+        drop.setItemId((short)itemID);
         drop.setMinDrop(min);
         drop.setMaxDrop(max);
         drop.setChance(chance);
@@ -105,7 +105,7 @@ public class FaenorInterface implements EngineInterface
             throw new NullPointerException();
         }
         L2DropData drop = new L2DropData();
-        drop.setItemId(itemID);
+        drop.setItemId((short)itemID);
         drop.setMinDrop(min);
         drop.setMaxDrop(max);
         drop.setSweep(sweep);
@@ -134,7 +134,7 @@ public class FaenorInterface implements EngineInterface
         return questDrops;
     }
     
-    public void addEventDrop(int[] items, int[] count, double chance, DateRange range)
+    public void addEventDrop(short[] items, int[] count, double chance, DateRange range)
     {
         EventDroplist.getInstance().addGlobalDrop(items, count, (int)(chance * L2DropData.MAX_CHANCE), range);
     }

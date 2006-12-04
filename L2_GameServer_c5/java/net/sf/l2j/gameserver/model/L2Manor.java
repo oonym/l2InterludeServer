@@ -71,7 +71,7 @@ public class L2Manor
         return -1;
     }
     
-    public int getCropType(int seedId)
+    public short getCropType(int seedId)
     {
         SeedData seed = _seeds.get(seedId);
 
@@ -130,9 +130,9 @@ public class L2Manor
      * @param castleId
      * @return
      */
-    public List<Integer> getCropForCastle(int castleId)
+    public List<Short> getCropForCastle(int castleId)
     {
-        List<Integer> crops =  new FastList<Integer>();
+        List<Short> crops =  new FastList<Short>();
         
         for(SeedData seed : _seeds.values())
         {
@@ -168,7 +168,7 @@ public class L2Manor
     
     private class SeedData
     {
-        public SeedData(int pLevel,int pCrop)
+        public SeedData(int pLevel,short pCrop)
         {
             this.level = pLevel;
             this.crop = pCrop;
@@ -191,7 +191,7 @@ public class L2Manor
         
         public int id;
         public int level;          // seed level
-        public int crop;           // crop type
+        public short crop;           // crop type
         public int type1;
         public int type2;
         public int type1amount;
@@ -255,7 +255,7 @@ public class L2Manor
 
         int seedId = Integer.parseInt(st.nextToken());  // seed id
         int level = Integer.parseInt(st.nextToken());   // seed level
-        int cropId = Integer.parseInt(st.nextToken());  // crop id
+        short cropId = Short.parseShort(st.nextToken());  // crop id
         int type1R = Integer.parseInt(st.nextToken());  // type I reward
         int type1A = Integer.parseInt(st.nextToken());  // type I reward amount
         int type2R = Integer.parseInt(st.nextToken());  // type II reward

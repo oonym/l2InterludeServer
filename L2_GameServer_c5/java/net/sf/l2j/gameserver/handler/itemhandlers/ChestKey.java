@@ -20,9 +20,9 @@ import net.sf.l2j.gameserver.serverpackets.SocialAction;
 
 public class ChestKey implements IItemHandler
 {
-	public static final int INTERACTION_DISTANCE = 100;
+	public static final byte INTERACTION_DISTANCE = 100;
 
-	private static int[] _itemIds = {5197, 5198, 5199, 5200, 5201, 5202, 5203, 5204, //chest key
+	private static short[] _itemIds = {5197, 5198, 5199, 5200, 5201, 5202, 5203, 5204, //chest key
 										6665, 6666, 6667, 6668, 6669, 6670, 6671, 6672 //deluxe key
 	};
 
@@ -459,7 +459,7 @@ public class ChestKey implements IItemHandler
 		chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
 	}
 
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

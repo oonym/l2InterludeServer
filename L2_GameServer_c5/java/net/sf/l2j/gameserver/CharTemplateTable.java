@@ -142,7 +142,7 @@ public class CharTemplateTable
 				{
 					if (rset.getInt("items"+x) != 0)
 					{
-						ct.addItem(rset.getInt("items"+x));
+						ct.addItem(rset.getShort("items"+x));
 					}
 				}
 				_templates.put(ct.classId.getId(), ct);
@@ -161,7 +161,7 @@ public class CharTemplateTable
 				{
 					if (rset.getInt(34+x) != 0)
 					{
-						ct.addItem(rset.getInt("items"+x));
+						ct.addItem(rset.getShort("items"+x));
 					}
 				}
 				_templates.put(ct.classId.getId() | 0x100, ct);

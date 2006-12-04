@@ -41,7 +41,7 @@ public interface IItemHandler
 	 * Returns the list of item IDs corresponding to the type of item.<BR><BR>
 	 * <B><I>Use :</I></U><BR>
 	 * This method is called at initialization to register all the item IDs automatically 
-	 * @return int[] designating all itemIds for a type of item.
+	 * @return short[] designating all itemIds for a type of item.
 	 */
-	public int[] getItemIds();
+	public short[] getItemIds();
 }

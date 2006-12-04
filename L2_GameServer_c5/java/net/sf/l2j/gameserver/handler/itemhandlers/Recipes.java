@@ -34,12 +34,12 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Recipes implements IItemHandler
 {
-    private static int[] _itemIds = null;
+    private static short[] _itemIds = null;
 
     public Recipes()
     {
         RecipeController rc = RecipeController.getInstance();
-        _itemIds = new int[rc.getRecipesCount()];
+        _itemIds = new short[rc.getRecipesCount()];
         for (int i = 0; i < rc.getRecipesCount(); i++)
         {
             _itemIds[i] = rc.getRecipeList(i).getRecipeId();
@@ -126,7 +126,7 @@ public class Recipes implements IItemHandler
         }
     }
 
-    public int[] getItemIds()
+    public short[] getItemIds()
     {
         return _itemIds;
     }

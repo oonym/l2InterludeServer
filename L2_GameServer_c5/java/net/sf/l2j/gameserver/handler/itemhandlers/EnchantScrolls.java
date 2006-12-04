@@ -10,7 +10,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class EnchantScrolls implements IItemHandler
 {
     
-	private static int[] _itemIds = {
+	private static short[] _itemIds = {
         729, 730, 731, 732, 6569, 6570, // a grade
         947, 948, 949, 950, 6571, 6572, // b grade
         951, 952, 953, 954, 6573, 6574, // c grade
@@ -31,7 +31,7 @@ public class EnchantScrolls implements IItemHandler
 		return;
 	}
 	
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

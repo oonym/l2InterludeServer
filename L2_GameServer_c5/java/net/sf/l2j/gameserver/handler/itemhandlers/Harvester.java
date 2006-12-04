@@ -15,7 +15,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Harvester implements IItemHandler
 {
-    private static int[] _itemIds = { 5125 };
+    private static short[] _itemIds = { 5125 };
     L2PcInstance player;
     L2MonsterInstance target;
     
@@ -73,7 +73,7 @@ public class Harvester implements IItemHandler
 
     }
     
-    public int[] getItemIds()
+    public short[] getItemIds()
     {
         return _itemIds;
     }

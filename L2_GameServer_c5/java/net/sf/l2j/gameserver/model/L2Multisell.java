@@ -64,7 +64,7 @@ public class L2Multisell
     public class MultiSellEntry
     {
         private int _entryId;
-        private int _productId;
+        private short _productId;
         private int _productCount;
         private int _productEnchant;
         private List<MultiSellIngredient> _ingredients = new FastList<MultiSellIngredient>();
@@ -88,7 +88,7 @@ public class L2Multisell
         /**
          * @param productId The productId to set.
          */
-        public void setProductId(int productId)
+        public void setProductId(short productId)
         {
             _productId = productId;
         }
@@ -96,7 +96,7 @@ public class L2Multisell
         /**
          * @return Returns the productId.
          */
-        public int getProductId()
+        public short getProductId()
         {
             return _productId;
         }
@@ -152,11 +152,11 @@ public class L2Multisell
 
     public class MultiSellIngredient
     {
-        private int _itemId;
+        private short _itemId;
         private int _itemCount;
         private int _itemEnchant;
 
-        public MultiSellIngredient(int itemId, int itemCount, int itemEnchant)
+        public MultiSellIngredient(short itemId, int itemCount, int itemEnchant)
         {
             setItemId(itemId);
             setItemCount(itemCount);
@@ -171,7 +171,7 @@ public class L2Multisell
         /**
          * @param itemId The itemId to set.
          */
-        public void setItemId(int itemId)
+        public void setItemId(short itemId)
         {
             _itemId = itemId;
         }
@@ -179,7 +179,7 @@ public class L2Multisell
         /**
          * @return Returns the itemId.
          */
-        public int getItemId()
+        public short getItemId()
         {
             return _itemId;
         }
@@ -342,7 +342,7 @@ public class L2Multisell
         {
             if ("ingredient".equalsIgnoreCase(n.getNodeName()))
             {
-                int id = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
+                short id = Short.parseShort(n.getAttributes().getNamedItem("id").getNodeValue());
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
                 int enchant = Integer.parseInt(n.getAttributes().getNamedItem("enchant").getNodeValue());
 
@@ -351,7 +351,7 @@ public class L2Multisell
             }
             else if ("production".equalsIgnoreCase(n.getNodeName()))
             {
-                int id = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
+                short id = Short.parseShort(n.getAttributes().getNamedItem("id").getNodeValue());
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
                 int enchant = Integer.parseInt(n.getAttributes().getNamedItem("enchant").getNodeValue());
 

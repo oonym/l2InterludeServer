@@ -13,8 +13,8 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class PcInventory extends Inventory 
 {
-    public static final int ADENA_ID = 57;
-    public static final int ANCIENT_ADENA_ID = 5575;
+    public static final byte ADENA_ID = 57;
+    public static final short ANCIENT_ADENA_ID = 5575;
 	
 	private final L2PcInstance _owner;
 	private L2ItemInstance _adena;
@@ -200,7 +200,7 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item or the updated item in inventory
      */
-    public L2ItemInstance addItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
+    public L2ItemInstance addItem(String process, short itemId, int count, L2PcInstance actor, L2Object reference)
     {
         L2ItemInstance item = super.addItem(process, itemId, count, actor, reference);
         

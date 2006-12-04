@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class ScrollOfResurrection implements IItemHandler 
 { 
     // all the items ids that this handler knows 
-    private final static int[] _itemIds = { 737, 3936, 3959, 6387 }; 
+    private final static short[] _itemIds = { 737, 3936, 3959, 6387 }; 
     
     /* (non-Javadoc) 
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance) 
@@ -161,7 +161,7 @@ public class ScrollOfResurrection implements IItemHandler
         }
     } 
     	
-    public int[] getItemIds() 
+    public short[] getItemIds() 
     { 
         return _itemIds; 
     } 

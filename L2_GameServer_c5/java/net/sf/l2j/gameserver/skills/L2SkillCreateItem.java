@@ -19,14 +19,14 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 public class L2SkillCreateItem extends L2Skill
 {
     private static final Random _rnd = new Random();
-    private final int[] create_item_id;
+    private final short[] create_item_id;
     private final int create_item_count;
     private final int random_count;
 
     public L2SkillCreateItem(StatsSet set)
     {
         super(set);
-        create_item_id = set.getIntegerArray("create_item_id");
+        create_item_id = set.getShortArray("create_item_id");
         create_item_count = set.getInteger("create_item_count", 0);
         random_count = set.getInteger("random_count", 1);
     }  
@@ -58,7 +58,7 @@ public class L2SkillCreateItem extends L2Skill
      * @param itemId
      * @param count
      */
-    public void giveItems(L2PcInstance activeChar, int itemId, int count)
+    public void giveItems(L2PcInstance activeChar, short itemId, int count)
     {
         L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
         if (item == null) return;

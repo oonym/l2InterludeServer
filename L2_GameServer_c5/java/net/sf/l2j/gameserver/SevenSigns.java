@@ -37,33 +37,33 @@ public class SevenSigns
 	public static final String SEVEN_SIGNS_DATA_FILE = "config/signs.properties";
 	public static final String SEVEN_SIGNS_HTML_PATH = "data/html/seven_signs/";
 	
-	public static final int CABAL_NULL = 0;
-	public static final int CABAL_DUSK = 1;
-	public static final int CABAL_DAWN = 2;	
+	public static final byte CABAL_NULL = 0;
+	public static final byte CABAL_DUSK = 1;
+	public static final byte CABAL_DAWN = 2;	
 	
-	public static final int SEAL_NULL = 0;
-	public static final int SEAL_AVARICE = 1;
-	public static final int SEAL_GNOSIS = 2;
-	public static final int SEAL_STRIFE = 3;
+	public static final byte SEAL_NULL = 0;
+	public static final byte SEAL_AVARICE = 1;
+	public static final byte SEAL_GNOSIS = 2;
+	public static final byte SEAL_STRIFE = 3;
 
-	public static final int PERIOD_COMP_RECRUITING = 0;
-	public static final int PERIOD_COMPETITION = 1;
-	public static final int PERIOD_COMP_RESULTS = 2;
-	public static final int PERIOD_SEAL_VALIDATION = 3;
+	public static final byte PERIOD_COMP_RECRUITING = 0;
+	public static final byte PERIOD_COMPETITION = 1;
+	public static final byte PERIOD_COMP_RESULTS = 2;
+	public static final byte PERIOD_SEAL_VALIDATION = 3;
     
-	public static final int PERIOD_START_HOUR = 18;
-	public static final int PERIOD_START_MINS = 00;
-    public static final int PERIOD_START_DAY = Calendar.MONDAY;
+	public static final byte PERIOD_START_HOUR = 18;
+	public static final byte PERIOD_START_MINS = 00;
+    public static final byte PERIOD_START_DAY = Calendar.MONDAY;
 
     // The quest event and seal validation periods last for approximately one week
     // with a 1 hour "interval" period sandwiched between them.
     public static final int PERIOD_MINOR_LENGTH = 3600000;
     public static final int PERIOD_MAJOR_LENGTH = 604800000 - PERIOD_MINOR_LENGTH;
 	
-	public static final int ANCIENT_ADENA_ID = 5575;
-	public static final int RECORD_SEVEN_SIGNS_ID = 5707;
-    public static final int CERTIFICATE_OF_APPROVAL_ID = 6388;
-	public static final int RECORD_SEVEN_SIGNS_COST = 500;
+	public static final short ANCIENT_ADENA_ID = 5575;
+	public static final short RECORD_SEVEN_SIGNS_ID = 5707;
+    public static final short CERTIFICATE_OF_APPROVAL_ID = 6388;
+	public static final short RECORD_SEVEN_SIGNS_COST = 500;
     public static final int ADENA_JOIN_DAWN_COST = 50000;
 
     // NPC Related Constants \\
@@ -103,9 +103,9 @@ public class SevenSigns
     
 	private Map<Integer, StatsSet> _signsPlayerData;
 	
-	private Map<Integer, Integer> _signsSealOwners;
-	private Map<Integer, Integer> _signsDuskSealTotals;
-	private Map<Integer, Integer> _signsDawnSealTotals;
+	private Map<Byte, Integer> _signsSealOwners;
+	private Map<Byte, Integer> _signsDuskSealTotals;
+	private Map<Byte, Integer> _signsDawnSealTotals;
     
     private static AutoSpawnInstance _merchantSpawn;
     private static AutoSpawnInstance _blacksmithSpawn;
@@ -120,9 +120,9 @@ public class SevenSigns
 	public SevenSigns() 
 	{
 		_signsPlayerData = new FastMap<Integer, StatsSet>();
-		_signsSealOwners = new FastMap<Integer, Integer>();
-		_signsDuskSealTotals = new FastMap<Integer, Integer>();
-		_signsDawnSealTotals = new FastMap<Integer, Integer>();		
+		_signsSealOwners = new FastMap<Byte, Integer>();
+		_signsDuskSealTotals = new FastMap<Byte, Integer>();
+		_signsDawnSealTotals = new FastMap<Byte, Integer>();		
 		
 		try 
 		{
@@ -494,7 +494,7 @@ public class SevenSigns
 		return 0;
 	}
 	
-	public final int getCabalHighestScore() 
+	public final byte getCabalHighestScore() 
 	{
 		if (getCurrentScore(CABAL_DUSK) == getCurrentScore(CABAL_DAWN))
 			return CABAL_NULL;
@@ -581,7 +581,7 @@ public class SevenSigns
 		return getPlayerData(player).getInteger("seal");
 	}
 
-	public int getPlayerCabal(L2PcInstance player) 
+	public byte getPlayerCabal(L2PcInstance player) 
 	{
 		if (!hasRegisteredBefore(player)) 
 			return CABAL_NULL;
@@ -848,7 +848,7 @@ public class SevenSigns
 	 * @param chosenSeal
 	 * @return int cabal
 	 */
-	public int setPlayerInfo(L2PcInstance player, int chosenCabal, int chosenSeal)
+	public int setPlayerInfo(L2PcInstance player, byte chosenCabal, byte chosenSeal)
 	{
 		int charObjId = player.getObjectId();
 		Connection con = null;
@@ -1073,7 +1073,7 @@ public class SevenSigns
      */
     protected void initializeSeals()
 	{
-		for (Integer currSeal : _signsSealOwners.keySet())
+		for (byte currSeal : _signsSealOwners.keySet())
 		{
 			int sealOwner = _signsSealOwners.get(currSeal);
 			
@@ -1115,7 +1115,7 @@ public class SevenSigns
 			_log.info("SevenSigns: (Strife) Dawn = " + _signsDawnSealTotals.get(SEAL_STRIFE) + ", Dusk = " + _signsDuskSealTotals.get(SEAL_STRIFE));
 		}
 		
-		for (Integer currSeal : _signsDawnSealTotals.keySet()) 
+		for (byte currSeal : _signsDawnSealTotals.keySet()) 
 		{
 			int prevSealOwner = _signsSealOwners.get(currSeal);
 			int newSealOwner = CABAL_NULL;

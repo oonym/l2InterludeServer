@@ -110,7 +110,7 @@ public class RequestDestroyItem extends ClientBasePacket
 
 		if (itemToRemove == null || itemToRemove.isWear()) return;
         
-        int itemId = itemToRemove.getItemId();
+        short itemId = itemToRemove.getItemId();
         
         if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
             return;

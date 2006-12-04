@@ -43,7 +43,7 @@ public class CursedWeapon
 	private static final Logger _log = Logger.getLogger(CursedWeaponsManager.class.getName());
 
 	private final String _name;
-	private final int _itemId;
+	private final short _itemId;
 	private final int _skillId;
 	private final int _skillMaxLevel;
 	private int _dropRate;
@@ -68,7 +68,7 @@ public class CursedWeapon
 	
 	// =========================================================
 	// Constructor
-	public CursedWeapon(int itemId, int skillId, String name)
+	public CursedWeapon(short itemId, int skillId, String name)
 	{
 		_name = name;
 		_itemId = itemId;

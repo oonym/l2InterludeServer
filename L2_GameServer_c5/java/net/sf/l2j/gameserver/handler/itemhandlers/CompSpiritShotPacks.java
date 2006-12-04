@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class CompSpiritShotPacks implements IItemHandler
 {
-	private static int[] _itemIds = { 5140, 5141, 5142, 5143, 5144, 5145, 5256, 5257, 5258, 5259, 5260, 5261 };
+	private static short[] _itemIds = { 5140, 5141, 5142, 5143, 5144, 5145, 5256, 5257, 5258, 5259, 5260, 5261 };
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
@@ -41,15 +41,15 @@ public class CompSpiritShotPacks implements IItemHandler
 			return;
 		L2PcInstance activeChar = (L2PcInstance)playable;
 
-	    int itemId = item.getItemId();
-	    int itemToCreateId;
+	    short itemId = item.getItemId();
+	    short itemToCreateId;
 	    int amount;
 	    
 	    if (itemId < 5200){ // Normal Compressed Package of SpiritShots
-    		itemToCreateId = itemId - 2631; // Gives id of matching item for this pack
+    		itemToCreateId = (short)(itemId - 2631); // Gives id of matching item for this pack
     		amount = 300;
 	    }else{  // Greater Compressed Package of Spirithots
-     		itemToCreateId = itemId - 2747; // Gives id of matching item for this pack
+     		itemToCreateId = (short)(itemId - 2747); // Gives id of matching item for this pack
 	    	amount = 1000;
 	    }
 
@@ -64,7 +64,7 @@ public class CompSpiritShotPacks implements IItemHandler
         ItemList playerUI = new ItemList(activeChar, false);
 		activeChar.sendPacket(playerUI);
 	}
-	public int[] getItemIds()
+	public short[] getItemIds()
 	{
 		return _itemIds;
 	}

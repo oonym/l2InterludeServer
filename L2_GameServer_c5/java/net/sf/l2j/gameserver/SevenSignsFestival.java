@@ -69,20 +69,20 @@ public class SevenSignsFestival implements SpawnListener
     public static final long FESTIVAL_SIGNUP_TIME = Config.ALT_FESTIVAL_CYCLE_LENGTH - Config.ALT_FESTIVAL_LENGTH - 60000;
      
     // Key Constants \\
-    private static final int FESTIVAL_MAX_OFFSET_X = 230;
-    private static final int FESTIVAL_MAX_OFFSET_Y = 230;
-    private static final int FESTIVAL_DEFAULT_RESPAWN = 60; // Specify in seconds!
+    private static final short FESTIVAL_MAX_OFFSET_X = 230;
+    private static final short FESTIVAL_MAX_OFFSET_Y = 230;
+    private static final byte FESTIVAL_DEFAULT_RESPAWN = 60; // Specify in seconds!
 
-    public static final int FESTIVAL_COUNT = 5;    
-    public static final int FESTIVAL_LEVEL_MAX_31 = 0;
-    public static final int FESTIVAL_LEVEL_MAX_42 = 1;
-    public static final int FESTIVAL_LEVEL_MAX_53 = 2;
-    public static final int FESTIVAL_LEVEL_MAX_64 = 3;
-    public static final int FESTIVAL_LEVEL_MAX_NONE = 4;
-    public static final int[] FESTIVAL_LEVEL_SCORES = {60, 70, 100, 120, 150}; // 500 maximum possible score 
+    public static final byte FESTIVAL_COUNT = 5;    
+    public static final byte FESTIVAL_LEVEL_MAX_31 = 0;
+    public static final byte FESTIVAL_LEVEL_MAX_42 = 1;
+    public static final byte FESTIVAL_LEVEL_MAX_53 = 2;
+    public static final byte FESTIVAL_LEVEL_MAX_64 = 3;
+    public static final byte FESTIVAL_LEVEL_MAX_NONE = 4;
+    public static final short[] FESTIVAL_LEVEL_SCORES = {60, 70, 100, 120, 150}; // 500 maximum possible score 
     
-    public static final int FESTIVAL_OFFERING_ID = 5901;
-    public static final int FESTIVAL_OFFERING_VALUE = 5;
+    public static final short FESTIVAL_OFFERING_ID = 5901;
+    public static final byte FESTIVAL_OFFERING_VALUE = 5;
     
     //////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\
     /*
