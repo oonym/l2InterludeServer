@@ -331,7 +331,7 @@ public class NpcTable
 
 			npcDat.set("npcId", id);
 			npcDat.set("idTemplate",NpcData.getInt("idTemplate"));
-			byte level = NpcData.getByte("level");
+			int level = NpcData.getInt("level");
 			npcDat.set("level", level);
 			npcDat.set("jClass", NpcData.getString("class"));
 
@@ -348,15 +348,15 @@ public class NpcTable
 			npcDat.set("collision_height", NpcData.getDouble("collision_height"));
 			npcDat.set("sex", NpcData.getString("sex"));
 			npcDat.set("type", NpcData.getString("type"));
-			npcDat.set("baseAtkRange", NpcData.getShort("attackrange"));
+			npcDat.set("baseAtkRange", NpcData.getInt("attackrange"));
 			npcDat.set("revardExp", NpcData.getInt("exp"));
 			npcDat.set("revardSp", NpcData.getInt("sp"));
-			npcDat.set("basePAtkSpd", NpcData.getShort("atkspd"));
-			npcDat.set("baseMAtkSpd", NpcData.getShort("matkspd"));
-			npcDat.set("aggroRange", NpcData.getShort("aggro"));
-			npcDat.set("rhand", NpcData.getShort("rhand"));
-			npcDat.set("lhand", NpcData.getShort("lhand"));
-			npcDat.set("armor", NpcData.getShort("armor"));
+			npcDat.set("basePAtkSpd", NpcData.getInt("atkspd"));
+			npcDat.set("baseMAtkSpd", NpcData.getInt("matkspd"));
+			npcDat.set("aggroRange", NpcData.getInt("aggro"));
+			npcDat.set("rhand", NpcData.getInt("rhand"));
+			npcDat.set("lhand", NpcData.getInt("lhand"));
+			npcDat.set("armor", NpcData.getInt("armor"));
 			npcDat.set("baseWalkSpd", NpcData.getInt("walkspd"));
 			npcDat.set("baseRunSpd", NpcData.getInt("runspd"));
 

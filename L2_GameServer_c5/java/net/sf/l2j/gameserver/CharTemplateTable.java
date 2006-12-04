@@ -90,12 +90,12 @@ public class CharTemplateTable
 				set.set("classId", rset.getInt("id"));
 				set.set("className", rset.getString("className"));
 				set.set("raceId", rset.getInt("raceId"));
-				set.set("baseSTR", rset.getByte("STR"));
-				set.set("baseCON", rset.getByte("CON"));
-				set.set("baseDEX", rset.getByte("DEX"));
-				set.set("baseINT", rset.getByte("_INT"));
-				set.set("baseWIT", rset.getByte("WIT"));
-				set.set("baseMEN", rset.getByte("MEN"));
+				set.set("baseSTR", rset.getInt("STR"));
+				set.set("baseCON", rset.getInt("CON"));
+				set.set("baseDEX", rset.getInt("DEX"));
+				set.set("baseINT", rset.getInt("_INT"));
+				set.set("baseWIT", rset.getInt("WIT"));
+				set.set("baseMEN", rset.getInt("MEN"));
 				set.set("baseHpMax", rset.getFloat("defaultHpBase"));
 				set.set("lvlHpAdd", rset.getFloat("defaultHpAdd"));
 				set.set("lvlHpMod", rset.getFloat("defaultHpMod"));
@@ -109,14 +109,14 @@ public class CharTemplateTable
                 set.set("baseCpReg", 0.01);
 				set.set("baseMpReg", 0.9);
 				set.set("basePAtk", rset.getInt("p_atk"));
-				set.set("basePDef", /*classId.isMage()? 77 : 129*/ rset.getShort("p_def"));
+				set.set("basePDef", /*classId.isMage()? 77 : 129*/ rset.getInt("p_def"));
 				set.set("baseMAtk", rset.getInt("m_atk"));
-				set.set("baseMDef", rset.getShort("char_templates.m_def"));
-				set.set("classBaseLevel", rset.getByte("class_lvl"));
-				set.set("basePAtkSpd", rset.getShort("p_spd"));
-				set.set("baseMAtkSpd", /*classId.isMage()? 166 : 333*/ rset.getShort("char_templates.m_spd"));
-				set.set("baseCritRate", rset.getByte("char_templates.critical")/10);
-				set.set("baseRunSpd", rset.getShort("move_spd"));
+				set.set("baseMDef", rset.getInt("char_templates.m_def"));
+				set.set("classBaseLevel", rset.getInt("class_lvl"));
+				set.set("basePAtkSpd", rset.getInt("p_spd"));
+				set.set("baseMAtkSpd", /*classId.isMage()? 166 : 333*/ rset.getInt("char_templates.m_spd"));
+				set.set("baseCritRate", rset.getInt("char_templates.critical")/10);
+				set.set("baseRunSpd", rset.getInt("move_spd"));
 				set.set("baseLoad", rset.getInt("_load"));
 				set.set("baseShldDef", 0);
 				set.set("baseShldRate", 0);
@@ -124,7 +124,7 @@ public class CharTemplateTable
 
 				set.set("spawnX", rset.getInt("x"));
 				set.set("spawnY", rset.getInt("y"));
-				set.set("spawnZ", rset.getShort("z"));
+				set.set("spawnZ", rset.getInt("z"));
 
 				L2PcTemplate ct;
 
