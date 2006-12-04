@@ -4814,11 +4814,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				player.setName(rset.getString("char_name"));
 				player._lastAccess = rset.getLong("lastAccess");
 				
-				player._activeClass = activeClassId;
-				try { player.setBaseClass(rset.getInt("base_class")); }
-				catch (Exception e) { player.setBaseClass(activeClassId); }
-				
-				player._classIndex = 0;
 				player.getStat().setExp(rset.getLong("exp"));
 				player.getStat().setLevel(rset.getByte("level"));
 				player.getStat().setSp(rset.getInt("sp"));
@@ -4826,7 +4821,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				player.setFace(rset.getInt("face"));
 				player.setHairStyle(rset.getInt("hairStyle"));
 				player.setHairColor(rset.getInt("hairColor"));
-				//player.setClanPrivileges(rset.getInt("clan_privs"));
 				
 				player.setWantsPeace(rset.getInt("wantspeace"));
 				
@@ -4885,18 +4879,31 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				//Check recs
 				player.checkRecom(rset.getInt("rec_have"),rset.getInt("rec_left"));
-				
-                // Restore Subclass Data
+
+				player._classIndex = 0;				
+				try { player.setBaseClass(rset.getInt("base_class")); }
+				catch (Exception e) { player.setBaseClass(activeClassId); }
+
+				// Restore Subclass Data (cannot be done earlier in function)
                 if (restoreSubClassData(player))
                 {
-                	if (player.getActiveClass() != player.getBaseClass())
+                	if (activeClassId != player.getBaseClass())
                 	{
                     	for (SubClass subClass : player.getSubClasses().values())
-                    		if (subClass.getClassId() == player.getActiveClass())
+                    		if (subClass.getClassId() == activeClassId)
                     			player._classIndex = subClass.getClassIndex();
                 	}
-                }				 
-                
+                }		
+                if (player.getClassIndex() == 0 && activeClassId != player.getBaseClass())
+                {
+                	// Subclass in use but doesn't exist in DB - 
+                	// a possible restart-while-modifysubclass cheat has been attempted.
+                	// Switching to use base class
+                	player.setClassId(player.getBaseClass());
+                	_log.warning("Player "+player.getName()+" reverted to base class. Possibly has tried a relogin exploit while subclassing.");
+                }
+                else player._activeClass = activeClassId;
+				
                 player.setIsIn7sDungeon((rset.getInt("isin7sdungeon")==1)? true : false);
                 player.setInJail((rset.getInt("in_jail")==1)? true : false);
                 if (player.isInJail())
@@ -7662,11 +7669,6 @@ public final class L2PcInstance extends L2PlayableInstance
      */
     public boolean modifySubClass(int classIndex, int newClassId)
     {
-    	// cheat prevention, possibly worked
-    	for (L2Skill oldSkill : getAllSkills())
-            super.removeSkill(oldSkill);
-    	// ---
-    	
     	int oldClassId = getSubClasses().get(classIndex).getClassId();
         
         if (Config.DEBUG)
