@@ -118,10 +118,10 @@ public class L2CharTemplate
 		baseMAtkSpd        = set.getShort("baseMAtkSpd");
 		baseMReuseRate     = set.getFloat ("baseMReuseDelay", 1.f);
 		baseShldDef        = set.getByte("baseShldDef");
-		baseAtkRange       = set.getByte("baseAtkRange");
+		baseAtkRange       = set.getShort("baseAtkRange");
 		baseShldRate       = set.getByte("baseShldRate");
 		baseCritRate       = set.getByte("baseCritRate");
-		baseRunSpd         = set.getByte("baseRunSpd");
+		baseRunSpd         = set.getShort("baseRunSpd");
 		// SpecialStats
 		baseBreath         = set.getByte("baseBreath",         (byte)100);
 		baseAggression     = set.getByte("baseAggression",     (byte)0);

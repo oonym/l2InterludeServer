@@ -534,7 +534,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                 case 20: // Seal Status (for when joining a cabal)
                     TextBuilder contentBuffer = new TextBuilder("<html><body><font color=\"LEVEL\">[ Seal Status ]</font><br>");
 
-                    for (int i = 1; i < 4; i++)
+                    for (byte i = 1; i < 4; i++)
                     {
                         int sealOwner = SevenSigns.getInstance().getSealOwner(i);
 

@@ -504,12 +504,12 @@ public class SevenSigns
 			return CABAL_DAWN;
 	}
 	
-	public final int getSealOwner(int seal) 
+	public final int getSealOwner(byte seal) 
 	{
 		return _signsSealOwners.get(seal);
 	}
 
-	public final int getSealProportion(int seal, int cabal) 
+	public final int getSealProportion(byte seal, int cabal) 
 	{
 		if (cabal == CABAL_NULL)
 			return 0;

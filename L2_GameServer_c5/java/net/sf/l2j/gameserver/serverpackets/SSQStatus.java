@@ -236,7 +236,7 @@ public class SSQStatus extends ServerBasePacket
                 writeC(35); // Minimum limit for winning cabal to claim a seal
                 writeC(3); // Total number of seals
 
-                for (int i = 1; i < 4; i++)
+                for (byte i = 1; i < 4; i++)
                 {
                     int dawnProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DAWN);
                     int duskProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DUSK);
@@ -282,7 +282,7 @@ public class SSQStatus extends ServerBasePacket
                 writeC(winningCabal); // Overall predicted winner
                 writeC(3); // Total number of seals
 
-                for (int i = 1; i < 4; i++)
+                for (byte i = 1; i < 4; i++)
                 {
                     int dawnProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DAWN);
                     int duskProportion = SevenSigns.getInstance().getSealProportion(i, SevenSigns.CABAL_DUSK);

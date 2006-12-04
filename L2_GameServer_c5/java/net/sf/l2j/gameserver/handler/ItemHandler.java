@@ -89,6 +89,6 @@ public class ItemHandler
 	 */
 	public IItemHandler getItemHandler(short itemId)
 	{
-		return _datatable.get(new Integer(itemId));
+		return _datatable.get(new Short(itemId));
 	}
 }
