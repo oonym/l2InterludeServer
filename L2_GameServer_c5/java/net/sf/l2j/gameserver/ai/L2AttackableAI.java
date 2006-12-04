@@ -41,6 +41,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FriendlyMobInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2GuardInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2MinionInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -391,11 +392,30 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         // If this is a festival monster, then it remains in the same location.
         if (_actor instanceof L2FestivalMonsterInstance) return;
 
-        // The actor is a L2MonsterInstance
+        // Minions following leader
+	    if (_actor instanceof L2MinionInstance && ((L2MinionInstance)_actor).getLeader() != null)
+	    {
+            int offset;
 
+            if (_actor.isRaid())	offset = 500; // for Raids - need correction
+            else		offset = 200; // for normal minions - need correction :)
+
+            if(((L2MinionInstance)_actor).getLeader().isRunning())	_actor.setRunning();
+            else	_actor.setWalking();
+
+            if (_actor.getPlanDistanceSq(((L2MinionInstance)_actor).getLeader()) > offset*offset)
+	    	{
+	            int x1, y1, z1;
+	            x1 = ((L2MinionInstance)_actor).getLeader().getX() + Rnd.nextInt( (offset - 30) * 2 ) - ( offset - 30 );
+	            y1 = ((L2MinionInstance)_actor).getLeader().getY() + Rnd.nextInt( (offset - 30) * 2 ) - ( offset - 30 );
+	            z1 = ((L2MinionInstance)_actor).getLeader().getZ();
+	            // Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
+	            moveTo(x1, y1, z1);
+	            return;
+	    	}
+	    }
         // Order to the L2MonsterInstance to random walk (1/100)
-
-        if (npc.getSpawn() != null && Rnd.nextInt(RANDOM_WALK_RATE) == 0)
+	    else if (npc.getSpawn() != null && Rnd.nextInt(RANDOM_WALK_RATE) == 0)
         {
             int x1, y1, z1;
 
