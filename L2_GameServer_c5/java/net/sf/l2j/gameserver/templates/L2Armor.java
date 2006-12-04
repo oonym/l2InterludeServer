@@ -34,11 +34,11 @@ import net.sf.l2j.gameserver.skills.FuncTemplate;
  */
 public final class L2Armor extends L2Item
 {
-	private final short _avoidModifier;
-	private final short _pDef;
-	private final short _mDef;
-	private final short _mpBonus;
-	private final short _hpBonus;
+	private final int _avoidModifier;
+	private final int _pDef;
+	private final int _mDef;
+	private final int _mpBonus;
+	private final int _hpBonus;
 	
     /**
      * Constructor for Armor.<BR><BR>
@@ -53,11 +53,11 @@ public final class L2Armor extends L2Item
 	public L2Armor(L2ArmorType type, StatsSet set)
 	{
 		super(type, set);
-		_avoidModifier = set.getShort("avoid_modify");
-		_pDef          = set.getShort("p_def");
-		_mDef          = set.getShort("m_def");
-		_mpBonus       = set.getShort("mp_bonus", (short)0);
-		_hpBonus       = set.getShort("hp_bonus", (short)0);
+		_avoidModifier = set.getInteger("avoid_modify");
+		_pDef          = set.getInteger("p_def");
+		_mDef          = set.getInteger("m_def");
+		_mpBonus       = set.getInteger("mp_bonus", 0);
+		_hpBonus       = set.getInteger("hp_bonus", 0);
 	}
 	
 	/**

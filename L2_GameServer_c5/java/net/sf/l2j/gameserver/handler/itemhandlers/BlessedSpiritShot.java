@@ -38,8 +38,8 @@ import net.sf.l2j.gameserver.util.Broadcast;
 public class BlessedSpiritShot implements IItemHandler 
 { 
 	// all the items ids that this handler knowns 
-	private static short[] _itemIds = { 3947, 3948, 3949, 3950, 3951, 3952 };
-	private static short[] _skillIds = { 2061, 2160, 2161, 2162, 2163, 2164 };
+	private static int[] _itemIds = { 3947, 3948, 3949, 3950, 3951, 3952 };
+	private static int[] _skillIds = { 2061, 2160, 2161, 2162, 2163, 2164 };
 
 	/* (non-Javadoc) 
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance) 
@@ -51,7 +51,7 @@ public class BlessedSpiritShot implements IItemHandler
         L2PcInstance activeChar = (L2PcInstance)playable;
         L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
         L2Weapon weaponItem = activeChar.getActiveWeaponItem(); 
-        short itemId = item.getItemId();  
+        int itemId = item.getItemId();  
 
         // Check if Blessed Spiritshot can be used
         if (weaponInst == null || weaponItem.getSpiritShotCount() == 0)
@@ -102,7 +102,7 @@ public class BlessedSpiritShot implements IItemHandler
         Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUser(activeChar, activeChar, _skillIds[weaponGrade], 1, 0, 0), 360000/*600*/);
 	} 
 
-	public short[] getItemIds() 
+	public int[] getItemIds() 
 	{ 
 		return _itemIds; 
 	} 

@@ -84,7 +84,7 @@ public class MercTicket implements IItemHandler
     }
 
     // left in here for backward compatibility
-    public short[] getItemIds()
+    public int[] getItemIds()
     {
         return MercTicketManager.getInstance().getItemIds();
     }

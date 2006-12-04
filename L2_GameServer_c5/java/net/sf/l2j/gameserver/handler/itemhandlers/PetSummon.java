@@ -46,7 +46,7 @@ public class PetSummon implements IItemHandler
     protected static Logger _log = Logger.getLogger(PetSummon.class.getName());
 	
 	// all the items ids that this handler knowns
-	private static final short[] _itemIds = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650 };
+	private static final int[] _itemIds = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650 };
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -219,7 +219,7 @@ public class PetSummon implements IItemHandler
 		}
 	}
 	
-	public short[] getItemIds()
+	public int[] getItemIds()
 	{
 		return _itemIds;
 	}

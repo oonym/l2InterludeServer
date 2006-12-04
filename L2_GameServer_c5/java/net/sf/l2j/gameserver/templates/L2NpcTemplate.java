@@ -61,9 +61,9 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final int     revardExp;
 	public final int     revardSp;
 	public final int     aggroRange;
-	public final short   rhand;
-	public final short   lhand;
-	public final short   armor;
+	public final int     rhand;
+	public final int     lhand;
+	public final int     armor;
 	public final String  factionId;
 	public final int     factionRange;
 	public final boolean isUndead;
@@ -110,9 +110,9 @@ public final class L2NpcTemplate extends L2CharTemplate
 		revardExp = set.getInteger("revardExp");
 		revardSp  = set.getInteger("revardSp");
 		aggroRange= set.getInteger("aggroRange");
-		rhand     = set.getShort("rhand");
-		lhand     = set.getShort("lhand");
-		armor     = set.getShort("armor");
+		rhand     = set.getInteger("rhand");
+		lhand     = set.getInteger("lhand");
+		armor     = set.getInteger("armor");
 		String f  = set.getString("factionId", null);
 		if (f == null)
 			factionId = null;

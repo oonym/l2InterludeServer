@@ -279,24 +279,24 @@ public class L2PetDataTable
     }
     
     
-    public static short getWyvernItemId()
+    public static int getWyvernItemId()
     {
     	return 4425;
     }
-    public static short getStriderWindItemId()
+    public static int getStriderWindItemId()
     {
     	return 4422;
     }
-    public static short getStriderStarItemId()
+    public static int getStriderStarItemId()
     {
     	return 4423;
     }
-    public static short getStriderTwilightItemId()
+    public static int getStriderTwilightItemId()
     {
     	return 4424;
     }
     
-    public static boolean isPetItem(short itemId)
+    public static boolean isPetItem(int itemId)
     {
     	return (itemId == 2375 // wolf
 				|| itemId == 3500 || itemId == 3501 || itemId == 3502 // hatchlings

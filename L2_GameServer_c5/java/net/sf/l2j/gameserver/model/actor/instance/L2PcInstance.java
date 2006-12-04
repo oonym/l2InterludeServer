@@ -477,7 +477,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private boolean _isSilentMoving = false;
 	
-	protected Set<Short> _activeSoulShots = new FastSet<Short>();
+	protected Set<Integer> _activeSoulShots = new FastSet<Integer>();
 	private boolean _isPathNodeMode;
 	private boolean _isPathNodesVisible;
 	private Map<WayPointNode, List<WayPointNode>> _pathNodeMap;
@@ -1822,55 +1822,55 @@ public final class L2PcInstance extends L2PlayableInstance
 		if ((classId >= 0x00) && (classId <= 0x09))
 		{
 			//human fighter fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)246);
+			L2Item temp = ItemTable.getInstance().getTemplate(246);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x0a) && (classId <= 0x11))
 		{
 			//human mage fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)251);
+			L2Item temp = ItemTable.getInstance().getTemplate(251);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x12) && (classId <= 0x18))
 		{
 			//elven fighter fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)244);
+			L2Item temp = ItemTable.getInstance().getTemplate(244);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x19) && (classId <= 0x1e))
 		{
 			//elven mage fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)249);
+			L2Item temp = ItemTable.getInstance().getTemplate(249);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x1f) && (classId <= 0x25))
 		{
 			//dark elven fighter fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)245);
+			L2Item temp = ItemTable.getInstance().getTemplate(245);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x26) && (classId <= 0x2b))
 		{
 			//dark elven mage fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)250);
+			L2Item temp = ItemTable.getInstance().getTemplate(250);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x2c) && (classId <= 0x30))
 		{
 			//orc fighter fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)248);
+			L2Item temp = ItemTable.getInstance().getTemplate(248);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x31) && (classId <= 0x34))
 		{
 			//orc mage fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)252);
+			L2Item temp = ItemTable.getInstance().getTemplate(252);
 			weaponItem = (L2Weapon)temp;
 		}
 		else if ((classId >= 0x35) && (classId <= 0x39))
 		{
 			//dwarven fists
-			L2Item temp = ItemTable.getInstance().getTemplate((short)247);
+			L2Item temp = ItemTable.getInstance().getTemplate(247);
 			weaponItem = (L2Weapon)temp;
 		}
 		
@@ -2446,12 +2446,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Adds item to Inventory and send a Server->Client InventoryUpdate packet to the L2PcInstance.
 	 * @param process : String Identifier of process triggering this action
-	 * @param itemId : short Item Identifier of the item to be added
+	 * @param itemId : int Item Identifier of the item to be added
 	 * @param count : int Quantity of items to be added
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
 	 * @param sendMessage : boolean Specifies whether to send message to Client about this action
 	 */
-	public void addItem(String process, short itemId, int count, L2Object reference, boolean sendMessage)
+	public void addItem(String process, int itemId, int count, L2Object reference, boolean sendMessage)
 	{
 		if (count > 0) 
 		{
@@ -6714,17 +6714,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		return SevenSignsFestival.getInstance().isParticipant(this);
 	}
 	
-	public void addAutoSoulShot(short itemId)
+	public void addAutoSoulShot(int itemId)
 	{
 		_activeSoulShots.add(itemId);
 	}
 	
-	public void removeAutoSoulShot(short itemId)
+	public void removeAutoSoulShot(int itemId)
 	{
 		_activeSoulShots.remove(itemId);
 	}
 	
-	public Set<Short> getAutoSoulShot()
+	public Set<Integer> getAutoSoulShot()
 	{
 		return _activeSoulShots;
 	}
@@ -6737,7 +6737,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (_activeSoulShots == null || _activeSoulShots.size() == 0)
 			return;
 		
-		for (short itemId : _activeSoulShots)
+		for (int itemId : _activeSoulShots)
 		{
 			item = getInventory().getItemByItemId(itemId);
 			
@@ -7510,7 +7510,7 @@ public final class L2PcInstance extends L2PlayableInstance
     	{
     		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
     		{
-    			removeSkill(s);
+    			this.removeSkill(s);
     		}
     	}
     	_noble = val;

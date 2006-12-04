@@ -72,7 +72,7 @@ public interface EngineInterface
     //public ArrayList getAllPlayers();
     //public Player getPlayer(String characterName);
     public void addQuestDrop(int npcID, int itemID, int min, int max, int chance, String questID, String[] states);
-    public void addEventDrop(short[] items, int[] count, double chance, DateRange range);
+    public void addEventDrop(int[] items, int[] count, double chance, DateRange range);
     public void onPlayerLogin(String[] message, DateRange range);
 
 }

@@ -115,7 +115,7 @@ public class TradeController
 					{
 						dummyItemCount++;
 						L2TradeList buy1 = new L2TradeList(rset1.getInt("shop_id"));
-						short itemId = rset.getShort("item_id");
+						int itemId = rset.getInt("item_id");
 						int price = rset.getInt("price");
 						
 						L2ItemInstance item = ItemTable.getInstance().createDummyItem(itemId);
@@ -129,7 +129,7 @@ public class TradeController
 							while (rset.next())
 							{
 								dummyItemCount++;
-								itemId = rset.getShort("item_id");
+								itemId = rset.getInt("item_id");
 								price = rset.getInt("price");
 								L2ItemInstance item2 = ItemTable.getInstance().createDummyItem(itemId);
 								if (item2 == null) continue;
@@ -180,7 +180,7 @@ public class TradeController
 		L2TradeList buy1 = new L2TradeList(listId);
 		while (st.hasMoreTokens())
 		{
-			short itemId = Short.parseShort(st.nextToken());
+			int itemId = Integer.parseInt(st.nextToken());
 			int price = Integer.parseInt(st.nextToken());
 			L2ItemInstance item = ItemTable.getInstance().createDummyItem(itemId);
 			item.setPriceToSell(price);

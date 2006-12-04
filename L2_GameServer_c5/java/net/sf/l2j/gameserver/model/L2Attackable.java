@@ -204,16 +204,16 @@ public class L2Attackable extends L2NpcInstance
      */
     public final class RewardItem
     {
-        protected short _itemId;
+        protected int _itemId;
         protected int _count;
         
-        public RewardItem(short itemId, int count)
+        public RewardItem(int itemId, int count)
         {
             this._itemId = itemId;
             this._count = count;
         }
         
-        public short getItemId() { return _itemId;}
+        public int getItemId() { return _itemId;}
         public int getCount() { return _count;}
     }
     
@@ -1240,105 +1240,105 @@ public class L2Attackable extends L2NpcInstance
              int random = Rnd.get(100);
              if (random < Config.RATE_DROP_MP_HP_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8600, 1); // Herb of Life 
+                 RewardItem item = new RewardItem(8600, 1); // Herb of Life 
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_GREATER_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8601, 1); // Greater Herb of Life
+                 RewardItem item = new RewardItem(8601, 1); // Greater Herb of Life
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(1000); // note *10
              if (random < Config.RATE_DROP_SUPERIOR_HERBS)
              {                  
-                 RewardItem item = new RewardItem((short)8602, 1); // Superior Herb of Life
+                 RewardItem item = new RewardItem(8602, 1); // Superior Herb of Life
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_MP_HP_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8603, 1); // Herb of Manna
+                 RewardItem item = new RewardItem(8603, 1); // Herb of Manna
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_GREATER_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8604, 1); // Greater Herb of Mana
+                 RewardItem item = new RewardItem(8604, 1); // Greater Herb of Mana
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(1000); // note *10
              if (random < Config.RATE_DROP_SUPERIOR_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8605, 1); // Superior Herb of Mana 
+                 RewardItem item = new RewardItem(8605, 1); // Superior Herb of Mana 
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }             
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8606, 1); // Herb of Power
+                 RewardItem item = new RewardItem(8606, 1); // Herb of Power
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8607, 1); // Herb of Magic
+                 RewardItem item = new RewardItem(8607, 1); // Herb of Magic
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {                  
-                 RewardItem item = new RewardItem((short)8608, 1); // Herb of Atk. Spd.
+                 RewardItem item = new RewardItem(8608, 1); // Herb of Atk. Spd.
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8609, 1); // Herb of Casting Spd.
+                 RewardItem item = new RewardItem(8609, 1); // Herb of Casting Spd.
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {                 
-                 RewardItem item = new RewardItem((short)8610, 1); // Herb of Critical Attack
+                 RewardItem item = new RewardItem(8610, 1); // Herb of Critical Attack
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(100);
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {                
-                 RewardItem item = new RewardItem((short)8611, 1);  // Herb of Speed
+                 RewardItem item = new RewardItem(8611, 1);  // Herb of Speed
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(1000); // note *10
              if (random < Config.RATE_DROP_SPECIAL_HERBS)
              {                  
-                 RewardItem item = new RewardItem((short)8612, 1); // Herb of Warrior
+                 RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);;
              }
              random = Rnd.get(1000); // note *10
              if (random < Config.RATE_DROP_SPECIAL_HERBS)
              {                  
-                 RewardItem item = new RewardItem((short)8613, 1); // Herb of Mystic
+                 RewardItem item = new RewardItem(8613, 1); // Herb of Mystic
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
              random = Rnd.get(1000); // note *10
              if (random < Config.RATE_DROP_SPECIAL_HERBS)
              {                  
-                 RewardItem item = new RewardItem((short)8614, 1); // Herb of Recovery       
+                 RewardItem item = new RewardItem(8614, 1); // Herb of Recovery       
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
                  else DropItem(player, item);
              }
@@ -1421,7 +1421,7 @@ public class L2Attackable extends L2NpcInstance
          return ditem;
      }
      
-	public L2ItemInstance DropItem(L2PcInstance lastAttacker, short itemId, int itemCount)
+	public L2ItemInstance DropItem(L2PcInstance lastAttacker, int itemId, int itemCount)
 	{
 		return DropItem(lastAttacker, new RewardItem(itemId, itemCount));
 	}
@@ -1704,7 +1704,7 @@ public class L2Attackable extends L2NpcInstance
         int crystalQTY = 0;
         int crystalLVL = 0;
         int crystalOLD = 0;
-        short crystalNEW = 0;
+        int crystalNEW = 0;
         
         // ********
         // Now we have four choices:
@@ -1728,8 +1728,8 @@ public class L2Attackable extends L2NpcInstance
             L2ItemInstance[] inv = player.getInventory().getItems();
             for (L2ItemInstance item : inv) 
             {
-                short itemId = item.getItemId();
-                for (short id : SoulCrystal.SoulCrystalTable)
+                int itemId = item.getItemId();
+                for (int id : SoulCrystal.SoulCrystalTable)
                 {
                     // Find any of the 39 possible crystals.
                     if (id == itemId)
@@ -1776,7 +1776,7 @@ public class L2Attackable extends L2NpcInstance
                                         }
                                 }
                                 else
-                                    crystalNEW = (short)(id+1);
+                                    crystalNEW = id+1;
                             }
                             catch (NumberFormatException nfe) 
                             {
@@ -1800,7 +1800,7 @@ public class L2Attackable extends L2NpcInstance
                         else
                         {
                             crystalNME = item.getItem().getName().toLowerCase().trim();
-                            crystalNEW = (short)(id+1);
+                            crystalNEW = id+1;
                         }
                         
                         // Done
@@ -1859,7 +1859,7 @@ public class L2Attackable extends L2NpcInstance
         }
     }
     
-    private void exchangeCrystal(L2PcInstance player, int takeid, short giveid, boolean broke)
+    private void exchangeCrystal(L2PcInstance player, int takeid, int giveid, boolean broke)
     {
         L2ItemInstance Item = player.getInventory().destroyItemByItemId("SoulCrystal", takeid, 1, player, this);
         if (Item != null) 

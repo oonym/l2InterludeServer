@@ -30,7 +30,6 @@ public class L2TeleportLocation
 	private int _locY;
 	private int _locZ;
 	private int _price;
-	private boolean _fornoble;
 
 
 	/**
@@ -66,19 +65,11 @@ public class L2TeleportLocation
 	}
 
 	/**
-	 * @param price
+	 * @param locZ
 	 */
 	public void setPrice(int price)
 	{
 		_price = price;
-	}
-	
-	/**
-	 * @param val
-	 */
-	public void setIsForNoble(boolean val)
-	{
-		_fornoble = val;
 	}
 
 
@@ -121,12 +112,6 @@ public class L2TeleportLocation
 	{
 		return _price;
 	}
-	
-	/**
-	 * @return
-	 */
-	public boolean getIsForNoble()
-	{
-		return _fornoble;
-	}
+
+
 }

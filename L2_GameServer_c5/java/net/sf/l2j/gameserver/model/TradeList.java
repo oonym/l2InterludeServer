@@ -323,7 +323,7 @@ public class TradeList
      * @param price : int
      * @return
      */
-    public synchronized TradeItem addItemByItemId(short itemId, int count, int price)
+    public synchronized TradeItem addItemByItemId(int itemId, int count, int price)
     {
         if (isLocked())
         {

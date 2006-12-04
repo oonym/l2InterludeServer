@@ -58,16 +58,16 @@ public class ItemTable
 	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
 	private static Logger _logItems = Logger.getLogger("item");
 	
-	private static final Map<String, Byte> _materials = new FastMap<String, Byte>();
-	private static final Map<String, Byte> _crystalTypes = new FastMap<String, Byte>();
+	private static final Map<String, Integer> _materials = new FastMap<String, Integer>();
+	private static final Map<String, Integer> _crystalTypes = new FastMap<String, Integer>();
 	private static final Map<String, L2WeaponType> _weaponTypes = new FastMap<String, L2WeaponType>();
 	private static final Map<String, L2ArmorType> _armorTypes = new FastMap<String, L2ArmorType>();
 	private static final Map<String, Integer> _slots = new FastMap<String, Integer>();
 	
 	private L2Item[] _allTemplates;
-	private Map<Short, L2EtcItem> _etcItems;
-	private Map<Short, L2Armor>   _armors;
-	private Map<Short, L2Weapon>  _weapons;
+	private Map<Integer, L2EtcItem> _etcItems;
+	private Map<Integer, L2Armor>   _armors;
+	private Map<Integer, L2Weapon>  _weapons;
 	
 	private boolean _initialized = true;
 	
@@ -191,9 +191,9 @@ public class ItemTable
      */
 	public ItemTable()
 	{
-        _etcItems   = new FastMap<Short, L2EtcItem>();
-        _armors     = new FastMap<Short, L2Armor>();
-        _weapons    = new FastMap<Short, L2Weapon>();
+        _etcItems   = new FastMap<Integer, L2EtcItem>();
+        _armors     = new FastMap<Integer, L2Armor>();
+        _weapons    = new FastMap<Integer, L2Weapon>();
 	
 		java.sql.Connection con = null;
 		try
@@ -357,11 +357,11 @@ public class ItemTable
             item.set.set("type2", L2Item.TYPE2_SHIELD_ARMOR);
 		}
         
-        item.set.set("weight", rset.getShort("weight"));
+        item.set.set("weight", rset.getInt("weight"));
         item.set.set("material", _materials.get(rset.getString("material")));
         item.set.set("crystal_type", _crystalTypes.get(rset.getString("crystal_type")));
         item.set.set("avoid_modify", rset.getInt("avoid_modify"));
-        item.set.set("durability", rset.getByte("durability"));
+        item.set.set("durability", rset.getInt("durability"));
         item.set.set("p_def", rset.getInt("p_def"));
         item.set.set("m_def", rset.getInt("m_def"));
         item.set.set("mp_bonus", rset.getInt("mp_bonus"));
@@ -527,28 +527,28 @@ public class ItemTable
 		int highestId = 0;		
 		
 		// Get highest ID of item in armor FastMap, then in weapon FastMap, and finally in etcitem FastMap
-		for (Iterator<Short> iter = _armors.keySet().iterator(); iter.hasNext();)
+		for (Iterator<Integer> iter = _armors.keySet().iterator(); iter.hasNext();)
 		{
-			short id = iter.next();
+			Integer id = iter.next();
 			L2Armor item = _armors.get(id);
 			if (item.getItemId() > highestId)
 			{
 				highestId = item.getItemId();
 			}
 		}
-		for (Iterator<Short> iter = _weapons.keySet().iterator(); iter.hasNext();)
+		for (Iterator<Integer> iter = _weapons.keySet().iterator(); iter.hasNext();)
 		{
 			
-			short id = iter.next();
+			Integer id = iter.next();
 			L2Weapon item = _weapons.get(id);
 			if (item.getItemId() > highestId)
 			{
 				highestId = item.getItemId();
 			}
 		}
-		for (Iterator<Short> iter = _etcItems.keySet().iterator(); iter.hasNext();)
+		for (Iterator<Integer> iter = _etcItems.keySet().iterator(); iter.hasNext();)
 		{
-			short id = iter.next();
+			Integer id = iter.next();
 			L2EtcItem item = _etcItems.get(id);
 			if (item.getItemId() > highestId)
 			{
@@ -561,30 +561,30 @@ public class ItemTable
 		_allTemplates = new L2Item[highestId +1];
 		
 		// Insert armor item in Fast Look Up Table
-		for (Iterator<Short> iter = _armors.keySet().iterator(); iter.hasNext();)
+		for (Iterator<Integer> iter = _armors.keySet().iterator(); iter.hasNext();)
 		{
-			short id = iter.next();
+			Integer id = iter.next();
 			L2Armor item = _armors.get(id);
-			assert _allTemplates[id] == null;
-			_allTemplates[id] = item;
+			assert _allTemplates[id.intValue()] == null;
+			_allTemplates[id.intValue()] = item;
 		}
 
 		// Insert weapon item in Fast Look Up Table
-		for (Iterator<Short> iter = _weapons.keySet().iterator(); iter.hasNext();)
+		for (Iterator<Integer> iter = _weapons.keySet().iterator(); iter.hasNext();)
 		{
-			short id = iter.next();
+			Integer id = iter.next();
 			L2Weapon item = _weapons.get(id);
-			assert _allTemplates[id] == null;
-			_allTemplates[id] = item;
+			assert _allTemplates[id.intValue()] == null;
+			_allTemplates[id.intValue()] = item;
 		}
 		
 		// Insert etcItem item in Fast Look Up Table
-		for (Iterator<Short> iter = _etcItems.keySet().iterator(); iter.hasNext();)
+		for (Iterator<Integer> iter = _etcItems.keySet().iterator(); iter.hasNext();)
 		{
-			short id = iter.next();
+			Integer id = iter.next();
 			L2EtcItem item = _etcItems.get(id);
-			assert _allTemplates[id] == null;
-			_allTemplates[id] = item;
+			assert _allTemplates[id.intValue()] == null;
+			_allTemplates[id.intValue()] = item;
 		}
 	}
 
@@ -593,7 +593,7 @@ public class ItemTable
 	 * @param id : int designating the item
 	 * @return L2Item
 	 */
-	public L2Item getTemplate(short id)
+	public L2Item getTemplate(int id)
 	{
 		if (id > _allTemplates.length)
 			return null;
@@ -616,7 +616,7 @@ public class ItemTable
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item
 	 */
-	public L2ItemInstance createItem(String process, short itemId, int count, L2PcInstance actor, L2Object reference)
+	public L2ItemInstance createItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
 	{
         // Create and Init the L2ItemInstance corresponding to the Item Identifier
 		L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
@@ -647,7 +647,7 @@ public class ItemTable
 		return item; 	
 	}
 
-	public L2ItemInstance createItem(String process, short itemId, int count, L2PcInstance actor)
+	public L2ItemInstance createItem(String process, int itemId, int count, L2PcInstance actor)
 	{
 		return createItem(process, itemId, count, actor, null);
 	}
@@ -659,7 +659,7 @@ public class ItemTable
 	 * @param itemId : int designating the item
 	 * @return L2ItemInstance designating the dummy item created
 	 */
-	public L2ItemInstance createDummyItem(short itemId)
+	public L2ItemInstance createDummyItem(int itemId)
 	{
 		L2Item item = getTemplate(itemId);
 		if (item == null)

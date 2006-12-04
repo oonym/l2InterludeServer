@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
  * @author Tempy
   */
 public class CharChangePotions implements IItemHandler {
-	private static short[] _itemIds = { 
+	private static int[] _itemIds = { 
                                       5235, 5236, 5237,							// Face
 	                                  5238, 5239, 5240, 5241, 					// Hair Color
 	                                  5242, 5243, 5244, 5245, 5246, 5247, 5248 	// Hair Style
@@ -119,7 +119,7 @@ public class CharChangePotions implements IItemHandler {
 		activeChar.broadcastPacket(ui);
 	}
 		
-	public short[] getItemIds()
+	public int[] getItemIds()
 	{
        return _itemIds;
 	}

@@ -216,7 +216,7 @@ public class RequestCrystallizeItem extends ClientBasePacket
 				"Crystalize", _objectId, _count, activeChar, null);
 
 		// add crystals
-		short crystalId = itemToRemove.getItem().getCrystalItemId();
+		int crystalId = itemToRemove.getItem().getCrystalItemId();
 		int crystalAmount = itemToRemove.getCrystalCount();
 		L2ItemInstance createditem = activeChar.getInventory().addItem(
 				"Crystalize", crystalId, crystalAmount, activeChar,

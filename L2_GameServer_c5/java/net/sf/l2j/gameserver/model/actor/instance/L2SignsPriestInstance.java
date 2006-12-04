@@ -61,7 +61,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
             InventoryUpdate iu;
             StatusUpdate su;
             String path;
-            byte cabal = SevenSigns.CABAL_NULL;
+            int cabal = SevenSigns.CABAL_NULL;
             int stoneType = 0;
             L2ItemInstance ancientAdena = player.getInventory().getItemByItemId(
                                                                                 SevenSigns.ANCIENT_ADENA_ID);
@@ -75,13 +75,13 @@ public class L2SignsPriestInstance extends L2FolkInstance
             {
                 try
                 {
-                    cabal = Byte.parseByte(command.substring(14, 15).trim());
+                    cabal = Integer.parseInt(command.substring(14, 15).trim());
                 }
                 catch (Exception e)
                 {
                     try
                     {
-                        cabal = Byte.parseByte(command.substring(13, 14).trim());
+                        cabal = Integer.parseInt(command.substring(13, 14).trim());
                     }
                     catch (Exception e2)
                     {
@@ -131,8 +131,8 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     showChatWindow(player, val, SevenSigns.getCabalShortName(cabal), false);
                     break;
                 case 4: // Join a Cabal - SevenSigns 4 [0]1 x
-                    byte newSeal = Byte.parseByte(command.substring(15));
-                    byte oldCabal = SevenSigns.getInstance().getPlayerCabal(player);
+                    int newSeal = Integer.parseInt(command.substring(15));
+                    int oldCabal = SevenSigns.getInstance().getPlayerCabal(player);
 
                     if (oldCabal != SevenSigns.CABAL_NULL)
                     {
@@ -354,8 +354,8 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     player.sendPacket(iu);
                     break;
                 case 9: // Receive Contribution Rewards
-                    byte playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
-                    byte winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+                    int playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
+                    int winningCabal = SevenSigns.getInstance().getCabalHighestScore();
 
                     if (SevenSigns.getInstance().isSealValidationPeriod() && playerCabal == winningCabal)
                     {
@@ -534,7 +534,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                 case 20: // Seal Status (for when joining a cabal)
                     TextBuilder contentBuffer = new TextBuilder("<html><body><font color=\"LEVEL\">[ Seal Status ]</font><br>");
 
-                    for (byte i = 1; i < 4; i++)
+                    for (int i = 1; i < 4; i++)
                     {
                         int sealOwner = SevenSigns.getInstance().getSealOwner(i);
 

@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.util.Broadcast;
 public class BeastSpiritShot implements IItemHandler
 {
     // All the item IDs that this handler knows.
-    private static short[] _itemIds = {6646, 6647};
+    private static int[] _itemIds = {6646, 6647};
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
@@ -72,7 +72,7 @@ public class BeastSpiritShot implements IItemHandler
             return;
         }
 
-        short itemId = item.getItemId();
+        int itemId = item.getItemId();
         boolean isBlessed = (itemId == 6647);
         int shotConsumption = 1;
         
@@ -155,7 +155,7 @@ public class BeastSpiritShot implements IItemHandler
         Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, isBlessed? 2009:2008, 1, 0, 0), 360000/*600*/);
     }
     
-    public short[] getItemIds()
+    public int[] getItemIds()
     {
         return _itemIds;
     }

@@ -14,12 +14,12 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class ChristmasTree implements IItemHandler
 {
-    private static short[] _itemIds = {
+    private static int[] _itemIds = {
                                      5560, // x-mas tree
                                      5561  // Special x-mas tree
                                      };
 
-    private static short[] _npcIds = {
+    private static int[] _npcIds = {
     	                            13006, //Christmas tree w. flashing lights and snow
     	                            13007
                                     };
@@ -69,7 +69,7 @@ public class ChristmasTree implements IItemHandler
         }
     }
 
-    public short[] getItemIds()
+    public int[] getItemIds()
     {
         return _itemIds;
     }

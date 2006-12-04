@@ -40,18 +40,18 @@ import net.sf.l2j.gameserver.skills.FuncTemplate;
  */
 public final class L2Weapon  extends L2Item
 {
-	private final byte _soulShotCount;
-	private final byte _spiritShotCount;
+	private final int _soulShotCount;
+	private final int _spiritShotCount;
 	private final int _pDam;
 	private final int _rndDam;
 	private final int _critical;
 	private final double _hitModifier;
 	private final int _avoidModifier;
-	private final short _shieldDef;
+	private final int _shieldDef;
 	private final double _shieldDefRate;
-	private final short _atkSpeed;
-	private final short _atkReuse;
-	private final short _mpConsume;
+	private final int _atkSpeed;
+	private final int _atkReuse;
+	private final int _mpConsume;
 	private final int _mDam;
     
     // Attached skills for Special Abilities
@@ -76,18 +76,18 @@ public final class L2Weapon  extends L2Item
 	public L2Weapon(L2WeaponType type, StatsSet set)
 	{
 		super(type, set);
-		_soulShotCount   = set.getByte("soulshots");
-		_spiritShotCount = set.getByte("spiritshots");
+		_soulShotCount   = set.getInteger("soulshots");
+		_spiritShotCount = set.getInteger("spiritshots");
 		_pDam            = set.getInteger("p_dam");
 		_rndDam          = set.getInteger("rnd_dam");
 		_critical        = set.getInteger("critical");
 		_hitModifier     = set.getDouble("hit_modify");
 		_avoidModifier   = set.getInteger("avoid_modify");
-		_shieldDef       = set.getShort("shield_def");
+		_shieldDef       = set.getInteger("shield_def");
 		_shieldDefRate   = set.getDouble("shield_def_rate");
-		_atkSpeed        = set.getShort("atk_speed");
-		_atkReuse        = set.getShort("atk_reuse", type==L2WeaponType.BOW ? (byte)1500 : (byte)0);
-		_mpConsume       = set.getShort("mp_consume");
+		_atkSpeed        = set.getInteger("atk_speed");
+		_atkReuse        = set.getInteger("atk_reuse", type==L2WeaponType.BOW ? 1500 : 0);
+		_mpConsume       = set.getInteger("mp_consume");
 		_mDam            = set.getInteger("m_dam");
 	}
 	

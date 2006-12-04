@@ -244,36 +244,6 @@ public final class StatsSet  {
 		}
 		return result;
 	}
-	/**
-	 * Returns the short[] associated to the key put in parameter ("name"). If the value associated to the key is null, this method returns the value of the parameter
-	 * deflt.
-	 * @param name : String designating the key in the set
-	 * @return short[] : value associated to the key
-	 */
-	
-	public short[]     getShortArray(String name)
-	{
-		Object val = _set.get(name);
-		if (val == null)
-			throw new IllegalArgumentException("Integer value required, but not specified");
-		if (val instanceof Number){
-			short[] result = {((Number)val).shortValue()};
-			return result;
-		}
-		int c = 0;
-		String[] vals = ((String)val).split(";");		
-		short[] result = new short[vals.length];
-		for(String v: vals)
-		{
-			try {
-				result[c] = Short.parseShort(v);
-				c++;
-			} catch (Exception e) {
-				throw new IllegalArgumentException("Integer value required, but found: "+val);
-			}
-		}
-		return result;
-	}
     
     /**
      * Returns the long associated to the key put in parameter ("name").

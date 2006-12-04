@@ -70,7 +70,7 @@ public final class L2ItemInstance extends L2Object
 	private int _count;
 	
 	/** ID of the item */
-	private final short _itemId;
+	private final int _itemId;
 	
 	/** Object L2Item associated to the item */
 	private final L2Item _item;
@@ -129,7 +129,7 @@ public final class L2ItemInstance extends L2Object
 	 * @param objectId : int designating the ID of the object in the world
 	 * @param itemId : int designating the ID of the item
 	 */
-	public L2ItemInstance(int objectId, short itemId)
+	public L2ItemInstance(int objectId, int itemId)
 	{
 		super(objectId);
 		super.setKnownList(new NullKnownList(new L2ItemInstance[] {this}));
@@ -361,7 +361,7 @@ public final class L2ItemInstance extends L2Object
 	 * Returns the ID of the item
 	 * @return int
 	 */
-	public short getItemId()
+	public int getItemId()
 	{
 		return _itemId;
 	}
@@ -664,7 +664,7 @@ public final class L2ItemInstance extends L2Object
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				int owner_id = rs.getInt("owner_id");
-				short item_id = rs.getShort("item_id");
+				int item_id = rs.getInt("item_id");
 				int count = rs.getInt("count");
 				ItemLocation loc = ItemLocation.valueOf(rs.getString("loc"));
 				int loc_data = rs.getInt("loc_data");

@@ -45,7 +45,7 @@ public class CastleUpdater implements Runnable {
                         if (amount > 0)
                         {
                             // Move the current treasury amount to clan warehouse
-                            warehouse.addItem("Castle", (short)57, amount, null, null);
+                            warehouse.addItem("Castle", 57, amount, null, null);
                             castle.addToTreasury(amount * -1);
                         }
                     }
@@ -53,7 +53,7 @@ public class CastleUpdater implements Runnable {
                     // Give clan 1 Dual Craft Stamp every 3 hour (8 per day)
                     if (_RunCount % 3 == 0)
                     {
-                    	warehouse.addItem("Castle", (short)5126, 1, null, null);
+                    	warehouse.addItem("Castle", 5126, 1, null, null);
                     }
                     
                     _RunCount++;

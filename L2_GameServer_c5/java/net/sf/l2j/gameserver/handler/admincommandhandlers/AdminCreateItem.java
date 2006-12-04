@@ -62,7 +62,7 @@ public class AdminCreateItem implements IAdminCommandHandler {
 				if (st.countTokens()== 2)
 				{
 					String id = st.nextToken();
-					short idval = Short.parseShort(id);
+					int idval = Integer.parseInt(id);
 					String num = st.nextToken();
 					int numval = Integer.parseInt(num);
 					createItem(activeChar,idval,numval);
@@ -70,7 +70,7 @@ public class AdminCreateItem implements IAdminCommandHandler {
 				else if (st.countTokens()== 1)
 				{
 					String id = st.nextToken();
-					short idval = Short.parseShort(id);
+					int idval = Integer.parseInt(id);
 					createItem(activeChar,idval,1);
 				}
 				else
@@ -103,7 +103,7 @@ public class AdminCreateItem implements IAdminCommandHandler {
 		return (level >= REQUIRED_LEVEL);
 	}
 	
-	private void createItem(L2PcInstance activeChar, short id, int num)
+	private void createItem(L2PcInstance activeChar, int id, int num)
 	{
 		activeChar.getInventory().addItem("Admin", id, num, activeChar, null);
 

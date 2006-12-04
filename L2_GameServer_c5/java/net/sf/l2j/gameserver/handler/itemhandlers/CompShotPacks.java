@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class CompShotPacks implements IItemHandler
 {
-	private static short[] _itemIds ={
+	private static int[] _itemIds ={
 	                                 5134, 5135, 5136, 5137, 5138, 5139, /**/ 5250, 5251, 5252, 5253, 5254, 5255 // SS
 	                                 //5140, 5141, 5142, 5143, 5144, 5145, /**/ 5256, 5257, 5258, 5259, 5260, 5261, // SpS
 	                                 //5146, 5147, 5148, 5149, 5150, 5151, /**/ 5262, 5263, 5264, 5265, 5266, 5267  // BSpS
@@ -45,8 +45,8 @@ public class CompShotPacks implements IItemHandler
 			return;
 		L2PcInstance activeChar = (L2PcInstance)playable;
 
-	    short itemId = item.getItemId();
-	    short itemToCreateId = 0;
+	    int itemId = item.getItemId();
+	    int itemToCreateId = 0;
 	    int amount = 0; // default regular pack
 	    
 	    if (itemId >= 5134 && itemId <= 5139) // SS
@@ -54,7 +54,7 @@ public class CompShotPacks implements IItemHandler
 	    	if (itemId == 5134) // No Grade
 	    		itemToCreateId = 1835;
 	    	else
-	    		itemToCreateId = (short)(itemId - 3672);
+	    		itemToCreateId = itemId - 3672;
 	    	
 	    	amount = 300;
 	    }
@@ -63,7 +63,7 @@ public class CompShotPacks implements IItemHandler
 	    	if (itemId == 5250) // No Grade
 	    		itemToCreateId = 1835;
 	    	else
-	       		itemToCreateId = (short)(itemId - 3788);
+	       		itemToCreateId = itemId - 3788;
 
 	    	amount = 1000;
 	    }
@@ -86,7 +86,7 @@ public class CompShotPacks implements IItemHandler
         activeChar.sendPacket(playerUI);
 	}
 	
-	public short[] getItemIds()
+	public int[] getItemIds()
 	{
 		return _itemIds;
 	}

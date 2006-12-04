@@ -423,7 +423,7 @@ public final class QuestState
 			_drops = new FastMap<Integer, List<L2DropData>>();
         
 		L2DropData d = new L2DropData();
-		d.setItemId((short)itemId);
+		d.setItemId(itemId);
 		d.setChance(chance);
 		d.setQuestID(getQuest().getName());
 		d.addStates(new String[]{getState().getName()});
@@ -526,7 +526,7 @@ public final class QuestState
 		// Set quantity of item
 		
 		// Add items to player's inventory
-		L2ItemInstance item = getPlayer().getInventory().addItem("Quest", (short)itemId, count, getPlayer(), getPlayer().getTarget());
+		L2ItemInstance item = getPlayer().getInventory().addItem("Quest", itemId, count, getPlayer(), getPlayer().getTarget());
         
 		if (item == null) 
             return;
@@ -572,12 +572,12 @@ public final class QuestState
      * @param sound : boolean indicating whether to play sound
      * @return boolean indicating whether player has requested number of items
      */
-    public boolean dropQuestItems(short itemId, int count, int neededCount, int dropChance, boolean sound) 
+    public boolean dropQuestItems(int itemId, int count, int neededCount, int dropChance, boolean sound) 
     {
         return dropQuestItems(itemId, count, count, neededCount, dropChance, sound);
     }
     
-    public boolean dropQuestItems(short itemId, int minCount, int maxCount, int neededCount, int dropChance, boolean sound) 
+    public boolean dropQuestItems(int itemId, int minCount, int maxCount, int neededCount, int dropChance, boolean sound) 
     {
         dropChance *= Config.RATE_DROP_QUEST / ((getPlayer().getParty() != null) ? getPlayer().getParty().getMemberCount() : 1);
         int currentCount = getQuestItemsCount(itemId);

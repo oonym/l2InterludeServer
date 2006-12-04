@@ -332,7 +332,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
     private void editShopItem(L2PcInstance admin, String[] args)
     {
         int tradeListID = Integer.parseInt(args[1]);
-        short itemID = Short.parseShort(args[2]);
+        int itemID = Integer.parseInt(args[2]);
         L2TradeList tradeList = TradeController.getInstance().getBuyList(tradeListID);
         
         L2Item item = ItemTable.getInstance().getTemplate(itemID);
@@ -379,7 +379,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
     private void delShopItem(L2PcInstance admin, String[] args)
     {
         int tradeListID = Integer.parseInt(args[1]);
-        short itemID = Short.parseShort(args[2]);
+        int itemID = Integer.parseInt(args[2]);
         L2TradeList tradeList = TradeController.getInstance().getBuyList(tradeListID);
         
         if (tradeList.getPriceForItemId(itemID) < 0)
@@ -435,7 +435,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
         if (args.length > 3)
         {
         	int order = tradeList.getItems().size() + 1; // last item order + 1
-            short itemID = Short.parseShort(args[2]);
+            int itemID = Integer.parseInt(args[2]);
             int price = Integer.parseInt(args[3]);
             
             L2ItemInstance newItem = ItemTable.getInstance().createDummyItem(itemID);
@@ -867,7 +867,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 	        if(dropData.next()){
 	            replyMSG.append("<table>");
 	            replyMSG.append("<tr><td>Appertain of NPC</td><td>"+ NpcTable.getInstance().getTemplate(dropData.getInt("mobId")).name + "</td></tr>");
-	            replyMSG.append("<tr><td>ItemName</td><td>"+ ItemTable.getInstance().getTemplate(dropData.getShort("itemId")).getName() + "(" + dropData.getInt("itemId") + ")</td></tr>");
+	            replyMSG.append("<tr><td>ItemName</td><td>"+ ItemTable.getInstance().getTemplate(dropData.getInt("itemId")).getName() + "(" + dropData.getInt("itemId") + ")</td></tr>");
 	            replyMSG.append("<tr><td>MIN(" + dropData.getInt("min") + ")</td><td><edit var=\"min\" width=80></td></tr>");
 	            replyMSG.append("<tr><td>MAX(" + dropData.getInt("max") + ")</td><td><edit var=\"max\" width=80></td></tr>");
 	            replyMSG.append("<tr><td>IS SWEEP(" + (dropData.getInt("sweep") ==1) + ")</td><td><edit var=\"sweep\" width=80></td></tr>");
@@ -1089,7 +1089,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 	        {
 	            dropData = new L2DropData();
 	            
-				dropData.setItemId(dropDataList.getShort("itemId"));
+				dropData.setItemId(dropDataList.getInt("itemId"));
 				dropData.setMinDrop(dropDataList.getInt("min"));
 				dropData.setMaxDrop(dropDataList.getInt("max"));
 				dropData.setSweep(dropDataList.getInt("sweep") == 1);

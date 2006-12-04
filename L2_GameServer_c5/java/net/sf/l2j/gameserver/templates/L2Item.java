@@ -41,19 +41,19 @@ import net.sf.l2j.gameserver.skills.FuncTemplate;
  */
 public abstract class L2Item
 {
-	public static final byte TYPE1_WEAPON_RING_EARRING_NECKLACE = 0;
-	public static final byte TYPE1_SHIELD_ARMOR = 1;
-	public static final byte TYPE1_ITEM_QUESTITEM_ADENA = 4;
+	public static final int TYPE1_WEAPON_RING_EARRING_NECKLACE = 0;
+	public static final int TYPE1_SHIELD_ARMOR = 1;
+	public static final int TYPE1_ITEM_QUESTITEM_ADENA = 4;
 
-	public static final byte TYPE2_WEAPON = 0;
-	public static final byte TYPE2_SHIELD_ARMOR = 1;
-	public static final byte TYPE2_ACCESSORY = 2;
-	public static final byte TYPE2_QUEST = 3;
-	public static final byte TYPE2_MONEY = 4;
-    public static final byte TYPE2_OTHER = 5;
-    public static final byte TYPE2_PET_WOLF = 6;
-    public static final byte TYPE2_PET_HATCHLING = 7;
-    public static final byte TYPE2_PET_STRIDER = 8;
+	public static final int TYPE2_WEAPON = 0;
+	public static final int TYPE2_SHIELD_ARMOR = 1;
+	public static final int TYPE2_ACCESSORY = 2;
+	public static final int TYPE2_QUEST = 3;
+	public static final int TYPE2_MONEY = 4;
+    public static final int TYPE2_OTHER = 5;
+    public static final int TYPE2_PET_WOLF = 6;
+    public static final int TYPE2_PET_HATCHLING = 7;
+    public static final int TYPE2_PET_STRIDER = 8;
 	
 	
 	public static final int SLOT_NONE = 0x0000;
@@ -78,51 +78,51 @@ public abstract class L2Item
     public static final int SLOT_HATCHLING = 0x040000;
     public static final int SLOT_STRIDER = 0x080000;
 	
-	public static final byte MATERIAL_STEEL = 0x00; // ??
-	public static final byte MATERIAL_FINE_STEEL = 0x01; // ??
-	public static final byte MATERIAL_BLOOD_STEEL = 0x02; // ??
-	public static final byte MATERIAL_BRONZE = 0x03; // ??
-	public static final byte MATERIAL_SILVER = 0x04; // ??
-	public static final byte MATERIAL_GOLD = 0x05; // ??
-	public static final byte MATERIAL_MITHRIL = 0x06; // ??
-	public static final byte MATERIAL_ORIHARUKON = 0x07; // ??
-	public static final byte MATERIAL_PAPER = 0x08; // ??
-	public static final byte MATERIAL_WOOD = 0x09; // ??
-	public static final byte MATERIAL_CLOTH = 0x0a; // ??
-	public static final byte MATERIAL_LEATHER = 0x0b; // ??
-	public static final byte MATERIAL_BONE = 0x0c; // ??
-	public static final byte MATERIAL_HORN = 0x0d; // ??
-	public static final byte MATERIAL_DAMASCUS = 0x0e; // ??
-	public static final byte MATERIAL_ADAMANTAITE = 0x0f; // ??
-	public static final byte MATERIAL_CHRYSOLITE = 0x10; // ??
-	public static final byte MATERIAL_CRYSTAL = 0x11; // ??
-	public static final byte MATERIAL_LIQUID = 0x12; // ??
-	public static final byte MATERIAL_SCALE_OF_DRAGON = 0x13; // ??
-	public static final byte MATERIAL_DYESTUFF = 0x14; // ??
-	public static final byte MATERIAL_COBWEB = 0x15; // ??
-    public static final byte MATERIAL_SEED = 0x15; // ??
+	public static final int MATERIAL_STEEL = 0x00; // ??
+	public static final int MATERIAL_FINE_STEEL = 0x01; // ??
+	public static final int MATERIAL_BLOOD_STEEL = 0x02; // ??
+	public static final int MATERIAL_BRONZE = 0x03; // ??
+	public static final int MATERIAL_SILVER = 0x04; // ??
+	public static final int MATERIAL_GOLD = 0x05; // ??
+	public static final int MATERIAL_MITHRIL = 0x06; // ??
+	public static final int MATERIAL_ORIHARUKON = 0x07; // ??
+	public static final int MATERIAL_PAPER = 0x08; // ??
+	public static final int MATERIAL_WOOD = 0x09; // ??
+	public static final int MATERIAL_CLOTH = 0x0a; // ??
+	public static final int MATERIAL_LEATHER = 0x0b; // ??
+	public static final int MATERIAL_BONE = 0x0c; // ??
+	public static final int MATERIAL_HORN = 0x0d; // ??
+	public static final int MATERIAL_DAMASCUS = 0x0e; // ??
+	public static final int MATERIAL_ADAMANTAITE = 0x0f; // ??
+	public static final int MATERIAL_CHRYSOLITE = 0x10; // ??
+	public static final int MATERIAL_CRYSTAL = 0x11; // ??
+	public static final int MATERIAL_LIQUID = 0x12; // ??
+	public static final int MATERIAL_SCALE_OF_DRAGON = 0x13; // ??
+	public static final int MATERIAL_DYESTUFF = 0x14; // ??
+	public static final int MATERIAL_COBWEB = 0x15; // ??
+    public static final int MATERIAL_SEED = 0x15; // ??
 
-	public static final byte CRYSTAL_NONE = 0x00; // ??
-	public static final byte CRYSTAL_D = 0x01; // ??
-	public static final byte CRYSTAL_C = 0x02; // ??
-	public static final byte CRYSTAL_B = 0x03; // ??
-	public static final byte CRYSTAL_A = 0x04; // ??
-	public static final byte CRYSTAL_S = 0x05; // ??
+	public static final int CRYSTAL_NONE = 0x00; // ??
+	public static final int CRYSTAL_D = 0x01; // ??
+	public static final int CRYSTAL_C = 0x02; // ??
+	public static final int CRYSTAL_B = 0x03; // ??
+	public static final int CRYSTAL_A = 0x04; // ??
+	public static final int CRYSTAL_S = 0x05; // ??
 	
-    public static final short[] crystalItemId = {0, 1458, 1459, 1460, 1461, 1462};
-    public static final byte[] crystalEnchantBonusArmor = {0, 11, 6, 11, 19, 25};
-    public static final short[] crystalEnchantBonusWeapon = {0, 90, 45, 67, 144, 250};
+    public static final int[] crystalItemId = {0, 1458, 1459, 1460, 1461, 1462};
+    public static final int[] crystalEnchantBonusArmor = {0, 11, 6, 11, 19, 25};
+    public static final int[] crystalEnchantBonusWeapon = {0, 90, 45, 67, 144, 250};
 
-	private final short _itemId;
+	private final int _itemId;
 	private final String _name;
-	private final short _type1;	// needed for item list (inventory)
-	private final short _type2;	// different lists for armor, weapon, etc
-	private final short _weight;
+	private final int _type1;	// needed for item list (inventory)
+	private final int _type2;	// different lists for armor, weapon, etc
+	private final int _weight;
 	private final boolean _crystallizable;
 	private final boolean _stackable;
-	private final byte _materialType;
-	private final byte _crystalType; // default to none-grade 
-	private final byte _durability;
+	private final int _materialType;
+	private final int _crystalType; // default to none-grade 
+	private final int _durability;
 	private final int _bodyPart;
 	private final int _referencePrice;
 	private final int _crystalCount;
@@ -158,16 +158,16 @@ public abstract class L2Item
 	protected L2Item(Enum type, StatsSet set)
 	{
 		_type = type;
-		_itemId = set.getShort("item_id");
+		_itemId = set.getInteger("item_id");
 		_name   = set.getString("name");
-		_type1  = set.getByte("type1");	// needed for item list (inventory)
-		_type2  = set.getByte("type2");	// different lists for armor, weapon, etc
-		_weight = set.getShort("weight");
+		_type1  = set.getInteger("type1");	// needed for item list (inventory)
+		_type2  = set.getInteger("type2");	// different lists for armor, weapon, etc
+		_weight = set.getInteger("weight");
 		_crystallizable = set.getBool("crystallizable");
 		_stackable      = set.getBool("stackable", false);
-		_materialType   = set.getByte("material");
-		_crystalType    = set.getByte("crystal_type", CRYSTAL_NONE); // default to none-grade 
-		_durability     = set.getByte("durability");
+		_materialType   = set.getInteger("material");
+		_crystalType    = set.getInteger("crystal_type", CRYSTAL_NONE); // default to none-grade 
+		_durability     = set.getInteger("durability");
 		_bodyPart       = set.getInteger("bodypart");
 		_referencePrice = set.getInteger("price");
 		_crystalCount   = set.getInteger("crystal_count", 0);
@@ -196,7 +196,7 @@ public abstract class L2Item
 	 * Returns the ID of the iden
 	 * @return int
 	 */
-	public final short getItemId()
+	public final int getItemId()
 	{
 		return _itemId;
 	}
@@ -252,7 +252,7 @@ public abstract class L2Item
      * Return the type of crystal if item is crystallizable
      * @return int
      */
-    public final short getCrystalItemId()
+    public final int getCrystalItemId()
     {
         return crystalItemId[_crystalType];
     }

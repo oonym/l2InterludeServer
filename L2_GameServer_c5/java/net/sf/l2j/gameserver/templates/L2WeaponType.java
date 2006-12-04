@@ -38,7 +38,7 @@ public enum L2WeaponType {
 	ROD       (13, "Rod"),
 	BIGBLUNT  (14, "Big Blunt"); // Two handed blunt
 	
-	private final byte _id;
+	private final int _id;
 	private final String _name;
 	
 	/**
@@ -48,7 +48,7 @@ public enum L2WeaponType {
 	 */
 	private L2WeaponType(int id, String name)
 	{
-		_id = (byte)id;
+		_id = id;
 		_name = name;
 	}
 	

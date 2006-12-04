@@ -95,7 +95,7 @@ public class State
             if (_Drops == null)
                 _Drops = new FastMap<Integer, List<L2DropData>>();
             L2DropData d = new L2DropData();
-            d.setItemId((short)itemId);
+            d.setItemId(itemId);
             d.setChance(chance);
             d.setQuestID(_quest.getName());
             d.addStates(new String[]{_Name});

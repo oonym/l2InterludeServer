@@ -41,7 +41,7 @@ public class SoulCrystals implements IItemHandler
 {
 	// First line is for Red Soul Crystals, second is Green and third is Blue Soul Crystals,
 	// ordered by ascending level, from 0 to 13... 
-	private static short[] _itemIds = { 4629, 4630, 4631, 4632, 4633, 4634, 4635, 4636, 4637, 4638, 4639, 5577, 5580, 5908,
+	private static int[] _itemIds = { 4629, 4630, 4631, 4632, 4633, 4634, 4635, 4636, 4637, 4638, 4639, 5577, 5580, 5908,
 									  4640, 4641, 4642, 4643, 4644, 4645, 4646, 4647, 4648, 4649, 4650, 5578, 5581, 5911,
 									  4651, 4652, 4653, 4654, 4655, 4656, 4657, 4658, 4659, 4660, 4661, 5579, 5582, 5914};
 	
@@ -114,7 +114,7 @@ public class SoulCrystals implements IItemHandler
 		}
 	}
 
-	public short[] getItemIds()
+	public int[] getItemIds()
 	{
 		return _itemIds;
 	}

@@ -779,7 +779,7 @@ public class L2NpcInstance extends L2Character
                     		&& (player.getInventory().getItemByObjectId(summon.getControlItemId())!=null)
                     	)
                     {
-                        short exchangeItem = L2PetDataTable.getWyvernItemId();
+                        int exchangeItem = L2PetDataTable.getWyvernItemId();
                         if (!player.reduceAdena("PetUpate", 20000000, this, true)) return;
                         player.getInventory().destroyItem("PetUpate", summon.getControlItemId(), 1, player, this);
                         
@@ -862,7 +862,7 @@ public class L2NpcInstance extends L2Character
                     		&& (player.getInventory().getItemByObjectId(summon.getControlItemId())!=null)
                     	)
                     {
-                        short exchangeItem = L2PetDataTable.getStriderTwilightItemId();
+                        int exchangeItem = L2PetDataTable.getStriderTwilightItemId();
                         if(myPet.equals(wind)) 
                         	exchangeItem = L2PetDataTable.getStriderWindItemId();
                         else if(myPet.equals(star)) 
@@ -1010,7 +1010,7 @@ public class L2NpcInstance extends L2Character
                 int val = 0;
                 try 
                 {
-                	val = Integer.parseInt(command.substring(14));
+                	val = Integer.parseInt(command.substring(5));
                 } catch (IndexOutOfBoundsException ioobe) {
                 } catch (NumberFormatException nfe) {}
                 showChatWindow(player, val);
@@ -1524,7 +1524,7 @@ public class L2NpcInstance extends L2Character
             sm.addItemName(4442);
             player.sendPacket(sm);
             
-            L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), (short)4442);
+            L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), 4442);
 			item.setCount(1);
 			item.setCustomType1(lotonumber);
 			item.setEnchantLevel(enchant);

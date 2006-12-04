@@ -84,7 +84,7 @@ public class L2PcTemplate extends L2CharTemplate {
 	 * add starter equipment
 	 * @param i
 	 */
-	public void addItem(short itemId)
+	public void addItem(int itemId)
 	{
 		L2Item item = ItemTable.getInstance().getTemplate(itemId);
 		if (item != null)

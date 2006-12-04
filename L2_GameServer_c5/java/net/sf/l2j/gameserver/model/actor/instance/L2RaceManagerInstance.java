@@ -408,7 +408,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
             sm.addNumber(raceNumber);
             sm.addItemName(4443);
             player.sendPacket(sm);
-            L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), (short)4443);
+            L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), 4443);
             item.setCount(1);
             item.setEnchantLevel(raceNumber);
             item.setCustomType1(ticket);

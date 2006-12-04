@@ -72,7 +72,7 @@ public class MercTicketManager
             200 // Aden
             };
     
-    private final short[] _ItemIds = {
+    private final int[] _ItemIds = {
             3960, 3961, 3962, 3963, 3964, 3965, 3966, 3967, 3968, 3969, // Gludio
             3973, 3974, 3975, 3976, 3977, 3978, 3979, 3980, 3981, 3982, // Dion
             3986, 3987, 3988, 3989, 3990, 3991, 3992, 3993, 3994, 3995, // Giran
@@ -136,7 +136,7 @@ public class MercTicketManager
 	        rs = statement.executeQuery();
 	        
 	        int npcId;
-	        short itemId;
+	        int itemId;
 	        int x,y,z;
 	        // start index to begin the search for the itemId corresponding to this NPC
 	        // this will help with: 
@@ -253,7 +253,7 @@ public class MercTicketManager
      * returns the id of the mercenary npc that was added to the spawn
      * returns -1 if this fails.
      */ 
-    public int addTicket(short itemId, L2PcInstance activeChar, String[] messages)
+    public int addTicket(int itemId, L2PcInstance activeChar, String[] messages)
     {
     	int x = activeChar.getX();
     	int y = activeChar.getY();
@@ -342,7 +342,7 @@ public class MercTicketManager
     	
     	getDroppedTickets().remove(item);
     }
-    public short[] getItemIds()
+    public int[] getItemIds()
     {
         return _ItemIds;
     }

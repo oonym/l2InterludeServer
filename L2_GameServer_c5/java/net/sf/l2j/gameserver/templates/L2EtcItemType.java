@@ -37,7 +37,7 @@ public enum L2EtcItemType {
     SHOT       (11, "Shot"),
     HERB	   (12, "Herb");
 	
-	final byte _id;
+	final int _id;
 	final String _name;
 	
 	/**
@@ -47,7 +47,7 @@ public enum L2EtcItemType {
 	 */
 	L2EtcItemType(int id, String name)
 	{
-		_id = (byte)id;
+		_id = id;
 		_name = name;
 	}
 	
