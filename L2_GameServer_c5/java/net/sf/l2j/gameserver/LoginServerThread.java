@@ -317,7 +317,7 @@ public class LoginServerThread extends Thread
 								{
 									_log.warning("session key is not correct. closing connection");
 									wcToRemove.clientThread.getConnection().sendPacket(new AuthLoginFail(1));
-									//FIXME: should we actually close the connexion?
+									wcToRemove.clientThread.getConnection().close();
 								}
 								_waitingClients.remove(wcToRemove);
 							}
