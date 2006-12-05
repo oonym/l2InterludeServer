@@ -1725,4 +1725,29 @@ public final class Formulas
 
 		return true;
 	}
+	
+    public int calculateEnchantSkillSuccessRate(int skillLvl, int playerLvl)
+    {
+    	// source: forums
+    	// +5 82 % at lvl 77
+    	// +3 88 % at lvl 77
+    	// lvl 76 pretty safe up to +3 (+4 40 %)
+    	// lvl 77 pretty safe up to +6 (+7 ~40 %)
+    	// lvl 78 pretty safe up to +8 
+    	
+    	if (skillLvl > 140) skillLvl = skillLvl - 140;
+    	else skillLvl = skillLvl - 100;
+    	if (skillLvl < 1) return 0;
+    	if (playerLvl < 75) return 0;
+    	
+    	// linear approx, although the formula isn't linear
+    	int successRate = 75 - skillLvl * 7;   
+        successRate += (playerLvl - 75) * 20;         	
+   
+        if (successRate < 10) successRate = 10;
+        if (successRate > 100) successRate = 100;
+       	
+    	return successRate;
+    }
+
 }

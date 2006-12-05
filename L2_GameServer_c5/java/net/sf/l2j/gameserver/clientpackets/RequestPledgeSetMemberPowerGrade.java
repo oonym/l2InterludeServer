@@ -52,8 +52,6 @@ public class RequestPledgeSetMemberPowerGrade extends ClientBasePacket
     @Override
     void runImpl()
     {
-        //System.out.println("C5: RequestPledgeSetMemberPowerGrade S:"+_member);
-        //System.out.println("C5: RequestPledgeSetMemberPowerGrade d:"+_powerGrade);
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null)
         	return;
@@ -63,6 +61,12 @@ public class RequestPledgeSetMemberPowerGrade extends ClientBasePacket
         L2ClanMember member = clan.getClanMember(_member);
         if(member == null)
         	return;
+        if(member.getPledgeType() == L2Clan.SUBUNIT_ACADEMY)
+        {
+        	// also checked from client side
+        	activeChar.sendMessage("You cannot change academy member grade");
+        	return;
+        }
         member.setPowerGrade(_powerGrade);
     }
 

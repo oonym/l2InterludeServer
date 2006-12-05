@@ -301,6 +301,8 @@ public abstract class L2Skill
     private final float _mulCrossLearnProf; // multiplay for fighter/mage missmatch, default 3
     private final List<ClassId> _canLearn; // which classes can learn
     private final List<Integer> _teachers; // which NPC teaches
+    private final int _minPledgeClass;
+    
     private final boolean _isOffensive;
 
     protected Condition _preCondition;
@@ -365,6 +367,7 @@ public abstract class L2Skill
         _mulCrossLearn = set.getFloat("mulCrossLearn", 2.f);
         _mulCrossLearnRace = set.getFloat("mulCrossLearnRace", 2.f);
         _mulCrossLearnProf = set.getFloat("mulCrossLearnProf", 3.f);
+        _minPledgeClass     = set.getInteger("minPledgeClass", 0);
         _isOffensive = set.getBool("offensive", isSkillTypeOffensive());
 
         String canLearn = set.getString("canLearn", null);
@@ -760,6 +763,8 @@ public abstract class L2Skill
     {
         return _teachers == null || _teachers.contains(npcId);
     }
+    
+    public int getMinPledgeClass() { return _minPledgeClass;  }
 
     public final boolean isPvpSkill()
     {

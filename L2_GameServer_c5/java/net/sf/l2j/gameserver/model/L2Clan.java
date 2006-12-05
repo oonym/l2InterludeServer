@@ -98,7 +98,16 @@ public class L2Clan
     public static final int CP_CS_MERCENARIES =2097152;
     public static final int CP_CS_SET_FUNCTIONS =4194304;
     public static final int CP_ALL = 8388606;
-
+    
+    // Sub-unit types
+    public static final int SUBUNIT_ACADEMY = -1;
+    public static final int SUBUNIT_ROYAL1 = 100; 
+    public static final int SUBUNIT_ROYAL2 = 200; 
+    public static final int SUBUNIT_KNIGHT1 = 1001; 
+    public static final int SUBUNIT_KNIGHT2 = 1002; 
+    public static final int SUBUNIT_KNIGHT3 = 2001; 
+    public static final int SUBUNIT_KNIGHT4 = 2002; 
+    
     /** FastMap(Integer, L2Skill) containing all skills of the L2Clan */
     protected final Map<Integer, L2Skill> _Skills = new FastMap<Integer, L2Skill>();
     protected final Map<Integer, RankPrivs> _Privs = new FastMap<Integer, RankPrivs>();
@@ -693,13 +702,9 @@ public class L2Clan
                 {
                 	member = new L2ClanMember(this, clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"),clanMembers.getInt("subpledge"), clanMembers.getInt("power_grade"), clanMembers.getString("title"));
                     if (member.getObjectId() == leaderId)
-                    {
                     	setLeader(member);
-                    }
                     else
-                    {
                         addClanMember(member);
-                    }                   
                 }               
                 clanMembers.close();
                 statement2.close();              
@@ -1027,23 +1032,23 @@ public class L2Clan
     		//_log.warning("found sub-unit with id: "+pledgeType);
     		switch(pledgeType)
     		{
-    			case -1:
+    			case SUBUNIT_ACADEMY:
     				return 0;
-    			case 100:
-    				pledgeType = getAvailablePledgeTypes(200);
+    			case SUBUNIT_ROYAL1:
+    				pledgeType = getAvailablePledgeTypes(SUBUNIT_ROYAL2);
     				break;
-    			case 200:
+    			case SUBUNIT_ROYAL2:
     				return 0;
-    			case 1001:
-    				pledgeType = getAvailablePledgeTypes(1002);
+    			case SUBUNIT_KNIGHT1:
+    				pledgeType = getAvailablePledgeTypes(SUBUNIT_KNIGHT2);
     				break;
-    			case 1002:
-    				pledgeType = getAvailablePledgeTypes(2001);
+    			case SUBUNIT_KNIGHT2:
+    				pledgeType = getAvailablePledgeTypes(SUBUNIT_KNIGHT3);
     				break;
-                case 2001:
-                	pledgeType = getAvailablePledgeTypes(2002);
+                case SUBUNIT_KNIGHT3:
+                	pledgeType = getAvailablePledgeTypes(SUBUNIT_KNIGHT4);
                 	break;
-                case 2002:
+                case SUBUNIT_KNIGHT4:
                 	return 0;
     		}
     	}
@@ -1201,6 +1206,8 @@ public class L2Clan
 
     public void setReputationScore(int value, boolean save)
     {
+    	if(_reputationScore > 100000000) _reputationScore = 100000000;
+    	if(_reputationScore < -100000000) _reputationScore = -100000000;
     	_reputationScore = value;
     	if (save) updateClanInDB();
     }

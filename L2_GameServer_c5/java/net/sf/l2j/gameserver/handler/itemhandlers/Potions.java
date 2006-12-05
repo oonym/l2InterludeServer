@@ -43,7 +43,7 @@ public class Potions implements IItemHandler
                                       6553, 6554, 6555, 8600,8601,8602, 8603, 8604, 
                                       8605, 8606, 8607, 8608, 8609, 8610, 8611, 8612, 8613, 8614 };
     
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
         L2PcInstance activeChar;
         boolean res = false;
@@ -215,15 +215,13 @@ public class Potions implements IItemHandler
                 }
             }
             
-            MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2166, 1, 1, 0);
-            activeChar.broadcastPacket(MSU);
-                
-            //usePotion(activeChar, 5591, 2);
+            res = usePotion(activeChar, 2166, (itemId == 5591) ? 1 : 2);
+            // MagicSkillUser MSU = new MagicSkillUser(playable, activeChar, 2166, 1, 1, 0);
+            // activeChar.broadcastPacket(MSU);
+            // int amountCP = (itemId == 5591) ? 50 : 200;
+            // activeChar.setCurrentCp(activeChar.getCurrentCp() + amountCP);
+            // res = true;
 
-            int amountCP = (itemId == 5591) ? 50 : 200;
-            activeChar.setCurrentCp(activeChar.getCurrentCp() + amountCP);
-
-            res = true;
         }
         else if (itemId == 6035) // Magic Haste Potion, xml: 2169
             res = usePotion(activeChar, 2169, 1);

@@ -37,6 +37,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.Olympiad;
+import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -338,6 +339,9 @@ public class Hero
             if (player != null)
             {
                 player.setHero(true);
+                L2Clan clan = player.getClan();
+                if (clan != null)
+                    clan.setReputationScore(clan.getReputationScore()+1000, true);
                 player.sendPacket(new UserInfo(player));
                 player.broadcastUserInfo();
             }

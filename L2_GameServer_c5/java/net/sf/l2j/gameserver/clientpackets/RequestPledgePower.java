@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ManagePledgePower;
@@ -32,7 +33,7 @@ public class RequestPledgePower extends ClientBasePacket
     private static final String _C__C0_REQUESTPLEDGEPOWER = "[C] C0 RequestPledgePower";
     private final int _rank;
     private final int _action;
-    private final int _privs;
+    private int _privs;
     
     public RequestPledgePower(ByteBuffer buf, ClientThread client)
     {
@@ -55,8 +56,18 @@ public class RequestPledgePower extends ClientBasePacket
         {
         	if(player.getClan() != null && player.isClanLeader())
         	{
-        		// TODO: There are many rights that cannot be bestowed upon adademy
-        		// members: join/leave, title, clan war, auction etc... Not checked now.
+        	    if(_rank == 9) 
+        	    {
+       	            //The rights below cannot be bestowed upon Academy members:
+        	        //Join a clan or be dismissed 
+        	        //Title management, crest management, master management, level management, 
+        	        //bulletin board administration 
+        	        //Clan war, right to dismiss, set functions 
+        	        //Auction, manage taxes, attack/defend registration, mercenary management 
+        	        //=> Leaves only CP_CL_VIEW_WAREHOUSE, CP_CH_OPEN_DOOR, CP_CS_OPEN_DOOR?  
+        	        _privs = (_privs & L2Clan.CP_CL_VIEW_WAREHOUSE) + (_privs & L2Clan.CP_CH_OPEN_DOOR)
+        	                 + (_privs & L2Clan.CP_CS_OPEN_DOOR);
+        	    }
         		player.getClan().setRankPrivs(_rank, _privs);
         	}
         } else
