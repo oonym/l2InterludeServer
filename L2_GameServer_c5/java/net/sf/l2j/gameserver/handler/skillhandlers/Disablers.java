@@ -355,6 +355,16 @@ public class Disablers implements ISkillHandler
                 }// end case                                    
             }//end switch
         }//end for        
+        
+        // self Effect :]
+        L2Effect effect = activeChar.getEffect(skill.getId());        
+        if (effect != null && effect.isSelfEffect())        
+        {            
+        	//Replace old effect with new one.            
+        	effect.exit();        
+        }        
+        skill.getEffectsSelf(activeChar);
+        
     } //end void
     
     private void negateEffect(L2Character target, SkillType type, double power) {

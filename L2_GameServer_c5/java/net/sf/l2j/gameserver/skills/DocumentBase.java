@@ -175,6 +175,12 @@ abstract class DocumentBase
                                                                  attrs.getNamedItem("time").getNodeValue(),
                                                                  template).intValue();
         else time = ((L2Skill) template).getBuffDuration() / 1000 / count;
+        boolean self = false;
+        if (attrs.getNamedItem("self") != null)
+        {
+            if (getNumber(attrs.getNamedItem("self").getNodeValue(),template).intValue() == 1)
+                self = true;
+        }
         Lambda lambda = getLambda(n, template);
         Condition applayCond = parseCondition(n.getFirstChild(), template);
         short abnormal = 0;
@@ -196,7 +202,8 @@ abstract class DocumentBase
                                                abnormal, stackType, stackOrder);
         parseTemplate(n, lt);
         if (template instanceof L2Item) ((L2Item) template).attach(lt);
-        else if (template instanceof L2Skill) ((L2Skill) template).attach(lt);
+        else if (template instanceof L2Skill && !self) ((L2Skill) template).attach(lt);
+        else if (template instanceof L2Skill && self) ((L2Skill) template).attachSelf(lt);
     }
 
     protected void attachSkill(Node n, Object template, Condition attachCond)

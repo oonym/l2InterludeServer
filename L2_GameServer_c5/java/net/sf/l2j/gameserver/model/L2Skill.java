@@ -28,7 +28,9 @@ import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SkillTreeTable;
+import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
@@ -40,6 +42,7 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Condition;
+import net.sf.l2j.gameserver.skills.EffectCharge;
 import net.sf.l2j.gameserver.skills.EffectTemplate;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Func;
@@ -55,8 +58,6 @@ import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.gameserver.templates.StatsSet;
 import net.sf.l2j.gameserver.util.Util;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 
 /**
  * This class...
@@ -304,11 +305,13 @@ public abstract class L2Skill
     private final int _minPledgeClass;
     
     private final boolean _isOffensive;
+    private final int _num_charges;
 
     protected Condition _preCondition;
     protected Condition _itemPreCondition;
     protected FuncTemplate[] _funcTemplates;
     protected EffectTemplate[] _effectTemplates;
+    protected EffectTemplate[] _effectTemplatesSelf;
 
     protected L2Skill(StatsSet set)
     {
@@ -369,6 +372,7 @@ public abstract class L2Skill
         _mulCrossLearnProf = set.getFloat("mulCrossLearnProf", 3.f);
         _minPledgeClass     = set.getInteger("minPledgeClass", 0);
         _isOffensive = set.getBool("offensive", isSkillTypeOffensive());
+        _num_charges = set.getInteger("num_charges", getLevel());
 
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
@@ -1651,6 +1655,49 @@ public abstract class L2Skill
 
         return effects.toArray(new L2Effect[effects.size()]);
     }
+    public final L2Effect[] getEffectsSelf(L2Character effector)
+    {
+        if (isPassive()) return _emptyEffectSet;
+     
+        if (_effectTemplatesSelf == null) return _emptyEffectSet;
+
+        List<L2Effect> effects = new FastList<L2Effect>();
+
+        for (EffectTemplate et : _effectTemplatesSelf)
+        {
+            Env env = new Env();
+            env._player = effector;
+            env._target = effector;
+            env._skill = this;
+            L2Effect e = et.getEffect(env);
+            if (e != null)                
+            {
+                //Implements effect charge
+                if (e.getEffectType()== L2Effect.EffectType.CHARGE)
+                {               
+                    EffectCharge effect = (EffectCharge) env._target.getEffect(L2Effect.EffectType.CHARGE);
+                    if (effect != null) 
+                    {
+                    	int effectcharge = effect.getLevel();
+                        if (effectcharge < _num_charges)
+                        {
+                        	effectcharge++;
+                            effect.addNumCharges(effectcharge);
+                            env._target.updateEffectIcons();
+                            SystemMessage sm = new SystemMessage(614);
+                            sm.addString("Charged to " + effectcharge);
+                            env._target.sendPacket(sm);
+                        }                
+                    }
+                    else effects.add(e);
+                }
+                else effects.add(e);                
+            }
+        }
+        if (effects.size() == 0) return _emptyEffectSet;
+
+        return effects.toArray(new L2Effect[effects.size()]);
+    }
 
     public final void attach(FuncTemplate f)
     {
@@ -1681,6 +1728,22 @@ public abstract class L2Skill
             System.arraycopy(_effectTemplates, 0, tmp, 0, len);
             tmp[len] = effect;
             _effectTemplates = tmp;
+        }
+        
+    }
+    public final void attachSelf(EffectTemplate effect)
+    {
+        if (_effectTemplatesSelf == null)
+        {
+            _effectTemplatesSelf = new EffectTemplate[] {effect};
+        }
+        else
+        {
+            int len = _effectTemplatesSelf.length;
+            EffectTemplate[] tmp = new EffectTemplate[len + 1];
+            System.arraycopy(_effectTemplatesSelf, 0, tmp, 0, len);
+            tmp[len] = effect;
+            _effectTemplatesSelf = tmp;
         }
     }
 

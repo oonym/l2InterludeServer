@@ -505,6 +505,7 @@ public class GeoEngine extends GeoData
 		int cellX = 0;		
 		int cellY = 0;		
 		int index = 0;
+		short temph = -30000;
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
 		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
 		ByteBuffer geo = Geodata.get(region);
@@ -517,14 +518,7 @@ public class GeoEngine extends GeoData
 		index++;
 	    if(type == 0)
 	    {
-	    	short height = (short)(geo.getShort(index)&0x0fff0);
-	    	//Check if this z is correct
-	    	if (height < zmin - 102 || height > zmax + 102)
-	    	{
-	    		_log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
-	    		return (short)zmin;
-	    	}	    		
-	        return height;
+	    	temph = (short)(geo.getShort(index)&0x0fff0);	    	
 	    }
 	    else if(type == 1)
 	    {
@@ -534,13 +528,7 @@ public class GeoEngine extends GeoData
 	        short height = geo.getShort(index);
 			height = (short)(height&0x0fff0);
 			height = (short)(height >> 1);
-            //Check if this z is correct
-	    	if (height < zmin - 102 || height > zmax + 102)
-	    	{
-	    		_log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
-	    		return (short)zmin;
-	    	}	    	
-	        return height;
+            temph = height;
 	    }
 	    else
 	    {
@@ -560,20 +548,24 @@ public class GeoEngine extends GeoData
 			{
 				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);				
 	            return (short)zmin;
-			}
+			}			
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
 	            height = (short)(height&0x0fff0);
 				height = (short)(height >> 1); //height / 2				
-	            if (height >= zmin - 102 &&  height <= zmax + 102)
-	                return height;            
+	            if ((zmin-temph)*(zmin-temph) > (zmin-height)*(zmin-height))
+	                temph = height;            
 	            layers--;
 	            index += 2;
-	        }
-	        _log.warning("SpawnHeight Error - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+height+"!!");
-	        return (short)zmin;		 
+	        }	        	        		 
 	    }
+	    if (temph > zmax + 150)
+        {
+        	_log.warning("SpawnHeight Error - NPC Fall Down - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+"!!");
+	        return (short)zmin;
+        }
+	    return temph;
 	}
 	/**
 	 * @param x

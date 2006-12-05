@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.lib.Log;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -194,6 +195,14 @@ public class Mdam implements ISkillHandler
                 target.reduceCurrentHp(damage, activeChar);
             }
         }
+        // self Effect :]
+        L2Effect effect = activeChar.getEffect(skill.getId());        
+        if (effect != null && effect.isSelfEffect())        
+        {            
+        	//Replace old effect with new one.            
+        	effect.exit();        
+        }        
+        skill.getEffectsSelf(activeChar);
         
         if (skill.isSuicideAttack())
         {

@@ -1,6 +1,7 @@
 package net.sf.l2j.gameserver.skills;
 
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -100,7 +101,16 @@ public class L2SkillChargeDmg extends L2Skill
 				SystemMessage sm = new SystemMessage(SystemMessage.MISSED_TARGET);
 				caster.sendPacket(sm);
 			}
-		}	
+		}
+        // effect self :]
+        L2Effect seffect = caster.getEffect(getId());
+        if (seffect != null && seffect.isSelfEffect())
+        {             
+            //Replace old effect with new one.
+            seffect.exit();
+        }
+        // cast self effect if any
+        getEffectsSelf(caster);
 	}
 	
 }
