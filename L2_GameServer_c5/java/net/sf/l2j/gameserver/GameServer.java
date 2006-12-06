@@ -452,7 +452,6 @@ public class GameServer
         _adminCommandHandler.registerAdminCommandHandler(new AdminLevel());
         _adminCommandHandler.registerAdminCommandHandler(new AdminQuest());
         _adminCommandHandler.registerAdminCommandHandler(new AdminZone());
-        _adminCommandHandler.registerAdminCommandHandler(new AdminSubClass());
         _adminCommandHandler.registerAdminCommandHandler(new AdminCursedWeapons());
         _adminCommandHandler.registerAdminCommandHandler(new AdminGeodata());
 
