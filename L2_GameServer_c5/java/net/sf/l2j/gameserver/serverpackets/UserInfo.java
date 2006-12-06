@@ -262,9 +262,9 @@ public class UserInfo extends ServerBasePacket
 		//new c5 
        	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
         
-        writeD(0x00); // ??
+        writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
         
-        writeD(0x00); // ??
+        writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_FACE));
         
         writeD(_cha.getPledgeClass()); //changes the text above CP on Status Window
         writeD(0x00); // ??

@@ -160,7 +160,7 @@ public class CharInfo extends ServerBasePacket
 			else 
 				writeD(_cha.getBaseClass());
 			
-			writeD(0); // unknown, maybe underwear?
+			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_UNDER));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LHAND));
@@ -254,7 +254,7 @@ public class CharInfo extends ServerBasePacket
 	        
 	        writeD(0x00); // ??
 	        
-	        writeD(0x00); // ??
+	        writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_FACE));
 	        
 	        writeD(_cha.getPledgeClass()); 
 	        writeD(0x00); // ??

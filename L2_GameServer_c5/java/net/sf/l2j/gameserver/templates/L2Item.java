@@ -75,8 +75,10 @@ public abstract class L2Item
 	public static final int SLOT_FULL_ARMOR = 0x8000;
     public static final int SLOT_HAIR = 0x010000;
     public static final int SLOT_WOLF = 0x020000;
-    public static final int SLOT_HATCHLING = 0x040000;
-    public static final int SLOT_STRIDER = 0x080000;
+    public static final int SLOT_HATCHLING = 0x100000;
+    public static final int SLOT_STRIDER = 0x200000;
+    public static final int SLOT_FACE = 0x040000;
+    public static final int SLOT_DHAIR = 0x080000;
 	
 	public static final int MATERIAL_STEEL = 0x00; // ??
 	public static final int MATERIAL_FINE_STEEL = 0x01; // ??

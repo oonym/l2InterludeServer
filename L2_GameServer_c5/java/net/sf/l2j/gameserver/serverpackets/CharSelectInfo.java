@@ -184,8 +184,8 @@ public class CharSelectInfo extends ServerBasePacket
             	writeD(0x00); //c3 auto-select char
             
             writeC(charInfoPackage.getEnchantEffect());
-            writeD(0x00); //c5 unk
-            writeD(0x00); //c5 secondary hair slot itemId
+            writeD(charInfoPackage.getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
+            writeD(charInfoPackage.getPaperdollItemId(Inventory.PAPERDOLL_FACE));
         }
     }
 
