@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
@@ -65,6 +66,13 @@ public class RequestSocialAction extends ClientBasePacket
             activeChar.sendPacket(sm);
             sm = null;
             return;
+        }
+        
+        // check if its the actionId is allowed
+        if (_actionId >= 2 && _actionId <= 13)
+        {
+        	Util.handleIllegalPlayerAction(activeChar, "Warning!! Character "+activeChar.getName()+" of account "+activeChar.getAccountName()+" requested an internal Social Action.", Config.DEFAULT_PUNISH);
+        	return;
         }
         
 		if (	activeChar.getPrivateStoreType()==0 &&
