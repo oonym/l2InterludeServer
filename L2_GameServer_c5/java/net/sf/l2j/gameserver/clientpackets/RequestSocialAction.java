@@ -69,7 +69,7 @@ public class RequestSocialAction extends ClientBasePacket
         }
         
         // check if its the actionId is allowed
-        if (_actionId >= 2 && _actionId <= 13)
+        if (_actionId < 2 || _actionId > 13)
         {
         	Util.handleIllegalPlayerAction(activeChar, "Warning!! Character "+activeChar.getName()+" of account "+activeChar.getAccountName()+" requested an internal Social Action.", Config.DEFAULT_PUNISH);
         	return;
