@@ -110,8 +110,8 @@ public final class SubClass
     
     public void setLevel(byte levelValue)
     {
-        if (levelValue > 78)
-            levelValue = 78;
+        if (levelValue > (Experience.MAX_LEVEL - 1))
+            levelValue = (Experience.MAX_LEVEL - 1);
         else if (levelValue < 40)
             levelValue = 40;
             
@@ -120,7 +120,7 @@ public final class SubClass
     
     public void incLevel()
     {
-        if (getLevel() == 78)
+        if (getLevel() == (Experience.MAX_LEVEL - 1))
             return;
         
         _level++;

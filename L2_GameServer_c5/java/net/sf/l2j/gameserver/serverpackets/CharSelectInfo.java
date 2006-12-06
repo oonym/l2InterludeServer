@@ -263,7 +263,7 @@ public class CharSelectInfo extends ServerBasePacket
         charInfopackage.setHairColor(chardata.getInt("haircolor"));
         charInfopackage.setSex(chardata.getInt("sex"));
         
-        charInfopackage.setExp(chardata.getInt("exp"));
+        charInfopackage.setExp(chardata.getLong("exp"));
         charInfopackage.setSp(chardata.getInt("sp"));
         charInfopackage.setClanId(chardata.getInt("clanid"));
         

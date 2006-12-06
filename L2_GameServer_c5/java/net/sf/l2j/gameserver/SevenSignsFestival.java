@@ -25,6 +25,7 @@ import net.sf.l2j.gameserver.model.SpawnListener;
 import net.sf.l2j.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -850,7 +851,7 @@ public class SevenSignsFestival implements SpawnListener
      */
     public static final int getMaxLevelForFestival(int festivalId)
     {
-        int maxLevel = 78;
+        int maxLevel = (Experience.MAX_LEVEL - 1);
         
         switch (festivalId) 
         {

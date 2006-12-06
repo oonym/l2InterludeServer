@@ -52,7 +52,7 @@ public class PetStat extends SummonStat
 
     public final boolean addLevel(byte value)
     {
-        if (getLevel() + value > 78) return false;
+        if (getLevel() + value > (Experience.MAX_LEVEL - 1)) return false;
 
         boolean levelIncreased = super.addLevel(value);
 

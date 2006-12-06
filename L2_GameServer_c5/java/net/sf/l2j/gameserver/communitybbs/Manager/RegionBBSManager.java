@@ -124,7 +124,7 @@ public class RegionBBSManager extends BaseBBSManager
 		    {
 		        long nextLevelExp = 0;
 		        long nextLevelExpNeeded = 0;
-		        if (player.getLevel() < 75)
+		        if (player.getLevel() < (Experience.MAX_LEVEL - 1))
 		        {
 		            nextLevelExp = Experience.LEVEL[player.getLevel() + 1];
 		            nextLevelExpNeeded = nextLevelExp-player.getExp();

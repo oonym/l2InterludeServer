@@ -30,7 +30,7 @@ public class CharSelectInfoPackage
 	private String _name;
     private int _objectId = 0;
 	private int _charId = 0x00030b7a;
-	private int _exp =0;
+	private long _exp =0;
 	private int _sp =0;
 	private int _clanId=0;
 	private int _race=0;
@@ -135,11 +135,11 @@ public class CharSelectInfoPackage
 	{
 		_lastAccess = lastAccess;
 	}
-	public int getExp()
+	public long getExp()
 	{
 		return _exp;
 	}
-	public void setExp(int exp)
+	public void setExp(long exp)
 	{
 		_exp = exp;
 	}

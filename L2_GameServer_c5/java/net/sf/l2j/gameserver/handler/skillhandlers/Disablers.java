@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 
@@ -279,7 +280,7 @@ public class Disablers implements ISkillHandler
                     if (skill.getId() == 1056)
                     {
                     	int lvlmodifier= 52+skill.getMagicLevel()*2;
-                    	if(skill.getMagicLevel()==12) lvlmodifier = 78;
+                    	if(skill.getMagicLevel()==12) lvlmodifier = (Experience.MAX_LEVEL - 1);
                     	int landrate = 90;
                     	if((target.getLevel() - lvlmodifier)>0) landrate = 90-4*(target.getLevel()-lvlmodifier);
                     	if(Rnd.get(100) < landrate)
