@@ -255,7 +255,7 @@ public class CursedWeapon
 			level = _skillMaxLevel;
 		
 		L2Skill skill = SkillTable.getInstance().getInfo(_skillId, level);
-		_player.addSkill(skill);
+		_player.addSkill(skill, true);
 		
 		if (Config.DEBUG)
 			System.out.println("Player "+_player.getName() +" has been awarded with skill "+skill);

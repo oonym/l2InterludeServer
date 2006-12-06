@@ -866,6 +866,7 @@ public class L2CharacterAI extends AbstractAI
             _log.warning("maybeMoveToPawn: target == NULL!");
             return false;
         }
+        if(offset < 0) return false; // skill radius -1
         
         if (!_actor.isInsideRadius(target, offset, false, false))
         {

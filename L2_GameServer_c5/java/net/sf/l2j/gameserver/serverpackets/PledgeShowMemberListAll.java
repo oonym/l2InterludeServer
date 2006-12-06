@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
-
+//import java.util.logging.Logger;
 /**
  * 
  *
@@ -67,6 +67,8 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 	private L2Clan _clan;
 	private L2PcInstance _activeChar;
 	private L2ClanMember[] _members;
+	private int _pledgeType;
+	//private static Logger _log = Logger.getLogger(PledgeShowMemberListAll.class.getName());
 	
 	public PledgeShowMemberListAll(L2Clan clan, L2PcInstance activeChar)
 	{
@@ -77,23 +79,39 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 	final void runImpl()
 	{
 		_members = _clan.getMembers();
-		//temporary solution to show subpledges...
+		
+	}
+	
+	final void writeImpl()
+	{
+		
+		_pledgeType = 0;
+		writePledge(0);
+		
 		SubPledge[] subPledge = _clan.getAllSubPledges();
 		for (int i = 0; i<subPledge.length; i++)
 		{
 			_activeChar.sendPacket(new PledgeReceiveSubPledgeCreated(subPledge[i]));
 		}
+		
+		for (L2ClanMember m : _members)
+		{
+            if (m.getPledgeType() == 0) continue;
+			_activeChar.sendPacket(new PledgeShowMemberListAdd(m));
+		}
+
 		// unless this is sent sometimes, the client doesn't recognise the player as the leader
 		_activeChar.sendPacket(new UserInfo(_activeChar));
+				
 	}
 	
-	final void writeImpl()
+	void writePledge(int mainOrSubpledge)
 	{
 		writeC(0x53);
 		
-		writeD(0); //c5 pledge(1) or subpledge(0) 
+		writeD(mainOrSubpledge); //c5 main clan 0 or any subpledge 1?
 		writeD(_clan.getClanId());
-		writeD(0); //c5
+		writeD(_pledgeType); //c5 - possibly pledge type?
 		writeS(_clan.getName());
 		writeS(_clan.getLeaderName());
 		
@@ -110,10 +128,11 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 		writeS(_clan.getAllyName());
 		writeD(_clan.getAllyCrestId());
         writeD(_clan.isAtWar());// new c3
-		writeD(_members.length);
+		writeD(_clan.getSubPledgeMembersCount(_pledgeType));
+
 		for (L2ClanMember m : _members)
 		{
-			//subpledge value somehow missing. one option is to use many pledgeshowmemberlistadd packets
+    		if(m.getPledgeType() != _pledgeType) continue;
 			writeS(m.getName());
 			writeD(m.getLevel());
 			writeD(m.getClassId());

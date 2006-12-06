@@ -29,14 +29,18 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.CharTemplateTable;
 import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.Olympiad;
+import net.sf.l2j.gameserver.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
+import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
 import net.sf.l2j.gameserver.model.base.ClassType;
 import net.sf.l2j.gameserver.model.base.PlayerClass;
 import net.sf.l2j.gameserver.model.base.PlayerRace;
 import net.sf.l2j.gameserver.model.base.SubClass;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
@@ -91,19 +95,25 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         {
             if (cmdParams.equals("")) return;
 
-            createSubPledge(player, cmdParams, null, -1, 5);
+            createSubPledge(player, cmdParams, null, L2Clan.SUBUNIT_ACADEMY, 5);
         }
         else if (actualCommand.equalsIgnoreCase("create_royal"))
         {
             if (cmdParams.equals("")) return;
 
-            createSubPledge(player, cmdParams, cmdParams2, 100, 6);
+            createSubPledge(player, cmdParams, cmdParams2, L2Clan.SUBUNIT_ROYAL1, 6);
         }
         else if (actualCommand.equalsIgnoreCase("create_knight"))
         {
             if (cmdParams.equals("")) return;
 
-            createSubPledge(player, cmdParams, cmdParams2, 1001, 7);
+            createSubPledge(player, cmdParams, cmdParams2, L2Clan.SUBUNIT_KNIGHT1, 7);
+        }
+        else if (actualCommand.equalsIgnoreCase("assign_subpl_leader"))
+        {
+            if (cmdParams.equals("")) return;
+
+            assignSubPledgeLeader(player, cmdParams, cmdParams2);
         }
         else if (actualCommand.equalsIgnoreCase("create_ally"))
         {
@@ -122,6 +132,10 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         else if (actualCommand.equalsIgnoreCase("increase_clan_level"))
         {
             levelUpClan(player, player.getClanId());
+        }
+        else if (actualCommand.equalsIgnoreCase("learn_clan_skills"))
+        {
+            showPledgeSkillList(player);
         }
         else if (command.startsWith("Subclass"))
         { 
@@ -431,6 +445,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
     public void onAction(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Village Master activated");
+        player.setLastFolkNPC(this);
         super.onAction(player);
     }
 
@@ -918,7 +933,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             return;
         }
         
-        if (player.getClan().getLevel() <= minClanLvl)
+        if (player.getClan().getLevel() < minClanLvl)
         {
             SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
             player.sendPacket(sm);
@@ -932,7 +947,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             return;
         }
         
-        if(!(pledgeType == -1))
+        if(!(pledgeType == L2Clan.SUBUNIT_ACADEMY))
             if(player.getClan().getClanMember(leaderName) == null || player.getClan().getClanMember(leaderName).getPledgeType() != 0)
             {
                 player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
@@ -956,6 +971,66 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         player.sendPacket(sm);
     }
 
+    public void assignSubPledgeLeader(L2PcInstance player, String clanName, String leaderName)
+    {
+        // TODO: System messages for this
+    	//if (Config.DEBUG)
+        //    _log.fine(player.getObjectId() + "(" + player.getName() + ") requested to change sub clan leader "
+        //         + "(" + leaderName + ")");
+    	_log.fine(player.getObjectId() + "(" + player.getName() + ") requested to change sub clan"+clanName +"leader "
+    	                + "(" + leaderName + ")");
+        
+        if (player.getClanId() == 0)
+        {
+        	player.sendMessage("The clan doesn't exist.");
+            return;
+        }
+        
+        if (!player.isClanLeader())
+        {
+        	player.sendMessage("Only the clan leader can do this.");
+            return;
+        }
+        
+        if (leaderName.length() > 20)
+        {
+        	player.sendMessage("Leader name too long.");
+            return;
+        }
+        
+        SubPledge[] subPledge = player.getClan().getAllSubPledges();
+
+		int match = -1;
+        for (int i = 0; i<subPledge.length; i++)
+		{
+			if (subPledge[i].getName().equals(clanName)) 
+			{
+				match = i;
+				break;
+			}
+		}
+        if(match < 0) 
+        {
+        	player.sendMessage("Sub-unit not found.");
+            return;
+        }
+        
+        if(player.getClan().getClanMember(leaderName) == null)
+        {
+            player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
+            return;
+        }
+        
+        if(!(subPledge[match].getId() == -1) && player.getClan().getClanMember(leaderName).getPledgeType() != 0)
+        {
+        	player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
+        	return;
+        }
+
+        subPledge[match].setLeaderName(leaderName);
+
+        player.sendMessage("New sub-unit leader has been assigned.");
+    }
 
     private final Set<PlayerClass> getAvailableSubClasses(L2PcInstance player)
     {
@@ -1024,6 +1099,55 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         return availSubs;
     }
 
+    /**
+     * this displays PledgeSkillList to the player.
+     * @param player
+     */
+    public void showPledgeSkillList(L2PcInstance player)
+    {
+        if (Config.DEBUG) 
+            _log.fine("PledgeSkillList activated on: "+getObjectId());
+        
+        L2PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(player);
+        AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Clan);
+        int counts = 0;
+        
+        for (L2PledgeSkillLearn s: skills)
+        {
+            int cost = s.getRepCost();
+            counts++;
+            
+            asl.addSkill(s.getId(), s.getLevel(), s.getLevel(), cost, 0);
+        }
+        
+        if (counts == 0)
+        {
+            NpcHtmlMessage html = new NpcHtmlMessage(1);
+            
+            if (player.getClan().getLevel() < 8)
+            {
+                SystemMessage sm = new SystemMessage(607);
+                sm.addNumber(player.getClan().getLevel()+1);
+                player.sendPacket(sm);
+            }
+            else
+            {
+                TextBuilder sb = new TextBuilder();
+                sb.append("<html><head><body>");
+                sb.append("You've learned all skills available for your Clan.<br>");
+                sb.append("</body></html>");
+                html.setHtml(sb.toString());
+                player.sendPacket(html);
+            }
+        } 
+        else 
+        {
+            player.sendPacket(asl);
+        }
+        
+        player.sendPacket(new ActionFailed());
+    }
+    
     private final String formatClassForDisplay(PlayerClass className)
     {
         String classNameStr = className.toString();

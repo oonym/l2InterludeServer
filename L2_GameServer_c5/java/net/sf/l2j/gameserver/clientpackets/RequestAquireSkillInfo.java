@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.SkillSpellbookTable;
 import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.SkillTreeTable;
+import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
@@ -45,7 +46,7 @@ public class RequestAquireSkillInfo extends ClientBasePacket
 
 	private final int _id;
 	private final int _level;
-	private final int _fisherman;
+	private final int _skillType;
 
 	/**
 	 * packet type id 0x6b packet format rev650 cddd
@@ -57,7 +58,7 @@ public class RequestAquireSkillInfo extends ClientBasePacket
 		super(buf, client);
 		_id = readD();
 		_level = readD();
-		_fisherman = readD();// normal(0) learn or fisherman(1)
+		_skillType = readD();// normal(0) learn or fisherman(1)
 	}
 
 	void runImpl()
@@ -83,7 +84,7 @@ public class RequestAquireSkillInfo extends ClientBasePacket
 			return;
 		}
 
-		if (_fisherman == 0)
+		if (_skillType == 0)
 		{
 			if (!trainer.getTemplate().canTeach(activeChar.getClassId())) 
                 return; // cheater
@@ -100,7 +101,7 @@ public class RequestAquireSkillInfo extends ClientBasePacket
 			}
             
 			if (!canteach)
-				return; // cheater :)
+				return; // cheater
             
 			int requiredSp = SkillTreeTable.getInstance().getSkillCost(activeChar, skill);
 			AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), requiredSp,0);
@@ -115,6 +116,36 @@ public class RequestAquireSkillInfo extends ClientBasePacket
 
 			sendPacket(asi);
 		}
+		else if (_skillType == 2)
+        {
+            int requiredRep = 0;
+            int itemId = 0;
+            L2PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(activeChar);
+
+            for (L2PledgeSkillLearn s : skills)
+            {
+                if (s.getId() == _id && s.getLevel() == _level)
+                {
+                    canteach = true;
+                    requiredRep = s.getRepCost();
+                    itemId = s.getItemId();
+                    break;
+                }
+            }
+            
+            if (!canteach)
+                return; // cheater
+            
+            
+            AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), requiredRep,2);
+            
+            if (Config.SP_BOOK_NEEDED)
+            {
+                asi.addRequirement(1, itemId, 1, 0);
+            }
+
+            sendPacket(asi);
+        }
 		else // Common Skills
 		{			
 			int costid = 0;

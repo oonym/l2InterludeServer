@@ -143,6 +143,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Spoil;
 import net.sf.l2j.gameserver.handler.skillhandlers.Sweep;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.handler.skillhandlers.Unlock;
+import net.sf.l2j.gameserver.handler.skillhandlers.StrSiegeAssault;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanPenalty;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanWarsList;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.DisMount;
@@ -389,6 +390,7 @@ public class GameServer
 		_skillHandler.registerSkillHandler(new Resurrect());
         _skillHandler.registerSkillHandler(new Spoil());
         _skillHandler.registerSkillHandler(new Sweep());
+        _skillHandler.registerSkillHandler(new StrSiegeAssault());
         _skillHandler.registerSkillHandler(new Disablers());
 		_skillHandler.registerSkillHandler(new Recall());
         _skillHandler.registerSkillHandler(new SiegeFlag());

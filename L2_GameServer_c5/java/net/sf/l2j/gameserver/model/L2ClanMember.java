@@ -85,6 +85,11 @@ public class L2ClanMember
 			_powerGrade = _player.getPowerGrade();
 			_title = _player.getTitle();
 		}
+		if (player != null) {
+			L2Skill[] skills = _clan.getAllSkills();
+			for (L2Skill sk : skills) 
+				player.addSkill(sk, false);
+		}
 		_player = player;
 	}
 

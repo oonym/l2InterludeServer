@@ -73,6 +73,7 @@ import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.handler.skillhandlers.SiegeFlag;
+import net.sf.l2j.gameserver.handler.skillhandlers.StrSiegeAssault;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
@@ -148,6 +149,8 @@ import net.sf.l2j.gameserver.serverpackets.ObservationMode;
 import net.sf.l2j.gameserver.serverpackets.ObservationReturn;
 import net.sf.l2j.gameserver.serverpackets.PartySmallWindowUpdate;
 import net.sf.l2j.gameserver.serverpackets.PetInventoryUpdate;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDelete;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDeleteAll;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreListBuy;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreListSell;
@@ -197,8 +200,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=?";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
-    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,allyId=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,deleteclan=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=? WHERE obj_id=?";
-    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, deleteclan, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge,last_recom_date FROM characters WHERE obj_id=?";
+    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,allyId=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,deleteclan=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=? WHERE obj_id=?";
+    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, deleteclan, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor FROM characters WHERE obj_id=?";
     private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
     private static final String ADD_CHAR_SUBCLASS = "INSERT INTO character_subclasses (char_obj_id,class_id,exp,sp,level,class_index) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CHAR_SUBCLASS = "UPDATE character_subclasses SET exp=?,sp=?,level=?,class_id=? WHERE char_obj_id=? AND class_index =?";
@@ -307,6 +310,9 @@ public final class L2PcInstance extends L2PlayableInstance
     private int _pledgeType = 0;
     public int tempJoinPledgeType = 0; // temp variable for join requests, TODO better argument passing and remove this
     
+    /** Level at which the player joined the clan as an academy member*/
+    private int _lvlJoinedAcademy = 0; // TODO: check, negative or zero?
+    
 	/** The number of recommandation obtained by the L2PcInstance */
 	private int _recomHave; // how much I was recommended by others
 	
@@ -412,8 +418,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** The Clan Leader Flag of the L2PcInstance (True : the L2PcInstance is the leader of the clan) */
 	private boolean _clanLeader;
 	
-	/** Apprentice's name or ID, TODO*/
+	/** Apprentice and Sponsor IDs */
     private int _apprentice = 0;
+    private int _sponsor = 0;
 	
 	private long _deleteClanTime;
 	
@@ -1767,6 +1774,33 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void setClassId(int Id)
 	{
+		if (getLvlJoinedAcademy() != 0 && _clan != null)
+        {
+            if(getLvlJoinedAcademy() < 16) _clan.setReputationScore(_clan.getReputationScore()+370, true);
+            else if(getLvlJoinedAcademy() > 20) _clan.setReputationScore(_clan.getReputationScore()+220, true); 
+            else _clan.setReputationScore(_clan.getReputationScore()+(370-(getLvlJoinedAcademy()-15)*30), true); 
+            setLvlJoinedAcademy(0);
+            
+            //oust pledge member from the academy, cuz he has finished his 2nd class transfer
+            _clan.removeClanMember(this.getName());
+            SystemMessage msg = new SystemMessage(SystemMessage.CLAN_MEMBER_S1_EXPELLED);
+            msg.addString(this.getName());
+            _clan.broadcastToOnlineMembers(msg);            
+            _clan.broadcastToOtherOnlineMembers(new PledgeShowMemberListDelete(this.getName()),this);
+            
+            setClan(null);
+            setTitle("");
+            sendPacket(new SystemMessage(SystemMessage.CLAN_MEMBERSHIP_TERMINATED));
+            setDeleteClanCurTime();
+            
+            broadcastUserInfo();
+            
+            sendPacket(new PledgeShowMemberListDeleteAll());
+            
+            // receive graduation gift
+            getInventory().addItem("Gift",8181,1,this,null); // give academy circlet
+            getInventory().updateDatabase(); // update database
+        }
 		_activeClass = Id;
 		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(Id, getSex()==1);
 		
@@ -1914,7 +1948,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getExpertiseIndex() > 0)
 		{
 			L2Skill skill = SkillTable.getInstance().getInfo(239, getExpertiseIndex());
-			addSkill(skill);
+			addSkill(skill, true);
 			
 			if (Config.DEBUG) _log.fine("awarded "+getName()+" with new expertise.");
 			
@@ -1929,14 +1963,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getSkillLevel(1321) < 1 && getRace() == Race.dwarf)
 		{
 			L2Skill skill = SkillTable.getInstance().getInfo(1321,1);
-			addSkill(skill);
+			addSkill(skill, true);
 		}
 		
 		//Active skill common craft
 		if (getSkillLevel(1322) < 1)
 		{
 			L2Skill skill = SkillTable.getInstance().getInfo(1322,1);
-			addSkill(skill);
+			addSkill(skill, true);
 		}
 		
 		for(int i = 0; i < COMMON_CRAFT_LEVELS.length; i++)
@@ -1944,7 +1978,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			if(lvl >= COMMON_CRAFT_LEVELS[i] && getSkillLevel(1320) < (i+1))
 			{
 				L2Skill skill = SkillTable.getInstance().getInfo(1320, (i+1));
-				addSkill(skill);
+				addSkill(skill, true);
 			}
 		}
 		
@@ -1985,7 +2019,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (getSkillLevel(sk.getId()) == -1)
 					skillCounter++;
 				
-				addSkill(sk);
+				addSkill(sk, true);
 			}
 			
 			// Get new available skills
@@ -3587,6 +3621,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 					if (!ArenaManager.getInstance().checkIfInZone(this))
 					{
+						boolean isKillerPc = (killer instanceof L2PcInstance);
+		                if (isKillerPc && ((L2PcInstance)killer).getClan() != null && getClan() != null && _clan.isAtWarWith(((L2PcInstance) killer).getClanId()) && ((L2PcInstance)killer).getClan().isAtWarWith(_clan.getClanId()))
+		                {
+		                    ((L2PcInstance) killer).getClan().setReputationScore(((L2PcInstance) killer).getClan().getReputationScore()+2, true);
+		                    _clan.setReputationScore(_clan.getReputationScore()-2, true);
+		                }
 						if (Config.ALT_GAME_DELEVEL)
 						{
 							// Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty
@@ -4904,6 +4944,9 @@ public final class L2PcInstance extends L2PlayableInstance
                 }
                 else player._activeClass = activeClassId;
 				
+                player.setApprentice(rset.getInt("apprentice"));
+                player.setSponsor(rset.getInt("sponsor"));
+                player.setLvlJoinedAcademy(rset.getInt("lvl_joined_academy"));
                 player.setIsIn7sDungeon((rset.getInt("isin7sdungeon")==1)? true : false);
                 player.setInJail((rset.getInt("in_jail")==1)? true : false);
                 if (player.isInJail())
@@ -5262,7 +5305,10 @@ public final class L2PcInstance extends L2PlayableInstance
             statement.setLong(47, getPowerGrade());
             statement.setInt(48, getPledgeType());
             statement.setLong(49,getLastRecomUpdate());
-            statement.setInt(50, getObjectId());
+            statement.setInt(50,getLvlJoinedAcademy());
+            statement.setLong(51,getApprentice());
+            statement.setLong(52,getSponsor());
+            statement.setInt(53, getObjectId());
             
 			statement.execute();
 			statement.close();
@@ -5405,13 +5451,13 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * @return The L2Skill replaced or null if just added a new L2Skill
 	 *
 	 */
-	public L2Skill addSkill(L2Skill newSkill)
+	public L2Skill addSkill(L2Skill newSkill, boolean store)
 	{
 		// Add a skill to the L2PcInstance _skills and its Func objects to the calculator set of the L2PcInstance
 		L2Skill oldSkill = super.addSkill(newSkill);
 		
 		// Add or update a L2PcInstance skill in the character_skills table of the database
-		storeSkill(newSkill, oldSkill, -1);
+		if (store) storeSkill(newSkill, oldSkill, -1);
 		
 		return oldSkill;
 	}
@@ -6448,12 +6494,16 @@ public final class L2PcInstance extends L2PlayableInstance
             abortCast();
             return;
         }
-		
-		     
+        else if (skill.getSkillType() == SkillType.STRSIEGEASSAULT && !StrSiegeAssault.checkIfOkToUseStriderSiegeAssault(this, false))
+        {
+        	sendPacket(new ActionFailed());
+        	abortCast();
+        	return;
+        }
         
         // If all conditions are checked, create a new SkillDat object and set the player _currentSkill
         setCurrentSkill(skill, forceUse, dontMove);
-        
+     
 		// Check if the active L2Skill can be casted (ex : not sleeping...), Check if the target is correct and Notify the AI with AI_INTENTION_CAST and target
         super.useMagic(skill);
         
@@ -6558,6 +6608,8 @@ public final class L2PcInstance extends L2PlayableInstance
                 break; //Dismounted
 			case 1: 
                 setIsRiding(true);
+                L2Skill striderAssaultSkill = SkillTable.getInstance().getInfo(325, 1);
+                addSkill(striderAssaultSkill, false); // not saved to DB
                 break;
 			case 2: 
                 setIsFlying(true);
@@ -7217,6 +7269,16 @@ public final class L2PcInstance extends L2PlayableInstance
     	_apprentice = apprentice_id;
     }
 
+    public int getSponsor()
+    {
+    	return _sponsor;
+    }
+    
+    public void setSponsor(int sponsor_id)
+    {
+    	_sponsor = sponsor_id;
+    }
+
 	
 	public void refreshLinks()
 	{
@@ -7503,7 +7565,7 @@ public final class L2PcInstance extends L2PlayableInstance
     	{
     		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
     		{
-    			addSkill(s);
+    			addSkill(s, true);
     		}
     	}
     	else
@@ -7515,6 +7577,17 @@ public final class L2PcInstance extends L2PlayableInstance
     	}
     	_noble = val;
     }
+    
+    public void setLvlJoinedAcademy(int lvl)
+    {
+    	_lvlJoinedAcademy = lvl;
+    }
+        
+    public int getLvlJoinedAcademy()
+    {
+    	return _lvlJoinedAcademy;
+    }
+    
 	public void setTeam(int team)
 	{
 		_team = team;

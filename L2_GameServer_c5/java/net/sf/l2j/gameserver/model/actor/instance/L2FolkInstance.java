@@ -4,11 +4,13 @@ import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.SkillTreeTable;
+import net.sf.l2j.gameserver.model.L2EnchantSkillLearn;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
+import net.sf.l2j.gameserver.serverpackets.ExEnchantSkillList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -107,6 +109,95 @@ public class L2FolkInstance extends L2NpcInstance
 		player.sendPacket(new ActionFailed());
 	}
 	
+	/**
+     * this displays EnchantSkillList to the player.
+     * @param player
+     */
+    public void showEnchantSkillList(L2PcInstance player, ClassId classId)
+    {
+        if (Config.DEBUG) 
+            _log.fine("EnchantSkillList activated on: "+getObjectId());
+        int npcId = getTemplate().npcId;
+        
+        if (_classesToTeach == null)
+        {
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+            TextBuilder sb = new TextBuilder();
+            sb.append("<html><head><body>");
+            sb.append("I cannot teach you. My class list is empty.<br> Ask admin to fix it. Need add my npcid and classes to skill_learn.sql.<br>NpcId:"+npcId+", Your classId:"+player.getClassId().getId()+"<br>");
+            sb.append("</body></html>");
+            html.setHtml(sb.toString());
+            player.sendPacket(html);
+            
+            return;
+        }
+        
+        if (!getTemplate().canTeach(classId))
+        {
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+            TextBuilder sb = new TextBuilder();
+            sb.append("<html><head><body>");
+            sb.append("I cannot teach you any skills.<br> You must find your current class teachers.");
+            sb.append("</body></html>");
+            html.setHtml(sb.toString());
+            player.sendPacket(html);
+            
+            return;
+        }
+        if(player.getClassId().getId() < 88) 
+        {
+        	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+            TextBuilder sb = new TextBuilder();
+            sb.append("<html><head><body>");
+            sb.append("You must have 3rd class change quest completed.");
+            sb.append("</body></html>");
+            html.setHtml(sb.toString());
+            player.sendPacket(html);
+            
+            return;
+        }
+            
+        L2EnchantSkillLearn[] skills = SkillTreeTable.getInstance().getAvailableEnchantSkills(player);
+        ExEnchantSkillList esl = new ExEnchantSkillList();
+        int counts = 0;
+        
+        for (L2EnchantSkillLearn s: skills)
+        {           
+            L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
+            if (sk == null) continue;
+            counts++;
+            esl.addSkill(s.getId(), s.getLevel(), s.getSpCost(), s.getExp());
+        }
+        if (counts == 0)
+        {
+            player.sendMessage("there are no enchant skills");
+            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+            int level = player.getLevel();
+            
+            if (level < 74)
+            {
+                SystemMessage sm = new SystemMessage(607);
+                sm.addNumber(level);
+                player.sendPacket(sm);
+            }
+            else
+            {
+                TextBuilder sb = new TextBuilder();
+                sb.append("<html><head><body>");
+                sb.append("You've learned all skills for your class.<br>");
+                sb.append("</body></html>");
+                html.setHtml(sb.toString());
+                player.sendPacket(html);
+            }
+        } 
+        else 
+        {
+            player.sendPacket(esl);
+        }
+        
+        player.sendPacket(new ActionFailed());
+    }
+	
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (command.startsWith("SkillList"))
@@ -187,6 +278,10 @@ public class L2FolkInstance extends L2NpcInstance
 				showSkillList(player, player.getClassId());
 			}
 		}
+		else if (command.startsWith("EnchantSkillList"))
+        {
+            showEnchantSkillList(player, player.getClassId());
+        }
 		else 
 		{
 			// this class dont know any other commands, let forward

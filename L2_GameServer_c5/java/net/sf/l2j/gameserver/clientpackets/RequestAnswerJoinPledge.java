@@ -73,13 +73,17 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        clan.addClanMember(activeChar);
 		        activeChar.setClan(clan);
 		        activeChar.setPledgeType(requestor.tempJoinPledgeType);
-
-		        activeChar.setPowerGrade(5); // actually it looks to the clan leader that the new one starts with 0
+		        clan.getClanMember(activeChar.getName()).setPlayerInstance(activeChar);
+		        if(requestor.tempJoinPledgeType == L2Clan.SUBUNIT_ACADEMY) {
+		        	activeChar.setPowerGrade(9); // adademy
+		        	activeChar.setLvlJoinedAcademy(activeChar.getLevel());
+		        }
+		        else activeChar.setPowerGrade(5); // new member starts at 5, not confirmed
 		        activeChar.setClanPrivileges(activeChar.getClan().getRankPrivs(activeChar.getPowerGrade()));
 		        
 		        //should be update packet only
-		        activeChar.sendPacket(new PledgeShowInfoUpdate(clan, activeChar));
-		        activeChar.broadcastUserInfo();
+		        //activeChar.sendPacket(new PledgeShowInfoUpdate(clan, activeChar));
+		        
 		        
 		        SystemMessage sm = new SystemMessage(SystemMessage.ENTERED_THE_CLAN);
 		        activeChar.sendPacket(sm);
@@ -94,10 +98,11 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        PledgeShowMemberListAdd la = new PledgeShowMemberListAdd(activeChar);
 		        clan.broadcastToOnlineMembers(la);
 		        clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan, activeChar));
-
+		        
 		        // this activates the clan tab on the new member
 		        activeChar.sendPacket(new PledgeShowMemberListAll(clan, activeChar));
 		        activeChar.setDeleteClanTime(0);
+		        activeChar.broadcastUserInfo();
 		    } 
             else 
             {

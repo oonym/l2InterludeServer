@@ -29,11 +29,13 @@ import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ClanTable;
+import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PledgeReceiveSubPledgeCreated;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
+import net.sf.l2j.gameserver.serverpackets.PledgeSkillListAdd;
 import net.sf.l2j.gameserver.serverpackets.PledgeStatusChanged;
 import net.sf.l2j.gameserver.serverpackets.ServerBasePacket;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -718,6 +720,7 @@ public class L2Clan
             restorewars();
             restoreSubPledges();
             restoreRankPrivs();
+            restoreSkills();
         }
         catch (Exception e)
         {
@@ -726,6 +729,160 @@ public class L2Clan
         finally
         {
             try { con.close(); } catch (Exception e) {}
+        }
+    }
+    
+    private void restoreSkills()
+    {
+        java.sql.Connection con = null;
+        
+        try
+        {
+            // Retrieve all skills of this L2PcInstance from the database
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT skill_id,skill_level FROM clan_skills WHERE clan_id=?");
+            statement.setInt(1, getClanId());
+
+            ResultSet rset = statement.executeQuery();
+            
+            // Go though the recordset of this SQL query
+            while (rset.next())
+            {
+                int id = rset.getInt("skill_id");
+                int level = rset.getInt("skill_level");
+                // Create a L2Skill object for each record
+                L2Skill skill = SkillTable.getInstance().getInfo(id, level);
+                // Add the L2Skill object to the L2Clan _skills
+                _Skills.put(skill.getId(), skill);
+            }
+            
+            rset.close();
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.warning("Could not restore clan skills: " + e);
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+    }
+    
+    /** used to retrieve all skills */
+    public final L2Skill[] getAllSkills()
+    {
+        if (_Skills == null)
+            return new L2Skill[0];
+        
+        return _Skills.values().toArray(new L2Skill[_Skills.values().size()]);
+    }
+    
+    
+    /** used to add a skill to skill list of this L2Clan */
+    public L2Skill addSkill(L2Skill newSkill)
+    {
+        L2Skill oldSkill    = null;
+        
+        if (newSkill != null)
+        {
+            // Replace oldSkill by newSkill or Add the newSkill
+            oldSkill = _Skills.put(newSkill.getId(), newSkill);
+        }
+        
+        return oldSkill;
+    }
+    
+    /** used to add a new skill to the list, send a packet to all online clan members, update their stats and store it in db*/
+    public L2Skill addNewSkill(L2Skill newSkill)
+    {
+        L2Skill oldSkill    = null;
+        java.sql.Connection con = null;
+        
+        if (newSkill != null)
+        {
+            
+            // Replace oldSkill by newSkill or Add the newSkill
+            oldSkill = _Skills.put(newSkill.getId(), newSkill);
+            
+            
+            try
+            {
+                con = L2DatabaseFactory.getInstance().getConnection();
+                PreparedStatement statement;
+                
+                if (oldSkill != null)
+                {
+                    statement = con.prepareStatement("UPDATE clan_skills SET skill_level=? WHERE skill_id=? AND clan_id=?");
+                    statement.setInt(1, newSkill.getLevel());
+                    statement.setInt(2, oldSkill.getId());
+                    statement.setInt(3, getClanId());
+                    statement.execute();
+                    statement.close();
+                }
+                else
+                {
+                    statement = con.prepareStatement("INSERT INTO clan_skills (clan_id,skill_id,skill_level,skill_name) VALUES (?,?,?,?)");
+                    statement.setInt(1, getClanId());
+                    statement.setInt(2, newSkill.getId());
+                    statement.setInt(3, newSkill.getLevel());
+                    statement.setString(4, newSkill.getName());
+                    statement.execute();
+                    statement.close();
+                }
+            }
+            catch (Exception e)
+            {
+                _log.warning("Error could not store char skills: " + e);
+            }
+            finally
+            {
+                try { con.close(); } catch (Exception e) {}
+            }
+            
+                
+            for (L2ClanMember temp : _members.values())
+            {
+                if (temp.isOnline() && temp.getPlayerInstance()!=null)
+                {
+                    if (newSkill.getMinPledgeClass() <= temp.getPlayerInstance().getPledgeClass())
+                    {
+                    	temp.getPlayerInstance().addSkill(newSkill, false); // Skill is not saved to player DB
+                        temp.getPlayerInstance().sendPacket(new PledgeSkillListAdd(newSkill.getId(), newSkill.getLevel()));
+                    }
+                }
+            }
+        }
+        
+        return oldSkill;
+    }
+    
+    
+    public void addSkillEffects()
+    {
+        for(L2Skill skill : _Skills.values())
+        {
+            for (L2ClanMember temp : _members.values())
+            {
+                if (temp.isOnline() && temp.getPlayerInstance()!=null)
+                {
+                    if (skill.getMinPledgeClass() <= temp.getPlayerInstance().getPledgeClass())
+                    	temp.getPlayerInstance().addSkill(skill, false); // Skill is not saved to player DB
+                }
+            }
+        }
+    }
+    
+    public void addSkillEffects(L2PcInstance cm)
+    {
+        if (cm == null)
+            return;
+        
+        for(L2Skill skill : _Skills.values())
+        {
+            //TODO add skills according to members class( in ex. don't add Clan Agillity skill's effect to lower class then Baron)
+            if (skill.getMinPledgeClass() <= cm.getPledgeClass())
+            	cm.addSkill(skill, false); // Skill is not saved to player DB
         }
     }
     
@@ -835,11 +992,6 @@ public class L2Clan
            PledgeShowMemberListAll pm = new PledgeShowMemberListAll(this, member);
            member.sendPacket(pm);
         }
-    }
-    
-    public void addSkill(L2Skill sk)
-    {
-    	_skills.add(sk);
     }
     
     public void removeSkill(int id)

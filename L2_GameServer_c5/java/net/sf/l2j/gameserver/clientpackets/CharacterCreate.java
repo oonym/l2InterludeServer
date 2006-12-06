@@ -245,7 +245,7 @@ public class CharacterCreate extends ClientBasePacket
 		L2SkillLearn[] startSkills = SkillTreeTable.getInstance().getAvailableSkills(newChar, newChar.getClassId());
 		for (int i = 0; i < startSkills.length; i++)
 		{
-			newChar.addSkill(SkillTable.getInstance().getInfo(startSkills[i].getId(), startSkills[i].getLevel()));
+			newChar.addSkill(SkillTable.getInstance().getInfo(startSkills[i].getId(), startSkills[i].getLevel()), true);
 			if (startSkills[i].getId()==1001 || startSkills[i].getId()==1177){
 			    shortcut = new L2ShortCut(1,0,2,startSkills[i].getId(),1,1);
 			    newChar.registerShortCut(shortcut);

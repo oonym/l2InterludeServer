@@ -201,7 +201,7 @@ public class AdminSkill implements IAdminCommandHandler {
                 {
                     skillCounter++;
                 }
-                player.addSkill(sk);
+                player.addSkill(sk, true);
             }
             countUnlearnable = false;
             skills = SkillTreeTable.getInstance().getAvailableSkills(player, player.getClassId());
@@ -360,7 +360,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			}
 			for (int i=0;i<skills.length;i++)
 			{
-				activeChar.addSkill(skills[i]);
+				activeChar.addSkill(skills[i], true);
 			}
 			SystemMessage smA = new SystemMessage(614);
 			smA.addString("You now have all the skills of  "+player.getName()+".");
@@ -397,7 +397,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			}
 			for (int i=0;i<activeChar.getAllSkills().length;i++)
 			{
-				player.addSkill(activeChar.getAllSkills()[i]);
+				player.addSkill(activeChar.getAllSkills()[i], true);
 			}
 			for (int i=0;i<skills.length;i++)
 			{
@@ -405,7 +405,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			}
 			for (int i=0;i<adminSkills.length;i++)
 			{
-				activeChar.addSkill(adminSkills[i]);
+				activeChar.addSkill(adminSkills[i], true);
 			}
 			SystemMessage sm = new SystemMessage(614);
 			sm.addString("[GM]"+activeChar.getName()+" has updated your skills.");
@@ -451,7 +451,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			sm.addString("Admin gave you the skill "+skill.getName()+".");
 			player.sendPacket(sm);
 			
-			player.addSkill(skill);
+			player.addSkill(skill, true);
 			
 			//Admin information	
 			SystemMessage smA = new SystemMessage(614);
