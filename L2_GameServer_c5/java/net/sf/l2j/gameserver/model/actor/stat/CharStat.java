@@ -12,8 +12,8 @@ public class CharStat
     // =========================================================
     // Data Field
     private L2Character _ActiveChar;
-    private long _Exp                       = 1;
-    private int _Sp                         = 1;
+    private long _Exp                       = 0;
+    private int _Sp                         = 0;
     private byte _Level                     = 1;
     
     // =========================================================
