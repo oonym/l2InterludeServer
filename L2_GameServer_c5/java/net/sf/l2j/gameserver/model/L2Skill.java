@@ -978,7 +978,8 @@ public abstract class L2Skill
                         || skillType == SkillType.HOT || skillType == SkillType.MANAHEAL
                         || skillType == SkillType.MANARECHARGE || skillType == SkillType.NEGATE
                         || skillType == SkillType.CANCEL || skillType == SkillType.REFLECT
-                        || skillType == SkillType.UNBLEED || skillType == SkillType.UNPOISON || skillType == SkillType.SEED)))
+                        || skillType == SkillType.UNBLEED || skillType == SkillType.UNPOISON || skillType == SkillType.SEED
+                        || skillType == SkillType.COMBATPOINTHEAL)))
                 {
                     activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
                     return null;
