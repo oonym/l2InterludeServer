@@ -259,19 +259,19 @@ public final class L2PcInstance extends L2PlayableInstance
 					cubic.doAction(target);
 		}
 		
-		/*public void doCast(L2Skill skill) 
+		public void doCast(L2Skill skill) 
         {
 			super.doCast(skill);
 			
+			if(skill == null) return;
 			if(!skill.isOffensive()) return;
-			L2Object[] targets = skill.getTargetList(L2PcInstance.this);
-			// rest of the code doesn't yet support multiple targets
-			if(targets == null) return;
-			L2Character mainTarget = (L2Character) targets[0];
+			L2Object mainTarget = skill.getFirstOfTargetList(L2PcInstance.this);
+			// the code doesn't now support multiple targets
+			if(mainTarget == null || !(mainTarget instanceof L2Character)) return;
 			for (L2CubicInstance cubic : getCubics().values())
 				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
-					cubic.doAction(mainTarget);
-		}*/
+					cubic.doAction((L2Character)mainTarget);
+		}
 	}
 	
 	private Connection _connection;

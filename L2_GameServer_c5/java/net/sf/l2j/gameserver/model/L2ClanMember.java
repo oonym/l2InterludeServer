@@ -88,7 +88,10 @@ public class L2ClanMember
 		if (player != null) {
 			L2Skill[] skills = _clan.getAllSkills();
 			for (L2Skill sk : skills) 
-				player.addSkill(sk, false);
+			{
+				if(sk.getMinPledgeClass() <= player.getPledgeClass())
+					player.addSkill(sk, false);
+			}
 		}
 		_player = player;
 	}

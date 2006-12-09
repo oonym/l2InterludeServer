@@ -1480,16 +1480,74 @@ public abstract class L2Skill
 
                 if (onlyFirst == false) targetList.add(target);
                 else return new L2Character[] {target};
+                
+                boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar)!= null);
+                L2PcInstance src = null;
+                if (activeChar instanceof L2PcInstance)
+                	src = (L2PcInstance)activeChar;
+                L2PcInstance trg = null;
 
                 int radius = getSkillRadius();
-                if (target.getKnownList() != null)
-                    for (L2Object obj : target.getKnownList().getKnownObjects())
+                if (activeChar.getKnownList() != null)
+                	for (L2Object obj : activeChar.getKnownList().getKnownObjects())
                     {
                         if (obj == null) continue;
-                    	if (!(obj instanceof L2Attackable) || !((L2Character) obj).isDead()
+                        if (!(obj instanceof L2Attackable) || ((L2Character) obj).isDead()
                             || ((L2Character) obj) == activeChar) continue;
 
                         if (!Util.checkIfInRange(radius, target, obj, true)) continue;
+                        
+                        if(obj instanceof L2PcInstance && src != null)
+                        { 
+                        	trg = (L2PcInstance)obj;
+                                                    
+                        	if((src.getParty() != null && trg.getParty() != null) && 
+                        			src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID()) 
+                        		continue;
+                        	
+                        	if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
+                        	{
+                        		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0) 
+                        			continue;
+                        		
+                        		if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
+                        		
+                        		if(src.getClan() != null && trg.getClan() != null)
+                        		{
+                        			if(src.getClan().getClanId() == trg.getClan().getClanId()) 
+                        				continue;
+                        		}
+                        		
+                        		if(!src.checkPvpSkill(obj, this)) 
+                        			continue;
+                        	}
+                        }
+                        if(obj instanceof L2Summon && src != null)
+                        {
+                        	trg = ((L2Summon)obj).getOwner();
+                        	
+                        	if((src.getParty() != null && trg.getParty() != null) && 
+                        			src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID()) 
+                        		continue;
+                        	
+                        	if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
+                        	{
+                        		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0) 
+                        			continue;
+                        		
+                        		if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
+                        		
+                        		if(src.getClan() != null && trg.getClan() != null)
+                        		{
+                        			if(src.getClan().getClanId() == trg.getClan().getClanId()) 
+                        				continue;
+                        		}
+                        		
+                        		if(!src.checkPvpSkill(trg, this)) 
+                        			continue;
+                        		
+                        	}
+                        }
 
                         targetList.add((L2Character) obj);
                     }

@@ -252,26 +252,26 @@ public class EnterWorld extends ClientBasePacket
 
 		if (Config.ALLOW_WATER)
 		    activeChar.checkWaterState();
+
+        if (Hero.getInstance().getHeroes() != null &&
+                Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
+            activeChar.setHero(true);
         
+        setPledgeClass(activeChar);
+
 		//add char to online characters
 		activeChar.setOnlineStatus(true);
 		
         notifyFriends(activeChar);
 		notifyClanMembers(activeChar);
-        
-        activeChar.onPlayerEnter();
+
+		activeChar.onPlayerEnter();
         
         if (Olympiad.getInstance().playerInStadia(activeChar))
         {
             activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
             activeChar.sendMessage("You have been teleported to the nearest town due to you being in an Olympiad Stadia");
         }
-        
-        if (Hero.getInstance().getHeroes() != null &&
-                Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
-            activeChar.setHero(true);
-        
-        setPledgeClass(activeChar);
         
         if(Config.GAMEGUARD_ENFORCE)
             activeChar.sendPacket(new GameGuardQuery());
