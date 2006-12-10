@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -7703,7 +7704,7 @@ public final class L2PcInstance extends L2PlayableInstance
             _log.info(getName() + " added class ID " + classId + " as a sub class at index " + classIndex + ".");
         
 		ClassId subTemplate = ClassId.values()[classId];
-		List<L2SkillLearn> skillTree = SkillTreeTable.getInstance().getAllowedSkills(subTemplate);
+		Collection<L2SkillLearn> skillTree = SkillTreeTable.getInstance().getAllowedSkills(subTemplate);
 		
 		if (skillTree == null)
 			return true;

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.Item;
+import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.templates.L2Armor;
 import net.sf.l2j.gameserver.templates.L2EtcItem;
@@ -105,7 +106,7 @@ public class SkillsEngine {
 				continue;
 			for (L2Skill skill : s)
             {
-				allSkills.put(skill.getId()*100+ skill.getLevel(), skill);
+				allSkills.put(SkillTable.getSkillHashCode(skill), skill);
 				count++;
             }
 		}

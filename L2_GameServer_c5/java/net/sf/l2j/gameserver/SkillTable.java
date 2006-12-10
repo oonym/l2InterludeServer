@@ -61,20 +61,40 @@ public class SkillTable
 	    return _initialized;
 	}
 	
-	public L2Skill getInfo(int magicId, int level)
+	/**
+     * Provides the skill hash
+     * @param skill The L2Skill to be hashed
+     * @return SkillTable.getSkillHashCode(skill.getId(), skill.getLevel())
+     */
+    public static int getSkillHashCode(L2Skill skill)
+    {
+        return SkillTable.getSkillHashCode(skill.getId(), skill.getLevel());
+    }
+	
+    /**
+     * Centralized method for easier change of the hashing sys
+     * @param skillId The Skill Id
+     * @param skillLevel The Skill Level
+     * @return The Skill hash number
+     */
+    public static int getSkillHashCode(int skillId, int skillLevel)
+    {
+        return skillId*256+skillLevel;
+    }
+    
+	public L2Skill getInfo(int skillId, int level)
 	{
-		return _skills.get(magicId*100 + level);
+		return _skills.get(SkillTable.getSkillHashCode(skillId, level));
 	}
 
-	public int getMaxLevel(int magicId, int curlevel)
+	public int getMaxLevel(int magicId, int level)
 	{
 	    L2Skill temp;
-	    int level = curlevel;
         
 	    while (level < 100) 
 	    {
 	        level++;
-	        temp = _skills.get(magicId*100 + level);
+	        temp = _skills.get(SkillTable.getSkillHashCode(magicId, level));
         
 		    if (temp == null)
 		        return level-1;
