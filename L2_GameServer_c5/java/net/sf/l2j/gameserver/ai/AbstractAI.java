@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Effect.EffectType;
@@ -265,14 +266,16 @@ abstract class AbstractAI implements Ctrl
                )
            )
         {
-            if (_actor.getEffect(EffectType.SILENT_MOVE) != null)
+        	L2Effect silentMove = _actor.getEffect(EffectType.SILENT_MOVE);
+            if (silentMove != null && silentMove.getSkill() != null)
             {
                 SystemMessage sm = new SystemMessage(92);
-                sm.addSkillName(_actor.getEffect(EffectType.SILENT_MOVE).getSkill().getId());
-                _actor.getEffect(EffectType.SILENT_MOVE).exit();
+                sm.addSkillName(silentMove.getSkill().getId());
+                silentMove.exit();
                 _actor.sendPacket(sm);
                 sm = null;
             }
+            silentMove = null;
         }
 
         // Stop the follow mode if necessary
