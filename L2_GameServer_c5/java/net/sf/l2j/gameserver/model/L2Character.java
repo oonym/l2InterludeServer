@@ -578,7 +578,8 @@ public abstract class L2Character extends L2Object
         		if (player.isCursedWeaponEquiped())
         		{
                 	// If hitted by a cursed weapon, Cp is reduced to 0
-        			target.setCurrentCp(0);
+        			if (!(target instanceof L2PcInstance) || !((L2PcInstance)target).isInvul())
+        				target.setCurrentCp(0);
         		} else if (player.isHero())
         		{
         			if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
