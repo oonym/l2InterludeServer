@@ -441,8 +441,8 @@ public class PcInventory extends Inventory
         int slots = 0;
         
         L2ItemInstance invItem = getItemByItemId(ItemId);
-        if (!(invItem != null && invItem.isStackable()) && invItem.getItemType() != L2EtcItemType.HERB) 
-        	slots++;
+        if (invItem == null) slots++;
+        else if (!invItem.isStackable() && invItem.getItemType() != L2EtcItemType.HERB) slots++; 
         
         return validateCapacity(slots);
     }
