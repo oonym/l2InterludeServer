@@ -87,7 +87,7 @@ public abstract class L2Skill
 
     /** Target types of skills : SELF, PARTY, CLAN, PET... */
     public static enum SkillTargetType {
-        TARGET_NONE, TARGET_SELF, TARGET_ONE, TARGET_PARTY, TARGET_ALLY, TARGET_CLAN, TARGET_PET, TARGET_AREA, TARGET_AURA, TARGET_CORPSE, TARGET_UNDEAD, TARGET_AREA_UNDEAD, TARGET_MULTIFACE, TARGET_CORPSE_ALLY, TARGET_CORPSE_CLAN, TARGET_CORPSE_PLAYER, TARGET_CORPSE_PET, TARGET_ITEM, TARGET_AREA_CORPSE_MOB, TARGET_CORPSE_MOB, TARGET_UNLOCKABLE, TARGET_HOLY, TARGET_PARTY_MEMBER, TARGET_OWNER_PET
+        TARGET_NONE, TARGET_SELF, TARGET_ONE, TARGET_PARTY, TARGET_ALLY, TARGET_CLAN, TARGET_PET, TARGET_AREA, TARGET_AURA, TARGET_CORPSE, TARGET_UNDEAD, TARGET_AREA_UNDEAD, TARGET_MULTIFACE, TARGET_CORPSE_ALLY, TARGET_CORPSE_CLAN, TARGET_CORPSE_PLAYER, TARGET_CORPSE_PET, TARGET_ITEM, TARGET_AREA_CORPSE_MOB, TARGET_CORPSE_MOB, TARGET_UNLOCKABLE, TARGET_HOLY, TARGET_PARTY_MEMBER, TARGET_ENEMY_SUMMON, TARGET_OWNER_PET
     }
 
     public static enum SkillType {
@@ -97,7 +97,7 @@ public abstract class L2Skill
                 L2SkillChargeDmg.class), CONFUSE_MOB_ONLY, DEATHLINK, DETECT_WEAKNESS, ENCHANT_ARMOR, ENCHANT_WEAPON, FEED_PET, HEAL_PERCENT, LUCK, MANADAM, MDOT, MUTE, RECALL, REFLECT, SOULSHOT, SPIRITSHOT, SPOIL, SWEEP, SUMMON(
                 L2SkillSummon.class), WEAKNESS, DEATHLINK_PET, MANA_BY_LEVEL, FAKE_DEATH, UNBLEED, UNPOISON, SIEGEFLAG, TAKECASTLE, UNDEAD_DEFENSE, SEED(
                 L2SkillSeed.class), PARALYZE, DRAIN_SOUL, COMMON_CRAFT, DWARVEN_CRAFT, WEAPON_SA, FISHING, PUMPING, REELING, CREATE_ITEM(
-                L2SkillCreateItem.class), AGGDEBUFF, STRSIEGEASSAULT,
+                L2SkillCreateItem.class), AGGDEBUFF, STRSIEGEASSAULT, ERASE,
 
         // unimplemented
         NOTDONE;
@@ -816,6 +816,7 @@ public abstract class L2Skill
             case ROOT:
             case CONFUSION:
             case UNLOCK:
+            case ERASE:
             case FEAR:
             case DRAIN:
             case SLEEP:
@@ -1636,6 +1637,19 @@ public abstract class L2Skill
 
                 if (targetList.size() == 0) return null;
                 return targetList.toArray(new L2Character[targetList.size()]);
+            }
+            case TARGET_ENEMY_SUMMON: 
+            { 
+                if(target != null && target instanceof L2Summon) 
+                {       
+                    L2Summon targetSummon = null; 
+                    targetSummon = (L2Summon)target; 
+                    if (activeChar instanceof L2PcInstance && activeChar.getPet() != targetSummon && !targetSummon.isDead()
+                            && (targetSummon.getOwner().getPvpFlag() != 0 || targetSummon.getOwner().getKarma() > 0)
+                            || (targetSummon.getOwner().getInPvpZone() == true && ((L2PcInstance)activeChar).getInPvpZone()== true))
+                       return new L2Character[]{targetSummon}; 
+                } 
+                return null; 
             }
             default:
             {

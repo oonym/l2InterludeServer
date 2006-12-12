@@ -52,7 +52,7 @@ public class Disablers implements ISkillHandler
                                        L2Skill.SkillType.UNBLEED, L2Skill.SkillType.UNPOISON,
                                        L2Skill.SkillType.MUTE, L2Skill.SkillType.FAKE_DEATH,
                                        L2Skill.SkillType.CONFUSE_MOB_ONLY, L2Skill.SkillType.NEGATE,
-                                       L2Skill.SkillType.CANCEL, L2Skill.SkillType.PARALYZE};
+                                       L2Skill.SkillType.CANCEL, L2Skill.SkillType.PARALYZE, L2Skill.SkillType.ERASE};
 
     protected static Logger _log = Logger.getLogger(L2Skill.class.getName());
     private  String[] _negateStats=null;
@@ -272,6 +272,54 @@ public class Disablers implements ISkillHandler
                 {
                     negateEffect(target,SkillType.POISON,skill.getPower());
                     break;
+                }
+
+                // Skill Erase done by Scafu
+                case ERASE:
+                {
+                	int chance = 0;
+                switch (skill.getLevel()) {
+            	case 1:
+            		chance = 63;
+            		break;
+            	case 2:
+            		chance = 65;
+            		break;
+            	case 3:
+            		chance = 69;
+            		break;
+            	case 4:
+            		chance = 72;
+            		break;
+            	case 5:
+            		chance = 75;
+            		break;
+            	case 6:
+            		chance = 81;
+            		break;
+            	case 7:
+            		chance = 85;
+            		break;
+            	case 8:
+            		chance = 89;
+            		break;
+            	case 9:
+            		chance = 92;
+            		break;
+            	case 10:
+            		chance = 97;
+            		break;
+              }
+                	if (target != null && target instanceof L2Summon && Rnd.get(100) < chance) {
+                		L2PcInstance summonOwner = null;
+                		L2Summon summonPet = null;
+                		summonOwner = ((L2Summon)target).getOwner();                		
+                		summonPet = summonOwner.getPet();
+                		summonPet.unSummon(summonOwner);
+                               SystemMessage sm = new SystemMessage(1667);
+				summonOwner.sendPacket(sm); 
+                	}
+                	break;
                 }
                 case CANCEL:
                 case NEGATE:
