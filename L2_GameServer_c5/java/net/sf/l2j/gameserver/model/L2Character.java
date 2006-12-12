@@ -2556,7 +2556,7 @@ public abstract class L2Character extends L2Object
         int ArraySize = effects.size();
         L2Effect[] effectArray = new L2Effect[ArraySize];
         for (int i=0; i<ArraySize; i++) {
-            if (i > effects.size() || effects.get(i) == null) break;
+            if (i >= effects.size() || effects.get(i) == null) break;
             effectArray[i] = effects.get(i);
         }
 		return effectArray;
