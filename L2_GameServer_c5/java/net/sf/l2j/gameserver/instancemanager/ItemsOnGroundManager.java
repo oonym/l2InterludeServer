@@ -33,6 +33,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.templates.L2EtcItemType;
+import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 
 /**
  * This class manage all items on ground
@@ -215,6 +216,8 @@ public class ItemsOnGroundManager
 			}
 		
         for (L2ItemInstance item: _items){
+        	
+        	if (CursedWeaponsManager.getInstance().isCursed(item.getItemId())) continue; // Cursed Items not saved to ground, prevent double save
 
         	java.sql.Connection con = null;
             try {
