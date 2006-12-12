@@ -6614,8 +6614,11 @@ public final class L2PcInstance extends L2PlayableInstance
                 break; //Dismounted
 			case 1: 
                 setIsRiding(true);
-                L2Skill striderAssaultSkill = SkillTable.getInstance().getInfo(325, 1);
-                addSkill(striderAssaultSkill, false); // not saved to DB
+                if(isNoble()) 
+                {
+                	L2Skill striderAssaultSkill = SkillTable.getInstance().getInfo(325, 1);
+                	addSkill(striderAssaultSkill, false); // not saved to DB
+                }
                 break;
 			case 2: 
                 setIsFlying(true);
