@@ -1349,6 +1349,7 @@ public final class Formulas
 				rate = value;
 				break;
 			case MDOT:
+            case MANADAM:    
 			case CONFUSION:
 				mAtk = player.getMAtk(target, skill);
 				mDef = target.getMDef(player, skill);
@@ -1749,5 +1750,19 @@ public final class Formulas
        	
     	return successRate;
     }
+    
+    public double calcManaDam(L2Character attacker, L2Character target, L2Skill skill,
+			boolean ss, boolean bss)
+    {
+    	//Mana Burnt = (SQR(M.Atk)*Power*(Target Max MP/97))/M.Def
+    	double mAtk = attacker.getMAtk(target, skill);
+		double mDef = target.getMDef(attacker, skill);
+		double mp = target.getMaxMp();
+		if (bss) mAtk *= 4;
+		else if (ss) mAtk *= 2;
 
+		double damage = (Math.sqrt(mAtk) * skill.getPower(attacker) * (mp/97)) / mDef;
+				
+    	return damage;
+    }
 }
