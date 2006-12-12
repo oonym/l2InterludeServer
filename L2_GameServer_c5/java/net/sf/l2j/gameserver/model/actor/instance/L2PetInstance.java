@@ -478,6 +478,8 @@ public final class L2PetInstance extends L2Summon
     {
     	if (_curFed > (getMaxFed() / 10))
     		_curFed = getMaxFed() / 10;
+    	
+    	getOwner().removeReviving();
 
     	super.doRevive();
 

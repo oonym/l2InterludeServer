@@ -135,6 +135,7 @@ import net.sf.l2j.gameserver.model.waypoint.WayPointNode;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChangeWaitType;
 import net.sf.l2j.gameserver.serverpackets.CharInfo;
+import net.sf.l2j.gameserver.serverpackets.ConfirmDlg;
 import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.serverpackets.ExFishingEnd;
 import net.sf.l2j.gameserver.serverpackets.ExFishingStart;
@@ -586,6 +587,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _powerGrade = 0;
 	
 	private int _cursedWeaponEquipedId = 0;
+
+	private int _ReviveRequested = 0;
+	private L2Skill _ReviveSkill = null;
+	private boolean _RevivePet = false;
     
     
 	/** Skill casting information (used to queue when several skills are cast in a short time) **/
@@ -8158,6 +8163,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		super.doRevive();
 		updateEffectIcons();
+		_ReviveRequested = 0;
+		_ReviveSkill = null;
 	}
 	
 	public void doRevive(L2Skill skill)
@@ -8167,7 +8174,74 @@ public final class L2PcInstance extends L2PlayableInstance
 		restoreExp(skill.getPower());
 		doRevive();
 	}
+
+	public void ReviveRequest(L2PcInstance Reviver, L2Skill skill, boolean Pet)
+	{
+		if (_ReviveRequested == 1)
+		{
+			if (_RevivePet == Pet)
+			{
+				Reviver.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
+			}
+			else
+			{
+				if (Pet)
+					Reviver.sendPacket(new SystemMessage(1515)); // A pet cannot be resurrected while it's owner is in the process of resurrecting.
+				else
+					Reviver.sendPacket(new SystemMessage(1511)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+			}
+			return;
+		}
+		if((Pet && getPet() != null && getPet().isDead()) || (!Pet && isDead()))
+		{
+			_ReviveRequested = 1;
+			_ReviveSkill = skill;
+			_RevivePet = Pet;
+			sendPacket(new ConfirmDlg(SystemMessage.RESSURECTION_REQUEST,Reviver.getName()));
+		}
+	}
 	
+	public void ReviveAnswer(int answer)
+	{
+		if (_ReviveRequested != 1 || (!isDead() && !_RevivePet) || (_RevivePet && getPet() != null && !getPet().isDead()))
+			return;
+		if (answer == 1)
+		{
+			if (!_RevivePet)
+			{
+				if (_ReviveSkill != null)
+					doRevive(_ReviveSkill);
+				else
+					doRevive();
+			}
+			else if (getPet() != null)
+			{
+				if (_ReviveSkill != null)
+					getPet().doRevive(_ReviveSkill);
+				else
+					getPet().doRevive();
+			}
+		}
+		_ReviveRequested = 0;
+		_ReviveSkill = null;
+	}
+
+	public boolean isReviveRequested()
+	{
+		return (_ReviveRequested == 1);
+	}
+
+	public boolean isRevivingPet()
+	{
+		return _RevivePet;
+	}
+
+	public void removeReviving()
+	{
+		_ReviveRequested=0;
+		_ReviveSkill = null;
+	}
+
 	public void onActionRequest()
 	{
 		setProtection(false);

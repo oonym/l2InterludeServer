@@ -92,14 +92,18 @@ public class ScrollOfResurrection implements IItemHandler
                 
                 if (targetPet != null)
                 {
-                    // pets CAN be resurrected by anyone in c4, not just by owner
-                	/*if (targetPet.getOwner() != activeChar)
+                	if (targetPet.getOwner() != activeChar)
                     {
-                        condGood = false;
-                        activeChar.sendMessage("You are not the owner of this pet");
+                		if (targetPet.getOwner().isReviveRequested())
+                		{
+                			if (targetPet.getOwner().isRevivingPet())
+                				activeChar.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
+                			else
+                				activeChar.sendPacket(new SystemMessage(1515)); // A pet cannot be resurrected while it's owner is in the process of resurrecting.
+                            condGood = false;
+                		}
                     }
-                    else */
-                	if (!petScroll)
+                    else if (!petScroll)
                     {
                         condGood = false;
                         activeChar.sendMessage("You do not have the correct scroll");
@@ -112,9 +116,14 @@ public class ScrollOfResurrection implements IItemHandler
                         condGood = false;
                         activeChar.sendPacket(SystemMessage.sendString("You may not resurrect participants in a festival."));
                     }
-                    // Can only res party memeber or own pet
-                    else if (activeChar.getParty() == null || targetPlayer.getParty() == null || activeChar.getParty().getPartyLeaderOID() != targetPlayer.getParty().getPartyLeaderOID())
+                	if (targetPlayer.isReviveRequested())
+                	{
+                		if (targetPlayer.isRevivingPet())
+                			activeChar.sendPacket(new SystemMessage(1511)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+                		else
+                			activeChar.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
                         condGood = false;
+                	}
                     else if (!humanScroll)
                     {
                         condGood = false;

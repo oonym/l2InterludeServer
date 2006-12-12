@@ -598,6 +598,9 @@ public class PacketHandler
             case 0xc2:
 				msg = new RequestDeleteMacro(data, client);
 				break;
+            case 0xc5:
+				msg = new DlgAnswer(data, client);
+				break;
             case 0xc6:
 				msg = new RequestWearItem(data, client);
 				break;

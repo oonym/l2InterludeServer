@@ -1418,24 +1418,28 @@ public abstract class L2Skill
                             if (castle != null) if (castle.getSiege().getIsInProgress())
                             {
                                 condGood = false;
-                                player.sendMessage("You Cannot Resurect in a Sieged Zone");
+                                player.sendPacket(new SystemMessage(SystemMessage.CANNOT_BE_RESURRECTED_DURING_SIEGE));
                             }
 
                             // Can only res party memeber or own pet
-                            if (targetPet != null)
+                            if (targetPlayer != null)
+                            {
+                            	if (targetPlayer.isReviveRequested())
+                            	{
+                            		if (targetPlayer.isRevivingPet())
+                            			player.sendPacket(new SystemMessage(1511)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+                            		else
+                            			player.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
+                                    condGood = false;
+                            	}
+                            }
+                            else if (targetPet != null)
                             {
                                 if (targetPet.getOwner() != player)
                                 {
                                     condGood = false;
                                     player.sendMessage("You are not the owner of this pet");
                                 }
-                            }
-                            else
-                            {
-                                if (player.getParty() == null
-                                    || targetPlayer.getParty() == null
-                                    || player.getParty().getPartyLeaderOID() != targetPlayer.getParty().getPartyLeaderOID())
-                                    condGood = false;
                             }
                         }
 
