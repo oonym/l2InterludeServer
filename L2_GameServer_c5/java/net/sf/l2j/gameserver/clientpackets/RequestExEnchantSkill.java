@@ -129,20 +129,22 @@ public class RequestExEnchantSkill extends ClientBasePacket
             
         if (player.getSp() >= _requiredSp && player.getExp() >= _requiredExp)
         {       
-        	int spbId = 6622;
-                  
-        	L2ItemInstance spb = player.getInventory().getItemByItemId(spbId);
-                       
-        	if (spb == null)
+        	if (Config.SP_BOOK_NEEDED) 
         	{
-        		// Haven't spellbook
-        		player.sendPacket(new SystemMessage(SystemMessage.ITEM_MISSING_TO_LEARN_SKILL));
-        		return;
-        	}
+        		int spbId = 6622;
+                  
+        		L2ItemInstance spb = player.getInventory().getItemByItemId(spbId);
+                       
+        		if (spb == null)
+        		{
+        			// Haven't spellbook
+        			player.sendPacket(new SystemMessage(SystemMessage.ITEM_MISSING_TO_LEARN_SKILL));
+        			return;
+        		}
                         
-        	// ok
-        	player.destroyItem("Consume", spb, trainer, true);                    
-                
+        		// ok
+        		player.destroyItem("Consume", spb, trainer, true);
+        	}
         }
         else
         {
