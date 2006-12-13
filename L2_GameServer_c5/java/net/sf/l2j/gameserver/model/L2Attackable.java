@@ -1246,7 +1246,7 @@ public class L2Attackable extends L2NpcInstance
              if (random < Config.RATE_DROP_SPECIAL_HERBS)
              {                  
                  RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
-                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
              }
              else for (int i = 0; i < 3; i++)
@@ -1259,7 +1259,7 @@ public class L2Attackable extends L2NpcInstance
             		 if (i == 1) item = new RewardItem(8608, 1); // Herb of Atk. Spd.
             		 if (i == 2) item = new RewardItem(8610, 1); // Herb of Critical Attack
             		 
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             		 break;
             	 }
@@ -1269,7 +1269,7 @@ public class L2Attackable extends L2NpcInstance
              if (random < Config.RATE_DROP_SPECIAL_HERBS)
              {
                  RewardItem item = new RewardItem(8613, 1); // Herb of Mystic
-                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
                  _mtk = true;
              }
@@ -1279,7 +1279,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_COMMON_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8607, 1); // Herb of Magic
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             		 _mtk = true;
             	 }
@@ -1290,7 +1290,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_COMMON_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8609, 1); // Herb of Casting Spd.
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             	 }
              }
@@ -1299,7 +1299,7 @@ public class L2Attackable extends L2NpcInstance
              if (random < Config.RATE_DROP_SPECIAL_HERBS)
              {
                  RewardItem item = new RewardItem(8614, 1); // Herb of Recovery       
-                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
                  _mp = true;
                  _hp = true;
@@ -1311,7 +1311,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_MP_HP_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8600, 1); // Herb of Life 
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             		 _mp = true;
             	 }
@@ -1322,7 +1322,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_GREATER_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8601, 1); // Greater Herb of Life
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             		 _mp = true;
             	 }
@@ -1333,7 +1333,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_SUPERIOR_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8602, 1); // Superior Herb of Life
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);                
             	 }
              }
@@ -1344,7 +1344,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_MP_HP_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8603, 1); // Herb of Manna
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             		 _mp = true;
             	 }
@@ -1355,7 +1355,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_GREATER_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8604, 1); // Greater Herb of Mana
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             		 _mp = true;
             	 }
@@ -1366,7 +1366,7 @@ public class L2Attackable extends L2NpcInstance
             	 if (random < Config.RATE_DROP_SUPERIOR_HERBS)
             	 {
             		 RewardItem item = new RewardItem(8605, 1); // Superior Herb of Mana 
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
             	 }
              }
@@ -1375,7 +1375,7 @@ public class L2Attackable extends L2NpcInstance
              if (random < Config.RATE_DROP_COMMON_HERBS)
              {
                  RewardItem item = new RewardItem(8611, 1);  // Herb of Speed
-                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.doAutoLoot(this, item);
+                 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
              }             
          }     

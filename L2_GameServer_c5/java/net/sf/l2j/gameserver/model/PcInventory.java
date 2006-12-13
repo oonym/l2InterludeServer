@@ -425,28 +425,28 @@ public class PcInventory extends Inventory
         return validateCapacity(slots);
     }
     
-    public boolean validateCapacity(List<L2ItemInstance> items)
-    {
-        int slots = 0;
-        
-        for (L2ItemInstance item : items)
-            if (!(item.isStackable() && getItemByItemId(item.getItemId()) != null) && item.getItemType() != L2EtcItemType.HERB) 
-            	slots++;
-        
-        return validateCapacity(slots);
-    }
-    
-    public boolean validateCapacityByItemId(int ItemId)
-    {
-        int slots = 0;
-        
-        L2ItemInstance invItem = getItemByItemId(ItemId);
-        if (invItem == null) slots++;
-        else if (!invItem.isStackable() && invItem.getItemType() != L2EtcItemType.HERB) slots++; 
-        
-        return validateCapacity(slots);
-    }
-    
+    public boolean validateCapacity(List<L2ItemInstance> items) 
+    { 
+    	int slots = 0; 
+    	
+    	for (L2ItemInstance item : items) 
+    		if (!(item.isStackable() && getItemByItemId(item.getItemId()) != null))  
+                slots++; 
+              
+    	return validateCapacity(slots); 
+    } 
+          
+    public boolean validateCapacityByItemId(int ItemId) 
+    { 
+    	int slots = 0; 
+              
+    	L2ItemInstance invItem = getItemByItemId(ItemId); 
+    	if (!(invItem != null && invItem.isStackable()))  
+    		slots++; 
+              
+    	return validateCapacity(slots); 
+    } 
+
 	public boolean validateCapacity(int slots)
 	{
 		return (_items.size() + slots <= _owner.GetInventoryLimit());

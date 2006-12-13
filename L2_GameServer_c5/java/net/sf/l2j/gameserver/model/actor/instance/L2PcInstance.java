@@ -3412,24 +3412,26 @@ public final class L2PcInstance extends L2PlayableInstance
         //Auto use herbs - pick up
 		if (target.getItemType() == L2EtcItemType.HERB)
         {
-        IItemHandler handler = ItemHandler.getInstance().getItemHandler(target.getItemId());        
-        if (handler == null) 
-            _log.fine("No item handler registered for item ID " + target.getItemId() + ".");
-        else 
-            handler.useItem(this, target);
-            ItemTable.getInstance().destroyItem("Consume", target, this, null);
+			IItemHandler handler = ItemHandler.getInstance().getItemHandler(target.getItemId());        
+			if (handler == null) 
+				_log.fine("No item handler registered for item ID " + target.getItemId() + ".");
+			else 
+				handler.useItem(this, target);
+            	ItemTable.getInstance().destroyItem("Consume", target, this, null);
         }
-		
-		// Check if a Party is in progress
-		if (isInParty()) getParty().distributeItem(this, target);
-		// Target is adena 
-		else if (target.getItemId() == 57 && getInventory().getAdenaInstance() != null)
+		else 
 		{
-			addAdena("Pickup", target.getCount(), null, true);
-			ItemTable.getInstance().destroyItem("Pickup", target, this, null);
+			// Check if a Party is in progress
+			if (isInParty()) getParty().distributeItem(this, target);
+			// Target is adena 
+			else if (target.getItemId() == 57 && getInventory().getAdenaInstance() != null)
+			{
+				addAdena("Pickup", target.getCount(), null, true);
+				ItemTable.getInstance().destroyItem("Pickup", target, this, null);
+			}
+			// Target is regular item 
+			else addItem("Pickup", target, null, true);
 		}
-		// Target is regular item 
-		else addItem("Pickup", target, null, true);
 	}
 	
 	/**
