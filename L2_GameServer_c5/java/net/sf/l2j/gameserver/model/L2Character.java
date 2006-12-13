@@ -1799,6 +1799,13 @@ public abstract class L2Character extends L2Object
 		synchronized(_effects) 
 		{
 			L2Effect tempEffect = null;
+			
+			// Make sure there's no same effect previously  
+			for (int i=0; i<_effects.size(); i++)   
+			{ 	
+				if (_effects.get(i).getSkill().getId() == newEffect.getSkill().getId())   
+					return;  
+			} 
 		
 			// Remove first Buff if number of buffs > 19
 			L2Skill tempskill = newEffect.getSkill(); 
