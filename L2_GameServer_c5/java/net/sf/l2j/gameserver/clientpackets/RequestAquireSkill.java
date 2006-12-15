@@ -226,8 +226,14 @@ public class RequestAquireSkill extends ClientBasePacket
 		} 
 		else if (_skillType == 2) //pledgeskills TODO: Find appropriate system messages.
         {
-
-            int itemId = 0;
+            if (!player.isClanLeader()) 
+            {
+            	// TODO: Find and add system msg
+            	player.sendMessage("This feature is available only for the clan leader");
+            	return;
+            }
+            
+			int itemId = 0;
             int repCost = 100000000;
             // Skill Learn bug Fix
             L2PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(player);
