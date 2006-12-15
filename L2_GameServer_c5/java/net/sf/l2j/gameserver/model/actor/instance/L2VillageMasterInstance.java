@@ -296,7 +296,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                      * 
                      * If they both exist, remove both unique items and continue with adding the sub-class.
                      */
-                    if (!Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS)
+                    if (!Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS && player.getSubClasses().isEmpty())
                     {
                         L2ItemInstance elixirItem = player.getInventory().getItemByItemId(ELIXIR_ITEM_ID);
                         L2ItemInstance destinyItem = player.getInventory().getItemByItemId(
