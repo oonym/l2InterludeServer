@@ -266,8 +266,6 @@ public class EnterWorld extends ClientBasePacket
         notifyFriends(activeChar);
 		notifyClanMembers(activeChar);
 
-		// checkCrowns(activeChar); // would enable some momentary warehouse/trade cheats
-		
 		activeChar.onPlayerEnter();
         
         if (Olympiad.getInstance().playerInStadia(activeChar))
@@ -280,29 +278,6 @@ public class EnterWorld extends ClientBasePacket
             activeChar.sendPacket(new GameGuardQuery());
 	}
     
-	private void checkCrowns(L2PcInstance activeChar)
-	{
-		int crownId = 0;
-		L2Clan activeCharClan  = activeChar.getClan();
-		if(activeCharClan != null) // character has clan 
-		{
-			int castleId = activeCharClan.getHasCastle();
-			if (castleId != 0) 
-			{
-				crownId = 6841; // crown of lord for leaders
-				if (!activeChar.isClanLeader()) // and circlet for members
-					crownId = CrownTable.getCrownId(castleId); // get crown id
-	         	if(crownId != 0 && activeChar.getInventory().getItemByItemId(crownId) == null) 
-	         	{
-	         		activeChar.getInventory().addItem("Crown",crownId,1,activeChar,null); 
-	         		activeChar.getInventory().updateDatabase(); // update database
-	         	}
-			}
-		}
-		for (int deleteCrown : CrownTable.getCrownList())
-			if(deleteCrown != crownId) activeChar.getInventory().destroyItemByItemId("Crown", deleteCrown, 1, activeChar, null);
-	}
-	
 	/**
 	 * @param activeChar
 	 */
