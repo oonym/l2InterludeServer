@@ -266,7 +266,7 @@ public class EnterWorld extends ClientBasePacket
         notifyFriends(activeChar);
 		notifyClanMembers(activeChar);
 
-		checkCrowns(activeChar);
+		// checkCrowns(activeChar); // would enable some momentary warehouse/trade cheats
 		
 		activeChar.onPlayerEnter();
         
