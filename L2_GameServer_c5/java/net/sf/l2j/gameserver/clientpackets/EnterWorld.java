@@ -29,6 +29,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.CrownTable;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.MapRegionTable;
@@ -265,6 +266,8 @@ public class EnterWorld extends ClientBasePacket
         notifyFriends(activeChar);
 		notifyClanMembers(activeChar);
 
+		checkCrowns(activeChar);
+		
 		activeChar.onPlayerEnter();
         
         if (Olympiad.getInstance().playerInStadia(activeChar))
@@ -277,6 +280,29 @@ public class EnterWorld extends ClientBasePacket
             activeChar.sendPacket(new GameGuardQuery());
 	}
     
+	private void checkCrowns(L2PcInstance activeChar)
+	{
+		int crownId = 0;
+		L2Clan activeCharClan  = activeChar.getClan();
+		if(activeCharClan != null) // character has clan 
+		{
+			int castleId = activeCharClan.getHasCastle();
+			if (castleId != 0) 
+			{
+				crownId = 6841; // crown of lord for leaders
+				if (!activeChar.isClanLeader()) // and circlet for members
+					crownId = CrownTable.getCrownId(castleId); // get crown id
+	         	if(crownId != 0 && activeChar.getInventory().getItemByItemId(crownId) == null) 
+	         	{
+	         		activeChar.getInventory().addItem("Crown",crownId,1,activeChar,null); 
+	         		activeChar.getInventory().updateDatabase(); // update database
+	         	}
+			}
+		}
+		for (int deleteCrown : CrownTable.getCrownList())
+			if(deleteCrown != crownId) activeChar.getInventory().destroyItemByItemId("Crown", deleteCrown, 1, activeChar, null);
+	}
+	
 	/**
 	 * @param activeChar
 	 */
