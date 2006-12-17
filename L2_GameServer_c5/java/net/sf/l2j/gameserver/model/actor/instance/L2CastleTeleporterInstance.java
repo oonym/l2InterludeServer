@@ -31,6 +31,7 @@ import net.sf.l2j.gameserver.TeleportLocationTable;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2TeleportLocation;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
@@ -51,12 +52,22 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 		super(objectId, template);
 	}
 	
+	public void onAction(L2PcInstance player)
+	{
+		player.sendPacket(new ActionFailed());
+		player.setTarget(this);
+		player.sendPacket(new MyTargetSelected(getObjectId(), -15));
+	
+		if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+			showChatWindow(player);
+	}
+	
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		player.sendPacket( new ActionFailed() );
 
 		int condition = validateCondition(player);
-		if (condition <= Cond_All_False)
+		if (condition <= Cond_Busy_Because_Of_Siege)
             return;
 
         StringTokenizer st = new StringTokenizer(command, " ");
