@@ -451,7 +451,7 @@ public class RequestActionUse extends ClientBasePacket
             
         	if (skill == null) 
         	{
-        		_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon.");
+        		_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
         		return;
         	}
         	

@@ -67,14 +67,14 @@ public class ProtocolVersion extends ClientBasePacket
 		}
         else if (_version < Config.MIN_PROTOCOL_REVISION)
         {
-            _log.info("Client Protocol Revision:" + _version + " is too low. only "+Config.MIN_PROTOCOL_REVISION+" and "+Config.MAX_PROTOCOL_REVISION+" are supported. closing connection.");
+            _log.info("Client (" + getClient().getLoginName() + ") Protocol Revision:" + _version + " is too low. only "+Config.MIN_PROTOCOL_REVISION+" and "+Config.MAX_PROTOCOL_REVISION+" are supported. Closing connection.");
             _log.warning("Wrong Protocol Version "+_version);
 			getConnection().close();
 			return;
         }
         else if (_version > Config.MAX_PROTOCOL_REVISION)
         {
-            _log.info("Client Protocol Revision:" + _version + " is too high. only "+Config.MIN_PROTOCOL_REVISION+" and "+Config.MAX_PROTOCOL_REVISION+" are supported. closing connection.");
+            _log.info("Client Protocol Revision:" + _version + " is too high. only "+Config.MIN_PROTOCOL_REVISION+" and "+Config.MAX_PROTOCOL_REVISION+" are supported. Closing connection.");
             _log.warning("Wrong Protocol Version "+_version);
             getConnection().close();
 			return;
