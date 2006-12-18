@@ -488,11 +488,11 @@ public final class L2PetInstance extends L2Summon
         startFeed(false);
     }
 
-	public void doRevive(L2Skill skill)
+	public void doRevive(double revivePower)
 	{
 		// Restore the pet's lost experience, 
 		// depending on the % return of the skill used (based on its power).
-		restoreExp(skill.getPower());
+		restoreExp(revivePower);
 		doRevive();
 	}
 

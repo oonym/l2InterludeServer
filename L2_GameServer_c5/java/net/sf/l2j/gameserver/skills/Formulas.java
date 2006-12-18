@@ -1765,4 +1765,25 @@ public final class Formulas
 				
     	return damage;
     }
+    
+    public double calculateSkillResurrectRestorePercent(double baseRestorePercent, int casterWIT)
+	{
+		double restorePercent = baseRestorePercent;
+		double modifier = WITbonus[casterWIT];
+
+		if(restorePercent != 100 && restorePercent != 0) {
+						
+			restorePercent = baseRestorePercent * modifier;
+						
+			if(restorePercent - baseRestorePercent > 20.0) 
+				restorePercent = baseRestorePercent + 20.0;
+		}
+				
+		if(restorePercent > 100) 
+			restorePercent = 100;
+		if(restorePercent < baseRestorePercent) 
+			restorePercent = baseRestorePercent;
+					
+		return restorePercent;
+	}
 }

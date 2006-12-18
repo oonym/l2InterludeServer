@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.skills.Formulas;
 /**
  * This class ...
  * 
@@ -82,13 +83,13 @@ public class Resurrect implements ISkillHandler
             	else if (cha instanceof L2PetInstance)
             	{
             		if (((L2PetInstance)cha).getOwner() == activeChar)
-            			cha.doRevive(skill);
+            			cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
             		else
                 		((L2PetInstance)cha).getOwner().ReviveRequest((L2PcInstance)activeChar,skill,true);
             	}
-            	else cha.doRevive(skill);
+            	else cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
             }
-            else cha.doRevive(skill);
+            else cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
 	}
 	
 	

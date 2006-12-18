@@ -1268,7 +1268,7 @@ public abstract class L2Character extends L2Object
 	}
 	
 	/** Revives the L2Character using skill. */
-	public void doRevive(L2Skill skill) { doRevive(); }
+	public void doRevive(double revivePower) { doRevive(); }
 	
 	/**
 	 * Check if the active L2Skill can be casted.<BR><BR>
