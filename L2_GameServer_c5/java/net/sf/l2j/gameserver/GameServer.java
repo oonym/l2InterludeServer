@@ -29,6 +29,8 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.Server;
+import net.sf.l2j.gameserver.ExtractableItemsData;
+import net.sf.l2j.gameserver.SummonItemsData;
 import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
@@ -88,30 +90,22 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTest;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminUnblockIp;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminZone;
-import net.sf.l2j.gameserver.handler.itemhandlers.AdvQuestItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSoulShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.BlessedSpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.CharChangePotions;
 import net.sf.l2j.gameserver.handler.itemhandlers.ChestKey;
-import net.sf.l2j.gameserver.handler.itemhandlers.ChristmasTree;
-import net.sf.l2j.gameserver.handler.itemhandlers.CompBlessedSpiritShotPacks;
-import net.sf.l2j.gameserver.handler.itemhandlers.CompShotPacks;
-import net.sf.l2j.gameserver.handler.itemhandlers.CompSpiritShotPacks;
 import net.sf.l2j.gameserver.handler.itemhandlers.CrystalCarol;
 import net.sf.l2j.gameserver.handler.itemhandlers.EnchantScrolls;
 import net.sf.l2j.gameserver.handler.itemhandlers.EnergyStone;
+import net.sf.l2j.gameserver.handler.itemhandlers.ExtractableItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.Firework;
-import net.sf.l2j.gameserver.handler.itemhandlers.FishItem;
 import net.sf.l2j.gameserver.handler.itemhandlers.FishShots;
 import net.sf.l2j.gameserver.handler.itemhandlers.Guide;
 import net.sf.l2j.gameserver.handler.itemhandlers.Harvester;
 import net.sf.l2j.gameserver.handler.itemhandlers.MercTicket;
 import net.sf.l2j.gameserver.handler.itemhandlers.MysteryPotion;
-import net.sf.l2j.gameserver.handler.itemhandlers.PetSummon;
-import net.sf.l2j.gameserver.handler.itemhandlers.Potions;
 import net.sf.l2j.gameserver.handler.itemhandlers.Recipes;
-import net.sf.l2j.gameserver.handler.itemhandlers.Remedy;
 import net.sf.l2j.gameserver.handler.itemhandlers.RollingDice;
 import net.sf.l2j.gameserver.handler.itemhandlers.ScrollOfEscape;
 import net.sf.l2j.gameserver.handler.itemhandlers.ScrollOfResurrection;
@@ -121,6 +115,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.SevenSignsRecord;
 import net.sf.l2j.gameserver.handler.itemhandlers.SoulCrystals;
 import net.sf.l2j.gameserver.handler.itemhandlers.SoulShots;
 import net.sf.l2j.gameserver.handler.itemhandlers.SpiritShot;
+import net.sf.l2j.gameserver.handler.itemhandlers.SummonItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.WorldMap;
 import net.sf.l2j.gameserver.handler.skillhandlers.Charge;
 import net.sf.l2j.gameserver.handler.skillhandlers.CombatPointHeal;
@@ -251,6 +246,10 @@ public class GameServer
 		    _log.severe("Could not find the extraced files. Please Check Your Data.");
 		    throw new Exception("Could not initialize the item table");
 		}
+		
+		ExtractableItemsData.getInstance();
+		SummonItemsData.getInstance();
+		
 
 		TradeController.getInstance();
 		_skillTable = SkillTable.getInstance();
@@ -341,8 +340,6 @@ public class GameServer
 		_log.config("AutoSpawnHandler: Loaded " + _autoSpawnHandler.size() + " handlers in total.");
 
 		_itemHandler = ItemHandler.getInstance();
-		_itemHandler.registerItemHandler(new ChristmasTree());
-		_itemHandler.registerItemHandler(new PetSummon());
 		_itemHandler.registerItemHandler(new ScrollOfEscape());
 		_itemHandler.registerItemHandler(new ScrollOfResurrection());
 		_itemHandler.registerItemHandler(new SoulShots());
@@ -352,16 +349,11 @@ public class GameServer
         _itemHandler.registerItemHandler(new BeastSpiritShot());
         _itemHandler.registerItemHandler(new ChestKey());
 		_itemHandler.registerItemHandler(new WorldMap());
-		_itemHandler.registerItemHandler(new Potions());
 		_itemHandler.registerItemHandler(new Recipes());
-        _itemHandler.registerItemHandler(new CompShotPacks());
-        _itemHandler.registerItemHandler(new CompSpiritShotPacks());
-        _itemHandler.registerItemHandler(new CompBlessedSpiritShotPacks());
         _itemHandler.registerItemHandler(new RollingDice());
         _itemHandler.registerItemHandler(new MysteryPotion());
 		_itemHandler.registerItemHandler(new EnchantScrolls());
         _itemHandler.registerItemHandler(new EnergyStone());
-		_itemHandler.registerItemHandler(new Remedy());
 		_itemHandler.registerItemHandler(new Guide());
 		_itemHandler.registerItemHandler(new Scrolls());
 		_itemHandler.registerItemHandler(new CrystalCarol());
@@ -369,12 +361,12 @@ public class GameServer
 		_itemHandler.registerItemHandler(new SevenSignsRecord());
         _itemHandler.registerItemHandler(new CharChangePotions());
         _itemHandler.registerItemHandler(new Firework());
-        _itemHandler.registerItemHandler(new AdvQuestItems());
         _itemHandler.registerItemHandler(new Seed());
         _itemHandler.registerItemHandler(new Harvester());
         _itemHandler.registerItemHandler(new MercTicket());
-		_itemHandler.registerItemHandler(new FishItem());
-		_itemHandler.registerItemHandler(new FishShots());		
+		_itemHandler.registerItemHandler(new FishShots());
+		_itemHandler.registerItemHandler(new ExtractableItems());
+		_itemHandler.registerItemHandler(new SummonItems());
         _log.config("ItemHandler: Loaded " + _itemHandler.size() + " handlers.");
 
 		_skillHandler = SkillHandler.getInstance();
