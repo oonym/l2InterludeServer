@@ -18,9 +18,6 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-import java.util.logging.Logger;
-
-import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Clan.RankPrivs;
 
 /**
@@ -39,14 +36,12 @@ import net.sf.l2j.gameserver.model.L2Clan.RankPrivs;
 public class PledgePowerGradeList extends ServerBasePacket
 {
 	private static final String _S__FE_3B_PLEDGEPOWERGRADELIST = "[S] FE:3B PledgePowerGradeList";
-	private L2Clan _clan;
     private RankPrivs[] _privs;
-    private static Logger _log = Logger.getLogger(ServerBasePacket.class.getName());
+    // private static Logger _log = Logger.getLogger(ServerBasePacket.class.getName());
 
 	
 	public PledgePowerGradeList(RankPrivs[] privs)
 	{
-		//_clan = clan;
         _privs = privs;
 	}	
 	
