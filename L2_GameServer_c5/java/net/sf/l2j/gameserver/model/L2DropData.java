@@ -35,7 +35,6 @@ public class L2DropData
 	private int _itemId;
 	private int _mindrop;
 	private int _maxdrop;
-	private boolean _sweep;
 	private int _chance;
     private String _questID = null;
     private String[] _stateID = null;
@@ -77,15 +76,6 @@ public class L2DropData
 	}
 	
 	/**
-	 * Returns if item dropped come from sweep
-	 * @return boolean
-	 */
-	public boolean isSweep()
-	{
-		return _sweep;
-	}
-	
-	/**
 	 * Returns the chance of having a drop
 	 * @return int
 	 */
@@ -110,15 +100,6 @@ public class L2DropData
 	public void setMaxDrop(int maxdrop)
 	{
 		_maxdrop = maxdrop;
-	}
-	
-	/**
-	 * Sets if the item come from sweep
-	 * @param sweep
-	 */
-	public void setSweep(boolean sweep)
-	{
-		_sweep = sweep;
 	}
 	
 	/**
