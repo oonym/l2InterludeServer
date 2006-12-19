@@ -474,6 +474,7 @@ public final class SelectorThread extends Thread {
 			try
 			{
 				con.getClient().getActiveChar().getInventory().updateDatabase();
+				ClientThread.saveCharToDisk(con.getClient().getActiveChar());
 				_log.info("Error on network read, player "+con.getClient().getActiveChar().getName()+" disconnected?");
 			}
 			catch(NullPointerException npe)
