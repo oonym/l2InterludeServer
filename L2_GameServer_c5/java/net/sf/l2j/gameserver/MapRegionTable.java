@@ -322,18 +322,6 @@ public class MapRegionTable
         // TODO: Micht: Maybe we should add some checks to prevent exception here.
         coord = TownManager.getInstance().getClosestTown(activeChar).getSpawn().get(0);
         
-        if (Config.RESPAWN_RANDOM_ENABLED)
-        {
-        	if (Rnd.nextBoolean()) {
-        		coord[0] = coord[0] + Rnd.nextInt(Config.RESPAWN_RANDOM_MAX_OFFSET + 1);
-        		coord[1] = coord[1] + Rnd.nextInt(Config.RESPAWN_RANDOM_MAX_OFFSET + 1);
-        	}
-        	else {
-        		coord[0] = coord[0] - Rnd.nextInt(Config.RESPAWN_RANDOM_MAX_OFFSET + 1);
-        		coord[1] = coord[1] - Rnd.nextInt(Config.RESPAWN_RANDOM_MAX_OFFSET + 1);
-        	}
-        }
-        
         return new Location(coord[0], coord[1], coord[4]);
     }
 }

@@ -175,7 +175,7 @@ public class AdminSiege implements IAdminCommandHandler
             		    coord = zone.getCoords().get(0);
 			    int x = coord[0] + (coord[2] - coord[0])/2;
 			    int y = coord[1] + (coord[3] - coord[1])/2;
-            		    activeChar.teleToLocation(new Location(x, y, coord[4])); 
+            		    activeChar.teleToLocation(new Location(x, y, coord[4]), true); 
 			}
             }
             else if (command.equalsIgnoreCase("admin_spawn_doors"))

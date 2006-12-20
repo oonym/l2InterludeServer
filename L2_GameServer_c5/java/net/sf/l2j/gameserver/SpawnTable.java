@@ -266,7 +266,7 @@ public class SpawnTable
                 if (teleportIndex > -1)
                 {
                     if (teleportIndex == index)
-                        activeChar.teleToLocation(spawn.getLocx(), spawn.getLocy(), spawn.getLocz());
+                        activeChar.teleToLocation(spawn.getLocx(), spawn.getLocy(), spawn.getLocz(), true);
                 }
                 else
                 {

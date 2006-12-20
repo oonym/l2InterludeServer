@@ -146,7 +146,7 @@ public final class MobGroup
                 int x = player.getX() + _rnd.nextInt(50);
                 int y = player.getY() + _rnd.nextInt(50);
                 
-                mobInst.teleToLocation(x, y, player.getZ());
+                mobInst.teleToLocation(x, y, player.getZ(), true);
                 L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
                 ai.follow(player);
             }

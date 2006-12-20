@@ -215,7 +215,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int x = activeChar.getX();
             int y = activeChar.getY();
             int z = activeChar.getZ()+150;
-            activeChar.teleToLocation(x, y, z);
+            activeChar.teleToLocation(x, y, z, false);
             showTeleportWindow(activeChar);
         }
         else if (command.startsWith("admin_goup"))
@@ -227,7 +227,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 int x = activeChar.getX();
                 int y = activeChar.getY();
                 int z = activeChar.getZ()+intVal;
-                activeChar.teleToLocation(x, y, z);
+                activeChar.teleToLocation(x, y, z, false);
                 showTeleportWindow(activeChar);
             }
             catch (StringIndexOutOfBoundsException e) {}
@@ -238,7 +238,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int x = activeChar.getX();
             int y = activeChar.getY();
             int z = activeChar.getZ();
-            activeChar.teleToLocation(x, y, z - 150);
+            activeChar.teleToLocation(x, y, z - 150, false);
             showTeleportWindow(activeChar);
         }
         else if (command.startsWith("admin_godown"))
@@ -250,7 +250,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 int x = activeChar.getX();
                 int y = activeChar.getY();
                 int z = activeChar.getZ()-intVal;
-                activeChar.teleToLocation(x, y, z);
+                activeChar.teleToLocation(x, y, z, false);
                 showTeleportWindow(activeChar);
             }
             catch (StringIndexOutOfBoundsException e) {}
@@ -261,7 +261,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int x = activeChar.getX();
             int y = activeChar.getY();
             int z = activeChar.getZ();
-            activeChar.teleToLocation(x+150, y, z);
+            activeChar.teleToLocation(x+150, y, z, false);
             showTeleportWindow(activeChar);
         }
         else if (command.startsWith("admin_goeast"))
@@ -273,7 +273,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 int x = activeChar.getX()+intVal;
                 int y = activeChar.getY();
                 int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z);
+                activeChar.teleToLocation(x, y, z, false);
                 showTeleportWindow(activeChar);
             }
             catch (StringIndexOutOfBoundsException e) {}
@@ -284,7 +284,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int x = activeChar.getX();
             int y = activeChar.getY();
             int z = activeChar.getZ();
-            activeChar.teleToLocation(x-150, y, z);
+            activeChar.teleToLocation(x-150, y, z, false);
             showTeleportWindow(activeChar);
         }
         else if (command.startsWith("admin_gowest"))
@@ -296,7 +296,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 int x = activeChar.getX()-intVal;
                 int y = activeChar.getY();
                 int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z);
+                activeChar.teleToLocation(x, y, z, false);
                 showTeleportWindow(activeChar);
             }
             catch (StringIndexOutOfBoundsException e) {}
@@ -307,7 +307,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int x = activeChar.getX();
             int y = activeChar.getY()+150;
             int z = activeChar.getZ();
-            activeChar.teleToLocation(x, y, z);
+            activeChar.teleToLocation(x, y, z, false);
             showTeleportWindow(activeChar);
         }
         else if (command.startsWith("admin_gosouth"))
@@ -319,7 +319,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 int x = activeChar.getX();
                 int y = activeChar.getY()+intVal;
                 int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z);
+                activeChar.teleToLocation(x, y, z, false);
                 showTeleportWindow(activeChar);
             }
             catch (StringIndexOutOfBoundsException e) {}
@@ -330,7 +330,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int x = activeChar.getX();
             int y = activeChar.getY();
             int z = activeChar.getZ();
-            activeChar.teleToLocation(x, y-150, z);
+            activeChar.teleToLocation(x, y-150, z, false);
             showTeleportWindow(activeChar);
         }
         else if (command.startsWith("admin_gonorth"))
@@ -342,7 +342,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 int x = activeChar.getX();
                 int y = activeChar.getY()-intVal;
                 int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z);
+                activeChar.teleToLocation(x, y, z, false);
                 showTeleportWindow(activeChar);
             }
             catch (StringIndexOutOfBoundsException e) {}
@@ -375,7 +375,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int z = Integer.parseInt(z1);
             
             activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-            activeChar.teleToLocation(x, y, z);
+            activeChar.teleToLocation(x, y, z, false);
             
             SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("You have been teleported to " + Cords);
@@ -498,7 +498,7 @@ public class AdminTeleport implements IAdminCommandHandler
             player.sendMessage("Admin is teleporting you.");
             
             player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-            player.teleToLocation(x, y, z);
+            player.teleToLocation(x, y, z, true);
         }
     }
     
@@ -526,7 +526,7 @@ public class AdminTeleport implements IAdminCommandHandler
             int z = player.getZ();
             
             activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-            activeChar.teleToLocation(x, y, z);
+            activeChar.teleToLocation(x, y, z, true);
             
             activeChar.sendMessage("You have teleported to character " + player.getName() + ".");
         }

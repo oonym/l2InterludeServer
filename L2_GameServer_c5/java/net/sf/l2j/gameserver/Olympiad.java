@@ -1467,8 +1467,8 @@ public class Olympiad
             _playerOne.setTarget(null);
             _playerTwo.setTarget(null);
     		
-    		_playerOne.teleToLocation(_stadiumPort[0], _stadiumPort[1], _stadiumPort[2]);
-            _playerTwo.teleToLocation(_stadiumPort[0], _stadiumPort[1], _stadiumPort[2]);
+    		_playerOne.teleToLocation(_stadiumPort[0], _stadiumPort[1], _stadiumPort[2], true);
+            _playerTwo.teleToLocation(_stadiumPort[0], _stadiumPort[1], _stadiumPort[2], true);
             
             _playerOne.setOlympiadSide(2);
             _playerTwo.setOlympiadSide(1);
@@ -1496,11 +1496,11 @@ public class Olympiad
             
     		_playerOne.teleToLocation(_playerOneLocation[0],
     		                          _playerOneLocation[1],
-    		                          _playerOneLocation[2]);
+    		                          _playerOneLocation[2], true);
     		
     		_playerTwo.teleToLocation(_playerTwoLocation[0],
     		                          _playerTwoLocation[1],
-    		                          _playerTwoLocation[2]);
+    		                          _playerTwoLocation[2], true);
     		
     		for (L2PcInstance player : _players)
     		{

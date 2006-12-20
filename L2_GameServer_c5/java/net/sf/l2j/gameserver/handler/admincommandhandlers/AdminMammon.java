@@ -85,7 +85,7 @@ public class AdminMammon implements IAdminCommandHandler
 
                 if (teleportIndex == 0)
                     activeChar.teleToLocation(blackInst[0].getX(), blackInst[0].getY(),
-                                              blackInst[0].getZ());
+                                              blackInst[0].getZ(), true);
             }
 
             if (merchInst.length > 0)
@@ -95,7 +95,7 @@ public class AdminMammon implements IAdminCommandHandler
 
                 if (teleportIndex == 1)
                     activeChar.teleToLocation(merchInst[0].getX(), merchInst[0].getY(),
-                                              merchInst[0].getZ());
+                                              merchInst[0].getZ(), true);
             }
         }
         

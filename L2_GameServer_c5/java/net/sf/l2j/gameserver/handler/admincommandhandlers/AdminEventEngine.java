@@ -533,7 +533,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
        while(it.hasNext()){
            try{L2PcInstance pc = L2World.getInstance().getPlayer(it.next().toString());
            pc.setTitle(L2Event.names.get(team));
-           pc.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ());}catch(Exception e){}
+           pc.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), true);}catch(Exception e){}
        }
        
    }
@@ -580,7 +580,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
        while(it.hasNext()){
         try{   L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
         target.getPoly().setPolyInfo("npc", id);
-        target.teleToLocation(target.getX(), target.getY(), target.getZ());
+        target.teleToLocation(target.getX(), target.getY(), target.getZ(), true);
         CharInfo info1 = new CharInfo(target);
         target.broadcastPacket(info1);
             UserInfo info2 = new UserInfo(target);
@@ -644,7 +644,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
           target.setKarma(target.eventkarma);
           target.setPvpKills(target.eventpvpkills);
           target.setPkKills(target.eventpkkills);
-          target.teleToLocation(target.eventX, target.eventY, target.eventZ);
+          target.teleToLocation(target.eventX, target.eventY, target.eventZ, true);
           target.kills.clear();
           target.eventSitForced = false;
           target.atEvent = false;}catch(Exception e){}

@@ -400,7 +400,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                                 break;
                         }
 
-                        player.teleToLocation(x, y, z);
+                        player.teleToLocation(x, y, z, true);
                     }
                     catch (Exception e)
                     {

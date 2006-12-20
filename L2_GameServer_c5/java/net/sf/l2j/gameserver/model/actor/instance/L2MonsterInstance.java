@@ -119,7 +119,7 @@ public class L2MonsterInstance extends L2Attackable
                 			// teleport raid boss home if it's too far from home location
                 			L2Spawn bossSpawn = getSpawn();
                 			if(!isInsideRadius(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz(), 5000, true, false))
-                				teleToLocation(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz());
+                				teleToLocation(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz(), true);
                 			minionList.maintainMinions();
                 		}
                 	}, 60000, getMaintenanceInterval()+Rnd.get(5000));

@@ -290,7 +290,7 @@ public class L2Event
             target.setKarma(target.eventkarma);
             target.setPvpKills(target.eventpvpkills);
             target.setPkKills(target.eventpkkills);
-            target.teleToLocation(target.eventX, target.eventY, target.eventZ);
+            target.teleToLocation(target.eventX, target.eventY, target.eventZ, true);
             target.kills.clear();
             target.eventSitForced = false;
             target.atEvent = false;

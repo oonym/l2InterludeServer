@@ -238,7 +238,7 @@ public abstract class L2Character extends L2Object
 		if (_IsPendingRevive) doRevive();
 		
 		// Modify the position of the pet if necessary
-		if(getPet() != null) getPet().teleToLocation(getPosition().getX() + Rnd.get(-100,100), getPosition().getY() + Rnd.get(-100,100), getPosition().getZ());
+		if(getPet() != null) getPet().teleToLocation(getPosition().getX() + Rnd.get(-100,100), getPosition().getY() + Rnd.get(-100,100), getPosition().getZ(), false);
 	}
 	
 	// =========================================================
@@ -336,7 +336,7 @@ public abstract class L2Character extends L2Object
 	 * <li>Modify the position of the pet if necessary</li><BR><BR>
 	 *
 	 */
-	public void teleToLocation(int x, int y, int z)
+	public void teleToLocation(int x, int y, int z, boolean allowRandomOffset)
 	{
 		// Stop movement
 		stopMove(null, false);
@@ -346,10 +346,10 @@ public abstract class L2Character extends L2Object
 		setIsTeleporting(true);
 		setTarget(null);
 		
-        if (Config.RESPAWN_RANDOM_ENABLED)
+        if (Config.RESPAWN_RANDOM_ENABLED && allowRandomOffset)
         {
-            x += Rnd.get(-70, 70);
-            y += Rnd.get(-70, 70);
+            x += Rnd.get(-Config.RESPAWN_RANDOM_MAX_OFFSET, Config.RESPAWN_RANDOM_MAX_OFFSET);
+            y += Rnd.get(-Config.RESPAWN_RANDOM_MAX_OFFSET, Config.RESPAWN_RANDOM_MAX_OFFSET);
         }
         
         z += 5;
@@ -369,9 +369,9 @@ public abstract class L2Character extends L2Object
             onTeleported();
 	}
 	
-	public void teleToLocation(Location loc) { teleToLocation(loc.getX(), loc.getY(), loc.getZ()); }
+	public void teleToLocation(Location loc, boolean allowRandomOffset) { teleToLocation(loc.getX(), loc.getY(), loc.getZ(), allowRandomOffset); }
 	
-	public void teleToLocation(TeleportWhereType teleportWhere) { teleToLocation(MapRegionTable.getInstance().getTeleToLocation(this, teleportWhere)); }
+	public void teleToLocation(TeleportWhereType teleportWhere) { teleToLocation(MapRegionTable.getInstance().getTeleToLocation(this, teleportWhere), true); }
 	
 	// =========================================================
 	// Method - Private

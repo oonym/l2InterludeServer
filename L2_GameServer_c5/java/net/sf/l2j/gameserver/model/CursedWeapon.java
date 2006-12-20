@@ -572,11 +572,11 @@ public class CursedWeapon
     	if (_isActivated)
     	{
     		// Go to player holding the weapon
-    		player.teleToLocation(_player.getX(), _player.getY(), _player.getZ() + 20);
+    		player.teleToLocation(_player.getX(), _player.getY(), _player.getZ() + 20, true);
     	} else if (_isDropped)
     	{
-    		// Go to item on the groud
-    		player.teleToLocation(_item.getX(), _item.getY(), _item.getZ() + 20);
+    		// Go to item on the ground
+    		player.teleToLocation(_item.getX(), _item.getY(), _item.getZ() + 20, true);
     	} else
     	{
     		player.sendMessage(_name+" isn't in the World.");

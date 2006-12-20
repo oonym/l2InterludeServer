@@ -531,7 +531,7 @@ public class L2BoatInstance extends L2Character
 					}
 					else
 					{
-						player.teleToLocation(_t1._ntx1,_t1._nty1,_t1._ntz1);
+						player.teleToLocation(_t1._ntx1,_t1._nty1,_t1._ntz1, false);
 					}
 					}
 				}				  
@@ -569,7 +569,7 @@ public class L2BoatInstance extends L2Character
 					}
 					else
 					{
-						player.teleToLocation(_t2._ntx1,_t2._nty1,_t2._ntz1);
+						player.teleToLocation(_t2._ntx1,_t2._nty1,_t2._ntz1, false);
 					}
 					}
 				}

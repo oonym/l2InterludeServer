@@ -212,7 +212,7 @@ public class AdminMenu implements IAdminCommandHandler
             sm.addString("Admin is teleporting you.");
             player.sendPacket(sm);
 
-    		player.teleToLocation(x, y, z);
+    		player.teleToLocation(x, y, z, true);
         }
 		AdminHelpPage.showHelpPage(activeChar, "charmanage.htm");
 	}
@@ -243,7 +243,7 @@ public class AdminMenu implements IAdminCommandHandler
 			int y = player.getY();
 			int z = player.getZ();
 			
-			activeChar.teleToLocation(x, y, z);
+			activeChar.teleToLocation(x, y, z, true);
 		
 			SystemMessage sm = new SystemMessage(614);
 			sm.addString("You have teleported to character " + player.getName() + ".");

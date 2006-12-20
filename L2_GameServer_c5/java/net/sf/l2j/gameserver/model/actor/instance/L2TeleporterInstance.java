@@ -208,7 +208,7 @@ public final class L2TeleporterInstance extends L2FolkInstance
                 if (Config.DEBUG)
                     _log.fine("Teleporting player " + player.getName() + " to new location: "
                         + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
-                player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ());
+                player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
             }
         }
         else

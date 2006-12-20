@@ -210,7 +210,7 @@ public class AdminEffects implements IAdminCommandHandler
             st.nextToken();
             String id = st.nextToken();
         	activeChar.getPoly().setPolyInfo("npc", id);
-        	activeChar.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+        	activeChar.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), false);
         	CharInfo info1 = new CharInfo(activeChar);
         	activeChar.broadcastPacket(info1);
 		    UserInfo info2 = new UserInfo(activeChar);

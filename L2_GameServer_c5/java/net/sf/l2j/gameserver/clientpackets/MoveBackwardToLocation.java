@@ -99,7 +99,7 @@ public class MoveBackwardToLocation extends ClientBasePacket
 			if (activeChar.getTeleMode() == 1)
 				activeChar.setTeleMode(0);
 			activeChar.sendPacket(new ActionFailed());
-			activeChar.teleToLocation(_targetX, _targetY, _targetZ);
+			activeChar.teleToLocation(_targetX, _targetY, _targetZ, false);
 			return;
 		}
 		

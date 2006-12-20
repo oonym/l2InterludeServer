@@ -148,7 +148,7 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 					_log.fine("Teleporting player "+player.getName()+" to new location: "+list.getLocX()+":"+list.getLocY()+":"+list.getLocZ());
                 
 				// teleport
-				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ());
+				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
 				player.stopMove(new L2CharPosition(list.getLocX(), list.getLocY(), list.getLocZ(), player.getHeading()));
 			}
 		}

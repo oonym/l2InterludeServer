@@ -59,7 +59,7 @@ public class ObjectPosition
             else if (getActiveObject() instanceof L2PcInstance)
             {
                 //((L2PcInstance)obj).deleteMe();
-                ((L2PcInstance)getActiveObject()).teleToLocation(0,0,0);
+                ((L2PcInstance)getActiveObject()).teleToLocation(0,0,0, false);
                 ((L2PcInstance)getActiveObject()).sendMessage("Error with your coords, Please ask a GM for help!");
             }
         }

@@ -7358,7 +7358,7 @@ public final class L2PcInstance extends L2PlayableInstance
         setTarget(null);
         setIsInvul(true);
         setInvisible();
-        teleToLocation(x, y, z);
+        teleToLocation(x, y, z, true);
         sendPacket(new ExOlympiadMode(3));
         _observerMode = true;
     }
@@ -7383,7 +7383,7 @@ public final class L2PcInstance extends L2PlayableInstance
     {
 		setTarget(null);
 		sendPacket(new ExOlympiadMode(0));
-        teleToLocation(_obsX, _obsY, _obsZ);
+        teleToLocation(_obsX, _obsY, _obsZ, true);
         setVisible();
         setIsInvul(false);
         if (getAI() != null)
@@ -7976,7 +7976,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			// if the rent of a wyvern expires while over a flying zone, tp to down before unmounting
 			if (checkLandingState() && getMountType()==2)
-				teleToLocation(MapRegionTable.getInstance().getTeleToLocation(this, MapRegionTable.TeleportWhereType.Town));
+				teleToLocation(MapRegionTable.TeleportWhereType.Town);
 			_taskRentPet.cancel(false);
 			Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
 			sendPacket(dismount);
@@ -8952,7 +8952,7 @@ public final class L2PcInstance extends L2PlayableInstance
                 htmlMsg.setHtml("<html><body>You have been put in jail by an admin.</body></html>");
             sendPacket(htmlMsg);
 
-            teleToLocation(-114356, -249645, -2984);  // Jail
+            teleToLocation(-114356, -249645, -2984, true);  // Jail
         } else
         {
             // Open a Html message to inform the player
@@ -8964,7 +8964,7 @@ public final class L2PcInstance extends L2PlayableInstance
                 htmlMsg.setHtml("<html><body>You are free for now, respect server rules!</body></html>");
             sendPacket(htmlMsg);
             
-            teleToLocation(17836, 170178, -3507);  // Floran
+            teleToLocation(17836, 170178, -3507, true);  // Floran
         }
         
         // store in database
@@ -8995,7 +8995,7 @@ public final class L2PcInstance extends L2PlayableInstance
             
             // If player escaped, put him back in jail
             if (!ZoneManager.getInstance().checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Jail), this))
-                teleToLocation(-114356,-249645,-2984);
+                teleToLocation(-114356,-249645,-2984, true);
         }
     }
 

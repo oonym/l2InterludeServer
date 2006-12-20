@@ -141,7 +141,7 @@ public class RequestRestartPoint extends ClientBasePacket
 
                 //Teleport and revive
                 activeChar.setIsPendingRevive(true);
-                activeChar.teleToLocation(loc);
+                activeChar.teleToLocation(loc, true);
             } catch (Throwable e) {
                 //_log.log(Level.SEVERE, "", e);
             }
