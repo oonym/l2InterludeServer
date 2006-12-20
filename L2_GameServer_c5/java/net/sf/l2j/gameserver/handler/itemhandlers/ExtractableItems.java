@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.ExtractableItemsData;
+import net.sf.l2j.gameserver.ItemTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ExtractableItem;
 import net.sf.l2j.gameserver.model.L2ExtractableProductItem;
@@ -40,14 +41,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class ExtractableItems implements IItemHandler
 {
-	private static int[] _itemIds = null;
-	
-	public ExtractableItems()
-	{
-		_itemIds = ExtractableItemsData.getInstance().itemIDs();
-	}
-	
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
         if (!(playable instanceof L2PcInstance))
         	return;
@@ -88,7 +82,7 @@ public class ExtractableItems implements IItemHandler
         
 	    PcInventory inv = activeChar.getInventory();
         
-        if (inv.getItemByItemId(createItemID).isStackable())
+        if (ItemTable.getInstance().createDummyItem(createItemID).isStackable())
             inv.addItem("Extract", createItemID, createAmount, activeChar, null);
         else
         {
@@ -120,6 +114,6 @@ public class ExtractableItems implements IItemHandler
     
     public int[] getItemIds()
     {
-    	return _itemIds;
+    	return ExtractableItemsData.getInstance().itemIDs();
     }
 }

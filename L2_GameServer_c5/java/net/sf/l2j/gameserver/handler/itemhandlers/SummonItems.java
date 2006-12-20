@@ -46,12 +46,6 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class SummonItems implements IItemHandler
 {
-    private static int[] _itemIds = null;
-	
-	public SummonItems()
-	{
-		_itemIds = SummonItemsData.getInstance().itemIDs();
-	}
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -226,7 +220,6 @@ public class SummonItems implements IItemHandler
 	
 	public int[] getItemIds()
     {
-    	return _itemIds;
+    	return SummonItemsData.getInstance().itemIDs();
     }
-
 }

@@ -158,6 +158,7 @@ public class ExtractableItemsData
 		for (L2ExtractableItem ei : _items.values())
         {
 			result[i] = ei.getItemId();
+			i++;
         }
 		return result;
 	}

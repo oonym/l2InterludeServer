@@ -119,6 +119,7 @@ public class SummonItemsData
 		for (L2SummonItem si : _summonitems.values())
         {
 			result[i] = si.getItemId();
+			i++;
         }
 		return result;
 	}
