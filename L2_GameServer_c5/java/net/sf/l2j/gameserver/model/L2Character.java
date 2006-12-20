@@ -369,6 +369,8 @@ public abstract class L2Character extends L2Object
             onTeleported();
 	}
 	
+	public void teleToLocation(int x, int y, int z) { teleToLocation(x, y, z, false); } 
+	
 	public void teleToLocation(Location loc, boolean allowRandomOffset) { teleToLocation(loc.getX(), loc.getY(), loc.getZ(), allowRandomOffset); }
 	
 	public void teleToLocation(TeleportWhereType teleportWhere) { teleToLocation(MapRegionTable.getInstance().getTeleToLocation(this, teleportWhere), true); }
