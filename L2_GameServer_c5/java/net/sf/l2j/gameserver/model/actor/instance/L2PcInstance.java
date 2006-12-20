@@ -5622,6 +5622,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
+        // Update Noble Skills after subclass change
+		if (this.isNoble())
+			this.setNoble(true); 
 	}
 	
     /**
@@ -7573,20 +7576,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	
     public void setNoble(boolean val)
     {
-    	if (val)
-    	{
-    		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
-    		{
-    			addSkill(s, true);
-    		}
-    	}
-    	else
-    	{
-    		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
-    		{
-    			this.removeSkill(s);
-    		}
-    	}
+    	if (val)    	
+    		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())    		
+    			addSkill(s, false); //Dont Save Noble skills to Sql
+    	else    	
+    		for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())    		
+    			super.removeSkill(s); //Just Remove skills without deleting from Sql    	
     	_noble = val;
     }
     
