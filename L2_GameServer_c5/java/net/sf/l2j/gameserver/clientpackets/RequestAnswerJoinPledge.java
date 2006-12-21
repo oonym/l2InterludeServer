@@ -68,6 +68,8 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        activeChar.sendPacket(jp);
 		        
 		        L2Clan clan = requestor.getClan();
+		        if (clan.getSubPledgeMembersCount(requestor.tempJoinPledgeType) >= clan.getMaxNrOfMembers(requestor.tempJoinPledgeType))
+		        	return; // hax
 		        
 		        // this also updates the database
 		        clan.addClanMember(activeChar);

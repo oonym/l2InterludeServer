@@ -72,45 +72,8 @@ public class RequestJoinPledge extends ClientBasePacket
 				L2PcInstance member = (L2PcInstance) object;
 				L2Clan clan = activeChar.getClan();
 				
-				int limit   = 0;
+				int limit = clan.getMaxNrOfMembers(_pledgetype);
                 
-                switch (clan.getLevel())
-                {
-                case 4:
-                    limit   = 30;
-                    break;
-                case 3:
-                    limit   = 25;
-                    break;
-                case 2:
-                    limit   = 20;
-                    break;
-                case 1:
-                    limit   = 15;
-                    break;
-                case 0:
-                    limit   = 10;
-                    break;
-                default:
-                    limit   = 40;
-                break;
-                }
-                
-                switch (_pledgetype)
-                {
-                    case -1:
-                    case 100:
-                    case 200:
-                        limit   = 20;
-                        break;
-                    case 1001:
-                    case 1002:
-                    case 2001:
-                    case 2002:
-                        limit   = 10;
-                        break;
-                }
-
 				if (member.getClanId() != 0)
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_WORKING_WITH_ANOTHER_CLAN);
