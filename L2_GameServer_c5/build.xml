@@ -32,7 +32,7 @@
     
     <path id="classpath">
         <fileset dir="${lib}">
-            <include name="c3p0-0.9.1-pre10.jar"/>
+            <include name="c3p0-0.9.0.jar"/>
             <include name="bsf.jar"/>
             <include name="bsh-2.0b4.jar"/>
         	<include name="commons-logging-1.1.jar"/>
@@ -78,7 +78,7 @@
             <fileset dir="${build.classes}"/>
             <manifest>
                 <attribute name="Main-Class" value="net.sf.l2j.Server"/>
-                <attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1-pre10.jar jython.jar mysql-connector-java-5.0.4-bin.jar javolution.jar"/>
+                <attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.0.jar jython.jar mysql-connector-java-5.0.4-bin.jar javolution.jar"/>
             </manifest>
         </jar>
         
@@ -125,7 +125,7 @@
     	
     	<copy todir="${build.dist.login}">
 			<fileset dir="${src}/../lib">
-				<include name="c3p0-0.9.1-pre10.jar"/>
+				<include name="c3p0-0.9.0.jar"/>
 				<include name="mysql-connector-java-5.0.4-bin.jar"/>
 				<include name="javolution.jar"/>
 			</fileset>
