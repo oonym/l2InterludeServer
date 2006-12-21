@@ -42,9 +42,6 @@ public class L2CharTemplate
 	/** MP Regen base */
 	public final float baseMpReg;
        
-    /** CP Regen base */
-    public final float baseCpReg;
-	
 	public final int basePAtk;
 	public final int baseMAtk;
 	public final int basePDef;
@@ -108,7 +105,6 @@ public class L2CharTemplate
     	baseCpMax          = set.getFloat("baseCpMax");
 		baseMpMax          = set.getFloat ("baseMpMax");
 		baseHpReg          = set.getFloat ("baseHpReg");
-        baseCpReg          = set.getFloat("baseCpReg");
 		baseMpReg          = set.getFloat ("baseMpReg");
 		basePAtk           = set.getInteger("basePAtk");
 		baseMAtk           = set.getInteger("baseMAtk");

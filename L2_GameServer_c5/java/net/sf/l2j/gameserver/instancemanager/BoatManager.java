@@ -172,7 +172,6 @@ public class BoatManager
 		npcDat.set("name", name);
 		npcDat.set("baseHpMax", 50000);
 		npcDat.set("baseHpReg", 3.e-3f);
-        npcDat.set("baseCpReg", 0);
 		npcDat.set("baseMpReg", 3.e-3f);
 		npcDat.set("basePDef", 100);
 		npcDat.set("baseMDef", 100);		

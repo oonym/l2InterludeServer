@@ -846,12 +846,14 @@ public final class Formulas
             if (player.isSitting()) hpRegenMultiplier *= 1.5;      // Sitting
             else if (!player.isMoving()) hpRegenMultiplier *= 1.1; // Staying
             else if (player.isRunning()) hpRegenMultiplier *= 0.7; // Running
+
+            // Add CON bonus
+            init *= cha.getLevelMod() * CONbonus[cha.getCON()];
 		}
 
-        init *= cha.getLevelMod() * CONbonus[cha.getCON()];
         if (init < 1) init = 1;
 
-        return cha.calcStat(Stats.REGENERATE_HP_RATE, init, null, null) * (hpRegenMultiplier / 100) + hpRegenBonus;
+        return cha.calcStat(Stats.REGENERATE_HP_RATE, init, null, null) * hpRegenMultiplier + hpRegenBonus;
 	}
 
 	/**
@@ -881,12 +883,14 @@ public final class Formulas
             if (player.isSitting()) mpRegenMultiplier *= 1.5;      // Sitting
             else if (!player.isMoving()) mpRegenMultiplier *= 1.1; // Staying
             else if (player.isRunning()) mpRegenMultiplier *= 0.7; // Running
+
+            // Add MEN bonus
+            init *= cha.getLevelMod() * MENbonus[cha.getMEN()];
 		}
 
-		init *= cha.getLevelMod() * MENbonus[cha.getMEN()];
 		if (init < 1) init = 1;
 
-		return cha.calcStat(Stats.REGENERATE_MP_RATE, init, null, null) * (mpRegenMultiplier / 100) + mpRegenBonus;
+		return cha.calcStat(Stats.REGENERATE_MP_RATE, init, null, null) * mpRegenMultiplier + mpRegenBonus;
 	}
 
 	/**
@@ -912,7 +916,7 @@ public final class Formulas
         init *= cha.getLevelMod() * CONbonus[cha.getCON()];
         if (init < 1) init = 1;
 
-        return cha.calcStat(Stats.REGENERATE_CP_RATE, init, null, null) * (cpRegenMultiplier / 100) + cpRegenBonus;
+        return cha.calcStat(Stats.REGENERATE_CP_RATE, init, null, null) * cpRegenMultiplier + cpRegenBonus;
 	}
 
 	@SuppressWarnings("deprecation")

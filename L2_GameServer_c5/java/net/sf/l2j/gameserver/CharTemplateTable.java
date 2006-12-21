@@ -106,7 +106,6 @@ public class CharTemplateTable
 				set.set("lvlMpAdd", rset.getFloat("defaultMpAdd"));
 				set.set("lvlMpMod", rset.getFloat("defaultMpMod"));
 				set.set("baseHpReg", 1.5);
-                set.set("baseCpReg", 0.01);
 				set.set("baseMpReg", 0.9);
 				set.set("basePAtk", rset.getInt("p_atk"));
 				set.set("basePDef", /*classId.isMage()? 77 : 129*/ rset.getInt("p_def"));

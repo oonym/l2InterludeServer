@@ -157,7 +157,6 @@ public class DoorTable
 		npcDat.set("name", name);
 		npcDat.set("baseHpMax", hp);
 		npcDat.set("baseHpReg", 3.e-3f);
-        npcDat.set("baseCpReg", 0);
 		npcDat.set("baseMpReg", 3.e-3f);
 		npcDat.set("basePDef", pdef);
 		npcDat.set("baseMDef", mdef);

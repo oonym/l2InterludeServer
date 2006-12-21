@@ -76,7 +76,7 @@ public class NpcTable
             {
 			    con = L2DatabaseFactory.getInstance().getConnection();
 			    PreparedStatement statement;
-			    statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[] {"id", "idTemplate", "name", "serverSideName", "title", "serverSideTitle", "class", "collision_radius", "collision_height", "level", "sex", "type", "attackrange", "hp", "mp", "str", "con", "dex", "int", "wit", "men", "exp", "sp", "patk", "pdef", "matk", "mdef", "atkspd", "aggro", "matkspd", "rhand", "lhand", "armor", "walkspd", "runspd", "faction_id", "faction_range", "isUndead", "absorb_level"}) + " FROM npc");
+			    statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[] {"id", "idTemplate", "name", "serverSideName", "title", "serverSideTitle", "class", "collision_radius", "collision_height", "level", "sex", "type", "attackrange", "hp", "mp", "hpreg", "mpreg", "str", "con", "dex", "int", "wit", "men", "exp", "sp", "patk", "pdef", "matk", "mdef", "atkspd", "aggro", "matkspd", "rhand", "lhand", "armor", "walkspd", "runspd", "faction_id", "faction_range", "isUndead", "absorb_level"}) + " FROM npc");
 			    ResultSet npcdata = statement.executeQuery();
 			    
 			    fillNpcTable(npcdata);
@@ -335,10 +335,6 @@ public class NpcTable
 			npcDat.set("baseWalkSpd", NpcData.getInt("walkspd"));
 			npcDat.set("baseRunSpd", NpcData.getInt("runspd"));
 
-			npcDat.set("baseHpReg", 1.5 + ((level-1)/10));
-            npcDat.set("baseCpReg", 0);
-			npcDat.set("baseMpReg", 0.9 + 0.3*((level-1)/10));
-
 			// constants, until we have stats in DB
 			npcDat.set("baseSTR", NpcData.getInt("str"));
 			npcDat.set("baseCON", NpcData.getInt("con"));
@@ -350,6 +346,8 @@ public class NpcTable
 			npcDat.set("baseHpMax", NpcData.getInt("hp"));
             npcDat.set("baseCpMax", 0);
 			npcDat.set("baseMpMax", NpcData.getInt("mp"));
+            npcDat.set("baseHpReg", NpcData.getFloat("hpreg")>0?NpcData.getFloat("hpreg"):1.5 + ((level-1)/10));
+            npcDat.set("baseMpReg", NpcData.getFloat("mpreg")>0?NpcData.getFloat("mpreg"):0.9 + 0.3*((level-1)/10));
 			npcDat.set("basePAtk", NpcData.getInt("patk"));
 			npcDat.set("basePDef", NpcData.getInt("pdef"));
 			npcDat.set("baseMAtk", NpcData.getInt("matk"));
