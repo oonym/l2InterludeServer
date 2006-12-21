@@ -1218,17 +1218,17 @@ public final class Formulas
 	{
         double init = 0;
 
-		if (Config.ALT_GAME_CANCEL_CAST && target.isCastingNow()) init = 45;
+		if (Config.ALT_GAME_CANCEL_CAST && target.isCastingNow()) init = 50;
 		if (Config.ALT_GAME_CANCEL_BOW && target.isAttackingNow())
 		{
 			L2Weapon wpn = target.getActiveWeaponItem();
-			if (wpn != null && wpn.getItemType() == L2WeaponType.BOW) init = 20;
+			if (wpn != null && wpn.getItemType() == L2WeaponType.BOW) init = 15;
 		}
 
         if (init <= 0) return false; // No attack break
 
         // Chance of break is higher with higher dmg
-        init += 5 * Math.sqrt(dmg);  
+        init += Math.sqrt(13*dmg);  
 
         // Chance is affected by target MEN
         init -= (MENbonus[target.getMEN()] * 100 - 100);

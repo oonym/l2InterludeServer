@@ -121,12 +121,22 @@ public class L2SkillElemental extends L2Skill {
 			int damage = (int)Formulas.getInstance().calcMagicDam(
 					activeChar, target, this, ss, bss, mcrit);
 			
-			target.reduceCurrentHp(damage, activeChar);
-
-			if (activeChar instanceof L2PcInstance) {
-				SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-				sm.addNumber(damage); 
-				activeChar.sendPacket(sm);
+			if (damage > 0)
+			{
+				target.reduceCurrentHp(damage, activeChar);
+	
+	            // Manage attack or cast break of the target (calculating rate, sending message...)
+	            if (!target.isRaid() && Formulas.getInstance().calcAtkBreak(target, damage))
+	            {
+	                target.breakAttack();
+	                target.breakCast();
+	            }
+	
+				if (activeChar instanceof L2PcInstance) {
+					SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
+					sm.addNumber(damage); 
+					activeChar.sendPacket(sm);
+				}
 			}
 			
 			// activate attacked effects, if any
