@@ -1004,7 +1004,7 @@ public class Olympiad
             
             StatsSet noble = _nobles.get(charId);
             int currentPoints = noble.getInteger(POINTS);
-            currentPoints += 100;
+            currentPoints += 300;
             noble.set(POINTS, currentPoints);
             
             _nobles.remove(charId);
