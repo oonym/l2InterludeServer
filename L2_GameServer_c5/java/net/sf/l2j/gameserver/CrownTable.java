@@ -34,16 +34,19 @@ public class CrownTable
     
     public static List<Integer> getCrownList()
     {
-    	_CrownList.add(6841); // Crown of the lord
-    	_CrownList.add(6834); // Innadril
-        _CrownList.add(6835); // Dion
-        _CrownList.add(6836); // Goddard
-        _CrownList.add(6837); // Oren
-        _CrownList.add(6838); // Gludio
-        _CrownList.add(6839); // Giran
-        _CrownList.add(6840); // Aden
-        _CrownList.add(8182); // Rune
-        _CrownList.add(8183); // Schuttgart
+    	if(_CrownList.isEmpty())
+    	{
+    		_CrownList.add(6841); // Crown of the lord
+    		_CrownList.add(6834); // Innadril
+    		_CrownList.add(6835); // Dion
+    		_CrownList.add(6836); // Goddard
+    		_CrownList.add(6837); // Oren
+    		_CrownList.add(6838); // Gludio
+    		_CrownList.add(6839); // Giran
+    		_CrownList.add(6840); // Aden
+    		_CrownList.add(8182); // Rune
+    		_CrownList.add(8183); // Schuttgart
+    	}
         return _CrownList;
      
     }
