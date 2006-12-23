@@ -18,11 +18,9 @@
  */
 package net.sf.l2j.gameserver.model;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.WeakHashMap;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
@@ -217,15 +215,21 @@ public class L2Attackable extends L2NpcInstance
         public int getCount() { return _count;}
     }
     
-    /** The table containing all autoAttackable L2Character in its Aggro Range and L2Character that attacked the L2Attackable */
-    private Map<L2Character, AggroInfo> _aggroList;
-    public final Map<L2Character, AggroInfo> getAggroList()
-    {
-    	if (_aggroList == null) _aggroList = Collections.synchronizedMap(new WeakHashMap<L2Character, AggroInfo>());
+    /** The table containing all autoAttackable L2Character in its Aggro Range and L2Character that attacked the L2Attackable 
+     * This Map is Thread Safe, but Removing Object While Interating Over It Will Result NPE
+     * */
+    private FastMap<L2Character, AggroInfo> _aggroList = new FastMap<L2Character, AggroInfo>().setShared(true);
+    /** Use this to Read or Put Object to this Map */
+    public final FastMap<L2Character, AggroInfo> getAggroListRP()
+    {    	
     	return _aggroList;
     }
-    
-    public final void setAggroList(Map<L2Character, AggroInfo> aggroList) { _aggroList = aggroList; }
+    /** Use this to Remove Object from this Map
+     * This Should be Synchronized While Interating over This Map - ie u cant interating and removing object at once*/
+    public final FastMap<L2Character, AggroInfo> getAggroList()
+    {    	
+    	return _aggroList;
+    }
     
     /** Table containing all Items that a Dwarf can Sweep on this L2Attackable */ 
     private RewardItem[] _sweepItems;
@@ -248,7 +252,7 @@ public class L2Attackable extends L2NpcInstance
     private boolean _absorbed;
     
     /** The table containing all L2PcInstance that successfuly absorbed the soul of this L2Attackable */
-    private Map<L2PcInstance, AbsorberInfo> _absorbersList;
+    private FastMap<L2PcInstance, AbsorberInfo> _absorbersList = new FastMap<L2PcInstance, AbsorberInfo>().setShared(true);
 
     /** Have this L2Attackable to drop somethink on DIE? **/
     private boolean _haveToDrop;
@@ -499,78 +503,63 @@ public class L2Attackable extends L2NpcInstance
      */
     private void calculateRewards(L2Character lastAttacker)
     {
-    	if (getAggroList().size() == 0) return;
+    	if (getAggroListRP().isEmpty()) return;
         if (getMustRewardExpSP()) {
-        // Get the Identifier of the L2Attackable killed
-        int npcID = getTemplate().npcId;
         
         // Creates an empty list of rewards
         FastMap<L2Character, RewardInfo> rewards = new FastMap<L2Character, RewardInfo>().setShared(true);
         int rewardCount = 0;
         
+        int damage;
+        L2Character attacker;
+        L2Character ddealer;
+        RewardInfo reward;
+       	
+        // While Interating over This Map Removing Object is Not Allowed
         synchronized (getAggroList())
         {
-        	int damage;
-        	L2Character attacker;
-        	L2Character ddealer;
-        	RewardInfo reward;
-
-        	// Go through the _aggroList of the L2Attackable
-            List<L2Character> toRemove  = new FastList<L2Character>();
-            for (AggroInfo info : _aggroList.values())
+            // Go through the _aggroList of the L2Attackable
+            for (AggroInfo info : getAggroListRP().values())
             {
-                if (info == null) continue;
+            	if (info == null) continue;
 
                 // Get the L2Character corresponding to this attacker 
                 attacker = info.attacker;
-                
+                    
                 // Get damages done by this attacker
                 damage = info.damage;
                 
                 // Prevent unwanted behavior
-                if (npcID > 0 && damage > 1)
+                if (damage > 1)
                 {
-                    if (attacker instanceof L2SummonInstance)
-                        ddealer = ((L2SummonInstance)attacker).getOwner();
-                    else
-                    	ddealer = info.attacker;
-                    
-                    // Calculate real damages (Summoners should get own damage plus summon's damage) 
-                    reward = rewards.get(ddealer);
-                    
-                    if (reward == null)
-                    {
-                        reward = new RewardInfo(ddealer, damage);
-                        rewardCount++;
-                    }
-                    else
-                    {
-                        reward.addDamage(damage);
-                    }
-                    
-                    rewards.put(ddealer, reward);
+                	if (attacker instanceof L2SummonInstance)
+                		ddealer = ((L2SummonInstance)attacker).getOwner();
+                	else
+                		ddealer = info.attacker;
+                	// Calculate real damages (Summoners should get own damage plus summon's damage)                    
+                	reward = rewards.get(ddealer);
+                        
+                	if (reward == null)
+                	{
+                		reward = new RewardInfo(ddealer, damage);
+                		rewardCount++;
+                	}
+                	else
+                	{
+                		reward.addDamage(damage);
+                	}
+                	rewards.put(ddealer, reward);
                 }
-                
-                toRemove.add(attacker);
             }
-            
-            for (L2Character atker : toRemove)
-            {
-                if (atker != null) getAggroList().remove(atker);
-            }
-        }
-        
+        }       
         if (!rewards.isEmpty())
         {
-        	L2Character attacker;
         	L2Party attackerParty;
-        	int damage;
         	long exp;
         	int levelDiff;
         	int partyDmg;
         	float partyMul;
         	float penalty;
-        	RewardInfo reward;
         	RewardInfo reward2;
         	int sp;
         	int[] tmp;
@@ -827,10 +816,10 @@ public class L2Attackable extends L2NpcInstance
      */
     public void addDamageHate(L2Character attacker, int damage, int aggro)
     {
-        if (attacker == null || _aggroList == null) return;
+        if (attacker == null /*|| _aggroList == null*/) return;
         
         // Get the AggroInfo of the attacker L2Character from the _aggroList of the L2Attackable
-        AggroInfo ai = _aggroList.get(attacker);
+        AggroInfo ai = getAggroListRP().get(attacker);
         if (ai != null) 
         {
             // Add new damage and aggro (=damage) to the AggroInfo object
@@ -845,7 +834,7 @@ public class L2Attackable extends L2NpcInstance
             ai.hate = aggro;
             
             // Add the attaker L2Character and the AggroInfo object in the _aggroList of the L2Attackable
-            getAggroList().put(attacker, ai);
+            getAggroListRP().put(attacker, ai);
         }
         
         // Set the intention to the L2Attackable to AI_INTENTION_ACTIVE
@@ -875,32 +864,29 @@ public class L2Attackable extends L2NpcInstance
      */
     public L2Character getMostHated() 
     {
-    	if (getAggroList().size() == 0 || isAlikeDead()) return null;
+    	if (getAggroListRP().isEmpty() || isAlikeDead()) return null;
         
         L2Character mostHated = null;
         int maxHate = 0;
         
-        // Go through the aggroList of the L2Attackable
-        
-        synchronized(getAggroList())
+        // While Interating over This Map Removing Object is Not Allowed
+        synchronized (getAggroList())
         {
-            for (AggroInfo ai : _aggroList.values()) 
+            // Go through the aggroList of the L2Attackable        
+            for (AggroInfo ai : getAggroListRP().values())            
             {
-                if (ai == null) continue;
-                if (ai.attacker.isAlikeDead() || !getKnownList().knowsObject(ai.attacker) ||!ai.attacker.isVisible())
-                    ai.hate = 0;
-            
-                if (ai.hate > maxHate) 
-                {
-                    mostHated = ai.attacker;
-                    maxHate = ai.hate;
-                }
+            	if (ai == null) continue;
+            	if (ai.attacker.isAlikeDead() || !getKnownList().knowsObject(ai.attacker) ||!ai.attacker.isVisible())
+            		ai.hate = 0;
+            	if (ai.hate > maxHate)
+            	{
+            		mostHated = ai.attacker;
+            		maxHate = ai.hate;
+            	}        	
             }
-        }
-        
+        }                
         return mostHated;
     }
-
     
     /**
      * Return the hate level of the L2Attackable against this L2Character contained in _aggroList.<BR><BR>
@@ -910,28 +896,27 @@ public class L2Attackable extends L2NpcInstance
      */
     public int getHating(L2Character target) 
     {
-    	if (getAggroList().size() == 0) return 0;
+    	if (getAggroListRP().isEmpty()) return 0;
         
-        AggroInfo ai = _aggroList.get(target);
+    	AggroInfo ai = getAggroListRP().get(target);
         if (ai == null) return 0;
-
-        if (ai.attacker instanceof L2PcInstance && (((L2PcInstance)ai.attacker).getInvisible() == 1 || ((L2PcInstance)ai.attacker).isInvul()))
-        {
-        	getAggroList().remove(target);
-        	return 0;
-        }
-        if (!ai.attacker.isVisible()) 
-        {
-        	getAggroList().remove(target);
-            return 0;
-        }
-        if (ai.attacker.isAlikeDead()) 
+    	if (ai.attacker instanceof L2PcInstance && (((L2PcInstance)ai.attacker).getInvisible() == 1 || ((L2PcInstance)ai.attacker).isInvul()))
+    	{
+    		//Remove Object Should Use This Method and Can be Blocked While Interating
+    		getAggroList().remove(target);            	
+    		return 0;            
+    	}            
+    	if (!ai.attacker.isVisible())             
+    	{            	
+    		getAggroList().remove(target);                
+    		return 0;           
+    	}    	
+    	if (ai.attacker.isAlikeDead()) 
         {
             ai.hate = 0;
             return 0;
-        }
-        
-        return ai.hate;
+        }        
+    	return ai.hate;
     }
 
     /**
@@ -1162,7 +1147,7 @@ public class L2Attackable extends L2NpcInstance
              int highestLevel = lastAttacker.getLevel();
 
              // Check to prevent very high level player to nearly kill mob and let low level player do the last hit.
-             if (getAttackByList() != null && getAttackByList().size() > 0)
+             if (getAttackByList() != null && !getAttackByList().isEmpty())
              {
                  for (L2Character atkChar: getAttackByList())
                      if (atkChar != null && atkChar.getLevel() > highestLevel) highestLevel = atkChar.getLevel();
@@ -1248,7 +1233,7 @@ public class L2Attackable extends L2NpcInstance
 	    	         }
 	    			 
 	    	         // Set the table _sweepItems of this L2Attackable
-	    	         if (sweepList.size() > 0) 
+	    	         if (!sweepList.isEmpty()) 
 	    	        	 _sweepItems = sweepList.toArray(new RewardItem[sweepList.size()]);
 	    		 }
     		 }
@@ -1527,7 +1512,7 @@ public class L2Attackable extends L2NpcInstance
      */
     public boolean noTarget()
     {
-    	return getAggroList().size() == 0 || getAggroList().isEmpty();
+    	return getAggroListRP().isEmpty();
     }
     
     /**
@@ -1538,7 +1523,7 @@ public class L2Attackable extends L2NpcInstance
      */
     public boolean containsTarget(L2Character player)
     {
-    	return getAggroList().containsKey(player);
+    	return getAggroListRP().containsKey(player);
     }
     
     /**
@@ -1554,8 +1539,8 @@ public class L2Attackable extends L2NpcInstance
      */
     public void clearHating(L2Character target) 
     {
-    	if (getAggroList().size() == 0) return;
-    	AggroInfo ai = _aggroList.get(target);
+    	if (getAggroListRP().isEmpty()) return;
+    	AggroInfo ai = getAggroListRP().get(target);
     	if (ai == null) return;
     	ai.hate = 0;
     }
@@ -1699,15 +1684,8 @@ public class L2Attackable extends L2NpcInstance
             return;
         
         // If we have no _absorbersList initiated, do it
-        AbsorberInfo ai = null;
-        if (_absorbersList == null)
-        {
-            _absorbersList = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, AbsorberInfo>());
-        }
-        else
-        {
-            ai = _absorbersList.get(attacker); 
-        }
+        AbsorberInfo ai = _absorbersList.get(attacker); 
+        
         
         // If the L2Character attacker isn't already in the _absorbersList of this L2Attackable, add it
         if (ai == null)
@@ -1763,7 +1741,7 @@ public class L2Attackable extends L2NpcInstance
         if (!isBossMob)
         {
             // Fail if this L2Attackable isn't absorbed or there's no one in its _absorbersList
-            if (!isAbsorbed() || _absorbersList == null)
+            if (!isAbsorbed() /*|| _absorbersList == null*/)
             {
                 resetAbsorbList();
                 return;
@@ -1981,7 +1959,7 @@ public class L2Attackable extends L2NpcInstance
     private void resetAbsorbList()
     {
         _absorbed = false;
-        _absorbersList = null;
+        _absorbersList.clear();
     }
     
     /**

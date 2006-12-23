@@ -29,19 +29,9 @@ public class AttackableKnownList extends NpcKnownList
     {
         if (!super.removeKnownObject(object)) return false;
 
-        if (getActiveChar().getAggroList() != null)
-        {
-            // Remove the L2Object from the _aggrolist of the L2Attackable
-            synchronized (getActiveChar().getAggroList())
-            {
-                if (object != null && object instanceof L2Character)
-                {
-                    getActiveChar().getAggroList().remove(object);
-                    if (getActiveChar().getAggroList().isEmpty()) getActiveChar().setAggroList(null);
-                }
-            }
-        }
-        
+        // Remove the L2Object from the _aggrolist of the L2Attackable            
+        if (object != null && object instanceof L2Character)
+            getActiveChar().getAggroList().remove(object);
         // Set the L2Attackable Intention to AI_INTENTION_IDLE
         Collection<L2PcInstance> known = getKnownPlayers();
         
@@ -64,14 +54,8 @@ public class AttackableKnownList extends NpcKnownList
 
     public int getDistanceToForgetObject(L2Object object)
     {
-        if (getActiveChar().getAggroList() != null)
-        {
-            synchronized (getActiveChar().getAggroList())
-            {
-                if (getActiveChar().getAggroList().get(object) != null) return 3000;
-            }
-        }
-        
+        if (getActiveChar().getAggroListRP() != null)        
+        	if (getActiveChar().getAggroListRP().get(object) != null) return 3000;            
         return 2 * getDistanceToWatchObject(object);
     }
 
