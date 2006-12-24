@@ -1047,7 +1047,7 @@ public abstract class L2Skill
                     if (obj != null && (obj instanceof L2Attackable || obj instanceof L2PlayableInstance))
                     {
                         // Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
-                        if (obj == src) continue;
+                        if (obj == activeChar || obj == src) continue;
                     	if (src != null) 
                         {
                             // check if both attacker and target are L2PcInstances and if they are in same party 
@@ -1105,8 +1105,12 @@ public abstract class L2Skill
                 }
                 else cha = activeChar;
                 
-                boolean skillUserIsL2PcInstance = (activeChar instanceof L2PcInstance);
                 boolean effectOriginIsL2PlayableInstance = (cha instanceof L2PlayableInstance);
+
+                L2PcInstance src = null;
+                if (activeChar instanceof L2PcInstance) src = (L2PcInstance)activeChar;
+                else if (activeChar instanceof L2Summon) src = ((L2Summon)activeChar).getOwner();
+                
                 int radius = getSkillRadius();
                 
                 boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar)!= null);
@@ -1123,10 +1127,9 @@ public abstract class L2Skill
                         if (!Util.checkIfInRange(radius, obj, cha, true))
                           continue;
                         
-                        if (skillUserIsL2PcInstance)
+                        if (src != null) // caster is l2playableinstance and exists
                         {
-                            L2PcInstance src = (L2PcInstance)activeChar;
-                            
+                           
                         	if(obj instanceof L2PcInstance)
                             { 
                                 L2PcInstance trg = (L2PcInstance)obj;
@@ -1180,7 +1183,7 @@ public abstract class L2Skill
                             }
                         }
                         else
-                        // Skill user is not L2PcInstance
+                        // Skill user is not L2PlayableInstance
                         {
                         	if (effectOriginIsL2PlayableInstance && // If effect starts at L2PlayableInstance and
                         			!(obj instanceof L2PlayableInstance)) // Object is not L2PlayableInstance
