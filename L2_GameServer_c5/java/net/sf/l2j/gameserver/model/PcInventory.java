@@ -47,12 +47,16 @@ public class PcInventory extends Inventory
 	 * Returns the list of items in inventory available for transaction
 	 * @return L2ItemInstance : items in inventory
 	 */
-	public L2ItemInstance[] getUniqueItems(boolean allowAdena)
+	public L2ItemInstance[] getUniqueItems(boolean allowAdena, boolean allowAncientAdena)
 	{
 		List<L2ItemInstance> list = new FastList<L2ItemInstance>();
 		for (L2ItemInstance item : _items)
 		{
-			if ((!allowAdena && item.getItemId() == 57)) continue;
+			if ((!allowAdena && item.getItemId() == 57)) 
+				continue;
+			if ((!allowAncientAdena && item.getItemId() == 5575))
+				continue;
+			
 			boolean isDuplicate = false;
 			for (L2ItemInstance litem : list) if (litem.getItemId() == item.getItemId())
 			{

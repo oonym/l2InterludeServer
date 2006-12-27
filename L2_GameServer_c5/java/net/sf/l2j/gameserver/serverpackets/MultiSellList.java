@@ -72,7 +72,7 @@ public class MultiSellList extends ServerBasePacket
             MultiSellListContainer tmpList = L2Multisell.getInstance().getList(_listId);
             if (tmpList == null) return;
             
-            L2ItemInstance[] items = _player.getInventory().getUniqueItems(false);
+            L2ItemInstance[] items = _player.getInventory().getUniqueItems(false,false);
             _list = L2Multisell.getInstance().new MultiSellListContainer();
             _list.setListId(_listId);
             

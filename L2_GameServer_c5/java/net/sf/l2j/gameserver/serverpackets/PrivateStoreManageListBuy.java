@@ -44,7 +44,7 @@ public class PrivateStoreManageListBuy extends ServerBasePacket
 	final void runImpl()
 	{
 		_playerAdena = _player.getAdena();
-		_itemList = _player.getInventory().getUniqueItems(false);
+		_itemList = _player.getInventory().getUniqueItems(false,true);
 		_buyList = _player.getBuyList().getItems(); 
 	}
 	
