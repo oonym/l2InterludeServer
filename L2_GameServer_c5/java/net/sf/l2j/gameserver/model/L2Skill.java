@@ -97,7 +97,7 @@ public abstract class L2Skill
                 L2SkillChargeDmg.class), CONFUSE_MOB_ONLY, DEATHLINK, DETECT_WEAKNESS, ENCHANT_ARMOR, ENCHANT_WEAPON, FEED_PET, HEAL_PERCENT, LUCK, MANADAM, MDOT, MUTE, RECALL, REFLECT, SOULSHOT, SPIRITSHOT, SPOIL, SWEEP, SUMMON(
                 L2SkillSummon.class), WEAKNESS, DEATHLINK_PET, MANA_BY_LEVEL, FAKE_DEATH, UNBLEED, UNPOISON, SIEGEFLAG, TAKECASTLE, UNDEAD_DEFENSE, SEED(
                 L2SkillSeed.class), PARALYZE, DRAIN_SOUL, COMMON_CRAFT, DWARVEN_CRAFT, WEAPON_SA, FISHING, PUMPING, REELING, CREATE_ITEM(
-                L2SkillCreateItem.class), AGGDEBUFF, STRSIEGEASSAULT, ERASE,
+                L2SkillCreateItem.class), AGGDEBUFF, STRSIEGEASSAULT, ERASE, MAGE_BANE, WARRIOR_BANE,
 
         // unimplemented
         NOTDONE;
@@ -789,6 +789,8 @@ public abstract class L2Skill
             case WEAKNESS:
             case PARALYZE:
             case CANCEL:
+            case MAGE_BANE:
+            case WARRIOR_BANE:
                 return true;
             default:
                 return false;
@@ -837,6 +839,8 @@ public abstract class L2Skill
             case DRAIN_SOUL:
             case AGGREDUCE:
             case CANCEL:
+            case MAGE_BANE:
+            case WARRIOR_BANE:
             case AGGREMOVE:
             case AGGREDUCE_CHAR:
                 return true;
@@ -980,7 +984,7 @@ public abstract class L2Skill
                         || skillType == SkillType.MANARECHARGE || skillType == SkillType.NEGATE
                         || skillType == SkillType.CANCEL || skillType == SkillType.REFLECT
                         || skillType == SkillType.UNBLEED || skillType == SkillType.UNPOISON || skillType == SkillType.SEED
-                        || skillType == SkillType.COMBATPOINTHEAL)))
+                        || skillType == SkillType.COMBATPOINTHEAL || skillType == SkillType.MAGE_BANE | skillType == SkillType.WARRIOR_BANE)))
                 {
                     activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
                     return null;
