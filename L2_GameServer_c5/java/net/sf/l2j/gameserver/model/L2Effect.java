@@ -50,8 +50,31 @@ public abstract class L2Effect
         CREATED, ACTING, FINISHING
     }
 
-    public static enum EffectType {
-        BUFF, CHARGE, DMG_OVER_TIME, HEAL_OVER_TIME, COMBAT_POINT_HEAL_OVER_TIME, MANA_DMG_OVER_TIME, MANA_HEAL_OVER_TIME, RELAXING, STUN, ROOT, SLEEP, HATE, FAKE_DEATH, CONFUSION, CONFUSE_MOB_ONLY, MUTE, FEAR, SILENT_MOVE, SEED, PARALYZE, STUN_SELF, PSYCHICAL_MUTE, REMOVE_TARGET, TARGET_ME
+    public static enum EffectType 
+    {
+        BUFF,
+        CHARGE,
+        DMG_OVER_TIME,
+        HEAL_OVER_TIME,
+        COMBAT_POINT_HEAL_OVER_TIME,
+        MANA_DMG_OVER_TIME,
+        MANA_HEAL_OVER_TIME,
+        RELAXING, STUN, ROOT,
+        SLEEP,
+        HATE, 
+        FAKE_DEATH,
+        CONFUSION, 
+        CONFUSE_MOB_ONLY, 
+        MUTE,
+        FEAR,
+        SILENT_MOVE, 
+        SEED, 
+        PARALYZE,
+        STUN_SELF,
+        PSYCHICAL_MUTE, 
+        REMOVE_TARGET, 
+        TARGET_ME,
+        SILENCE_MAGIC_PHYSICAL 
     }
 
     private static final Func[] _emptyFunctionSet = new Func[0];
