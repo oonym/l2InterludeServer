@@ -74,7 +74,8 @@ public abstract class L2Effect
         PSYCHICAL_MUTE, 
         REMOVE_TARGET, 
         TARGET_ME,
-        SILENCE_MAGIC_PHYSICAL 
+        SILENCE_MAGIC_PHYSICAL,
+        BETRAY
     }
 
     private static final Func[] _emptyFunctionSet = new Func[0];

@@ -141,13 +141,13 @@ public class RequestActionUse extends ClientBasePacket
 				break;
             case 15:
 			case 21: // pet follow/stop
-				if (pet != null && !pet.isMovementDisabled())
+				if (pet != null && !pet.isMovementDisabled() && !activeChar.isBetrayed())
 					pet.setFollowStatus(!pet.getFollowStatus());
 				
 				break;
             case 16:
 			case 22: // pet attack
-				if (target != null && pet != null && pet != target && !pet.isAttackingDisabled())
+				if (target != null && pet != null && pet != target && !pet.isAttackingDisabled() && !activeChar.isBetrayed())
 				{
                     if (activeChar.getAccessLevel() < Config.GM_PEACEATTACK &&
                     		activeChar.isInsidePeaceZone(pet, target))
@@ -166,12 +166,12 @@ public class RequestActionUse extends ClientBasePacket
 				break;
             case 17:
 			case 23: // pet - cancel action
-				if (pet != null && !pet.isMovementDisabled())
+				if (pet != null && !pet.isMovementDisabled() && !activeChar.isBetrayed())
 					pet.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
 				
 				break;
 			case 19: // pet unsummon
-				if (pet != null)
+				if (pet != null && !activeChar.isBetrayed())
 				{
 					//returns pet to control item
 					if (pet.isDead())
@@ -200,7 +200,7 @@ public class RequestActionUse extends ClientBasePacket
 				break;
 			case 38: // pet mount
 				// mount
-                if (pet != null && pet.isMountable() && !activeChar.isMounted()) 
+                if (pet != null && pet.isMountable() && !activeChar.isMounted() && !activeChar.isBetrayed()) 
                 {
                     if (activeChar.isDead())
                     {
@@ -435,7 +435,7 @@ public class RequestActionUse extends ClientBasePacket
             return;
         }
         
-        if (activeSummon != null)
+        if (activeSummon != null && !activeChar.isBetrayed())
         {
         	Map<Integer, L2Skill> _skills = activeSummon.getTemplate().getSkills();
             

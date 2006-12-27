@@ -55,7 +55,7 @@ public class Disablers implements ISkillHandler
                                        L2Skill.SkillType.MUTE, L2Skill.SkillType.FAKE_DEATH,
                                        L2Skill.SkillType.CONFUSE_MOB_ONLY, L2Skill.SkillType.NEGATE,
                                        L2Skill.SkillType.CANCEL, L2Skill.SkillType.PARALYZE, L2Skill.SkillType.ERASE,
-                                       L2Skill.SkillType.MAGE_BANE, L2Skill.SkillType.WARRIOR_BANE};
+                                       L2Skill.SkillType.MAGE_BANE, L2Skill.SkillType.WARRIOR_BANE, L2Skill.SkillType.BETRAY};
 
     protected static Logger _log = Logger.getLogger(L2Skill.class.getName());
     private  String[] _negateStats=null;
@@ -137,6 +137,19 @@ public class Disablers implements ISkillHandler
           
             switch (type)
             {
+        		case BETRAY: 
+        	 	{ 
+        	 		if ( target != null && activeChar instanceof L2PcInstance && target instanceof L2Summon && Rnd.get(100) < 50) 
+        	 			skill.getEffects(activeChar, target); 
+        	 		else 
+        	 		{
+        	 			SystemMessage sm = new SystemMessage(139); 
+        	 			sm.addString(target.getName()); 
+        	 			sm.addSkillName(skill.getId()); 
+        	 			activeChar.sendPacket(sm);  
+        	 		} 
+        	 		break;
+        	 	}
                 case FAKE_DEATH:
                 {
                     // stun/fakedeath is not mdef dependant, it depends on lvl difference, target CON and power of stun
@@ -325,53 +338,53 @@ public class Disablers implements ISkillHandler
                 	break;
                 }
                 case MAGE_BANE:
-                	{
-                        for(L2Object t: targets)
-                        {
-                        	L2Character target1 = (L2Character) t;
-                        	if (! Formulas.getInstance().calcSkillSuccess(activeChar, target1, skill, false, sps, bss))
-                        		continue;
-                        
-                        	 L2Effect[] effects = target1.getAllEffects();
-                        	 for(L2Effect e: effects)
-                        	 {
-                        		 for(Func f: e.getStatFuncs())
-                        		 {
-                        			 if(f._stat == Stats.MAGIC_ATTACK || f._stat == Stats.MAGIC_ATTACK_SPEED)
-                        			 {
-                        				 e.exit();
-                        				 break;
-                        			 }
-                        		 }
-                        	 }
-                        	 
-                        }
-                	}
-                    	break;
-                    case WARRIOR_BANE:
-                	{
-                        for(L2Object t: targets)
-                        {
-                        	L2Character target1 = (L2Character) t;
-                        	if (! Formulas.getInstance().calcSkillSuccess(activeChar, target1, skill, false, sps, bss))
-                        		continue;
-                        
-                        	 L2Effect[] effects = target1.getAllEffects();
-                        	 for(L2Effect e: effects)
-                        	 {
-                        		 for(Func f: e.getStatFuncs())
-                        		 {
-                        			 if(f._stat == Stats.RUN_SPEED || f._stat == Stats.POWER_ATTACK_SPEED)
-                        			 {
-                        				 e.exit();
-                        				 break;
-                        			 }
-                        		 }
-                        	 }
-                        	 
-                        }
-                	}
-                    	break;
+            	{
+                    for(L2Object t: targets)
+                    {
+                    	L2Character target1 = (L2Character) t;
+                    	if (! Formulas.getInstance().calcSkillSuccess(activeChar, target1, skill, false, sps, bss))
+                    		continue;
+                    
+                    	 L2Effect[] effects = target1.getAllEffects();
+                    	 for(L2Effect e: effects)
+                    	 {
+                    		 for(Func f: e.getStatFuncs())
+                    		 {
+                    			 if(f._stat == Stats.MAGIC_ATTACK || f._stat == Stats.MAGIC_ATTACK_SPEED)
+                    			 {
+                    				 e.exit();
+                    				 break;
+                    			 }
+                    		 }
+                    	 }
+                    	 
+                    }
+                    break;
+            	}
+                case WARRIOR_BANE:
+            	{
+                    for(L2Object t: targets)
+                    {
+                    	L2Character target1 = (L2Character) t;
+                    	if (! Formulas.getInstance().calcSkillSuccess(activeChar, target1, skill, false, sps, bss))
+                    		continue;
+                    
+                    	 L2Effect[] effects = target1.getAllEffects();
+                    	 for(L2Effect e: effects)
+                    	 {
+                    		 for(Func f: e.getStatFuncs())
+                    		 {
+                    			 if(f._stat == Stats.RUN_SPEED || f._stat == Stats.POWER_ATTACK_SPEED)
+                    			 {
+                    				 e.exit();
+                    				 break;
+                    			 }
+                    		 }
+                    	 }
+                    	 
+                    }
+                    break;
+            	}
                 case CANCEL:
                 case NEGATE:
                 {

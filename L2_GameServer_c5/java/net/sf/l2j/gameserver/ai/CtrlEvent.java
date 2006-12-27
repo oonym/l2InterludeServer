@@ -75,5 +75,7 @@ public enum CtrlEvent {
 	/** The character flee in randoms directions **/
 	EVT_AFFRAID,
 	/** The character finish casting **/
-	EVT_FINISH_CASTING
+	EVT_FINISH_CASTING,
+	/** The character betrayed its master */
+	EVT_BETRAYED
 }

@@ -141,6 +141,7 @@ public abstract class L2Character extends L2Object
 	private boolean _IsRunning                              = false;
 	private boolean _IsSleeping                             = false; // Cannot move/attack until sleep timed out or monster is attacked
 	private boolean _IsStunned                              = false; // Cannot move/attack until stun timed out
+	private boolean _IsBetrayed                             = false; // Betrayed by own summon
 	private boolean _IsTeleporting                          = false;
 	private L2Character _LastBuffer							= null;
 	private int _LastHealAmount								= 0;
@@ -1476,6 +1477,9 @@ public abstract class L2Character extends L2Object
 	public final boolean isStunned() { return _IsStunned; }
 	public final void setIsStunned(boolean value) { _IsStunned = value; }
 	
+	public final boolean isBetrayed() { return _IsBetrayed; } 
+	public final void setIsBetrayed(boolean value) { _IsBetrayed = value; } 
+	 
 	public final boolean isTeleporting() { return _IsTeleporting; }
 	public final void setIsTeleporting(boolean value) { _IsTeleporting = value; }
 	
@@ -2171,7 +2175,19 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_STUNNED, null);
 		updateAbnormalEffect();
 	}
-	
+	public final void startBetray() 
+	{ 
+		setIsBetrayed(true); 
+		getAI().notifyEvent(CtrlEvent.EVT_BETRAYED, null); 
+		updateAbnormalEffect(); 
+	} 
+
+	public final void stopBetray() 
+	{ 
+		stopEffects(L2Effect.EffectType.BETRAY); 
+		setIsBetrayed(false); 
+		updateAbnormalEffect(); 
+	} 
 	/**
 	 * Modify the abnormal effect map according to the mask.<BR><BR>
 	 */
