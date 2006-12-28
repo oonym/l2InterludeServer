@@ -18,8 +18,7 @@
  */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.lib.Rnd; 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
@@ -36,7 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class SummonTreasureKey implements ISkillHandler
 {
-    static Log _log = LogFactory.getLog(SummonTreasureKey.class.getName());
+    static Logger _log = Logger.getLogger(SummonTreasureKey.class.getName());
     protected SkillType[] _skillIds = {SkillType.SUMMON_TREASURE_KEY};
 
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused")
@@ -90,7 +89,7 @@ public class SummonTreasureKey implements ISkillHandler
         }
         catch (Exception e)
         {
-            _log.fatal("Error using skill summon Treasure Key:" + e); 
+            _log.warning("Error using skill summon Treasure Key:" + e); 
         }
     }
 
