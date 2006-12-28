@@ -91,7 +91,7 @@ public abstract class L2Skill
     }
 
     public static enum SkillType {
-    	PDAM, MDAM, DOT, BLEED, POISON, HEAL, HOT, COMBATPOINTHEAL, CPHOT, MANAHEAL, MANAHEAL_PERCENT, MANARECHARGE, MPHOT, AGGDAMAGE, BUFF, DEBUFF, STUN, ROOT, RESURRECT, PASSIVE, CONT, CONFUSION, UNLOCK, CHARGE(
+    	PDAM,LETHALDAM, MDAM, DOT, BLEED, POISON, HEAL, HOT, COMBATPOINTHEAL, CPHOT, MANAHEAL, MANAHEAL_PERCENT, MANARECHARGE, MPHOT, AGGDAMAGE, BUFF, DEBUFF, STUN, ROOT, RESURRECT, PASSIVE, CONT, CONFUSION, UNLOCK, CHARGE(
                 L2SkillCharge.class), FEAR, MHOT, DRAIN(L2SkillDrain.class), NEGATE, CANCEL,
                 SLEEP, AGGREDUCE, AGGREMOVE, AGGREDUCE_CHAR, CHARGEDAM(
                 L2SkillChargeDmg.class), CONFUSE_MOB_ONLY, DEATHLINK, DETECT_WEAKNESS, ENCHANT_ARMOR, ENCHANT_WEAPON, FEED_PET, HEAL_PERCENT, LUCK, MANADAM, MDOT, MUTE, RECALL, REFLECT, SOULSHOT, SPIRITSHOT, SPOIL, SWEEP, SUMMON(
@@ -307,6 +307,10 @@ public abstract class L2Skill
     private final boolean _isOffensive;
     private final int _num_charges;
 
+    private final int _lethalEffect1;     // percent of success for lethal 1st effect (hit cp to 1 or if mob hp to 50%) (only for PDAM skills)
+    private final int _lethalEffect2;     // percent of success for lethal 2nd effect (hit cp,hp to 1 or if mob hp to 1) (only for PDAM skills)
+    private final boolean _directHpDmg;  // If true then dmg is being make directly 
+    
     protected Condition _preCondition;
     protected Condition _itemPreCondition;
     protected FuncTemplate[] _funcTemplates;
@@ -374,6 +378,21 @@ public abstract class L2Skill
         _isOffensive = set.getBool("offensive", isSkillTypeOffensive());
         _num_charges = set.getInteger("num_charges", getLevel());
 
+        int l1 = set.getInteger("lethal1",0);
+        int l2 = set.getInteger("lethal2",0);
+    	if( l1 <= l2 || l2 <= 0)
+    	{
+    		_lethalEffect1 = 0;
+    		_lethalEffect2 = 0;
+    	}
+    	else
+    	{
+    		_lethalEffect1 = l1;
+    		_lethalEffect2 = l2;
+    	}
+
+        _directHpDmg  = set.getBool("dmgDirectlyToHp",false);
+        
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
         {
@@ -802,7 +821,18 @@ public abstract class L2Skill
     {
         return _isOffensive;
     }
-
+    public final int getLethalChance1()
+    {
+    	return _lethalEffect1;
+    }
+    public final int getLethalChance2()
+    {
+    	return _lethalEffect2;
+    }
+    public final boolean getDmgDirectlyToHP()
+    {
+    	return _directHpDmg;
+    }
     public final boolean isSkillTypeOffensive()
     {
         switch (_skillType)

@@ -103,11 +103,7 @@ public class Pdam implements ISkillHandler
                     + activeChar.getLevel() + " lvl did damage " + damage + " with skill "
                     + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_pdam");
             }
-            // Why are we trying to reduce the current target HP here?
-            // Why not inside the below "if" condition, after the effects processing as it should be?
-            // It doesn't seem to make sense for me. I'm moving this line inside the "if" condition, right after the effects processing...
-            // [changed by nexus - 2006-08-15]
-            //target.reduceCurrentHp(damage, activeChar);
+
             if (soul && weapon != null) weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
             
             if (damage > 0)
@@ -144,104 +140,73 @@ public class Pdam implements ISkillHandler
                     }
                 }
                 
-                if((skill.getId() == 30 || skill.getId() == 321 || skill.getId() == 263 || skill.getId() == 409) 
-                		&& !target.isRaid()) //TODO check if lethal effect should affect Bosses
+                 // Success of lethal effect
+                int chance;
+                if( ( chance = Rnd.get(100)) < skill.getLethalChance1())
                 {
-                	//Skill is Backstab, deadly or blinding
-                	double Hpdam = 0;
-                	int chance = 0;
-                	chance = Rnd.get(100);
-                	// Lethal Strike effect chance
-                	if (chance <= 5) 
+                	// 1st lethal effect activate (cp to 1 or if target is npc then hp to 50%)
+                	if(chance >= skill.getLethalChance2())
                 	{
-                		// Msg: Lethal Strike
-                		SystemMessage sm = new SystemMessage(1667);
-                        activeChar.sendPacket(sm);
-                		
-                        if (chance < 2) 
-                        {       
-                        	// If is a monster damage is (CurrentHp - 1) so HP = 1
-                                if (target instanceof L2NpcInstance)
-                                    target.reduceCurrentHp(target.getCurrentHp()-1, activeChar);
-                           // If is a active player set his HP and CP to 1
-                    			else if (target instanceof L2PcInstance)
-                    			{
-                    				L2PcInstance player = (L2PcInstance)target;
-                    				if (!player.isInvul())
-                    				{
-                    					player.setCurrentHp(1);
-                    					player.setCurrentCp(1);
-                    				}
-                    			}
-                		}
-                		else //Chance <=5 and >=2
-                		{
-                     		   if (target instanceof L2PcInstance) 
-                     		   {
-	                   				L2PcInstance player = (L2PcInstance)target;
-	                				if (!player.isInvul())
-	                				{
-	                    			   // Set CP to 1
-	                					player.setCurrentCp(1);
-	                    			   // if skill is Backstab remove HP
-	                               	  if (skill.getId() == 30)
-	                               	  {
-	                            	    if (damage >= player.getCurrentHp()) 
-	                            	    {
-	                            	    	player.setCurrentHp(0);
-	                            	    	player.doDie(activeChar);
-	                            	    }
-	                            	    else 
-	                            	    {
-	                            		    Hpdam = (player.getCurrentHp() - damage);
-	                            		    player.setCurrentHp(Hpdam);
-	                            	    }
-	                                  }
-	                               	  //Else skill is deadly or blinding and remove first 1 CP and after HP
-	                               	  else 
-	                               		player.reduceCurrentHp(damage, activeChar);
-	                				}
-                    		   }
-                     		   // If is a monster remove first damage and after 50% of current hp
-                     		   else if (target instanceof L2MonsterInstance)
-                     		   {
-                     			  target.reduceCurrentHp(damage, activeChar);
-                     			  target.reduceCurrentHp(target.getCurrentHp()/2, activeChar);
-                     		   }
-                	     }
-                        // Lethal Strike was succefful!
-                		sm = new SystemMessage(1668);
-                        activeChar.sendPacket(sm);
-                	}               	
-                	else //Chance > 5 (Not Lethal effect)
+              		   if (target instanceof L2PcInstance) 
+             		   {
+               				L2PcInstance player = (L2PcInstance)target;
+            				if (!player.isInvul())
+            				{
+            					player.setCurrentCp(1); // Set CP to 1
+                           		player.reduceCurrentHp(damage, activeChar);
+            				}
+            		   }
+             		   else if (target instanceof L2MonsterInstance) // If is a monster remove first damage and after 50% of current hp
+             		   {
+             			  target.reduceCurrentHp(damage, activeChar);
+             			  target.reduceCurrentHp(target.getCurrentHp()/2, activeChar);
+             		   }
+                	}
+                	else //2nd lethal effect activate (cp,hp to 1 or if target is npc then hp to 1)
                 	{
-                    	if (skill.getId() == 30)
-                    	{
-                    		if (target instanceof L2PcInstance)
-                    		{
-                				L2PcInstance player = (L2PcInstance)target;
-                				if (!player.isInvul())
-                				{
-	                    	       if (damage >= player.getCurrentHp()) 
-	                    	       {
-	                    	    	   player.setCurrentHp(0);
-	                    	    	   player.doDie(activeChar);
-	                    	       }
-	                    	       else 
-	                    	       {
-	                    		      Hpdam = (player.getCurrentHp() - damage);
-	                    		      player.setCurrentHp(Hpdam);
-	                    	       }
-                				}
-                            }
-                    		else
-                    			target.reduceCurrentHp(damage, activeChar);
-                    	}
-                    	else
-                    		target.reduceCurrentHp(damage, activeChar); 
+                      	 // If is a monster damage is (CurrentHp - 1) so HP = 1
+                        if (target instanceof L2NpcInstance)
+                            target.reduceCurrentHp(target.getCurrentHp()-1, activeChar);
+            			else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
+            			{
+            				L2PcInstance player = (L2PcInstance)target;
+            				if (!player.isInvul())
+            				{
+            					player.setCurrentHp(1);
+            					player.setCurrentCp(1);
+            				}
+            			}
+                	}
+                    // Lethal Strike was succefful!
+                    activeChar.sendPacket(new SystemMessage(1668));
+                }
+                else
+                {
+                	// Make damage directly to HP
+                	if(skill.getDmgDirectlyToHP())
+                	{
+        				if(target instanceof L2PcInstance)
+        				{
+        					L2PcInstance player = (L2PcInstance)target;
+	                		if (!player.isInvul())
+	        				{
+	                	       if (damage >= player.getCurrentHp()) 
+	                	       {
+	                	    	   player.setCurrentHp(0);
+	                	    	   player.doDie(activeChar);
+	                	       }
+	                	       else 
+	                		      player.setCurrentHp(player.getCurrentHp() - damage);
+	        				}
+        				}
+        				else
+        					target.reduceCurrentHp(damage, activeChar);
+                	}
+                	else
+                	{
+                		target.reduceCurrentHp(damage, activeChar);
                 	}
                 }
-                else target.reduceCurrentHp(damage, activeChar);
             }
             else // No - damage
             {
