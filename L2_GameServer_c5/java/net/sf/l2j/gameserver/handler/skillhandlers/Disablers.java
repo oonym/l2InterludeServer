@@ -139,7 +139,7 @@ public class Disablers implements ISkillHandler
             {
         		case BETRAY: 
         	 	{ 
-        	 		if ( target != null && activeChar instanceof L2PcInstance && target instanceof L2Summon && Rnd.get(100) < 50) 
+        	 		if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss)) 
         	 			skill.getEffects(activeChar, target); 
         	 		else 
         	 		{
