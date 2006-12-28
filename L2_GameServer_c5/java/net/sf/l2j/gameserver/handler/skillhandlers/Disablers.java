@@ -199,7 +199,7 @@ public class Disablers implements ISkillHandler
                 case CONFUSION:
                 case MUTE:
                 {
-                    if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, ss,
+                    if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps,
                                                                 bss))
                     {
                         // stop same type effect if avaiable
@@ -291,7 +291,7 @@ public class Disablers implements ISkillHandler
                 }
                 case ERASE:
                 {
-                	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, ss, bss))
+                	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss))
                 	{
                 		L2PcInstance summonOwner = null;
                 		L2Summon summonPet = null;
