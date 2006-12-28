@@ -201,6 +201,7 @@ public abstract class L2Object
         	if (itemId >=3960 && itemId <=4021)
         	{
         		MercTicketManager.getInstance().removeTicket((L2ItemInstance)this);
+        		ItemsOnGroundManager.getInstance().removeObject(this);
         	}
         }
         	
