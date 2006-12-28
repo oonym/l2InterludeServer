@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.base.ClassType;
 import net.sf.l2j.gameserver.model.base.PlayerClass;
 import net.sf.l2j.gameserver.model.base.PlayerRace;
 import net.sf.l2j.gameserver.model.base.SubClass;
+import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
@@ -296,28 +297,20 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                      * 
                      * If they both exist, remove both unique items and continue with adding the sub-class.
                      */
-                    if (!Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS && player.getSubClasses().isEmpty())
+                    if (!Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS)
                     {
-                        L2ItemInstance elixirItem = player.getInventory().getItemByItemId(ELIXIR_ITEM_ID);
-                        L2ItemInstance destinyItem = player.getInventory().getItemByItemId(
-                                                                                           DESTINY_ITEM_ID);
 
-                        if (elixirItem == null)
+                    	QuestState qs = player.getQuestState("235_MimirsElixir");
+                    	if(qs == null || !qs.isCompleted())
                         {
                             player.sendMessage("You must have completed the Mimir's Elixir quest to continue adding your sub class.");
                             return;
                         }
-
-                        if (destinyItem == null)
+                    	qs = player.getQuestState("234_FatesWhisper");
+                    	if(qs == null || !qs.isCompleted())
                         {
                             player.sendMessage("You must have completed the Fate's Whisper quest to continue adding your sub class.");
                             return;
-                        }
-
-                        if (allowAddition)
-                        {
-                            player.destroyItemByItemId("Quest", ELIXIR_ITEM_ID, 1, this, true);
-                            player.destroyItemByItemId("Quest", DESTINY_ITEM_ID, 1, this, true);
                         }
                     }
 
