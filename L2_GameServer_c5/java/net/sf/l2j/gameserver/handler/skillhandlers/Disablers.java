@@ -289,51 +289,17 @@ public class Disablers implements ISkillHandler
                     negateEffect(target,SkillType.POISON,skill.getPower());
                     break;
                 }
-
-                // Skill Erase done by Scafu
                 case ERASE:
                 {
-                	int chance = 0;
-                switch (skill.getLevel()) {
-            	case 1:
-            		chance = 63;
-            		break;
-            	case 2:
-            		chance = 65;
-            		break;
-            	case 3:
-            		chance = 69;
-            		break;
-            	case 4:
-            		chance = 72;
-            		break;
-            	case 5:
-            		chance = 75;
-            		break;
-            	case 6:
-            		chance = 81;
-            		break;
-            	case 7:
-            		chance = 85;
-            		break;
-            	case 8:
-            		chance = 89;
-            		break;
-            	case 9:
-            		chance = 92;
-            		break;
-            	case 10:
-            		chance = 97;
-            		break;
-              }
-                	if (target != null && target instanceof L2Summon && Rnd.get(100) < chance) {
+                	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, ss, bss))
+                	{
                 		L2PcInstance summonOwner = null;
                 		L2Summon summonPet = null;
                 		summonOwner = ((L2Summon)target).getOwner();                		
                 		summonPet = summonOwner.getPet();
                 		summonPet.unSummon(summonOwner);
-                               SystemMessage sm = new SystemMessage(1667);
-				summonOwner.sendPacket(sm); 
+                        SystemMessage sm = new SystemMessage(1667);
+				        summonOwner.sendPacket(sm);                		 
                 	}
                 	break;
                 }
