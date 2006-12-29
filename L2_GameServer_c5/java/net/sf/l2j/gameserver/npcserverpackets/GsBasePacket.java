@@ -16,6 +16,7 @@ public abstract class GsBasePacket
 	
 	public GsBasePacket    _next;
 	protected ByteBuffer    _buf;
+	protected byte[]       _data;
 	protected int        _length;
 	  
 	protected GsBasePacket() 
@@ -29,9 +30,9 @@ public abstract class GsBasePacket
 	{
 		return _length;
 	}
-	public  ByteBuffer getData()
+	public  byte[] getData()
 	{
-		return _buf;
+		return _data;
 	}
 	
 	protected final void writeByte(byte value)
@@ -42,6 +43,10 @@ public abstract class GsBasePacket
 
 	public final void send()
 	{
+		_data = new byte[_length];
+		for(int i = 0; i < _length; i++)
+			_data[i] = _buf.get(i);
+		_buf = null;
 		NpcServerThread.getInstance().addPacket(this);
 	}
  

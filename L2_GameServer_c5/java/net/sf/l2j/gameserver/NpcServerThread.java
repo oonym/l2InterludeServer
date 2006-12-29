@@ -65,10 +65,7 @@ public class NpcServerThread extends Thread
 								GsBasePacket packet = _queue.get();
 								
 								int length = packet.getLength();
-								ByteBuffer b = packet.getData();
-								byte[] data = new byte[length];
-								for(int i = 0; i < length; i++)
-									data[i] = b.get(i);
+								byte[] data = packet.getData();
 								
 								out.write((length + 2)%256); // Size is set on 2 bytes
 								out.write((length + 2)/256);
