@@ -503,21 +503,22 @@ public final class L2World
             Iterator<L2Object> _objects = _regions.get(i).iterateVisibleObjects();
             
             // Go through visible object of the selected region
-            while (_objects.hasNext())
+            try 
             {
-                L2Object _object = _objects.next();
+            	while (_objects.hasNext())
+            	{
+            		L2Object _object = _objects.next();
                 
-                if (_object == null)
-                    continue;
-                
-                if (_object.equals(object))
-                    continue;   // skip our own character
-                
-                if (!_object.isVisible())
-                    continue;   // skip dying objects
-                
-                result.add(_object);
-            }
+            		if (_object == null)
+            			continue;
+            		if (_object.equals(object))
+            			continue;   // skip our own character
+            		if (!_object.isVisible())
+            			continue;   // skip dying objects
+            		
+            		result.add(_object);
+            	}
+            } catch (NullPointerException e) {}
         }
         
         return result;
