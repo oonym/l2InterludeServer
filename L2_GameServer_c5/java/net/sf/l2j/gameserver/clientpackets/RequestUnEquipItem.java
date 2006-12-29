@@ -70,12 +70,15 @@ public class RequestUnEquipItem extends ClientBasePacket
 			return;
 		}
         
-        // Prevent Stunned player to remove the weapon
-        if (activeChar.isStunned() || activeChar.isSleeping())
+		// Prevent player to remove the weapon on special conditions
+       	if (activeChar.isStunned() || activeChar.isSleeping() 
+       			|| activeChar.isParalyzed() || activeChar.isAlikeDead())
         {
             activeChar.sendMessage("Your status does not allow you to do that.");
             return;
         }
+        if (activeChar.isAttackingNow() || activeChar.isCastingNow()) 
+        	return;
         
 		L2ItemInstance[] unequiped =
 			activeChar.getInventory().unEquipItemInBodySlotAndRecord(_slot); 

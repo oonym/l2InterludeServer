@@ -139,8 +139,9 @@ public class UseItem extends ClientBasePacket
                 	return;
                 }
                 
-                // Don't allow use weapon/shield when player is stun/sleep
-                if (activeChar.isStunned() ||  activeChar.isSleeping()
+                // Prevent player to remove the weapon on special conditions
+                if ((activeChar.isStunned() || activeChar.isSleeping() || activeChar.isAttackingNow()
+                		|| activeChar.isCastingNow() || activeChar.isParalyzed() || activeChar.isAlikeDead())
                         && (bodyPart == L2Item.SLOT_LR_HAND 
                             || bodyPart == L2Item.SLOT_L_HAND 
                             || bodyPart == L2Item.SLOT_R_HAND))
