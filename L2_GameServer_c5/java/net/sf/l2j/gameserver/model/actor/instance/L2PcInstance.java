@@ -6199,6 +6199,9 @@ public final class L2PcInstance extends L2PlayableInstance
             case TARGET_SELF:
                 target = this;
                 break;
+            case TARGET_PET:
+                target = getPet();                
+                break;
             default:
                 target = getTarget();
             break;

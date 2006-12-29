@@ -301,7 +301,7 @@ public class RequestActionUse extends ClientBasePacket
 				useSkill(4230);
                 break;
             case 42: // Kai the Cat - Self Damage Shield
-				useSkill(4378);
+            	useSkill(4378, activeChar);
                 break;
             case 43: // Unicorn Merrow - Hydro Screw
 				useSkill(4137);
@@ -371,28 +371,28 @@ public class RequestActionUse extends ClientBasePacket
 				useSkill(4710); //TODO use correct skill lvl based on pet lvl
                 break;
             case 1004: // Wind Hatchling/Strider - Wild Defense
-				useSkill(4711); //TODO use correct skill lvl based on pet lvl
+            	useSkill(4711, activeChar); //TODO use correct skill lvl based on pet lvl
             	break;
             case 1005: // Star Hatchling/Strider - Bright Burst
 				useSkill(4712); //TODO use correct skill lvl based on pet lvl
             	break;
             case 1006: // Star Hatchling/Strider - Bright Heal
-				useSkill(4713); //TODO use correct skill lvl based on pet lvl
+            	useSkill(4713, activeChar); //TODO use correct skill lvl based on pet lvl
             	break;
             case 1007: // Cat Queen - Blessing of Queen
-				useSkill(4699);
+            	useSkill(4699, activeChar);
             	break;
             case 1008: // Cat Queen - Gift of Queen
-				useSkill(4700);
+            	useSkill(4700, activeChar);
             	break;
             case 1009: // Cat Queen - Cure of Queen
-				useSkill(4701);
+            	useSkill(4701);
             	break;
             case 1010: // Unicorn Seraphim - Blessing of Seraphim
-				useSkill(4702);
+            	useSkill(4702, activeChar);
             	break;
             case 1011: // Unicorn Seraphim - Gift of Seraphim
-				useSkill(4703);
+            	useSkill(4703, activeChar);
             	break;
             case 1012: // Unicorn Seraphim - Cure of Seraphim
 				useSkill(4704);
@@ -401,7 +401,7 @@ public class RequestActionUse extends ClientBasePacket
 				useSkill(4705);
             	break;
             case 1014: // Nightshade - Mass Curse of Shade
-				useSkill(4706);
+            	useSkill(4706, activeChar);
             	break;
             case 1015: // Nightshade - Shade Sacrifice
 				useSkill(4707);

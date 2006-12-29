@@ -4105,7 +4105,7 @@ public abstract class L2Character extends L2Object
 					// Reduce HP of the target and calculate reflection damage to reduce HP of attacker if necessary
 					double reflectPercent = target.getStat().calcStat(Stats.REFLECT_DAMAGE_PERCENT,0,null,null);
                     
-					if (reflectPercent > 0 && target.getTarget()==this)
+					if (reflectPercent > 0)
 					{
 						int reflectedDamage = (int)(reflectPercent / 100. * damage);
 						damage -= reflectedDamage;
@@ -4113,6 +4113,13 @@ public abstract class L2Character extends L2Object
                         
 						if (target instanceof L2PcInstance) 
                             ((L2PcInstance)target).sendMessage("You reflected " + reflectedDamage + " damage.");
+                        else if (target instanceof L2Summon)
+                            ((L2Summon)target).getOwner().sendMessage("Summon reflected " + reflectedDamage + " damage.");
+
+                        if (this instanceof L2PcInstance)
+                            ((L2PcInstance)this).sendMessage("Target reflected to you " + reflectedDamage + " damage.");
+                        else if (this instanceof L2Summon)
+                            ((L2Summon)this).getOwner().sendMessage("Target reflected to your summon " + reflectedDamage + " damage.");
 					}
 					
 					// Absorb HP from the damage inflicted
@@ -4126,7 +4133,17 @@ public abstract class L2Character extends L2Object
 						if (absorbDamage > maxCanAbsorb) 
                             absorbDamage = maxCanAbsorb; // Can't absord more than max hp
                         
-						setCurrentHp(getCurrentHp() + absorbDamage);
+                        if (absorbDamage > 0)
+                        {
+                            setCurrentHp(getCurrentHp() + absorbDamage);
+
+                            if (this instanceof L2PcInstance)
+                                ((L2PcInstance)this).sendMessage("You absorbed " + absorbDamage + " damage.");
+                            else if (this instanceof L2Summon)
+                                ((L2Summon)this).getOwner().sendMessage("Summon absorbed " + absorbDamage + " damage.");
+                            else if (Config.DEBUG)
+                                _log.info(getName() + " absorbed " + absorbDamage + " damage.");
+                        }
 					}
 				}
 				
