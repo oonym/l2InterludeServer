@@ -6214,8 +6214,10 @@ public final class L2PcInstance extends L2PlayableInstance
         
         // Create and set a L2Object containing the target of the skill
         L2Object target = null;
+        SkillTargetType sklTargetType = skill.getTargetType();
+        SkillType sklType = skill.getSkillType();
         
-        switch (skill.getTargetType())
+        switch (sklTargetType)
         {
             // Target the player if skill type is AURA, PARTY, CLAN or SELF
             case TARGET_AURA:      
@@ -6309,7 +6311,7 @@ public final class L2PcInstance extends L2PlayableInstance
             if (requiredItems == null || requiredItems.getCount() < skill.getItemConsume())
             {
             	// Checked: when a summon skill failed, server show required consume item count
-            	if (skill.getSkillType() == L2Skill.SkillType.SUMMON)
+            	if (sklType == L2Skill.SkillType.SUMMON)
                 {
             		SystemMessage sm = new SystemMessage(SystemMessage.SUMMONING_SERVITOR_COSTS_S2_S1);
             		sm.addItemName(skill.getItemConsumeId());
@@ -6369,7 +6371,8 @@ public final class L2PcInstance extends L2PlayableInstance
             return;
         }
         
-        if (isFishing() && (skill.getSkillType() != SkillType.PUMPING && skill.getSkillType() != SkillType.REELING && skill.getSkillType() != SkillType.FISHING))
+        if (isFishing() && (sklType != SkillType.PUMPING && 
+        		sklType != SkillType.REELING && sklType != SkillType.FISHING))
         {
             //Only fishing skills are available
             this.sendPacket(new SystemMessage(1448));
@@ -6402,11 +6405,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			// Check if a Forced ATTACK is in progress on non-attackable target
 			if (!target.isAutoAttackable(this) && !forceUse &&
-					skill.getTargetType() != SkillTargetType.TARGET_AURA &&
-					skill.getTargetType() != SkillTargetType.TARGET_CLAN &&
-					skill.getTargetType() != SkillTargetType.TARGET_ALLY &&
-					skill.getTargetType() != SkillTargetType.TARGET_PARTY &&
-					skill.getTargetType() != SkillTargetType.TARGET_SELF)
+					sklTargetType != SkillTargetType.TARGET_AURA &&
+					sklTargetType != SkillTargetType.TARGET_CLAN &&
+					sklTargetType != SkillTargetType.TARGET_ALLY &&
+					sklTargetType != SkillTargetType.TARGET_PARTY &&
+					sklTargetType != SkillTargetType.TARGET_SELF)
 			{
 				// Send a Server->Client packet ActionFailed to the L2PcInstance
 				sendPacket(new ActionFailed());
@@ -6417,7 +6420,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (dontMove)
 			{
 				// Calculate the distance between the L2PcInstance and the target
-                if (skill.getCastRange() > 0 && !isInsideRadius(target, skill.getCastRange(), false, false))
+                if (skill.getCastRange() > 0 && !isInsideRadius(target, skill.getCastRange()+getTemplate().collisionRadius, false, false))
 				{
 					// Send a System Message to the caster
 					sendPacket(new SystemMessage(SystemMessage.TARGET_TOO_FAR));
@@ -6434,14 +6437,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			// check if the target is a monster and if force attack is set.. if not then we don't want to cast.
 			if ((target instanceof L2MonsterInstance) && !forceUse
-                    && (skill.getTargetType() != SkillTargetType.TARGET_PET)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_AURA)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_CLAN)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_SELF)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_PARTY)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_ALLY)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_CORPSE_MOB)
-                    && (skill.getTargetType() != SkillTargetType.TARGET_AREA_CORPSE_MOB))
+                    && (sklTargetType != SkillTargetType.TARGET_PET)
+                    && (sklTargetType != SkillTargetType.TARGET_AURA)
+                    && (sklTargetType != SkillTargetType.TARGET_CLAN)
+                    && (sklTargetType != SkillTargetType.TARGET_SELF)
+                    && (sklTargetType != SkillTargetType.TARGET_PARTY)
+                    && (sklTargetType != SkillTargetType.TARGET_ALLY)
+                    && (sklTargetType != SkillTargetType.TARGET_CORPSE_MOB)
+                    && (sklTargetType != SkillTargetType.TARGET_AREA_CORPSE_MOB))
 			{
 				// send the action failed so that the skill doens't go off.
 				sendPacket (new ActionFailed());
@@ -6450,7 +6453,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		// Check if the skill is Spoil type and if the target isn't already spoiled
-		if (skill.getSkillType() == SkillType.SPOIL)
+		if (sklType == SkillType.SPOIL)
 		{
 			if (!(target instanceof L2MonsterInstance))
 			{
@@ -6472,7 +6475,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
         
         // Check if the skill is Sweep type and if conditions not apply
-        if (skill.getSkillType() == SkillType.SWEEP && target instanceof L2Attackable)
+        if (sklType == SkillType.SWEEP && target instanceof L2Attackable)
         {
             int spoilerId = ((L2Attackable)target).getIsSpoiledBy();
 
@@ -6488,7 +6491,7 @@ public final class L2PcInstance extends L2PlayableInstance
         }
 
 		// Check if the skill is Drain Soul (Soul Crystals) and if the target is a MOB
-		if (skill.getSkillType() == SkillType.DRAIN_SOUL)
+		if (sklType == SkillType.DRAIN_SOUL)
 		{
 			if (!(target instanceof L2MonsterInstance))
 			{
@@ -6502,7 +6505,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
         
 		// Check if this is a Pvp skill and target isn't a non-flagged/non-karma player
-		switch (skill.getTargetType()) 
+		switch (sklTargetType) 
         {
 			case TARGET_PARTY:
 			case TARGET_ALLY:   // For such skills, checkPvpSkill() is called from L2Skill.getTargetList()
@@ -6522,20 +6525,23 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 		}
         
-        if (skill.getTargetType() == SkillTargetType.TARGET_HOLY && !TakeCastle.checkIfOkToCastSealOfRule(this, false))
+        if (sklTargetType == SkillTargetType.TARGET_HOLY && 
+        		!TakeCastle.checkIfOkToCastSealOfRule(this, false))
         {
             sendPacket(new ActionFailed());
             abortCast();
             return;
         }
         
-        if (skill.getSkillType() == SkillType.SIEGEFLAG && !SiegeFlag.checkIfOkToPlaceFlag(this, false))
+        if (sklType == SkillType.SIEGEFLAG && 
+        		!SiegeFlag.checkIfOkToPlaceFlag(this, false))
         {
             sendPacket(new ActionFailed());
             abortCast();
             return;
         }
-        else if (skill.getSkillType() == SkillType.STRSIEGEASSAULT && !StrSiegeAssault.checkIfOkToUseStriderSiegeAssault(this, false))
+        else if (sklType == SkillType.STRSIEGEASSAULT && 
+        		!StrSiegeAssault.checkIfOkToUseStriderSiegeAssault(this, false))
         {
         	sendPacket(new ActionFailed());
         	abortCast();

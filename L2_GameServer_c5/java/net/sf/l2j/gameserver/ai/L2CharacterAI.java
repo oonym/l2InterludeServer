@@ -271,7 +271,8 @@ public class L2CharacterAI extends AbstractAI
             _actor.abortAttack();
 
             // Cancel action client side by sending Server->Client packet ActionFailed to the L2PcInstance actor
-            clientActionFailed();
+            // no need for second ActionFailed packet, abortAttack() already sent it
+            //clientActionFailed();
         }
 
         // Set the AI skill used by INTENTION_CAST
@@ -511,6 +512,9 @@ public class L2CharacterAI extends AbstractAI
         if (AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
             AttackStanceTaskManager.getInstance().removeAttackStanceTask(_actor);
 
+        // Stop Server AutoAttack also
+        setAutoAttacking(false);
+        
         // Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
         clientStopMoving(null);
 
@@ -536,6 +540,9 @@ public class L2CharacterAI extends AbstractAI
         if (AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
             AttackStanceTaskManager.getInstance().removeAttackStanceTask(_actor);
 
+        // stop Server AutoAttack also
+        setAutoAttacking(false);
+        
         // Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
         clientStopMoving(null);
     }
@@ -551,9 +558,9 @@ public class L2CharacterAI extends AbstractAI
     protected void onEvtRooted(L2Character attacker)
     {
         // Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
-        _actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
-        if (AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
-            AttackStanceTaskManager.getInstance().removeAttackStanceTask(_actor);
+        //_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
+        //if (AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
+        //    AttackStanceTaskManager.getInstance().removeAttackStanceTask(_actor);
 
         // Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
         clientStopMoving(null);

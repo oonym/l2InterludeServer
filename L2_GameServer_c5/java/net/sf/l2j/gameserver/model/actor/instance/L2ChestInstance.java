@@ -174,10 +174,10 @@ public final class L2ChestInstance extends L2Attackable
 	private boolean handleCast(L2Character player, int skillId)
 	{
 		int skillLevel = 1;
-
-		if (getTemplate().level > 20 && getTemplate().level <= 40) skillLevel = 3;
-		else if (getTemplate().level > 40 && getTemplate().level <= 60) skillLevel = 5;
-		else if (getTemplate().level > 60) skillLevel = 6;
+		byte lvl = getTemplate().level;
+		if (lvl > 20 && lvl <= 40) skillLevel = 3;
+		else if (lvl > 40 && lvl <= 60) skillLevel = 5;
+		else if (lvl > 60) skillLevel = 6;
 
 		if (player.isDead() 
 			|| !player.isVisible()

@@ -175,27 +175,30 @@ public class L2PlayerAI extends L2CharacterAI
 
     private void thinkAttack()
     {
-        if (checkTargetLostOrDead(getAttackTarget()))
+    	L2Character target = getAttackTarget();
+    	if (target == null) return;
+        if (checkTargetLostOrDead(target))
         {
-            if (getAttackTarget() != null)
+            if (target != null)
             {
                 // Notify the target
                 setAttackTarget(null);
             }
             return;
         }
-        if (maybeMoveToPawn(getAttackTarget(), _actor.getPhysicalAttackRange())) return;
+        if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()+_actor.getTemplate().collisionRadius+target.getTemplate().collisionRadius)) return;
 
-        _accessor.doAttack(getAttackTarget());
+        _accessor.doAttack(target);
         return;
     }
 
     private void thinkCast()
     {
 
+    	L2Character target = getCastTarget();
         //if (Config.DEBUG) _log.warning("L2PlayerAI: thinkCast -> Start");
 
-        if (checkTargetLost(getCastTarget()))
+        if (checkTargetLost(target))
         {
             if (_skill.isOffensive() && getAttackTarget() != null)
             {
@@ -205,32 +208,22 @@ public class L2PlayerAI extends L2CharacterAI
             return;
         }
 
-        // if (Config.DEBUG) _log.warning("L2PlayerAI: thinkCast -> valid target: " + _cast_target);
-
-        if (maybeMoveToPawn(getCastTarget(), _actor.getMagicalAttackRange(_skill))) return;
-
-        // if (Config.DEBUG) _log.warning("L2PlayerAI: thinkCast -> no need to move to pawn... " + _actor + " " + _cast_target + " " + _skill);
-
-        // - Saves current _cast_target;
-        // - Stops the moving client/server side;
-        // - Retrieves old _cast_target;
-        L2Character castTarget = getCastTarget();
+        if (target != null && _skill.isOffensive()) 
+        	if (maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill)+_actor.getTemplate().collisionRadius+target.getTemplate().collisionRadius)) return;
+        
         if (_skill.getSkillTime() > 50) clientStopMoving(null);
-        setCastTarget(castTarget);
-
-        // if (Config.DEBUG) _log.warning("L2PlayerAI: thinkCast -> _cast_target: " + _cast_target + " getTarget(): " + _actor.getTarget());
 
         L2Object oldTarget = _actor.getTarget();
         if (oldTarget != null)
         {
             // Replace the current target by the cast target
-            if (getCastTarget() != null) _actor.setTarget(getCastTarget());
+            if (target != null && oldTarget != target) _actor.setTarget(getCastTarget());
 
             // Launch the Cast of the skill
             _accessor.doCast(_skill);
 
             // Restore the initial target
-            _actor.setTarget(oldTarget);
+            if (target != null && oldTarget != target) _actor.setTarget(oldTarget);
         }
         else _accessor.doCast(_skill);
 
@@ -240,19 +233,21 @@ public class L2PlayerAI extends L2CharacterAI
     private void thinkPickUp()
     {
         if (_actor.isAllSkillsDisabled()) return;
-        if (checkTargetLost(getTarget())) return;
-        if (maybeMoveToPawn(getTarget(), 36)) return;
+    	L2Object target = getTarget();
+        if (checkTargetLost(target)) return;
+        if (maybeMoveToPawn(target, 36)) return;
         setIntention(AI_INTENTION_IDLE);
-        ((L2PcInstance.AIAccessor) _accessor).doPickupItem(getTarget());
+        ((L2PcInstance.AIAccessor) _accessor).doPickupItem(target);
         return;
     }
 
     private void thinkInteract()
     {
         if (_actor.isAllSkillsDisabled()) return;
-        if (checkTargetLost(getTarget())) return;
-        if (maybeMoveToPawn(getTarget(), 36)) return;
-        ((L2PcInstance.AIAccessor) _accessor).doInteract((L2Character) getTarget());
+        L2Object target = getTarget();
+        if (checkTargetLost(target)) return;
+        if (maybeMoveToPawn(target, 36)) return;
+        ((L2PcInstance.AIAccessor) _accessor).doInteract((L2Character) target);
         setIntention(AI_INTENTION_IDLE);
         return;
     }
@@ -283,7 +278,6 @@ public class L2PlayerAI extends L2CharacterAI
     protected void onEvtArrivedRevalidate()
     {
         ThreadPoolManager.getInstance().executeTask(new KnownListAsynchronousUpdateTask(_actor));
-        ;
         super.onEvtArrivedRevalidate();
     }
 

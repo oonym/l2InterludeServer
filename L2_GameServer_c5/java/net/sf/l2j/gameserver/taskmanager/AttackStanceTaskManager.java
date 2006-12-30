@@ -86,6 +86,7 @@ public class AttackStanceTaskManager
         {
             Long current = System.currentTimeMillis();
             if (_attackStanceTasks != null)
+            	synchronized (this) {
                 for(L2Character actor : _attackStanceTasks.keySet())
                 {
                     if((current - _attackStanceTasks.get(actor)) > 15000)
@@ -95,6 +96,7 @@ public class AttackStanceTaskManager
                         _attackStanceTasks.remove(actor);
                     }
                 }
+            	}
         }
     }
 }
