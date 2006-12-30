@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
@@ -68,7 +69,7 @@ public class ClanHallManager
 
             con = L2DatabaseFactory.getInstance().getConnection();
 
-            statement = con.prepareStatement("Select id from clanhall order by id");
+            statement = con.prepareStatement("SELECT id from clanhall order by id");
             rs = statement.executeQuery();
 
             while (rs.next())
@@ -122,9 +123,9 @@ public class ClanHallManager
 
     public final ClanHall getClanHallByOwner(L2Clan clan)
     {
-	for (ClanHall clanhall : getClanHalls())
-	    if (clan.getClanId() == clanhall.getOwnerId())
-		return clanhall;
+    	for (ClanHall clanhall : getClanHalls())
+    		if (clan.getClanId() == clanhall.getOwnerId())
+    			return clanhall;
         return null;
     }
 
@@ -139,7 +140,10 @@ public class ClanHallManager
         return -1;
     }
 
-    public final int getClanHallIndex(L2Object activeObject) { return getClanHallIndex(activeObject.getPosition().getX(), activeObject.getPosition().getY()); }
+    public final int getClanHallIndex(L2Object activeObject) 
+    { 
+    	return getClanHallIndex(activeObject.getPosition().getX(), activeObject.getPosition().getY());
+    }
 
     public final int getClanHallIndex(int x, int y)
     {
@@ -154,23 +158,25 @@ public class ClanHallManager
     public final int getClanHallIndex(int x, int y, int offset)
     {
         ClanHall clanHall;
-	int id = -1;
+        int id = -1;
         for (int i = 0; i < getClanHalls().size(); i++)
         {
             clanHall = getClanHalls().get(i);
-	    int[] coord;
-	    Zone zone = clanHall.getZone();
+            int[] coord;
+            Zone zone = clanHall.getZone();
             if (zone != null)
             {
-        	coord = zone.getCoords().get(0);
-		int x1 = coord[0] + (coord[2] - coord[0])/2;
-		int y1 = coord[1] + (coord[3] - coord[1])/2;
-		//_log.warning("ch"+i+":("+x+","+y+") distance "+Util.calculateDistance(x,y,0,coord[0],coord[1]));
-		if (clanHall != null && Util.calculateDistance(x,y,0,x1,y1) < offset){ 
-		    id = i;
-		    offset = (int)Util.calculateDistance(x,y,0,x1,y1);
-		}
-	    }
+            	coord = zone.getCoords().get(0);
+            	int x1 = coord[0] + (coord[2] - coord[0])/2;
+            	int y1 = coord[1] + (coord[3] - coord[1])/2;
+            	if (Config.DEBUG)
+            		_log.warning("ch"+i+":("+x+","+y+") distance "+Util.calculateDistance(x,y,0,coord[0],coord[1]));
+            	if (clanHall != null && Util.calculateDistance(x,y,0,x1,y1) < offset)
+            	{ 
+            		id = i;
+            		offset = (int)Util.calculateDistance(x,y,0,x1,y1);
+            	}
+            }
         }
         return id;
     }

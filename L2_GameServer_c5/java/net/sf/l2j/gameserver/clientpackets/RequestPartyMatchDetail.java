@@ -19,7 +19,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
-
+import java.util.logging.Logger;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -34,7 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.PartyMatchDetail;
 public class RequestPartyMatchDetail extends ClientBasePacket
 {
 	private static final String _C__71_REQUESTPARTYMATCHDETAIL = "[C] 71 RequestPartyMatchDetail";
-	//private static Logger _log = Logger.getLogger(RequestPartyMatchDetail.class.getName());
+	private static Logger _log = Logger.getLogger(RequestPartyMatchDetail.class.getName());
 
 	private final int _objectId;
     @SuppressWarnings("unused")
@@ -60,6 +60,7 @@ public class RequestPartyMatchDetail extends ClientBasePacket
 
 	void runImpl()
 	{
+		//TODO: this packet is currently for starting auto join
 		L2PcInstance player = (L2PcInstance) L2World.getInstance().findObject(_objectId);
 		if (player == null)
 		    return;

@@ -51,8 +51,8 @@ public class RequestOustPledgeMember extends ClientBasePacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		
-		//is the guy leader of the clan ?
-		if (activeChar == null || !activeChar.isClanLeader()) 
+		//privilege check
+		if (activeChar == null || !((activeChar.getClanPrivileges() & L2Clan.CP_CL_DISMISS) == L2Clan.CP_CL_DISMISS)) 
 		{	
 			return;
 		}

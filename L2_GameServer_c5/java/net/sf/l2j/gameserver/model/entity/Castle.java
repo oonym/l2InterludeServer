@@ -119,10 +119,10 @@ public class Castle
 	/**
 	 * Move non clan members off castle area and to nearest town.<BR><BR>
 	 */
-	public void banishForeigner()
+	public void banishForeigner(L2PcInstance activeChar)
     {
-        // Get all players
-        for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		// Get players from this and nearest world regions
+        for (L2PcInstance player : L2World.getInstance().getVisiblePlayers(activeChar))
         {
             // Skip if player is in clan
             if (player.getClanId() == getOwnerId())

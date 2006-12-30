@@ -1743,6 +1743,8 @@ public class L2NpcInstance extends L2Character
      */
     public void showChatWindow(L2PcInstance player, int val)
     {
+    	if (getTemplate().type == "L2Auctioneer" && val==0)
+            return;
         int npcId = getTemplate().npcId;
         
         /* For use with Seven Signs implementation */

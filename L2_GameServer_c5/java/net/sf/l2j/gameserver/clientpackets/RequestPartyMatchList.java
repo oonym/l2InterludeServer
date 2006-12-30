@@ -80,9 +80,11 @@ public class RequestPartyMatchList extends ClientBasePacket
 			// window is open fill the list  
 			// actually the client should get automatic updates for the list
 			// for now we only fill it once
-			Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers(); 
-			L2PcInstance[] allPlayers = players.toArray(new L2PcInstance[players.size()]);
-			PartyMatchList matchList = new PartyMatchList(allPlayers);
+
+			//Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers(); 
+			//L2PcInstance[] allPlayers = players.toArray(new L2PcInstance[players.size()]);
+			L2PcInstance[] empty = new L2PcInstance[] { };
+			PartyMatchList matchList = new PartyMatchList(empty);
 			sendPacket(matchList);
 		}
 		else if (_status == 3)

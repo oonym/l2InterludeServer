@@ -355,12 +355,12 @@ public class PacketHandler
 			case 0x6e: 
 				msg = new RequestGMCommand(data, client);  
 				break;
-			case 0x6f:
-				msg = new RequestPartyMatchConfig(data, client);   
+			case 0x6f: 
+				msg = new RequestPartyMatchList(data, client);
 				break;
 				
-			case 0x70:
-				msg = new RequestPartyMatchList(data, client);      
+			case 0x70: 
+				msg = new RequestPartyMatchConfig(data, client);      
 				break;
 			case 0x71:
 				msg = new RequestPartyMatchDetail(data, client);     

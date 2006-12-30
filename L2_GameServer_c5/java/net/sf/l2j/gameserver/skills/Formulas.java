@@ -24,6 +24,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.SevenSignsFestival;
 import net.sf.l2j.gameserver.SkillTable;
+import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.Inventory;
@@ -37,6 +38,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
+import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.ConditionPlayerState.CheckPlayerState;
@@ -838,6 +840,18 @@ public final class Formulas
 				double siegeModifier = this.calcSiegeRegenModifer(player);
 				if (siegeModifier > 0) hpRegenMultiplier *= siegeModifier;
 			}
+            
+            if (player.getIsInClanHall())
+            {
+            	int clanHallIndex = player.getClan().getHasHideout();
+            	if (clanHallIndex > 0) 
+            	{
+            		ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex);
+            		if(clansHall != null)
+            			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_HP) != null) 
+            				hpRegenMultiplier *= 1+ clansHall.getFunction(ClanHall.FUNC_RESTORE_HP).getLvl()/100;
+            	}
+            }
 
 			// Mother Tree effect is calculated at last
 			if (player.getInMotherTreeZone()) hpRegenBonus += 2;
@@ -878,7 +892,19 @@ public final class Formulas
 
 			// Mother Tree effect is calculated at last
 			if (player.getInMotherTreeZone()) mpRegenBonus += 1;
-
+            
+            if (player.getIsInClanHall())
+            {
+            	int clanHallIndex = player.getClan().getHasHideout();
+            	if (clanHallIndex > 0)
+            	{
+            		ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex);
+            		if(clansHall != null)
+            			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_MP) != null) 
+            				mpRegenMultiplier *= 1+ clansHall.getFunction(ClanHall.FUNC_RESTORE_MP).getLvl()/100;
+            	}
+            }
+            	
 			// Calculate Movement bonus
             if (player.isSitting()) mpRegenMultiplier *= 1.5;      // Sitting
             else if (!player.isMoving()) mpRegenMultiplier *= 1.1; // Staying

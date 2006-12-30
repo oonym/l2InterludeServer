@@ -58,7 +58,10 @@ public abstract class IdFactory
 		"UPDATE clan_data             SET leader_id = ?   WHERE leader_id = ?",
 		"UPDATE pets                  SET item_obj_id = ? WHERE item_obj_id = ?",
 		"UPDATE character_hennas     SET char_obj_id = ? WHERE char_obj_id = ?",
-		"UPDATE itemsonground         SET object_id = ?   WHERE object_id = ?"
+		"UPDATE itemsonground         SET object_id = ?   WHERE object_id = ?",
+		"UPDATE auction_bid          SET bidderId = ?      WHERE bidderId = ?",
+        "UPDATE auction_watch        SET charObjId = ?     WHERE charObjId = ?",
+        "UPDATE clanhall             SET ownerId = ?       WHERE ownerId = ?"
 	};
 
     protected static String[] id_checks = 

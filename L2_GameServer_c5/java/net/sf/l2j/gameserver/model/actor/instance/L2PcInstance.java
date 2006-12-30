@@ -78,6 +78,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.StrSiegeAssault;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
@@ -125,6 +126,7 @@ import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.base.SubClass;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.entity.L2Event;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.entity.Zone;
@@ -307,6 +309,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private boolean _inPvpZone;
 	private boolean _inMotherTreeZone;
+	private boolean _inClanHall;
 
     /** L2PcInstance's pledge class (knight, Baron, etc.)*/
     private int _pledgeClass = 0;
@@ -1432,10 +1435,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		setInMotherTreeZone(ZoneManager.getInstance().checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.MotherTree), this));
 	}
     
+	public void revalidateInClanHall()
+    {
+		if(this.getClan() == null) return;
+		int clanHallIndex = this.getClan().getHasHideout();
+		if( clanHallIndex == 0 ) return;
+		ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex); 
+		if(clansHall != null) setIsInClanHall(clansHall.checkIfInZone(this.getX(),this.getY()));
+    }
+
+
     public void revalidateZone()
     {
         revalidateInPvpZone();
         revalidateInMotherTreeZone();
+        revalidateInClanHall();
     }
 	
 	/**
@@ -4675,7 +4689,19 @@ public final class L2PcInstance extends L2PlayableInstance
         
         updateIsIn7sDungeonStatus();
     }
-	
+    
+    public boolean getIsInClanHall()
+    {
+        return _inClanHall;
+    }
+    
+    public void setIsInClanHall(boolean inCH)
+    {
+        if (inCH && !_inClanHall) sendMessage("You have entered your clan hall");
+        else if (!inCH && _inClanHall) sendMessage("You have left your clan hall");
+        _inClanHall = inCH;
+    }
+
 	/**
 	 * Update the characters table of the database with online status and lastAccess of this L2PcInstance (called when login and logout).<BR><BR>
 	 */

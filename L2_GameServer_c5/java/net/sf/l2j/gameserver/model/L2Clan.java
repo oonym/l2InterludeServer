@@ -65,7 +65,8 @@ public class L2Clan
     private int _crestId;
     private int _crestLargeId;
     private int _allyCrestId;
-
+    private int _auctionBiddedAt = 0;
+    
     private ItemContainer _warehouse = new ClanWarehouse(this);
     private List<Integer> _atWarWith = new FastList<Integer>();
 
@@ -710,7 +711,7 @@ public class L2Clan
             L2ClanMember member;
             
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,hasHideout,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score FROM clan_data where clan_id=?");
+            PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,hasHideout,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score,auction_bid_at FROM clan_data where clan_id=?");
             statement.setInt(1, getClanId());
             ResultSet clanData = statement.executeQuery();
 
@@ -737,6 +738,7 @@ public class L2Clan
                 
                 setAllyCrestId(clanData.getInt("ally_crest_id"));
                 setReputationScore(clanData.getInt("reputation_score"), false);
+                setAuctionBiddedAt(clanData.getInt("auction_bid_at"));
                 
                 int leaderId = (clanData.getInt("leader_id"));          
 
@@ -1422,5 +1424,32 @@ public class L2Clan
     { 
     	return _rank; 
     } 
-
+    public int getAuctionBiddedAt()
+    {
+        return _auctionBiddedAt;
+    }
+    
+    public void setAuctionBiddedAt(int id)
+    {
+        _auctionBiddedAt = id;
+        //store changes to DB
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET auction_bid_at=? WHERE clan_id=?");
+            statement.setInt(1, id);
+            statement.setInt(2, getClanId());
+            statement.execute();
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.warning("Could not store auction for clan: " + e);
+        }
+        finally
+        {
+            try { con.close(); } catch (Exception e) {}
+        }
+    } 
 }

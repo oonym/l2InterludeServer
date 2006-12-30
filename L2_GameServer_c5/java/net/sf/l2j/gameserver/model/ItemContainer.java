@@ -404,7 +404,24 @@ public abstract class ItemContainer
 		for (L2ItemInstance item : _items) 
 			destroyItem(process, item, actor, reference);
 	}
-
+	
+	/**
+	 * Get warehouse adena  
+	 */
+	public int getAdena()
+    {
+        int count = 0;
+        
+        for (L2ItemInstance item : _items)
+            if (item.getItemId() == 57)
+            {
+                count = item.getCount();
+                return count;
+            }
+        
+        return count;
+    }
+	
     /**
      * Adds item to inventory for further adjustments.
      * @param item : L2ItemInstance to be added from inventory
@@ -501,5 +518,7 @@ public abstract class ItemContainer
     }
     
     public boolean validateCapacity(int slots) { return true; }
-    public boolean validateWeight(int weight) { return true; }
+    
+    public boolean validateWeight(int weight) { return true; }    
+
 }

@@ -25,10 +25,12 @@ import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.MapRegionTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.model.L2SiegeClan;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.serverpackets.Revive;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.IllegalPlayerAction;
@@ -86,7 +88,9 @@ public class RequestRestartPoint extends ClientBasePacket
                         return;
                     }
                     loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.ClanHall);
-                }                    
+                    if (ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan())!= null && ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan()).getFunction(ClanHall.FUNC_RESTORE_EXP)!= null)
+                        activeChar.restoreExp(ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan()).getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl());
+                }
                 else if (requestedPointType == 2) // to castle
                 {
                     Boolean isInDefense = false;
