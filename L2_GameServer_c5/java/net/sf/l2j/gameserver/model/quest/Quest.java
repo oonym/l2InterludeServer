@@ -297,10 +297,12 @@ public abstract class Quest
 				
 				// Identify the state of the quest for the player
 				boolean completed = false;
-				if (stateId.length() > 0 && stateId.charAt(0) == '*') {
+				if (stateId.length() > 0 && stateId.charAt(0) == '*') { // probably obsolete check 
 					completed = true;
 					stateId = stateId.substring(1);
 				}
+				if(stateId.equals("Completed")) completed = true;
+				
 				// Create an object State containing the state of the quest
 				State state = q.states.get(stateId);
 				if (state == null) {
@@ -493,8 +495,8 @@ public abstract class Quest
 	 */
 	public static void updateQuestInDb(QuestState qs) {
 		String val = qs.getStateId();
-		if (qs.isCompleted())
-			val = "*" + val;
+		//if (qs.isCompleted())
+		//	val = "*" + val;
 		updateQuestVarInDb(qs, "<state>", val);
 	}
 	

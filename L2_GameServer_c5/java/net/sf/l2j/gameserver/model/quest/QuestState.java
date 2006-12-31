@@ -211,8 +211,12 @@ public final class QuestState
         // set new state
 		_state = state;
         
+		if(state == null) return null;
+		
+		if(getStateId().equals("Completed")) _isCompleted = true;
+		
 		// add drops from new state
-		if (state != null && !isCompleted()) 
+		if (!isCompleted()) 
         {
 			Map<Integer, List<L2DropData>> newDrops = state.getDrops();
             
