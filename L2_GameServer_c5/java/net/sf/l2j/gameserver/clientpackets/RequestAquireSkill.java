@@ -106,14 +106,14 @@ public class RequestAquireSkill extends ClientBasePacket
 		{
 
 			L2SkillLearn[] skills = SkillTreeTable.getInstance()
-					.getAvailableSkills(player, player.getClassId());
+					.getAvailableSkills(player, player.getSkillLearningClassId());
 
 			for (L2SkillLearn s : skills)
 			{
 				L2Skill sk = SkillTable.getInstance().getInfo(s.getId(),
 						s.getLevel());
 				if (sk == null || sk != skill
-						|| !sk.getCanLearn(player.getClassId())
+						|| !sk.getCanLearn(player.getSkillLearningClassId())
 						|| !sk.canTeachBy(npcid))
 					continue;
 				counts++;

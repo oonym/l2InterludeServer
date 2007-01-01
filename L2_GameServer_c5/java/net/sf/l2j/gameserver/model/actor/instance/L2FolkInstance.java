@@ -248,16 +248,25 @@ public class L2FolkInstance extends L2NpcInstance
 					// make a list of classes
 					if (_classesToTeach != null) 
                     {
-					    for (ClassId cid : _classesToTeach)
-					    {
-					        if (cid.level() != player.getClassId().level())
-					            continue;
-                            
-					        if (SkillTreeTable.getInstance().getAvailableSkills(player, cid).length == 0)
-					            continue;
-                            
-					        text += "<a action=\"bypass -h npc_%objectId%_SkillList "+cid.getId()+"\">Learn "+cid+"'s class Skills</a><br>\n";
-					    }
+						int count = 0;
+						ClassId classCheck = player.getClassId();
+						
+						while ((count == 0) && (classCheck != null))
+						{
+						    for (ClassId cid : _classesToTeach)
+						    {
+						        if (cid.level() != classCheck.level())
+						            continue;
+	                            
+						        if (SkillTreeTable.getInstance().getAvailableSkills(player, cid).length == 0)
+						            continue;
+	                            
+						        text += "<a action=\"bypass -h npc_%objectId%_SkillList "+cid.getId()+"\">Learn "+cid+"'s class Skills</a><br>\n";
+						        count++;
+						    }
+						    classCheck = classCheck.getParent();
+						}
+						classCheck = null;
                     }
                     else
                     {

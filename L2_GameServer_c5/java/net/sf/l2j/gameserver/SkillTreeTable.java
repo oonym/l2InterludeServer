@@ -577,7 +577,7 @@ public class SkillTreeTable
     public int getSkillCost(L2PcInstance player, L2Skill skill)
     {
         int skillCost = 100000000;
-        ClassId classId = player.getClassId();
+        ClassId classId = player.getSkillLearningClassId();
         int skillHashCode = SkillTable.getSkillHashCode(skill);
         
         if (getSkillTrees().get(classId).containsKey(skillHashCode))

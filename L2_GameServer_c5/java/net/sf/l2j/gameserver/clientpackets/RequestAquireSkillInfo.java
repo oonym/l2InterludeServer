@@ -86,10 +86,10 @@ public class RequestAquireSkillInfo extends ClientBasePacket
 
 		if (_skillType == 0)
 		{
-			if (!trainer.getTemplate().canTeach(activeChar.getClassId())) 
+			if (!trainer.getTemplate().canTeach(activeChar.getSkillLearningClassId())) 
                 return; // cheater
 
-			L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(activeChar, activeChar.getClassId());
+			L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(activeChar, activeChar.getSkillLearningClassId());
 
 			for (L2SkillLearn s : skills)
 			{
