@@ -118,15 +118,11 @@ public class SystemMessage extends ServerBasePacket
 	public static final int CRITICAL_HIT                       =   44;
 	public static final int CRITICAL_HIT_BY_PET                = 1017;
 	public static final int CRITICAL_HIT_BY_SUMMONED_MOB       = 1028;
+	public static final int CRITICAL_HIT_MAGIC                 = 1280;
 	public static final int SHIELD_DEFENCE_SUCCESSFULL         =  111;
+	public static final int YOUR_EXCELLENT_SHIELD_DEFENSE_WAS_A_SUCCESS = 1281;
 	public static final int OVER_HIT                           =  361;
 	public static final int ACQUIRED_BONUS_EXPERIENCE_THROUGH_OVER_HIT  =  362;
-	public static final int SPOIL_SUCCESS                      =  612;
-	public static final int SPOIL_CANNOT_USE                   =  661;
-    public static final int SWEEPER_FAILED_TARGET_NOT_SPOILED  =  343;
-    public static final int S1_SWEEPED_UP_S2_S3 = 608;
-    public static final int S1_SWEEPED_UP_S2 = 609;
-    public static final int ALREDAY_SPOILED = 357;
     public static final int CANT_MOVE_SITTING = 31;
     public static final int SYMBOL_ADDED = 877;
     public static final int CANT_DRAW_SYMBOL = 899;
@@ -134,6 +130,15 @@ public class SystemMessage extends ServerBasePacket
     public static final int SKILL_NOT_AVAILABLE             = 0x30;
     
     public static final int CANT_SEE_TARGET                 = 0xb5;
+    
+    //  Spoil & Sweep
+    public static final int SWEEPER_FAILED_TARGET_NOT_SPOILED  =  343;
+    public static final int ALREDAY_SPOILED                    =  357;
+    public static final int S1_SWEEPED_UP_S2_S3                =  608;
+    public static final int S1_SWEEPED_UP_S2                   =  609;
+	public static final int SPOIL_SUCCESS                      =  612;
+	public static final int SPOIL_CANNOT_USE                   =  661;
+	public static final int SWEEP_NOT_ALLOWED                  =  683;
 	
 	// party related 
 	public static final int WAITING_FOR_REPLY = 164;
@@ -563,6 +568,10 @@ public class SystemMessage extends ServerBasePacket
     public static final int S1_HAS_DISAPPEARED = 1818;
 
     public static final int RESSURECTION_REQUEST = 1510;
+    
+    //  Energy Stones
+    public static final int FORCE_INCREASED_TO_S1 = 323;
+    public static final int FORCE_MAXLEVEL_REACHED = 324;
 
     /**
 	 * @param _characters

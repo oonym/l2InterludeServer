@@ -68,17 +68,15 @@ public class EnergyStone implements IItemHandler
 
             if (activeChar.isSitting())
             {
-                     SystemMessage sm = new SystemMessage(614);
-                     sm.addString("You cannot use that while sitting.");
-                     activeChar.sendPacket(sm);
+                     activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_MOVE_SITTING));
                      return;
             }
      
             skill = getChargeSkill(activeChar);
             if (skill == null)
             {
-                     SystemMessage sm = new SystemMessage(614);
-                     sm.addString("You dont have the knowledge.");
+                     SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+                     sm.addItemName(5589);
                      activeChar.sendPacket(sm);
                      return;
             }
@@ -108,19 +106,17 @@ public class EnergyStone implements IItemHandler
             }
             else if (effect.getLevel() == 2)
             {
-                SystemMessage sm2 = new SystemMessage(614);
-                sm2.addString("Already charged to maximum.");
-                activeChar.sendPacket(sm2);
+                activeChar.sendPacket(new SystemMessage(SystemMessage.FORCE_MAXLEVEL_REACHED));
             }
-            SystemMessage sm = new SystemMessage(614);
-            sm.addString("Charged to " + effect.getLevel() + ".");
+            SystemMessage sm = new SystemMessage(SystemMessage.FORCE_INCREASED_TO_S1);
+            sm.addNumber(effect.getLevel());
             activeChar.sendPacket(sm);
             return;
         }
         else
         {
-             SystemMessage sm = new SystemMessage(614);
-             sm.addString("Only Gladiators or Tyrants can use Energy Stone.");
+             SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+             sm.addItemName(5589);
              activeChar.sendPacket(sm);
              return;
         }
