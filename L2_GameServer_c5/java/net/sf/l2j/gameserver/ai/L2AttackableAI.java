@@ -156,6 +156,12 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             // Check if the AI isn't a Raid Boss and the target isn't in silent move mode
             if (!(me instanceof L2RaidBossInstance) && ((L2PcInstance)target).isSilentMoving())
                 return false;
+            
+            // Check if player is an ally
+            if (me.getFactionId() == "varka" && ((L2PcInstance)target).isAlliedWithVarka())
+                return false;
+            if (me.getFactionId() == "ketra" && ((L2PcInstance)target).isAlliedWithKetra())
+                return false;
         }
         
         // Check if the actor is a L2GuardInstance
