@@ -96,17 +96,12 @@ public final class L2WarehouseInstance extends L2FolkInstance
         if (player.getClan() != null)
         {
             if (player.getClan().getLevel() == 0)
-            {
-                player.sendPacket(new SystemMessage(
-                                                    SystemMessage.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
-            }
+                player.sendPacket(new SystemMessage(SystemMessage.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
             else
             {
-                if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
-                {
-                    player.sendPacket(new SystemMessage(
-                                                        SystemMessage.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE));
-                }
+                if (!player.isClanLeader())
+                    player.sendPacket(new SystemMessage(SystemMessage.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE));
+
                 player.setActiveWarehouse(player.getClan().getWarehouse());
                 player.tempInvetoryDisable();
                 if (Config.DEBUG) _log.fine("Showing items to deposit - clan");
@@ -120,16 +115,19 @@ public final class L2WarehouseInstance extends L2FolkInstance
     private void showWithdrawWindowClan(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
-        if (player.getClan() != null) //FIXME this should be available only to authorized clan members
+        if (player.getClan() != null) 
         {
             if (player.getClan().getLevel() == 0)
-            {
-                player.sendPacket(new SystemMessage(
-                                                    SystemMessage.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
-            }
+                player.sendPacket(new SystemMessage(SystemMessage.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
             else
             {
-                player.setActiveWarehouse(player.getClan().getWarehouse());
+            	if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) 
+            			!= L2Clan.CP_CL_VIEW_WAREHOUSE)
+            	{
+            		player.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
+            		return;
+            	}
+            	player.setActiveWarehouse(player.getClan().getWarehouse());
                 if (Config.DEBUG) _log.fine("Showing items to deposit - clan");
                 player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Clan));
             }
