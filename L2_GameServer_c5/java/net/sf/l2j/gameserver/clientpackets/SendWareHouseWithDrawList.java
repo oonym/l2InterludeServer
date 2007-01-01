@@ -94,7 +94,7 @@ public class SendWareHouseWithDrawList extends ClientBasePacket
         // Alt game - Karma punishment
         if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && player.getKarma() > 0) return;
         
-        if (warehouse instanceof ClanWarehouse && !((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) == L2Clan.CP_CL_VIEW_WAREHOUSE)) return;
+        if (warehouse instanceof ClanWarehouse && !player.isClanLeader()) return;
         
         int weight = 0;
         int slots = 0;
