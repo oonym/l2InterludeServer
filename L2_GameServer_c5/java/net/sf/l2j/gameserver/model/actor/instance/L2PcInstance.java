@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -6838,9 +6839,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (_activeSoulShots == null || _activeSoulShots.size() == 0)
 			return;
+
+		int itemId;
 		
-		for (int itemId : _activeSoulShots)
+		for (Iterator<Integer> i = _activeSoulShots.iterator(); i.hasNext(); )
 		{
+			itemId = i.next();
 			item = getInventory().getItemByItemId(itemId);
 			
 			if (item != null)
