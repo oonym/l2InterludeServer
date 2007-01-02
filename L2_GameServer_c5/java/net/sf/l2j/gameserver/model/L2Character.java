@@ -4596,6 +4596,18 @@ public abstract class L2Character extends L2Object
         if (removeMe != null) removeMe.exit();
     }
     
+    public int getDanceCount()
+    {
+    	int danceCount = 0;
+    	L2Effect[] effects = this.getAllEffects();
+    	for (L2Effect e : effects)
+    	{
+    		if (e.getSkill().isDance())
+    			danceCount++;
+    	}
+    	return danceCount;
+    }
+    
     /**
      * Checks if the given skill stacks with an existing one.<BR><BR>
      *

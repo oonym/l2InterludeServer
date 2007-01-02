@@ -349,7 +349,11 @@ public class CharStat
     /** Return the mpConsume. */
     public final int getMpConsume(L2Skill skill)
     {
-        return (int)calcStat(Stats.MP_CONSUME, skill.getMpConsume(), null, null);
+    	int mpconsume = skill.getMpConsume();
+    	if (skill.isDance() && _ActiveChar.getDanceCount() > 0)
+    		mpconsume += _ActiveChar.getDanceCount() * skill.getNextDanceMpCost();
+    		
+        return (int)calcStat(Stats.MP_CONSUME, mpconsume, null, null);
     }
     
     /** Return the mpInitialConsume. */

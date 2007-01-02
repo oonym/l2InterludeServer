@@ -310,6 +310,8 @@ public abstract class L2Skill
     private final int _lethalEffect1;     // percent of success for lethal 1st effect (hit cp to 1 or if mob hp to 50%) (only for PDAM skills)
     private final int _lethalEffect2;     // percent of success for lethal 2nd effect (hit cp,hp to 1 or if mob hp to 1) (only for PDAM skills)
     private final boolean _directHpDmg;  // If true then dmg is being make directly 
+    private final boolean _isDance;      // If true then casting more dances will cost more MP
+    private final int _nextDanceCost;
     
     protected Condition _preCondition;
     protected Condition _itemPreCondition;
@@ -392,6 +394,8 @@ public abstract class L2Skill
     	}
 
         _directHpDmg  = set.getBool("dmgDirectlyToHp",false);
+        _isDance = set.getBool("isDance",false);
+        _nextDanceCost = set.getInteger("nextDanceCost", 0);
         
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
@@ -737,6 +741,16 @@ public abstract class L2Skill
     public final boolean isToggle()
     {
         return _operateType == SkillOpType.OP_TOGGLE;
+    }
+    
+    public final boolean isDance()
+    {
+        return _isDance;
+    }
+    
+    public final int getNextDanceMpCost()
+    {
+    	return _nextDanceCost;
     }
 
     public final boolean useSoulShot()
