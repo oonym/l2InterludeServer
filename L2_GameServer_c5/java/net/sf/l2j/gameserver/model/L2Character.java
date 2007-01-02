@@ -4599,12 +4599,14 @@ public abstract class L2Character extends L2Object
     public int getDanceCount()
     {
     	int danceCount = 0;
-    	L2Effect[] effects = this.getAllEffects();
-    	for (L2Effect e : effects)
-    	{
-    		if (e.getSkill().isDance())
+    	L2Effect[] effects = getAllEffects();
+    	for (L2Effect effect : effects)
+		{    		 
+    		if (effect == null)
+    			continue;
+    		if (effect.getSkill().isDance() && effect.getInUse())
     			danceCount++;
-    	}
+		}
     	return danceCount;
     }
     
