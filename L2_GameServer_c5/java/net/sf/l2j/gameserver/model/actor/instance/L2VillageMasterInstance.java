@@ -32,7 +32,6 @@ import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
 import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
 import net.sf.l2j.gameserver.model.base.ClassType;
@@ -59,9 +58,6 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 public final class L2VillageMasterInstance extends L2FolkInstance
 {
     //private static Logger _log = Logger.getLogger(L2VillageMasterInstance.class.getName());
-
-    private static final int ELIXIR_ITEM_ID = 6319; // Mimir's Elixir (obtained through quest)
-    private static final int DESTINY_ITEM_ID = 5011; // Star of Destiny
 
     /**
      * @param template

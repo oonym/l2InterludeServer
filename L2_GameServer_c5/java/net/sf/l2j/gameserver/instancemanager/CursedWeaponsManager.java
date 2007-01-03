@@ -266,6 +266,7 @@ public class CursedWeaponsManager
 						}
 						
 						// Delete the skill
+						/*
 						statement = con.prepareStatement("DELETE FROM character_skills WHERE char_obj_id=? AND skill_id=");
 						statement.setInt(1, playerId);
 						statement.setInt(2, cw.getSkillId());
@@ -273,6 +274,7 @@ public class CursedWeaponsManager
 						{
 							_log.warning("Error while deleting cursed weapon "+itemId+" skill from userId "+playerId);
 						}
+						*/
 					}
 				} catch (SQLException sqlE)
 				{}
