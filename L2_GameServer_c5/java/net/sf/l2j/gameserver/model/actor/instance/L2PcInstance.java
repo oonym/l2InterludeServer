@@ -87,6 +87,7 @@ import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.BlockList;
+import net.sf.l2j.gameserver.model.CursedWeapon;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.ItemContainer;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -5505,6 +5506,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		return oldSkill;
 	}
+	public L2Skill removeSkill(L2Skill skill, boolean store)
+	{
+		if (store)
+			return removeSkill(skill);
+		else
+			return super.removeSkill(skill);
+	}
 	
 	/**
 	 * Remove a skill from the L2Character and its Func objects from calculator set of the L2Character and save update in the character_skills table of the database.<BR><BR>
@@ -7978,6 +7986,10 @@ public final class L2PcInstance extends L2PlayableInstance
         for (L2Skill oldSkill : getAllSkills())
             super.removeSkill(oldSkill);
         
+        // Yesod: Rebind CursedWeapon passive. 
+        if (isCursedWeaponEquiped())
+        	CursedWeaponsManager.getInstance().givePassive(_cursedWeaponEquipedId);
+            
         for (L2Effect effect : getAllEffects())
             effect.exit();
         

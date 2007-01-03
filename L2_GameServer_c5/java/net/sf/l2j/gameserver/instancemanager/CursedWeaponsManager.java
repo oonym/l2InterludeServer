@@ -363,6 +363,7 @@ public class CursedWeaponsManager
 			{
 				cw.setPlayer(player);
 				cw.setItem(player.getInventory().getItemByItemId(cw.getItemId()));
+				cw.giveSkill();
 				player.setCursedWeaponEquipedId(cw.getItemId());
 				
 				SystemMessage sm = new SystemMessage(SystemMessage.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
@@ -427,5 +428,10 @@ public class CursedWeaponsManager
     public CursedWeapon getCursedWeapon(int itemId)
     {
     	return _cursedWeapons.get(itemId);
+    }
+    
+    public void givePassive(int itemId)
+    {
+    	try { _cursedWeapons.get(itemId).giveSkill(); } catch (Exception e) {/***/}
     }
 }
