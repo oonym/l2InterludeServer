@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+import javolution.util.FastMap;
 import javolution.util.FastSet;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.NpcTable;
@@ -55,6 +56,7 @@ public class MinionList
 
     /** List containing the current spawned minions for this L2MonsterInstance */
     private final List<L2MinionInstance> minionReferences;
+    protected FastMap<Long,Integer> _respawnTasks = new FastMap<Long,Integer>().setShared(true);
     private final L2MonsterInstance master;
     private Random _rand;
 
@@ -123,7 +125,49 @@ public class MinionList
             minionReferences.remove(minion);
         }
     }
+    
+    public void moveMinionToRespawnList(L2MinionInstance minion)
+    {
+    	Long current = System.currentTimeMillis();
+    	synchronized (minionReferences)
+        {
+            minionReferences.remove(minion);
+            if(_respawnTasks.get(current) == null)
+            	_respawnTasks.put(current,minion.getNpcId());
+            else 
+            {
+            	// nice AoE
+            	for(int i = 1; i < 30; i++)
+            	{
+            		if(_respawnTasks.get(current+i) == null)
+            		{
+            			_respawnTasks.put(current+i,minion.getNpcId());
+            			break;
+            		}
+            	}
+            }
+        }
+    }
 
+    /**
+     * Manage respawning of minions for this RaidBoss.<BR><BR>
+     */
+    public void maintainMinions()
+    {
+    	 if(master == null || master.isAlikeDead()) return; 
+    	 Long current = System.currentTimeMillis();
+         if (_respawnTasks != null)
+             for(long deathTime : _respawnTasks.keySet())
+             {
+                 int delay = 300000; // respawn delay 5 min
+                 if((current - deathTime) > delay)
+                 {
+                	 spawnSingleMinion(_respawnTasks.get(deathTime));
+                     _respawnTasks.remove(deathTime);
+                 }
+             }
+    }
+    
     /**
      * Manage the spawn of all Minions of this RaidBoss.<BR><BR>
      * 
@@ -134,9 +178,9 @@ public class MinionList
      * @param player The L2PcInstance to attack
      * 
      */
-    public void maintainMinions()
+    public void spawnMinions()
     {
-    	if(master.isAlikeDead()) return;
+    	if(master == null || master.isAlikeDead()) return;
     	List<L2MinionData> minions = master.getTemplate().getMinionData();
 
         synchronized (minionReferences)

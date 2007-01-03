@@ -36,7 +36,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 {
 	//protected static Logger _log = Logger.getLogger(L2RaidBossInstance.class.getName());
     
-    private static final int RAIDBOSS_MAINTENANCE_INTERVAL = 420000; // 7 min
+    private static final int RAIDBOSS_MAINTENANCE_INTERVAL = 30000; // 30 sec
     
     private RaidBossSpawnManager.StatusEnum _raidStatus;
 

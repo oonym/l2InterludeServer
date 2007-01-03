@@ -113,6 +113,7 @@ public class L2MonsterInstance extends L2Attackable
                 
                 if(this instanceof L2RaidBossInstance) // respawn minions
                 {
+                	minionList.spawnMinions();
                 	minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
                 		public void run()
                 		{
@@ -127,7 +128,7 @@ public class L2MonsterInstance extends L2Attackable
                 else minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
                     public void run()
                     {
-                        minionList.maintainMinions();
+                        minionList.spawnMinions();
                     }
                 }, getMaintenanceInterval());
     		}
@@ -186,8 +187,12 @@ public class L2MonsterInstance extends L2Attackable
                 {
                     minion = itr.next();
                     // Trigger the aggro condition of the minion
-                    if (minion != null && !minion.isInCombat() && !minion.isDead())
-                        minion.addDamage(attacker, 1);
+                    if (minion != null && !minion.isDead())
+                    {
+                        if(this instanceof L2RaidBossInstance)
+                        	minion.addDamage(attacker, 100);
+                        else minion.addDamage(attacker, 1);
+                    }
                 }
             }
         }
@@ -218,7 +223,7 @@ public class L2MonsterInstance extends L2Attackable
     
     public void notifyMinionDied(L2MinionInstance minion)
     {
-        minionList.removeSpawnedMinion(minion);
+        minionList.moveMinionToRespawnList(minion);
     }
     
     public void notifyMinionSpawned(L2MinionInstance minion)
