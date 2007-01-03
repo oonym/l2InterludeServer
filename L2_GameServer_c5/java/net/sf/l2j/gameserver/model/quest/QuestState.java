@@ -214,6 +214,7 @@ public final class QuestState
 		if(state == null) return null;
 		
 		if(getStateId().equals("Completed")) _isCompleted = true;
+		else _isCompleted = false;
 		
 		// add drops from new state
 		if (!isCompleted()) 
