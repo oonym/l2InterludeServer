@@ -24,6 +24,7 @@ import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.Collection;
 import java.util.concurrent.Future;
+import java.util.Iterator; 
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
@@ -319,10 +320,14 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             int npcX, npcY, targetX, targetY;
             double dy, dx;
             double dblAggroRange = aggroRange * aggroRange;
-            // Go through visible objects
-            for (L2Object obj : npc.getKnownList().getKnownObjects())
-            {
-                if (obj == null || !(obj instanceof L2Character)) continue;
+            
+            L2Object obj = null;
+            
+            for (Iterator<L2Object> i = npc.getKnownList().getKnownObjects().iterator(); i.hasNext(); )  
+            {  
+            	obj = i.next();  
+
+            	if (obj == null || !(obj instanceof L2Character)) continue;
 
                 npcX = npc.getX();
                 npcY = npc.getY();
