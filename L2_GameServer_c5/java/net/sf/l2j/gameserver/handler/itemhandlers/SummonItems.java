@@ -159,7 +159,7 @@ public class SummonItems implements IItemHandler
 
         	break;
         case 2: // wyvern
-            Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, sitem.getItemId());
+            Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, sitem.getNpcId());
             activeChar.sendPacket(mount);
             activeChar.broadcastPacket(mount);
             activeChar.setMountType(mount.getMountType());
