@@ -120,22 +120,36 @@ public class ClanHall
 	// =========================================================
 	// Method - Public
     /** Return true if object is inside the zone */
-    public boolean checkIfInZone(L2Object obj) { 
+    public boolean checkIfInZone(L2Object obj) 
+    { 
     	return checkIfInZone(obj.getX(), obj.getY()); 
-    	}
+    }
 
     /** Return true if object is inside the zone */
-    public boolean checkIfInZone(int x, int y) { 
-    	return getZone().checkIfInZone(x, y); 
-    	}
+    public boolean checkIfInZone(int x, int y) 
+    {
+    	Zone zone = getZone();
+    	
+    	if (zone == null)
+    		return false;
+    	else
+    		return zone.checkIfInZone(x, y); 
+    }
 
-    public double findDistanceToZone(int x, int y, int z, boolean checkZ) { 
-    	return getZone().findDistanceToZone(x, y, z, checkZ); 
-    	}
+    public double findDistanceToZone(int x, int y, int z, boolean checkZ) 
+    { 
+    	Zone zone = getZone();
+
+    	if (zone == null)
+    		return 99999999;
+    	else
+    		return zone.findDistanceToZone(x, y, z, checkZ); 
+    }
 	
-	public void openCloseDoor(int doorId, boolean open) {
+	public void openCloseDoor(int doorId, boolean open) 
+	{
 		this.openCloseDoor(getDoor(doorId), open); 
-		}
+	}
 
 	public void openCloseDoor(L2DoorInstance door, boolean open)
 	{
