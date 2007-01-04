@@ -1954,7 +1954,7 @@ public abstract class L2Character extends L2Object
 		// skill.exit() could be used, if the users don't wish to see "effect 
 		// removed" always when a timer goes off, even if the buff isn't active 
 		// any more (has been replaced). but then check e.g. npc hold and raid petrify.
-		if (Config.EFFECT_CANCELING && stackQueue.size() > 1) 
+		if (Config.EFFECT_CANCELING && !newStackedEffect.isHerbEffect() && stackQueue.size() > 1) 
 		{
 			// only keep the current effect, cancel other effects
 			for (int n=0; n<_effects.size(); n++) 

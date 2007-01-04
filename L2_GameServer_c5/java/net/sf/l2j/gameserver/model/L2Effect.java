@@ -249,6 +249,14 @@ public abstract class L2Effect
     {
         return _skill._effectTemplatesSelf != null;
     }
+    
+    public boolean isHerbEffect()
+    {
+    	if (getSkill().getName().contains("Herb"))
+    		return true;
+    	
+    	return false;
+    }
 
     public final double calc()
     {
