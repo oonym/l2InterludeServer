@@ -928,15 +928,23 @@ public final class Formulas
         double cpRegenMultiplier = Config.CP_REGEN_MULTIPLIER;
         double cpRegenBonus = 0;
 
-        L2PcInstance player = (L2PcInstance) cha;
-
-        // Calculate correct baseHpReg value for certain level of PC
-        init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10) : 0.5;
-        
-        // Calculate Movement bonus
-        if (player.isSitting()) cpRegenMultiplier *= 1.5;      // Sitting
-        else if (!player.isMoving()) cpRegenMultiplier *= 1.1; // Staying
-        else if (player.isRunning()) cpRegenMultiplier *= 0.7; // Running
+        if (cha instanceof L2PcInstance)
+        {
+	        L2PcInstance player = (L2PcInstance) cha;
+	
+	        // Calculate correct baseHpReg value for certain level of PC
+	        init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10) : 0.5;
+	        
+	        // Calculate Movement bonus
+	        if (player.isSitting()) cpRegenMultiplier *= 1.5;      // Sitting
+	        else if (!player.isMoving()) cpRegenMultiplier *= 1.1; // Staying
+	        else if (player.isRunning()) cpRegenMultiplier *= 0.7; // Running
+        } else
+        {
+	        // Calculate Movement bonus
+        	if (!cha.isMoving()) cpRegenMultiplier *= 1.1; // Staying
+	        else if (cha.isRunning()) cpRegenMultiplier *= 0.7; // Running
+        }
 
         // Apply CON bonus
         init *= cha.getLevelMod() * CONbonus[cha.getCON()];
