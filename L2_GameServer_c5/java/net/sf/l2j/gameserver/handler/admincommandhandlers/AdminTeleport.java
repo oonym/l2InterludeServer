@@ -537,19 +537,23 @@ public class AdminTeleport implements IAdminCommandHandler
         if ((obj != null) && (obj instanceof L2NpcInstance))
         {
             L2NpcInstance target = (L2NpcInstance) obj;
-            L2Spawn spawn = target.getSpawn();
             
             int monsterTemplate = target.getTemplate().npcId;
-            
-            
             L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(monsterTemplate);
-            
             if (template1 == null)
             {
                 activeChar.sendMessage("Incorrect monster template.");
+                _log.warning("ERROR: NPC " + target.getObjectId() + " has a 'null' template.");
                 return;
             }
-            
+
+            L2Spawn spawn = target.getSpawn();
+            if (spawn == null)
+            {
+                activeChar.sendMessage("Incorrect monster spawn.");
+                _log.warning("ERROR: NPC " + target.getObjectId() + " has a 'null' spawn.");
+                return;
+            }
             int respawnTime = spawn.getRespawnDelay();
             
             target.deleteMe();
