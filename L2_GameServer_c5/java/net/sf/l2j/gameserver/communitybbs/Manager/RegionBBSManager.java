@@ -77,7 +77,7 @@ public class RegionBBSManager extends BaseBBSManager
 		}
 		else
 		{
-			if(Config.COMMUNITY_TYPE.toLowerCase().equals("old"))
+			if(Config.COMMUNITY_TYPE.equals("old"))
 			{
 				showOldCommunity(activeChar, 0);	
 			}
