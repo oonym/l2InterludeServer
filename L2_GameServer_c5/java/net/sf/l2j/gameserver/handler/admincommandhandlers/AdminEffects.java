@@ -20,9 +20,11 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.SkillTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -43,7 +45,7 @@ public class AdminEffects implements IAdminCommandHandler
    //private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
 
    private static String[] _adminCommands = { "admin_invis", "admin_invisible", "admin_vis",
-	   "admin_visible", "admin_earthquake", "admin_bighead", "admin_shrinkhead", 
+	   "admin_visible", "admin_earthquake", "admin_bighead", "admin_shrinkhead", "admin_gmspeed", 
 	   "admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", "admin_polyself",
 	   "admin_unpolyself", "admin_changename", "admin_clearteams", "admin_setteam_close", "admin_setteam" };
 
@@ -201,6 +203,35 @@ public class AdminEffects implements IAdminCommandHandler
            catch (Exception e)
            {
            }
+       }
+       if (command.startsWith("admin_gmspeed"))
+       {
+    	   int val;
+           try {
+    	       val = Integer.parseInt(command.substring(14));
+    	       boolean sendMessage = activeChar.getEffect(7029) != null;
+
+    	       activeChar.stopEffect(7029);
+    	       if (val == 0 && sendMessage) {
+        	       SystemMessage sm = new SystemMessage(SystemMessage.EFFECT_S1_DISAPPEARED);
+        	       sm.addSkillName(7029);
+		           activeChar.sendPacket(sm);
+	           }
+	           else if ((val >= 1) && (val <= 4)) {
+	    	       L2Skill gmSpeedSkill = SkillTable.getInstance().getInfo(7029, val);
+
+    			   activeChar.doCast(gmSpeedSkill);
+	           }
+    	   }
+    	   catch (Exception e) {
+               SystemMessage sm = new SystemMessage(614);
+
+    		   sm.addString("Use //gmspeed value = [0...4].");
+	           activeChar.sendPacket(sm);
+    	   }
+    	   finally {
+    	       activeChar.updateEffectIcons();
+    	   }
        }
        if (command.startsWith("admin_polyself"))
        {
