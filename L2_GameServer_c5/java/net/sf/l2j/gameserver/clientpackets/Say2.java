@@ -220,7 +220,7 @@ public class Say2 extends ClientBasePacket
 			case ALL:
 				for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers())
 				{
-                    if (activeChar.isInsideRadius(player, 1250, false, true))
+                    if (player != null && activeChar.isInsideRadius(player, 1250, false, true))
 						player.sendPacket(cs);
 				}
                 activeChar.sendPacket(cs);
