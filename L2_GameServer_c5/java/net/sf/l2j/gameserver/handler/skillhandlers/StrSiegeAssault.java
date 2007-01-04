@@ -31,7 +31,6 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
-import java.util.logging.Logger;
 
 /** 
  * @author _tomciaaa_ 
@@ -39,7 +38,7 @@ import java.util.logging.Logger;
  */ 
 public class StrSiegeAssault implements ISkillHandler 
 { 
-    private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName()); 
+    //private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName()); 
     protected SkillType[] _skillIds = {SkillType.STRSIEGEASSAULT}; 
     
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)

@@ -114,7 +114,7 @@ public class DynamicExtension {
         if (loadedExtensions.containsKey(className))
             return "already loaded";
         try {
-            Class extension = Class.forName(className, true, classLoader);
+            Class<?> extension = Class.forName(className, true, classLoader);
             Object obj = extension.newInstance();
             extension.getMethod("init", new Class[0]).invoke(obj, new Object[0]);
             log.info("Extension " + className + " loaded.");
@@ -169,7 +169,7 @@ public class DynamicExtension {
         String res = className + " unloaded";
         try {
             Object obj = loadedExtensions.get(className);
-            Class extension = obj.getClass();
+            Class<?> extension = obj.getClass();
             loadedExtensions.remove(className);
             extension.getMethod("unload", new Class[0]).invoke(obj, new Object[0]);
             log.info("Extension " + className + " unloaded.");

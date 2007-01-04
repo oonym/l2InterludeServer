@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 import net.sf.l2j.gameserver.ClientThread;
 
 /**
@@ -31,7 +30,7 @@ import net.sf.l2j.gameserver.ClientThread;
 public class RequestPartyMatchConfig extends ClientBasePacket
 {
 	private static final String _C__6F_REQUESTPARTYMATCHCONFIG = "[C] 6F RequestPartyMatchConfig";
-	private static Logger _log = Logger.getLogger(RequestPartyMatchConfig.class.getName());
+	//private static Logger _log = Logger.getLogger(RequestPartyMatchConfig.class.getName());
 
 	private final int _automaticRegistration;
 	private final int _showLevel;

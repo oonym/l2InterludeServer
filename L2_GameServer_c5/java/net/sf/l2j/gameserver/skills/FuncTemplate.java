@@ -31,7 +31,7 @@ public final class FuncTemplate {
 
 	public Condition _attachCond;
 	public Condition _applayCond;
-	public final Class _func;
+	public final Class<?> _func;
 	public final Constructor _constructor;
 	public final Stats _stat;
 	public final int _order;

@@ -29,7 +29,6 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.ClientThread;
-import net.sf.l2j.gameserver.CrownTable;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.MapRegionTable;

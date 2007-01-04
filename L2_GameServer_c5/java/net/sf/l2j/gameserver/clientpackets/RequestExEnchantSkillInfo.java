@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
@@ -44,7 +43,7 @@ import net.sf.l2j.gameserver.skills.Formulas;
  */
 public class RequestExEnchantSkillInfo extends ClientBasePacket
 {
-	private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
+	//private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
 	private static final String _C__D0_06_REQUESTEXENCHANTSKILLINFO = "[C] D0:06 RequestExEnchantSkillInfo";
 	@SuppressWarnings("unused")
 	private int _skillID;

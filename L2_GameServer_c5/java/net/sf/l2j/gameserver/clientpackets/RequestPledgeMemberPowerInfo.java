@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceivePowerInfo;
 public class RequestPledgeMemberPowerInfo extends ClientBasePacket
 {
     private static final String _C__D0_1B_REQUESTPLEDGEMEMBERPOWERINFO = "[C] D0:1B RequestPledgeMemberPowerInfo";
+    @SuppressWarnings("unused")
     private int _unk1;
     private String _player;
     /**
