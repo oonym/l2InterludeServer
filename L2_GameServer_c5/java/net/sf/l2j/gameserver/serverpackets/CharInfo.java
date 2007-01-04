@@ -18,11 +18,14 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.NpcTable;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * 0000: 03 32 15 00 00 44 fe 00 00 80 f1 ff ff 00 00 00    .2...D..........<p>
@@ -48,6 +51,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class CharInfo extends ServerBasePacket
 {
+	private static final Logger _log = Logger.getLogger(CharInfo.class.getName());
 
 	private static final String _S__03_CHARINFO = "[S] 03 CharInfo";
 	private L2PcInstance _cha;
@@ -92,52 +96,61 @@ public class CharInfo extends ServerBasePacket
 	{
 		if (_cha.getInvisible() == 1)
 			return;
+		
 		if (_cha.getPoly().isMorphed())
 		{
-			writeC(0x16);
-			writeD(_cha.getObjectId());
-			writeD(_cha.getPoly().getPolyId()+1000000);  // npctype id
-			writeD(_cha.getKarma() > 0 ? 1 : 0); 
-			writeD(_x);
-			writeD(_y);
-			writeD(_z);
-			writeD(_heading);
-			writeD(0x00);
-			writeD(_mAtkSpd);
-			writeD(_pAtkSpd);
-			writeD(_runSpd);
-			writeD(_walkSpd);
-			writeD(_swimRunSpd/*0x32*/);  // swimspeed
-			writeD(_swimWalkSpd/*0x32*/);  // swimspeed
-			writeD(_flRunSpd);
-			writeD(_flWalkSpd);
-			writeD(_flyRunSpd);
-			writeD(_flyWalkSpd);
-			writeF(_cha.getMovementSpeedMultiplier());
-			writeF(_cha.getAttackSpeedMultiplier());
-			writeF(NpcTable.getInstance().getTemplate(_cha.getPoly().getPolyId()).collisionRadius);
-			writeF(NpcTable.getInstance().getTemplate(_cha.getPoly().getPolyId()).collisionHeight);
-			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND)); // right hand weapon
-			writeD(0);
-			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LHAND)); // left hand weapon
-			writeC(1);	// name above char 1=true ... ??
-			writeC(_cha.isRunning() ? 1 : 0);
-			writeC(_cha.isInCombat() ? 1 : 0);
-			writeC(_cha.isAlikeDead() ? 1 : 0);
-			writeC(_cha.getInvisible()); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
-			writeS(_cha.getName());
-			writeS(_cha.getTitle());
-			writeD(0);
-			writeD(0);
-			writeD(0000);  // hmm karma ??
-
-			writeH(_cha.getAbnormalEffect());  // C2
-			writeH(0x00);  // C2
-			writeD(0);  // C2
-			writeD(0);  // C2
-			writeD(0);  // C2
-			writeD(0);  // C2
-			writeC(0);  // C2
+			L2NpcTemplate template = NpcTable.getInstance().getTemplate(_cha.getPoly().getPolyId());
+			
+			if (template != null)
+			{
+				writeC(0x16);
+				writeD(_cha.getObjectId());
+				writeD(_cha.getPoly().getPolyId()+1000000);  // npctype id
+				writeD(_cha.getKarma() > 0 ? 1 : 0); 
+				writeD(_x);
+				writeD(_y);
+				writeD(_z);
+				writeD(_heading);
+				writeD(0x00);
+				writeD(_mAtkSpd);
+				writeD(_pAtkSpd);
+				writeD(_runSpd);
+				writeD(_walkSpd);
+				writeD(_swimRunSpd/*0x32*/);  // swimspeed
+				writeD(_swimWalkSpd/*0x32*/);  // swimspeed
+				writeD(_flRunSpd);
+				writeD(_flWalkSpd);
+				writeD(_flyRunSpd);
+				writeD(_flyWalkSpd);
+				writeF(_cha.getMovementSpeedMultiplier());
+				writeF(_cha.getAttackSpeedMultiplier());
+				writeF(template.collisionRadius);
+				writeF(template.collisionHeight);
+				writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND)); // right hand weapon
+				writeD(0);
+				writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LHAND)); // left hand weapon
+				writeC(1);	// name above char 1=true ... ??
+				writeC(_cha.isRunning() ? 1 : 0);
+				writeC(_cha.isInCombat() ? 1 : 0);
+				writeC(_cha.isAlikeDead() ? 1 : 0);
+				writeC(_cha.getInvisible()); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
+				writeS(_cha.getName());
+				writeS(_cha.getTitle());
+				writeD(0);
+				writeD(0);
+				writeD(0000);  // hmm karma ??
+	
+				writeH(_cha.getAbnormalEffect());  // C2
+				writeH(0x00);  // C2
+				writeD(0);  // C2
+				writeD(0);  // C2
+				writeD(0);  // C2
+				writeD(0);  // C2
+				writeC(0);  // C2
+			} else
+			{
+				_log.warning("Character "+_cha.getName()+" ("+_cha.getObjectId()+") morphed in a Npc ("+_cha.getPoly().getPolyId()+") w/o template.");
+			}
 		}
 		else
 		{
