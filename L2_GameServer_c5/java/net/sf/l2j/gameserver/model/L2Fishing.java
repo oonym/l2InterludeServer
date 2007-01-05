@@ -222,16 +222,19 @@ public class L2Fishing implements Runnable
 			case 7807:
 			case 6519:
 			case 6520:
+			case 6521:
 				luretype = 1;// This bait is preferred by fast moving fish.
 				break;
 			case 7808:
 			case 6522:
 			case 6523:
+			case 6524:
 				luretype = 2;// This bait is preferred by fat fish.
 				break;
 			case 7809:
 			case 6525:
 			case 6526:
+			case 6527:
 				luretype = 3;// This bait is preferred by ugly fish.
 				break;
 			default:
