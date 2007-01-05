@@ -308,10 +308,10 @@ public class LoginServerThread extends Thread
 									if (Config.DEBUG)_log.info("Login accepted player "+wcToRemove.account+" waited("+(GameTimeController.getGameTicks()-wcToRemove.timestamp)+"ms)");
 									PlayerInGame pig = new PlayerInGame(par.getAccount());
 									sendPacket(pig);
+									wcToRemove.clientThread.setAuthed(true);
 									CharSelectInfo cl = new CharSelectInfo(wcToRemove.account, wcToRemove.clientThread.getSessionId().playOkID1);
 									wcToRemove.clientThread.getConnection().sendPacket(cl);
 									wcToRemove.clientThread.setSessionId(wcToRemove.session);
-									wcToRemove.clientThread.setAuthed(true);
 									wcToRemove.clientThread.setCharSelection(cl.getCharInfo());
 								}
 								else
