@@ -53,6 +53,12 @@ public class PacketHandler
 	{
 		ClientBasePacket msg = null;
 		int id = data.get() & 0xff;
+		
+		if(id != 0x00 && id != 0x08 && !client.isAuthed())
+		{
+			_log.warning("Player tried to get in gameserver before auth : "+client.getLoginName());
+			client.getConnection().close();
+		}
 
         for (CustomPacketHandlerInterface handler : customhandlers) {
             msg = handler.handlePacket(data, client);

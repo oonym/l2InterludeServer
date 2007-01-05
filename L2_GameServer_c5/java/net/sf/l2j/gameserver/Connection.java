@@ -184,6 +184,7 @@ public final class Connection
         { }
 		try
         {
+			LoginServerThread.getInstance().removeWaitingClient(_client);
 			if (_client.getActiveChar() != null)
             {
 				_client.onDisconnect();

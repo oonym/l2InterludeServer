@@ -311,6 +311,7 @@ public class LoginServerThread extends Thread
 									CharSelectInfo cl = new CharSelectInfo(wcToRemove.account, wcToRemove.clientThread.getSessionId().playOkID1);
 									wcToRemove.clientThread.getConnection().sendPacket(cl);
 									wcToRemove.clientThread.setSessionId(wcToRemove.session);
+									wcToRemove.clientThread.setAuthed(true);
 									wcToRemove.clientThread.setCharSelection(cl.getCharInfo());
 								}
 								else
@@ -358,7 +359,10 @@ public class LoginServerThread extends Thread
 	{
 		if(Config.DEBUG) System.out.println(key);
 		WaitingClient wc = new WaitingClient(acc, client, key);
-		_waitingClients.add(wc);
+		synchronized(_waitingClients)
+		{
+			_waitingClients.add(wc);
+		}
 		PlayerAuthRequest par = new PlayerAuthRequest(acc,key);
 		try
 		{
@@ -368,6 +372,23 @@ public class LoginServerThread extends Thread
 		{
 			_log.warning("Error while sending player auth request");
             if (Config.DEBUG) e.printStackTrace();
+		}
+	}
+	
+	public void removeWaitingClient(ClientThread client)
+	{
+		WaitingClient toRemove = null;
+		synchronized(_waitingClients)
+		{
+			for(WaitingClient c :_waitingClients)
+			{
+				if(c.clientThread == client)
+				{
+					toRemove = c;
+				}
+			}
+			if(toRemove != null)
+				_waitingClients.remove(toRemove);
 		}
 	}
 

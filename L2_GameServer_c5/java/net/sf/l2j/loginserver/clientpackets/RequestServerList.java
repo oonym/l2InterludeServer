@@ -59,8 +59,8 @@ public class RequestServerList extends ClientBasePacket
 	public RequestServerList(byte[] rawPacket)
 	{
 		super(rawPacket);
-		_data1  = readD();
-		_data2  = readD();
-		_data3 =  readC();
+		_data1  = readD(); // loginOk 1
+		_data2  = readD(); // loginOk 2
+		_data3 =  readC(); // ?
 	}
 }

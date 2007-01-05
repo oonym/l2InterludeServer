@@ -44,7 +44,7 @@ import net.sf.l2j.util.EventData;
 public final class ClientThread
 {
 	protected static final Logger _log = Logger.getLogger(ClientThread.class.getName());
-	
+	private boolean _authed;
     
 	public static int devCharId;
 	
@@ -496,5 +496,15 @@ public final class ClientThread
     public boolean isGameGuardOk()
     {
         return _gameGuardOk;
+    }
+    
+    public void setAuthed(boolean b)
+    {
+    	_authed = b;
+    }
+    
+    public boolean isAuthed()
+    {
+    	return _authed;
     }
 }
