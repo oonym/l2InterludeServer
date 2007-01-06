@@ -448,7 +448,8 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 
     protected int validateCondition(L2PcInstance player)
     {   
-        if (player.isGM()) return Cond_Owner;
+        if (getClanHall() == null) return Cond_All_False;
+    	if (player.isGM()) return Cond_Owner;
         if (player.getClan() != null)
         {                                     
             if (getClanHall().getOwnerId() == player.getClanId())                                          
