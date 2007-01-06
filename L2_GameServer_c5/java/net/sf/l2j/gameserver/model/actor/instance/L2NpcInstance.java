@@ -1630,7 +1630,13 @@ public class L2NpcInstance extends L2Character
     
     public void makeCPRecovery(L2PcInstance player)
     {
-        if (getNpcId()!=31225 && getNpcId()!=31226) return;
+        if (getNpcId() != 31225 && getNpcId() != 31226) return;
+        if (player.isCursedWeaponEquiped())
+        {
+        	player.sendMessage("Go away, you're not welcome here.");
+        	return;
+        }
+
         int neededmoney = 100;
         SystemMessage sm;
         if (!player.reduceAdena("RestoreCP", neededmoney, player.getLastFolkNPC(), true)) return;
