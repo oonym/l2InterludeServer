@@ -594,14 +594,17 @@ public class L2Party {
 					{ 
 						owner   = (L2PcInstance)member;
 						
-						// The L2SummonInstance penalty is only applied if it has hit the L2Attackable
-						if (owner.getPet() instanceof L2SummonInstance && rewardedMembers.contains(owner.getPet()))
+						// The L2SummonInstance penalty
+						if (owner.getPet() instanceof L2SummonInstance)
 						{
 							summon     = (L2SummonInstance)owner.getPet();
 							penalty    = summon.getExpPenalty();
 							
 							// Remove the L2SummonInstance from the rewarded members
-							ToRemove.add(summon);
+							if (rewardedMembers.contains(owner.getPet()))
+							{
+								ToRemove.add(summon);
+							}
 						}
 					}
 					
