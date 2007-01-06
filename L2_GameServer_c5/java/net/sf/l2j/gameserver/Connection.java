@@ -84,6 +84,13 @@ public final class Connection
 	{
 		return _client;
 	}
+	/** 
+	 * Return IP adress of this Client Connection.
+	 */
+	public String getIP()
+	{
+		return _csocket.getInetAddress().getHostAddress();
+	}
 
 	/** Put a message received by NIO's thread
 	 * Notifies all threads, that wait() on this Connection

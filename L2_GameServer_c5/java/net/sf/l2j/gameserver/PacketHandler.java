@@ -56,8 +56,10 @@ public class PacketHandler
 		
 		if(id != 0x00 && id != 0x08 && !client.isAuthed())
 		{
-			_log.warning("Player tried to get in gameserver before auth : "+client.getLoginName());
+			_log.warning("Player with IP: "+client.getConnection().getIP()+" tried to hack account : "+client.getLoginName());
 			client.getConnection().close();
+			//Just for sure
+			return null;
 		}
 
         for (CustomPacketHandlerInterface handler : customhandlers) {
