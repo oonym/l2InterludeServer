@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Potions implements IItemHandler
 {
-    private static int[] _itemIds = { 65, 725, 726, 727, 728, 734, 735, 1060, 1061, 1062,
+    private static int[] _itemIds = { 65, 725, 726, 727, 728, 734, 735, 1060, 1061, 1062, 1073,
                                       1374, 1375, 1539, 1540, 5591, 5592, 6035, 6036, 6652, 
                                       6553, 6554, 6555, 8600,8601,8602, 8603, 8604, 
                                       8605, 8606, 8607, 8608, 8609, 8610, 8611, 8612, 8613, 8614 };
@@ -120,7 +120,7 @@ public class Potions implements IItemHandler
             res = usePotion(activeChar, 2011, 1);
         else if (itemId == 735) // swift_attack_potion, xml: 2012
             res = usePotion(activeChar, 2012, 1);
-        else if (itemId == 1060) // lesser_healing_potion, xml: 2031
+        else if (itemId == 1060 || itemId == 1073) // lesser_healing_potion, beginner's potion, xml: 2031
         {
             if (activeChar.getAllEffects() != null)
             {
