@@ -4659,6 +4659,7 @@ public abstract class L2Character extends L2Object
             return;
         }
 		
+		// Escaping from under skill's radius. First version, not perfect in AoE skills.
 		int escapeRange = 0;
 		if(skill.getEffectRange() > escapeRange) escapeRange = skill.getEffectRange();
 		else if(skill.getCastRange() < 0 && skill.getSkillRadius() > 80) escapeRange = skill.getSkillRadius();
@@ -4670,7 +4671,7 @@ public abstract class L2Character extends L2Object
 			{
 				if (targets[i] instanceof L2Character)
 				{
-					if(!this.isInsideRadius(targets[0],escapeRange,true,false)) continue;
+					if(!this.isInsideRadius(targets[i],escapeRange,true,false)) continue;
 					else targetList.add((L2Character)targets[i]);
 				}
 				//else

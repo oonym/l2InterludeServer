@@ -208,7 +208,7 @@ public class L2PlayerAI extends L2CharacterAI
             return;
         }
 
-        if (target != null && _skill.isOffensive()) 
+        if (target != null) 
         	if (maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill)+_actor.getTemplate().collisionRadius+target.getTemplate().collisionRadius)) return;
         
         if (_skill.getSkillTime() > 50) clientStopMoving(null);
