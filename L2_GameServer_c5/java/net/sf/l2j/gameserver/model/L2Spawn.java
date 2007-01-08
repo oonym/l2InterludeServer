@@ -475,9 +475,6 @@ public class L2Spawn
         // Init other values of the L2NpcInstance (ex : from its L2CharTemplate for INT, STR, DEX...) and add it in the world as a visible object
         mob.spawnMe(newlocx, newlocy, newlocz);
         
-        // Launch the action OnSpawn for the L2NpcInstance
-        mob.OnSpawn();
-        
         L2Spawn.notifyNpcSpawned(mob);
         
         _lastSpawn = mob;
