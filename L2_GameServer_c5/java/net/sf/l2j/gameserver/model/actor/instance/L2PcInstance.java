@@ -6595,22 +6595,33 @@ public final class L2PcInstance extends L2PlayableInstance
 				target != null &&                                           // target not null and
 				target != this &&                                           // target is not self and
 				target instanceof L2PcInstance &&                           // target is L2PcInstance and
-				skill.isPvpSkill() &&                                       // pvp skill and
 				!ZoneManager.getInstance().checkIfInZonePvP(this) &&        // Pc is not in PvP zone
 				!ZoneManager.getInstance().checkIfInZonePvP(target)         // target is not in PvP zone
 		)
 		{
-            if(this.getClan() != null && ((L2PcInstance)target).getClan() != null)
-            {
-                if(this.getClan().isAtWarWith(((L2PcInstance)target).getClan().getClanId()))
-                    return true; // in clan war player can attack whites even with sleep etc.
-            }
-            if (
-					((L2PcInstance)target).getPvpFlag() == 0 &&             //   target's pvp flag is not set and
-					((L2PcInstance)target).getKarma() == 0                  //   target has no karma
-			)
-				return false;
+			if(skill.isPvpSkill()) // pvp skill
+			{
+				if(this.getClan() != null && ((L2PcInstance)target).getClan() != null)
+				{
+					if(this.getClan().isAtWarWith(((L2PcInstance)target).getClan().getClanId()))
+						return true; // in clan war player can attack whites even with sleep etc.
+				}
+				if (
+						((L2PcInstance)target).getPvpFlag() == 0 &&             //   target's pvp flag is not set and
+						((L2PcInstance)target).getKarma() == 0                  //   target has no karma
+					)
+					return false;
+			}
+			else if (getCurrentSkill() != null && !getCurrentSkill().isCtrlPressed() && skill.isOffensive())
+			{
+				if (
+						((L2PcInstance)target).getPvpFlag() == 0 &&             //   target's pvp flag is not set and
+						((L2PcInstance)target).getKarma() == 0                  //   target has no karma
+					)
+					return false;
+			}
 		}
+		
 		return true;
 	}
 	
