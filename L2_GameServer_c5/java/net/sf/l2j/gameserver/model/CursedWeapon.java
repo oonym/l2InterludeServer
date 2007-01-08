@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.serverpackets.ExRedSky;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
+import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.util.Point3D;
@@ -317,6 +318,14 @@ public class CursedWeapon
 		_player.setPkKills(0);
 		if (_player.isInParty())
 			_player.getParty().oustPartyMember(_player);
+		
+		if (_player.isMounted())
+		{
+			Ride dismount = new Ride(_player.getObjectId(), Ride.ACTION_DISMOUNT, 0);
+			_player.broadcastPacket(dismount);
+			_player.setMountType(0);
+			_player.setMountObjectID(0);
+		}
 
 		// Add skill
 		giveSkill();
