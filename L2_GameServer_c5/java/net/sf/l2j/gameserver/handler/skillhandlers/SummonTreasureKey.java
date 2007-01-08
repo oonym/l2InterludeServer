@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import net.sf.l2j.gameserver.lib.Rnd; 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
@@ -48,17 +47,6 @@ public class SummonTreasureKey implements ISkillHandler
 
         try
         {
-            L2ItemInstance itemToTake = player.getInventory().getItemByItemId(skill.getItemConsumeId());
-
-            if(itemToTake.getCount() >= skill.getItemConsume())
-            {
-                player.destroyItemByItemId("Consume", skill.getItemConsumeId(), skill.getItemConsume(), player, false); 
-            }
-            else
-            {
-                player.sendMessage("Need more Key of Thief.");
-                return;
-            }
          
             int item_id = 0;
 
