@@ -251,7 +251,8 @@ public final class L2ItemInstance extends L2Object
 	public void changeCount(String process, int count, L2PcInstance creator, L2Object reference)
 	{
         if (count == 0) return;
-        _count += count;
+        if (_count + count > Integer.MAX_VALUE) _count = Integer.MAX_VALUE;
+        else _count += count;
         if (_count < 0) _count = 0;
         _storedInDb = false;
         
