@@ -344,10 +344,10 @@ public class L2Clan
 		switch (getLevel())
         {
         case 4:
-            limit   = 30;
+            limit   = 40;
             break;
         case 3:
-            limit   = 25;
+            limit   = 30;
             break;
         case 2:
             limit   = 20;
