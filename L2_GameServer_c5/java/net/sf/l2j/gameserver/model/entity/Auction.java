@@ -253,7 +253,7 @@ public class Auction
 			if(takeItem(bidder, 57, requiredAdena))
 			{
 				this.updateInDB(bidder, bid);
-            	bidder.getClan().setAuctionBiddedAt(_Id);
+            	bidder.getClan().setAuctionBiddedAt(_Id, true);
             	return;
 			}
 	    }
@@ -461,7 +461,7 @@ public class Auction
           if (ClanTable.getInstance().getClanByName(b.getClanName()).getHasHideout() == 0)
           {             
             returnItem(b.getClanName(), 57, 9*b.getBid()/10, false); // 10 % tax
-            ClanTable.getInstance().getClanByName(b.getClanName()).setAuctionBiddedAt(0);
+            ClanTable.getInstance().getClanByName(b.getClanName()).setAuctionBiddedAt(0, true);
           }
           if (ClanTable.getInstance().getClanByName(b.getClanName()).getHasHideout() != 0)
           {
@@ -539,7 +539,7 @@ public class Auction
             try { con.close(); } catch (Exception e) {}
         }
         returnItem(_bidders.get(bidder).getClanName(), 57, _bidders.get(bidder).getBid(), true);
-        ClanTable.getInstance().getClanByName(_bidders.get(bidder).getClanName()).setAuctionBiddedAt(0);
+        ClanTable.getInstance().getClanByName(_bidders.get(bidder).getClanName()).setAuctionBiddedAt(0, true);
         _bidders.remove(bidder);
     }
     
