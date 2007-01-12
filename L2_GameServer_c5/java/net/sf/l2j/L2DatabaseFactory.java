@@ -22,12 +22,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import com.mchange.v2.c3p0.DataSources;
-//import com.mchange.v2.c3p0.PoolConfig;
+import com.mchange.v2.c3p0.PoolConfig;
 import com.mchange.v2.c3p0.PooledDataSource;
 
 public class L2DatabaseFactory
@@ -57,44 +56,43 @@ public class L2DatabaseFactory
                 Config.DATABASE_MAX_CONNECTIONS = 2;
                 _log.warning("at least " + Config.DATABASE_MAX_CONNECTIONS + " db connections are required.");
             }
-			
-			Properties config = new Properties();
-			
-			config.setProperty("autoCommitOnClose", "true");
-			config.setProperty("initialPoolSize", "3"); // 3 is the default for c3p0 anyway
 
+			PoolConfig config = new PoolConfig();
+			config.setAutoCommitOnClose(true);
+			config.setInitialPoolSize(3);   // 3 is the default for c3p0 anyway  
 			// if > MaxPoolSize, it will be ignored - no worry
 			// (as said in c3p0 docs, it's only a suggestion
 			// how many connections to acquire to start with)
-			config.setProperty("minPoolSize", "1");
-			config.setProperty("minPoolSize", "" + Config.DATABASE_MAX_CONNECTIONS);
-			
-			config.setProperty("acquireRetryAttempts", "0"); // try to obtain connections indefinitely (0 = never quit)
-			config.setProperty("acquireRetryDelay", "500"); // 500 miliseconds wait before try to acquire connection again
-			config.setProperty("checkoutTimeout", "0"); // 0 = wait indefinitely for new connection
-			
+
+			config.setMinPoolSize(1);
+			config.setMaxPoolSize(Config.DATABASE_MAX_CONNECTIONS);
+
+ 
+			config.setAcquireRetryAttempts(0); // try to obtain connections indefinitely (0 = never quit)
+			config.setAcquireRetryDelay(500);  // 500 miliseconds wait before try to acquire connection again
+			config.setCheckoutTimeout(0);      // 0 = wait indefinitely for new connection
 			// if pool is exhausted
-			config.setProperty("acquireIncrement", "5"); // if pool is exhausted, get 5 more connections at a time
+			config.setAcquireIncrement(5);     // if pool is exhausted, get 5 more connections at a time
 			// cause there is a "long" delay on acquire connection
 			// so taking more than one connection at once will make connection pooling 
 			// more effective. 
-
+ 
 			// this "connection_test_table" is automatically created if not already there
-			config.setProperty("automaticTestTable", "connection_test_table"); // very very fast test, don't worry
-			config.setProperty("testConnectionOnCheckin", "true"); // this will *not* make l2j slower in any way
-			
+			config.setAutomaticTestTable("connection_test_table");  // very very fast test, don't worry
+			config.setTestConnectionOnCheckin(true); // this will *not* make l2j slower in any way
+ 
 			// testing OnCheckin used with IdleConnectionTestPeriod is faster than  testing on checkout
-			config.setProperty("idleConnectionTestPeriod", "60"); // test idle connection every 60 sec
-			config.setProperty("maxIdleTime", "0"); // 0 = idle connections never expire
+ 
+			config.setIdleConnectionTestPeriod(60); // test idle connection every 60 sec
+			config.setMaxIdleTime(0); // 0 = idle connections never expire 
 			// *THANKS* to connection testing configured above
 			// but I prefer to disconnect all connections not used
 			// for more than 1 hour  
 
-
 			// enables statement caching,  there is a "semi-bug" in c3p0 0.9.0 but in 0.9.0.2 and later it's fixed
-			config.setProperty("maxStatementPerConnection", "100");
-			
-			config.setProperty("breakAfterAcquireFailure", "false"); // never fail if any way possible
+			config.setMaxStatementsPerConnection(100);
+
+			config.setBreakAfterAcquireFailure(false);  // never fail if any way possible
 			// setting this to true will make
 			// c3p0 "crash" and refuse to work 
 			// till restart thus making acquire
