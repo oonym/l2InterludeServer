@@ -109,7 +109,9 @@ public class L2MonsterInstance extends L2Attackable
                 {
                     if (minion == null) continue;
                     getSpawnedMinions().remove(minion);
+                    minion.deleteMe();
                 }
+                minionList.clearRespawnList();
                 
                 if(this instanceof L2RaidBossInstance) // respawn minions
                 {
@@ -258,6 +260,7 @@ public class L2MonsterInstance extends L2Attackable
                 
                 getSpawnedMinions().remove(minion);
             }
+            minionList.clearRespawnList();
         }
         super.deleteMe();
     }

@@ -148,6 +148,11 @@ public class MinionList
             }
         }
     }
+    
+    public void clearRespawnList()
+    {
+    	_respawnTasks.clear();
+    }
 
     /**
      * Manage respawning of minions for this RaidBoss.<BR><BR>
