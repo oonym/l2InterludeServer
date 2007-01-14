@@ -269,7 +269,7 @@ public abstract class L2Character extends L2Object
 		
 		if (getKnownList().getKnownPlayers() == null) return;
 		
-		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers();
+		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
 		
 		if (knownPlayers == null) return;
 		
@@ -837,7 +837,7 @@ public abstract class L2Character extends L2Object
 		// ===========================================================
 		
 		L2Character target;
-		for (L2Object obj : getKnownList().getKnownObjects())
+		for (L2Object obj : getKnownList().getKnownObjects().values())
 		{
 			//Check if the L2Object is a L2Character
 			if(obj instanceof L2Character)

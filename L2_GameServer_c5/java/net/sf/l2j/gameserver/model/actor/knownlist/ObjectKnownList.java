@@ -19,10 +19,9 @@
 package net.sf.l2j.gameserver.model.actor.knownlist;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.Map;
 
-import javolution.util.FastSet;
+import javolution.util.FastMap;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
@@ -36,7 +35,7 @@ public class ObjectKnownList
     // =========================================================
     // Data Field
     private L2Object[] _ActiveObject;          // Use array as a dirty trick to keep object as byref instead of byval
-    private Set<L2Object> _KnownObjects;
+    private Map<Integer, L2Object> _KnownObjects;
     
     // =========================================================
     // Constructor
@@ -63,15 +62,15 @@ public class ObjectKnownList
         // Check if object is not inside distance to watch object
         if (!Util.checkIfInRange(getDistanceToWatchObject(object), getActiveObject(), object, true)) return false;
         
-        return getKnownObjects().add(object);
+        return (getKnownObjects().put(object.getObjectId(), object) == null);
     }
 
-    public final boolean knowsObject(L2Object object) { return getActiveObject() == object || getKnownObjects().contains(object); }
+    public final boolean knowsObject(L2Object object) { return getActiveObject() == object || getKnownObjects().containsKey(object.getObjectId()); }
     
     /** Remove all L2Object from _knownObjects */
     public void removeAllKnownObjects() { getKnownObjects().clear(); }
 
-    public boolean removeKnownObject(L2Object object) { return getKnownObjects().remove(object); }
+    public boolean removeKnownObject(L2Object object) { return (getKnownObjects().remove(object.getObjectId()) != null); }
     
     /**
      * Update the _knownObject and _knowPlayers of the L2Character and of its already known L2Object.<BR><BR>
@@ -96,33 +95,50 @@ public class ObjectKnownList
     // Method - Private
     private final void findCloseObjects()
     {
-        Collection<L2Object> objects = L2World.getInstance().getVisibleObjects(getActiveObject());
-        if (objects == null) return;
-
-        // Go through all visible L2Object near the L2Character
-        boolean isActiveObjectPlayable = (getActiveObject() instanceof L2PlayableInstance);
-        boolean isObjectCharacter;
-        for (L2Object object : objects)
+    	boolean isActiveObjectPlayable = (getActiveObject() instanceof L2PlayableInstance);
+    	
+        if(isActiveObjectPlayable)
         {
-            if (object == null) continue;
+        	Collection<L2Object> objects = L2World.getInstance().getVisibleObjects(getActiveObject());
+            if (objects == null) return;
+            
+        	// Go through all visible L2Object near the L2Character
+        	for (L2Object object : objects)
+        	{
+        		if (object == null) continue;
 
-            // Try to add object to active object's known objects
-            // L2PlayableInstance see's everything
-            // L2Character only needs to see visible L2PcInstance and L2PlayableInstance
-            isObjectCharacter = (object instanceof L2PlayableInstance);
-            if (isActiveObjectPlayable || isObjectCharacter) addKnownObject(object);
+        		// Try to add object to active object's known objects
+        		// L2PlayableInstance see's everything
+        		addKnownObject(object);
 
-            // Try to add active object to object's known objects
-            // Only if object is a L2Character and active object is a L2PlayableInstance
-            if (!isObjectCharacter) isObjectCharacter = (object instanceof L2Character);
-            if (isActiveObjectPlayable && isObjectCharacter) object.getKnownList().addKnownObject(getActiveObject());
+        		// Try to add active object to object's known objects
+        		// Only if object is a L2Character and active object is a L2PlayableInstance
+        		if (object instanceof L2Character) object.getKnownList().addKnownObject(getActiveObject());
+        	}
+        }
+        else
+        {
+        	Collection<L2PlayableInstance> playables = L2World.getInstance().getVisiblePlayable(getActiveObject());
+        	if (playables == null) return;
+                
+        	// Go through all visible L2Object near the L2Character
+        	for (L2Object playable : playables)
+        	{
+        		if (playable == null) continue;
+
+        		// Try to add object to active object's known objects
+        		// L2Character only needs to see visible L2PcInstance and L2PlayableInstance,
+        		// when moving. Other l2characters are currently only known from initial spawn area.
+        		// Possibly look into getDistanceToForgetObject values before modifying this approach...
+        		addKnownObject(playable);
+        	}
         }
     }
 
     private final void forgetObjects()
     {
     	// Go through knownObjects    
-    	Collection<L2Object> knownObjects = getKnownObjects();
+    	Collection<L2Object> knownObjects = getKnownObjects().values();
     	
     	if (knownObjects == null || knownObjects.size() == 0) return;
     	
@@ -178,9 +194,9 @@ public class ObjectKnownList
     public int getDistanceToWatchObject(L2Object object) { return 0; }
 
     /** Return the _knownObjects containing all L2Object known by the L2Character. */
-    public final Collection<L2Object> getKnownObjects()
+    public final Map<Integer, L2Object> getKnownObjects()
     {
-        if (_KnownObjects == null) _KnownObjects = Collections.synchronizedSet(new FastSet<L2Object>());
+        if (_KnownObjects == null) _KnownObjects = new FastMap<Integer, L2Object>().setShared(true);
         return _KnownObjects;
     }
     

@@ -297,7 +297,7 @@ public class L2NpcInstance extends L2Character
         //broadcastPacket(info);
         
         // Send a Server->Client packet NpcInfo with state of abnormal effect to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
-        for (L2PcInstance player : getKnownList().getKnownPlayers())
+        for (L2PcInstance player : getKnownList().getKnownPlayers().values())
             if (player != null)
                 player.sendPacket(new NpcInfo(this, player));
     }

@@ -30,6 +30,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.util.L2ObjectMap;
 import net.sf.l2j.util.Point3D;
 
@@ -666,7 +667,7 @@ public final class L2World
      * @param object L2object that determine the current L2WorldRegion 
      * 
      */
-    public Collection<L2PcInstance> getVisiblePlayers(L2Object object)
+    public Collection<L2PlayableInstance> getVisiblePlayable(L2Object object)
     {
         L2WorldRegion reg = object.getWorldRegion();
         
@@ -674,7 +675,7 @@ public final class L2World
             return null;
         
         // Create an FastList in order to contain all visible L2Object
-        FastList<L2PcInstance> result = new FastList<L2PcInstance>();
+        FastList<L2PlayableInstance> result = new FastList<L2PlayableInstance>();
         
         // Create a FastList containing all regions around the current region
         List<L2WorldRegion> _regions = reg.getSurroundingRegions();
@@ -683,12 +684,12 @@ public final class L2World
         for (int i = 0; i < _regions.size(); i++) 
         {
             // Create an Iterator to go through the visible L2Object of the L2WorldRegion
-            Iterator<L2PcInstance> _players = _regions.get(i).iterateAllPlayers();
+            Iterator<L2PlayableInstance> _playables = _regions.get(i).iterateAllPlayers();
             
             // Go through visible object of the selected region
-            while (_players.hasNext())
+            while (_playables.hasNext())
             {
-                L2PcInstance _object = _players.next();
+                L2PlayableInstance _object = _playables.next();
                 
                 if (_object == null)
                     continue;

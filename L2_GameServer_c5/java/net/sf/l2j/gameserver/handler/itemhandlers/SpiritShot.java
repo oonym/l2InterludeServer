@@ -56,7 +56,7 @@ public class SpiritShot implements IItemHandler
         // Check if Spiritshot can be used
         if (weaponInst == null || weaponItem.getSpiritShotCount() == 0)
         {
-            if(!activeChar.getAutoSoulShot().contains(itemId)) 
+            if(!activeChar.getAutoSoulShot().containsKey(itemId)) 
                 activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_USE_SPIRITSHOTS));
 			return;
 		}
@@ -73,7 +73,7 @@ public class SpiritShot implements IItemHandler
     		(weaponGrade == L2Item.CRYSTAL_A && itemId != 2513) ||  
     		(weaponGrade == L2Item.CRYSTAL_S && itemId != 2514)) 
 		{ 
-            if(!activeChar.getAutoSoulShot().contains(itemId)) 
+            if(!activeChar.getAutoSoulShot().containsKey(itemId)) 
                 activeChar.sendPacket(new SystemMessage(SystemMessage.SPIRITSHOTS_GRADE_MISMATCH));
 			return; 
 		} 
@@ -81,7 +81,7 @@ public class SpiritShot implements IItemHandler
         // Consume Spiritshot if player has enough of them 
         if (!activeChar.destroyItem("Consume", item.getObjectId(), weaponItem.getSpiritShotCount(), null, false))
 		{ 
-            if(activeChar.getAutoSoulShot().contains(itemId))
+            if(activeChar.getAutoSoulShot().containsKey(itemId))
             {
                 activeChar.removeAutoSoulShot(itemId);
                 activeChar.sendPacket(new ExAutoSoulShot(itemId, 0));

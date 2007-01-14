@@ -123,7 +123,7 @@ public class BeastSoulShot implements IItemHandler
         // If the player doesn't have enough beast soulshot remaining, remove any auto soulshot task.
         if (!activeOwner.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
         {
-            if (activeOwner.getAutoSoulShot().contains(itemId))
+            if (activeOwner.getAutoSoulShot().containsKey(itemId))
             {
                 activeOwner.removeAutoSoulShot(itemId);
                 activeOwner.sendPacket(new ExAutoSoulShot(itemId, 0));

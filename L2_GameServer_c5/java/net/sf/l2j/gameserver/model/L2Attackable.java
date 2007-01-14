@@ -728,7 +728,7 @@ public class L2Attackable extends L2NpcInstance
         if (target == null)
             return;
 
-        for (L2PcInstance actor : getKnownList().getKnownPlayers())
+        for (L2PcInstance actor : getKnownList().getKnownPlayers().values())
         {
             if (actor.isCastingNow() && target.getLastBuffer() == actor)
             {

@@ -2,12 +2,13 @@ package net.sf.l2j.gameserver.model.actor.knownlist;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.Map;
 
 import javolution.util.FastList;
-import javolution.util.FastSet;
+import javolution.util.FastMap;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.L2Attackable.AggroInfo;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -17,7 +18,7 @@ public class CharKnownList extends ObjectKnownList
 {
     // =========================================================
     // Data Field
-    private Set<L2PcInstance> _KnownPlayers;
+    private Map<Integer, L2PcInstance> _KnownPlayers;
     
     // =========================================================
     // Constructor
@@ -32,7 +33,7 @@ public class CharKnownList extends ObjectKnownList
     public boolean addKnownObject(L2Object object, L2Character dropper)
     {
         if (!super.addKnownObject(object, dropper)) return false;
-        if (object instanceof L2PcInstance) getKnownPlayers().add((L2PcInstance)object);
+        if (object instanceof L2PcInstance) getKnownPlayers().put(object.getObjectId(), (L2PcInstance)object);
         return true;
     }
 
@@ -40,7 +41,7 @@ public class CharKnownList extends ObjectKnownList
      * Return True if the L2PcInstance is in _knownPlayer of the L2Character.<BR><BR>
      * @param player The L2PcInstance to search in _knownPlayer
      */
-    public final boolean knowsThePlayer(L2PcInstance player) { return getActiveChar() == player || getKnownPlayers().contains(player); }
+    public final boolean knowsThePlayer(L2PcInstance player) { return getActiveChar() == player || getKnownPlayers().containsKey(player.getObjectId()); }
     
     /** Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI. */
     public final void removeAllKnownObjects()
@@ -59,7 +60,7 @@ public class CharKnownList extends ObjectKnownList
     public boolean removeKnownObject(L2Object object)
     {
         if (!super.removeKnownObject(object)) return false;
-        if (object instanceof L2PcInstance) getKnownPlayers().remove(object);
+        if (object instanceof L2PcInstance) getKnownPlayers().remove(object.getObjectId());
         // If object is targeted by the L2Character, cancel Attack or Cast
         if (object == getActiveChar().getTarget()) getActiveChar().setTarget(null);
 
@@ -81,7 +82,7 @@ public class CharKnownList extends ObjectKnownList
     {
         FastList<L2Character> result = new FastList<L2Character>();
         
-        for (L2Object obj : getKnownObjects())  
+        for (L2Object obj : getKnownObjects().values())  
         {  
             if (obj != null && obj instanceof L2Character) result.add((L2Character) obj);  
         }
@@ -93,7 +94,7 @@ public class CharKnownList extends ObjectKnownList
     {
        FastList<L2Character> result = new FastList<L2Character>();
        
-       for (L2Object obj : getKnownObjects())  
+       for (L2Object obj : getKnownObjects().values())  
        {  
            if (obj instanceof L2PcInstance)  
            {  
@@ -115,9 +116,9 @@ public class CharKnownList extends ObjectKnownList
        return result;
     }
 
-    public final Collection<L2PcInstance> getKnownPlayers()
+    public final Map<Integer, L2PcInstance> getKnownPlayers()
     {
-        if (_KnownPlayers == null) _KnownPlayers = Collections.synchronizedSet(new FastSet<L2PcInstance>());
+        if (_KnownPlayers == null) _KnownPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
         return _KnownPlayers;
     }
     
@@ -125,7 +126,7 @@ public class CharKnownList extends ObjectKnownList
     {
         FastList<L2PcInstance> result = new FastList<L2PcInstance>();
         
-        for (L2PcInstance player : getKnownPlayers())
+        for (L2PcInstance player : getKnownPlayers().values())
             if (Util.checkIfInRange((int)radius, getActiveChar(), player, true))
                 result.add(player);
             

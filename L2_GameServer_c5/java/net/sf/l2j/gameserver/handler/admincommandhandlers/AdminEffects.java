@@ -143,7 +143,7 @@ public class AdminEffects implements IAdminCommandHandler
        {
            try
            {
-               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers())
+               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
                {
             	   if (!player.isGM())
             	   {
@@ -164,7 +164,7 @@ public class AdminEffects implements IAdminCommandHandler
        {
            try
            {
-               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers())
+               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
                {
             	   player.stopAbnormalEffect((short)0x0400);
             	   player.setIsParalyzed(false);
@@ -312,7 +312,7 @@ public class AdminEffects implements IAdminCommandHandler
        {
            try
            {
-               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers())
+               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
                {
                    player.setTeam(0);
                    player.broadcastUserInfo();
@@ -328,7 +328,7 @@ public class AdminEffects implements IAdminCommandHandler
            int teamVal = Integer.parseInt(val);
            try
            {
-               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers())
+               for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
                {
                    if (activeChar.isInsideRadius(player, 400, false, true))
                    {

@@ -55,7 +55,7 @@ public class L2CabaleBufferInstance extends L2NpcInstance
              *  - Fighters: +25% Max Load, +25% Effect Resistance<BR>
              *  - Mystics: +25% Magic Cancel Resist, +25% Effect Resistance<BR>
              */
-            for (L2PcInstance player : getKnownList().getKnownPlayers())
+            for (L2PcInstance player : getKnownList().getKnownPlayers().values())
             {
                 final int playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
                 

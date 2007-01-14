@@ -1093,7 +1093,7 @@ public abstract class L2Skill
                 if (activeChar instanceof L2Summon) src = ((L2Summon)activeChar).getOwner();
                 
                 // Go through the L2Character _knownList
-                for (L2Object obj : activeChar.getKnownList().getKnownObjects())
+                for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {
                     if (obj != null && (obj instanceof L2Attackable || obj instanceof L2PlayableInstance))
                     {
@@ -1166,7 +1166,7 @@ public abstract class L2Skill
                 
                 boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar)!= null);
                 
-                for (L2Object obj : activeChar.getKnownList().getKnownObjects())
+                for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {
                     if (obj == null) continue;
                 	if (!(obj instanceof L2Character)) continue;
@@ -1263,7 +1263,7 @@ public abstract class L2Skill
 
                 int radius = getSkillRadius();
 
-                for (L2Object obj : activeChar.getKnownList().getKnownObjects())
+                for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {
                     if (obj == null) continue;
                 	if (!Util.checkIfInRange(radius, activeChar, obj, true)) continue;
@@ -1376,7 +1376,7 @@ public abstract class L2Skill
                     {
                         // Get all visible objects in a spheric area near the L2Character
                         // Get Clan Members
-                        for (L2Object newTarget : activeChar.getKnownList().getKnownObjects())
+                        for (L2Object newTarget : activeChar.getKnownList().getKnownObjects().values())
                         {
                             if (newTarget == null || !(newTarget instanceof L2PcInstance)) continue;
                             if ((((L2PcInstance) newTarget).getAllyId() == 0 || ((L2PcInstance) newTarget).getAllyId() != player.getAllyId())
@@ -1548,7 +1548,7 @@ public abstract class L2Skill
 
                 int radius = getSkillRadius();
                 if (activeChar.getKnownList() != null)
-                	for (L2Object obj : activeChar.getKnownList().getKnownObjects())
+                	for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                     {
                         if (obj == null) continue;
                         if (!(obj instanceof L2Attackable) || ((L2Character) obj).isDead()
@@ -1673,7 +1673,7 @@ public abstract class L2Skill
 
                 int radius = getSkillRadius();
                 if (cha != null && cha.getKnownList() != null)
-                    for (L2Object obj : cha.getKnownList().getKnownObjects())
+                    for (L2Object obj : cha.getKnownList().getKnownObjects().values())
                     {
                         if (obj == null) continue;
                     	if (!(obj instanceof L2NpcInstance)) continue;

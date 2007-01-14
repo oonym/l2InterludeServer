@@ -491,7 +491,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private boolean _isSilentMoving = false;
 	
-	protected Set<Integer> _activeSoulShots = new FastSet<Integer>();
+	/** Active shots. A FastSet variable would actually suffice but this was changed to fix threading stability... */
+	protected Map<Integer, Integer> _activeSoulShots = new FastMap<Integer, Integer>().setShared(true);
 	private boolean _isPathNodeMode;
 	private boolean _isPathNodesVisible;
 	private Map<WayPointNode, List<WayPointNode>> _pathNodeMap;
@@ -1611,7 +1612,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (karma < 0) karma = 0;
 		if (_karma == 0 && karma > 0)
 		{
-			for (L2Object object : getKnownList().getKnownObjects())
+			for (L2Object object : getKnownList().getKnownObjects().values())
 			{
 				if (object == null || !(object instanceof L2GuardInstance)) continue;
 				
@@ -6845,7 +6846,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void addAutoSoulShot(int itemId)
 	{
-		_activeSoulShots.add(itemId);
+		_activeSoulShots.put(itemId, itemId);
 	}
 	
 	public void removeAutoSoulShot(int itemId)
@@ -6853,7 +6854,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		_activeSoulShots.remove(itemId);
 	}
 	
-	public Set<Integer> getAutoSoulShot()
+	public Map<Integer, Integer> getAutoSoulShot()
 	{
 		return _activeSoulShots;
 	}
@@ -6866,11 +6867,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (_activeSoulShots == null || _activeSoulShots.size() == 0)
 			return;
 
-		int itemId;
-		
-		for (Iterator<Integer> i = _activeSoulShots.iterator(); i.hasNext(); )
+		for (int itemId : _activeSoulShots.values())
 		{
-			itemId = i.next();
 			item = getInventory().getItemByItemId(itemId);
 			
 			if (item != null)

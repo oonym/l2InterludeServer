@@ -60,7 +60,7 @@ public final class Broadcast
     {
         if (Config.DEBUG) _log.fine("players to notify:" + character.getKnownList().getKnownPlayers().size() + " packet:"+mov.getType());
 
-        for (L2PcInstance player : character.getKnownList().getKnownPlayers())
+        for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
         {
             if (player == null || player.getTarget() != character) 
                 continue;
@@ -83,7 +83,7 @@ public final class Broadcast
     {
         if (Config.DEBUG) _log.fine("players to notify:" + character.getKnownList().getKnownPlayers().size() + " packet:"+mov.getType());
 
-        for (L2PcInstance player : character.getKnownList().getKnownPlayers())
+        for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
         {
             if (player == null) 
                 continue;
@@ -108,7 +108,7 @@ public final class Broadcast
     	if (radius < 0)
     		radius = 1500;
     	
-    	for (L2PcInstance player : character.getKnownList().getKnownPlayers())
+    	for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
         {
             if (player == null) 
                 continue;
@@ -141,7 +141,7 @@ public final class Broadcast
 
        if (character instanceof L2PcInstance) character.sendPacket(mov);
 
-       for (L2PcInstance player : character.getKnownList().getKnownPlayers())
+       for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
        {
           if (player != null && character.getDistanceSq(player) <= radiusSq) player.sendPacket(mov);
        }

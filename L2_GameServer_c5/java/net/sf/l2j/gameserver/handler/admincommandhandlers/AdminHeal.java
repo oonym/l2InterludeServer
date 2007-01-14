@@ -85,7 +85,7 @@ public class AdminHeal implements IAdminCommandHandler {
                 try
                 {
                     int radius  = Integer.parseInt(player);
-                    for (L2Object object : activeChar.getKnownList().getKnownObjects())
+                    for (L2Object object : activeChar.getKnownList().getKnownObjects().values())
                     {
                         if (object instanceof L2Character)
                         {

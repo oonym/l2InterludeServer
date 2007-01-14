@@ -130,7 +130,7 @@ public class BeastSpiritShot implements IItemHandler
         
         if (!activeOwner.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
         {
-            if (activeOwner.getAutoSoulShot().contains(itemId))
+            if (activeOwner.getAutoSoulShot().containsKey(itemId))
             {
                 activeOwner.removeAutoSoulShot(itemId);
                 activeOwner.sendPacket(new ExAutoSoulShot(itemId, 0));

@@ -57,7 +57,7 @@ public class SoulShots implements IItemHandler
         // Check if Soulshot can be used
 		if (weaponInst == null || weaponItem.getSoulShotCount() == 0)
 		{
-            if(!activeChar.getAutoSoulShot().contains(itemId)) 
+            if(!activeChar.getAutoSoulShot().containsKey(itemId)) 
                 activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_USE_SOULSHOTS));
 			return;
 		}
@@ -74,7 +74,7 @@ public class SoulShots implements IItemHandler
 			(weaponGrade == L2Item.CRYSTAL_A && itemId != 1466) || 
 			(weaponGrade == L2Item.CRYSTAL_S && itemId != 1467))
 		{
-            if(!activeChar.getAutoSoulShot().contains(itemId)) 
+            if(!activeChar.getAutoSoulShot().containsKey(itemId)) 
                 activeChar.sendPacket(new SystemMessage(SystemMessage.SOULSHOTS_GRADE_MISMATCH));
 			return;
 		}
@@ -85,7 +85,7 @@ public class SoulShots implements IItemHandler
 
 		if (!activeChar.destroyItem("Consume", item.getObjectId(), SSCount, null, false))
 		{
-            if(activeChar.getAutoSoulShot().contains(itemId))
+            if(activeChar.getAutoSoulShot().containsKey(itemId))
             {
                 activeChar.removeAutoSoulShot(itemId);
                 activeChar.sendPacket(new ExAutoSoulShot(itemId, 0));

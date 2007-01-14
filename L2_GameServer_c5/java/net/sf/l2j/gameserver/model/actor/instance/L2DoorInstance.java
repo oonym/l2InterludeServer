@@ -425,7 +425,7 @@ public class L2DoorInstance extends L2Character
 
     public void broadcastStatusUpdate()
     {
-        Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers(); 
+        Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values(); 
         if (knownPlayers == null || knownPlayers.isEmpty())
             return;
 
@@ -470,7 +470,7 @@ public class L2DoorInstance extends L2Character
     {
         FastList<L2SiegeGuardInstance> result = new FastList<L2SiegeGuardInstance>();
         
-        for (L2Object obj : getKnownList().getKnownObjects())  
+        for (L2Object obj : getKnownList().getKnownObjects().values())  
         {  
             if (obj instanceof L2SiegeGuardInstance) result.add((L2SiegeGuardInstance) obj);
         }

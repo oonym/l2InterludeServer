@@ -451,7 +451,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
                 L2Event.spawn(player, id);
            
             temp.add(player);}
-            for (L2PcInstance playertemp : player.getKnownList().getKnownPlayers()){
+            for (L2PcInstance playertemp : player.getKnownList().getKnownPlayers().values()){
               if( (Math.abs(playertemp.getX()-player.getX()) < 500) && (Math.abs(playertemp.getY()-player.getY()) < 500) &&  (Math.abs(playertemp.getZ()-player.getZ()) < 500) ) temp.add(playertemp);
             }
             

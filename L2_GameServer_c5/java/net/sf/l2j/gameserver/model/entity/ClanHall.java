@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 
 public class ClanHall
@@ -436,10 +437,12 @@ public class ClanHall
     public void banishForeigner(L2PcInstance activeChar)
     {
         // Get players from this and nearest world regions
-        for (L2PcInstance player : L2World.getInstance().getVisiblePlayers(activeChar))
+        for (L2PlayableInstance player : L2World.getInstance().getVisiblePlayable(activeChar))
         {
-            // Skip if player is in clan
-            if (player.getClanId() == getOwnerId())
+        	if(!(player instanceof L2PcInstance)) continue;
+        	
+        	// Skip if player is in clan
+            if (((L2PcInstance)player).getClanId() == getOwnerId())
                 continue;            
             if (checkIfInZone(player)) player.teleToLocation(MapRegionTable.TeleportWhereType.Town); 
         }
