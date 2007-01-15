@@ -445,7 +445,7 @@ public class GeoEngine extends GeoData
 		index++;
 	    if(type == 0)
 	    {
-	        return (short)(geo.getShort(index)&0x0fff0);
+	        return (short)((geo.getShort(index) >> 4) << 3);
 	    }
 	    else if(type == 1)
 	    {
@@ -453,8 +453,7 @@ public class GeoEngine extends GeoData
 			cellY = getCell(y);
 	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			height = (short)(height&0x0fff0);
-			height = (short)(height >> 1);
+			height = (short)( (height >>4) << 3);
 			return height;
 	    }
 	    else
@@ -480,8 +479,8 @@ public class GeoEngine extends GeoData
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
-	            height = (short)(height&0x0fff0);
-				height = (short)(height >> 1); //height / 2				
+	            height = (short)((height >>4)<<3);
+				//height = (short)(height >> 1); //height / 2				
 	            if ((z-temph)*(z-temph) > (z-height)*(z-height))
 	                temph = height;            
 	            layers--;
