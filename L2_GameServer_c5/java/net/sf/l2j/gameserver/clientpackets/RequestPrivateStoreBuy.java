@@ -129,6 +129,16 @@ public class RequestPrivateStoreBuy extends ClientBasePacket
 			return;
 		}
         
+        if (storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
+        {
+        	if (storeList.getItemCount() > _count)
+        	{
+        		String msgErr = "[RequestPrivateStoreBuy] player "+getClient().getActiveChar().getName()+" tried to buy less items then sold by package-sell, ban this player for bot-usage!";
+        		Util.handleIllegalPlayerAction(getClient().getActiveChar(),msgErr,Config.DEFAULT_PUNISH);
+        		return;
+        	}
+        }
+        
         if (!storeList.PrivateStoreBuy(player, _items, (int) priceTotal))
         {
             sendPacket(new ActionFailed());
