@@ -95,14 +95,6 @@ public class RequestJoinPledge extends ClientBasePacket
 					sm = null;
 					return;
 				} 
-				else if (_pledgetype == 0 && clan.getMembers().length >= limit)
-				{
-					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
-					sm.addString("The clan is full, you cannot invite any more players."); // haven't found a sysmsg for this one
-					activeChar.sendPacket(sm);
-					sm = null;
-					return;
-				}
 				else if (clan.getSubPledgeMembersCount(_pledgetype) >= limit)
                 {
                     SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
