@@ -360,7 +360,7 @@ public class L2Clan
             break;
         default:
             limit   = 40;
-        break;
+        	break;
         }
         
         switch (pledgetype)
@@ -376,6 +376,8 @@ public class L2Clan
             case 2002:
                 limit   = 10;
                 break;
+            default:
+            	break;
         }
         
         return limit;
