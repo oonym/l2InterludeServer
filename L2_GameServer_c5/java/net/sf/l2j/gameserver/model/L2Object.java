@@ -198,7 +198,16 @@ public abstract class L2Object
         if (this instanceof L2ItemInstance)
         {
         	int itemId = ((L2ItemInstance)this).getItemId();
-        	if (itemId >=3960 && itemId <=4021)
+        	if (	   itemId >=3960 && itemId<=3969	// Gludio
+        			&& itemId >=3973 && itemId<=3982	// Dion
+        			&& itemId >=3986 && itemId<=3995	// Giran
+        			&& itemId >=3999 && itemId<=4008	// Oren
+        			&& itemId >=4012 && itemId<=4021	// Aden
+        			&& itemId >=5205 && itemId<=5214	// Innadril
+        			&& itemId >=6779 && itemId<=6788	// Goddard
+        			&& itemId >=7973 && itemId<=7982	// Rune
+        			&& itemId >=7918 && itemId<=7927	// Schuttgart
+        		)
         	{
         		MercTicketManager.getInstance().removeTicket((L2ItemInstance)this);
         		ItemsOnGroundManager.getInstance().removeObject(this);

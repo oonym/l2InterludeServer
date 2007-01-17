@@ -47,9 +47,9 @@ public class MercTicket implements IItemHandler
     		case 4:activeChar.sendMessage("This Mercenary Ticket can only be used in Oren.");return;
     		case 5:activeChar.sendMessage("This Mercenary Ticket can only be used in Aden.");return;
     		case 6:activeChar.sendMessage("This Mercenary Ticket can only be used in Heine.");return;
-    		// NOTE: rune and goddard will be 7 & 8, but I may have gotten them backwards.
-    		case 7:activeChar.sendMessage("This Mercenary Ticket can only be used in Rune.");return;	
-    		case 8:activeChar.sendMessage("This Mercenary Ticket can only be used in Goddard.");return;
+    		case 7:activeChar.sendMessage("This Mercenary Ticket can only be used in Goddard.");return;
+    		case 8:activeChar.sendMessage("This Mercenary Ticket can only be used in Rune.");return;
+    		case 9:activeChar.sendMessage("This Mercenary Ticket can only be used in Schuttgart.");return;
     		// player is not in a castle
     		default: activeChar.sendMessage("Mercenary Tickets can only be used in a castle.");return;
     		}
