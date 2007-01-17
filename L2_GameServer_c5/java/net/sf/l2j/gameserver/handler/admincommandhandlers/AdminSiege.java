@@ -142,7 +142,7 @@ public class AdminSiege implements IAdminCommandHandler
             }
             else if (command.equalsIgnoreCase("admin_setcastle"))
             {
-                if (player == null)
+                if (player == null || player.getClan() == null)
                     activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
                 else
                     castle.setOwner(player.getClan());
