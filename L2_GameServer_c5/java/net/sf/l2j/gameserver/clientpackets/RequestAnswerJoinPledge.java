@@ -70,6 +70,9 @@ public class RequestAnswerJoinPledge extends ClientBasePacket
 		        L2Clan clan = requestor.getClan();
 		        if (clan.getSubPledgeMembersCount(requestor.tempJoinPledgeType) >= clan.getMaxNrOfMembers(requestor.tempJoinPledgeType))
 		        	return; // hax
+		        if(requestor.tempJoinPledgeType == L2Clan.SUBUNIT_ACADEMY && clan.getLevel() < 5) return; // hax
+		        if(requestor.tempJoinPledgeType >= L2Clan.SUBUNIT_ROYAL1 && clan.getLevel() < 6) return;   
+		        if(requestor.tempJoinPledgeType >= L2Clan.SUBUNIT_KNIGHT1 && clan.getLevel() < 7) return;  
 		        
 		        // this also updates the database
 		        clan.addClanMember(activeChar);
