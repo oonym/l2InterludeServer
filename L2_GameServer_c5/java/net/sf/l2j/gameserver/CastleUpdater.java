@@ -7,6 +7,7 @@
 package net.sf.l2j.gameserver;
 
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.ItemContainer;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.entity.Castle;
@@ -50,10 +51,12 @@ public class CastleUpdater implements Runnable {
                         }
                     }
 
-                    // Give clan 1 Dual Craft Stamp every 3 hour (8 per day)
+                    // Give clan 1 Dualsword Craft Stamp every 3 hour (8 per day)
+                    // Give clan ~1 Secret Book of Giants daily (it's been confirmed that castle owners get these, but method is unknown)
                     if (_RunCount % 3 == 0)
                     {
                     	warehouse.addItem("Castle", 5126, 1, null, null);
+                    	if (Rnd.get(100) < 25) warehouse.addItem("Castle", 6622, 1, null, null);
                     }
                     
                     _RunCount++;
