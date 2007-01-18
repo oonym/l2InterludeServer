@@ -56,7 +56,7 @@ public class AttackableKnownList extends NpcKnownList
     {
         if (getActiveChar().getAggroListRP() != null)        
         	if (getActiveChar().getAggroListRP().get(object) != null) return 3000;            
-        return 2 * getDistanceToWatchObject(object);
+        return Math.min(2200, 2 * getDistanceToWatchObject(object));
     }
 
     public int getDistanceToWatchObject(L2Object object)

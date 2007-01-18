@@ -109,7 +109,7 @@ public class ObjectKnownList
 
         		// Try to add object to active object's known objects
         		// L2PlayableInstance see's everything
-        		addKnownObject(object);
+        		if(!addKnownObject(object)) continue;
 
         		// Try to add active object to object's known objects
         		// Only if object is a L2Character and active object is a L2PlayableInstance

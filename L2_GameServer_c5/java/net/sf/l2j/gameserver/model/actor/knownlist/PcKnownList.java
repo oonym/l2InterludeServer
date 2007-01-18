@@ -217,7 +217,27 @@ public class PcKnownList extends PlayableKnownList
     // Property - Public
     public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
 
-    public int getDistanceToForgetObject(L2Object object) { return 4500; }
+    public int getDistanceToForgetObject(L2Object object) 
+    { 
+    	int knownlistSize = getKnownObjects().size(); 
+    	if (knownlistSize > 25) 
+    	{
+    		if (knownlistSize > 70)  return 2000;
+        	if (knownlistSize > 35)  return 2800;
+    		return 3700;
+    	}
+    	return 4200; 
+    }
 
-    public int getDistanceToWatchObject(L2Object object) { return 3500; }
+    public int getDistanceToWatchObject(L2Object object) 
+    { 
+    	int knownlistSize = getKnownObjects().size(); 
+    	if (knownlistSize > 25) 
+    	{
+    		if (knownlistSize > 70)  return 1700; // siege, TOI, city
+        	if (knownlistSize > 35)  return 2400; 
+    		return 3000;
+    	}
+    	return 3500; // empty field
+    }
 }
