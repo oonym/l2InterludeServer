@@ -2214,7 +2214,7 @@ public abstract class L2Character extends L2Object
 		
 		// Go through all active skills effects
 		for(L2Effect e : effects)
-			e.exit();
+			if(e != null) e.exit();
 	}
 	
 	/**
