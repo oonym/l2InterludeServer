@@ -70,7 +70,11 @@ public class ObjectKnownList
     /** Remove all L2Object from _knownObjects */
     public void removeAllKnownObjects() { getKnownObjects().clear(); }
 
-    public boolean removeKnownObject(L2Object object) { return (getKnownObjects().remove(object.getObjectId()) != null); }
+    public boolean removeKnownObject(L2Object object) 
+    { 
+    	if (object == null) return false;
+    	return (getKnownObjects().remove(object.getObjectId()) != null); 
+    }
     
     /**
      * Update the _knownObject and _knowPlayers of the L2Character and of its already known L2Object.<BR><BR>
