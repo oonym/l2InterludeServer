@@ -25,6 +25,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 
 /**
@@ -52,6 +53,11 @@ public class RequestPetGetItem extends ClientBasePacket
 		L2ItemInstance item = (L2ItemInstance)world.findObject(_objectId);
 		if (item == null || getClient().getActiveChar() == null)
 		    return;
+		if(getClient().getActiveChar().getPet() instanceof L2SummonInstance)
+		{
+			sendPacket(new ActionFailed());
+			return;
+		}
 		L2PetInstance pet = (L2PetInstance)getClient().getActiveChar().getPet();
 		if (pet == null || pet.isDead() || pet.isOutOfControl())
 		{
