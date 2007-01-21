@@ -20,17 +20,20 @@ package net.sf.l2j.gameserver.skills;
 
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 final class EffectSilentMove extends L2Effect
 {
-	public EffectSilentMove(Env env, EffectTemplate template) {
+	public EffectSilentMove(Env env, EffectTemplate template) 
+	{
 		super(env, template);
 	}
 
 	/** Notify started */
-	public void onStart() {
+	public void onStart() 
+	{
 		super.onStart();
 
 		L2Character effected = getEffected();
@@ -39,7 +42,8 @@ final class EffectSilentMove extends L2Effect
 	}
 	
 	/** Notify exited */
-	public void onExit() {
+	public void onExit() 
+	{
 		super.onExit();
 		
 		L2Character effected = getEffected();
@@ -48,12 +52,18 @@ final class EffectSilentMove extends L2Effect
 	}
 	
 	@Override
-	public EffectType getEffectType() {
+	public EffectType getEffectType() 
+	{
 		return EffectType.SILENT_MOVE;
 	}
 
 	@Override
-	public boolean onActionTime() {
+	public boolean onActionTime() 
+	{
+		 // Only cont skills shouldn't end
+		if(getSkill().getSkillType() != SkillType.CONT)
+			return false;
+		
 		if(getEffected().isDead())
 			return false;
 		
