@@ -1294,11 +1294,11 @@ public abstract class L2Skill
                 	player = ((L2Summon)activeChar).getOwner();
                     targetList.add(player);
                 }
-                else if (activeChar instanceof L2PcInstance
-                			&& activeChar.getPet() != null) 
+                else if (activeChar instanceof L2PcInstance)
                 {
                 	player = (L2PcInstance)activeChar;
-                    targetList.add(activeChar.getPet());
+                	if (activeChar.getPet() != null)
+                		targetList.add(activeChar.getPet());
                 }
 
 				if (activeChar.getParty() != null)
