@@ -30,7 +30,14 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class AdminGeodata implements IAdminCommandHandler
 {
 	//private static Logger _log = Logger.getLogger(AdminKill.class.getName());
-	private static String[] _adminCommands = {"admin_geo_z", "admin_geo_type", "admin_geo_nswe", "admin_geo_los"};
+	private static String[] _adminCommands = 
+		{
+		"admin_geo_z",
+		"admin_geo_type",
+		"admin_geo_nswe",
+		"admin_geo_los",
+		"admin_geo_position"
+		};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
@@ -77,7 +84,13 @@ public class AdminGeodata implements IAdminCommandHandler
             }
             else            
                 activeChar.sendMessage("None Target!");            
-        }        
+        }   
+        else if(command.equals("admin_geo_position"))
+        {
+        	activeChar.sendMessage("GeoEngine: Your current position: ");
+        	activeChar.sendMessage(".... world coords: x: "+activeChar.getX()+" y: "+activeChar.getY()+" z: "+activeChar.getZ());
+        	activeChar.sendMessage(".... geo position: "+GeoData.getInstance().geoPosition(activeChar.getX(), activeChar.getY()));
+        }
 		return true;
 	}
 	

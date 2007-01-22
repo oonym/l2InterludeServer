@@ -120,4 +120,8 @@ public class GeoData
     {
         return new Location(tx,ty,tz);
     }
+    public String geoPosition(int x, int y)
+    {
+    	return "";
+    }
 }

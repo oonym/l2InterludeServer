@@ -85,6 +85,13 @@ public class GeoEngine extends GeoData
     {
     	return NgetSpawnHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,zmin,zmax);        
     }
+    public String geoPosition(int x, int y)
+    {
+    	int gx = (x - L2World.MAP_MIN_X) >> 4;
+    	int gy = (y - L2World.MAP_MIN_Y) >> 4;
+    	
+    	return "bx: "+getBlock(x)+" by: "+getBlock(y)+" cx: "+getCell(x)+" cy: "+getCell(y)+"  region offset: "+getRegionOffset(x,y);
+    }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTarget(net.sf.l2j.gameserver.model.L2Object, net.sf.l2j.gameserver.model.L2Object)
      */
