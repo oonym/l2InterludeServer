@@ -90,7 +90,7 @@ public class GeoEngine extends GeoData
     	int gx = (x - L2World.MAP_MIN_X) >> 4;
     	int gy = (y - L2World.MAP_MIN_Y) >> 4;
     	
-    	return "bx: "+getBlock(x)+" by: "+getBlock(y)+" cx: "+getCell(x)+" cy: "+getCell(y)+"  region offset: "+getRegionOffset(x,y);
+    	return "bx: "+getBlock(gx)+" by: "+getBlock(gy)+" cx: "+getCell(gx)+" cy: "+getCell(gy)+"  region offset: "+getRegionOffset(gx,gy);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTarget(net.sf.l2j.gameserver.model.L2Object, net.sf.l2j.gameserver.model.L2Object)
@@ -324,7 +324,7 @@ public class GeoEngine extends GeoData
 		int index = 0;		
 		int block = 0;			
 		int flor = 0;
-		try {	    
+		try {
 	        // Create a read-only memory-mapped file
 	        FileChannel roChannel = new RandomAccessFile(Geo, "r").getChannel();
 			size = (int)roChannel.size();			
