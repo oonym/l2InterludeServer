@@ -96,12 +96,12 @@ public class AdminGeodata implements IAdminCommandHandler
         {
         	try
 			{
-				String comment = command.substring(11);
+				String comment = command.substring(14);
 				GeoData.getInstance().addGeoDataBug(activeChar, comment);
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
-				//case of empty filename
+				activeChar.sendMessage("Usage: //admin_geo_bug you coments here");
 			}
         }
 		return true;
