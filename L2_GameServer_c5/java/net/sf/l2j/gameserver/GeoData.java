@@ -37,16 +37,16 @@ public class GeoData
     {
         if(_instance == null)
         {        	
-        	if (Config.GEODATA)        	 
-        		_instance = GeoEngine.getInstance();        		
+        	if (Config.GEODATA)
+        		_instance = GeoEngine.getInstance();
         	else
         	{
         		_instance = new GeoData();
         		_log.info("Geodata Engine: Disabled.");
         	}        		
-        }           
+        }
         return _instance;
-    }    
+    }
     
     // Public Methods
     /**
@@ -54,9 +54,9 @@ public class GeoData
      * @param y
      * @return Geo Block Type
      */
-    public short getType  (int x, int y)         
+    public short getType  (int x, int y)
     {
-        return 0;        
+        return 0;
     }
     /**
      * @param x
@@ -66,19 +66,30 @@ public class GeoData
      */
     public short getHeight(int x, int y, int z)
     {
-        return (short)z;        
+        return (short)z;
     }
     /**
      * @param x
      * @param y
      * @param zmin
      * @param zmax
+     * @param spawnid
      * @return
      */
-    public short getSpawnHeight(int x, int y, int zmin, int zmax)
+    public short getSpawnHeight(int x, int y, int zmin, int zmax, int spawnid)
     {
-        return (short)zmin;        
+        return (short)zmin;
     }
+    /**
+     * @param x
+     * @param y
+     * @return
+     */
+    public String geoPosition(int x, int y)
+    {
+    	return "";
+    }
+
     /**
      * @param cha
      * @param target
@@ -94,7 +105,7 @@ public class GeoData
      * @return True if cha can see target (LOS) and send usful info to PC
      */
     public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
-    {        
+    {
         return true;
     }
     /**
@@ -106,7 +117,7 @@ public class GeoData
     public short getNSWE(int x, int y, int z)  
     {
         return 15;
-    }    
+    }
     /**
      * @param x
      * @param y
@@ -120,8 +131,14 @@ public class GeoData
     {
         return new Location(tx,ty,tz);
     }
-    public String geoPosition(int x, int y)
+    /**
+     * @param x
+     * @param y
+     * @param z
+     * @param comment
+     */
+    public void addGeoDataBug(int x, int y, int z, String comment)
     {
-    	return "";
+    	//Do Nothing
     }
 }

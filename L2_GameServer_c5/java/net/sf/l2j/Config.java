@@ -987,6 +987,8 @@ public final class Config
 
     /** GeoData On/Off */
     public static boolean GEODATA;
+    /** Force loading GeoData to psychical memory */
+    public static boolean FORCE_GEODATA;
     
     /** Max amount of buffs */
     public static byte BUFFS_MAX_AMOUNT;
@@ -1169,6 +1171,7 @@ public final class Config
                 GRID_NEIGHBOR_TURNOFF_TIME      = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));    
                 
                 GEODATA                         = Boolean.parseBoolean(optionsSettings.getProperty("GeoData", "False"));
+                FORCE_GEODATA                   = Boolean.parseBoolean(optionsSettings.getProperty("ForceGeoData", "True"));
                 
                 // ---------------------------------------------------
                 // Configuration values not found in config files

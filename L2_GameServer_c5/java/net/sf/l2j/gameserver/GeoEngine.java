@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.Location;
@@ -67,41 +68,49 @@ public class GeoEngine extends GeoData
     /**
      * @see net.sf.l2j.gameserver.GeoData#getType(int, int)
      */
+    @Override
     public short getType(int x, int y)         
-    {    	
+    {
         return NgetType((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4);        
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#getHeight(int, int, int)
      */
+    @Override
     public short getHeight(int x, int y, int z)
     {
         return NgetHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);        
     }
     /**
-     * @see net.sf.l2j.gameserver.GeoData#getSpawnHeight(int, int, int, int)
+     * @see net.sf.l2j.gameserver.GeoData#getSpawnHeight(int, int, int, int, int)
      */
-    public short getSpawnHeight(int x, int y, int zmin, int zmax)
+    @Override
+    public short getSpawnHeight(int x, int y, int zmin, int zmax, int spawnid)
     {
-    	return NgetSpawnHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,zmin,zmax);        
+    	return NgetSpawnHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,zmin,zmax,spawnid);        
     }
+    /**
+     * @see net.sf.l2j.gameserver.GeoData#geoPosition(int, int)
+     */
+    @Override
     public String geoPosition(int x, int y)
     {
     	int gx = (x - L2World.MAP_MIN_X) >> 4;
     	int gy = (y - L2World.MAP_MIN_Y) >> 4;
-    	
     	return "bx: "+getBlock(gx)+" by: "+getBlock(gy)+" cx: "+getCell(gx)+" cy: "+getCell(gy)+"  region offset: "+getRegionOffset(gx,gy);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTarget(net.sf.l2j.gameserver.model.L2Object, net.sf.l2j.gameserver.model.L2Object)
      */
+    @Override
     public boolean canSeeTarget(L2Object cha, L2Object target)
     {
         return canSeeTarget(cha.getX(),cha.getY(),cha.getZ(),target.getX(),target.getY(),target.getZ());
-    }    
+    }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTargetDebug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, net.sf.l2j.gameserver.model.L2Object)
      */
+    @Override
     public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
     {
         return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ(),(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ());
@@ -109,18 +118,28 @@ public class GeoEngine extends GeoData
     /**
      * @see net.sf.l2j.gameserver.GeoData#getNSWE(int, int, int)
      */
+    @Override
     public short getNSWE(int x, int y, int z)  
     {
         return NgetNSWE((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);
-    }    
+    }
     /**
      * @see net.sf.l2j.gameserver.GeoData#moveCheck(int, int, int, int, int, int)
      */
+    @Override
     public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
     {
     	Location destiny = new Location(tx,ty,tz);
         return MoveCheck(destiny,(x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
     }
+    /**
+     * @see net.sf.l2j.gameserver.GeoData#addGeoDataBug(int, int, int, java.lang.String)
+     */
+    @Override
+    public void addGeoDataBug(int x, int y, int z, String comment)
+    {
+    	//TODO! [Nemesiss]
+    }    
     
     // Private Methods
     private boolean canSeeTarget(int x, int y, int z, int tx, int ty, int tz)
@@ -129,6 +148,7 @@ public class GeoEngine extends GeoData
     }
     private static boolean canSee(double x, double y, double z, int tx, int ty, int tz)
     {
+    	//TODO! [Nemesiss] Need Performance Optimization
         final double dx = (tx - x);
         final double dy = (ty - y);
         final double dz = (tz - z);
@@ -157,15 +177,14 @@ public class GeoEngine extends GeoData
             {                
                 z += plus_z;
                 if (!NLOS(last_x,last_y,(int)z,new_x,new_y,tz))
-                {
                     return false;
-                }                
             }
         }
         return true;
     }
     private static boolean canSeeDebug(L2PcInstance gm, double x, double y, double z, int tx, int ty, int tz)
     {
+    	//TODO! [Nemesiss] Need Performance Optimization
         final double dx = (tx - x);
         final double dy = (ty - y);
         final double dz = (tz - z);
@@ -188,42 +207,24 @@ public class GeoEngine extends GeoData
         gm.sendMessage("Los: from X: "+x+ "Y: "+y+ "--->> X: "+tx+" Y: "+ty);
         String angel = "";
         if(8192 < heading && heading < 24576) //S
-        {
             angel= "S";
-        }
-        else if(24576 < heading && heading < 40960) //W
-        {
+        else if(24576 < heading && heading < 40960) //W        
             angel= "W";
-        }
         else if(40960 < heading && heading < 57344) //N
-        {
             angel= "N";
-        }
         else if(57344 < heading || heading < 8192) //E
-        {
             angel= "E";
-        }
         else if(heading == 8192) //SE
-        {
-            angel= "SE";
-        }
+            angel= "SE";        
         else if(heading == 24576) //SW
-        {
             angel= "SW";
-        }
         else if(heading == 40960) //NW
-        {
             angel= "NW";
-        }
         else if(heading == 57344) //NE
-        {
             angel= "NE";
-        }
         else
-        {
             angel= "Error!";
-        }
-        gm.sendMessage("Los: Heading: "+heading+ " Angel: "+angel);
+        gm.sendMessage("Los: Heading: "+heading+ " Angle: "+angel);
         while (new_x != tx || new_y != ty)
         {
             last_x = new_x;
@@ -237,9 +238,7 @@ public class GeoEngine extends GeoData
                 count++;
                 z += plus_z;
                 if (!NLOS(last_x,last_y,(int)z,new_x,new_y,tz))
-                {
                     return false;
-                }
                 if (count > distance)
                 {
                     gm.sendMessage("Error!!");
@@ -251,6 +250,7 @@ public class GeoEngine extends GeoData
     }
     private static Location MoveCheck(Location destiny, double x, double y, double z, int tx, int ty, int tz)
     {
+    	//TODO! [Nemesiss] Need Performance Optimization
         final double dx = (tx - x);
         final double dy = (ty - y);
         final double dz = (tz - z);
@@ -273,25 +273,23 @@ public class GeoEngine extends GeoData
             if (last_x != new_x || last_y != new_y)
             {                
                 z += plus_z;
-                if (!NcanMoveNext(last_x,last_y,(int)z,new_x,new_y,tz))
-                {
-                    return new Location((last_x << 4) + L2World.MAP_MIN_X,(last_y << 4) + L2World.MAP_MIN_Y,(int)z);
-                }                
-            }            
+                if (!NcanMoveNext(last_x,last_y,(int)z,new_x,new_y,tz))                
+                	return new Location((last_x << 4) + L2World.MAP_MIN_X,(last_y << 4) + L2World.MAP_MIN_Y,(int)z);
+            }
         }
         return destiny;
-    }
-	
+    }	
 	
 	//GeoEngine
 	private static void NinitGeodata()
-	{		
+	{
 		LineNumberReader lnr = null;
 		try
 		{
 			_log.info("Geo Engine: - Loading Geodata...");			
 			File Data = new File("./data/geodata/geo_index.txt");
-			if (!Data.exists()) return;
+			if (!Data.exists())
+				return;
 			
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(Data)));	
 		} catch (Exception e) {
@@ -320,19 +318,21 @@ public class GeoEngine extends GeoData
 		short regionoffset = (short)((rx << 5) + ry);
 		_log.info("Geo Engine: - Loading: "+fname+" -> region offset: "+regionoffset+"X: "+rx+" Y: "+ry);		
 		File Geo = new File(fname);
-		int size;		
-		int index = 0;		
-		int block = 0;			
-		int flor = 0;
+		int size, index = 0, block = 0, flor = 0;
 		try {
 	        // Create a read-only memory-mapped file
 	        FileChannel roChannel = new RandomAccessFile(Geo, "r").getChannel();
-			size = (int)roChannel.size();			
-			MappedByteBuffer geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size).load();								
-			geo.order(ByteOrder.LITTLE_ENDIAN);						
+			size = (int)roChannel.size();
+			MappedByteBuffer geo;
+			if (Config.FORCE_GEODATA) //Force O/S to Loads this buffer's content into physical memory.
+				//it is not guarantee, because the underlying operating system may have paged out some of the buffer's data
+				geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size).load();
+			else
+				geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size);
+			geo.order(ByteOrder.LITTLE_ENDIAN);
 			
 			if (size > 196608)
-			{                
+			{
 				// Indexing geo files, so we will know where each block starts
 				IntBuffer indexs = IntBuffer.allocate(65536);
 				while(block < 65536)
@@ -340,37 +340,33 @@ public class GeoEngine extends GeoData
 					byte type = geo.get(index);
 			        indexs.put(block,index);
 					block++;
-					index++;								
+					index++;
 			        if(type == 0)
-			        {			
-			        	index += 2; // 1x short					
-			        }
+			        	index += 2; // 1x short
 			        else if(type == 1)
-			        {
-			        	index += 128; // 64 x short					
-			        }       
+			        	index += 128; // 64 x short
 			        else
-			        {					
-			            int b;            
+			        {
+			            int b;
 			            for(b=0;b<64;b++)
-			            {												
-			                byte layers = geo.get(index);						
-			                index += (layers << 1) + 1;						
+			            {
+			                byte layers = geo.get(index);
+			                index += (layers << 1) + 1;
 			                if (layers > flor)
-			                     flor = layers;               
-			            }            
-			        }		        				
+			                     flor = layers;
+			            }
+			        }
 			    }
 				Geodata_index.put(regionoffset, indexs);
-			}		 
+			}
 			Geodata.put(regionoffset,geo);
 			
-			_log.info("Geo Engine: - Max Layers: "+flor+" Size: "+size+" Loaded: "+index);					
-	    } catch (Exception e) 
+			_log.info("Geo Engine: - Max Layers: "+flor+" Size: "+size+" Loaded: "+index);
+	    } catch (Exception e)
 		{
-			e.printStackTrace();			
+			e.printStackTrace();
 			_log.warning("Failed to Load GeoFile at block: "+block+"\n");
-	    }		
+	    }
 	}
 	
 	//Geodata Methods
@@ -390,18 +386,18 @@ public class GeoEngine extends GeoData
 	 * @param pos
 	 * @return Block Index: 0-255
 	 */
-	private  static int getBlock(int pos)
+	private  static int getBlock(int geo_pos)
 	{
-	    return (pos >> 3) % 256;	    
+	    return (geo_pos >> 3) % 256;
 	}
 	
 	/**
 	 * @param pos
 	 * @return Cell Index: 0-7
 	 */
-	private static int getCell(int pos)
+	private static int getCell(int geo_pos)
 	{
-	    return pos % 8;	    
+	    return geo_pos % 8;
 	}
 	
 	//Geodata Functions
@@ -412,19 +408,23 @@ public class GeoEngine extends GeoData
 	 * @return Type of geo_block: 0-2
 	 */
 	private static short NgetType(int x, int y)
-	{   
+	{
 	    short region = getRegionOffset(x,y);
 		int blockX = getBlock(x);
-		int blockY = getBlock(y);		
+		int blockY = getBlock(y);
 		int index = 0;
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		//Geodata without index - it is just empty so index can be calculated on the fly
+		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;
+		//Get Index for current block of current geodata region
 		else index = Geodata_index.get(region).get((blockX << 8) + blockY);
-		if(Geodata.get(region) == null)
+		//Buffer that Contains current Region GeoData
+		ByteBuffer geo = Geodata.get(region);
+		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return 0;
 		}
-		return Geodata.get(region).get(index);      
+		return geo.get(index);
 	}
 	/**
 	 * @param x
@@ -432,61 +432,63 @@ public class GeoEngine extends GeoData
 	 * @param z
 	 * @return Nearlest Z
 	 */
-	private static short NgetHeight(int x, int y, int z)
-	{    
-	    short region = getRegionOffset(x,y);
-	    int blockX = getBlock(x);
-		int blockY = getBlock(y);
-		int cellX = 0;		
-		int cellY = 0;		
-		int index = 0;
+	private static short NgetHeight(int geox, int geoy, int z)
+	{
+	    short region = getRegionOffset(geox,geoy);
+	    int blockX = getBlock(geox);
+		int blockY = getBlock(geoy);
+		int cellX, cellY, index;
+		//Geodata without index - it is just empty so index can be calculated on the fly
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		//Get Index for current block of current region geodata
 		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		//Buffer that Contains current Region GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
-			return 0;
-		}		
+			return (short)z;
+		}
+		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)
+	    if(type == 0)//flat
+	        return geo.getShort(index);	    
+	    else if(type == 1)//complex
 	    {
-	        return geo.getShort(index);
-	    }
-	    else if(type == 1)
-	    {
-	    	cellX = getCell(x);
-			cellY = getCell(y);
+	    	cellX = getCell(geox);
+			cellY = getCell(geoy);
 	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			height = (short)( (height >>4) << 3);
+			height = (short)(height&0x0fff0);
+			height = (short)(height >> 1); //height / 2
 			return height;
 	    }
-	    else
+	    else //multilevel
 	    {
-	    	cellX = getCell(x);
-			cellY = getCell(y);
+	    	cellX = getCell(geox);
+			cellY = getCell(geoy);
 	        int offset = (cellX << 3) + cellY;
 	        while(offset > 0)
 	        {
-	            byte lc = geo.get(index);		                
+	            byte lc = geo.get(index);
 	            index += (lc << 1) + 1;
 	            offset--;
 	        }
 	        byte layers = geo.get(index);
 	        index++;
 	        short height=-1;
-			if(layers <= 0 || layers > 60)
+			if(layers <= 0 || layers > 125)
 			{
-				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);				
-	            return height;
+				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+geox+" "+geoy);				
+	            return (short)z;
 			}
-	        short temph = -30000;
+	        short temph = Short.MIN_VALUE;
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
-	            height = (short)((height >>4)<<3);				
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2
 	            if ((z-temph)*(z-temph) > (z-height)*(z-height))
 	                temph = height;            
 	            layers--;
@@ -502,42 +504,44 @@ public class GeoEngine extends GeoData
 	 * @param zmax
 	 * @return Z betwen zmin and zmax
 	 */
-	private static short NgetSpawnHeight(int x, int y, int zmin, int zmax)
+	private static short NgetSpawnHeight(int geox, int geoy, int zmin, int zmax, int spawnid)
 	{    
-	    short region = getRegionOffset(x,y);
-	    int blockX = getBlock(x);
-		int blockY = getBlock(y);
-		int cellX = 0;		
-		int cellY = 0;		
-		int index = 0;
-		short temph = -30000;
+	    short region = getRegionOffset(geox,geoy);
+	    int blockX = getBlock(geox);
+		int blockY = getBlock(geoy);
+		int cellX, cellY, index;
+		short temph = Short.MIN_VALUE;
+		//Geodata without index - it is just empty so index can be calculated on the fly
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		//Get Index for current block of current region geodata
 		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		//Buffer that Contains current Region GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return (short)zmin;
-		}		
+		}
+		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)
+	    if(type == 0)//flat	    
+	    	temph = geo.getShort(index);	    
+	    else if(type == 1)//complex
 	    {
-	    	temph = geo.getShort(index);	    	
-	    }
-	    else if(type == 1)
-	    {
-	    	cellX = getCell(x);
-			cellY = getCell(y);
+	    	cellX = getCell(geox);
+			cellY = getCell(geoy);
 	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			height = (short)((height >> 4 ) <<3 );
+			height = (short)(height&0x0fff0);
+			height = (short)(height >> 1); //height / 2
             temph = height;
 	    }
-	    else
+	    else//multilevel
 	    {
-	    	cellX = getCell(x);
-			cellY = getCell(y);
+	    	cellX = getCell(geox);
+			cellY = getCell(geoy);
+			short height;
 	        int offset = (cellX << 3) + cellY;
 	        while(offset > 0)
 	        {
@@ -545,28 +549,35 @@ public class GeoEngine extends GeoData
 	            index += (lc << 1) + 1;
 	            offset--;
 	        }
+	        //Read current block type: 0-flat,1-complex,2-multilevel
 	        byte layers = geo.get(index);
 	        index++;
-	        short height=-1;
-			if(layers <= 0 || layers > 60)
+			if(layers <= 0 || layers > 125)
 			{
-				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);				
+				_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+geox+" "+geoy);				
 	            return (short)zmin;
 			}			
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
-	            height = (short)((height >> 4 )<<3);			
+	            height = (short)(height&0x0fff0);
+				height = (short)(height >> 1); //height / 2
 	            if ((zmin-temph)*(zmin-temph) > (zmin-height)*(zmin-height))
 	                temph = height;            
 	            layers--;
 	            index += 2;
-	        }	        	        		 
+	        }
+	        if (temph > zmax + 150 || temph < zmin - 150)        
+	        {
+	        	//Just log error - we trust GeoData and spawn NPC on nearlest GeoData Z
+	        	_log.warning("SpawnHeight Error - Couldnt find correct layer to spawn NPC - GoeData or Spawnlist Bug!: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+" SpawnId: "+spawnid+" at: "+geox+" : "+geoy);
+	        	return temph;
+	        }
 	    }
-	    if (temph > zmax + 150)
-        {
-        	_log.warning("SpawnHeight Error - NPC Fall Down - Wrong Z Value: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+"!!");
-	        return (short)zmin;
+	    if (temph > zmax + 600 || temph < zmin - 600) 
+	    {
+	    	//Just log error - we trust GeoData and spawn NPC on Z given by GeoData
+        	_log.warning("SpawnHeight Error - Spawnlist z value is wrong or GeoData error: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+" SpawnId: "+spawnid+" at: "+geox+" : "+geoy);	        
         }
 	    return temph;
 	}
@@ -584,26 +595,27 @@ public class GeoEngine extends GeoData
 	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
-		int cellX = 0;		
-		int cellY = 0;		
-	    short NSWE = -1;	    
+		int cellX, cellY;
+	    short NSWE = 0;	    
 	    
 		int index = 0;
+		//Geodata without index - it is just empty so index can be calculated on the fly
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		//Get Index for current block of current region geodata
 		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		//Buffer that Contains current Region GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
-			return false;
+			return true;
 		}
+		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)
-	    {
+	    if(type == 0)//flat
 	        return true;
-	    }
-	    else if(type == 1)
+	    else if(type == 1)//complex
 	    {
 	    	cellX = getCell(x);
 			cellY = getCell(y);
@@ -611,7 +623,7 @@ public class GeoEngine extends GeoData
 	        short height = geo.getShort(index);
 			NSWE = (short)(height&0x0F);		
 	    }
-	    else
+	    else//multilevel
 	    {		 
 	    	cellX = getCell(x);
 			cellY = getCell(y);
@@ -625,13 +637,13 @@ public class GeoEngine extends GeoData
 	        byte layers = geo.get(index);
 	        index++;
 	        short height=-1;		 
-	        if(layers <= 0 || layers > 60)		 
+	        if(layers <= 0 || layers > 125)		 
 	        {		     
                 _log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
-	            return false;		 
+	            return false;
 	        }		
-	        short tempz = -30000;
-	        short tempz2 = -30000;
+	        short tempz = Short.MIN_VALUE;
+	        short tempz2 = Short.MIN_VALUE;
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
@@ -645,16 +657,12 @@ public class GeoEngine extends GeoData
 	                NSWE = (short)(NSWE&0x0F);                           
 	            }
 	            if ((tz-tempz2)*(tz-tempz2) > (tz-height)*(tz-height))
-	            {
-	                tempz2 = height;                                          
-	            }                            
+	            	tempz2 = height;
 	            layers--;
 	            index += 2;
 	        }
-	        if(tempz != tempz2)		 
-	        {
-	        	return false;		 
-	        }	 
+	        if(tempz != tempz2)
+	        	return false;	        
 	    }
 	    return CheckNSWE(NSWE,x,y,tx,ty);
 	}
@@ -672,27 +680,27 @@ public class GeoEngine extends GeoData
 	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
-		int cellX = 0;		
-		int cellY = 0;		
-	    short NSWE = -1;
-	    short NSWE2 = -1;
+		int cellX, cellY;
+	    short NSWE = 0, NSWE2 = 0;
 	    
-		int index = 0;
+		int index;
+		//Geodata without index - it is just empty so index can be calculated on the fly
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		//Get Index for current block of current region geodata
 		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		//Buffer that Contains current Region GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
-			return false;
+			return true;
 		}
+		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)
-	    {
-	        return true;
-	    }
-	    else if(type == 1)
+	    if(type == 0)//flat	    
+	        return true;	    
+	    else if(type == 1)//complex
 	    {
 	    	cellX = getCell(x);
 			cellY = getCell(y);
@@ -700,7 +708,7 @@ public class GeoEngine extends GeoData
 	        short height = geo.getShort(index);
 			NSWE = (short)(height&0x0F);		
 	    }
-	    else
+	    else//multilevel
 	    {		 
 	    	cellX = getCell(x);
 			cellY = getCell(y);
@@ -714,13 +722,13 @@ public class GeoEngine extends GeoData
 	        byte layers = geo.get(index);
 	        index++;
 	        short height=-1;		 
-	        if(layers <= 0 || layers > 60)		 
-	        {		     
+	        if(layers <= 0 || layers > 125)
+	        {
                 _log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
-	            return false;		 
-	        }		
-	        short tempz = -30000;
-	        short tempz2 = -30000;
+	            return false;
+	        }
+	        short tempz = Short.MIN_VALUE;
+	        short tempz2 = Short.MIN_VALUE;
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
@@ -731,23 +739,25 @@ public class GeoEngine extends GeoData
 	            {
 	                tempz = height;
 	                NSWE = geo.getShort(index);
-	                NSWE = (short)(NSWE&0x0F);                           
+	                NSWE = (short)(NSWE&0x0F);
 	            }
 	            if ((tz-tempz2)*(tz-tempz2) > (tz-height)*(tz-height))
 	            {
 	                tempz2 = height;
-	                NSWE = geo.getShort(index);
-	                NSWE = (short)(NSWE&0x0F);
+	                NSWE2 = geo.getShort(index);
+	                NSWE2 = (short)(NSWE2&0x0F);
 	            }                            
 	            layers--;
 	            index += 2;
 	        }
-	        if(Math.abs((z-tz)) < 32)		 
+	        if(Math.abs((tempz-tempz2)) <= 32)
 	        {
-	        	if (CheckNSWE(NSWE,x,y,tx,ty)|| CheckNSWE(NSWE2,x,y,tx,ty))
+	        	if (CheckNSWE(NSWE,x,y,tx,ty) || CheckNSWE(NSWE2,x,y,tx,ty))
 	        		return true;
 	        	else return false;
-	        }	        
+	        }
+	        else
+	        	return false;
 	    }
 	    return CheckNSWE(NSWE,x,y,tx,ty);
 	}
@@ -762,26 +772,27 @@ public class GeoEngine extends GeoData
 		short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
-		int cellX = 0;		
-		int cellY = 0;
-	    short NSWE = -1;	    
+		int cellX, cellY;
+	    short NSWE = 0;
 
 		int index = 0;
+		//Geodata without index - it is just empty so index can be calculated on the fly
 		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		//Get Index for current block of current region geodata
 		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		//Buffer that Contains current Region GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
 			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
-			return 0;
+			return 15;
 		}
+		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)
-	    {
+	    if(type == 0)//flat
 	        return 15;
-	    }
-	    else if(type == 1)
+	    else if(type == 1)//complex
 	    {
 	    	cellX = getCell(x);
 			cellY = getCell(y);
@@ -789,7 +800,7 @@ public class GeoEngine extends GeoData
 	        short height = geo.getShort(index);
 			NSWE = (short)(height&0x0F);		
 	    }
-	    else
+	    else//multilevel
 	    {		 
 	    	cellX = getCell(x);
 			cellY = getCell(y);
@@ -803,14 +814,14 @@ public class GeoEngine extends GeoData
 	        byte layers = geo.get(index);
 	        index++;
 	        short height=-1;		 
-	        if(layers <= 0 || layers > 60)		 
+	        if(layers <= 0 || layers > 125)		 
 	        {		     
 	        	_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
-	            return 0;		 
-	        }		
-	        short tempz = -30000;	        
+	            return 15;
+	        }
+	        short tempz = Short.MIN_VALUE;
 	        while(layers > 0)
-	        {	            
+	        {
 	            height = geo.getShort(index);
 	            height = (short)(height&0x0fff0);
 				height = (short)(height >> 1); //height / 2	                      
@@ -820,10 +831,10 @@ public class GeoEngine extends GeoData
 	                tempz = height;
 	                NSWE = geo.get(index);
 	                NSWE = (short)(NSWE&0x0F);                           
-	            }	                                       
+	            }
 	            layers--;
 	            index += 2;
-	        }	        	 
+	        }
 	    }
 	    return NSWE;	    
 	}

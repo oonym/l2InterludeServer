@@ -438,7 +438,7 @@ public class L2Spawn
             // Set the calculated position of the L2NpcInstance
             newlocx = p[0];
             newlocy = p[1];
-            newlocz = GeoData.getInstance().getSpawnHeight(newlocx, newlocy, p[2], p[3]);
+            newlocz = GeoData.getInstance().getSpawnHeight(newlocx, newlocy, p[2], p[3],_id);
         } 
         else 
         {
@@ -446,7 +446,7 @@ public class L2Spawn
             newlocx = getLocx();
             newlocy = getLocy();
             if (Config.GEODATA)            
-            	newlocz = GeoData.getInstance().getSpawnHeight(newlocx,newlocy,getLocz(),getLocz());
+            	newlocz = GeoData.getInstance().getSpawnHeight(newlocx,newlocy,getLocz(),getLocz(),_id);
             else newlocz = getLocz();
         }
         
