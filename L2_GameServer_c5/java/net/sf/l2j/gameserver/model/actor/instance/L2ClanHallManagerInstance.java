@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.Config;
@@ -57,6 +58,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
     
     public void onBypassFeedback(L2PcInstance player, String command)
     {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         player.sendPacket( new ActionFailed() );
         int condition = validateCondition(player);
         if (condition <= Cond_All_False)
@@ -150,11 +152,11 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                     if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP) != null)
                         html.replace("%hp_regen%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLvl()) + "%");
                     else
-                        html.replace("%xp_regen%", "0");
+                        html.replace("%hp_regen%", "0");
                     if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP) != null)
                         html.replace("%mp_regen%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl()) + "%");
                     else
-                        html.replace("%xp_regen", "0");
+                        html.replace("%mp_regen", "0");
                     sendHtmlMessage(player, html);
                 }                    
             }
@@ -257,6 +259,33 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                         {
                             NpcHtmlMessage html = new NpcHtmlMessage(1);
                             html.setFile("data/html/clanHallManager/edit_recovery.htm");
+                            if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP) != null){
+                            	html.replace("%hp%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLvl()) + "%");
+                                html.replace("%hpPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getLease()));
+                                html.replace("%hpDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP).getEndTime()));
+                            }else{
+                                html.replace("%hp%", "0");
+                                html.replace("%hpPrice%", "0");
+                                html.replace("%hpDate%","0");
+                            }
+                            if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP) != null){
+                                html.replace("%exp%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl()) + "%");
+                                html.replace("%expPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getLease()));
+                                html.replace("%expDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP).getEndTime()));
+                            }else{
+                                html.replace("%exp%", "0");
+                                html.replace("%expPrice%", "0");
+                                html.replace("%expDate%","0");
+                            }
+                            if (getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP) != null){
+                                html.replace("%mp%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl()) + "%");
+                                html.replace("%mpPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLease()));
+                                html.replace("%mpDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getEndTime()));
+                            }else{
+                                html.replace("%mp%", "0");
+                                html.replace("%mpPrice%", "0");
+                                html.replace("%mpDate%","0");
+                            }
                             sendHtmlMessage(player, html);
                         }
                     }
@@ -342,6 +371,33 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                         {
                             NpcHtmlMessage html = new NpcHtmlMessage(1);
                             html.setFile("data/html/clanHallManager/edit_other.htm");
+                            if (getClanHall().getFunction(ClanHall.FUNC_TELEPORT) != null){
+                                html.replace("%tele%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getLvl()));
+                                html.replace("%telePrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getLease()));
+                                html.replace("%teleDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_TELEPORT).getEndTime()));
+                            }else{
+                                html.replace("%tele%", "0");
+                                html.replace("%telePrice%", "0");
+                                html.replace("%teleDate%","0");
+                            }
+                            if (getClanHall().getFunction(ClanHall.FUNC_SUPPORT) != null){
+                                html.replace("%support%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLvl()));
+                                html.replace("%supportPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getLease()));
+                                html.replace("%supportDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_SUPPORT).getEndTime()));
+                            }else{
+                                html.replace("%support%", "0");
+                                html.replace("%supportPrice%", "0");
+                                html.replace("%supportDate%","0");
+                            }
+                            if (getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE) != null){
+                                html.replace("%item%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLvl()));
+                                html.replace("%itemPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLease()));
+                                html.replace("%itemDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getEndTime()));                       
+                            }else{
+                                html.replace("%item%", "0");
+                                html.replace("%itemPrice%", "0");
+                                html.replace("%itemDate%","0");
+                            }
                             sendHtmlMessage(player, html);
                         }
                     }
