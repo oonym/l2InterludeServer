@@ -17,8 +17,10 @@
  */
 package net.sf.l2j.gameserver;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.io.RandomAccessFile;
@@ -45,14 +47,15 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class GeoEngine extends GeoData
 {
 	private static Logger _log = Logger.getLogger(GeoData.class.getName());
-	private static GeoEngine _instance; 
+	private static GeoEngine _instance;
     private final static byte E = 1;
     private final static byte W = 2;
     private final static byte S = 4;
     private final static byte N = 8;
 	private static Map<Short, MappedByteBuffer> Geodata = new FastMap<Short, MappedByteBuffer>();
 	private static Map<Short, IntBuffer> Geodata_index = new FastMap<Short, IntBuffer>();
-
+	private static BufferedOutputStream _geo_bugs_out;
+	
 	public static GeoEngine getInstance()
     {
         if(_instance == null)
@@ -131,14 +134,31 @@ public class GeoEngine extends GeoData
     {
     	Location destiny = new Location(tx,ty,tz);
         return MoveCheck(destiny,(x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
-    }
+    }    
     /**
-     * @see net.sf.l2j.gameserver.GeoData#addGeoDataBug(int, int, int, java.lang.String)
+     * @see net.sf.l2j.gameserver.GeoData#addGeoDataBug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, java.lang.String)
      */
     @Override
-    public void addGeoDataBug(int x, int y, int z, String comment)
+    public void addGeoDataBug(L2PcInstance gm, String comment)
     {
-    	//TODO! [Nemesiss]
+    	int gx = (gm.getX() - L2World.MAP_MIN_X) >> 4;
+    	int gy = (gm.getY() - L2World.MAP_MIN_Y) >> 4;
+    	int bx = getBlock(gx);
+    	int by = getBlock(gy);
+    	int cx = getCell(gx);
+    	int cy = getCell(gy);
+    	int rx = (gx >> 11) + 16;
+	    int ry = (gy >> 11) + 10;
+    	String out = rx+";"+ry+";"+bx+";"+by+";"+cx+":"+cy+";"+gm.getZ()+";"+comment+"\n";
+    	try
+		{
+    		_geo_bugs_out.write(out.getBytes());
+    		_geo_bugs_out.flush();
+    		gm.sendMessage("GeoData bug saved!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			gm.sendMessage("GeoData bug save Failed!");
+		}
     }    
     
     // Private Methods
@@ -205,26 +225,26 @@ public class GeoEngine extends GeoData
         heading += 32768;
         int count = 0;
         gm.sendMessage("Los: from X: "+x+ "Y: "+y+ "--->> X: "+tx+" Y: "+ty);
-        String angel = "";
+        String angle = "";
         if(8192 < heading && heading < 24576) //S
-            angel= "S";
+        	angle = "S";
         else if(24576 < heading && heading < 40960) //W        
-            angel= "W";
+        	angle = "W";
         else if(40960 < heading && heading < 57344) //N
-            angel= "N";
+        	angle = "N";
         else if(57344 < heading || heading < 8192) //E
-            angel= "E";
+        	angle = "E";
         else if(heading == 8192) //SE
-            angel= "SE";        
+        	angle = "SE";        
         else if(heading == 24576) //SW
-            angel= "SW";
+        	angle = "SW";
         else if(heading == 40960) //NW
-            angel= "NW";
+        	angle = "NW";
         else if(heading == 57344) //NE
-            angel= "NE";
+        	angle = "NE";
         else
-            angel= "Error!";
-        gm.sendMessage("Los: Heading: "+heading+ " Angle: "+angel);
+        	angle = "Error!";
+        gm.sendMessage("Los: Heading: "+heading+ " Angle: "+angle);
         while (new_x != tx || new_y != ty)
         {
             last_x = new_x;
@@ -310,7 +330,16 @@ public class GeoEngine extends GeoData
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Error("Failed to Read geo_index File.");
-		}		
+		}
+		try
+		{			
+			File geo_bugs = new File("./data/geodata/geo_bugs.txt");			
+			
+			_geo_bugs_out = new BufferedOutputStream(new FileOutputStream(geo_bugs,true));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Error("Failed to Load geo_bugs.txt File.");	
+		}
 	}
 	private static void LoadGeodataFile(byte rx, byte ry)
 	{

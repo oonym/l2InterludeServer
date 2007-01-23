@@ -97,7 +97,9 @@ public class GeoData
      */
     public boolean canSeeTarget(L2Object cha, L2Object target)
     {
-        return true;
+    	//If geo is off do simple check :]
+    	//Don't allow casting on players on different dungeon lvls etc
+        return (Math.abs(target.getZ() - cha.getZ()) < 1000);
     }    
     /**
      * @param cha
@@ -130,14 +132,12 @@ public class GeoData
     public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
     {
         return new Location(tx,ty,tz);
-    }
+    }    
     /**
-     * @param x
-     * @param y
-     * @param z
+     * @param gm
      * @param comment
      */
-    public void addGeoDataBug(int x, int y, int z, String comment)
+    public void addGeoDataBug(L2PcInstance gm, String comment)
     {
     	//Do Nothing
     }

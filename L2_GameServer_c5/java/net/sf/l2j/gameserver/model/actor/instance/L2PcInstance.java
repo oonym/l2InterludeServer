@@ -46,6 +46,7 @@ import net.sf.l2j.gameserver.CharTemplateTable;
 import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.Connection;
 import net.sf.l2j.gameserver.GameTimeController;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.HennaTable;
 import net.sf.l2j.gameserver.ItemTable;
@@ -6258,16 +6259,14 @@ public final class L2PcInstance extends L2PlayableInstance
             sendPacket(new SystemMessage(SystemMessage.TARGET_CANT_FOUND));
             sendPacket(new ActionFailed());
             return;
-        }   
-        
-        //Don't allow casting on players on different dungeon lvls etc
-        if ((Math.abs(target.getZ() - getZ()) > 1000))
+        }        
+        // GeoData Los Check here
+        if (!GeoData.getInstance().canSeeTarget(this, target))
         {
             sendPacket(new SystemMessage(SystemMessage.CANT_SEE_TARGET));
             sendPacket(new ActionFailed());
             return;
-        }
-        
+        }        
         
         
         //************************************* Check skill availability *******************************************
