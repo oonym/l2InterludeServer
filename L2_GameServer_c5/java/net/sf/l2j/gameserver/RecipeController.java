@@ -558,6 +558,9 @@ public class RecipeController
 			else
 			{
 				player.sendMessage("Item(s) failed to create");
+				if (target != player)
+					target.sendMessage("Item(s) failed to create");
+				
 				updateMakeInfo(false);
 			}
 			// update load and mana bar of craft window
