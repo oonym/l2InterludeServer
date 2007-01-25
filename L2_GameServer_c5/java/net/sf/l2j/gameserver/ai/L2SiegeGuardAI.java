@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -142,8 +143,9 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
             if (((L2PcInstance) target).isSilentMoving()
                 && !_actor.isInsideRadius(target, 100, false, false)) return false;
         }
-
-        return _actor.isAutoAttackable(target); // Target is auto attackable
+               // Los Check Here
+        return (_actor.isAutoAttackable(target) && GeoData.getInstance().canSeeTarget(_actor, target));
+        
     }
 
     /**

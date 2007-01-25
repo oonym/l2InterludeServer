@@ -145,6 +145,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             || !me.isInsideRadius(target, me.getAggroRange(), false, false) 
             || Math.abs(_actor.getZ() - target.getZ()) > 300) return false;
 
+        // Los Check Here
+        if(!GeoData.getInstance().canSeeTarget(me, target))
+        	return false;
+        
         // Check if the target is a L2PcInstance
         if (target instanceof L2PcInstance)
         {
@@ -317,24 +321,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         {
             // Get all visible objects inside its Aggro Range
             //L2Object[] objects = L2World.getInstance().getVisibleObjects(_actor, ((L2NpcInstance)_actor).getAggroRange());
-            int npcX, npcY, targetX, targetY;
-            double dy, dx;
-            double dblAggroRange = aggroRange * aggroRange;
             // Go through visible objects
             for (L2Object obj : npc.getKnownList().getKnownObjects().values())
             {
                 if (obj == null || !(obj instanceof L2Character)) continue;
-
-                npcX = npc.getX();
-                npcY = npc.getY();
-                targetX = obj.getX();
-                targetY = obj.getY();
-
-                dx = npcX - targetX;
-                dy = npcY - targetY;
-
-                if (dx * dx + dy * dy > dblAggroRange) continue;
-
                 L2Character target = (L2Character) obj;
 
                 /*
