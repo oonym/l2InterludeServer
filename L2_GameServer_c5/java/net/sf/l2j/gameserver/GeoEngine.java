@@ -149,7 +149,7 @@ public class GeoEngine extends GeoData
     	int cy = getCell(gy);
     	int rx = (gx >> 11) + 16;
 	    int ry = (gy >> 11) + 10;
-    	String out = rx+";"+ry+";"+bx+";"+by+";"+cx+":"+cy+";"+gm.getZ()+";"+comment+"\n";
+    	String out = rx+";"+ry+";"+bx+";"+by+";"+cx+";"+cy+";"+gm.getZ()+";"+comment+"\n";
     	try
 		{
     		_geo_bugs_out.write(out.getBytes());
