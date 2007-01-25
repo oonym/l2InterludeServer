@@ -87,24 +87,31 @@ public class ExtractableItems implements IItemHandler
         else
         {
             for (int i=0;i<createAmount;i++)
-                inv.addItem("Extraxt", createItemID, 1, activeChar, item);
+                inv.addItem("Extract", createItemID, 1, activeChar, item);
         }
         
-        SystemMessage sm;
+	    if (createItemID < 0)
+        {
+        	activeChar.sendMessage("Item failed to open");  // TODO: Put a more proper message here.
+        }
+	    else
+	    {
+	        SystemMessage sm;
 
-        if (createAmount > 1)
-        {
-            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
-            sm.addItemName(createItemID);
-            sm.addNumber(createAmount);
-        }
-        else
-        {
-            sm = new SystemMessage(SystemMessage.EARNED_ITEM);
-            sm.addItemName(createItemID);
-        }
+	        if (createAmount > 1)
+	        {
+	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+	            sm.addItemName(createItemID);
+	            sm.addNumber(createAmount);
+	        }
+	        else
+	        {
+	            sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+	            sm.addItemName(createItemID);
+	        }
+	        activeChar.sendPacket(sm);
+	    }
         
-        activeChar.sendPacket(sm);
         activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar.getTarget(), true);
         activeChar.sendPacket(new ItemList(activeChar, false));
         StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
