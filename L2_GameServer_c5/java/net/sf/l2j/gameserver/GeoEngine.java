@@ -450,7 +450,8 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			if(Config.DEBUG)
+				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return 0;
 		}
 		return geo.get(index);
@@ -475,7 +476,8 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			if(Config.DEBUG)
+				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return (short)z;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -548,7 +550,8 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			if(Config.DEBUG)
+				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return (short)zmin;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -636,7 +639,8 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			if(Config.DEBUG)
+				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return true;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -721,7 +725,8 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			if(Config.DEBUG)
+				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return true;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -813,7 +818,8 @@ public class GeoEngine extends GeoData
 		ByteBuffer geo = Geodata.get(region);
 		if(geo == null)
 		{
-			_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
+			if(Config.DEBUG)
+				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
 			return 15;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel

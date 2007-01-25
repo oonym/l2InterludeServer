@@ -6259,14 +6259,14 @@ public final class L2PcInstance extends L2PlayableInstance
             sendPacket(new SystemMessage(SystemMessage.TARGET_CANT_FOUND));
             sendPacket(new ActionFailed());
             return;
-        }        
+        }
         // GeoData Los Check here
         if (!GeoData.getInstance().canSeeTarget(this, target))
         {
             sendPacket(new SystemMessage(SystemMessage.CANT_SEE_TARGET));
             sendPacket(new ActionFailed());
             return;
-        }        
+        }
         
         
         //************************************* Check skill availability *******************************************

@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Territory;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.lib.Rnd;
@@ -45,6 +46,8 @@ import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 
@@ -682,6 +685,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 // check for close combat skills && heal/buff skills
                 if (!_actor.isMuted() /*&& _rnd.nextInt(100) <= 5*/)
                 {
+                	boolean useSkillSelf = true;;
                     for (L2Skill sk : skills)
                     {
                         if (/*sk.getCastRange() >= dist && sk.getCastRange() <= 70 && */!sk.isPassive()
@@ -692,7 +696,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                             if (sk.getSkillType() == L2Skill.SkillType.BUFF
                                 || sk.getSkillType() == L2Skill.SkillType.HEAL)
                             {
-                                boolean useSkillSelf = true;
+                                useSkillSelf = true;
                                 if (sk.getSkillType() == L2Skill.SkillType.HEAL
                                     && _actor.getCurrentHp() > (int) (_actor.getMaxHp() / 1.5))
                                 {
@@ -714,7 +718,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                                 }
                                 if (useSkillSelf) _actor.setTarget(_actor);
                             }
-
+                            // GeoData Los Check here
+                            if (!useSkillSelf && !GeoData.getInstance().canSeeTarget(_actor, _actor.getTarget()))
+                                return;
                             clientStopMoving(null);
                             _accessor.doCast(sk);
                             _actor.setTarget(OldTarget);

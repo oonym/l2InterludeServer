@@ -32,6 +32,7 @@ import javolution.util.FastList;
 import javolution.util.FastTable;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.MapRegionTable;
@@ -436,6 +437,14 @@ public abstract class L2Character extends L2Object
             sendPacket(af);
 			return;
 		}
+
+		// GeoData Los Check here
+        if (!GeoData.getInstance().canSeeTarget(this, target))
+        {
+            sendPacket(new SystemMessage(SystemMessage.CANT_SEE_TARGET));
+            sendPacket(new ActionFailed());
+            return;
+        }
         
 		// Check for a bow
 		if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.BOW))
