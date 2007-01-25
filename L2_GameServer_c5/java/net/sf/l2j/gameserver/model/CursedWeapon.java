@@ -601,17 +601,11 @@ public class CursedWeapon
     
     public Point3D getWorldPosition()
     {
-    	if (_isActivated)
-    	{
-    		if (_player == null)
-    			return null;
-    		else
-    			return _player.getPosition().getWorldPosition();
-    	}
-    	if (_isDropped)
-    	{
+    	if (_isActivated && _player != null)
+    		return _player.getPosition().getWorldPosition();
+
+    	if (_isDropped && _item != null)
     		return _item.getPosition().getWorldPosition();
-    	}
     	
     	return null;
     }
