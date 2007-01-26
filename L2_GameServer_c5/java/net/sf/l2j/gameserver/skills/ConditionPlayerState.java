@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 class ConditionPlayerState extends Condition {
 
-	enum CheckPlayerState { RESTING, MOVING, RUNNING }
+	enum CheckPlayerState { RESTING, MOVING, RUNNING, FLYING }
 	
 	final CheckPlayerState _check; 
 	final boolean _required;
@@ -52,6 +52,8 @@ class ConditionPlayerState extends Condition {
 			return env._player.isMoving() == _required;
 		case RUNNING:
 			return env._player.isMoving() == _required && env._player.isRunning() == _required;
+		case FLYING:
+			return env._player.isFlying() == _required;
 		}
 		return !_required;
 	}
