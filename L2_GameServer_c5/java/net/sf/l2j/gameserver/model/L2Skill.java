@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.GeoData; 
 import net.sf.l2j.gameserver.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
@@ -1031,7 +1032,7 @@ public abstract class L2Skill
                         || skillType == SkillType.CANCEL || skillType == SkillType.REFLECT
                         || skillType == SkillType.UNBLEED || skillType == SkillType.UNPOISON || skillType == SkillType.SEED
                         || skillType == SkillType.COMBATPOINTHEAL || skillType == SkillType.MAGE_BANE | skillType == SkillType.WARRIOR_BANE
-                        || skillType == SkillType.BETRAY)))
+                        || skillType == SkillType.BETRAY )))
                 {
                     activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
                     return null;
@@ -1101,6 +1102,8 @@ public abstract class L2Skill
                         if (obj == activeChar || obj == src) continue;
                     	if (src != null) 
                         {
+                    		if (!GeoData.getInstance().canSeeTarget(activeChar, (L2Character)obj))
+                    			continue;
                             // check if both attacker and target are L2PcInstances and if they are in same party 
                             if (obj instanceof L2PcInstance) 
                             {
@@ -1172,6 +1175,9 @@ public abstract class L2Skill
                 	if (!(obj instanceof L2Character)) continue;
                     if (obj == cha) continue;
                     target = (L2Character) obj;
+                    
+                    if (!GeoData.getInstance().canSeeTarget(activeChar, target))
+            			continue;
                     
                     if(!target.isAlikeDead() && (target != activeChar))   
                     {
@@ -1556,6 +1562,9 @@ public abstract class L2Skill
 
                         if (!Util.checkIfInRange(radius, target, obj, true)) continue;
                         
+                        if (!GeoData.getInstance().canSeeTarget(activeChar, (L2Character)obj))
+                			continue;
+                        
                         if(obj instanceof L2PcInstance && src != null)
                         { 
                         	trg = (L2PcInstance)obj;
@@ -1678,6 +1687,10 @@ public abstract class L2Skill
                         if (obj == null) continue;
                     	if (!(obj instanceof L2NpcInstance)) continue;
                         target = (L2NpcInstance) obj;
+                        
+                        if (!GeoData.getInstance().canSeeTarget(activeChar, target))
+                			continue;
+                        
                         if (!target.isAlikeDead()) // If target is not dead/fake death and not self
                         {
                             if (!target.isUndead()) continue;
