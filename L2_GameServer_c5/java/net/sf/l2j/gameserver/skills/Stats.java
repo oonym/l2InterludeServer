@@ -60,6 +60,7 @@ public enum Stats {
 	ACCURACY_COMBAT,
 	POWER_ATTACK_RANGE,
 	MAGIC_ATTACK_RANGE,
+    POWER_ATTACK_ANGLE,
 	// Run speed,
 	// walk & escape speed are calculated proportionally,
 	// magic speed is a buff
@@ -189,6 +190,7 @@ public enum Stats {
 		if (name == "accCombat") return ACCURACY_COMBAT;
 		if (name == "pAtkRange"    ) return POWER_ATTACK_RANGE;
 		if (name == "mAtkRange"    ) return MAGIC_ATTACK_RANGE;
+        if (name == "pAtkAngle"    ) return POWER_ATTACK_ANGLE;
 		if (name == "runSpd"       ) return RUN_SPEED;
 		if (name == "breath"       ) return BREATH;
 		if (name == "aggression"   ) return AGGRESSION;

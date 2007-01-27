@@ -786,12 +786,20 @@ public abstract class L2Character extends L2Object
 		boolean hitted = false;
 		
 		double angleChar, angleTarget;
-		int maxRadius = 80;
-		int maxAngleDiff = 45;
+        int statMaxRadius = (int)getStat().calcStat(Stats.POWER_ATTACK_RANGE, 0, null, null);
+		int maxRadius = statMaxRadius == 0 ? 80 : statMaxRadius;
+        int statMaxAngleDiff = (int)getStat().calcStat(Stats.POWER_ATTACK_ANGLE, 0, null, null);
+		int maxAngleDiff = statMaxAngleDiff == 0 ? 45 : statMaxAngleDiff;
 		
 		if(getTarget() == null) 
             return false;
 		
+        if (Config.DEBUG)
+        {
+            _log.info("doAttackHitByPole: Max radius = " + maxRadius);
+            _log.info("doAttackHitByPole: Max angle = " + maxAngleDiff);
+        }
+          
 		// o1 x: 83420 y: 148158 (Giran)
 		// o2 x: 83379 y: 148081 (Giran)
 		// dx = -41
@@ -5076,33 +5084,25 @@ public abstract class L2Character extends L2Object
 	 */
 	public boolean isBehindTarget()
 	{
-		if(getTarget() == null)
+        double angleChar, angleTarget, angleDiff, maxAngleDiff = 45;
+
+        if(getTarget() == null)
 			return false;
 		
 		if (getTarget() instanceof L2Character)
 		{
 			L2Character target = (L2Character) getTarget();
-			int tarheading = target.getHeading();
-			int heading = getHeading();
-			int dx = target.getX() - getX();
-			int dy = target.getY() - getY();
-			double dist = Math.sqrt(dx*dx + dy*dy);
-			if(dist == 0)
-			{
-				dist = 0.01;
-			}
-			double sin = dy/dist;
-			double cos = dx/dist;
-			heading = (int) (Math.atan2(-sin,-cos) * 10430.378350470452724949566316381);
-			heading += 32768;
-			if((tarheading - heading) <= 12000 && (tarheading - heading) >= -12000)
-			{
-				return true;
-			}
-			if((tarheading - heading) >= 53536 || (tarheading - heading) <= -53536)
-			{
-				return true;
-			}
+            angleChar = Util.calculateAngleFrom(target, this);
+            angleTarget = Util.convertHeadingToDegree(target.getHeading());
+            angleDiff = angleChar - angleTarget;
+            if (angleDiff <= -360 + maxAngleDiff) angleDiff += 360;
+            if (angleDiff >= 360 - maxAngleDiff) angleDiff -= 360;
+            if (Math.abs(angleDiff) <= maxAngleDiff)
+            {
+                if (Config.DEBUG)
+                    _log.info("Char " + this.getName() + " is behind " + target.getName());
+                return true;
+            }
 		}
 		else
 		{
