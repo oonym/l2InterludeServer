@@ -226,6 +226,40 @@ public class CharSelectInfo extends ServerBasePacket
 
         return new CharSelectInfoPackage[0];
     }
+    
+    private void loadCharacterSubclassInfo(CharSelectInfoPackage charInfopackage, int ObjectId, int activeClassId)
+    {
+        java.sql.Connection con = null;
+        
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement = con.prepareStatement("SELECT exp, sp, level FROM character_subclasses WHERE char_obj_id=? && class_id=? ORDER BY char_obj_id");
+            statement.setInt(1, ObjectId);
+            statement.setInt(2, activeClassId);
+            ResultSet charList = statement.executeQuery();
+            
+            if (charList.next())
+            {
+                charInfopackage.setExp(charList.getLong("exp"));
+                charInfopackage.setSp(charList.getInt("sp"));
+                charInfopackage.setLevel(charList.getInt("level"));
+            }
+            
+            charList.close();
+            statement.close();
+            
+        }
+        catch (Exception e)
+        {
+			_log.warning("Could not restore char subclass info: " + e);
+        } 
+        finally 
+        {
+			try { con.close(); } catch (Exception e) {}
+		}
+
+    } 
 
 
     private CharSelectInfoPackage restoreChar(ResultSet chardata) throws Exception
@@ -271,6 +305,10 @@ public class CharSelectInfo extends ServerBasePacket
         
         final int baseClassId = chardata.getInt("base_class");
         final int activeClassId = chardata.getInt("classid");
+        
+        // if is in subclass, load subclass exp, sp, lvl info
+        if(baseClassId != activeClassId)        
+        	loadCharacterSubclassInfo(charInfopackage, objectId, activeClassId);        
         
         charInfopackage.setClassId(activeClassId);
         
