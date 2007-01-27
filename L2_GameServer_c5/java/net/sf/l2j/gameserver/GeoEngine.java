@@ -166,139 +166,267 @@ public class GeoEngine extends GeoData
     {
         return canSee((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
     }
-    private static boolean canSee(double x, double y, double z, int tx, int ty, int tz)
+    private static boolean canSee(int x, int y, double z, int tx, int ty, int tz)
     {
-    	//TODO! [Nemesiss] Need Performance Optimization
-        final double dx = (tx - x);
-        final double dy = (ty - y);
-        final double dz = (tz - z);
-        final double distance = Math.sqrt(dx*dx + dy*dy);
+        int dx = (tx - x);
+        int dy = (ty - y);
+        final int dz = (tz - (int)z);
+        final int distance = Math.abs(dx + dy);
         if (distance > 300)
         {
             //Avoid too long check
             return false;
         }
-        final double plus_x = dx/distance;
-        final double plus_y = dy/distance;
-        final double plus_z = dz/distance;
-        int new_x = (int)x;
-        int new_y = (int)y;
-        int last_x;
-        int last_y;                
-        while (new_x != tx || new_y != ty)
+        final int inc_x = sign(dx);
+        final int inc_y = sign(dy);
+        final double inc_z = dz/distance;
+        final double dbl_inc_z = inc_z*2;
+        
+        dx = Math.abs(dx);
+        dy = Math.abs(dy);
+        
+        int next_x = x;
+        int next_y = y;
+        
+        if (dx >= dy)// dy/dx <= 1
         {
-            last_x = new_x;
-            last_y = new_y;
-            x += plus_x;
-            y += plus_y;
-            new_x = (int)Math.round(x);
-            new_y = (int)Math.round(y);
-            if (last_x != new_x || last_y != new_y)
-            {                
-                z += plus_z;
-                if (!NLOS(last_x,last_y,(int)z,new_x,new_y,tz))
-                    return false;
+        	int delta_A = 2*dy;
+        	int d = delta_A - dx;
+            int delta_B = delta_A - 2*dx;
+            
+            for (int i = 0; i <= dx; i++)
+            {
+            	x = next_x;
+            	y = next_y;
+            	if (d > 0)
+            	{
+            		z += dbl_inc_z;
+            		d += delta_B;
+            		next_x += inc_x;
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+                        return false;
+            		next_y += inc_y;
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
+            	else
+            	{
+            		z += inc_z;
+            		d += delta_A;
+            		next_x += inc_x;
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
+            }
+        }
+        else
+        {
+        	int delta_A = 2*dx;
+        	int d = delta_A - dy;
+            int delta_B = delta_A - 2*dy;
+            for (int i = 0; i <= dy; i++)
+            {
+            	x = next_x;
+            	y = next_y;
+            	if (d > 0)
+            	{
+            		z += dbl_inc_z;
+            		d += delta_B;
+            		next_y += inc_x; //dont touch it is fine
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            		next_x += inc_y; //dont touch it is fine
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
+            	else
+            	{
+            		z += inc_z;
+            		d += delta_A;
+            		next_x += inc_y; //dont touch it is fine
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
             }
         }
         return true;
     }
-    private static boolean canSeeDebug(L2PcInstance gm, double x, double y, double z, int tx, int ty, int tz)
+    private static boolean canSeeDebug(L2PcInstance gm, int x, int y, double z, int tx, int ty, int tz)
     {
-    	//TODO! [Nemesiss] Need Performance Optimization
-        final double dx = (tx - x);
-        final double dy = (ty - y);
-        final double dz = (tz - z);
-        final double distance = Math.sqrt(dx*dx + dy*dy);
+    	int dx = (tx - x);
+        int dy = (ty - y);
+        final int dz = (tz - (int)z);
+        final int distance = Math.abs(dx + dy);
         if (distance > 300)
         {
-            gm.sendMessage("dist > 300");
+            //Avoid too long check
+        	gm.sendMessage("dist > 300");
             return false;
         }
-        final double plus_x = dx/distance;
-        final double plus_y = dy/distance;
-        final double plus_z = dz/distance;
-        int new_x = (int)x;
-        int new_y = (int)y;
-        int last_x;
-        int last_y;
-        int heading = (int) (Math.atan2(-plus_y, -plus_x) * 10430.378350470452724949566316381);
-        heading += 32768;
-        int count = 0;
+        final int inc_x = sign(dx);
+        final int inc_y = sign(dy);
+        final double inc_z = dz/distance;
+        final double dbl_inc_z = inc_z*2;
+        
         gm.sendMessage("Los: from X: "+x+ "Y: "+y+ "--->> X: "+tx+" Y: "+ty);
-        String angle = "";
-        if(8192 < heading && heading < 24576) //S
-        	angle = "S";
-        else if(24576 < heading && heading < 40960) //W        
-        	angle = "W";
-        else if(40960 < heading && heading < 57344) //N
-        	angle = "N";
-        else if(57344 < heading || heading < 8192) //E
-        	angle = "E";
-        else if(heading == 8192) //SE
-        	angle = "SE";        
-        else if(heading == 24576) //SW
-        	angle = "SW";
-        else if(heading == 40960) //NW
-        	angle = "NW";
-        else if(heading == 57344) //NE
-        	angle = "NE";
-        else
-        	angle = "Error!";
-        gm.sendMessage("Los: Heading: "+heading+ " Angle: "+angle);
-        while (new_x != tx || new_y != ty)
+        
+        dx = Math.abs(dx);
+        dy = Math.abs(dy);
+        
+        int next_x = x;
+        int next_y = y;
+        
+        if (dx >= dy)// dy/dx <= 1
         {
-            last_x = new_x;
-            last_y = new_y;
-            x += plus_x;
-            y += plus_y;
-            new_x = (int)Math.round(x);
-            new_y = (int)Math.round(y);
-            if (last_x != new_x || last_y != new_y)
+        	int delta_A = 2*dy;
+        	int d = delta_A - dx;
+            int delta_B = delta_A - 2*dx;
+            
+            for (int i = 0; i <= dx; i++)
             {
-                count++;
-                z += plus_z;
-                if (!NLOS(last_x,last_y,(int)z,new_x,new_y,tz))
-                    return false;
-                if (count > distance)
-                {
-                    gm.sendMessage("Error!!");
-                    return false;
-                }
+            	x = next_x;
+            	y = next_y;
+            	if (d > 0)
+            	{
+            		z += dbl_inc_z;
+            		d += delta_B;
+            		next_x += inc_x;
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+                        return false;
+            		next_y += inc_y;
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
+            	else
+            	{
+            		z += inc_z;
+            		d += delta_A;
+            		next_x += inc_x;
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
+            }
+        }
+        else
+        {
+        	int delta_A = 2*dx;
+        	int d = delta_A - dy;
+            int delta_B = delta_A - 2*dy;
+            for (int i = 0; i <= dy; i++)
+            {
+            	x = next_x;
+            	y = next_y;
+            	if (d > 0)
+            	{
+            		z += dbl_inc_z;
+            		d += delta_B;
+            		next_y += inc_x; //dont touch it is fine
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            		next_x += inc_y; //dont touch it is fine
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
+            	else
+            	{
+            		z += inc_z;
+            		d += delta_A;
+            		next_x += inc_y; //dont touch it is fine
+            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            			return false;
+            	}
             }
         }
         return true;
     }
-    private static Location MoveCheck(Location destiny, double x, double y, double z, int tx, int ty, int tz)
+    private static Location MoveCheck(Location destiny, int x, int y, double z, int tx, int ty, int tz)
     {
-    	//TODO! [Nemesiss] Need Performance Optimization
-        final double dx = (tx - x);
-        final double dy = (ty - y);
-        final double dz = (tz - z);
-        final double distance = Math.sqrt(dx*dx + dy*dy);
-        final double plus_x = dx/distance;
-        final double plus_y = dy/distance;
-        final double plus_z = dz/distance;
-        int new_x = (int)x;
-        int new_y = (int)y;
-        int last_x;
-        int last_y;               
-        while (new_x != tx || new_y != ty)
+    	int dx = (tx - x);
+        int dy = (ty - y);
+        final int dz = (tz - (int)z);
+        final double distance = Math.abs(dx + dy);
+    	
+        final int inc_x = sign(dx);
+        final int inc_y = sign(dy);
+        final double inc_z = dz/distance;
+        final double dbl_inc_z = inc_z*2;
+        
+        dx = Math.abs(dx);
+        dy = Math.abs(dy);
+        
+        int next_x = x;
+        int next_y = y;
+        
+        if (dx >= dy)// dy/dx <= 1
         {
-            last_x = new_x;
-            last_y = new_y;
-            x += plus_x;
-            y += plus_y;
-            new_x = (int)Math.round(x);
-            new_y = (int)Math.round(y);
-            if (last_x != new_x || last_y != new_y)
-            {                
-                z += plus_z;
-                if (!NcanMoveNext(last_x,last_y,(int)z,new_x,new_y,tz))                
-                	return new Location((last_x << 4) + L2World.MAP_MIN_X,(last_y << 4) + L2World.MAP_MIN_Y,(int)z);
+        	int delta_A = 2*dy;
+        	int d = delta_A - dx;
+            int delta_B = delta_A - 2*dx;
+            
+            for (int i = 0; i <= dx; i++)
+            {
+            	x = next_x;
+            	y = next_y;
+            	if (d > 0)
+            	{
+            		z += dbl_inc_z;
+            		d += delta_B;
+            		next_x += inc_x;
+            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            		next_y += inc_y;
+            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            	}
+            	else
+            	{
+            		z += inc_z;
+            		d += delta_A;
+            		next_x += inc_x;
+            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            	}
+            }
+        }
+        else
+        {
+        	int delta_A = 2*dx;
+        	int d = delta_A - dy;
+            int delta_B = delta_A - 2*dy;
+            for (int i = 0; i <= dy; i++)
+            {
+            	x = next_x;
+            	y = next_y;
+            	if (d > 0)
+            	{
+            		z += dbl_inc_z;
+            		d += delta_B;
+            		next_y += inc_x; //dont touch it is fine
+            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            		next_x += inc_y; //dont touch it is fine
+            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            	}
+            	else
+            	{
+            		z += inc_z;
+            		d += delta_A;
+            		next_x += inc_y; //dont touch it is fine
+            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            	}
             }
         }
         return destiny;
-    }	
+    }
+    private static byte sign(int x)
+    {
+    	if (x >= 0)
+    		return +1;
+        else
+        	return -1;  
+    }
 	
 	//GeoEngine
 	private static void NinitGeodata()
