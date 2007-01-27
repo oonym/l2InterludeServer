@@ -46,8 +46,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
-import net.sf.l2j.gameserver.serverpackets.ActionFailed;
-import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 
@@ -76,8 +74,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     /** The flag used to indicate that a thinking action is in progress */
     private boolean thinking; // to prevent recursive thinking
 
-    private int aggroRange;
-
     /**
      * Constructor of L2AttackableAI.<BR><BR>
      * 
@@ -90,8 +86,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 
         _attack_timeout = Integer.MAX_VALUE;
         _globalAggro = -10; // 10 seconds timeout of ATTACK after respawn
-
-        aggroRange = ((L2Attackable) _actor).getAggroRange();
     }
 
     public void run()
@@ -163,7 +157,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             if (!(me instanceof L2RaidBossInstance) && ((L2PcInstance)target).isSilentMoving())
                 return false;
             
-            // Check if player is an ally
+            // Check if player is an ally //TODO! [Nemesiss] it should be rather boolean or smth like that
+            // Comparing String isnt good idea!
             if (me.getFactionId() == "varka" && ((L2PcInstance)target).isAlliedWithVarka())
                 return false;
             if (me.getFactionId() == "ketra" && ((L2PcInstance)target).isAlliedWithKetra())

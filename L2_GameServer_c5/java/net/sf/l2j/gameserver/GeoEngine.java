@@ -177,13 +177,15 @@ public class GeoEngine extends GeoData
             //Avoid too long check
             return false;
         }
+        else if (distance == 0)
+        	return true;
         final int inc_x = sign(dx);
         final int inc_y = sign(dy);
         final double inc_z = dz/distance;
         final double dbl_inc_z = inc_z*2;
         
-        dx = Math.abs(dx);
-        dy = Math.abs(dy);
+      	dx = Math.abs(dx);
+       	dy = Math.abs(dy);
         
         int next_x = x;
         int next_y = y;
@@ -263,6 +265,8 @@ public class GeoEngine extends GeoData
         	gm.sendMessage("dist > 300");
             return false;
         }
+        else if (distance == 0)
+        	return true;
         final int inc_x = sign(dx);
         final int inc_y = sign(dy);
         final double inc_z = dz/distance;
@@ -344,8 +348,10 @@ public class GeoEngine extends GeoData
     	int dx = (tx - x);
         int dy = (ty - y);
         final int dz = (tz - (int)z);
-        final double distance = Math.abs(dx + dy);
+        final int distance = Math.abs(dx + dy);
     	
+        if (distance == 0)
+        	return destiny;
         final int inc_x = sign(dx);
         final int inc_y = sign(dy);
         final double inc_z = dz/distance;
