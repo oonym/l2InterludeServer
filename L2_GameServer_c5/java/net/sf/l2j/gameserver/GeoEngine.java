@@ -175,7 +175,7 @@ public class GeoEngine extends GeoData
         int dy = (ty - y);
         final int dz = (tz - (int)z);
         final int distance = Math.abs(dx + dy);
-        if (distance > 1500)
+        if (distance > 300)
         {
             //Avoid too long check
             return false;
@@ -262,7 +262,7 @@ public class GeoEngine extends GeoData
         int dy = (ty - y);
         final int dz = (tz - (int)z);
         final int distance = Math.abs(dx + dy);
-        if (distance > 1500)
+        if (distance > 300)
         {
             //Avoid too long check
         	gm.sendMessage("dist > 300");
