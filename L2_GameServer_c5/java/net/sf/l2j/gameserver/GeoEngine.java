@@ -108,7 +108,10 @@ public class GeoEngine extends GeoData
     @Override
     public boolean canSeeTarget(L2Object cha, L2Object target)
     {
-        return canSeeTarget(cha.getX(),cha.getY(),cha.getZ(),target.getX(),target.getY(),target.getZ());
+    	if(cha.getZ() >= target.getZ())
+    		return canSeeTarget(cha.getX(),cha.getY(),cha.getZ(),target.getX(),target.getY(),target.getZ());
+    	else
+    		return canSeeTarget(target.getX(),target.getY(),target.getZ(), cha.getX(),cha.getY(),cha.getZ());
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTargetDebug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, net.sf.l2j.gameserver.model.L2Object)
@@ -172,7 +175,7 @@ public class GeoEngine extends GeoData
         int dy = (ty - y);
         final int dz = (tz - (int)z);
         final int distance = Math.abs(dx + dy);
-        if (distance > 300)
+        if (distance > 1500)
         {
             //Avoid too long check
             return false;
@@ -259,7 +262,7 @@ public class GeoEngine extends GeoData
         int dy = (ty - y);
         final int dz = (tz - (int)z);
         final int distance = Math.abs(dx + dy);
-        if (distance > 300)
+        if (distance > 1500)
         {
             //Avoid too long check
         	gm.sendMessage("dist > 300");
