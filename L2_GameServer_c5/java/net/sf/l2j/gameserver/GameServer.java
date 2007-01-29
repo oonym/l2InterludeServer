@@ -164,7 +164,7 @@ import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.taskmanager.TaskManager;
 import net.sf.l2j.gameserver.util.DynamicExtension;
 import net.sf.l2j.status.Status;
- 
+import net.sf.l2j.gameserver.script.faenor.FaenorScriptEngine; 
 
 /**
  * This class ...
@@ -335,7 +335,7 @@ public class GameServer
       
         Olympiad.getInstance();
         Hero.getInstance();
-        
+        FaenorScriptEngine.getInstance();
         // Init of a cursed weapon manager
         CursedWeaponsManager.getInstance();
 
