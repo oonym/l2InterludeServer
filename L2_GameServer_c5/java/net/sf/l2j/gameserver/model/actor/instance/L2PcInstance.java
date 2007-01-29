@@ -1685,7 +1685,7 @@ public final class L2PcInstance extends L2PlayableInstance
         
 		for (L2ItemInstance item : getInventory().getItems())
 		{
-			if (item.isEquipped())
+			if (item != null && item.isEquipped())
 			{
 				int crystaltype = item.getItem().getCrystalType();
                 
