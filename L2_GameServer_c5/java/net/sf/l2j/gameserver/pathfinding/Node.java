@@ -23,19 +23,26 @@ package net.sf.l2j.gameserver.pathfinding;
  */
 public class Node
 {	
-	private final Node[] _Neighbors;
-	private final AbstractNodeLoc _Loc;
+	private final AbstractNodeLoc _Loc;	
+	private final short _Neighbors_idx;
+	private Node[] _Neighbors;
 	private Node _Parent;
 	
-	public Node(Node[] Neighbors, AbstractNodeLoc Loc)
+	
+	public Node(AbstractNodeLoc Loc, short Neighbors_idx)
 	{
-		_Neighbors = Neighbors;
 		_Loc = Loc;
+		_Neighbors_idx = Neighbors_idx;
 	}
 
 	public void setParent(Node p)
 	{
 		_Parent = p;
+	}
+	
+	public void attacheNeighbors()
+	{
+		_Neighbors = PathFinding.getInstance().ReadNeighbors(this, _Neighbors_idx);
 	}
 
 	public Node[] getNighbors()
@@ -51,5 +58,19 @@ public class Node
 	public AbstractNodeLoc getLoc()
 	{
 		return _Loc;
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object arg0)
+	{
+		if(!(arg0 instanceof Node))
+			return false;
+		Node n = (Node)arg0;
+		//Check if x,y,z are the same
+		return _Loc.getX() == n.getLoc().getX() && _Loc.getY() == n.getLoc().getY()
+		&& _Loc.getZ() == n.getLoc().getZ();
 	}
 }

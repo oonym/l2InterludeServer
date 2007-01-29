@@ -17,8 +17,15 @@
  */
 package net.sf.l2j.gameserver.pathfinding.worldnodes;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.MappedByteBuffer;
+import java.util.Map;
 import java.util.logging.Logger;
+
+import javolution.util.FastMap;
 import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
+import net.sf.l2j.gameserver.pathfinding.Node;
 import net.sf.l2j.gameserver.pathfinding.PathFinding;
 
 /**
@@ -29,6 +36,8 @@ public class WorldPathFinding extends PathFinding
 {
 	private static Logger _log = Logger.getLogger(WorldPathFinding.class.getName());
 	private static WorldPathFinding _instance;
+	private static Map<Short, ByteBuffer> PathNodes = new FastMap<Short, ByteBuffer>();
+	private static Map<Short, IntBuffer> PathNodes_index = new FastMap<Short, IntBuffer>();
 	
 	public static WorldPathFinding getInstance()
 	{
@@ -37,14 +46,13 @@ public class WorldPathFinding extends PathFinding
 		return _instance;
 	}
 	
-	//TODO! [Nemesiss]
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#PathNodesExist(short)
 	 */
 	@Override
 	public boolean PathNodesExist(short regionoffset)
 	{
-		return false;
+		return PathNodes_index.containsKey(regionoffset);
 	}
 
     //TODO! [Nemesiss]
@@ -56,9 +64,19 @@ public class WorldPathFinding extends PathFinding
 	{
 		return null;
 	}
-
-	//Private
 	
+	/**
+	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
+	 */
+	@Override
+	public Node[] ReadNeighbors(Node node, short idx)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	//Private
+
 	private WorldPathFinding()
 	{
 		//TODO! {Nemesiss] Load PathNodes.

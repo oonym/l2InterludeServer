@@ -20,6 +20,8 @@ package net.sf.l2j.gameserver.pathfinding;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.sf.l2j.gameserver.model.L2World;
+
 /**
  *
  * @author -Nemesiss-
@@ -45,6 +47,7 @@ public abstract class PathFinding
 	}
 	public abstract boolean PathNodesExist(short regionoffset);	
 	public abstract AbstractNodeLoc[] FindPath(int gx, int gy, short z, int gtx, int gtz, short tz);
+	public abstract Node[] ReadNeighbors(Node node, short idx);
 	
 	public List<AbstractNodeLoc> search(Node start, Node end)
 	{
@@ -55,15 +58,17 @@ public abstract class PathFinding
 		LinkedList<Node> to_visit = new LinkedList<Node>();
 		to_visit.add(start);
 		
-		//TODO! [Nemesiss] here must be some limit, else it could check all World
-		while(!to_visit.isEmpty())
+		int i = 0;
+		while (i < 800)//TODO! Add limit to cfg
 		{
 			Node node = to_visit.removeFirst();
-			if (node == end) //path found!
+			if (node.equals(end)) //path found!
 				return ConstructPath(node);
 			else
 			{
+				i++;
 				visited.add(node);
+				node.attacheNeighbors();
 				for (Node n : node.getNighbors())
 				{
 					if (!visited.contains(n) && !to_visit.contains(n))
@@ -87,5 +92,35 @@ public abstract class PathFinding
 			node = node.getParent();
 		}
 		return path;
+	}
+	
+	/**
+	 * Convert geodata position to pathnode position
+	 * @param geo_pos
+	 * @return pathnode position
+	 */
+	public short getNodePos(int geo_pos)
+	{
+		return (short)((geo_pos >> 3) % 256);
+	}
+	
+	/**
+	 * Convert pathnode x to World x position
+	 * @param node_x, rx
+	 * @return
+	 */
+	public int CalculateWorldX(short node_x, byte rx)
+	{
+		return (rx - 16) * 4096 + node_x * 256 + 24 + L2World.MAP_MIN_X;
+	}
+	
+	/**
+	 * Convert pathnode y to World y position
+	 * @param node_y
+	 * @return
+	 */
+	public int CalculateWorldY(short node_y, byte ry)
+	{
+		return (ry - 10) * 4096 + node_y * 256 + 24 + L2World.MAP_MIN_Y;
 	}
 }
