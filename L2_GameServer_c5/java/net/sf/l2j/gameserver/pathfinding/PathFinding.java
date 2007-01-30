@@ -46,8 +46,8 @@ public abstract class PathFinding
 		return _instance;
 	}
 	public abstract boolean PathNodesExist(short regionoffset);	
-	public abstract AbstractNodeLoc[] FindPath(int gx, int gy, short z, int gtx, int gtz, short tz);
-	public abstract Node[] ReadNeighbors(Node node, short idx);
+	public abstract List<AbstractNodeLoc> FindPath(int gx, int gy, short z, int gtx, int gtz, short tz);
+	public abstract Node[] ReadNeighbors(short node_x,short node_y, int idx);
 	
 	public List<AbstractNodeLoc> search(Node start, Node end)
 	{
@@ -63,7 +63,7 @@ public abstract class PathFinding
 		{
 			Node node = to_visit.removeFirst();
 			if (node.equals(end)) //path found!
-				return ConstructPath(node);
+				return constructPath(node);
 			else
 			{
 				i++;
@@ -83,7 +83,7 @@ public abstract class PathFinding
 		return null;
 	}
 	
-	public List<AbstractNodeLoc> ConstructPath(Node node)
+	public List<AbstractNodeLoc> constructPath(Node node)
 	{
 		LinkedList<AbstractNodeLoc> path = new LinkedList<AbstractNodeLoc>();
 		while (node.getParent() != null)
@@ -101,7 +101,32 @@ public abstract class PathFinding
 	 */
 	public short getNodePos(int geo_pos)
 	{
-		return (short)((geo_pos >> 3) % 256);
+		return (short)(geo_pos >> 3); //OK?
+	}
+	
+	/**
+	 * Convert node position to pathnode block position
+	 * @param geo_pos
+	 * @return pathnode block position (0...255)
+	 */
+	public short getNodeBlock(int node_pos)
+	{
+		return (short)(node_pos % 256);
+	}
+	
+	public byte getRegionX(int node_pos)
+	{
+		return (byte)((node_pos >> 8) + 16);
+	}
+	
+	public byte getRegionY(int node_pos)
+	{
+		return (byte)((node_pos >> 8) + 10);	    
+	}
+	
+	public short getRegionOffset(byte rx, byte ry)
+	{
+		return (short)((rx << 5) + ry);
 	}
 	
 	/**
@@ -109,7 +134,7 @@ public abstract class PathFinding
 	 * @param node_x, rx
 	 * @return
 	 */
-	public int CalculateWorldX(short node_x)
+	public int calculateWorldX(short node_x)
 	{
 		return   L2World.MAP_MIN_X - 16 * 32768 + node_x * 128 + 48 ;
 	}

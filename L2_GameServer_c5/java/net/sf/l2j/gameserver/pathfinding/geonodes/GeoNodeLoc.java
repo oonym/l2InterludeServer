@@ -25,11 +25,11 @@ import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
  */
 public class GeoNodeLoc extends AbstractNodeLoc
 {
-	private final byte _x;
-	private final byte _y;
+	private final short _x;
+	private final short _y;
 	private final short _z;
 	
-	public GeoNodeLoc(byte x, byte y, short z)
+	public GeoNodeLoc(short x, short y, short z)
 	{
 		_x = x;
 		_y = y;
@@ -63,6 +63,16 @@ public class GeoNodeLoc extends AbstractNodeLoc
 	public short getZ()
 	{
 		return _z;
+	}
+	
+	public short getNodeX()
+	{
+		return _x;
+	}
+	
+	public short getNodeY()
+	{
+		return _y;
 	}
 
 }

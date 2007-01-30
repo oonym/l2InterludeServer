@@ -27,10 +27,12 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
+import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import net.sf.l2j.Config;
@@ -65,27 +67,155 @@ public class GeoPathFinding extends PathFinding
 		return PathNodes_index.containsKey(regionoffset);
 	}
 	
-	//	TODO! [Nemesiss]
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
 	 */
 	@Override
-	public AbstractNodeLoc[] FindPath(int gx, int gy, short z, int gtx, int gtz, short tz)
+	public List<AbstractNodeLoc> FindPath(int gx, int gy, short z, int gtx, int gty, short tz)
 	{
-		return null;
+		Node start = readNode(gx,gy,z);
+		Node end = readNode(gtx,gty,tz);
+		return search(start, end);
 	}
 	
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
 	 */
 	@Override
-	public Node[] ReadNeighbors(Node node, short idx)
+	public Node[] ReadNeighbors(short node_x,short node_y, int idx)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
+		ByteBuffer pn = PathNodes.get(regoffset);
+		
+		List<Node> Neighbors = new FastList<Node>(8);
+		
+		short new_node_x, new_node_y;
+		
+		//Region for sure will change, we must read from correct file
+		byte neighbor = pn.get(idx); //N
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = node_x;
+			new_node_y = (short)(node_y+1);
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //NE
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = (short)(node_x+1);
+			new_node_y = (short)(node_y+1);
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //E
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = (short)(node_x+1);
+			new_node_y = node_y;
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //SE
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = (short)(node_x+1);
+			new_node_y = (short)(node_y-1);
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //S
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = node_x;
+			new_node_y = (short)(node_y-1);
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //SW
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = (short)(node_x-1);
+			new_node_y = (short)(node_y-1);
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //W
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = (short)(node_x-1);
+			new_node_y = node_y;
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		neighbor = pn.get(idx); //NW
+		idx++;
+		if(neighbor > 0)
+		{
+			neighbor--;
+			new_node_x = (short)(node_x-1);
+			new_node_y = (short)(node_y+1);
+			Neighbors.add(readNode(new_node_x,new_node_y,neighbor));
+		}
+		Node[] result = new Node[Neighbors.size()];
+		return Neighbors.toArray(result);
 	}
 	
 	//Private
+	
+	private Node readNode(short node_x, short node_y, byte layer)
+	{
+		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
+		short nbx = getNodeBlock(node_x);
+		short nby = getNodeBlock(node_y);
+		int idx = PathNodes_index.get(regoffset).get((nbx << 8)+nby);
+		ByteBuffer pn = PathNodes.get(regoffset);
+		//reading
+		byte nodes = pn.get(idx);
+		idx++;//byte
+		if (nodes < layer)
+		{
+			_log.warning("SmthWrong!");
+		}
+		short node_z = pn.get(idx);
+		idx += 2;
+		return new Node(new GeoNodeLoc(node_x,node_y,node_z), idx);
+	}
+	
+	private Node readNode(int gx, int gy, short z)
+	{
+		short node_x = getNodePos(gx);
+		short node_y = getNodePos(gy);
+		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
+		short nbx = getNodeBlock(node_x);
+		short nby = getNodeBlock(node_y);
+		int idx = PathNodes_index.get(regoffset).get((nbx << 8)+nby);
+		ByteBuffer pn = PathNodes.get(regoffset);
+		//reading
+		byte nodes = pn.get(idx);
+		idx++;//byte
+		int idx2 = 0; //create index to nearlest node by z
+		short last_z = Short.MIN_VALUE;
+		while (nodes > 0)
+		{
+			short node_z = pn.get(idx);
+			idx += 2; //short
+			if (Math.abs(last_z - z) >  Math.abs(node_z -z))
+			{
+				last_z = node_z;
+				idx2 = idx;
+			}
+			nodes--;
+		}		
+		return new Node(new GeoNodeLoc(node_x,node_y,last_z), idx2);
+	}
 
 	private GeoPathFinding()
 	{
@@ -122,7 +252,7 @@ public class GeoPathFinding extends PathFinding
 	private void LoadPathNodeFile(byte rx,byte ry)
 	{
 		String fname = "./data/pathnode/"+rx+"_"+ry+".pn";
-		short regionoffset = (short)((rx << 5) + ry);
+		short regionoffset = getRegionOffset(rx,ry);
 		_log.info("PathFinding Engine: - Loading: "+fname+" -> region offset: "+regionoffset+"X: "+rx+" Y: "+ry);		
 		File Pn = new File(fname);
 		int node = 0,size, index = 0;

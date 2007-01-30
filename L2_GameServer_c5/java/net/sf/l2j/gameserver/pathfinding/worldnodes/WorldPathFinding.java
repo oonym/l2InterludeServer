@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.pathfinding.worldnodes;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -60,7 +61,7 @@ public class WorldPathFinding extends PathFinding
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
 	 */
 	@Override
-	public AbstractNodeLoc[] FindPath(int gx, int gy, short z, int gtx,	int gtz, short tz)
+	public List<AbstractNodeLoc> FindPath(int gx, int gy, short z, int gtx,	int gtz, short tz)
 	{
 		return null;
 	}
@@ -69,7 +70,7 @@ public class WorldPathFinding extends PathFinding
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
 	 */
 	@Override
-	public Node[] ReadNeighbors(Node node, short idx)
+	public Node[] ReadNeighbors(short node_x,short node_y, int idx)
 	{
 		// TODO Auto-generated method stub
 		return null;

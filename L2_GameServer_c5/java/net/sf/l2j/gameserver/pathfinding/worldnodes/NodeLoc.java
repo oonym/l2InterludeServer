@@ -62,4 +62,25 @@ public class NodeLoc extends AbstractNodeLoc
 	{		
 		return _z;
 	}
+
+	/**
+	 * @see net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc#getNodeX()
+	 */
+	@Override
+	public short getNodeX()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * @see net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc#getNodeY()
+	 */
+	@Override
+	public short getNodeY()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }

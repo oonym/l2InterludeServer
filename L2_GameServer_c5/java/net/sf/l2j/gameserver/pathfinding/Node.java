@@ -24,12 +24,12 @@ package net.sf.l2j.gameserver.pathfinding;
 public class Node
 {	
 	private final AbstractNodeLoc _Loc;	
-	private final short _Neighbors_idx;
+	private final int _Neighbors_idx;
 	private Node[] _Neighbors;
 	private Node _Parent;
 	
 	
-	public Node(AbstractNodeLoc Loc, short Neighbors_idx)
+	public Node(AbstractNodeLoc Loc, int Neighbors_idx)
 	{
 		_Loc = Loc;
 		_Neighbors_idx = Neighbors_idx;
@@ -42,7 +42,7 @@ public class Node
 	
 	public void attacheNeighbors()
 	{
-		_Neighbors = PathFinding.getInstance().ReadNeighbors(this, _Neighbors_idx);
+		_Neighbors = PathFinding.getInstance().ReadNeighbors(_Loc.getNodeX(),_Loc.getNodeY(), _Neighbors_idx);
 	}
 
 	public Node[] getNighbors()
