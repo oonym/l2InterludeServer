@@ -169,10 +169,7 @@ public class GeoEngine extends GeoData
     {
         return canSee((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
     }
-    private static String changeValues(int a, int b)
-    {
-    	return "["+((a/8)%256)+","+((b/8)%256)+"]["+(a%8)+","+(b%8)+"]";
-    }
+    
     private static boolean canSee(int x, int y, double z, int tx, int ty, int tz)
     {
         int dx = (tx - x);
@@ -246,11 +243,11 @@ public class GeoEngine extends GeoData
             	{
             		z += dbl_inc_z;
             		d += delta_B;
-            		next_y += inc_y; //no it's not
+            		next_y += inc_y;
             		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
             			return false;
 
-            		next_x += inc_x; //not it's not
+            		next_x += inc_x;
             		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
             			return false;
 
@@ -259,7 +256,7 @@ public class GeoEngine extends GeoData
             	{
             		z += inc_z;
             		d += delta_A;
-            		next_y += inc_y; //not it's not
+            		next_y += inc_y;
             		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
             			return false;
 
@@ -339,10 +336,10 @@ public class GeoEngine extends GeoData
             	{
             		z += dbl_inc_z;
             		d += delta_B;
-            		next_y += inc_y; //dont touch it is fine
+            		next_y += inc_y;
             		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
             			return false;
-            		next_x += inc_x; //dont touch it is fine
+            		next_x += inc_x;
             		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
             			return false;
             	}
@@ -350,7 +347,7 @@ public class GeoEngine extends GeoData
             	{
             		z += inc_z;
             		d += delta_A;
-            		next_x += inc_x; //dont touch it is fine
+            		next_y += inc_y;
             		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
             			return false;
             	}
@@ -422,10 +419,10 @@ public class GeoEngine extends GeoData
             	{
             		z += dbl_inc_z;
             		d += delta_B;
-            		next_y += inc_x; //dont touch it is fine
+            		next_y += inc_y;
             		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
-            		next_x += inc_y; //dont touch it is fine
+            		next_x += inc_x;
             		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             	}
@@ -433,7 +430,7 @@ public class GeoEngine extends GeoData
             	{
             		z += inc_z;
             		d += delta_A;
-            		next_x += inc_y; //dont touch it is fine
+            		next_y += inc_y;
             		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             	}
@@ -442,13 +439,11 @@ public class GeoEngine extends GeoData
         return destiny;
     }
     private static byte sign(int x)
-    {
-    	return (byte)Math.signum(x);
-    	/*
+    {    	
     	if (x >= 0)
     		return +1;
         else
-        	return -1;  */
+        	return -1;
     }
 	
 	//GeoEngine
