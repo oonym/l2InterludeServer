@@ -109,9 +109,9 @@ public abstract class PathFinding
 	 * @param node_x, rx
 	 * @return
 	 */
-	public int CalculateWorldX(short node_x, byte rx)
+	public int CalculateWorldX(short node_x)
 	{
-		return (rx - 16) * 4096 + node_x * 256 + 24 + L2World.MAP_MIN_X;
+		return   L2World.MAP_MIN_X - 16 * 32768 + node_x * 128 + 48 ;
 	}
 	
 	/**
@@ -119,8 +119,8 @@ public abstract class PathFinding
 	 * @param node_y
 	 * @return
 	 */
-	public int CalculateWorldY(short node_y, byte ry)
+	public int CalculateWorldY(short node_y)
 	{
-		return (ry - 10) * 4096 + node_y * 256 + 24 + L2World.MAP_MIN_Y;
+		return  L2World.MAP_MIN_Y - 10 * 32768 + node_y * 128 + 48 ;
 	}
 }
