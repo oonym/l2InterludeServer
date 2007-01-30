@@ -28,10 +28,12 @@ public class PledgeShowMemberListUpdate extends ServerBasePacket
 {
 	private static final String _S__54_PLEDGESHOWMEMBERLISTUPDATE = "[S] 54 PledgeShowMemberListUpdate";
 	private L2PcInstance _player;
+	private int _pledgeType;
 	
 	public PledgeShowMemberListUpdate(L2PcInstance player)
 	{
 		_player = player;
+		_pledgeType = player.getPledgeType();
 	}	
 	
 	final void runImpl()
@@ -48,7 +50,7 @@ public class PledgeShowMemberListUpdate extends ServerBasePacket
 		writeD(0); 
 		writeD(_player.getObjectId());
 		writeD(_player.isOnline()); // 1=online 0=offline
-		writeD(0x00);
+		writeD(_pledgeType);
 		writeD(0x00);  //sponsor??
 	}
 
