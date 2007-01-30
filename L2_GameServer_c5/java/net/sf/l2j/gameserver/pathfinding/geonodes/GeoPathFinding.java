@@ -179,7 +179,7 @@ public class GeoPathFinding extends PathFinding
 		ByteBuffer pn = PathNodes.get(regoffset);
 		//reading
 		byte nodes = pn.get(idx);
-		idx++;//byte
+		idx += layer*10+1;//byte + layer*10byte
 		if (nodes < layer)
 		{
 			_log.warning("SmthWrong!");
@@ -206,7 +206,7 @@ public class GeoPathFinding extends PathFinding
 		while (nodes > 0)
 		{
 			short node_z = pn.get(idx);
-			idx += 2; //short
+			idx += 10; //short + 8 byte
 			if (Math.abs(last_z - z) >  Math.abs(node_z -z))
 			{
 				last_z = node_z;
