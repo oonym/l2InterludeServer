@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.TargetUnselected;
 
 /**
@@ -35,8 +36,7 @@ public class RequestTargetCanceld extends ClientBasePacket
 	private static final String _C__37_REQUESTTARGETCANCELD = "[C] 37 RequestTargetCanceld";
 	//private static Logger _log = Logger.getLogger(RequestTargetCanceld.class.getName());
     
-    @SuppressWarnings("unused")
-	private final int _unk1; 
+    private final int _unselect; 
 
 	/**
 	 * packet type id 0x37
@@ -46,8 +46,7 @@ public class RequestTargetCanceld extends ClientBasePacket
 	public RequestTargetCanceld(ByteBuffer buf, ClientThread client)
 	{
 		super(buf, client);
-        //TODO analyse value unk1
-        _unk1 = readH();
+        _unselect = readH();
 	}
 
 	void runImpl()
@@ -55,17 +54,10 @@ public class RequestTargetCanceld extends ClientBasePacket
 		L2Character activeChar = getClient().getActiveChar();
         if (activeChar != null)
         {
-            if (activeChar.getTarget() != null)
+            if (_unselect == 1 && activeChar.getTarget() != null)
             {
-                if (activeChar.isCastingNow())
-                	activeChar.abortCast();
-                else if (activeChar.isAttackingNow())
-                	activeChar.abortAttack();
-                else
-                {
-                	sendPacket(new TargetUnselected(activeChar));
-                	activeChar.setTarget(null);
-                }                
+                sendPacket(new TargetUnselected(activeChar));
+                activeChar.setTarget(null);                                
             }
 	    
 		    CtrlIntention intention = activeChar.getAI().getIntention();
@@ -74,7 +66,9 @@ public class RequestTargetCanceld extends ClientBasePacket
 		    		intention != CtrlIntention.AI_INTENTION_MOVE_TO &&			// not walking
 		    		intention != CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT	// not moving in a boat
 		    	)
-		    	activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+                activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+            activeChar.abortAttack();       
+            activeChar.abortCast();       
         }
 	}
 

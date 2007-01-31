@@ -60,7 +60,6 @@ public class FinishRotating extends ClientBasePacket
 		if (getClient().getActiveChar() == null)
 		    return;
 		StopRotation sr = new StopRotation(getClient().getActiveChar(), _degree);
-		getClient().getActiveChar().sendPacket(sr);
 		getClient().getActiveChar().broadcastPacket(sr);
 	}
 

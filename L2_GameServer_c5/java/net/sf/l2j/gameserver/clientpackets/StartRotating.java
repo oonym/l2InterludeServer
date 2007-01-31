@@ -58,7 +58,6 @@ public class StartRotating extends ClientBasePacket
 		if (getClient().getActiveChar() == null)
 		    return;
 		BeginRotation br = new BeginRotation(getClient().getActiveChar(), _degree, _side);
-		getClient().getActiveChar().sendPacket(br);
 		getClient().getActiveChar().broadcastPacket(br);
 	}
 
