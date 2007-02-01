@@ -445,7 +445,7 @@ public class L2Attackable extends L2NpcInstance
 	        			
 	        			for (QuestState qs : pl.getQuestsForKills(this))
 	        			{
-	        				if (qs.getQuest().isParty())
+	        				if (qs.getState().isParty())
 	        				{
 	        					if (!qs.isCompleted() && !pl.isDead() && Util.checkIfInRange(1150, this, pl, true))
 	        					{

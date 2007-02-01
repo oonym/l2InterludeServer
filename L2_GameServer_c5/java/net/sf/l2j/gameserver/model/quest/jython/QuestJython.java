@@ -38,8 +38,4 @@ public abstract class QuestJython extends Quest {
 	public QuestJython(int questId, String name, String descr) {
 		super(questId, name, descr);
 	}
-	
-	public QuestJython(int questId, String name, String descr, boolean party) {
-		super(questId, name, descr, party);
-	}
 }
