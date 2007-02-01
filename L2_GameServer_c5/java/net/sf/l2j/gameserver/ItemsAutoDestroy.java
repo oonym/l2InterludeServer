@@ -81,7 +81,6 @@ public class ItemsAutoDestroy
                 		if((curtime - item.getDropTime()) > Config.HERB_AUTO_DESTROY_TIME)
                 		{
                 			L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
-                			L2World.getInstance().removeObject(item);
                 			_items.remove(item);
                 			if (Config.SAVE_DROPPED_ITEM)
                     			ItemsOnGroundManager.getInstance().removeObject(item);
@@ -90,7 +89,6 @@ public class ItemsAutoDestroy
                 	else if ( (curtime - item.getDropTime()) > _sleep)
                     {
                         L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
-                        L2World.getInstance().removeObject(item);
                         _items.remove(item);
                         if (Config.SAVE_DROPPED_ITEM)
                         	ItemsOnGroundManager.getInstance().removeObject(item);
