@@ -141,4 +141,12 @@ public class GeoData
     {
     	//Do Nothing
     }
+    public static void unloadGeodata(byte rx, byte ry)
+	{
+    	
+	}
+    public static boolean LoadGeodataFile(byte rx, byte ry)
+    {
+    	return false;
+    }
 }

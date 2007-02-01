@@ -487,7 +487,13 @@ public class GeoEngine extends GeoData
 			throw new Error("Failed to Load geo_bugs.txt File.");	
 		}
 	}
-	private static void LoadGeodataFile(byte rx, byte ry)
+	public static void unloadGeodata(byte rx, byte ry)
+	{
+		short regionoffset = (short)((rx << 5) + ry);
+		Geodata_index.remove(regionoffset);
+		Geodata.remove(regionoffset);
+	}
+	public static boolean LoadGeodataFile(byte rx, byte ry)
 	{
 		String fname = "./data/geodata/"+rx+"_"+ry+".l2j";
 		short regionoffset = (short)((rx << 5) + ry);
@@ -541,7 +547,9 @@ public class GeoEngine extends GeoData
 		{
 			e.printStackTrace();
 			_log.warning("Failed to Load GeoFile at block: "+block+"\n");
+			return false;
 	    }
+	    return true;
 	}
 	
 	//Geodata Methods

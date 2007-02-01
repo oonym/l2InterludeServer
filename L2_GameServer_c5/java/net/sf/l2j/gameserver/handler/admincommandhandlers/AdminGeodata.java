@@ -37,7 +37,9 @@ public class AdminGeodata implements IAdminCommandHandler
 		"admin_geo_nswe",
 		"admin_geo_los",
 		"admin_geo_position",
-		"admin_geo_bug"
+		"admin_geo_bug",
+		"admin_geo_load",
+		"admin_geo_unload"
 		};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
@@ -91,6 +93,45 @@ public class AdminGeodata implements IAdminCommandHandler
         	activeChar.sendMessage("GeoEngine: Your current position: ");
         	activeChar.sendMessage(".... world coords: x: "+activeChar.getX()+" y: "+activeChar.getY()+" z: "+activeChar.getZ());
         	activeChar.sendMessage(".... geo position: "+GeoData.getInstance().geoPosition(activeChar.getX(), activeChar.getY()));
+        }
+        else if(command.startsWith("admin_geo_load"))
+        {
+        	String[] v = command.substring(15).split(" ");
+        	if(v.length != 2)
+        		activeChar.sendMessage("Usage: //admin_gelo_load <regionX> <regionY>");
+        	else
+        	{
+        		try
+        		{
+        			byte rx = Byte.parseByte(v[0]);
+        			byte ry = Byte.parseByte(v[1]);
+        			boolean result = GeoData.getInstance().LoadGeodataFile(rx, ry);
+        			
+        			if(result)
+        				activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] loaded succesfuly");
+        			else
+        				activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] couldn't be loaded");
+        		}
+        		catch(Exception e){activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");}
+        	}
+        }
+        else if(command.startsWith("admin_geo_unload"))
+        {
+        	String[] v = command.substring(17).split(" ");
+        	if(v.length != 2)
+        		activeChar.sendMessage("Usage: //admin_gelo_unloadload <regionX> <regionY>");
+        	else
+        	{
+        		try
+        		{
+        			byte rx = Byte.parseByte(v[0]);
+        			byte ry = Byte.parseByte(v[1]);
+        			
+        			GeoData.getInstance().unloadGeodata(rx, ry);
+        			activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] unloaded.");
+        		}
+        		catch(Exception e){activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");}
+        	}
         }
         else if(command.startsWith("admin_geo_bug"))
         {
