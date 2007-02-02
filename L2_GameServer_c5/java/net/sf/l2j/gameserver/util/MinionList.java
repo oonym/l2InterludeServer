@@ -164,7 +164,7 @@ public class MinionList
          if (_respawnTasks != null)
              for(long deathTime : _respawnTasks.keySet())
              {
-                 int delay = 300000; // respawn delay 5 min
+                 double delay = Config.RAID_MINION_RESPAWN_TIMER;
                  if((current - deathTime) > delay)
                  {
                 	 spawnSingleMinion(_respawnTasks.get(deathTime));
