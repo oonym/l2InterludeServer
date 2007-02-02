@@ -119,7 +119,10 @@ public class GeoEngine extends GeoData
     @Override
     public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
     {
-        return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ(),(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ());
+    	if(gm.getZ() >= target.getZ())
+    		return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ(),(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ());
+    	else
+    		return canSeeDebug(gm,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ(),(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ());
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#getNSWE(int, int, int)
@@ -174,7 +177,7 @@ public class GeoEngine extends GeoData
     {
         int dx = (tx - x);
         int dy = (ty - y);
-        final int dz = (tz - (int)z);
+        final double dz = (tz - z);
         final int distance = Math.abs(dx + dy);
         if (distance > 300)
         {
@@ -269,7 +272,7 @@ public class GeoEngine extends GeoData
     {
     	int dx = (tx - x);
         int dy = (ty - y);
-        final int dz = (tz - (int)z);
+        final double dz = (tz - z);
         final int distance = Math.abs(dx + dy);
         if (distance > 300)
         {
@@ -359,7 +362,7 @@ public class GeoEngine extends GeoData
     {
     	int dx = (tx - x);
         int dy = (ty - y);
-        final int dz = (tz - (int)z);
+        final double dz = (tz - z);
         final int distance = Math.abs(dx + dy);
     	
         if (distance == 0)
