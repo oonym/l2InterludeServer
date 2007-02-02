@@ -98,7 +98,7 @@ public class AdminGeodata implements IAdminCommandHandler
         {
         	String[] v = command.substring(15).split(" ");
         	if(v.length != 2)
-        		activeChar.sendMessage("Usage: //admin_gelo_load <regionX> <regionY>");
+        		activeChar.sendMessage("Usage: //admin_geo_load <regionX> <regionY>");
         	else
         	{
         		try
@@ -119,7 +119,7 @@ public class AdminGeodata implements IAdminCommandHandler
         {
         	String[] v = command.substring(17).split(" ");
         	if(v.length != 2)
-        		activeChar.sendMessage("Usage: //admin_geo_unloadload <regionX> <regionY>");
+        		activeChar.sendMessage("Usage: //admin_geo_unload <regionX> <regionY>");
         	else
         	{
         		try
