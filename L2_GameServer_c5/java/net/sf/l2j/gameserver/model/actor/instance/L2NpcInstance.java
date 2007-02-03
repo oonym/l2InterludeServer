@@ -2191,6 +2191,7 @@ public class L2NpcInstance extends L2Character
     public void endDecayTask()
     {
     	if (!isDecayed()) {
+    		_isDecayed = true;
 	    	onDecay();
 	        DecayTaskManager.getInstance().cancelDecayTask(this);
     	}
