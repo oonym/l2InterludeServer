@@ -240,7 +240,7 @@ public class RequestActionUse extends ClientBasePacket
 					else if (activeChar.isFishing())
                     {
                         //You can't mount, dismount, break and drop items while fishing
-                        SystemMessage msg = new SystemMessage(1470);
+                        SystemMessage msg = new SystemMessage(SystemMessage.CANNOT_DO_WHILE_FISHING_2);
                         activeChar.sendPacket(msg);
                         msg = null;
                     }

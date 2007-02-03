@@ -57,7 +57,7 @@ public class FishShots implements IItemHandler
 		(grade == L2Item.CRYSTAL_S && FishshotId != 6540)) 
 		{ 
 			//1479 - This fishing shot is not fit for the fishing pole crystal.             
-			activeChar.sendPacket(new SystemMessage(1479));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.WRONG_FISHINGSHOT_GRADE));
 			return; 
 		} 
 
@@ -71,7 +71,7 @@ public class FishShots implements IItemHandler
         L2Object oldTarget = activeChar.getTarget();
         activeChar.setTarget(activeChar);
 
-		activeChar.sendPacket(new SystemMessage(SystemMessage.ENABLED_SPIRITSHOT));
+		//activeChar.sendPacket(new SystemMessage(SystemMessage.ENABLED_SPIRITSHOT));
         
 		MagicSkillUser MSU = new MagicSkillUser(activeChar,_skillIds[grade],1,0,0); 
         Broadcast.toSelfAndKnownPlayers(activeChar, MSU);

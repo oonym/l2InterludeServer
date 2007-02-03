@@ -572,7 +572,45 @@ public class SystemMessage extends ServerBasePacket
     //  Energy Stones
     public static final int FORCE_INCREASED_TO_S1 = 323;
     public static final int FORCE_MAXLEVEL_REACHED = 324;
-
+    
+    // Fishing related
+    public static final int CANNOT_DO_WHILE_FISHING_1 = 1447;
+    public static final int ONLY_FISHING_SKILLS_NOW = 1448;
+    public static final int GOT_A_BITE = 1449;
+    public static final int FISH_SPIT_THE_HOOK = 1450;
+    public static final int BAIT_STOLEN_BY_FISH = 1451;
+    public static final int BAIT_LOST_FISH_GOT_AWAY = 1452;
+    public static final int FISHING_POLE_NOT_EQUIPPED = 1453;
+    public static final int BAIT_ON_HOOK_BEFORE_FISHING = 1454;
+    public static final int CANNOT_FISH_UNDER_WATER = 1455;
+    public static final int CANNOT_FISH_ON_BOAT = 1456;
+    public static final int CANNOT_FISH_HERE = 1457;
+    public static final int FISHING_ATTEMPT_CANCELLED = 1458;
+    public static final int NOT_ENOUGH_BAIT = 1459;
+    public static final int REEL_LINE_AND_STOP_FISHING = 1460;
+    public static final int CAST_LINE_AND_START_FISHING = 1461;
+    public static final int CAN_USE_PUMPING_ONLY_WHILE_FISHING = 1462;
+    public static final int CAN_USE_REELING_ONLY_WHILE_FISHING = 1463;
+    public static final int FISH_RESISTED_ATTEMPT_TO_BRING_IT_IN = 1464;
+    public static final int PUMPING_SUCCESFUL_S1_DAMAGE = 1465;
+    public static final int FISH_RESISTED_PUMPING_S1_HP_REGAINED = 1466;
+    public static final int REELING_SUCCESFUL_S1_DAMAGE = 1467;
+    public static final int FISH_RESISTED_REELING_S1_HP_REGAINED = 1468;
+    public static final int YOU_CAUGHT_SOMETHING = 1469;
+    public static final int CANNOT_DO_WHILE_FISHING_2 = 1470;
+    public static final int CANNOT_DO_WHILE_FISHING_3 = 1471;
+    public static final int CANNOT_ATTACK_WITH_FISHING_POLE = 1472;
+    public static final int WRONG_FISHINGSHOT_GRADE = 1479;
+    public static final int CANNOT_FISH_WHILE_USING_RECIPE_BOOK = 1638;
+    public static final int YOU_CAUGHT_SOMETHING_SMELLY_THROW_IT_BACK = 1655;
+    public static final int FISH_NO_MORE_BITING_TRY_OTHER_LOCATION = 1662;
+    public static final int FISH_RESISTING_LOOK_BOBBLER = 1664;
+    public static final int YOU_WORN_FISH_OUT = 1665;
+    public static final int NOTHING_INSIDE_THAT = 1669;
+    public static final int REELING_PUMPING_3_LEVELS_HIGHER_THAN_FISHING_PENALTY = 1670;
+    public static final int REELING_SUCCESSFUL_PENALTY_S1 = 1671;
+    public static final int PUMPING_SUCCESSFUL_PENALTY_S1 = 1672;
+    
     // Game Time messages
     public static final int TIME_S1_S2_IN_THE_DAY = 927;
     public static final int TIME_S1_S2_IN_THE_NIGHT = 928;

@@ -36,17 +36,18 @@ public class ExFishingHpRegen extends ServerBasePacket
 {
 	private static final String _S__FE_16_EXFISHINGHPREGEN = "[S] FE:16 ExFishingHpRegen";
 	private L2Character _character;
-	private int _time, _fishHP, _HPmode, _Anim, _GoodUse, _Penalty;	
+	private int _time, _fishHP, _HPmode, _Anim, _GoodUse, _Penalty, _hpBarColor;	
 	
-	public ExFishingHpRegen(L2Character character, int time, int fishHP, int HPmode, int anim, int GoodUse, int penalty)
+	public ExFishingHpRegen(L2Character character, int time, int fishHP, int HPmode, int GoodUse, int anim, int penalty, int hpBarColor)
 	{
 		_character = character;
 		_time = time;
 		_fishHP = fishHP;
 		_HPmode = HPmode;
-		_Anim = anim;
 		_GoodUse = GoodUse;
+		_Anim = anim;
 		_Penalty = penalty;
+		_hpBarColor = hpBarColor;
 	}
 	
 	/* (non-Javadoc)
@@ -70,10 +71,11 @@ public class ExFishingHpRegen extends ServerBasePacket
 		writeD(_character.getObjectId());
 		writeD(_time);
 		writeD(_fishHP);
-		writeC(_HPmode); //HP raise -1 stop - 0
-		writeC(_GoodUse); //its 1 when skill is correct used
-		writeC(_Anim); //Anim - 1 realing,2 - pumping, 0 - none
-		writeD(_Penalty); //Penalty		
+		writeC(_HPmode); // 0 = HP stop, 1 = HP raise 
+		writeC(_GoodUse); // 0 = none, 1 = success, 2 = failed
+		writeC(_Anim); // Anim: 0 = none, 1 = reeling, 2 = pumping
+		writeD(_Penalty); // Penalty	
+		writeC(_hpBarColor); // 0 = normal hp bar, 1 = purple hp bar
 		
 	}
 

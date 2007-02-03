@@ -29,11 +29,12 @@ public class ExFishingStart extends ServerBasePacket
 {
 	private static final String _S__FE_13_EXFISHINGSTART = "[S] FE:13 ExFishingStart";
 	private L2Character _character;
-	private int _x,_y,_z;	
+	private int _x,_y,_z, _fishType;	
 	
-	public ExFishingStart(L2Character character, int x, int y,int z)
+	public ExFishingStart(L2Character character, int fishType, int x, int y,int z)
 	{
 		_character = character;
+		_fishType = fishType;
 		_x = x;
 		_y = y;
 		_z = z;
@@ -57,11 +58,12 @@ public class ExFishingStart extends ServerBasePacket
 		writeC(0xfe);
 		writeH(0x13);
 		writeD(_character.getObjectId());
-		writeD(0x02); //fish speed??
+		writeD(_fishType); // fish type
 		writeD(_x); // x poisson
 		writeD(_y); // y poisson
 		writeD(_z); // z poisson
-				
+		writeC((_fishType >= 7 && _fishType <= 9) ? 0x01 : 0x00); // 0 = day lure  1 = night lure
+		writeC(0x00);
 	}
 
 	/* (non-Javadoc)

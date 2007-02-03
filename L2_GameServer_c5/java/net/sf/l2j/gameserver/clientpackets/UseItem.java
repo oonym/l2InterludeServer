@@ -97,7 +97,7 @@ public class UseItem extends ClientBasePacket
             if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
             {
                 // You cannot do anything else while fishing
-                SystemMessage sm = new SystemMessage(1471);
+                SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_DO_WHILE_FISHING_3);
                 getClient().getActiveChar().sendPacket(sm);
                 sm = null;
                 return;
@@ -237,7 +237,7 @@ public class UseItem extends ClientBasePacket
                         activeChar.sendPacket(new ShowCalculator(4393));
                 }
                 else if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD)
-                    && ((itemid >= 6519 && itemid <= 6527) || (itemid >= 7807 && itemid <= 7809)))
+                    && ((itemid >= 6519 && itemid <= 6527) || (itemid >= 7610 && itemid <= 7613) || (itemid >= 7807 && itemid <= 7809) || (itemid >= 8484 && itemid <= 8486) || (itemid >= 8505 && itemid <= 8513)))
                 {
                     activeChar.getInventory().setPaperdollItem(Inventory.PAPERDOLL_LHAND, item);
                 

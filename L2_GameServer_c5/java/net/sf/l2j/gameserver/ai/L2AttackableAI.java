@@ -45,6 +45,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2MinionInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PenaltyMonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
@@ -675,7 +676,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     {
                         if (/*sk.getCastRange() >= dist && sk.getCastRange() <= 70 && */!sk.isPassive()
                             && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk)
-                            && !_actor.isSkillDisabled(sk.getId()) && Rnd.nextInt(100) <= 8)
+                            && !_actor.isSkillDisabled(sk.getId()) && (Rnd.nextInt(100) <= 8 
+                            || (_actor instanceof L2PenaltyMonsterInstance && Rnd.nextInt(100) <= 20)))
                         {
                             L2Object OldTarget = _actor.getTarget();
                             if (sk.getSkillType() == L2Skill.SkillType.BUFF

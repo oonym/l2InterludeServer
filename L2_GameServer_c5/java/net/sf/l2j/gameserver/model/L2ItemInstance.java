@@ -884,4 +884,7 @@ public final class L2ItemInstance extends L2Object
     {
     	return _protected;
     }
+    public boolean isNightLure() {
+    	return ((_itemId >= 8505 && _itemId <= 8513) || _itemId == 8485);
+    }
 }

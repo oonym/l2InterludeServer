@@ -427,10 +427,10 @@ public abstract class L2Character extends L2Object
 		// Get the active weapon item corresponding to the active weapon instance (always equiped in the right hand)
 		L2Weapon weaponItem = getActiveWeaponItem();
 		
-		if ((weaponItem!=null && weaponItem.getItemType() == L2WeaponType.ROD))
+		if (weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD)
 		{
 			//	You can't make an attack with a fishing pole.
-			((L2PcInstance)this).sendPacket(new SystemMessage(1472));
+			((L2PcInstance)this).sendPacket(new SystemMessage(SystemMessage.CANNOT_ATTACK_WITH_FISHING_POLE));
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 
             ActionFailed af = new ActionFailed();
@@ -1011,11 +1011,11 @@ public abstract class L2Character extends L2Object
             else if (this instanceof L2Summon)
                 ((L2Summon)this).getOwner().rechargeAutoSoulShot(false, true, true);
         }
-        else if (skill.useFishShot())
-        {
-        	if (this instanceof L2PcInstance) 
-        	  ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
-        }
+        //else if (skill.useFishShot())
+        //{
+        //	if (this instanceof L2PcInstance) 
+        //	  ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
+        //}
         
 		// Get all possible targets of the skill in a table in function of the skill target type
 		L2Object[] targets = skill.getTargetList(this);
@@ -1143,7 +1143,7 @@ public abstract class L2Character extends L2Object
 		broadcastPacket(new MagicSkillUser(this, target, displayId, level, skillTime, reuseDelay));
 		
 		// Send a system message USE_S1 to the L2Character
-		if (this instanceof L2PcInstance) 
+		if (this instanceof L2PcInstance && magicId != 1312) 
         {
 			SystemMessage sm = new SystemMessage(SystemMessage.USE_S1);
 			sm.addSkillName(magicId);

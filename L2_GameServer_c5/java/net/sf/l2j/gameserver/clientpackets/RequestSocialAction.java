@@ -62,7 +62,7 @@ public class RequestSocialAction extends ClientBasePacket
         // You cannot do anything else while fishing
         if (activeChar.isFishing())
         {
-            SystemMessage sm = new SystemMessage(1471);
+            SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_DO_WHILE_FISHING_3);
             activeChar.sendPacket(sm);
             sm = null;
             return;

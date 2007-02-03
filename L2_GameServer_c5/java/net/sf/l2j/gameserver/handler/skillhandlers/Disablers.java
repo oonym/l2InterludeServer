@@ -60,6 +60,7 @@ public class Disablers implements ISkillHandler
     protected static Logger _log = Logger.getLogger(L2Skill.class.getName());
     private  String[] _negateStats=null;
     private  float _negatePower=0.f;
+    private int _negateId=0;
     
     public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
     {
@@ -73,7 +74,7 @@ public class Disablers implements ISkillHandler
 
         if (activeChar instanceof L2PcInstance)
         {
-            if (weaponInst == null)
+            if (weaponInst == null && skill.isOffensive())
             {
                 SystemMessage sm2 = new SystemMessage(614);
                 sm2.addString("You must equip a weapon before casting a spell.");
@@ -394,6 +395,13 @@ public class Disablers implements ISkillHandler
                     	}
                         break;
                     }
+                    // fishing potion
+                    else if (skill.getId() == 2275) {
+                	 _negatePower = skill.getNegatePower();
+                	 _negateId = skill.getNegateId();
+                	 
+                		 negateEffect(target,SkillType.BUFF,_negatePower,_negateId);
+                    }
                 	// all others negate type skills
                     else
                     {
@@ -403,7 +411,7 @@ public class Disablers implements ISkillHandler
                     	 for (String stat : _negateStats)
                     	 {                                
                     		 stat = stat.toLowerCase().intern();
-	                    	 if (stat == "buff") negateEffect(target,SkillType.BUFF,-1);
+                        	 if (stat == "buff") negateEffect(target,SkillType.BUFF,-1);
 	                    	 if (stat == "debuff") negateEffect(target,SkillType.DEBUFF,-1);
 	                    	 if (stat == "weakness") negateEffect(target,SkillType.WEAKNESS,-1);
 	                    	 if (stat == "stun") negateEffect(target,SkillType.STUN,-1);
@@ -447,16 +455,30 @@ public class Disablers implements ISkillHandler
     } //end void
     
     private void negateEffect(L2Character target, SkillType type, double power) {
+    	negateEffect(target, type, power, 0);
+    }
+    
+    private void negateEffect(L2Character target, SkillType type, double power, int skillId) {
         L2Effect[] effects = target.getAllEffects();
         for (L2Effect e : effects)
         	if (power == -1) // if power is -1 the effect is always removed without power/lvl check ^^
         	{
-        		if (e.getSkill().getSkillType() == type || (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type))
-        			e.exit();
+        		if (e.getSkill().getSkillType() == type || (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type)) {
+        			if (skillId != 0)
+        				if (skillId == e.getSkill().getId())
+        					e.exit();
+        			else
+        				e.exit();
+        		}
         	}
         	else if ((e.getSkill().getSkillType() == type && e.getSkill().getPower() <= power) 
-        			|| (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type && e.getSkill().getEffectLvl() <= power))
-                e.exit();
+        			|| (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type && e.getSkill().getEffectLvl() <= power)) {
+    			if (skillId != 0)
+    				if (skillId == e.getSkill().getId())
+    					e.exit();
+    			else
+    				e.exit();
+        	}
     }
 
     public SkillType[] getSkillIds()

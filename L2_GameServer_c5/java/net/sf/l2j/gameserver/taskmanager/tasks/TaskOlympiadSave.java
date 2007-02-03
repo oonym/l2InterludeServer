@@ -37,6 +37,6 @@ public class TaskOlympiadSave extends Task
     public void initializate()
     {
         super.initializate();
-        TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "0", "1800000", "");
+        TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "900000", "1800000", "");
     }
 }

@@ -139,7 +139,7 @@ public class RequestDropItem extends ClientBasePacket
 		if (activeChar.isFishing())
         {
 			//You can't mount, dismount, break and drop items while fishing
-            activeChar.sendPacket(new SystemMessage(1470));
+            activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DO_WHILE_FISHING_2));
             return;
         }
 		
