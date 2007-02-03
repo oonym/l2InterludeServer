@@ -42,82 +42,80 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class ExtractableItems implements IItemHandler
 {
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
-    {
-        if (!(playable instanceof L2PcInstance))
-        	return;
+	{
+		if (!(playable instanceof L2PcInstance))
+			return;
 
-        L2PcInstance activeChar = (L2PcInstance)playable;
+		L2PcInstance activeChar = (L2PcInstance) playable;
 
-        int itemID = item.getItemId();
-        L2ExtractableItem exitem = ExtractableItemsData.getInstance().getExtractableItem(itemID);
+		int itemID = item.getItemId();
+		L2ExtractableItem exitem = ExtractableItemsData.getInstance()
+				.getExtractableItem(itemID);
 
-        if (exitem == null)
-        	return;
-        
-        int createItemID = 0,
-        	createAmount = 0,
-        	rndNum = Rnd.get(100),
-        	chanceFrom = 0;
+		if (exitem == null)
+			return;
 
-        // calculate extraction
-        for (L2ExtractableProductItem expi : exitem.getProductItemsArray())
-        {
-        	int chance = expi.getChance();
-        	
-        	if (rndNum >= chanceFrom && rndNum <= chance+chanceFrom)
-        	{
-        		createItemID = expi.getId();
-        		createAmount = expi.getAmmount();
-        		break;
-        	}
-        	
-        	chanceFrom += chance;
-        }
-        
-	    if (createItemID == 0)
-          {
-          	activeChar.sendMessage("Nothing happend.");
-	    	return;
-          }
-        
-	    PcInventory inv = activeChar.getInventory();
-        
-        if (ItemTable.getInstance().createDummyItem(createItemID).isStackable())
-            inv.addItem("Extract", createItemID, createAmount, activeChar, null);
-        else
-        {
-            for (int i=0;i<createAmount;i++)
-                inv.addItem("Extract", createItemID, 1, activeChar, item);
-        }
-        
-	    if (createItemID < 0)
-        {
-        	activeChar.sendMessage("Item failed to open");  // TODO: Put a more proper message here.
-        }
-	    else
-	    {
-	        SystemMessage sm;
+		int createItemID = 0, createAmount = 0, rndNum = Rnd.get(100), chanceFrom = 0;
 
-	        if (createAmount > 1)
-	        {
-	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
-	            sm.addItemName(createItemID);
-	            sm.addNumber(createAmount);
-	        }
-	        else
-	        {
-	            sm = new SystemMessage(SystemMessage.EARNED_ITEM);
-	            sm.addItemName(createItemID);
-	        }
-	        activeChar.sendPacket(sm);
-	    }
-        
-        activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar.getTarget(), true);
-        activeChar.sendPacket(new ItemList(activeChar, false));
-        StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
-        su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
-        activeChar.sendPacket(su);
-    }
+		// calculate extraction
+		for (L2ExtractableProductItem expi : exitem.getProductItemsArray())
+		{
+			int chance = expi.getChance();
+
+			if (rndNum >= chanceFrom && rndNum <= chance + chanceFrom)
+			{
+				createItemID = expi.getId();
+				createAmount = expi.getAmmount();
+				break;
+			}
+
+			chanceFrom += chance;
+		}
+
+		if (createItemID == 0)
+		{
+			activeChar.sendMessage("Nothing happend.");
+			return;
+		}
+
+		PcInventory inv = activeChar.getInventory();
+
+		if (createItemID > 0)
+		{
+			if (ItemTable.getInstance().createDummyItem(createItemID)
+					.isStackable())
+				inv.addItem("Extract", createItemID, createAmount, activeChar,
+						null);
+			else
+			{
+				for (int i = 0; i < createAmount; i++)
+					inv.addItem("Extract", createItemID, 1, activeChar, item);
+			}
+			SystemMessage sm;
+
+			if (createAmount > 1)
+			{
+				sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+				sm.addItemName(createItemID);
+				sm.addNumber(createAmount);
+			} else
+			{
+				sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+				sm.addItemName(createItemID);
+			}
+			activeChar.sendPacket(sm);
+		} else
+		{
+			activeChar.sendMessage("Item failed to open"); // TODO: Put a more proper message here.
+		}
+
+		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar
+				.getTarget(), true);
+		activeChar.sendPacket(new ItemList(activeChar, false));
+		StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
+		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
+		activeChar.sendPacket(su);
+	}
     
     public int[] getItemIds()
     {
