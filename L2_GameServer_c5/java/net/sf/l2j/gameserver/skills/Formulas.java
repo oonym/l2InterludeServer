@@ -1662,25 +1662,10 @@ public final class Formulas
 
 	public boolean calcMagicSuccess(L2Character attacker, L2Character target, L2Skill skill)
 	{
-		/* Level difference: 
-		 *  less then 10 : full chance
-		 *  10 - 20      : reduced chance
-		 *  20 and more  : min chance
-		 */
-		int value = target.isRaid() ? 130 : 170; // chance is reduced for RaidBoss
-		int lvlDepend = 6;
+		double lvlDifference = (target.getLevel() - (skill.getMagicLevel() > 0 ? skill.getMagicLevel() : attacker.getLevel()));
+		int rate = Math.round((float)(Math.pow(1.3, lvlDifference) * 100));
 
-		// TODO: Temporary fix for NPC skills with MagicLevel not set
-		// int lvlmodifier = (skill.getMagicLevel() - target.getLevel()) * lvlDepend;
-		int lvlmodifier = ((skill.getMagicLevel() > 0 ? skill.getMagicLevel() : attacker.getLevel()) - target.getLevel())
-			* lvlDepend;
-
-		int rate = value + lvlmodifier;
-
-		if (rate > 99) rate = 99;
-		else if (rate < 1) rate = 1;
-
-		return (Rnd.get(100) < rate);
+		return (Rnd.get(10000) > rate);
 	}
 
 	public boolean calcAltSkillSuccess(L2Character activeChar, L2Character target, L2Skill skill)

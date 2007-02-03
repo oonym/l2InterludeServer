@@ -6479,14 +6479,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				// Send a Server->Client packet ActionFailed to the L2PcInstance
 				sendPacket(new ActionFailed());
 				return;
-			} else if (((L2Attackable)target).isSpoil())
-			{
-				// Send a System Message to the caster
-				sendPacket(new SystemMessage(SystemMessage.ALREDAY_SPOILED));
-				
-				// Send a Server->Client packet ActionFailed to the L2PcInstance
-				sendPacket(new ActionFailed());
-				return;
 			}
 		}
         
@@ -6495,14 +6487,24 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             int spoilerId = ((L2Attackable)target).getIsSpoiledBy();
 
-            if ((((L2Attackable)target).isDead() && !((L2Attackable)target).isSpoil()) || (getObjectId() != spoilerId && !isInLooterParty(spoilerId)))
-            {
-                // Send a System Message to the L2PcInstance
-                sendPacket(new SystemMessage(SystemMessage.SWEEPER_FAILED_TARGET_NOT_SPOILED));
-
-                // Send a Server->Client packet ActionFailed to the L2PcInstance
-                sendPacket(new ActionFailed());
-                return;
+            if (((L2Attackable)target).isDead()) {
+            	if (!((L2Attackable)target).isSpoil()) {
+	                // Send a System Message to the L2PcInstance
+	                sendPacket(new SystemMessage(SystemMessage.SWEEPER_FAILED_TARGET_NOT_SPOILED));
+	
+	                // Send a Server->Client packet ActionFailed to the L2PcInstance
+	                sendPacket(new ActionFailed());
+	                return;
+            	}
+            	
+            	if (getObjectId() != spoilerId && !isInLooterParty(spoilerId)) {
+	                // Send a System Message to the L2PcInstance
+	                sendPacket(new SystemMessage(SystemMessage.SWEEP_NOT_ALLOWED));
+	
+	                // Send a Server->Client packet ActionFailed to the L2PcInstance
+	                sendPacket(new ActionFailed());
+	                return;
+            	}
             }
         }
 
