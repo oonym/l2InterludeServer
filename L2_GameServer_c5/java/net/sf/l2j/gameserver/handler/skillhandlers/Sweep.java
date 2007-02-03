@@ -97,6 +97,7 @@ public class Sweep implements ISkillHandler
 					}
 				}
             }
+            target.setDecayed(true);
             target.endDecayTask();
             
     		if (send)

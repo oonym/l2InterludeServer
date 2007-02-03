@@ -107,8 +107,10 @@ public class L2SkillDrain extends L2Skill {
             }
             
             // Check to see if we should do the decay right after the cast
-            if (target.isDead() && getTargetType() == SkillTargetType.TARGET_CORPSE_MOB && target instanceof L2NpcInstance)
+            if (target.isDead() && getTargetType() == SkillTargetType.TARGET_CORPSE_MOB && target instanceof L2NpcInstance) {
+            	((L2NpcInstance)target).setDecayed(true);
                 ((L2NpcInstance)target).endDecayTask();
+            }
 		}
         //effect self :]
         L2Effect effect = activeChar.getEffect(getId());
