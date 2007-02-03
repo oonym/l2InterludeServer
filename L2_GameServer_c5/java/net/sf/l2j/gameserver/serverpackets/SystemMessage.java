@@ -573,6 +573,10 @@ public class SystemMessage extends ServerBasePacket
     public static final int FORCE_INCREASED_TO_S1 = 323;
     public static final int FORCE_MAXLEVEL_REACHED = 324;
 
+    // Game Time messages
+    public static final int TIME_S1_S2_IN_THE_DAY = 927;
+    public static final int TIME_S1_S2_IN_THE_NIGHT = 928;
+    
     /**
 	 * @param _characters
 	 */

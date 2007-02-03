@@ -750,14 +750,6 @@ public final class Config
     /** Allow player with karma to use warehouse ?*/
     public static boolean ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE;
 
-    // Day/Night Status
-    /** Force the client to change their day and night status ? */
-    public static boolean DAY_STATUS_FORCE_CLIENT_UPDATE;
-    /** Time for sunrise */
-    public static int     DAY_STATUS_SUN_RISE_AT;
-    /** Time for sunset */
-    public static int     DAY_STATUS_SUN_SET_AT;
-    
     // Packet information
     /** Count the amount of packets per minute ? */  
 	public static boolean  COUNT_PACKETS           = false;
@@ -1142,10 +1134,6 @@ public final class Config
                 FORCE_INVENTORY_UPDATE          = Boolean.valueOf(optionsSettings.getProperty("ForceInventoryUpdate", "False"));
 
                 AUTODELETE_INVALID_QUEST_DATA   = Boolean.valueOf(optionsSettings.getProperty("AutoDeleteInvalidQuestData", "False"));
-                             
-                DAY_STATUS_SUN_RISE_AT          = Integer.parseInt(optionsSettings.getProperty("DayStatusSunRiseAt", "6"));
-                DAY_STATUS_SUN_SET_AT           = Integer.parseInt(optionsSettings.getProperty("DayStatusSunSetAt", "18"));
-                DAY_STATUS_FORCE_CLIENT_UPDATE  = Boolean.valueOf(optionsSettings.getProperty("DayStatusForceClientUpdate", "True"));
 
                 THREAD_P_EFFECTS                = Integer.parseInt(optionsSettings.getProperty("ThreadPoolSizeEffects", "6"));
                 THREAD_P_GENERAL                = Integer.parseInt(optionsSettings.getProperty("ThreadPoolSizeGeneral", "15"));
@@ -1864,10 +1852,6 @@ public final class Config
         else if (pName.equalsIgnoreCase("MaximumOnlineUsers")) MAXIMUM_ONLINE_USERS = Integer.parseInt(pValue);
 
         else if (pName.equalsIgnoreCase("ZoneTown")) ZONE_TOWN = Integer.parseInt(pValue);
-
-        else if (pName.equalsIgnoreCase("DayStatusForceClientUpdate")) DAY_STATUS_FORCE_CLIENT_UPDATE = Boolean.valueOf(pValue);
-        else if (pName.equalsIgnoreCase("DayStatusSunRiseAt")) DAY_STATUS_SUN_RISE_AT = Integer.parseInt(pValue);
-        else if (pName.equalsIgnoreCase("DayStatusSunSetAt")) DAY_STATUS_SUN_SET_AT = Integer.parseInt(pValue);
 
         else if (pName.equalsIgnoreCase("MaximumUpdateDistance")) MINIMUM_UPDATE_DISTANCE = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("MinimumUpdateTime")) MINIMUN_UPDATE_TIME = Integer.parseInt(pValue);

@@ -25,15 +25,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.ServerBasePacket;
-import net.sf.l2j.gameserver.serverpackets.SunRise;
-import net.sf.l2j.gameserver.serverpackets.SunSet;
 
 /**
  * This class ...
@@ -254,37 +248,12 @@ public class GameTimeController
 		public void run()
 		{
 			int h = (getGameTime() / 60) % 24; // Time in hour
-			boolean tempIsNight = (h < Config.DAY_STATUS_SUN_RISE_AT || h >= Config.DAY_STATUS_SUN_SET_AT);
+			boolean tempIsNight = (h < 6);
             
-			if (tempIsNight == _isNight) // If diff day/night state
-                return; // Do nothing if same state
-			else 
-            {
+			if (tempIsNight != _isNight) { // If diff day/night state
                 _isNight = tempIsNight; // Set current day/night varible to value of temp varible
                 
                 DayNightSpawnManager.getInstance().notifyChangeMode();
-    
-    			if (!Config.DAY_STATUS_FORCE_CLIENT_UPDATE) // Do not force client to update their day/night status
-    				return;
-    
-    			if (SevenSigns.getInstance().isSealValidationPeriod()) // Do nothing if in Seal validation period 
-    				return;
-    
-    			// Force client day/night cycle to sync everyone's day/night state
-    			ServerBasePacket packet;
-    			if (_isNight) // If is now night
-    			{
-    				packet = new SunSet(); // Set client day/night state to night
-    				if (Config.DEBUG) _log.fine("SunSet");
-    			}
-    			else
-    			{
-    				packet = new SunRise(); // Set client day/night state to day
-    				if (Config.DEBUG) _log.fine("SunRise");
-    			}
-    
-    			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
-    				player.sendPacket(packet);
             }
 		}
 	}

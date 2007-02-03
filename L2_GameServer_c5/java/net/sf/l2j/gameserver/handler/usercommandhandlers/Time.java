@@ -17,10 +17,6 @@
  */
 package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -41,21 +37,29 @@ public class Time implements IUserCommandHandler
         if (COMMAND_IDS[0] != id) return false;
         
 		int t = GameTimeController.getInstance().getGameTime();
-		int h = t/60;
-		int m = t%60;
-		Calendar gamt = Calendar.getInstance();
-		gamt.set(Calendar.HOUR_OF_DAY, h);
-		gamt.set(Calendar.MINUTE, m);
-		
-		String RealTime = (new SimpleDateFormat("H:mm")).format(new Date());
-		String GameTime = (new SimpleDateFormat("H:mm")).format(gamt.getTime());
+		String h = "" + (t/60)%24;
+		String m;
+		if (t%60 < 10)
+			m = "0" + t%60;
+		else
+			m = "" + t%60;
 
-		SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
-        sm.addString("Game Time: "+GameTime+", Real Time: "+RealTime);
+
+
+		SystemMessage sm;
+		if (GameTimeController.getInstance().isNowNight()) {
+			sm = new SystemMessage(SystemMessage.TIME_S1_S2_IN_THE_NIGHT);
+        	sm.addString(h);
+        	sm.addString(m);
+		}
+		else {
+			sm = new SystemMessage(SystemMessage.TIME_S1_S2_IN_THE_DAY);
+	       	sm.addString(h);
+        	sm.addString(m);
+		}
         activeChar.sendPacket(sm);
         return true;
     }
-
     public int[] getUserCommandList()
     {
         return COMMAND_IDS;
