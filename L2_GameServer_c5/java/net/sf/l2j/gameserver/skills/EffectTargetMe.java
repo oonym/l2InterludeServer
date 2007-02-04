@@ -19,6 +19,7 @@ package net.sf.l2j.gameserver.skills;
 
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 
 /**
  *
@@ -50,8 +51,12 @@ public class EffectTargetMe extends L2Effect
     public boolean onActionTime()
     {
     	//Should only work on PC?
-    	if (getEffected() instanceof L2PcInstance)        
+    	if (getEffected() instanceof L2PcInstance)
+    	{
     		getEffected().setTarget(getEffector());
+    		MyTargetSelected my = new MyTargetSelected(getEffector().getObjectId(), 0);
+    		getEffected().sendPacket(my);
+    	}    		
         return true;
     }
 }
