@@ -437,7 +437,7 @@ public class GameServerThread extends Thread
 		}
 	}
 	
-	public void KickPlayer(String account)
+	public void kickPlayer(String account)
 	{
 		KickPlayer kp = new KickPlayer(account);
 		try

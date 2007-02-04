@@ -228,7 +228,7 @@ public class ClientThread extends Thread
                                     }
                                     if (lc.isAccountInAnyGameServer(account)) {
                                         _log.warning("Account is in use on Game server (kicking off): " + account);
-                                    	GameServerTable.getInstance().getGameServerThread(lc.getGameServerIDforAccount(account)).KickPlayer(account);
+                                    	GameServerTable.getInstance().getGameServerThread(lc.getGameServerIDforAccount(account)).kickPlayer(account);
                                         lc.removeGameServerLogin(account);
                                     }
                                     LoginFail lok = new LoginFail(LoginFail.REASON_ACCOUNT_IN_USE);
