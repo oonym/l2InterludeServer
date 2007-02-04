@@ -21,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.pathfinding.utils.BinaryNodeHeap;
+import net.sf.l2j.gameserver.pathfinding.utils.FastNodeList;
 
 /**
  *
@@ -74,6 +76,46 @@ public abstract class PathFinding
 					if (!visited.contains(n) && !to_visit.contains(n))
 					{
 						n.setParent(node);
+						to_visit.add(n);
+					}
+				}
+			}
+		}
+		//No Path found
+		return null;
+	}
+	
+	public List<AbstractNodeLoc> searchAStar(Node start, Node end)
+	{
+		int start_x = start.getLoc().getX();
+		int start_y = start.getLoc().getY();
+		int end_x = end.getLoc().getX();
+		int end_y = end.getLoc().getY();
+		//List of Visited Nodes
+		FastNodeList visited = new FastNodeList(800/2);//TODO! Add limit to cfg
+
+		// List of Nodes to Visit
+		BinaryNodeHeap to_visit = new BinaryNodeHeap(800);
+		to_visit.add(start);
+		
+		int i = 0;
+		while (i < 800)//TODO! Add limit to cfg
+		{
+			Node node = to_visit.removeFirst();
+			if (node.equals(end)) //path found!
+				return constructPath(node);
+			else
+			{
+				visited.add(node);
+				node.attacheNeighbors();
+				for (Node n : node.getNighbors())
+				{
+					if (!visited.contains(n) && !to_visit.contains(n))
+					{
+						i++;
+						n.setParent(node);
+						n.setCost(Math.abs(start_x - n.getLoc().getNodeX())+Math.abs(start_y - n.getLoc().getNodeY())
+								+Math.abs(end_x - n.getLoc().getNodeX())+Math.abs(end_y - n.getLoc().getNodeY()));
 						to_visit.add(n);
 					}
 				}
