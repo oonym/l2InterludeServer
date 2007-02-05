@@ -23,7 +23,6 @@ import java.nio.ByteBuffer;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.TargetUnselected;
 
 /**
@@ -54,21 +53,15 @@ public class RequestTargetCanceld extends ClientBasePacket
 		L2Character activeChar = getClient().getActiveChar();
         if (activeChar != null)
         {
-            if (_unselect == 1 && activeChar.getTarget() != null)
+            if (_unselect == 0)
             {
-                sendPacket(new TargetUnselected(activeChar));
-                activeChar.setTarget(null);                                
+            	if (activeChar.isCastingNow())
+            		activeChar.abortCast();
+            	else if (activeChar.getTarget() != null)
+            		activeChar.setTarget(null);
             }
-	    
-		    CtrlIntention intention = activeChar.getAI().getIntention();
-		    if (
-		    		intention != CtrlIntention.AI_INTENTION_REST &&				// not sitting
-		    		intention != CtrlIntention.AI_INTENTION_MOVE_TO &&			// not walking
-		    		intention != CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT	// not moving in a boat
-		    	)
-                activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-            activeChar.abortAttack();       
-            activeChar.abortCast();       
+            else if (activeChar.getTarget() != null)
+            	activeChar.setTarget(null);
         }
 	}
 
