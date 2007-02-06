@@ -23,7 +23,7 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
 	public static final int DEFAULT_CAPACITY = 50;
     public static final int DEFAULT_FORGET_TIME = 300000; //5 Minutes
     
-    FastMap<K,CacheNode> _cache = new FastMap<K,CacheNode>();
+    FastMap<K,CacheNode> _cache = new FastMap<K,CacheNode>().setKeyComparator(FastComparator.DIRECT);
     FastMap<K,V> _map;
     FastList<K> _mruList = new FastList<K>();
     int _cacheSize;
@@ -40,13 +40,9 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
             node = object;
         }
         
-        public synchronized boolean equals(Object object)
+        public boolean equals(Object object)
         {
-        	boolean ret;
-        	synchronized (object) {
-        		ret = node == object;
-        	}
-        	return ret;
+        	return node == object;
         }
         
     }
@@ -95,22 +91,16 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         _map = map;
         _cacheSize = max;
         _forgetTime = forgetTime;
-    }
-    
-    // Overrides.
-    public synchronized FastCollection setValueComparator(FastComparator comparator) {
-        super.setValueComparator(comparator);
-        _map.setKeyComparator(comparator);
-        _cache.setKeyComparator(comparator);
-        return this;
+        _map.setKeyComparator(FastComparator.DIRECT);
     }
     
     // Implements Reusable.
     public synchronized void reset() {
-        super.setValueComparator(FastComparator.DIRECT);
         _map.reset();
         _cache.reset();
         _mruList.reset();
+        _map.setKeyComparator(FastComparator.DIRECT);
+        _cache.setKeyComparator(FastComparator.DIRECT);
     }
     
     public synchronized V get(K key)
@@ -186,11 +176,11 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
     }
     
     // Implements FastCollection abstract method.
-    public final synchronized Record head() {
+    public final Record head() {
         return _mruList.head();
     }
 
-    public final synchronized Record tail() {
+    public final Record tail() {
         return _mruList.tail();
     }
 
