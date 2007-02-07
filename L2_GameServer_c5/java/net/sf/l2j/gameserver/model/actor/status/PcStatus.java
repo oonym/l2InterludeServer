@@ -9,6 +9,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
+import net.sf.l2j.gameserver.util.Util;
 
 public class PcStatus extends PlayableStatus
 {
@@ -42,7 +43,8 @@ public class PcStatus extends PlayableStatus
         {
             // Check and calculate transfered damage
             L2Summon summon = getActiveChar().getPet();
-            if (summon != null && summon instanceof L2SummonInstance)
+            //TODO correct range 
+            if (summon != null && summon instanceof L2SummonInstance && Util.checkIfInRange(900, getActiveChar(), summon, true))
             {
                 int tDmg = (int)value * (int)getActiveChar().getStat().calcStat(Stats.TRANSFER_DAMAGE_PERCENT, 0, null, null) /100;
                 
