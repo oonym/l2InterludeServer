@@ -1,17 +1,17 @@
 ##############################################
-#               L2j geodata                  #
+#               L2j pathnode                 #
 #                                            #
 #       All files are integral part          # 
 #          part of l2j server.               #
 #                                            #
 #                                            #
-#         To make geodata  working           #
+#         To make pathnode working           #
 #           unrar all files into             #
-#        /gameserver/data/geodata            #
+#        /gameserver/data/pathnode           #
 #                 folder                     #
 #                                            #
-#           Link to geodata  files:          #
-# http://www.l2jserver.com/geodata/geodata   #
+#           Link to pathnode files:          #
+# http://www.l2jserver.com/geodata/pathnode  #
 #                                            #
 ##############################################
 
