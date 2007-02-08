@@ -1,4 +1,4 @@
-package net.sf.l2j.gameserver;
+package net.sf.l2j.gameserver.datatables;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

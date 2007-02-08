@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import net.sf.l2j.gameserver.ItemTable;
+import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.CropProcure;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;

@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.templates;
 import java.util.List;
 
 import javolution.util.FastList;
-import net.sf.l2j.gameserver.ItemTable;
+import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.base.Race;
 

@@ -15,7 +15,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-package net.sf.l2j.gameserver;
+package net.sf.l2j.gameserver.datatables;
 
 import net.sf.l2j.gameserver.model.L2Skill;
 

@@ -20,8 +20,8 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import net.sf.l2j.gameserver.lib.Rnd;
-import net.sf.l2j.gameserver.ExtractableItemsData;
-import net.sf.l2j.gameserver.ItemTable;
+import net.sf.l2j.gameserver.datatables.ExtractableItemsData;
+import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ExtractableItem;
 import net.sf.l2j.gameserver.model.L2ExtractableProductItem;

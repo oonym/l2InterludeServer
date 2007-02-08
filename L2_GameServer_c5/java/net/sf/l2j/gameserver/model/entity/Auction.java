@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.AuctionManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;

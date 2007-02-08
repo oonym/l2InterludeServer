@@ -22,8 +22,8 @@ import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.ClientThread;
-import net.sf.l2j.gameserver.MapRegionTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.model.L2SiegeClan;

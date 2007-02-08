@@ -33,7 +33,7 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.SpawnTable;
+import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.L2World;

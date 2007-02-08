@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.skills.l2skills;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.NpcTable;
+import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;

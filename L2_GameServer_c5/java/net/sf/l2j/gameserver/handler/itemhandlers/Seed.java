@@ -2,9 +2,9 @@ package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import java.util.Random;
 
-import net.sf.l2j.gameserver.MapRegionTable;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Manor;

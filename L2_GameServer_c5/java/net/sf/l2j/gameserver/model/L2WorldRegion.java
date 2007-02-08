@@ -25,10 +25,10 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import java.util.concurrent.ScheduledFuture;
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.SpawnTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.ai.L2AttackableAI;
+import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.util.L2ObjectSet;
 

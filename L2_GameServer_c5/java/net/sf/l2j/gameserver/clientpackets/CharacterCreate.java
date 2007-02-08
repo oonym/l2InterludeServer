@@ -25,13 +25,13 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.CharNameTable;
-import net.sf.l2j.gameserver.CharTemplateTable;
 import net.sf.l2j.gameserver.ClientThread;
-import net.sf.l2j.gameserver.ItemTable;
-import net.sf.l2j.gameserver.SkillTable;
-import net.sf.l2j.gameserver.SkillTreeTable;
 import net.sf.l2j.gameserver.TaskPriority;
+import net.sf.l2j.gameserver.datatables.CharNameTable;
+import net.sf.l2j.gameserver.datatables.CharTemplateTable;
+import net.sf.l2j.gameserver.datatables.ItemTable;
+import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2ShortCut;

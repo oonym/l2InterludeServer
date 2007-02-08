@@ -19,7 +19,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 
-import net.sf.l2j.gameserver.ClanTable;
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 

@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.serverpackets;
 //import java.util.Calendar; //signed time related
 //import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.ClanTable;
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2SiegeClan;
 import net.sf.l2j.gameserver.model.entity.Castle;

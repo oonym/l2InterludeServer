@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import javolution.util.FastList;
-import net.sf.l2j.gameserver.SpawnTable;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2ControllableMobAI;
+import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2ControllableMobInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;

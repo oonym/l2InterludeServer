@@ -23,7 +23,7 @@
  * 
  */
 
-package net.sf.l2j.gameserver;
+package net.sf.l2j.gameserver.datatables;
 
 import java.io.File;
 import java.util.Scanner;

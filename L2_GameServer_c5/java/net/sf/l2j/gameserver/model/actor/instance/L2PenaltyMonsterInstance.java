@@ -2,9 +2,9 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.Random;
 
-import net.sf.l2j.gameserver.SpawnTable;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.clientpackets.Say2;
+import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;

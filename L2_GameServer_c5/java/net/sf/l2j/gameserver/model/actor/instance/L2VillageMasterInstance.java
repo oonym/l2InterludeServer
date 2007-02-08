@@ -26,10 +26,10 @@ import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.CharTemplateTable;
-import net.sf.l2j.gameserver.ClanTable;
 import net.sf.l2j.gameserver.Olympiad;
-import net.sf.l2j.gameserver.SkillTreeTable;
+import net.sf.l2j.gameserver.datatables.CharTemplateTable;
+import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;

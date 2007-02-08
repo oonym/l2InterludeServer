@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-import net.sf.l2j.gameserver.MapRegionTable;
+import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Town;

@@ -23,7 +23,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.HennaTreeTable;
+import net.sf.l2j.gameserver.datatables.HennaTreeTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2HennaInstance;
 import net.sf.l2j.gameserver.serverpackets.HennaEquipList;
