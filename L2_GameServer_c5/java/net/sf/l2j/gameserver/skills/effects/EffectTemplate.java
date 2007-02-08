@@ -65,7 +65,7 @@ public final class EffectTemplate
 		_stackType = stackType;
 		_stackOrder = stackOrder;
 		try {
-			_func = Class.forName("net.sf.l2j.gameserver.skills.Effect"+func);
+			_func = Class.forName("net.sf.l2j.gameserver.skills.effects.Effect"+func);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

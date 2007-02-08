@@ -49,7 +49,7 @@ public final class FuncTemplate {
 		_order = order;
 		_lambda = lambda;
 		try {
-			_func = Class.forName("net.sf.l2j.gameserver.skills.Func"+func);
+			_func = Class.forName("net.sf.l2j.gameserver.skills.funcs.Func"+func);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
