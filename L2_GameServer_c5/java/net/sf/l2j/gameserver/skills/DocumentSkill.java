@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.skills.conditions.Condition;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
 import org.w3c.dom.Document;

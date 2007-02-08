@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.skills;
 
+import net.sf.l2j.gameserver.skills.funcs.Func;
+
 
 /**
  * A calculator is created to manage and dynamically calculate the effect of a character property (ex : MAX_HP, REGENERATE_HP_RATE...). 
