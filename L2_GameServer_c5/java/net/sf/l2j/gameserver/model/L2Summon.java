@@ -529,7 +529,7 @@ public abstract class L2Summon extends L2PlayableInstance
         //************************************* Check Consumables *******************************************
         
         // Check if the summon has enough MP
-        if (getCurrentMp() < skill.getMpConsume())
+        if (getCurrentMp() < getStat().getMpConsume(skill) + getStat().getMpInitialConsume(skill))
         {
             // Send a System Message to the caster
         	if (getOwner() != null)
