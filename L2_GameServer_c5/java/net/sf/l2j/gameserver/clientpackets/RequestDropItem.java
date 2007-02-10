@@ -82,24 +82,20 @@ public class RequestDropItem extends ClientBasePacket
     	if (activeChar == null) return;
         L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
         
-        if (item == null || _count == 0 || !activeChar.validateItemManipulation(_objectId, "drop")
-        		|| (
-        				(!Config.ALLOW_DISCARDITEM || Config.LIST_NONDROPPABLE_ITEMS.contains(item.getItemId()))
-        				&& !activeChar.isGM()
-        			)
-        )
-		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
-			return;
-		}
+        if (item == null 
+	|| _count == 0 
+	|| !activeChar.validateItemManipulation(_objectId, "drop") 
+	|| (!Config.ALLOW_DISCARDITEM && !activeChar.isGM()) 
+	|| !item.isDropable())
+	{
+		activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_THIS_ITEM));
+		return;
+	}
         if(item.getItemType() == L2EtcItemType.QUEST)
         {
         	return;
         }
         int itemId = item.getItemId();
-        
-        if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
-            return;
         
         // Cursed Weapons cannot be dropped
         if (CursedWeaponsManager.getInstance().isCursed(itemId))
@@ -107,7 +103,7 @@ public class RequestDropItem extends ClientBasePacket
         
         if(_count > item.getCount()) 
         {
-			activeChar.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_THIS_ITEM));
 			return;
         }
         

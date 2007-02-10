@@ -157,9 +157,9 @@ public class ItemTable
 	/** Table of SQL request in order to obtain items from tables [etcitem], [armor], [weapon] */
     private static final String[] SQL_ITEM_SELECTS  =
     {
-        "SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, durability, price, crystal_count, sellable FROM etcitem",
-        "SELECT item_id, name, bodypart, crystallizable, armor_type, weight, material, crystal_type, avoid_modify, durability, p_def, m_def, mp_bonus, price, crystal_count, sellable FROM armor",
-        "SELECT item_id, name, bodypart, crystallizable, weight, soulshots, spiritshots, material, crystal_type, p_dam, rnd_dam, weaponType, critical, hit_modify, avoid_modify, shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, durability, price, crystal_count, sellable FROM weapon"
+        "SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, durability, price, crystal_count, sellable, dropable, destroyable, tradeable FROM etcitem",
+        "SELECT item_id, name, bodypart, crystallizable, armor_type, weight, material, crystal_type, avoid_modify, durability, p_def, m_def, mp_bonus, price, crystal_count, sellable, dropable, destroyable, tradeable FROM armor",
+        "SELECT item_id, name, bodypart, crystallizable, weight, soulshots, spiritshots, material, crystal_type, p_dam, rnd_dam, weaponType, critical, hit_modify, avoid_modify, shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, durability, price, crystal_count, sellable, dropable, destroyable, tradeable FROM weapon"
     };
     /** List of etcItem */
     private static final Map<Integer, Item> itemData    = new FastMap<Integer, Item>();
@@ -309,6 +309,9 @@ public class ItemTable
         item.set.set("price",          rset.getInt("price"));
         item.set.set("crystal_count",  rset.getInt("crystal_count"));
         item.set.set("sellable",       Boolean.valueOf(rset.getString("sellable")));
+        item.set.set("dropable",       Boolean.valueOf(rset.getString("dropable")));
+        item.set.set("destroyable",       Boolean.valueOf(rset.getString("destroyable")));
+        item.set.set("tradeable",       Boolean.valueOf(rset.getString("tradeable")));
         
         if (item.type == L2WeaponType.PET)
         {
@@ -347,6 +350,9 @@ public class ItemTable
         item.set.set("crystallizable", Boolean.valueOf(rset.getString("crystallizable")));
         item.set.set("crystal_count", rset.getInt("crystal_count"));
         item.set.set("sellable", Boolean.valueOf(rset.getString("sellable")));
+        item.set.set("dropable", Boolean.valueOf(rset.getString("dropable")));
+        item.set.set("destroyable", Boolean.valueOf(rset.getString("destroyable")));
+        item.set.set("tradeable", Boolean.valueOf(rset.getString("tradeable")));
         if (bodypart == L2Item.SLOT_NECK ||
                 bodypart == L2Item.SLOT_HAIR ||
                 bodypart == L2Item.SLOT_FACE ||
@@ -408,6 +414,9 @@ public class ItemTable
         item.set.set("bodypart", 0);
         item.set.set("crystal_count", rset.getInt("crystal_count"));
         item.set.set("sellable", Boolean.valueOf(rset.getString("sellable")));
+        item.set.set("dropable", Boolean.valueOf(rset.getString("dropable")));
+        item.set.set("destroyable", Boolean.valueOf(rset.getString("destroyable")));
+        item.set.set("tradeable", Boolean.valueOf(rset.getString("tradeable")));
         String itemType = rset.getString("item_type");
         if (itemType.equals("none"))              item.type = L2EtcItemType.OTHER; // only for default
         else if (itemType.equals("castle_guard")) item.type = L2EtcItemType.SCROLL; // dummy

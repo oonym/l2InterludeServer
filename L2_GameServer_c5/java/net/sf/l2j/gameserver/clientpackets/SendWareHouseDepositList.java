@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.templates.L2EtcItemType;
 
 /**
  * This class ...
@@ -106,9 +107,7 @@ public class SendWareHouseDepositList extends ClientBasePacket
             	continue;
             }
             
-            int itemId = item.getItemId();
-            if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
-                continue;
+		if (!item.isTradeable() || item.getItemType() == L2EtcItemType.QUEST) return;
 
 			// Calculate needed adena and slots
 			if (item.getItemId() == 57) currentAdena -= count;

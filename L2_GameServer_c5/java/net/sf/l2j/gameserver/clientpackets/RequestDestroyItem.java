@@ -108,17 +108,13 @@ public class RequestDestroyItem extends ClientBasePacket
 			}
 		}
 
-		if (itemToRemove == null || itemToRemove.isWear()) return;
-        
-        int itemId = itemToRemove.getItemId();
-        
-        if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
-            return;
-        
-        // Cursed Weapons cannot be destroyed
-        if (CursedWeaponsManager.getInstance().isCursed(itemId))
-        	return;
-        
+		int itemId = itemToRemove.getItemId();
+		if (itemToRemove == null || itemToRemove.isWear() || !itemToRemove.isDestroyable() || CursedWeaponsManager.getInstance().isCursed(itemId)) 
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_THIS_ITEM));
+			return;
+		}
+
         if(!itemToRemove.isStackable() && count > 1)
         {
             Util.handleIllegalPlayerAction(activeChar,"[RequestDestroyItem] count > 1 but item is not stackable! oid: "+_objectId+" owner: "+activeChar.getName(),Config.DEFAULT_PUNISH);
