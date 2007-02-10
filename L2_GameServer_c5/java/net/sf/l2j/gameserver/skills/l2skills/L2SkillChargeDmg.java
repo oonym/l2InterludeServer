@@ -26,7 +26,7 @@ public class L2SkillChargeDmg extends L2Skill
 		charge_skill_id = set.getInteger("charge_skill_id");
 	}
 
-	public boolean checkCondition(L2Character activeChar)
+	public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
 	{
 		if (activeChar instanceof L2PcInstance)
 		{
@@ -40,7 +40,7 @@ public class L2SkillChargeDmg extends L2Skill
 				return false;
 			}
 		}
-		return super.checkCondition(activeChar, false);
+		return super.checkCondition(activeChar, itemOrWeapon);
 	}
 	
 	public void useSkill(L2Character caster, L2Object[] targets)
@@ -59,7 +59,8 @@ public class L2SkillChargeDmg extends L2Skill
 			caster.sendPacket(sm);
 			return;
 		}
-		effect.num_charges -= this.num_charges;
+		if (this.getTargetType() != SkillTargetType.TARGET_AREA && this.getTargetType() != SkillTargetType.TARGET_MULTIFACE)
+			effect.num_charges -= this.num_charges;
         double modifier = 0;
         modifier = effect.num_charges*0.33;
         //effect.num_charges = 0;
