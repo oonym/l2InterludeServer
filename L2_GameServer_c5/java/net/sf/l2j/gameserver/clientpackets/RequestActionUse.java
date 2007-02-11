@@ -448,10 +448,11 @@ public class RequestActionUse extends ClientBasePacket
         	}
 
         	L2Skill skill = _skills.get(skillId);
-            
+
         	if (skill == null) 
         	{
-        		_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
+        		if (Config.DEBUG)
+        			_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
         		return;
         	}
         	
