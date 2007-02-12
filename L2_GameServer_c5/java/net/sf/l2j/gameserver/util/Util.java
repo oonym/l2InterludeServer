@@ -33,6 +33,7 @@ import java.util.Collection;
 
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -159,20 +160,29 @@ public final class Util
     {
         if (obj1 == null || obj2 == null) return false;
         
+       int rad = 0;
+        if(obj1 instanceof L2Character)
+        	rad += ((L2Character)obj1).getTemplate().collisionRadius;
+        if(obj2 instanceof L2Character)
+        	rad += ((L2Character)obj2).getTemplate().collisionRadius;
+        
         double dx = obj1.getX() - obj2.getX();
         double dy = obj1.getY() - obj2.getY();
 
         if (includeZAxis)
         {
         	double dz = obj1.getZ() - obj2.getZ();
-            return (dx*dx + dy*dy + dz*dz) <= range * range;
+        	double d = dx*dx + dy*dy +dz*dz;
+        	
+            return d <= range*range + 2*range*rad + rad*rad;
         }
         else
         {
-            return (dx*dx + dy*dy) <= range * range;
+        	double d = dx*dx + dy*dy;
+        	
+            return d <= range*range + 2*range*rad +rad*rad;
         }
     }
-
     public static double convertHeadingToDegree(int heading)
     {
     	if (heading == 0) return 360;

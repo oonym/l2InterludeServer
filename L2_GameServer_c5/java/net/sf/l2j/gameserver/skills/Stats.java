@@ -62,6 +62,7 @@ public enum Stats
 	POWER_ATTACK_RANGE 	("pAtkRange"),
 	MAGIC_ATTACK_RANGE 	("mAtkRange"),
     POWER_ATTACK_ANGLE 	("pAtkAngle"),
+    ATTACK_COUNT_MAX    ("atkCountMax"),
 	// Run speed,
 	// walk & escape speed are calculated proportionally,
 	// magic speed is a buff
