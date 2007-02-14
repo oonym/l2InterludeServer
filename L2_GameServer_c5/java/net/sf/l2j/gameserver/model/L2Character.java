@@ -972,13 +972,13 @@ public abstract class L2Character extends L2Object
 		}
 		
 		// Check if the skill is a magic spell and if the L2Character is not muted
-		if (skill.isMagic() && isMuted())
+		if (skill.isMagic() && isMuted() && !skill.isPotion())
 		{
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
         // Check if the skill is psychical and if the L2Character is not psychical_muted
-        if (!skill.isMagic() && isPsychicalMuted())
+        if (!skill.isMagic() && isPsychicalMuted() && !skill.isPotion())
         {
             getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
             return;
