@@ -121,7 +121,7 @@ public class UserInfo extends ServerBasePacket
 
         writeD(0x28); // unknown
 
-        writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_UNDER));
+        writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_DHAIR));
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_REAR));
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LEAR));
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_NECK));
@@ -140,7 +140,7 @@ public class UserInfo extends ServerBasePacket
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND));
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_HAIR));
 
-        writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_UNDER));
+        writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
         writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_REAR));
         writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LEAR));
         writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_NECK));
