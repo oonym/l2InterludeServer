@@ -19,11 +19,13 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.LoginServerThread;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2Character;
@@ -258,16 +260,23 @@ public class AdminMenu implements IAdminCommandHandler
         {           
             con = L2DatabaseFactory.getInstance().getConnection();
             
-            String stmt = "UPDATE accounts, characters SET accounts.access_level = ? WHERE characters.account_name = accounts.login AND characters.char_name=?";
+            String stmt = "Select characters.account_name From characters Where characters.char_name = ?";
             PreparedStatement statement = con.prepareStatement(stmt);
-            statement.setInt(1, banLevel);
-            statement.setString(2, user);
-            statement.executeUpdate();
+            statement.setString(1, user);
+            ResultSet result = statement.executeQuery();
+            String acc_name = result.getString(1);
             statement.close();
             
             SystemMessage sm = new SystemMessage(614);
-            sm.addString("Account Access Level for "+user+" set to "+banLevel+".");
+            if(acc_name.length() > 0)
+            {
+            	LoginServerThread.getInstance().sendAccessLevel(acc_name, banLevel);
+            	sm.addString("Account Access Level for "+user+" set to "+banLevel+".");
+            }
+            else
+            	sm.addString("Couldnt find player: "+user+".");
             player.sendPacket(sm);
+            
         }
         catch (Exception e)
         {

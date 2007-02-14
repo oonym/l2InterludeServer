@@ -56,6 +56,7 @@ public class AdminBan implements IAdminCommandHandler {
                 
         StringTokenizer st = new StringTokenizer(command);
         st.nextToken();
+        String account_name = "";
         String player = "";
         L2PcInstance plyr = null;
         if (command.startsWith("admin_ban"))
@@ -75,8 +76,8 @@ public class AdminBan implements IAdminCommandHandler {
             
             if (plyr!=null && !plyr.equals(activeChar)) // you cannot ban yourself!
             {
-                player = plyr.getName();
-                LoginServerThread.getInstance().sendAccessLevel(player, -100);
+            	account_name = plyr.getAccountName();
+                LoginServerThread.getInstance().sendAccessLevel(account_name, -100);
                 plyr.logout();
             }
         }
@@ -84,8 +85,8 @@ public class AdminBan implements IAdminCommandHandler {
         {
             try
             {
-            	player = st.nextToken();
-            	LoginServerThread.getInstance().sendAccessLevel(player, 0);
+            	account_name = st.nextToken();
+            	LoginServerThread.getInstance().sendAccessLevel(account_name, 0);
             }
             catch(Exception e)
             {
