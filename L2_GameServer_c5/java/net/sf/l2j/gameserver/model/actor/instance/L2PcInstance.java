@@ -2557,7 +2557,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 			}
 			//Auto use herbs - autoloot
-			if (itemId >= 8600 && itemId <= 8614) //If item is herb dont add it to iv :]
+			if (ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB) //If item is herb dont add it to iv :]
 			{
 				L2ItemInstance herb = new L2ItemInstance(this._charId, itemId);
                 IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());                
