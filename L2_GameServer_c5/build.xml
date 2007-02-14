@@ -225,6 +225,14 @@
                 <include name="*.l2j"/>
             </fileset>
         </copy>
+    	
+    	<mkdir dir="${build.dist.game}/data/pathnode" />
+    	<copy todir="${build.dist.game}/data/pathnode">
+    	    <fileset dir="data/geodata">
+    	        <include name="*.txt"/>
+    	        <include name="*.pn"/>
+    	    </fileset>
+    	</copy>
 
         <zip destfile="${build}/l2j-server.zip"
              basedir="${build.dist}" />

@@ -308,7 +308,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _pkKills;
 	
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
-	private int _pvpFlag;
+	private byte _pvpFlag;
 	
 	private boolean _inPvpZone;
 	private boolean _inMotherTreeZone;
@@ -1349,7 +1349,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void setPvpFlag(int pvpFlag)
 	{
-		_pvpFlag = pvpFlag;
+		_pvpFlag = (byte)pvpFlag;
 	}
 	
 	public boolean getInPvpZone()
@@ -2088,7 +2088,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** Set the SP amount of the L2PcInstance. */
 	public void setSp(int sp) { super.getStat().setSp(sp); }
 	
-	public int getPvpFlag()
+	public byte getPvpFlag()
 	{
 		return _pvpFlag;
 	}
@@ -2518,12 +2518,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void addItem(String process, int itemId, int count, L2Object reference, boolean sendMessage)
 	{
-		if (count > 0) 
+		if (count > 0)
 		{
 			// Sends message to client if requested
 			if (sendMessage)
 			{
-				if (count > 1) 
+				if (count > 1)
 				{
 					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
@@ -2556,43 +2556,44 @@ public final class L2PcInstance extends L2PlayableInstance
 					}
 				}
 			}
-			
-			// Add the item to inventory
-			L2ItemInstance item = _inventory.addItem(process, itemId, count, this, reference);
-			
-			// Send inventory update packet
-			if (!Config.FORCE_INVENTORY_UPDATE)
-			{
-				InventoryUpdate playerIU = new InventoryUpdate();
-				playerIU.addItem(item);
-				sendPacket(playerIU);
-			}
-			else sendPacket(new ItemList(this, false));
-			
-			// Update current load as well
-			StatusUpdate su = new StatusUpdate(getObjectId());
-			su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
-			sendPacket(su);
-
-			// Cursed Weapon
-			if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
-			{
-				CursedWeaponsManager.getInstance().activate(this, item);
-			}
-            
 			//Auto use herbs - autoloot
-			if (item.getItemType() == L2EtcItemType.HERB)
-	        {
-                IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getItemId());                
-                if (handler == null) 
-                    _log.fine("No item handler registered for item ID " + item.getItemId() + ".");
-                else 
-                    handler.useItem(this, item);
-                
+			if (itemId >= 8600 && itemId <= 8614) //If item is herb dont add it to iv :]
+			{
+				L2ItemInstance herb = new L2ItemInstance(this._charId, itemId);
+                IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());                
+                if (handler == null)
+                    _log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
+                else
+                    handler.useItem(this, herb);
             }
-	    	// If over capacity, drop the item 
-	    	if (!isGM() && !_inventory.validateCapacity(0)) 
-	    		dropItem("InvDrop", item, null, true);
+			else
+            {
+				// Add the item to inventory
+				L2ItemInstance item = _inventory.addItem(process, itemId, count, this, reference);
+				
+				// Send inventory update packet
+				if (!Config.FORCE_INVENTORY_UPDATE)
+				{
+					InventoryUpdate playerIU = new InventoryUpdate();
+					playerIU.addItem(item);
+					sendPacket(playerIU);
+				}
+				else
+					sendPacket(new ItemList(this, false));
+				
+				// Update current load as well
+				StatusUpdate su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
+				sendPacket(su);
+	
+				// Cursed Weapon
+				if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+					CursedWeaponsManager.getInstance().activate(this, item);
+	            
+		    	// If over capacity, drop the item 
+		    	if (!isGM() && !_inventory.validateCapacity(0))
+		    		dropItem("InvDrop", item, null, true);
+            }
 		}
 	}
 	
