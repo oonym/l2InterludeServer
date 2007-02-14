@@ -93,7 +93,7 @@ public class RequestMakeMacro extends ClientBasePacket
 			player.sendPacket(new SystemMessage(810));
 			return;
 		}
-		if (player.getMacroses().getAllMacroses().length > 5)
+		if (player.getMacroses().getAllMacroses().length > 24)
 		{
 			//You may create up to 24 macros.
 			player.sendPacket(new SystemMessage(797));
