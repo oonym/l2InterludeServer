@@ -64,9 +64,8 @@ public class L2Multisell
     public class MultiSellEntry
     {
         private int _entryId;
-        private int _productId;
-        private int _productCount;
-        private int _productEnchant;
+
+        private List<MultiSellIngredient>    _products = new FastList<MultiSellIngredient>();
         private List<MultiSellIngredient> _ingredients = new FastList<MultiSellIngredient>();
 
         /**
@@ -84,55 +83,23 @@ public class L2Multisell
         {
             return _entryId;
         }
-
+        
         /**
-         * @param productId The productId to set.
+         * @param product The product to add.
          */
-        public void setProductId(int productId)
+        public void addProduct(MultiSellIngredient product)
         {
-            _productId = productId;
+            _products.add(product);
         }
-
+        
         /**
-         * @return Returns the productId.
+         * @return Returns the products.
          */
-        public int getProductId()
+        public List<MultiSellIngredient> getProducts()
         {
-            return _productId;
+            return _products;
         }
-
-        /**
-         * @param productCount The productCount to set.
-         */
-        public void setProductCount(int productCount)
-        {
-            _productCount = productCount;
-        }
-
-        /**
-         * @return Returns the productCount.
-         */
-        public int getProductCount()
-        {
-            return _productCount;
-        }
-
-        /**
-         * @param productEnchant The productEnchant to set.
-         */
-        public void setProductEnchant(int productEnchant)
-        {
-            _productEnchant = productEnchant;
-        }
-
-        /**
-         * @return Returns the productEnchant.
-         */
-        public int getProductEnchant()
-        {
-            return _productEnchant;
-        }
-
+        
         /**
          * @param ingredients The ingredients to set.
          */
@@ -355,12 +322,12 @@ public class L2Multisell
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
                 int enchant = Integer.parseInt(n.getAttributes().getNamedItem("enchant").getNodeValue());
 
-                entry.setEntryId(entryId);
-                entry.setProductId(id);
-                entry.setProductCount(count);
-                entry.setProductEnchant(enchant);
+                MultiSellIngredient e = new MultiSellIngredient(id, count, enchant); 
+                entry.addProduct(e);
             }
         }
+        
+        entry.setEntryId(entryId);
 
         return entry;
     }

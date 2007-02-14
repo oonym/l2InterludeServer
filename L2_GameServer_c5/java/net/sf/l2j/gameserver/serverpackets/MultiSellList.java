@@ -118,18 +118,19 @@ public class MultiSellList extends ServerBasePacket
         {
             for(MultiSellEntry ent : _list.getEntries())
             {
-            	int typeP = ItemTable.getInstance().getTemplate(ent.getProductId()).getType2();
-    
             	writeD(ent.getEntryId());
             	writeC(1);
-            	writeH(1);
+            	writeH(ent.getProducts().size());
             	writeH(ent.getIngredients().size());
     
-            	writeH(ent.getProductId());
-            	writeD(0);
-            	writeH(typeP);
-            	writeD(ent.getProductCount());
-        	    writeH(ent.getProductEnchant()); //enchtant lvl
+            	for(MultiSellIngredient i: ent.getProducts())
+            	{
+	            	writeH(i.getItemId());
+	            	writeD(0);
+	            	writeH(ItemTable.getInstance().getTemplate(i.getItemId()).getType2());
+	            	writeD(i.getItemCount());
+	        	    writeH(i.getItemEnchant()); //enchtant lvl
+            	}
         	    
                 for(MultiSellIngredient i : ent.getIngredients())
                 {

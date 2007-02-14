@@ -117,45 +117,49 @@ public class MultiSellChoose extends ClientBasePacket
     	}
     	
     	// Generate the appropriate items
-    	if (ItemTable.getInstance().createDummyItem(entry.getProductId()).isStackable())
+    	for(MultiSellIngredient e : entry.getProducts())
     	{
-	    	L2ItemInstance product = inv.addItem("Multisell", entry.getProductId(), (entry.getProductCount() * _amount), player, player.getTarget());
-	    	product.setEnchantLevel(entry.getProductEnchant());
-    	} else
-    	{
-    		L2ItemInstance product = null;
-            for (int i = 1; i <= (entry.getProductCount() * _amount); i++)
-            {
-            	product = inv.addItem("Multisell", entry.getProductId(), 1, player, player.getTarget());
-    	    	product.setEnchantLevel(entry.getProductEnchant());
-            }
+	    	if (ItemTable.getInstance().createDummyItem(e.getItemId()).isStackable())
+	    	{
+		    	L2ItemInstance product = inv.addItem("Multisell", e.getItemId(), (e.getItemCount() * _amount), player, player.getTarget());
+		    	product.setEnchantLevel(e.getItemEnchant());
+	    	} else
+	    	{
+	    		L2ItemInstance product = null;
+	            for (int i = 1; i <= (e.getItemCount() * _amount); i++)
+	            {
+	            	product = inv.addItem("Multisell", e.getItemId(), 1, player, player.getTarget());
+	    	    	product.setEnchantLevel(e.getItemEnchant());
+	            }
+	    	}
+	         // msg part
+	        SystemMessage sm;
+	        
+	        if (e.getItemCount() * _amount > 1)
+	        {
+	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+	            sm.addItemName(e.getItemId());
+	            sm.addNumber(e.getItemCount() * _amount);
+	            player.sendPacket(sm);
+	            sm = null;
+	        }
+	        else
+	        {
+	            if(e.getItemEnchant() > 0)
+	            {
+	                sm = new SystemMessage(SystemMessage.ACQUIRED);
+	                sm.addNumber(e.getItemEnchant());
+	                sm.addItemName(e.getItemId());
+	            }
+	            else
+	            {
+	                sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+	                sm.addItemName(e.getItemId());
+	            }
+	            player.sendPacket(sm);
+	            sm = null;
+	        }
     	}
-        
-        SystemMessage sm;
-        if (entry.getProductCount() * _amount > 1)
-        {
-            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
-            sm.addItemName(entry.getProductId());
-            sm.addNumber(entry.getProductCount() * _amount);
-            player.sendPacket(sm);
-            sm = null;
-        }
-        else
-        {
-            if(entry.getProductEnchant() > 0)
-            {
-                sm = new SystemMessage(SystemMessage.ACQUIRED);
-                sm.addNumber(entry.getProductEnchant());
-                sm.addItemName(entry.getProductId());
-            }
-            else
-            {
-                sm = new SystemMessage(SystemMessage.EARNED_ITEM);
-                sm.addItemName(entry.getProductId());
-            }
-            player.sendPacket(sm);
-            sm = null;
-        }
         player.sendPacket(new ItemList(player, false));
         
         StatusUpdate su = new StatusUpdate(player.getObjectId());
