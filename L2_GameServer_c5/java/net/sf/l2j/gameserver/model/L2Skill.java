@@ -1379,6 +1379,9 @@ public abstract class L2Skill
                     L2PcInstance player = (L2PcInstance) activeChar;
                     L2Clan clan = player.getClan();
 
+                    if (player.isInOlympiadMode())
+                    	return new L2Character[] {player};
+                    
                     if (targetType != SkillTargetType.TARGET_CORPSE_ALLY)
                     {
                         if (onlyFirst == false) targetList.add(player);
@@ -1420,6 +1423,9 @@ public abstract class L2Skill
                     L2PcInstance player = (L2PcInstance) activeChar;
                     L2Clan clan = player.getClan();
 
+                    if (player.isInOlympiadMode())
+                    	return new L2Character[] {player};
+                    
                     if (targetType != SkillTargetType.TARGET_CORPSE_CLAN)
                     {
                         if (onlyFirst == false) targetList.add(player);
