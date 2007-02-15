@@ -8309,9 +8309,8 @@ public final class L2PcInstance extends L2PlayableInstance
         sendPacket(new SystemMessage(SystemMessage.CAST_LINE_AND_START_FISHING));
         ExFishingStart efs = null;
         if (!GameTimeController.getInstance().isNowNight() && _lure.isNightLure())
-        	efs = new ExFishingStart(this,-1,x,y,z);
-        else
-        	efs = new ExFishingStart(this,_fish.getType(),x,y,z);
+        	_fish.setType(-1);
+    	efs = new ExFishingStart(this,_fish.getType(),x,y,z,_lure.isNightLure());
         broadcastPacket(efs);       
         StartLookingForFishTask();
     }
