@@ -139,6 +139,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.SoulShots;
 import net.sf.l2j.gameserver.handler.itemhandlers.SpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.SummonItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.WorldMap;
+import net.sf.l2j.gameserver.handler.skillhandlers.BalanceLife;
 import net.sf.l2j.gameserver.handler.skillhandlers.Charge;
 import net.sf.l2j.gameserver.handler.skillhandlers.CombatPointHeal;
 import net.sf.l2j.gameserver.handler.skillhandlers.Continuous;
@@ -401,6 +402,7 @@ public class GameServer
 		_skillHandler.registerSkillHandler(new Heal());
         _skillHandler.registerSkillHandler(new CombatPointHeal());
 		_skillHandler.registerSkillHandler(new ManaHeal());
+		_skillHandler.registerSkillHandler(new BalanceLife());
 		_skillHandler.registerSkillHandler(new Charge());
 		_skillHandler.registerSkillHandler(new Continuous());
 		_skillHandler.registerSkillHandler(new Resurrect());
