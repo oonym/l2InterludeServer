@@ -63,7 +63,7 @@ public class GMViewCharacterInfo extends ServerBasePacket
 		writeD(_cha.getObjectId());
 		writeS(_cha.getName());
 		writeD(_cha.getRace().ordinal());
-		writeD(_cha.getSex());
+		writeD(_cha.getAppearance().getSex()? 1 : 0);
 		writeD(_cha.getClassId().getId());
 		writeD(_cha.getLevel());
 		writeQ(_cha.getExp());
@@ -147,9 +147,9 @@ public class GMViewCharacterInfo extends ServerBasePacket
 		writeF(_cha.getAttackSpeedMultiplier()); //2.9);//
 		writeF(_cha.getTemplate().collisionRadius);  // scale
 		writeF(_cha.getTemplate().collisionHeight); // y offset ??!? fem dwarf 4033
-		writeD(_cha.getHairStyle());
-		writeD(_cha.getHairColor());
-		writeD(_cha.getFace());
+		writeD(_cha.getAppearance().getHairStyle());
+		writeD(_cha.getAppearance().getHairColor());
+		writeD(_cha.getAppearance().getFace());
 		writeD(_cha.isGM() ? 0x01 : 0x00);	// builder level
 
 		writeS(_cha.getTitle());
@@ -179,7 +179,7 @@ public class GMViewCharacterInfo extends ServerBasePacket
         writeD(_cha.getPledgeClass()); //changes the text above CP on Status Window
         writeD(0x00);
         
-        writeD(_cha.getNameColor());
+        writeD(_cha.getAppearance().getNameColor());
         
         writeD(0x00);
 	}

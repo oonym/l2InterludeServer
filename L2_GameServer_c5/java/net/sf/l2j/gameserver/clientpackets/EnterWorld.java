@@ -112,7 +112,7 @@ public class EnterWorld extends ClientBasePacket
             if (Config.GM_STARTUP_INVISIBLE 
                     && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_GODMODE
                       || Config.ALT_PRIVILEGES_ADMIN && AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_invisible")))
-                activeChar.setInvisible();
+                activeChar.getAppearance().setInvisible();
 
             if (Config.GM_STARTUP_SILENCE 
                     && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_MENU
@@ -127,9 +127,9 @@ public class EnterWorld extends ClientBasePacket
             if (Config.GM_NAME_COLOR_ENABLED)
             {
                 if (activeChar.getAccessLevel() >= 100)
-                    activeChar.setNameColor(Config.ADMIN_NAME_COLOR);
+                    activeChar.getAppearance().setNameColor(Config.ADMIN_NAME_COLOR);
                 else if (activeChar.getAccessLevel() >= 75)
-                    activeChar.setNameColor(Config.GM_NAME_COLOR);
+                    activeChar.getAppearance().setNameColor(Config.GM_NAME_COLOR);
             }
         }
         

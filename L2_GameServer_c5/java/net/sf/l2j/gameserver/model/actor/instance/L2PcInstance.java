@@ -18,25 +18,17 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -119,6 +111,7 @@ import net.sf.l2j.gameserver.model.ShortCuts;
 import net.sf.l2j.gameserver.model.TradeList;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.model.actor.appearance.PcAppearance;
 import net.sf.l2j.gameserver.model.actor.knownlist.PcKnownList;
 import net.sf.l2j.gameserver.model.actor.stat.PcStat;
 import net.sf.l2j.gameserver.model.actor.status.PcStatus;
@@ -136,7 +129,6 @@ import net.sf.l2j.gameserver.model.entity.Zone;
 import net.sf.l2j.gameserver.model.entity.ZoneType;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
-import net.sf.l2j.gameserver.model.waypoint.WayPointNode;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChangeWaitType;
 import net.sf.l2j.gameserver.serverpackets.CharInfo;
@@ -284,7 +276,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private Connection _connection;
 	
-	//private L2Object _newTarget = null;
+	private PcAppearance _appearance;
 	
 	/** The Identifier of the L2PcInstance */
 	private int _charId = 0x00030b7a;
@@ -297,12 +289,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/** The number of player killed during a PvP (the player killed was PvP Flagged) */
 	private int _pvpKills;
-	
-	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
-	private int _nameColor;
-	
-	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
-	private int _titleColor;
 	
 	/** The PK counter of the L2PcInstance (= Number of non PvP Flagged player killed) */
 	private int _pkKills;
@@ -355,15 +341,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/** Last NPC Id talked on a quest */
 	private int _questNpcObject = 0; 
-	
-	/** The face type Identifier of the L2PcInstance */
-	private int _face;
-	
-	/** The hair style Identifier of the L2PcInstance */
-	private int _hairStyle;
-	
-	/** The hair color Identifier of the L2PcInstance */
-	private int _hairColor;
 	
 	/** True if the L2PcInstance is newbie */
 	private boolean _newbie;
@@ -495,15 +472,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/** Active shots. A FastSet variable would actually suffice but this was changed to fix threading stability... */
 	protected Map<Integer, Integer> _activeSoulShots = new FastMap<Integer, Integer>().setShared(true);
-	private boolean _isPathNodeMode;
-	private boolean _isPathNodesVisible;
-	private Map<WayPointNode, List<WayPointNode>> _pathNodeMap;
-	private WayPointNode _selectedNode;
 	private int _clanPrivileges = 0;
-	private boolean _linkToggle = true;
-	
-	/** 1 if  the player is invisible */
-	private int _invisible = 0;
 	
 	/** Location before entering Observer Mode */
 	private int _obsX;
@@ -661,22 +630,14 @@ public final class L2PcInstance extends L2PlayableInstance
 	 *
 	 */
 	public static L2PcInstance create(int objectId, L2PcTemplate template, String accountName,
-	                                  String name, int hairStyle, int hairColor, int face)
+	                                  String name, byte hairStyle, byte hairColor, byte face, boolean sex)
 	{
 		// Create a new L2PcInstance with an account name
-		L2PcInstance player = new L2PcInstance(objectId, template, accountName);
+		PcAppearance app = new PcAppearance(face, hairColor, hairStyle, sex);
+;		L2PcInstance player = new L2PcInstance(objectId, template, accountName, app);
 		
 		// Set the name of the L2PcInstance
 		player.setName(name);
-		
-		// Set the Hair Style of the L2PcInstance
-		player.setHairStyle(hairStyle);
-		
-		// Set the Hair Color of the L2PcInstance
-		player.setHairColor(hairColor);
-		
-		// Set the Face type of the L2PcInstance
-		player.setFace(face);
 		
 		// Set the base class ID to that of the actual class ID.
 		player.setBaseClass(player.getClassId());
@@ -748,7 +709,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * @param accountName The name of the account including this L2PcInstance
 	 *
 	 */
-	private L2PcInstance(int objectId, L2PcTemplate template, String accountName)
+	private L2PcInstance(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
 	{
 		super(objectId, template);
 		super.setKnownList(new PcKnownList(new L2PcInstance[] {this}));
@@ -756,9 +717,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		super.setStatus(new PcStatus(this));
 		
 		_accountName  = accountName;
-		_nameColor    = 0xFFFFFF;
-		_titleColor    = 0xFFFF77;
-		_baseLoad      = template.baseLoad;
+		_baseLoad     = template.baseLoad;
+		_appearance   = app;
 		
 		// Create an AI
 		_ai = new L2PlayerAI(new L2PcInstance.AIAccessor());
@@ -786,21 +746,20 @@ public final class L2PcInstance extends L2PlayableInstance
 	public final PcKnownList getKnownList() { return (PcKnownList)super.getKnownList(); }
 	public final PcStat getStat() { return (PcStat)super.getStat(); }
 	public final PcStatus getStatus() { return (PcStatus)super.getStatus(); }
+	public final PcAppearance getAppearance() { return _appearance; }
 	
 	/**
 	 * Return the base L2PcTemplate link to the L2PcInstance.<BR><BR>
 	 */
 	public final L2PcTemplate getBaseTemplate()
 	{
-		return CharTemplateTable.getInstance().getTemplate(_baseClass, getSex() == 1);
+		return CharTemplateTable.getInstance().getTemplate(_baseClass);
 	}
 	
 	/** Return the L2PcTemplate link to the L2PcInstance. */
 	public final L2PcTemplate getTemplate() { return (L2PcTemplate)super.getTemplate(); }
 	
-	public void setTemplate(ClassId newclass, boolean female) { super.setTemplate(CharTemplateTable.getInstance().getTemplate(newclass, female)); }
-	
-	public void changeSex() { super.setTemplate(CharTemplateTable.getInstance().getTemplate(getClassId(), (getSex() == 1))); }
+	public void setTemplate(ClassId newclass) { super.setTemplate(CharTemplateTable.getInstance().getTemplate(newclass)); }
 	
 	/**
 	 * Return the AI of the L2PcInstance (create it if necessary).<BR><BR>
@@ -851,69 +810,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/** Return the Level of the L2PcInstance. */
 	public final int getLevel() { return getStat().getLevel(); }
-	
-	/**
-	 * Return the Sex of the L2PcInstance (Male=0, Female=1).<BR><BR>
-	 */
-	public int getSex() { return getTemplate().isMale ? 0 : 1; }
-	
-	/**
-	 * Return the Face type Identifier of the L2PcInstance.<BR><BR>
-	 */
-	public int  getFace()
-	{
-		return _face;
-	}
-	
-	/**
-	 * Set the Face type of the L2PcInstance.<BR><BR>
-	 *
-	 * @param face The Identifier of the Face type<BR><BR>
-	 *
-	 */
-	public void setFace(int face)
-	{
-		_face = face;
-	}
-	
-	/**
-	 * Return the Hair Color Identifier of the L2PcInstance.<BR><BR>
-	 */
-	public int  getHairColor()
-	{
-		return _hairColor;
-	}
-	
-	/**
-	 * Set the Hair Color of the L2PcInstance.<BR><BR>
-	 *
-	 * @param hairColor The Identifier of the Hair Color<BR><BR>
-	 *
-	 */
-	public void setHairColor(int hairColor)
-	{
-		_hairColor = hairColor;
-	}
-	
-	/**
-	 * Return the Hair Style Identifier of the L2PcInstance.<BR><BR>
-	 */
-	public int getHairStyle()
-	{
-		return _hairStyle;
-	}
-	
-	/**
-	 * Set the Hair Style of the L2PcInstance.<BR><BR>
-	 *
-	 * @param hairStyle The Identifier of the Hair Style<BR><BR>
-	 *
-	 */
-	public void setHairStyle(int hairStyle)
-	{
-		_hairStyle = hairStyle;
-	}
-	
 	/**
 	 * Return the _newbie state of the L2PcInstance.<BR><BR>
 	 */
@@ -962,9 +858,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void logout()
 	{
-		// Delete all Path Nodes
-		clearPathNodes();
-		
 		// Close the connection with the client
 		if (_connection != null)
             _connection.close();
@@ -1833,7 +1726,7 @@ public final class L2PcInstance extends L2PlayableInstance
             getInventory().updateDatabase(); // update database
         }
 		_activeClass = Id;
-		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(Id, getSex()==1);
+		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(Id);
 		
 		if (t == null)
 		{
@@ -2069,11 +1962,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public Race getRace()
 	{
 		if (!isSubClassActive())
-			return getTemplate().race;
+			return getTemplate().race;		
 		
-		boolean isFemale = (getSex() == 1);
-		L2PcTemplate charTemp = CharTemplateTable.getInstance().getTemplate(_baseClass, isFemale);
-		
+		L2PcTemplate charTemp = CharTemplateTable.getInstance().getTemplate(_baseClass);		
 		return charTemp.race;
 	}
     
@@ -4811,10 +4702,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(25, getINT());
 			statement.setInt(26, getMEN());
 			statement.setInt(27, getWIT());
-			statement.setInt(28, getFace());
-			statement.setInt(29, getHairStyle());
-			statement.setInt(30, getHairColor());
-			statement.setInt(31, getSex());
+			statement.setInt(28, getAppearance().getFace());
+			statement.setInt(29, getAppearance().getHairStyle());
+			statement.setInt(30, getAppearance().getHairColor());
+			statement.setInt(31, getAppearance().getSex()? 1 : 0);
 			statement.setDouble(32, 1/*getMovementMultiplier()*/);
 			statement.setDouble(33, 1/*getAttackSpeedMultiplier()*/);
 			statement.setDouble(34, getTemplate().collisionRadius/*getCollisionRadius()*/);
@@ -4894,19 +4785,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				final int activeClassId = rset.getInt("classid");
 				final boolean female = rset.getInt("sex")!=0;
-				final L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(activeClassId, female);
+				final L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(activeClassId);
+				PcAppearance app = new PcAppearance(rset.getByte("face"), rset.getByte("hairColor"), rset.getByte("hairStyle"), female);
 				
-				player = new L2PcInstance(objectId, template, rset.getString("account_name"));
+				player = new L2PcInstance(objectId, template, rset.getString("account_name"), app);
 				player.setName(rset.getString("char_name"));
 				player._lastAccess = rset.getLong("lastAccess");
 				
 				player.getStat().setExp(rset.getLong("exp"));
 				player.getStat().setLevel(rset.getByte("level"));
 				player.getStat().setSp(rset.getInt("sp"));
-				
-				player.setFace(rset.getInt("face"));
-				player.setHairStyle(rset.getInt("hairStyle"));
-				player.setHairColor(rset.getInt("hairColor"));
 				
 				player.setWantsPeace(rset.getInt("wantspeace"));
 				
@@ -5305,9 +5193,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(11, getINT());
 			statement.setInt(12, getMEN());
 			statement.setInt(13, getWIT());
-			statement.setInt(14, getFace());
-			statement.setInt(15, getHairStyle());
-			statement.setInt(16, getHairColor());
+			statement.setInt(14, getAppearance().getFace());
+			statement.setInt(15, getAppearance().getHairStyle());
+			statement.setInt(16, getAppearance().getHairColor());
 			statement.setInt(17, getHeading());
 			statement.setInt(18, _observerMode ? _obsX : getX());
 			statement.setInt(19, _observerMode ? _obsY : getY());
@@ -7012,321 +6900,7 @@ public final class L2PcInstance extends L2PlayableInstance
             }
         }
         
-    }
-    
-	public void setInvisible()
-	{
-		_invisible = 1;
-	}
-	
-	public void setVisible()
-	{
-		_invisible = 0;
-	}
-	
-	public int getInvisible()
-	{
-		return _invisible;
-	}
-	
-	public void togglePathNodeMode()
-	{
-		_isPathNodeMode	= !_isPathNodeMode;
-	}
-	
-	public void toggleViewPathNodes()
-	{
-		_isPathNodesVisible	= !_isPathNodesVisible;
-	}
-	
-	public boolean isPathNodeModeActive()
-	{
-		return _isPathNodeMode;
-	}
-	
-	public boolean isPathNodeVisible()
-	{
-		return _isPathNodesVisible;
-	}
-	
-	public Map<WayPointNode, List<WayPointNode>> getPathNodeMap()
-	{
-		if (_pathNodeMap == null)
-			_pathNodeMap = new FastMap<WayPointNode, List<WayPointNode>>();
-        
-		return _pathNodeMap;
-	}
-	
-	public void addPathNodePoint()
-	{
-		//add Node to Players PathNode List
-		//TODO: Addcheck for nearby point in radius
-		setSelectedNode(WayPointNode.spawn(this));
-		getPathNodeMap().put(getSelectedNode(), new FastList<WayPointNode>());
-	}
-	
-	/**
-	 * Delete all Path Nodes.<BR><BR>
-	 */
-	public void clearPathNodes()
-	{
-		if (getPathNodeMap() != null)
-		{
-			for (WayPointNode node : getPathNodeMap().keySet())
-				removePathNodePoint(node);
-            
-            getPathNodeMap().clear();
-		}
-        
-		setSelectedNode(null);
-	}
-	
-	public void setSelectedNode(WayPointNode decoInstance)
-	{
-		if (getSelectedNode() != null)
-		{
-			List<WayPointNode> linkedNodes = getPathNodeMap().get(getSelectedNode());
-            
-			if (linkedNodes != null)
-				for (WayPointNode node : linkedNodes)
-					node.setNormal();
-            
-            getSelectedNode().setNormal();
-		}
-        
-		_selectedNode = decoInstance;
-        
-		if (_selectedNode != null)
-		{
-			_selectedNode.setSelected();
-            
-			List<WayPointNode> linkedNodes = getPathNodeMap().get(_selectedNode);
-            
-			if (linkedNodes != null)
-				for (WayPointNode linked : linkedNodes)
-					linked.setLinked();
-		}
-	}
-	
-	public WayPointNode getSelectedNode()
-	{
-		return _selectedNode;
-	}
-	
-	public void addLink(WayPointNode target)
-	{
-		if (getSelectedNode() != null)
-		{
-			List<WayPointNode> list	= getPathNodeMap().get(getSelectedNode());
-            
-			if (list == null)
-				list = new FastList<WayPointNode>();
-            
-			list.add(target);
-			_pathNodeMap.put(getSelectedNode(), list);
-			
-			List<WayPointNode> list2 = getPathNodeMap().get(target);
-            
-			if (list2 == null)
-                list2 = new FastList<WayPointNode>();
-            
-			list2.add(getSelectedNode());
-			_pathNodeMap.put(target, list2);
-            
-			target.setLinked();
-			WayPointNode.drawLine(target, getSelectedNode());
-		}
-	}
-	
-	public void removeLink(WayPointNode target)
-	{
-		if (getSelectedNode() != null)
-		{
-			List<WayPointNode> list	= getPathNodeMap().get(getSelectedNode());
-            
-			if (list != null && list.contains(target))
-			{
-				list.remove(target);
-                _pathNodeMap.put(getSelectedNode(), list);
-				
-				List<WayPointNode> list2 = getPathNodeMap().get(target);
-                
-				if (list2 != null && list2.contains(getSelectedNode()))
-				{
-					list2.remove(getSelectedNode());
-					_pathNodeMap.put(target, list2);
-				}
-                
-				target.setNormal();
-				WayPointNode.eraseLine(target, getSelectedNode());
-			}
-			else
-			{
-				sendPacket(SystemMessage.sendString("Target not a Linked Node."));
-			}
-		}
-	}
-	
-	public void removePathNodePoint()
-	{
-		removePathNodePoint(getSelectedNode());
-	}
-	
-	public void removePathNodePoint(WayPointNode node)
-	{
-		if (node != null)
-		{
-			List<WayPointNode> list  = getPathNodeMap().get(node);
-            
-			if (list != null)
-			{
-				synchronized (list)
-				{
-					try
-					{
-						for (WayPointNode link : list)
-						{
-							//WayPointNode.eraseLine(node, link);
-							removeLink(link);
-						}
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
-            
-			node.decayMe();
-			node = null;
-		}
-	}
-	
-	/**
-	 * @param string
-	 */
-	public void savePathNodes(String fileName)
-	{
-		try
-		{
-			//File file   = new File(Config.DATAPACK_ROOT, "pathnode/" + fileName + ".bin");
-			FileOutputStream fos = new FileOutputStream("pathnode/" + fileName + ".bin"); // Save to file
-			GZIPOutputStream gzos = new GZIPOutputStream(fos); // Compressed
-			ObjectOutputStream out = new ObjectOutputStream(gzos); // Save objects
-			out.writeObject(getSaveList()); // Write the entire pathNodeMap of Positions
-			out.flush(); // Always flush the output.
-			out.close(); // And close the stream.
-			sendPacket(SystemMessage.sendString("Path Node table saved to: L2J/pathnode/"+fileName+".bin"));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			sendPacket(SystemMessage.sendString("Could not Save Path Node Table."));
-		}
-	}
-	
-	public Map<Point3D, List<Point3D>> getSaveList()
-	{
-		Map<Point3D, List<Point3D>> saveList   = null;
-        
-		if (getPathNodeMap() != null)
-		{
-			saveList = Collections.synchronizedMap(new WeakHashMap<Point3D, List<Point3D>>());
-            
-			for (WayPointNode node : getPathNodeMap().keySet())
-			{
-				Point3D nodePoint   = Point3D.getPosition(node);
-				
-				List<WayPointNode> links = getPathNodeMap().get(node);
-				List<Point3D> linkPoints = null;
-                
-				if (links != null)
-				{
-					linkPoints  = new FastList<Point3D>();
-                    
-					for (WayPointNode link : links)
-						linkPoints.add(Point3D.getPosition(link));
-				}
-                
-				saveList.put(nodePoint, linkPoints);
-			}
-		}
-        
-		return saveList;
-	}
-	
-	/**
-	 * @param string
-	 */
-	@SuppressWarnings(value = { "unchecked" })
-	public void loadPathNodes(String fileName)
-	{
-		Map<Point3D, List<Point3D>> newNodeMap = null;
-        
-		try
-		{
-			//Create necessary input streams
-			//File file   = new File(Config.DATAPACK_ROOT, "pathnode/" + fileName + ".bin");
-			FileInputStream fis = new FileInputStream("pathnode/" + fileName + ".bin"); // Read from file
-			GZIPInputStream gzis = new GZIPInputStream(fis); // Uncompress
-			ObjectInputStream in = new ObjectInputStream(gzis); // Read objects
-			// Read in an object. It should be a vector of scribbles
-			
-			newNodeMap = (FastMap<Point3D, List<Point3D>>)in.readObject();
-			in.close(); // Close the stream.
-		}
-		catch (Exception e)
-		{
-			sendPacket(SystemMessage.sendString("Could not Load Path Node Table from: L2J/pathnode/"+fileName+".bin"));
-			e.printStackTrace();
-			return;
-		}
-        
-		clearPathNodes();
-		loadNodeList(newNodeMap);
-		sendPacket(SystemMessage.sendString("Path Node table loaded from: L2J/pathnode/"+fileName+".bin"));
-	}
-	
-	/**
-	 * @param newNodeMap
-	 */
-	private void loadNodeList(Map<Point3D, List<Point3D>> newNodeMap)
-	{
-		_pathNodeMap = Collections.synchronizedMap(new WeakHashMap<WayPointNode, List<WayPointNode>>());
-		Map<Point3D, WayPointNode> map = new FastMap<Point3D, WayPointNode>();
-		WayPointNode newNode = null;
-        
-		for (Point3D point : newNodeMap.keySet())
-		{
-			newNode = WayPointNode.spawn(point);
-			newNode.setNormal();
-			map.put(point, newNode);
-		}
-		
-		for (Point3D point : newNodeMap.keySet())
-		{
-			WayPointNode node = map.get(point);
-			List<Point3D> links = newNodeMap.get(point);
-			List<WayPointNode> nodeLinks = null;
-            
-			if (links != null)
-			{
-				nodeLinks  = new FastList<WayPointNode>();
-                
-				for (Point3D link : links)
-				{
-					WayPointNode linkNode = map.get(link);
-					nodeLinks.add(linkNode);
-                    
-					if (getPathNodeMap().get(linkNode) != null &&
-							!getPathNodeMap().get(linkNode).contains(node))
-						WayPointNode.drawLine(linkNode, node);
-				}
-			}
-            
-			_pathNodeMap.put(node, nodeLinks);
-		}
-	}
+    }	
 	
 	public int getClanPrivileges()
     {
@@ -7378,37 +6952,6 @@ public final class L2PcInstance extends L2PlayableInstance
     {
     	_sponsor = sponsor_id;
     }
-
-	
-	public void refreshLinks()
-	{
-		if (_linkToggle)
-		{
-			for (WayPointNode node : getPathNodeMap().keySet())
-			{
-				for (WayPointNode lineNode : node.getLineNodes())
-				{
-					lineNode.decayMe();
-					lineNode.refreshID();
-					//lineNode.spawnMe();
-				}
-			}
-		}
-		else
-		{
-			for (WayPointNode node : getPathNodeMap().keySet())
-			{
-				for (WayPointNode lineNode : node.getLineNodes())
-				{
-					//lineNode.decayMe();
-					//lineNode.refreshID();
-					lineNode.spawnMe();
-				}
-			}
-		}
-        
-		_linkToggle = !_linkToggle;
-	}
 	
 	public void sendMessage(String message)
 	{
@@ -7425,7 +6968,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		stopMove(null);
 		setIsParalyzed(true);
         setIsInvul(true);
-		setInvisible();
+		getAppearance().setInvisible();
 		sendPacket(new ObservationMode(x, y, z));
 		setXYZ(x, y, z);
         
@@ -7445,7 +6988,7 @@ public final class L2PcInstance extends L2PlayableInstance
         _obsZ = getZ();
         setTarget(null);
         setIsInvul(true);
-        setInvisible();
+        getAppearance().setInvisible();
         teleToLocation(x, y, z, true);
         sendPacket(new ExOlympiadMode(3));
         _observerMode = true;
@@ -7456,7 +6999,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		setTarget(null);
 		setXYZ(_obsX, _obsY, _obsZ);
 		setIsParalyzed(false);
-		setVisible();
+		getAppearance().setVisible();
         setIsInvul(false);
         
 		if (getAI() != null)
@@ -7472,7 +7015,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		setTarget(null);
 		sendPacket(new ExOlympiadMode(0));
         teleToLocation(_obsX, _obsY, _obsZ, true);
-        setVisible();
+        getAppearance().setVisible();
         setIsInvul(false);
         if (getAI() != null)
 		{
@@ -7688,36 +7231,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int getTeam()
 	{
 		return _team;
-	}
-	
-	public int getNameColor()
-	{
-		return _nameColor;
-	}
-	
-	public void setNameColor(int nameColor)
-	{
-		_nameColor = nameColor;
-	}
-	
-	public void setNameColor(int red, int green, int blue)
-	{
-		_nameColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);
-	}
-	
-	public int getTitleColor()
-	{
-		return _titleColor;
-	}
-	
-	public void setTitleColor(int titleColor)
-	{
-		_titleColor = titleColor;
-	}
-	
-	public void setTitleColor(int red, int green, int blue)
-	{
-		_titleColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);
 	}
 	
 	public void setWantsPeace(int wantsPeace)
@@ -8193,7 +7706,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
         if (_isInvul)
         	sendMessage("Entering world in Invulnerable mode.");
-        if (getInvisible() == 1) 
+        if (getAppearance().getInvisible()) 
             sendMessage("Entering world in Invisible mode.");
         if (getMessageRefusal()) 
             sendMessage("Entering world in Message Refusal mode.");
@@ -8740,8 +8253,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			// Close the connection with the client
 			try { setNetConnection(null); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
-			
-			clearPathNodes();
 			
 			if (getClanId() > 0)
 				getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);

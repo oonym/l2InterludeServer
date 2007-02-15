@@ -113,7 +113,7 @@ public class NpcInfo extends ServerBasePacket
 	{
         if (_cha instanceof L2Summon)
             if (((L2Summon)_cha).getOwner() != null 
-                    && ((L2Summon)_cha).getOwner().getInvisible() == 1)
+                    && ((L2Summon)_cha).getOwner().getAppearance().getInvisible())
                 return;
 		writeC(0x16);
 		writeD(_cha.getObjectId());

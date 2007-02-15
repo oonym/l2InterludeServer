@@ -104,7 +104,7 @@ public class RegionBBSManager extends BaseBBSManager
 		if (player != null)
 		{
 		    String sex = "Male";
-		    if (player.getSex() == 1)
+		    if (player.getAppearance().getSex())
 		    {
 		        sex = "Female";
 		    }
@@ -249,7 +249,7 @@ public class RegionBBSManager extends BaseBBSManager
 
               L2PcInstance player = iterator.next();  // Get the current record
               if (i < startIndex) continue;           // If not at start index
-              if ((player == null) || (player.getInvisible() == 1 && player != activeChar && !activeChar.isGM()))
+              if ((player == null) || (player.getAppearance().getInvisible() && player != activeChar && !activeChar.isGM()))
               {
                   i--;                                // Don't count the current loop
                   continue;                           // Go to next

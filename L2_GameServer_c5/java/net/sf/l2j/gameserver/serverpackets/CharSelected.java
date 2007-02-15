@@ -58,7 +58,7 @@ public class CharSelected extends ServerBasePacket
 		writeD(_sessionId);
 		writeD(_cha.getClanId());
 		writeD(0x00);  //??
-		writeD(_cha.getSex());
+		writeD(_cha.getAppearance().getSex()? 1 : 0);
 		writeD(_cha.getRace().ordinal());
 		writeD(_cha.getClassId().getId());
 		writeD(0x01); // active ??

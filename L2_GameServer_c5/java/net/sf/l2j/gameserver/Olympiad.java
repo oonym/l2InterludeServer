@@ -1456,8 +1456,8 @@ public class Olympiad
     		_playerTwoLocation[1] = _playerTwo.getY();
     		_playerTwoLocation[2] = _playerTwo.getZ();
     		
-    		_playerOne.setInvisible();
-    		_playerTwo.setInvisible();
+    		_playerOne.getAppearance().setInvisible();
+    		_playerTwo.getAppearance().setInvisible();
             
             if (_playerOne.isSitting())
                 _playerOne.standUp();
@@ -1623,7 +1623,7 @@ public class Olympiad
             
             for (L2PcInstance player : _players)
             {
-                player.setVisible();
+                player.getAppearance().setVisible();
                 player.broadcastUserInfo();
                 player.sendPacket(_sm);
                 if (player.getPet() != null)

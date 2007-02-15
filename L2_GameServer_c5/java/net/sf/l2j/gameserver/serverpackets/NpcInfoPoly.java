@@ -22,7 +22,6 @@ import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.waypoint.WayPointNode;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 /**
  * This class ...
@@ -91,26 +90,7 @@ public class NpcInfoPoly extends ServerBasePacket
 			_name = "item";
 			_title = "polymorphed";
 			_abnormalEffect = 0;
-		}
-        else if (_obj instanceof WayPointNode)
-        {
-            WayPointNode node = (WayPointNode) _obj;
-            _x = _obj.getX();
-            _y = _obj.getY();
-            _z = _obj.getZ();
-            _heading = 0;
-            _mAtkSpd = 100; //yes, an item can be dread as death
-            _pAtkSpd = 100;
-            _runSpd = 120;
-            _walkSpd = 80;
-            _swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
-            _swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd; 
-            _isRunning = _isInCombat = _isAlikeDead = false;
-            _name = node.getName();
-            _title = node.getTitle();
-            _abnormalEffect = 0;
-            collisionRadius = 10;
-        }
+		}        
 		else
 		{
 			_x = _cha.getX();

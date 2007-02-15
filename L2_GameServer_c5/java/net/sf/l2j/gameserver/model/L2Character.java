@@ -49,7 +49,6 @@ import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
-import net.sf.l2j.gameserver.model.actor.appearance.CharAppearance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
@@ -122,7 +121,6 @@ public abstract class L2Character extends L2Object
 	
 	// =========================================================
 	// Data Field
-	private CharAppearance _Appearance;
 	private List<L2Character> _AttackByList;
 	private L2Character _AttackingChar;
 	private L2Skill _AttackingCharSkill;
@@ -1355,13 +1353,7 @@ public abstract class L2Character extends L2Object
     }
 	
 	/** Return True if the L2Character has a L2CharacterAI. */
-	public boolean hasAI() { return _ai != null; }
-	
-	public final CharAppearance getAppearance()
-	{
-		if (_Appearance == null) _Appearance = new CharAppearance(this);
-		return _Appearance;
-	}
+	public boolean hasAI() { return _ai != null; }	
 	
 	/** Return True if the L2Character is RaidBoss or his minion. */
 	public boolean isRaid()

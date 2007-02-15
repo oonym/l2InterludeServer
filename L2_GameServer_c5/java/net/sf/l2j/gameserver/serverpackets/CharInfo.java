@@ -94,7 +94,7 @@ public class CharInfo extends ServerBasePacket
 	
 	final void writeImpl()
 	{
-		if (_cha.getInvisible() == 1)
+		if (_cha.getAppearance().getInvisible())
 			return;
 		
 		if (_cha.getPoly().isMorphed())
@@ -133,7 +133,7 @@ public class CharInfo extends ServerBasePacket
 				writeC(_cha.isRunning() ? 1 : 0);
 				writeC(_cha.isInCombat() ? 1 : 0);
 				writeC(_cha.isAlikeDead() ? 1 : 0);
-				writeC(_cha.getInvisible()); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
+				writeC(_cha.getAppearance().getInvisible()? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
 				writeS(_cha.getName());
 				writeS(_cha.getTitle());
 				writeD(0);
@@ -166,7 +166,7 @@ public class CharInfo extends ServerBasePacket
 			else
 			    writeS(_cha.getName());
 			writeD(_cha.getRace().ordinal());
-			writeD(_cha.getSex());
+			writeD(_cha.getAppearance().getSex()? 1 : 0);
 			        
 			if (_cha.getClassIndex() == 0)
 				writeD(_cha.getClassId().getId());
@@ -207,9 +207,9 @@ public class CharInfo extends ServerBasePacket
 			writeF(_cha.getBaseTemplate().collisionRadius);
 			writeF(_cha.getBaseTemplate().collisionHeight);
 	
-			writeD(_cha.getHairStyle());
-			writeD(_cha.getHairColor());
-			writeD(_cha.getFace());
+			writeD(_cha.getAppearance().getHairStyle());
+			writeD(_cha.getAppearance().getHairColor());
+			writeD(_cha.getAppearance().getFace());
 			
 			writeS(_cha.getTitle());
 			writeD(_cha.getClanId());
@@ -223,7 +223,7 @@ public class CharInfo extends ServerBasePacket
 			writeC(_cha.isInCombat() ? 1 : 0);
 			writeC(_cha.isAlikeDead() ? 1 : 0);
 			
-			writeC(_cha.getInvisible());	// invisible = 1  visible =0
+			writeC(_cha.getAppearance().getInvisible()? 1 : 0);	// invisible = 1  visible =0
 			writeC(_cha.getMountType());	// 1 on strider   2 on wyvern   0 no mount
 			writeC(_cha.getPrivateStoreType());   //  1 - sellshop
 			
@@ -260,7 +260,7 @@ public class CharInfo extends ServerBasePacket
 			writeD(_cha.GetFishx());  
 			writeD(_cha.GetFishy());
 			writeD(_cha.GetFishz());
-	        writeD(_cha.getNameColor());
+	        writeD(_cha.getAppearance().getNameColor());
 	        
 	        //c5
 	//       	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
@@ -272,7 +272,7 @@ public class CharInfo extends ServerBasePacket
 	        writeD(_cha.getPledgeClass()); 
 	        writeD(0x00); // ??
 	        
-	        writeD(_cha.getTitleColor());
+	        writeD(_cha.getAppearance().getTitleColor());
 	        
 	        writeD(0x00); // ??
 	        

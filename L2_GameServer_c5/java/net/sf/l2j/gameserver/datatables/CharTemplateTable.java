@@ -126,13 +126,7 @@ public class CharTemplateTable
 				set.set("spawnZ", rset.getInt("z"));
 
 				L2PcTemplate ct;
-
-				//
-				// Male class
-				//
-				set.set("isMale", true);
-				//set.setMUnk1(rset.getDouble(27));
-				//set.setMUnk2(rset.getDouble(28));
+				
 				set.set("collision_radius", rset.getDouble("m_col_r"));
 				set.set("collision_height", rset.getDouble("m_col_h"));
 				ct = new L2PcTemplate(set);
@@ -144,26 +138,7 @@ public class CharTemplateTable
 						ct.addItem(rset.getInt("items"+x));
 					}
 				}
-				_templates.put(ct.classId.getId(), ct);
-
-				//
-				// Female class
-				//
-				set.set("isMale", false);
-				//set.setFUnk1(rset.getDouble(31));
-				//set.setFUnk2(rset.getDouble(32));
-				set.set("collision_radius", rset.getDouble("f_col_r"));
-				set.set("collision_height", rset.getDouble("f_col_h"));
-				ct = new L2PcTemplate(set);
-				//5items must go here
-				for (int x=1; x < 6 ;x++)
-				{
-					if (rset.getInt(34+x) != 0)
-					{
-						ct.addItem(rset.getInt("items"+x));
-					}
-				}
-				_templates.put(ct.classId.getId() | 0x100, ct);
+				_templates.put(ct.classId.getId(), ct);				
 			}
 			
 			rset.close();
@@ -181,16 +156,14 @@ public class CharTemplateTable
 		_log.config("CharTemplateTable: Loaded " + _templates.size() + " Character Templates.");
 	}
 	
-	public L2PcTemplate getTemplate(ClassId classId, boolean female)
+	public L2PcTemplate getTemplate(ClassId classId)
 	{
-		return getTemplate(classId.getId(), female);
+		return getTemplate(classId.getId());
 	}
 	
-	public L2PcTemplate getTemplate(int classId, boolean female)
+	public L2PcTemplate getTemplate(int classId)
 	{
 		int key = classId;
-		if (female)
-			key |= 0x100;
 		return _templates.get(key);
 	}
     

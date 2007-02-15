@@ -61,7 +61,7 @@ public class AdminEffects implements IAdminCommandHandler
        
        if (command.equals("admin_invis")||command.equals("admin_invisible"))
        {
-    	   activeChar.setInvisible();
+    	   activeChar.getAppearance().setInvisible();
     	   activeChar.broadcastUserInfo();
     	   
     	   activeChar.decayMe();
@@ -71,7 +71,7 @@ public class AdminEffects implements IAdminCommandHandler
        }
        if (command.equals("admin_vis")||command.equals("admin_visible"))
        {
-    	   activeChar.setVisible();
+    	   activeChar.getAppearance().setVisible();
     	   activeChar.broadcastUserInfo();
        }
        if (command.startsWith("admin_earthquake"))

@@ -30,8 +30,6 @@ package net.sf.l2j.util;
 
 import java.io.Serializable;
 
-import net.sf.l2j.gameserver.model.waypoint.WayPointNode;
-
 /**
  * This class ...
  * 
@@ -71,11 +69,6 @@ public class Point3D implements Serializable
 			this.y = worldPosition.y;
 			this.z = worldPosition.z;
 		}
-	}
-
-	public static Point3D getPosition(WayPointNode node)
-	{
-		return new Point3D(node.getX(), node.getY(), node.getZ());
 	}
 
 	public synchronized void setTo(Point3D point)
