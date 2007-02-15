@@ -26,6 +26,7 @@ public class GeoEditorThread extends Thread
 	private Socket _geSocket;
 	
 	private BufferedOutputStream _out;
+    @SuppressWarnings("unused")
 	private BufferedInputStream _in;
 	
 	private GeoEditorConnector _geCon;

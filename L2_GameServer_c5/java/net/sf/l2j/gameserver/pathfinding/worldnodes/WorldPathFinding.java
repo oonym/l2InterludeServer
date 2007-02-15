@@ -19,10 +19,9 @@ package net.sf.l2j.gameserver.pathfinding.worldnodes;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.MappedByteBuffer;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
@@ -35,8 +34,9 @@ import net.sf.l2j.gameserver.pathfinding.PathFinding;
  */
 public class WorldPathFinding extends PathFinding
 {
-	private static Logger _log = Logger.getLogger(WorldPathFinding.class.getName());
+	//private static Logger _log = Logger.getLogger(WorldPathFinding.class.getName());
 	private static WorldPathFinding _instance;
+    @SuppressWarnings("unused")
 	private static Map<Short, ByteBuffer> PathNodes = new FastMap<Short, ByteBuffer>();
 	private static Map<Short, IntBuffer> PathNodes_index = new FastMap<Short, IntBuffer>();
 	

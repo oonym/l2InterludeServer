@@ -105,7 +105,7 @@ public class AdminGeodata implements IAdminCommandHandler
         		{
         			byte rx = Byte.parseByte(v[0]);
         			byte ry = Byte.parseByte(v[1]);
-        			boolean result = GeoData.getInstance().LoadGeodataFile(rx, ry);
+        			boolean result = GeoData.LoadGeodataFile(rx, ry);
         			
         			if(result)
         				activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] loaded succesfuly");
@@ -127,7 +127,7 @@ public class AdminGeodata implements IAdminCommandHandler
         			byte rx = Byte.parseByte(v[0]);
         			byte ry = Byte.parseByte(v[1]);
         			
-        			GeoData.getInstance().unloadGeodata(rx, ry);
+        			GeoData.unloadGeodata(rx, ry);
         			activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] unloaded.");
         		}
         		catch(Exception e){activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");}
