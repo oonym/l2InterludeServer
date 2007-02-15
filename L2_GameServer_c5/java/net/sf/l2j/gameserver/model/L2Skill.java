@@ -385,6 +385,7 @@ public abstract class L2Skill
     private final SkillTargetType _targetType;
 
     private final double _power;
+    private final int _effectPoints;
     private final int _magicLevel;
     private final String[] _negateStats;
     private final float _negatePower;
@@ -469,6 +470,7 @@ public abstract class L2Skill
 
         _targetType = set.getEnum("target", SkillTargetType.class);
         _power = set.getFloat("power", 0.f);
+        _effectPoints = set.getInteger("effectPoints", 0);
         _negateStats = set.getString("negateStats", "").split(" ");
         _negatePower = set.getFloat("negatePower", 0.f);
         _negateId = set.getInteger("negateId", 0);
@@ -633,6 +635,11 @@ public abstract class L2Skill
     public final double getPower()
     {
         return _power;
+    }
+    
+    public final int getEffectPoints()
+    {
+        return _effectPoints;
     }
     
     public final String[] getNegateStats()
