@@ -17,6 +17,7 @@
  */
 package net.sf.l2j.gameserver.pathfinding.geonodes;
 
+import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
 
 /**
@@ -42,8 +43,7 @@ public class GeoNodeLoc extends AbstractNodeLoc
 	@Override
 	public int getX()
 	{
-		//TODO [Nemesiss] Calculate x
-		return _x;
+		return   L2World.MAP_MIN_X  + _x * 128 + 48 ;
 	}
 
 	/**
@@ -52,8 +52,7 @@ public class GeoNodeLoc extends AbstractNodeLoc
 	@Override
 	public int getY()
 	{
-		// TODO [Nemesiss] Calculate y
-		return _y;
+		return  L2World.MAP_MIN_Y + _y * 128 + 48 ;
 	}
 
 	/**
