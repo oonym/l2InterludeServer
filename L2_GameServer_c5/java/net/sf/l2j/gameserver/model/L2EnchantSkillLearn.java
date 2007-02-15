@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.model;
 
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+
 /**
  * This class ...
  * 
@@ -36,8 +38,11 @@ public final class L2EnchantSkillLearn
     private final int _baseLvl;
     private final int _minSkillLevel;
     private final int _exp;
+    private final byte _rate76;
+    private final byte _rate77;
+    private final byte _rate78;
     
-    public L2EnchantSkillLearn(int id, int lvl, int minSkillLvl, int baseLvl, String name, int cost, int exp)
+    public L2EnchantSkillLearn(int id, int lvl, int minSkillLvl, int baseLvl, String name, int cost, int exp, byte rate76, byte rate77, byte rate78)
     {
         _id = id;
         _level = lvl;
@@ -46,6 +51,9 @@ public final class L2EnchantSkillLearn
         _name = name.intern();
         _spCost = cost;
         _exp = exp;
+        _rate76 = rate76;
+        _rate77 = rate77;
+        _rate78 = rate78;
     }
     
     /**
@@ -99,5 +107,25 @@ public final class L2EnchantSkillLearn
     {
         return _exp;
     }
-       
+    
+    public byte getRate(L2PcInstance ply)
+    {
+        byte result;
+        switch (ply.getLevel())
+        {        
+        case 76:
+            result = _rate76;
+            break;
+        case 77:
+            result = _rate77;
+            break;
+        case 78:
+            result = _rate78;
+            break;        
+        default:
+            result = _rate78;
+            break;
+        }
+        return result;
+    }       
 }

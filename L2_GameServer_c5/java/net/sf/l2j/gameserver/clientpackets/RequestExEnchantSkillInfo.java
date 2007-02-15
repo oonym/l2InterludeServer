@@ -30,7 +30,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ExEnchantSkillInfo;
-import net.sf.l2j.gameserver.skills.Formulas;
 
 /**
  * Format chdd
@@ -71,6 +70,9 @@ public class RequestExEnchantSkillInfo extends ClientBasePacket
         if (activeChar == null) 
             return;
         
+        if (activeChar.getLevel() < 76)
+            return;
+        
         L2FolkInstance trainer = activeChar.getLastFolkNPC();
 
         if ((trainer == null || !activeChar.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !activeChar.isGM()) 
@@ -107,17 +109,14 @@ public class RequestExEnchantSkillInfo extends ClientBasePacket
             
         int requiredSp = SkillTreeTable.getInstance().getSkillSpCost(activeChar, skill);
         int requiredExp = SkillTreeTable.getInstance().getSkillExpCost(activeChar, skill);
-        int rate = Formulas.getInstance().calculateEnchantSkillSuccessRate(skill.getLevel(), activeChar.getLevel());
+        byte rate = SkillTreeTable.getInstance().getSkillRate(activeChar, skill);
         ExEnchantSkillInfo asi = new ExEnchantSkillInfo(skill.getId(), skill.getLevel(), requiredSp, requiredExp, rate);
             
         if (Config.SP_BOOK_NEEDED && (skill.getLevel() == 101 || skill.getLevel() == 141)) // only first lvl requires book
         {
         	int spbId = 6622;
-                
-        	//if (skill.getLevel() == 1 && spbId > -1)
         	asi.addRequirement(4, spbId, 1, 0);
         }
-
         sendPacket(asi);
 		
 	}

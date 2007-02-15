@@ -239,7 +239,7 @@ public class SkillTreeTable
         {
             _enchantSkillTrees = new FastList<L2EnchantSkillLearn>();
             
-            PreparedStatement statement = con.prepareStatement("SELECT skill_id, level, name, base_lvl, sp, min_skill_lvl, exp FROM enchant_skill_trees ORDER BY skill_id, level");
+            PreparedStatement statement = con.prepareStatement("SELECT skill_id, level, name, base_lvl, sp, min_skill_lvl, exp, success_rate76, success_rate77, success_rate78 FROM enchant_skill_trees ORDER BY skill_id, level");
             ResultSet skilltree3 = statement.executeQuery();
         
             int prevSkillId = -1;
@@ -253,11 +253,14 @@ public class SkillTreeTable
                 int minSkillLvl = skilltree3.getInt("min_skill_lvl");
                 int sp = skilltree3.getInt("sp");
                 int exp = skilltree3.getInt("exp");
+                byte rate76 = skilltree3.getByte("success_rate76");
+                byte rate77 = skilltree3.getByte("success_rate77");
+                byte rate78 = skilltree3.getByte("success_rate78");
                                 
                 if (prevSkillId != id)
                     prevSkillId = id;
             
-                L2EnchantSkillLearn skill = new L2EnchantSkillLearn(id, lvl, minSkillLvl, baseLvl, name, sp, exp);
+                L2EnchantSkillLearn skill = new L2EnchantSkillLearn(id, lvl, minSkillLvl, baseLvl, name, sp, exp, rate76 , rate77, rate78);
                 
                 _enchantSkillTrees.add(skill);                    
             }            
@@ -648,4 +651,20 @@ public class SkillTreeTable
         return skillCost;
     }
     
+    public byte getSkillRate(L2PcInstance player, L2Skill skill)
+    {
+        L2EnchantSkillLearn[] enchantSkillLearnList = getAvailableEnchantSkills(player);
+        
+        for (L2EnchantSkillLearn enchantSkillLearn : enchantSkillLearnList)
+        {
+            if (enchantSkillLearn.getId() != skill.getId())
+                continue;
+            
+            if (enchantSkillLearn.getLevel() != skill.getLevel())
+                continue;
+            
+            return enchantSkillLearn.getRate(player);
+        }
+        return 0;
+    }    
 }

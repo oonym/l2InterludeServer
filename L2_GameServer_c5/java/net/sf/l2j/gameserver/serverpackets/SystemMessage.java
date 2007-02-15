@@ -611,6 +611,14 @@ public class SystemMessage extends ServerBasePacket
     public static final int REELING_SUCCESSFUL_PENALTY_S1 = 1671;
     public static final int PUMPING_SUCCESSFUL_PENALTY_S1 = 1672;
     
+    //Enchant Skills
+    public static final int THERE_IS_NO_SKILL_THAT_ENABLES_ENCHANT = 1438;
+    public static final int YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL = 1439;
+    public static final int YOU_HAVE_SUCCEEDED_IN_ENCHANTING_THE_SKILL_S1 = 1440;
+    public static final int YOU_HAVE_FAILED_TO_ENCHANT_THE_SKILL_S1 = 1441;
+    public static final int YOU_DONT_HAVE_ENOUGH_SP_TO_ENCHANT_THAT_SKILL = 1443;
+    public static final int YOU_DONT_HAVE_ENOUGH_EXP_TO_ENCHANT_THAT_SKILL = 1444;
+
     // Game Time messages
     public static final int TIME_S1_S2_IN_THE_DAY = 927;
     public static final int TIME_S1_S2_IN_THE_NIGHT = 928;
