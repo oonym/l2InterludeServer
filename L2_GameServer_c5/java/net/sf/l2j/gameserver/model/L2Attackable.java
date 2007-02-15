@@ -273,7 +273,7 @@ public class L2Attackable extends L2NpcInstance
     public L2Attackable(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        super.setKnownList(new AttackableKnownList(new L2Attackable[] {this}));
+        super.setKnownList(new AttackableKnownList(this));
         _haveToDrop = true;
         _mustGiveExpSp = true;
     }

@@ -14,7 +14,7 @@ public class MonsterKnownList extends AttackableKnownList
     
     // =========================================================
     // Constructor
-    public MonsterKnownList(L2MonsterInstance[] activeChar)
+    public MonsterKnownList(L2MonsterInstance activeChar)
     {
         super(activeChar);
     }

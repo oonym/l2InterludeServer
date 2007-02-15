@@ -33,7 +33,7 @@ public class BoatKnownList extends CharKnownList
 	/**
 	 * @param activeChar
 	 */
-	public BoatKnownList(L2Character[] activeChar)
+	public BoatKnownList(L2Character activeChar)
 	{
 		super(activeChar);
 		// TODO Auto-generated constructor stub

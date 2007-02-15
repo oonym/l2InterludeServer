@@ -14,7 +14,7 @@ public class RaceManagerKnownList extends NpcKnownList
     
     // =========================================================
     // Constructor
-    public RaceManagerKnownList(L2RaceManagerInstance[] activeChar)
+    public RaceManagerKnownList(L2RaceManagerInstance activeChar)
     {
         super(activeChar);
     }

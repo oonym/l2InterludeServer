@@ -14,7 +14,7 @@ public class FriendlyMobKnownList extends AttackableKnownList
     
     // =========================================================
     // Constructor
-    public FriendlyMobKnownList(L2FriendlyMobInstance[] activeChar)
+    public FriendlyMobKnownList(L2FriendlyMobInstance activeChar)
     {
         super(activeChar);
     }

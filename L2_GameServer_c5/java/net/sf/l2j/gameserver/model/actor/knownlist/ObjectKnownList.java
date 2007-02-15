@@ -34,12 +34,12 @@ public class ObjectKnownList
 {
     // =========================================================
     // Data Field
-    private L2Object[] _ActiveObject;          // Use array as a dirty trick to keep object as byref instead of byval
+    private L2Object _ActiveObject;
     private Map<Integer, L2Object> _KnownObjects;
     
     // =========================================================
     // Constructor
-    public ObjectKnownList(L2Object[] activeObject)
+    public ObjectKnownList(L2Object activeObject)
     {
         _ActiveObject = activeObject;
     }
@@ -188,9 +188,8 @@ public class ObjectKnownList
     // =========================================================
     // Property - Public
     public L2Object getActiveObject()
-    {
-        if (_ActiveObject == null || _ActiveObject.length <= 0) return null;
-        return _ActiveObject[0];
+    {        
+        return _ActiveObject;
     }
 
     public int getDistanceToForgetObject(L2Object object) { return 0; }

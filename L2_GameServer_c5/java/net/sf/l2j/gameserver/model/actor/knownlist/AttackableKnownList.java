@@ -18,7 +18,7 @@ public class AttackableKnownList extends NpcKnownList
     
     // =========================================================
     // Constructor
-    public AttackableKnownList(L2Attackable[] activeChar)
+    public AttackableKnownList(L2Attackable activeChar)
     {
         super(activeChar);
     }

@@ -77,7 +77,7 @@ public final class L2GuardInstance extends L2Attackable
 	public L2GuardInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-        super.setKnownList(new GuardKnownList(new L2GuardInstance[] {this}));
+        super.setKnownList(new GuardKnownList(this));
         
         Random rnd = new Random();
         ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new ReturnTask(),RETURN_INTERVAL,RETURN_INTERVAL+rnd.nextInt(60000));

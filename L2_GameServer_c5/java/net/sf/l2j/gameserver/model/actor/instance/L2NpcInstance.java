@@ -190,7 +190,7 @@ public class L2NpcInstance extends L2Character
         // Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object 
         // and link _calculators to NPC_STD_CALCULATOR
         super(objectId, template);
-        super.setKnownList(new NpcKnownList(new L2NpcInstance[] {this}));
+        super.setKnownList(new NpcKnownList(this));
         super.setStat(new NpcStat(this));
         super.setStatus(new NpcStatus(this));
         

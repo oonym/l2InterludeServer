@@ -184,7 +184,7 @@ public abstract class L2Character extends L2Object
 	public L2Character(int objectId, L2CharTemplate template)
 	{
 		super(objectId);
-		super.setKnownList(new CharKnownList(new L2Character[]{this}));
+		super.setKnownList(new CharKnownList(this));
 		
 		// Set its template to the new L2Character
 		_Template = template;

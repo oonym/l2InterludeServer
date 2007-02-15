@@ -154,7 +154,7 @@ public class L2DoorInstance extends L2Character
     public L2DoorInstance(int objectId, L2CharTemplate template, int doorId, String name, boolean unlockable)
     {
         super(objectId, template);
-        super.setKnownList(new DoorKnownList(new L2DoorInstance[] {this}));
+        super.setKnownList(new DoorKnownList(this));
         super.setStat(new DoorStat(this));
         super.setStatus(new DoorStatus(this));
         _doorId = doorId;

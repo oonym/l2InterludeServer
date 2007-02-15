@@ -347,7 +347,7 @@ public abstract class L2Object
 
     public ObjectKnownList getKnownList()
     {
-        if (_KnownList == null) _KnownList = new ObjectKnownList(new L2Object[]{this});
+        if (_KnownList == null) _KnownList = new ObjectKnownList(this);
         return _KnownList;
     }
     public final void setKnownList(ObjectKnownList value) { _KnownList = value; }

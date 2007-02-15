@@ -34,7 +34,7 @@ public class PcKnownList extends PlayableKnownList
     
     // =========================================================
     // Constructor
-    public PcKnownList(L2PcInstance[] activeChar)
+    public PcKnownList(L2PcInstance activeChar)
     {
         super(activeChar);
     }

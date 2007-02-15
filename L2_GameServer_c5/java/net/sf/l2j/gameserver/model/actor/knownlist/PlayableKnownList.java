@@ -9,7 +9,7 @@ public class PlayableKnownList extends CharKnownList
     
     // =========================================================
     // Constructor
-    public PlayableKnownList(L2PlayableInstance[] activeChar)
+    public PlayableKnownList(L2PlayableInstance activeChar)
     {
         super(activeChar);
     }

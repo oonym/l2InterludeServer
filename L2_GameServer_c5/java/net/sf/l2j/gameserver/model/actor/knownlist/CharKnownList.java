@@ -20,7 +20,7 @@ public class CharKnownList extends ObjectKnownList
     
     // =========================================================
     // Constructor
-    public CharKnownList(L2Character[] activeChar)
+    public CharKnownList(L2Character activeChar)
     {
         super(activeChar);
     }

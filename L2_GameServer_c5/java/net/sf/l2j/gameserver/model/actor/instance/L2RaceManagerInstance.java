@@ -68,7 +68,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
     public L2RaceManagerInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        super.setKnownList(new RaceManagerKnownList(new L2RaceManagerInstance[] {this}));
+        super.setKnownList(new RaceManagerKnownList(this));
         if (notInitialized)
         {
             notInitialized = false;

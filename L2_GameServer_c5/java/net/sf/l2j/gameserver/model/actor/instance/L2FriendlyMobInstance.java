@@ -35,7 +35,7 @@ public class L2FriendlyMobInstance extends L2Attackable {
 	public L2FriendlyMobInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-        super.setKnownList(new FriendlyMobKnownList(new L2FriendlyMobInstance[] {this}));
+        super.setKnownList(new FriendlyMobKnownList(this));
 	}	
 
     public final FriendlyMobKnownList getKnownList() { return (FriendlyMobKnownList)super.getKnownList(); }

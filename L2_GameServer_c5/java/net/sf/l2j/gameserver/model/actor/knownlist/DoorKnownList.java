@@ -11,7 +11,7 @@ public class DoorKnownList extends CharKnownList
     
     // =========================================================
     // Constructor
-    public DoorKnownList(L2DoorInstance[] activeChar)
+    public DoorKnownList(L2DoorInstance activeChar)
     {
         super(activeChar);
     }

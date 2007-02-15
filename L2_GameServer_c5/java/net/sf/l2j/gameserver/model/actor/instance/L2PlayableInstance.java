@@ -33,7 +33,7 @@ public abstract class L2PlayableInstance extends L2Character
 	public L2PlayableInstance(int objectId, L2CharTemplate template)
 	{
 		super(objectId, template);
-        super.setKnownList(new PlayableKnownList(new L2PlayableInstance[] {this}));
+        super.setKnownList(new PlayableKnownList(this));
         super.setStat(new PlayableStat(this));
         super.setStatus(new PlayableStatus(this));
 	}

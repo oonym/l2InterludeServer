@@ -712,7 +712,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private L2PcInstance(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
 	{
 		super(objectId, template);
-		super.setKnownList(new PcKnownList(new L2PcInstance[] {this}));
+		super.setKnownList(new PcKnownList(this));
 		super.setStat(new PcStat(this));
 		super.setStatus(new PcStatus(this));
 		
@@ -736,7 +736,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private L2PcInstance(int objectId)
 	{
 		super(objectId, null);
-		super.setKnownList(new PcKnownList(new L2PcInstance[] {this}));
+		super.setKnownList(new PcKnownList(this));
 		super.setStat(new PcStat(this));
 		super.setStatus(new PcStatus(this));
 		

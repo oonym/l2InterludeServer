@@ -56,7 +56,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
     public L2SiegeGuardInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        super.setKnownList(new SiegeGuardKnownList(new L2SiegeGuardInstance[] {this}));
+        super.setKnownList(new SiegeGuardKnownList(this));
     }
 
     public final SiegeGuardKnownList getKnownList() { return (SiegeGuardKnownList)super.getKnownList(); }

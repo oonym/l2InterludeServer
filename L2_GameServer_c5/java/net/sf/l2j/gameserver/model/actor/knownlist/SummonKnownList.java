@@ -10,7 +10,7 @@ public class SummonKnownList extends PlayableKnownList
     
     // =========================================================
     // Constructor
-    public SummonKnownList(L2Summon[] activeChar)
+    public SummonKnownList(L2Summon activeChar)
     {
         super(activeChar);
     }

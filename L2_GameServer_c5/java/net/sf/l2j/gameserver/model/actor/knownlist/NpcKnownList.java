@@ -15,7 +15,7 @@ public class NpcKnownList extends CharKnownList
     
     // =========================================================
     // Constructor
-    public NpcKnownList(L2NpcInstance[] activeChar)
+    public NpcKnownList(L2NpcInstance activeChar)
     {
         super(activeChar);
     }

@@ -14,7 +14,7 @@ public class SiegeGuardKnownList extends AttackableKnownList
     
     // =========================================================
     // Constructor
-    public SiegeGuardKnownList(L2SiegeGuardInstance[] activeChar)
+    public SiegeGuardKnownList(L2SiegeGuardInstance activeChar)
     {
         super(activeChar);
     }
