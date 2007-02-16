@@ -228,7 +228,7 @@
     	
     	<mkdir dir="${build.dist.game}/data/pathnode" />
     	<copy todir="${build.dist.game}/data/pathnode">
-    	    <fileset dir="data/geodata">
+    	    <fileset dir="data/pathnode">
     	        <include name="*.txt"/>
     	        <include name="*.pn"/>
     	    </fileset>
