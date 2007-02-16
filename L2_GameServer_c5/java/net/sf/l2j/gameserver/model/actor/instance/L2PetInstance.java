@@ -719,7 +719,7 @@ public final class L2PetInstance extends L2Summon
 		{
 			L2PetInstance pet = new L2PetInstance(IdFactory.getInstance().getNextId(), template, owner, control);
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, name, level, curHp, curMp, exp, sp, karma, pkkills, fed, FROM pets WHERE item_obj_id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, name, level, curHp, curMp, exp, sp, karma, pkkills, fed FROM pets WHERE item_obj_id=?");
 			statement.setInt(1, control.getObjectId());
 			ResultSet rset = statement.executeQuery();
 			if (!rset.next()) return pet;
