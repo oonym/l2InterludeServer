@@ -50,6 +50,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.ai.L2PlayerAI;
 import net.sf.l2j.gameserver.cache.HtmCache;
+import net.sf.l2j.gameserver.cache.WarehouseCacheManager;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.datatables.CharTemplateTable;
@@ -327,7 +328,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private long _deleteTimer;
 	private PcInventory _inventory = new PcInventory(this);
-	private PcWarehouse _warehouse = new PcWarehouse(this);
+	private PcWarehouse _warehouse;
 	private PcFreight _freight = new PcFreight(this);
 	
 	/** True if the L2PcInstance is sitting */
@@ -729,7 +730,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Retrieve from the database all skills of this L2PcInstance and add them to _skills
 		// Retrieve from the database all items of this L2PcInstance and add them to _inventory
 		getInventory().restore();
-		getWarehouse().restore();
+		if (!Config.WAREHOUSE_CACHE)
+			getWarehouse();
 		getFreight().restore();
 	}
 	
@@ -2145,7 +2147,24 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public PcWarehouse getWarehouse()
 	{
+		if (_warehouse == null)
+		{
+			_warehouse = new PcWarehouse(this);
+			_warehouse.restore();	
+		}
+		if (Config.WAREHOUSE_CACHE)
+			WarehouseCacheManager.getInstance().addCacheTask(this);
 		return _warehouse;
+	}
+	
+	/**
+	 * Free memory used by Warehouse
+	 */
+	public void clearWarehouse()
+	{
+		if (_warehouse != null)
+			_warehouse.deleteMe();
+		_warehouse = null;
 	}
 	
 	/**
@@ -8243,7 +8262,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			try { getInventory().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
 
 			// Update database with items in its warehouse and remove them from the world
-			try { getWarehouse().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+			try { clearWarehouse(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+			if(Config.WAREHOUSE_CACHE)
+				WarehouseCacheManager.getInstance().remCacheTask(this);
 
 			// Update database with items in its freight and remove them from the world
 			try { getFreight().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
