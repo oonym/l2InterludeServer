@@ -50,6 +50,9 @@ public enum Stats
 	MAGIC_REUSE_RATE 	("mReuse"), // how fast spells becomes ready to reuse
 	SHIELD_DEFENCE 		("sDef"),
 	CRITICAL_DAMAGE 	("cAtk"),
+	PVP_PHYSICAL_DMG    ("pvpPhysDmg"),
+	PVP_MAGICAL_DMG     ("pvpMagicalDmg"),
+	PVP_PHYS_SKILL_DMG  ("pvpPhysSkillsDmg"),
 	// Atk & Def rates
 	EVASION_RATE 		("rEvas"),
 	SHIELD_RATE 		("rShld"),
