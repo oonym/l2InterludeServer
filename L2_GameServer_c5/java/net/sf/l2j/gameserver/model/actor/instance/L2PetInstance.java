@@ -719,7 +719,7 @@ public final class L2PetInstance extends L2Summon
 		{
 			L2PetInstance pet = new L2PetInstance(IdFactory.getInstance().getNextId(), template, owner, control);
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, objId, name, level, maxHp, curHp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, str, con, dex, _int, men, wit, exp, sp, karma, pkkills, maxload, fed, max_fed FROM pets WHERE item_obj_id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, name, level, curHp, curMp, exp, sp, karma, pkkills, fed, FROM pets WHERE item_obj_id=?");
 			statement.setInt(1, control.getObjectId());
 			ResultSet rset = statement.executeQuery();
 			if (!rset.next()) return pet;
@@ -810,9 +810,9 @@ public final class L2PetInstance extends L2Summon
 	public synchronized void startFeed( boolean battleFeed )
 	{
 		// stop feeding task if its active
-		if (_feedTask != null) { stopFeed(); }
 		
-	    if (_feedTask == null && !isDead())
+		stopFeed();
+	    if (!isDead())
         {
 	    	if (battleFeed)
 	        {
