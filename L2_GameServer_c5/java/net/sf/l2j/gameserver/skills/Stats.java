@@ -119,7 +119,8 @@ public enum Stats
 	EARTH_RES 		("earthRes"),
 	HOLY_RES 		("holyRes"),
 	DARK_RES 		("darkRes"),
-
+	CANCEL_RES      ("cancelRes"), // Resistance for cancel type skills
+	
 	NONE_WPN_RES 	("noneWpnRes"), // Shields!!!
 	SWORD_WPN_RES 	("swordWpnRes"),
 	BLUNT_WPN_RES 	("bluntWpnRes"),

@@ -339,6 +339,7 @@ public class Disablers implements ISkillHandler
                 case CANCEL:
                 case NEGATE:
                 {
+                	//TODO@   Rewrite it to properly use Formulas class.
                     // cancel
                     if (skill.getId() == 1056)
                     {
@@ -346,6 +347,9 @@ public class Disablers implements ISkillHandler
                     	if(skill.getMagicLevel()==12) lvlmodifier = (Experience.MAX_LEVEL - 1);
                     	int landrate = 90;
                     	if((target.getLevel() - lvlmodifier)>0) landrate = 90-4*(target.getLevel()-lvlmodifier);
+                    	
+                    	landrate *= (100 - activeChar.calcStat(Stats.CANCEL_RES, 0, target, null))/100;
+                    	
                     	if(Rnd.get(100) < landrate)
                     	{
                     		L2Effect[] effects = target.getAllEffects();
