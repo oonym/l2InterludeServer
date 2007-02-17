@@ -77,6 +77,14 @@ public class Continuous implements ISkillHandler
         {
             target = (L2Character)targets[index];
 
+            if(skill.getSkillType() != L2Skill.SkillType.BUFF && skill.getSkillType() != L2Skill.SkillType.HOT 
+            		&& skill.getSkillType() != L2Skill.SkillType.CPHOT && skill.getSkillType() != L2Skill.SkillType.MPHOT
+            		&& skill.getSkillType() != L2Skill.SkillType.UNDEAD_DEFENSE && skill.getSkillType() != L2Skill.SkillType.AGGDEBUFF 
+            		&& skill.getSkillType() != L2Skill.SkillType.CONT)
+            {
+                if(target.reflectSkill(skill))
+                	target = activeChar;
+            }
             // Player holding a cursed weapon can't be buffed and can't buff
             if (skill.getSkillType() == L2Skill.SkillType.BUFF)
             {

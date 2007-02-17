@@ -40,6 +40,7 @@ public enum Stats
 	REGENERATE_MP_RATE	("regMp"),
     RECHARGE_MP_RATE	("gainMp"),
 	HEAL_EFFECTIVNESS 	("gainHp"),
+	
 	// Atk & Def
 	POWER_DEFENCE 		("pDef"),
 	MAGIC_DEFENCE		("mDef"),
@@ -53,6 +54,7 @@ public enum Stats
 	PVP_PHYSICAL_DMG    ("pvpPhysDmg"),
 	PVP_MAGICAL_DMG     ("pvpMagicalDmg"),
 	PVP_PHYS_SKILL_DMG  ("pvpPhysSkillsDmg"),
+	
 	// Atk & Def rates
 	EVASION_RATE 		("rEvas"),
 	SHIELD_RATE 		("rShld"),
@@ -60,6 +62,7 @@ public enum Stats
 	MCRITICAL_RATE 		("mCritRate"),
     EXPSP_RATE 			("rExp"),
 	ATTACK_CANCEL		("cancel"),
+	
 	// Accuracy and range
 	ACCURACY_COMBAT 	("accCombat"),
 	POWER_ATTACK_RANGE 	("pAtkRange"),
@@ -133,6 +136,8 @@ public enum Stats
 	DUALFIST_WPN_RES("dualFistWpnRes"),
 	
 	REFLECT_DAMAGE_PERCENT 	("reflectDam"),
+	REFLECT_SKILL_MAGIC     ("reflectSkillMagic"),
+	REFLECT_SKILL_PHYSIC    ("reflectSkillPhysic"),
 	ABSORB_DAMAGE_PERCENT 	("absorbDam"),
     TRANSFER_DAMAGE_PERCENT ("transDam"),
 	

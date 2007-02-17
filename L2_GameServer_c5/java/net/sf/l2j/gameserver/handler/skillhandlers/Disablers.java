@@ -160,6 +160,9 @@ public class Disablers implements ISkillHandler
                 case ROOT:
                 case STUN:
                 {
+                    if(target.reflectSkill(skill))
+                    	target = activeChar;
+                    
                     if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, ss, false, false))                    
                     	skill.getEffects(activeChar, target);
                     else
@@ -177,6 +180,9 @@ public class Disablers implements ISkillHandler
                 case SLEEP:
                 case PARALYZE: //use same as root for now
                 {
+                    if(target.reflectSkill(skill))
+                    	target = activeChar;
+                    
                     if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss))                    
                     	skill.getEffects(activeChar, target);                    
                     else
@@ -194,6 +200,9 @@ public class Disablers implements ISkillHandler
                 case CONFUSION:
                 case MUTE:
                 {
+                    if(target.reflectSkill(skill))
+                    	target = activeChar;
+                    
                     if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss))
                     {
                         // stop same type effect if avaiable
@@ -295,6 +304,10 @@ public class Disablers implements ISkillHandler
                     for(L2Object t: targets)
                     {
                     	L2Character target1 = (L2Character) t;
+                    	
+                        if(target1.reflectSkill(skill))
+                        	target1 = activeChar;
+                        
                     	if (! Formulas.getInstance().calcSkillSuccess(activeChar, target1, skill, false, sps, bss))
                     		continue;
                     
@@ -318,6 +331,10 @@ public class Disablers implements ISkillHandler
                     for(L2Object t: targets)
                     {
                     	L2Character target1 = (L2Character) t;
+                    	
+                        if(target1.reflectSkill(skill))
+                        	target1 = activeChar;
+                        
                     	if (! Formulas.getInstance().calcSkillSuccess(activeChar, target1, skill, false, sps, bss))
                     		continue;
                     
@@ -339,6 +356,9 @@ public class Disablers implements ISkillHandler
                 case CANCEL:
                 case NEGATE:
                 {
+                    if(target.reflectSkill(skill))
+                    	target = activeChar;
+                    
                 	//TODO@   Rewrite it to properly use Formulas class.
                     // cancel
                     if (skill.getId() == 1056)

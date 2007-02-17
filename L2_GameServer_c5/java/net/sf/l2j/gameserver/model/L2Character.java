@@ -5307,6 +5307,19 @@ public abstract class L2Character extends L2Object
 	{
 		_LastHealAmount = hp;
 	}
+	/**
+	 * Check if character reflected skill
+	 * @param skill
+	 * @return
+	 */
+	public boolean reflectSkill(L2Skill skill)
+	{
+		double reflect = calcStat(skill.isMagic() ? Stats.REFLECT_SKILL_MAGIC : Stats.REFLECT_SKILL_PHYSIC, 0, null, null);
+		if( Rnd.get(100) < reflect)
+			return true;
+		
+		return false;
+	}
 }
 
 
