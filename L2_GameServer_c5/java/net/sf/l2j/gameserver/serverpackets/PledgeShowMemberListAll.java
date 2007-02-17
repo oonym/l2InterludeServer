@@ -139,7 +139,7 @@ public class PledgeShowMemberListAll extends ServerBasePacket
 			writeD(0); // no visible effect
 			writeD(m.getObjectId());//writeD(1); 
 			writeD(m.isOnline() ? 1 : 0);  // 1=online 0=offline
-			writeD(0); //c5 makes the name yellow. member is in academy but doesn't have sponsor 
+			writeD(0); //c5 makes the name yellow. member is in academy and has a sponsor 
 		}
 	}
 

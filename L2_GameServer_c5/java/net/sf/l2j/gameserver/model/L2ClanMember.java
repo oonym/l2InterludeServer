@@ -19,6 +19,9 @@
 package net.sf.l2j.gameserver.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
@@ -38,7 +41,8 @@ public class L2ClanMember
 	private int _classId;
 	private L2PcInstance _player;
 	private int _pledgeType;
-	private String _apprentice;
+	private int _apprentice;
+	private int _sponsor;
 	
 	public L2ClanMember(L2Clan clan, String name, int level, int classId, int objectId, int pledgeType, int powerGrade, String title)
 	{
@@ -52,7 +56,8 @@ public class L2ClanMember
 		_powerGrade = powerGrade;
 		_title = title;
 		_pledgeType = pledgeType;
-		_apprentice = "None";
+		_apprentice = 0;
+		_sponsor = 0;
 
 	}
 	
@@ -69,7 +74,8 @@ public class L2ClanMember
 		_powerGrade = _player.getPowerGrade();
 		_pledgeType = _player.getPledgeType();
 		_title = _player.getTitle();
-		_apprentice = "None";
+		_apprentice = 0;
+		_sponsor = 0;
 	}
 
 		
@@ -220,13 +226,45 @@ public class L2ClanMember
 		}
 	}
 	
-	public String getApprentice() 
+	public void initApprenticeAndSponsor(int apprenticeID, int sponsorID)
+	{
+		_apprentice = apprenticeID;
+		_sponsor = sponsorID;
+	}
+
+	public int getSponsor()
+	{
+		if (_player != null) return _player.getSponsor();
+		else return _sponsor;
+	}
+	
+	public int getApprentice()
+	{
+		if (_player != null) return _player.getApprentice();
+		else return _apprentice;
+	}
+	
+	public String getApprenticeOrSponsorName() 
 	{ 
-		if (_player != null) 
-		{ 
-			return _apprentice;//_player.getApprentice(); 
-		} 
-		return _apprentice; 
+		if(_player != null) 
+		{
+			_apprentice = _player.getApprentice();
+			_sponsor = _player.getSponsor();
+		}
+		
+		if(_apprentice != 0)
+		{
+			L2ClanMember apprentice = _clan.getClanMember(_apprentice);
+			if(apprentice != null) return apprentice.getName();
+			else return "Error";
+		}
+		if(_sponsor != 0)
+		{
+			L2ClanMember sponsor = _clan.getClanMember(_sponsor);
+			if(sponsor != null) return sponsor.getName();
+			else return "Error";
+		}
+		return "";
 	} 
 	
 	public L2Clan getClan() 

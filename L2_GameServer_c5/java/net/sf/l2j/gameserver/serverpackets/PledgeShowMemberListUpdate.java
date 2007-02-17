@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.L2Clan;
 
 /**
  * @author -Wooden-
@@ -29,11 +30,16 @@ public class PledgeShowMemberListUpdate extends ServerBasePacket
 	private static final String _S__54_PLEDGESHOWMEMBERLISTUPDATE = "[S] 54 PledgeShowMemberListUpdate";
 	private L2PcInstance _player;
 	private int _pledgeType;
+	private int _hasSponsor;
 	
 	public PledgeShowMemberListUpdate(L2PcInstance player)
 	{
 		_player = player;
 		_pledgeType = player.getPledgeType();
+		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY) 
+			_hasSponsor = _player.getSponsor() != 0 ? 1 : 0;
+		else 
+			_hasSponsor = 0;
 	}	
 	
 	final void runImpl()
@@ -51,7 +57,7 @@ public class PledgeShowMemberListUpdate extends ServerBasePacket
 		writeD(_player.getObjectId());
 		writeD(_player.isOnline()); // 1=online 0=offline
 		writeD(_pledgeType);
-		writeD(0x00);  //sponsor??
+		writeD(_hasSponsor); 
 	}
 
 	/* (non-Javadoc)

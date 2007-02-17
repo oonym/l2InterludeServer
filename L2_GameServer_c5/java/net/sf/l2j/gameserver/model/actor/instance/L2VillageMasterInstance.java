@@ -955,8 +955,26 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
         UserInfo ui = new UserInfo(player);
         player.sendPacket(ui);*/
-
-        SystemMessage sm = new SystemMessage(SystemMessage.CLAN_CREATED);
+        
+        SystemMessage sm; 
+        if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
+        {
+        	sm = new SystemMessage(SystemMessage.THE_S1S_CLAN_ACADEMY_HAS_BEEN_CREATED);
+        	sm.addString(player.getClan().getName());
+        }
+        else if (pledgeType >= L2Clan.SUBUNIT_KNIGHT1)
+        {
+        	sm = new SystemMessage(SystemMessage.THE_KNIGHTS_OF_S1_HAVE_BEEN_CREATED);
+        	sm.addString(player.getClan().getName());
+        }
+        else if (pledgeType >= L2Clan.SUBUNIT_ROYAL1)
+        {
+        	sm = new SystemMessage(SystemMessage.THE_ROYAL_GUARD_OF_S1_HAVE_BEEN_CREATED);
+        	sm.addString(player.getClan().getName());
+        }
+        else 
+        	sm = new SystemMessage(SystemMessage.CLAN_CREATED);
+        
         player.sendPacket(sm);
     }
 

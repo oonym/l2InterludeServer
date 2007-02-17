@@ -60,15 +60,14 @@ public class PledgeReceiveMemberInfo extends ServerBasePacket
 		writeS(_member.getTitle()); // title
 		writeD(_member.getPowerGrade()); // power
 		
-		//clan or subpledge name??
+		//clan or subpledge name
 		if(_member.getPledgeType() != 0)
 		{
-			writeS("Subp_name");
-			//writeS((_member.getClan().getSubPledge(_member.getPledgeType())).getName());
+			writeS((_member.getClan().getSubPledge(_member.getPledgeType())).getName());
 		}
 		else writeS(_member.getClan().getName());
 		
-		writeS(_member.getApprentice()); // this member's apprentice name
+		writeS(_member.getApprenticeOrSponsorName()); // name of this member's apprentice/sponsor
 	}
 
 	/**

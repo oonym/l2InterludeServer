@@ -269,7 +269,7 @@ abstract class AbstractAI implements Ctrl
         	L2Effect silentMove = _actor.getEffect(EffectType.SILENT_MOVE);
             if (silentMove != null && silentMove.getSkill() != null)
             {
-                SystemMessage sm = new SystemMessage(92);
+                SystemMessage sm = new SystemMessage(SystemMessage.EFFECT_S1_DISAPPEARED);
                 sm.addSkillName(silentMove.getSkill().getId());
                 silentMove.exit();
                 _actor.sendPacket(sm);

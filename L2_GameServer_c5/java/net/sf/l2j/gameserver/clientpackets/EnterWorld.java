@@ -264,6 +264,7 @@ public class EnterWorld extends ClientBasePacket
 		
         notifyFriends(activeChar);
 		notifyClanMembers(activeChar);
+		notifySponsorOrApprentice(activeChar);
 
 		activeChar.onPlayerEnter();
         
@@ -340,6 +341,35 @@ public class EnterWorld extends ClientBasePacket
 			}
 			ps = null;
 			msg = null;
+		}
+	}
+	
+	/**
+	 * @param activeChar
+	 */
+	private void notifySponsorOrApprentice(L2PcInstance activeChar)
+	{
+		if (activeChar.getSponsor() != 0)
+		{
+			L2PcInstance sponsor = (L2PcInstance)L2World.getInstance().findObject(activeChar.getSponsor());
+			
+			if (sponsor != null)
+			{
+				SystemMessage msg = new SystemMessage(SystemMessage.YOUR_APPRENTICE_S1_HAS_LOGGED_IN);
+				msg.addString(activeChar.getName());
+				sponsor.sendPacket(msg);
+			}
+		}
+		else if (activeChar.getApprentice() != 0)
+		{
+			L2PcInstance apprentice = (L2PcInstance)L2World.getInstance().findObject(activeChar.getApprentice());
+			
+			if (apprentice != null)
+			{
+				SystemMessage msg = new SystemMessage(SystemMessage.YOUR_SPONSOR_S1_HAS_LOGGED_IN);
+				msg.addString(activeChar.getName());
+				apprentice.sendPacket(msg);
+			}
 		}
 	}
 

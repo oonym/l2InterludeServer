@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
@@ -51,6 +52,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2ControlTowerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SiegeInfo;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
@@ -412,10 +414,13 @@ public class Siege
         {
             if (getAttackerClans().size() <= 0)
             {
-                if (getCastle().getOwnerId() <= 0) announceToPlayer("The siege of "
-                    + getCastle().getName() + " has been canceled due to lack of interest.", false);
-                else announceToPlayer(getCastle().getName()
-                    + "'s siege was canceled because there were no clans that participated.", false);
+                SystemMessage sm;
+                if (getCastle().getOwnerId() <= 0) 
+            		sm = new SystemMessage(SystemMessage.SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST);
+                else
+                    sm = new SystemMessage(SystemMessage.S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED);
+                sm.addString(getCastle().getName());
+                Announcements.getInstance().announceToAll(sm);  
                 return;
             }
 
@@ -891,7 +896,8 @@ public class Siege
             + SiegeManager.getInstance().getSiegeClanMinLevel()
             + " and higher may register for a castle siege.");
         else if (player.getClan().getHasCastle() > 0) player.sendMessage("You cannot register because your clan already own a castle.");
-        else if (player.getClan().getClanId() == getCastle().getOwnerId()) player.sendMessage("The clan that owns the castle is automatically registered on the defending side.");
+        else if (player.getClan().getClanId() == getCastle().getOwnerId())
+            player.sendPacket(new SystemMessage(SystemMessage.CLAN_THAT_OWNS_CASTLE_IS_AUTOMATICALLY_REGISTERED_DEFENDING));
         else if (SiegeManager.getInstance().checkIsRegistered(player.getClan(), getCastle().getCastleId())) player.sendMessage("You are already registered in a Siege.");
         else return true;
 

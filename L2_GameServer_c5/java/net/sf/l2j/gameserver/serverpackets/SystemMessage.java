@@ -79,7 +79,7 @@ public class SystemMessage extends ServerBasePacket
 	
 	public static final int YOU_DID_S1_DMG = 0x23;
 	public static final int S1_GAVE_YOU_S2_DMG = 0x24;
-	public static final int EFFECT_S1_DISAPPEARED = 0x5c;
+	public static final int EFFECT_S1_DISAPPEARED = 0x92;
 	public static final int YOU_EARNED_S1_EXP_AND_S2_SP = 0x5f;
 	public static final int YOU_INCREASED_YOUR_LEVEL = 0x60;
 	
@@ -220,7 +220,10 @@ public class SystemMessage extends ServerBasePacket
 	public static final int CLAN_CREATED = 189;
 	public static final int CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE = 271;
 	public static final int CLAN_LVL_3_NEEDED_TO_SET_CREST = 272;
-	
+	public static final int THE_S1S_CLAN_ACADEMY_HAS_BEEN_CREATED = 1741;
+	public static final int THE_KNIGHTS_OF_S1_HAVE_BEEN_CREATED = 1794;	
+	public static final int THE_ROYAL_GUARD_OF_S1_HAVE_BEEN_CREATED = 1795;	
+
 	public static final int CANNOT_INVITE_YOURSELF = 4;
 	public static final int S1_WORKING_WITH_ANOTHER_CLAN = 10;
 	public static final int ENTERED_THE_CLAN = 195;
@@ -341,13 +344,20 @@ public class SystemMessage extends ServerBasePacket
     public static final int STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE = 1012;
     public static final int STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING = 1013;
 	
-    //Summons
+    //Summoning
     public static final int SUMMON_GAVE_DAMAGE_OF_S1 = 1026;
     public static final int SUMMON_RECEIVED_DAMAGE_OF_S2_BY_S1 = 1027;
     public static final int SUMMON_CRITICAL_HIT = 1028;
     public static final int SUMMON_A_PET = 547;
     public static final int CUBIC_SUMMONING_FAILED = 568;
     public static final int SUMMONING_SERVITOR_COSTS_S2_S1 = 1197;
+    public static final int YOU_CANNOT_SUMMON_PLAYERS_WHO_ARE_IN_OLYMPIAD = 1911;
+    public static final int S1_CURRENTLY_TRADING_OR_OPERATING_PRIVATE_STORE_AND_CANNOT_BE_SUMMONED = 1898; 
+    public static final int S1_IS_DEAD_AT_THE_MOMENT_AND_CANNOT_BE_SUMMONED = 1844;
+    public static final int YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION = 650;
+    public static final int S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT = 1842;
+    public static final int S1_IS_ENGAGED_IN_COMBAT_AND_CANNOT_BE_SUMMONED = 1843;
+    public static final int YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING = 1899;
     
 	// enchants
 	public static final int S1_SUCCESSFULLY_ENCHANTED = 62;
@@ -409,6 +419,19 @@ public class SystemMessage extends ServerBasePacket
     public static final int CAN_BE_USED_BY_DAWN = 1301;
     public static final int CAN_BE_USED_BY_DUSK = 1302;
     
+    // Siege
+    public static final int CLAN_THAT_OWNS_CASTLE_IS_AUTOMATICALLY_REGISTERED_DEFENDING = 688;
+    public static final int SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST = 846;
+    public static final int S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED = 295;
+    
+    // Sponsor/Apprentice
+    public static final int S2_HAS_BEEN_DESIGNATED_AS_APPRENTICE_OF_CLAN_MEMBER_S1 = 1755;
+    public static final int YOUR_APPRENTICE_S1_HAS_LOGGED_IN = 1756;
+    public static final int YOUR_APPRENTICE_S1_HAS_LOGGED_OUT = 1757;
+    public static final int YOUR_SPONSOR_S1_HAS_LOGGED_IN = 1758;
+    public static final int YOUR_SPONSOR_S1_HAS_LOGGED_OUT = 1759;
+    public static final int YOU_DO_NOT_HAVE_THE_RIGHT_TO_DISMISS_AN_APPRENTICE = 1762;
+    public static final int S2_CLAN_MEMBER_S1_S_APPRENTICE_HAS_BEEN_REMOVED = 1763;
     
     //wars
     public static final int WAR_WITH_THE_S1_CLAN_HAS_BEGUN = 215;

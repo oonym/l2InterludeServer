@@ -159,6 +159,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Resurrect;
 import net.sf.l2j.gameserver.handler.skillhandlers.SiegeFlag;
 import net.sf.l2j.gameserver.handler.skillhandlers.Spoil;
 import net.sf.l2j.gameserver.handler.skillhandlers.SummonTreasureKey; 
+import net.sf.l2j.gameserver.handler.skillhandlers.SummonFriend;
 import net.sf.l2j.gameserver.handler.skillhandlers.StrSiegeAssault;
 import net.sf.l2j.gameserver.handler.skillhandlers.Sweep;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
@@ -410,6 +411,7 @@ public class GameServer
         _skillHandler.registerSkillHandler(new Spoil());
         _skillHandler.registerSkillHandler(new Sweep());
         _skillHandler.registerSkillHandler(new StrSiegeAssault());
+        _skillHandler.registerSkillHandler(new SummonFriend());
         _skillHandler.registerSkillHandler(new SummonTreasureKey()); 
         _skillHandler.registerSkillHandler(new Disablers());
 		_skillHandler.registerSkillHandler(new Recall());

@@ -159,8 +159,9 @@ public final class Util
     public static boolean checkIfInRange(int range, L2Object obj1, L2Object obj2, boolean includeZAxis)
     {
         if (obj1 == null || obj2 == null) return false;
+        if (range == -1) return true; // not limited
         
-       int rad = 0;
+        int rad = 0;
         if(obj1 instanceof L2Character)
         	rad += ((L2Character)obj1).getTemplate().collisionRadius;
         if(obj2 instanceof L2Character)

@@ -209,6 +209,7 @@ public abstract class L2Skill
     	DETECT_WEAKNESS, 
     	LUCK,
     	RECALL,
+    	SUMMON_FRIEND,
     	REFLECT,
     	SPOIL,
     	SWEEP,

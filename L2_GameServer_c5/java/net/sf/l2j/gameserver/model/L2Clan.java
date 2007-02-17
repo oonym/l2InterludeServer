@@ -250,6 +250,15 @@ public class L2Clan
 		return _members.get(name);
 	}
 
+    public L2ClanMember getClanMember(int objectID)
+    {
+        for (L2ClanMember temp : _members.values())
+        {
+            if (temp.getObjectId() == objectID) return temp;
+        }
+        return null;
+    }
+    
 	public void removeClan()
 	{
 	    broadcastToOnlineMembers(new SystemMessage(SystemMessage.CLAN_MEMBERSHIP_TERMINATED));
@@ -310,6 +319,11 @@ public class L2Clan
         {
             setNewLeader();
         }
+		if (exMember.isOnline())
+		{
+			exMember.getPlayerInstance().setApprentice(0);
+			exMember.getPlayerInstance().setSponsor(0);
+		}
         removeMemberInDatabase(exMember);
         if (_members.isEmpty())
         {
@@ -631,12 +645,22 @@ public class L2Clan
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=0, allyId=0, title=?, clan_privs=0, wantspeace=0, subpledge=0 WHERE obj_Id=?");
+            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=0, allyId=0, title=?, clan_privs=0, wantspeace=0, subpledge=0, apprentice=0, sponsor=0 WHERE obj_Id=?");
             statement.setString(1, "");
             statement.setInt(2, member.getObjectId());
             statement.execute();
             statement.close();                  
             if (Config.DEBUG) _log.fine("clan member removed in db: "+getClanId());
+            
+            statement = con.prepareStatement("UPDATE characters SET apprentice=0 WHERE apprentice=?");
+            statement.setInt(1, member.getObjectId());
+            statement.execute();
+            statement.close();                  
+            
+            statement = con.prepareStatement("UPDATE characters SET sponsor=0 WHERE sponsor=?");
+            statement.setInt(1, member.getObjectId());
+            statement.execute();
+            statement.close();                  
         }
         catch (Exception e)
         {
@@ -744,7 +768,7 @@ public class L2Clan
                 
                 int leaderId = (clanData.getInt("leader_id"));          
 
-                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge FROM characters WHERE clanid=?");
+                PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge,apprentice,sponsor FROM characters WHERE clanid=?");
                 statement2.setInt(1, getClanId());
                 ResultSet clanMembers = statement2.executeQuery();
                 
@@ -755,6 +779,7 @@ public class L2Clan
                     	setLeader(member);
                     else
                         addClanMember(member);
+                    member.initApprenticeAndSponsor(clanMembers.getInt("apprentice"), clanMembers.getInt("sponsor"));
                 }               
                 clanMembers.close();
                 statement2.close();              
