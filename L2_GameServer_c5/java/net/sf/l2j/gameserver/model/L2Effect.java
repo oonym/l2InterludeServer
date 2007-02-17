@@ -75,7 +75,9 @@ public abstract class L2Effect
         REMOVE_TARGET, 
         TARGET_ME,
         SILENCE_MAGIC_PHYSICAL,
-        BETRAY
+        BETRAY,
+        PETRIFICATION,
+        ROTATE // for bluff skill
     }
 
     private static final Func[] _emptyFunctionSet = new Func[0];
