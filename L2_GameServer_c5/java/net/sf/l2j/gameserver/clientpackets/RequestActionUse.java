@@ -158,8 +158,13 @@ public class RequestActionUse extends ClientBasePacket
 
                     if (target.isAutoAttackable(activeChar) || _ctrlPressed)
                     {
-                    	// AI doesn't support attacking other than doors at the moment
-                        if ((pet.getNpcId() != L2Summon.SIEGE_GOLEM_ID) || (target instanceof L2DoorInstance))
+                    	if (target instanceof L2DoorInstance) 
+                    	{
+                    		if(((L2DoorInstance)target).isAttackable(activeChar))
+                    			pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+                    	}
+                    	// siege golem AI doesn't support attacking other than doors at the moment
+                    	else if (pet.getNpcId() != L2Summon.SIEGE_GOLEM_ID)
                             pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
                     }
 				}
