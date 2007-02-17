@@ -435,12 +435,13 @@ public class L2ControllableMobAI extends L2AttackableAI
 				|| Math.abs(_actor.getZ() - target.getZ()) > 100)
 			return false;
 
+        // Check if the target isn't invulnerable
+        if (target.isInvul())
+            return false;
+        
         // Check if the target is a L2PcInstance
         if (target instanceof L2PcInstance)
         {
-            // Check if the target isn't invulnerable
-            if (((L2PcInstance)target).isInvul())
-                return false;
             
             // Check if the target isn't in silent move mode
             if (((L2PcInstance)target).isSilentMoving())

@@ -102,7 +102,8 @@ public class CharStatus
 
     public void reduceHp(double value, L2Character attacker, boolean awake)
     {
-
+    	if (getActiveChar().isInvul()) return;
+    	
 	if (getActiveChar() instanceof L2PcInstance)
 	{
     	    if (getActiveChar().isDead() && !getActiveChar().isFakeDeath()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found

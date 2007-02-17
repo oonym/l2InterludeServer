@@ -40,8 +40,8 @@ public class L2SkillDrain extends L2Skill {
 			if (target.isAlikeDead() && getTargetType() != SkillTargetType.TARGET_CORPSE_MOB)
 				continue;
 
-            if (target instanceof L2PcInstance && activeChar != target && ((L2PcInstance)target).isInvul())
-                continue; // No effect on invulnerable players unless they cast it themselves.
+            if (activeChar != target && target.isInvul())
+                continue; // No effect on invulnerable chars unless they cast it themselves.
 
 			L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
 			

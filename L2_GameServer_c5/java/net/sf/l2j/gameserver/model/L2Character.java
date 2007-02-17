@@ -141,8 +141,9 @@ public abstract class L2Character extends L2Object
 	private boolean _IsSleeping                             = false; // Cannot move/attack until sleep timed out or monster is attacked
 	private boolean _IsStunned                              = false; // Cannot move/attack until stun timed out
 	private boolean _IsBetrayed                             = false; // Betrayed by own summon
-	private boolean _IsTeleporting                          = false;
+	protected boolean _IsTeleporting                          = false;
 	private L2Character _LastBuffer							= null;
+	protected boolean _isInvul                                = false;
 	private int _LastHealAmount								= 0;
 	private CharStat _Stat;
 	private CharStatus _Status;
@@ -588,7 +589,7 @@ public abstract class L2Character extends L2Object
         		if (player.isCursedWeaponEquiped())
         		{
                 	// If hitted by a cursed weapon, Cp is reduced to 0
-        			if (target instanceof L2PcInstance && !((L2PcInstance)target).isInvul())
+        			if (!target.isInvul())
         				target.setCurrentCp(0);
         		} else if (player.isHero())
         		{
@@ -1479,7 +1480,8 @@ public abstract class L2Character extends L2Object
 	 
 	public final boolean isTeleporting() { return _IsTeleporting; }
 	public final void setIsTeleporting(boolean value) { _IsTeleporting = value; }
-	
+	public void setIsInvul(boolean b){_isInvul = b;}
+	public boolean isInvul(){return _isInvul  || _IsTeleporting;}
 	public boolean isUndead() { return false; }
 	
 	public CharKnownList getKnownList() { return ((CharKnownList)super.getKnownList()); }

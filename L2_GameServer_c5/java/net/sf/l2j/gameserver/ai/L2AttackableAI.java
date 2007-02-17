@@ -144,12 +144,13 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         if(!GeoData.getInstance().canSeeTarget(me, target))
         	return false;
         
+        // Check if the target isn't invulnerable
+        if (target.isInvul())
+            return false;
+        
         // Check if the target is a L2PcInstance
         if (target instanceof L2PcInstance)
         {
-            // Check if the target isn't invulnerable
-            if (((L2PcInstance)target).isInvul())
-                return false;
             // Don't take the aggro if the GM has the access level below or equal to GM_DONT_TAKE_AGGRO
             if (((L2PcInstance)target).isGM() && ((L2PcInstance)target).getAccessLevel() <= Config.GM_DONT_TAKE_AGGRO)
                 return false;

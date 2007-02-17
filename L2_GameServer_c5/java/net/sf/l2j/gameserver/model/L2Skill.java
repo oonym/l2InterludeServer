@@ -29,6 +29,7 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GeoData; 
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
@@ -1908,17 +1909,12 @@ public abstract class L2Skill
     {
         if (isPassive()) return _emptyEffectSet;
 
-        if (_effectTemplates == null) return _emptyEffectSet;
+        if (_effectTemplates == null) 
+        	return _emptyEffectSet;
+        
+        if ((effector != effected) && effected.isInvul())
+            return _emptyEffectSet;
 
-        if (effected instanceof L2PcInstance)
-        {
-            L2PcInstance targetplayer = (L2PcInstance) effected;
-            //No effect on invulnerable players unless they cast it themselves.
-            if ((effector != effected) && targetplayer.isInvul())
-            {
-                return _emptyEffectSet;
-            }
-        }
 
         List<L2Effect> effects = new FastList<L2Effect>();
 
@@ -1956,6 +1952,7 @@ public abstract class L2Skill
                 //Implements effect charge
                 if (e.getEffectType()== L2Effect.EffectType.CHARGE)
                 {               
+                	env._skill = SkillTable.getInstance().getInfo(8, effector.getSkillLevel(8));
                     EffectCharge effect = (EffectCharge) env._target.getEffect(L2Effect.EffectType.CHARGE);
                     if (effect != null) 
                     {

@@ -133,12 +133,12 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         // Get the owner if the target is a summon
         if (target instanceof L2SummonInstance) target = ((L2SummonInstance) target).getOwner();
 
+        // Check if the target isn't invulnerable
+        if (target.isInvul()) return false;
+        
         // Check if the target is a L2PcInstance
         if (target instanceof L2PcInstance)
         {
-            // Check if the target isn't invulnerable
-            if (((L2PcInstance) target).isInvul()) return false;
-
             // Check if the target isn't in silent move mode AND too far (>100)
             if (((L2PcInstance) target).isSilentMoving()
                 && !_actor.isInsideRadius(target, 100, false, false)) return false;
