@@ -419,7 +419,19 @@ public abstract class L2Character extends L2Object
             sendPacket(new ActionFailed());
             return;
         }
-		
+
+        if (((L2PcInstance)target).isCursedWeaponEquiped() && ((L2PcInstance)this).getLevel()<=20){
+        	((L2PcInstance)this).sendMessage("Cant attack a cursed Player under twenty");
+        	sendPacket(new ActionFailed());
+        	return;
+        }
+        
+        if (((L2PcInstance)this).isCursedWeaponEquiped() && ((L2PcInstance)target).getLevel()<=20){
+        	((L2PcInstance)this).sendMessage("Cant attack a newbie player with Zarike");
+        	sendPacket(new ActionFailed());
+        	return;
+        }
+        
 		// Get the active weapon instance (always equiped in the right hand)
 		L2ItemInstance weaponInst = getActiveWeaponInstance();
 		

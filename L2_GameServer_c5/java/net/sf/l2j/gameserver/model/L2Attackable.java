@@ -1207,7 +1207,8 @@ public class L2Attackable extends L2NpcInstance
          }
          
          // Check the drop of a cursed weapon
-         CursedWeaponsManager.getInstance().checkDrop(this, player);
+         if (levelModifier>0 && player.getLevel()>20)
+         	CursedWeaponsManager.getInstance().checkDrop(this, player);
 
          // now throw all categorized drops and handle spoil.
     	 for(L2DropCategory cat:npcTemplate.getDropData())
