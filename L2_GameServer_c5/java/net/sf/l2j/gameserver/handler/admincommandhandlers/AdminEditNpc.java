@@ -76,7 +76,10 @@ public class AdminEditNpc implements IAdminCommandHandler {
     
     public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
-        if (!((checkLevel(activeChar.getAccessLevel()) || checkLevel2(activeChar.getAccessLevel())) && activeChar.isGM())) return false;
+        if (!Config.ALT_PRIVILEGES_ADMIN)
+        	if (!((checkLevel(activeChar.getAccessLevel()) || checkLevel2(activeChar.getAccessLevel())) && activeChar.isGM()))
+        		return false;
+        
         else if (command.startsWith("admin_showShop "))
         {
             String[] args = command.split(" ");

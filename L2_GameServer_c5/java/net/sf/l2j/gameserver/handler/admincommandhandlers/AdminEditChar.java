@@ -80,8 +80,9 @@ public class AdminEditChar implements IAdminCommandHandler
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
     {
-        if (!((checkLevel(activeChar.getAccessLevel()) || checkLevel2(activeChar.getAccessLevel())) && activeChar.isGM())) 
-            return false;
+        if (!Config.ALT_PRIVILEGES_ADMIN)
+        	if (!((checkLevel(activeChar.getAccessLevel()) || checkLevel2(activeChar.getAccessLevel())) && activeChar.isGM()))
+        		return false;
         
 		if (command.equals("admin_current_player"))
 		{

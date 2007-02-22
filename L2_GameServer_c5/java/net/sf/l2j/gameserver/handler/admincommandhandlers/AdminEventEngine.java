@@ -79,7 +79,10 @@ public class AdminEventEngine implements IAdminCommandHandler {
  private static boolean npcsDeleted = false;
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
-		if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
+        if (!Config.ALT_PRIVILEGES_ADMIN)
+        	if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
+        		return false;
+        
 		if (command.equals("admin_event")) showMainPage(activeChar);
 
         else if (command.equals("admin_event_new"))
