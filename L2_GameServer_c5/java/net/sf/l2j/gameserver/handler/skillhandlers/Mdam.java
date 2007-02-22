@@ -60,7 +60,7 @@ public class Mdam implements ISkillHandler
 
         L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
 
-        if (activeChar instanceof L2PcInstance)
+        /* if (activeChar instanceof L2PcInstance)
         {
             if (weaponInst == null)
             {
@@ -69,7 +69,7 @@ public class Mdam implements ISkillHandler
                 activeChar.sendPacket(sm2);
                 return;
             }
-        }
+        } */
 
         if (weaponInst != null)
         {
