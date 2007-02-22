@@ -235,7 +235,11 @@ public class CursedWeapon
 		} else
 		{
 			_player.dropItem("DieDrop", _item, killer, true);
-		
+			_player.setKarma(_playerKarma);
+			_player.setPkKills(_playerPkKills);
+			_player.setCursedWeaponEquipedId(0);
+			_player.removeSkill(SkillTable.getInstance().getInfo(_skillId, _player.getSkillLevel(_skillId)), false);
+			_player.abortAttack();		
 			//L2ItemInstance item = _player.getInventory().getItemByItemId(_itemId);
 			//_player.getInventory().dropItem("DieDrop", item, _player, null);
 			//_player.getInventory().getItemByItemId(_itemId).dropMe(_player, _player.getX(), _player.getY(), _player.getZ());
@@ -420,6 +424,8 @@ public class CursedWeapon
 			endOfLife();
 		} else
 		{
+			// Unequip & Drop
+			dropIt(null, null, killer, false);
 			// Reset player stats
 			_player.setKarma(_playerKarma);
 			_player.setPkKills(_playerPkKills);
@@ -430,9 +436,6 @@ public class CursedWeapon
 			
 			// Unequip weapon
 			//_player.getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LRHAND);
-			
-			// Unequip & Drop
-			dropIt(null, null, killer, false);
 			
 			_player.broadcastUserInfo();
 		}
