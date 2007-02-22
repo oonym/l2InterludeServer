@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+
 /**
  * This class ...
  * 
@@ -36,75 +37,81 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class BalanceLife implements ISkillHandler
 {
-	private static SkillType[] _skillIds = {SkillType.BALANCE_LIFE};
-	
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
-	{
-		//L2Character activeChar = activeChar;
-		//check for other effects
-	    try {
-	        ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(SkillType.BUFF);
-		
-            if (handler != null)
-                handler.useSkill(activeChar, skill, targets);
-	    } 
-        catch (Exception e) {}
+	private static SkillType[] _skillIds =
+		{ SkillType.BALANCE_LIFE };
 
-        L2Character target = null;
-		
+	public void useSkill(L2Character activeChar, L2Skill skill,
+			L2Object[] targets)
+	{
+		// L2Character activeChar = activeChar;
+		// check for other effects
+		try
+		{
+			ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(
+					SkillType.BUFF);
+
+			if (handler != null)
+				handler.useSkill(activeChar, skill, targets);
+		} catch (Exception e)
+		{
+		}
+
+		L2Character target = null;
+
 		L2PcInstance player = null;
 		if (activeChar instanceof L2PcInstance)
-			player = (L2PcInstance)activeChar;
-		
+			player = (L2PcInstance) activeChar;
+
 		double fullHP = 0;
 		double currentHPs = 0;
-		
-        for (int index = 0; index < targets.length; index++)
-        {
-            target = (L2Character)targets[index];
-			
-            // We should not heal if char is dead
-            if (target == null || target.isDead())
-                continue;
-            
-            // Player holding a cursed weapon can't be healed and can't heal
-            if (target != activeChar)
-            {
-            	if (target instanceof L2PcInstance && ((L2PcInstance)target).isCursedWeaponEquiped())
-            		continue;
-            	else if (player != null && player.isCursedWeaponEquiped())
-            		continue;
-            }
-            
-           	fullHP += target.getMaxHp();
-            currentHPs += target.getCurrentHp();
-		}
-        
-        double percentHP = currentHPs / fullHP;
-            
-        for (int index = 0; index < targets.length; index++)
-        {	
-        
-         double newHP = target.getMaxHp() * percentHP;
-         double totalHeal = newHP - target.getCurrentHp();
-            	
-         target.setCurrentHp(newHP);
-				
-		if(totalHeal > 0)
-			target.setLastHealAmount((int)totalHeal);	
 
-		StatusUpdate su = new StatusUpdate(target.getObjectId());
-		su.addAttribute(StatusUpdate.CUR_HP, (int)target.getCurrentHp());
-		target.sendPacket(su);
-				
-		SystemMessage sm = new SystemMessage(614);
-		sm.addString("HP of the party has been balanced.");
-		target.sendPacket(sm);
-		
-        }
+		for (int index = 0; index < targets.length; index++)
+		{
+			target = (L2Character) targets[index];
+
+			// We should not heal if char is dead
+			if (target == null || target.isDead())
+				continue;
+
+			// Player holding a cursed weapon can't be healed and can't heal
+			if (target != activeChar)
+			{
+				if (target instanceof L2PcInstance
+						&& ((L2PcInstance) target).isCursedWeaponEquiped())
+					continue;
+				else if (player != null && player.isCursedWeaponEquiped())
+					continue;
+			}
+
+			fullHP += target.getMaxHp();
+			currentHPs += target.getCurrentHp();
+		}
+
+		double percentHP = currentHPs / fullHP;
+
+		for (int index = 0; index < targets.length; index++)
+		{
+			target = (L2Character) targets[index];
+
+			double newHP = target.getMaxHp() * percentHP;
+			double totalHeal = newHP - target.getCurrentHp();
+
+			target.setCurrentHp(newHP);
+
+			if (totalHeal > 0)
+				target.setLastHealAmount((int) totalHeal);
+
+			StatusUpdate su = new StatusUpdate(target.getObjectId());
+			su.addAttribute(StatusUpdate.CUR_HP, (int) target.getCurrentHp());
+			target.sendPacket(su);
+
+			SystemMessage sm = new SystemMessage(614);
+			sm.addString("HP of the party has been balanced.");
+			target.sendPacket(sm);
+
+		}
 	}
-	
-	
+
 	public SkillType[] getSkillIds()
 	{
 		return _skillIds;
