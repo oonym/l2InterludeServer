@@ -29,6 +29,7 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread.SessionKey;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.CharSelectInfoPackage;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
@@ -116,7 +117,10 @@ public final class ClientThread
                 	EventData data = new EventData(player.eventX, player.eventY, player.eventZ, player.eventkarma, player.eventpvpkills, player.eventpkkills, player.eventTitle, player.kills, player.eventSitForced);
                     L2Event.connectionLossData.put(player.getName(), data);
                 }
-				
+                if (player.isFlying()) 
+                { 
+                	player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+                }
 				// notify the world about our disconnect
 				player.deleteMe();
 				

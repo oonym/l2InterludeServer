@@ -19,6 +19,7 @@
 
 package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -90,6 +91,7 @@ public class Mount implements IUserCommandHandler
         }
         else if (activeChar.isMounted())
         {
+        	if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
 			Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
 			Broadcast.toSelfAndKnownPlayers(activeChar, dismount);
             activeChar.setMountType(0);

@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.SevenSignsFestival;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -109,7 +110,10 @@ public class RequestRestart extends ClientBasePacket
                                                           SystemMessage.sendString(player.getName()
                                                               + " has been removed from the upcoming festival."));
         }
-
+        if (player.isFlying()) 
+        { 
+        	player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+        }
         player.deleteMe();
         ClientThread.saveCharToDisk(getClient().getActiveChar());
 
