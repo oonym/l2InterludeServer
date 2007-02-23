@@ -33,8 +33,6 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.ShowTownMap;
-import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
-import net.sf.l2j.util.L2ObjectSet;
 
 /**
  * GODSON ROX!
@@ -139,7 +137,7 @@ public class L2StaticObjectInstance extends L2Object
 
 				player.sendPacket(html);
 				player.sendPacket(new ActionFailed());
-			} else if(_type == 0) player.sendPacket(new ShowTownMap(_texture, _x, _y));
+			} else if(_type == 0) player.sendPacket(new ShowTownMap(_texture, getMapX(), getMapY()));
                     // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
                     player.sendPacket(new ActionFailed());
             }
