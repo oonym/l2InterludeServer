@@ -35,7 +35,6 @@ public class L2Fishing implements Runnable
 
 	public void run()
 	{
-		_anim = 0;
 		if (_FishCurHP >= _FishMaxHP * 2)
 		{
 			// The fish got away
@@ -145,9 +144,8 @@ public class L2Fishing implements Runnable
 			if (_stop == 0) {
 				_stop = 1;
 				int check = Rnd.get(100);
-				if (check >= 80) {
+				if (check >= 70) {
 					_mode = _mode == 0 ? 1 : 0;
-					_anim = _mode == 0 ? 1 : 2;
 				}
 				if (_isUpperGrade) {
 					check = Rnd.get(100);
@@ -172,8 +170,11 @@ public class L2Fishing implements Runnable
 
 	public void UseRealing(int dmg, int pen)
 	{
+		_anim = 2;
 		if (Rnd.get(100) > 90) {
 			_Fisher.sendPacket(new SystemMessage(SystemMessage.FISH_RESISTED_ATTEMPT_TO_BRING_IT_IN));
+			_gooduse = 0;
+			ChangeHp(0, pen);
 			return;
 		}
 		if (_Fisher == null) return;
@@ -229,8 +230,11 @@ public class L2Fishing implements Runnable
 
 	public void UsePomping(int dmg, int pen)
 	{
+		_anim = 1;
 		if (Rnd.get(100) > 90) {
 			_Fisher.sendPacket(new SystemMessage(SystemMessage.FISH_RESISTED_ATTEMPT_TO_BRING_IT_IN));
+			_gooduse = 0;
+			ChangeHp(0, pen);
 			return;
 		}
 		if (_Fisher == null) return;
