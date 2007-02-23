@@ -32,6 +32,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
@@ -41,7 +42,7 @@ import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
-
+import net.sf.l2j.gameserver.lib.Rnd;
 public class RaidBossSpawnManager {
     
     private static Logger _log = Logger.getLogger(RaidBossSpawnManager.class.getName());
@@ -90,7 +91,6 @@ public class RaidBossSpawnManager {
             L2Spawn spawnDat;
             L2NpcTemplate template;
             long respawnTime;
-            
             while (rset.next())
             {
                 template = getValidTemplate(rset.getInt("boss_id"));
@@ -102,8 +102,8 @@ public class RaidBossSpawnManager {
                     spawnDat.setLocz(rset.getInt("loc_z"));
                     spawnDat.setAmount(rset.getInt("amount"));
                     spawnDat.setHeading(rset.getInt("heading"));
-                    spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
-                    
+                    spawnDat.setRespawnMinDelay(rset.getInt("respawn_min_delay"));
+                    spawnDat.setRespawnMaxDelay(rset.getInt("respawn_max_delay"));
                     respawnTime = rset.getLong("respawn_time");
                     
                     addNewSpawn(spawnDat, respawnTime, rset.getDouble("currentHP"), rset.getDouble("currentMP"), false);
@@ -181,7 +181,9 @@ public class RaidBossSpawnManager {
             boss.setRaidStatus(StatusEnum.DEAD);
             
             long respawnTime;
-            long respawn_delay = boss.getSpawn().getRespawnDelay();
+            int RespawnMinDelay = boss.getSpawn().getRespawnMinDelay();
+            int RespawnMaxDelay = boss.getSpawn().getRespawnMaxDelay();
+            long respawn_delay = Rnd.get((int)(RespawnMinDelay*1000*Config.RAID_MIN_RESPAWN_MULTIPLIER),(int)(RespawnMaxDelay*1000*Config.RAID_MAX_RESPAWN_MULTIPLIER));
             respawnTime = Calendar.getInstance().getTimeInMillis() + respawn_delay;
             
             info.set("currentHP", boss.getMaxHp());
@@ -194,6 +196,8 @@ public class RaidBossSpawnManager {
             futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getNpcId()), respawn_delay);
             
             _schedules.put(boss.getNpcId(), futureSpawn);
+            //To update immediately Database uncomment on the following line, to post the hour of respawn raid boss on your site for example or to envisage a crash landing of the waiter. 
+            //updateDb();
         }
         else
         {  
@@ -262,17 +266,16 @@ public class RaidBossSpawnManager {
             try
             {
                 con = L2DatabaseFactory.getInstance().getConnection();
-                PreparedStatement statement = con.prepareStatement("INSERT INTO raidboss_spawnlist (boss_id,amount,loc_x,loc_y,loc_z,heading,respawn_delay,respawn_time,currentHp,currentMp) values(?,?,?,?,?,?,?,?,?,?)");
+                PreparedStatement statement = con.prepareStatement("INSERT INTO raidboss_spawnlist (boss_id,amount,loc_x,loc_y,loc_z,heading,respawn_time,currentHp,currentMp) values(?,?,?,?,?,?,?,?,?)");
                 statement.setInt(1, spawnDat.getNpcid());
                 statement.setInt(2, spawnDat.getAmount());
                 statement.setInt(3, spawnDat.getLocx());
                 statement.setInt(4, spawnDat.getLocy());
                 statement.setInt(5, spawnDat.getLocz());
                 statement.setInt(6, spawnDat.getHeading());
-                statement.setInt(7, spawnDat.getRespawnDelay() / 1000);
-                statement.setLong(8, respawnTime);
-                statement.setDouble(9, currentHP);
-                statement.setDouble(10, currentMP);
+                statement.setLong(7, respawnTime);
+                statement.setDouble(8, currentHP);
+                statement.setDouble(9, currentMP);
                 statement.execute();
                 statement.close();
             }

@@ -104,9 +104,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
                 }
             }, 60000);
         }
-        
         super.doDie(killer);
-        
     }
     
     public void onSpawn()
