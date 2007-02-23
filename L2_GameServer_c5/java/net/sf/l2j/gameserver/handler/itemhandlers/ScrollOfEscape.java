@@ -147,7 +147,7 @@ public class ScrollOfEscape implements IItemHandler
                 }
                 else if(_itemId == 5859) // do nothing
                 {
-                	_activeChar.sendPacket(SystemMessage.sendString("The clan does not own a castle."));
+                	_activeChar.sendPacket(SystemMessage.sendString("Your clan does not own a castle."));
                     return;
                 }
                 else
