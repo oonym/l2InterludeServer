@@ -370,6 +370,8 @@ public final class Formulas
 			{
 				env.value *= DEXbonus[p.getDEX()];
 				env.value *= 10;
+				if(env.value > 500)
+					env.value = 500;
 			}
 		}
 	}
