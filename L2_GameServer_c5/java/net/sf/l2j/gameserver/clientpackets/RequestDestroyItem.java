@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.2.4.2.6 $ $Date: 2005/03/27 15:29:30 $
  */
 public class RequestDestroyItem extends ClientBasePacket
@@ -53,15 +53,15 @@ public class RequestDestroyItem extends ClientBasePacket
 	private int _count;
 	/**
 	 * packet type id 0x1f
-	 * 
+	 *
 	 * sample
-	 * 
-	 * 59 
-	 * 0b 00 00 40		// object id 
+	 *
+	 * 59
+	 * 0b 00 00 40		// object id
 	 * 01 00 00 00		// count ??
-	 * 
-	 * 
-	 * format:		cdd  
+	 *
+	 *
+	 * format:		cdd
 	 * @param decrypt
 	 */
 	public RequestDestroyItem(ByteBuffer buf, ClientThread client)
@@ -81,23 +81,25 @@ public class RequestDestroyItem extends ClientBasePacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		    return;
-		
+
 		if(_count <= 0)
 		{
 			Util.handleIllegalPlayerAction(activeChar,"[RequestDestroyItem] count <= 0! ban! oid: "+_objectId+" owner: "+activeChar.getName(),Config.DEFAULT_PUNISH);
 			return;
 		}
-		
+
 		int count = _count;
-		
+
         if (activeChar.getPrivateStoreType() != 0)
         {
             activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
             return;
         }
-        
+
 		L2ItemInstance itemToRemove = activeChar.getInventory().getItemByObjectId(_objectId);
-        
+		// if we cant find requested item, its actualy a cheat!
+		if (itemToRemove == null) return;
+
 		// Cannot discard item that the skill is consumming
 		if (activeChar.isCastingNow())
 		{
@@ -109,7 +111,7 @@ public class RequestDestroyItem extends ClientBasePacket
 		}
 
 		int itemId = itemToRemove.getItemId();
-		if (itemToRemove == null || itemToRemove.isWear() || !itemToRemove.isDestroyable() || CursedWeaponsManager.getInstance().isCursed(itemId)) 
+		if (itemToRemove == null || itemToRemove.isWear() || !itemToRemove.isDestroyable() || CursedWeaponsManager.getInstance().isCursed(itemId))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISCARD_THIS_ITEM));
 			return;
@@ -120,25 +122,25 @@ public class RequestDestroyItem extends ClientBasePacket
             Util.handleIllegalPlayerAction(activeChar,"[RequestDestroyItem] count > 1 but item is not stackable! oid: "+_objectId+" owner: "+activeChar.getName(),Config.DEFAULT_PUNISH);
             return;
         }
-        
+
 		if (_count > itemToRemove.getCount())
 			count = itemToRemove.getCount();
-		
-		
+
+
 		if (itemToRemove.isEquipped())
 		{
 			L2ItemInstance[] unequiped =
-				activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getEquipSlot()); 
+				activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getEquipSlot());
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
 			{
 				activeChar.checkSSMatch(null, unequiped[i]);
-				
+
 				iu.addModifiedItem(unequiped[i]);
 			}
 			activeChar.sendPacket(iu);
 		}
-        
+
 		if (L2PetDataTable.isPetItem(itemId))
 		{
 			int petObjectId = 0;
@@ -155,12 +157,12 @@ public class RequestDestroyItem extends ClientBasePacket
 				}
 				rset.close();
 				statement.close();
-				
+
 				if (activeChar.getPet() != null && activeChar.getPet().getObjectId() == petObjectId)
 				{
 					activeChar.getPet().unSummon(activeChar);
 				}
-				
+
 				// if it's a pet control item, delete the pet
 				statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
 				statement.setInt(1, _objectId);
@@ -176,23 +178,23 @@ public class RequestDestroyItem extends ClientBasePacket
 				try { con.close(); } catch (Exception e) {}
 			}
 		}
-		
+
 		L2ItemInstance removedItem = activeChar.getInventory().destroyItem("Destroy", _objectId, count, activeChar, null);
-		
+
 		if(removedItem == null)
 			return;
-		
+
 		if (!Config.FORCE_INVENTORY_UPDATE)
 		{
 			InventoryUpdate iu = new InventoryUpdate();
 			if (removedItem.getCount() == 0) iu.addRemovedItem(removedItem);
 			else iu.addModifiedItem(removedItem);
-	
+
 			//client.getConnection().sendPacket(iu);
 			activeChar.sendPacket(iu);
 		}
-		else sendPacket(new ItemList(activeChar, true));		
-		
+		else sendPacket(new ItemList(activeChar, true));
+
 		StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
 		activeChar.sendPacket(su);
