@@ -1811,9 +1811,8 @@ public abstract class L2Skill
             {
                 L2Character cha;
                 int radius = getSkillRadius();
-                if (this.getCastRange() >= 0 && (target instanceof L2NpcInstance || target instanceof L2SummonInstance) && target.isUndead()
-                		&& GeoData.getInstance().canSeeTarget(activeChar, target) && Util.checkIfInRange(radius, activeChar, target, true)
-                		&& !target.isAlikeDead())
+                if (this.getCastRange() >= 0 && (target instanceof L2NpcInstance || target instanceof L2SummonInstance)
+                		&& target.isUndead() && !target.isAlikeDead())
                 {
                     cha = target;
 
@@ -1827,8 +1826,11 @@ public abstract class L2Skill
                     for (L2Object obj : cha.getKnownList().getKnownObjects().values())
                     {
                         if (obj == null) continue;
-                    	if (!(obj instanceof L2NpcInstance || obj instanceof L2SummonInstance)) continue;
-                        target = (L2NpcInstance) obj;
+                    	if (obj instanceof L2NpcInstance)
+                    		target = (L2NpcInstance) obj;
+                    	else if (obj instanceof L2SummonInstance)
+                    		target = (L2SummonInstance) obj;
+                    	else continue;
                         
                         if (!GeoData.getInstance().canSeeTarget(activeChar, target))
                 			continue;
