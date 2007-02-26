@@ -79,7 +79,7 @@ public class SystemMessage extends ServerBasePacket
 	
 	public static final int YOU_DID_S1_DMG = 0x23;
 	public static final int S1_GAVE_YOU_S2_DMG = 0x24;
-	public static final int EFFECT_S1_DISAPPEARED = 0x92;
+	public static final int EFFECT_S1_DISAPPEARED = 749;
 	public static final int YOU_EARNED_S1_EXP_AND_S2_SP = 0x5f;
 	public static final int YOU_INCREASED_YOUR_LEVEL = 0x60;
 	
