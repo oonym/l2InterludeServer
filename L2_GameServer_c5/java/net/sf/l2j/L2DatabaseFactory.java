@@ -23,11 +23,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sql.DataSource;
 
-import com.mchange.v2.c3p0.DataSources;
-import com.mchange.v2.c3p0.PoolConfig;
-import com.mchange.v2.c3p0.PooledDataSource;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class L2DatabaseFactory
 {
@@ -43,7 +40,7 @@ public class L2DatabaseFactory
     // Data Field
     private static L2DatabaseFactory _instance;
     private ProviderType _Provider_Type;
-	private DataSource _source;
+	private ComboPooledDataSource _source;
 	
     // =========================================================
     // Constructor
@@ -56,60 +53,60 @@ public class L2DatabaseFactory
                 Config.DATABASE_MAX_CONNECTIONS = 2;
                 _log.warning("at least " + Config.DATABASE_MAX_CONNECTIONS + " db connections are required.");
             }
+			
+			_source = new ComboPooledDataSource();
 
-			PoolConfig config = new PoolConfig();
-			config.setAutoCommitOnClose(true);
-			config.setInitialPoolSize(3);   // 3 is the default for c3p0 anyway  
+			_source.setAutoCommitOnClose(true);
+			_source.setInitialPoolSize(3);   // 3 is the default for c3p0 anyway  
 			// if > MaxPoolSize, it will be ignored - no worry
 			// (as said in c3p0 docs, it's only a suggestion
 			// how many connections to acquire to start with)
 
-			config.setMinPoolSize(1);
-			config.setMaxPoolSize(Config.DATABASE_MAX_CONNECTIONS);
+			_source.setMinPoolSize(1);
+			_source.setMaxPoolSize(Config.DATABASE_MAX_CONNECTIONS);
 
  
-			config.setAcquireRetryAttempts(0); // try to obtain connections indefinitely (0 = never quit)
-			config.setAcquireRetryDelay(500);  // 500 miliseconds wait before try to acquire connection again
-			config.setCheckoutTimeout(0);      // 0 = wait indefinitely for new connection
+			_source.setAcquireRetryAttempts(0); // try to obtain connections indefinitely (0 = never quit)
+			_source.setAcquireRetryDelay(500);  // 500 miliseconds wait before try to acquire connection again
+			_source.setCheckoutTimeout(0);      // 0 = wait indefinitely for new connection
 			// if pool is exhausted
-			config.setAcquireIncrement(5);     // if pool is exhausted, get 5 more connections at a time
+			_source.setAcquireIncrement(5);     // if pool is exhausted, get 5 more connections at a time
 			// cause there is a "long" delay on acquire connection
 			// so taking more than one connection at once will make connection pooling 
 			// more effective. 
  
 			// this "connection_test_table" is automatically created if not already there
-			config.setAutomaticTestTable("connection_test_table");  // very very fast test, don't worry
-			config.setTestConnectionOnCheckin(true); // this will *not* make l2j slower in any way
+			_source.setAutomaticTestTable("connection_test_table");  // very very fast test, don't worry
+			_source.setTestConnectionOnCheckin(true); // this will *not* make l2j slower in any way
  
 			// testing OnCheckin used with IdleConnectionTestPeriod is faster than  testing on checkout
  
-			config.setIdleConnectionTestPeriod(60); // test idle connection every 60 sec
-			config.setMaxIdleTime(0); // 0 = idle connections never expire 
+			_source.setIdleConnectionTestPeriod(60); // test idle connection every 60 sec
+			_source.setMaxIdleTime(0); // 0 = idle connections never expire 
 			// *THANKS* to connection testing configured above
 			// but I prefer to disconnect all connections not used
 			// for more than 1 hour  
 
 			// enables statement caching,  there is a "semi-bug" in c3p0 0.9.0 but in 0.9.0.2 and later it's fixed
-			config.setMaxStatementsPerConnection(100);
+			_source.setMaxStatementsPerConnection(100);
 
-			config.setBreakAfterAcquireFailure(false);  // never fail if any way possible
+			_source.setBreakAfterAcquireFailure(false);  // never fail if any way possible
 			// setting this to true will make
 			// c3p0 "crash" and refuse to work 
 			// till restart thus making acquire
 			// errors "FATAL" ... we don't want that
 			// it should be possible to recover
+			_source.setDriverClass(Config.DATABASE_DRIVER);
+			_source.setJdbcUrl(Config.DATABASE_URL);
+			_source.setUser(Config.DATABASE_LOGIN);
+			_source.setPassword(Config.DATABASE_PASSWORD);
  
-			Class.forName(Config.DATABASE_DRIVER).newInstance();
-
-			if (Config.DEBUG) _log.fine("Database Connection Working");
-
-			DataSource unpooled = DataSources.unpooledDataSource(Config.DATABASE_URL, Config.DATABASE_LOGIN, Config.DATABASE_PASSWORD);
-			_source = DataSources.pooledDataSource( unpooled, config);
-			
 			/* Test the connection */
 			_source.getConnection().close();
 
-            if (Config.DATABASE_DRIVER.toLowerCase().contains("microsoft"))
+			if (Config.DEBUG) _log.fine("Database Connection Working");
+
+			if (Config.DATABASE_DRIVER.toLowerCase().contains("microsoft"))
                 _Provider_Type = ProviderType.MsSql;
             else
                 _Provider_Type = ProviderType.MySql;
@@ -145,11 +142,11 @@ public class L2DatabaseFactory
     public void shutdown()
     {
         try {
-            ((PooledDataSource) _source).close();
-        } catch (SQLException e) {_log.log(Level.INFO, "", e);}
+            _source.close();
+        } catch (Exception e) {_log.log(Level.INFO, "", e);}
         try {
-            DataSources.destroy(_source);
-        } catch (SQLException e) {_log.log(Level.INFO, "", e);}
+            _source = null;
+        } catch (Exception e) {_log.log(Level.INFO, "", e);}
     }
 
     public final String safetyString(String[] whatToCheck)
@@ -202,12 +199,12 @@ public class L2DatabaseFactory
 	
 	public int getBusyConnectionCount() throws SQLException
 	{
-	    return ((PooledDataSource) _source).getNumBusyConnectionsDefaultUser();
+	    return _source.getNumBusyConnectionsDefaultUser();
 	}
 
 	public int getIdleConnectionCount() throws SQLException
 	{
-	    return ((PooledDataSource) _source).getNumIdleConnectionsDefaultUser();
+	    return _source.getNumIdleConnectionsDefaultUser();
 	}
 
     public final ProviderType getProviderType() { return _Provider_Type; }
