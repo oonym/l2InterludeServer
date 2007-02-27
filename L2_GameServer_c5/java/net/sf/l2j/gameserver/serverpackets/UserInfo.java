@@ -270,9 +270,7 @@ public class UserInfo extends ServerBasePacket
         writeD(0x00); // ??
         
         writeD(_cha.getAppearance().getTitleColor());
-        
-        writeD(0x00); // ??
-        
+
         if (_cha.isCursedWeaponEquiped())
         	writeD(CursedWeaponsManager.getInstance().getLevel(_cha.getCursedWeaponEquipedId()));
         else
