@@ -4898,10 +4898,7 @@ public abstract class L2Character extends L2Object
 	{
 		if (_disabledSkills == null) _disabledSkills = Collections.synchronizedList(new FastList<Integer>());
 		
-		synchronized (_disabledSkills)
-		{
-			_disabledSkills.add(skillId);
-		}
+		_disabledSkills.add(skillId);
 	}
 
 	/**
@@ -4930,10 +4927,7 @@ public abstract class L2Character extends L2Object
 		
 		if (_disabledSkills == null) return false;
         
-		synchronized (_disabledSkills)
-        {
-            return _disabledSkills.contains(skillId);
-        }
+		return _disabledSkills.contains(skillId);
 	}
 	
 	/**
