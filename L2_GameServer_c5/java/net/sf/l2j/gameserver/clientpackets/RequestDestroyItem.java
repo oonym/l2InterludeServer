@@ -20,12 +20,10 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -143,28 +141,16 @@ public class RequestDestroyItem extends ClientBasePacket
 
 		if (L2PetDataTable.isPetItem(itemId))
 		{
-			int petObjectId = 0;
 			java.sql.Connection con = null;
 			try
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT objId FROM pets WHERE item_obj_id=?");
-				statement.setInt(1, _objectId);
-				ResultSet rset = statement.executeQuery();
-				while (rset.next())
-				{
-					petObjectId = rset.getInt("objId");
-				}
-				rset.close();
-				statement.close();
-
-				if (activeChar.getPet() != null && activeChar.getPet().getObjectId() == petObjectId)
+				if (activeChar.getPet() != null && activeChar.getPet().getControlItemId() == _objectId)
 				{
 					activeChar.getPet().unSummon(activeChar);
 				}
 
 				// if it's a pet control item, delete the pet
-				statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
+				PreparedStatement statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
 				statement.setInt(1, _objectId);
 				statement.execute();
 				statement.close();
