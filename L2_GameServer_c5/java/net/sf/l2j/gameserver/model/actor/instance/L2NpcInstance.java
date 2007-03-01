@@ -1047,7 +1047,7 @@ public class L2NpcInstance extends L2Character
     		{
             	try
             	{
-            		MultiSellList multisell=new MultiSellList(Integer.parseInt(command.substring(9).trim()));
+            		MultiSellList multisell=new MultiSellList(Integer.parseInt(command.substring(9).trim()), this);
             		
             		if(multisell!=null) 
             			player.sendPacket(multisell);
@@ -1058,7 +1058,7 @@ public class L2NpcInstance extends L2Character
     		}
             else if (command.startsWith("exc_multisell"))
             {
-                player.sendPacket(new MultiSellList(Integer.parseInt(command.substring(13).trim()), true, player));
+                player.sendPacket(new MultiSellList(Integer.parseInt(command.substring(13).trim()), this, true, player));
             }
             else if (command.startsWith("npcfind_byid"))
             {

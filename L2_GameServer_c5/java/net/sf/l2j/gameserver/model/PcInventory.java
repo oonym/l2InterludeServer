@@ -58,12 +58,75 @@ public class PcInventory extends Inventory
 				continue;
 			
 			boolean isDuplicate = false;
-			for (L2ItemInstance litem : list) if (litem.getItemId() == item.getItemId())
+			for (L2ItemInstance litem : list) 
 			{
-				isDuplicate = true;
-				break;
+				if (litem.getItemId() == item.getItemId())
+				{
+					isDuplicate = true;
+					break;
+				}
 			}
 			if (!isDuplicate && item.getItem().isSellable() && item.isAvailable(getOwner(), false)) list.add(item);
+		}
+
+		return list.toArray(new L2ItemInstance[list.size()]);
+	}
+	
+	/**
+	 * Returns the list of items in inventory available for transaction
+	 * Allows an item to appear twice if and only if there is a difference in enchantment level.
+	 * @return L2ItemInstance : items in inventory
+	 */
+	public L2ItemInstance[] getUniqueItemsByEnchantLevel(boolean allowAdena, boolean allowAncientAdena)
+	{
+		List<L2ItemInstance> list = new FastList<L2ItemInstance>();
+		for (L2ItemInstance item : _items)
+		{
+			if ((!allowAdena && item.getItemId() == 57)) 
+				continue;
+			if ((!allowAncientAdena && item.getItemId() == 5575))
+				continue;
+			
+			boolean isDuplicate = false;
+			for (L2ItemInstance litem : list) 
+				if( (litem.getItemId() == item.getItemId()) && (litem.getEnchantLevel() == item.getEnchantLevel()))
+				{
+					isDuplicate = true;
+					break;
+				}
+			if (!isDuplicate && item.getItem().isSellable() && item.isAvailable(getOwner(), false)) list.add(item);
+		}
+
+		return list.toArray(new L2ItemInstance[list.size()]);
+	}
+	
+	/**
+	 * Returns the list of all items in inventory that have a given item id.  
+	 * @return L2ItemInstance[] : matching items from inventory
+	 */
+	public L2ItemInstance[] getAllItemsByItemId(int itemId)
+	{
+		List<L2ItemInstance> list = new FastList<L2ItemInstance>();
+		for (L2ItemInstance item : _items)
+		{
+			if (item.getItemId() == itemId)
+				list.add(item);
+		}
+
+		return list.toArray(new L2ItemInstance[list.size()]);
+	}
+
+	/**
+	 * Returns the list of all items in inventory that have a given item id AND a given enchantment level.  
+	 * @return L2ItemInstance[] : matching items from inventory
+	 */
+	public L2ItemInstance[] getAllItemsByItemId(int itemId, int enchantment)
+	{
+		List<L2ItemInstance> list = new FastList<L2ItemInstance>();
+		for (L2ItemInstance item : _items)
+		{
+			if ((item.getItemId() == itemId) && (item.getEnchantLevel() == enchantment))
+				list.add(item);
 		}
 
 		return list.toArray(new L2ItemInstance[list.size()]);

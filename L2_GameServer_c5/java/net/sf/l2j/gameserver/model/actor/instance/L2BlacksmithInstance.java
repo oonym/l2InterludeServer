@@ -29,7 +29,7 @@ public class L2BlacksmithInstance extends L2FolkInstance
 		if (command.startsWith("multisell"))
 		{
 			String listId = command.substring(9).trim();
-			player.sendPacket(new MultiSellList(Integer.parseInt(listId)));
+			player.sendPacket(new MultiSellList(Integer.parseInt(listId), this));
 		}
 		
 		super.onBypassFeedback(player,command);

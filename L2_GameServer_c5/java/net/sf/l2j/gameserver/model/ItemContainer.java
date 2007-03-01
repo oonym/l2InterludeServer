@@ -112,12 +112,18 @@ public abstract class ItemContainer
 	    return null;
 	}
     
+    /**
+     * Gets count of item in the inventory
+	 * @param itemId : Item to look for
+     * @param enchantLevel : enchant level to match on, or -1 for ANY enchant level
+     * @return int corresponding to the number of items matching the above conditions.
+     */
     public int getInventoryItemCount(int itemId, int enchantLevel)
     {
         int count = 0;
         
         for (L2ItemInstance item : _items)
-            if (item.getItemId() == itemId && item.getEnchantLevel() >= enchantLevel)
+            if (item.getItemId() == itemId && ((item.getEnchantLevel() == enchantLevel) || (enchantLevel<0)))
                 if (item.isAvailable((L2PcInstance)getOwner(), true) || item.getItem().getType2() == 3)//available or quest item
                     if (item.isStackable())
                         count = item.getCount();

@@ -151,7 +151,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
                     }
                     break;
                 case 7:
-                    player.sendPacket(new MultiSellList(102));
+                    player.sendPacket(new MultiSellList(102, this));
                     break;
                     default:
                         _logOlymp.warning("Olympiad System: Couldnt send packet for request " + val);

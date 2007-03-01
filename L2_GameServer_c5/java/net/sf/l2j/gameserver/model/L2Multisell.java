@@ -121,19 +121,24 @@ public class L2Multisell
     {
         private int _itemId;
         private int _itemCount;
-        private int _itemEnchant;
+        private int _enchantmentLevel;
 
-        public MultiSellIngredient(int itemId, int itemCount, int itemEnchant)
+        public MultiSellIngredient(int itemId, int itemCount)
+        {
+        	this(itemId, itemCount,0);
+        }
+        
+        public MultiSellIngredient(int itemId, int itemCount, int enchantmentLevel)
         {
             setItemId(itemId);
             setItemCount(itemCount);
-            setItemEnchant(itemEnchant);
+            setEnchantmentLevel(enchantmentLevel);
         }
         public MultiSellIngredient(MultiSellIngredient e)
         {
         	_itemId = e.getItemId();
         	_itemCount = e.getItemCount();
-        	_itemEnchant = e.getItemEnchant();
+        	_enchantmentLevel = e.getEnchantmentLevel();
         }
         /**
          * @param itemId The itemId to set.
@@ -166,27 +171,30 @@ public class L2Multisell
         {
             return _itemCount;
         }
-
+        
         /**
-         * @param itemEnchant The itemEnchant to set.
+         * @param itemCount The itemCount to set.
          */
-        public void setItemEnchant(int itemEnchant)
+        public void setEnchantmentLevel(int enchantmentLevel)
         {
-            _itemEnchant = itemEnchant;
+        	_enchantmentLevel = enchantmentLevel;
         }
 
         /**
-         * @return Returns the itemEnchant.
+         * @return Returns the itemCount.
          */
-        public int getItemEnchant()
+        public int getEnchantmentLevel()
         {
-            return _itemEnchant;
+            return _enchantmentLevel;
         }
     }
 
     public class MultiSellListContainer
     {
         private int _listId;
+        private boolean _applyTaxes = false;
+        private boolean _maintainEnchantment = false;
+        
         List<MultiSellEntry> entriesC;
         
         public MultiSellListContainer()
@@ -201,6 +209,16 @@ public class L2Multisell
         {
             _listId = listId;
         }
+        
+        public void setApplyTaxes(boolean applyTaxes)
+        {
+        	_applyTaxes = applyTaxes;
+        }
+
+        public void setMaintainEnchantment(boolean maintainEnchantment)
+        {
+        	_maintainEnchantment = maintainEnchantment;
+        }
 
         /**
          * @return Returns the listId.
@@ -208,6 +226,16 @@ public class L2Multisell
         public int getListId()
         {
             return _listId;
+        }
+        
+        public boolean getApplyTaxes()
+        {
+            return _applyTaxes;
+        }
+
+        public boolean getMaintainEnchantment()
+        {
+            return _maintainEnchantment;
         }
 
         public void addEntry(MultiSellEntry e)
@@ -279,6 +307,18 @@ public class L2Multisell
         {
             if ("list".equalsIgnoreCase(n.getNodeName()))
             {
+            	Node attribute;
+            	attribute = n.getAttributes().getNamedItem("applyTaxes");
+            	if(attribute == null)
+            		list.setApplyTaxes(false);
+            	else
+            		list.setApplyTaxes(Boolean.parseBoolean(attribute.getNodeValue()));
+            	attribute = n.getAttributes().getNamedItem("maintainEnchantment");
+            	if(attribute == null)
+            		list.setMaintainEnchantment(false);
+            	else
+            		list.setMaintainEnchantment(Boolean.parseBoolean(attribute.getNodeValue()));
+
                 for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
                 {
                     if ("item".equalsIgnoreCase(d.getNodeName()))
@@ -311,18 +351,16 @@ public class L2Multisell
             {
                 int id = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
-                int enchant = Integer.parseInt(n.getAttributes().getNamedItem("enchant").getNodeValue());
 
-                MultiSellIngredient e = new MultiSellIngredient(id, count, enchant);
+                MultiSellIngredient e = new MultiSellIngredient(id, count);
                 entry.addIngredient(e);
             }
             else if ("production".equalsIgnoreCase(n.getNodeName()))
             {
                 int id = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
-                int enchant = Integer.parseInt(n.getAttributes().getNamedItem("enchant").getNodeValue());
 
-                MultiSellIngredient e = new MultiSellIngredient(id, count, enchant); 
+                MultiSellIngredient e = new MultiSellIngredient(id, count); 
                 entry.addProduct(e);
             }
         }
