@@ -424,6 +424,9 @@ public class SystemMessage extends ServerBasePacket
     public static final int SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST = 846;
     public static final int S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED = 295;
     
+    //  only view castles during a siege 
+    public static final int ONLY_VIEW_SIEGE = 780; 
+        
     // Sponsor/Apprentice
     public static final int S2_HAS_BEEN_DESIGNATED_AS_APPRENTICE_OF_CLAN_MEMBER_S1 = 1755;
     public static final int YOUR_APPRENTICE_S1_HAS_LOGGED_IN = 1756;
