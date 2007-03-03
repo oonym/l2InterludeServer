@@ -1988,6 +1988,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         {
             SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_INCREASE_CLAN_LEVEL);
             player.sendPacket(sm);
+            return;
         }
         
         // the player should know that he has less sp now :p
