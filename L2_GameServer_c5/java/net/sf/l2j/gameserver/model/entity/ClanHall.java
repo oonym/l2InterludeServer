@@ -34,7 +34,6 @@ import net.sf.l2j.gameserver.datatables.DoorTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
@@ -351,14 +350,7 @@ public class ClanHall
             if (clan != null)
             {
     		    clan.setHasHideout(this.getId()); // Set has hideout flag for new owner
-
-    		    for (L2ClanMember member : clan.getMembers())
-        		{
-        			if (member.isOnline() && member.getPlayerInstance() != null)
-        			{
-        				member.getPlayerInstance().sendPacket(new PledgeShowInfoUpdate(clan, member.getPlayerInstance()));
-        			}
-        		}
+    		    clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
             }
         }
         catch (Exception e)

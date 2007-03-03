@@ -76,8 +76,8 @@ public class SiegeManager
     // Method - Public
     public final void addSiegeSkills(L2PcInstance character)
     {
-        character.addSkill(SkillTable.getInstance().getInfo(246, 1), true);
-        character.addSkill(SkillTable.getInstance().getInfo(247, 1), true);
+        character.addSkill(SkillTable.getInstance().getInfo(246, 1), false);
+        character.addSkill(SkillTable.getInstance().getInfo(247, 1), false);
     }
 
     /** Return true if object is inside zone */

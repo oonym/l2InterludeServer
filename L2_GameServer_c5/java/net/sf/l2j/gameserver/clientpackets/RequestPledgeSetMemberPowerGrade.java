@@ -68,6 +68,7 @@ public class RequestPledgeSetMemberPowerGrade extends ClientBasePacket
         	return;
         }
         member.setPowerGrade(_powerGrade);
+        clan.broadcastClanStatus();
     }
 
     /**

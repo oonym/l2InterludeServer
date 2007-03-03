@@ -58,55 +58,55 @@ public class Hero
     private static final String INSERT_HERO = "INSERT INTO heroes VALUES (?,?,?,?,?)";
     private static final String UPDATE_HERO = "UPDATE heroes SET count = ?, played = ?" +
             " WHERE char_id = ?";
-    private static final String GET_CLAN_ALLY = "SELECT clanid, allyId FROM characters" +
-            " WHERE obj_Id = ?";
+    private static final String GET_CLAN_ALLY = "SELECT characters.clanid AS clanid, coalesce(clan_data.ally_Id, 0) AS allyId FROM characters LEFT JOIN clan_data ON clan_data.clan_id = characters.clanid " +
+            " WHERE characters.obj_Id = ?";
     private static final String DELETE_ITEMS = "DELETE FROM items WHERE item_id IN " +
             "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) " +
             "AND owner_id NOT IN (SELECT obj_id FROM characters WHERE accesslevel > 0)";
-    
+
     private static final int[] _heroItems = {6842, 6611, 6612, 6613, 6614, 6615, 6616,
                                              6617, 6618, 6619, 6620, 6621
     };
     private static Map<Integer, StatsSet> _heroes;
     private static Map<Integer, StatsSet> _completeHeroes;
-    
+
     public static final String COUNT = "count";
     public static final String PLAYED = "played";
     public static final String CLAN_NAME = "clan_name";
     public static final String CLAN_CREST = "clan_crest";
     public static final String ALLY_NAME = "ally_name";
     public static final String ALLY_CREST = "ally_crest";
-    
+
     public static Hero getInstance()
     {
         if (_instance == null)
             _instance = new Hero();
-        return _instance;       
+        return _instance;
     }
-    
+
     public Hero()
     {
         init();
     }
-    
+
     private void init()
     {
         _heroes = new FastMap<Integer, StatsSet>();
         _completeHeroes = new FastMap<Integer, StatsSet>();
-        
+
         PreparedStatement statement;
         PreparedStatement statement2;
-        
+
         ResultSet rset;
         ResultSet rset2;
-        
+
         try
         {
             Connection con = L2DatabaseFactory.getInstance().getConnection();
             Connection con2 = L2DatabaseFactory.getInstance().getConnection();
             statement = con.prepareStatement(GET_HEROES);
             rset = statement.executeQuery();
-            
+
             while (rset.next())
             {
                 StatsSet hero = new StatsSet();

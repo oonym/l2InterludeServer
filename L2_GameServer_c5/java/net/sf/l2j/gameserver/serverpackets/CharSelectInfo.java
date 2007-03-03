@@ -195,11 +195,11 @@ public class CharSelectInfo extends ServerBasePacket
         List<CharSelectInfoPackage> characterList = new FastList<CharSelectInfoPackage>();
 
         java.sql.Connection con = null;
-        
+
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, allyId, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, base_class FROM characters WHERE account_name=? ORDER BY char_name");
+            PreparedStatement statement = con.prepareStatement("SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, base_class FROM characters WHERE account_name=? ORDER BY char_name");
             statement.setString(1, _loginName);
             ResultSet charList = statement.executeQuery();
 
@@ -238,52 +238,52 @@ public class CharSelectInfo extends ServerBasePacket
             statement.setInt(1, ObjectId);
             statement.setInt(2, activeClassId);
             ResultSet charList = statement.executeQuery();
-            
+
             if (charList.next())
             {
                 charInfopackage.setExp(charList.getLong("exp"));
                 charInfopackage.setSp(charList.getInt("sp"));
                 charInfopackage.setLevel(charList.getInt("level"));
             }
-            
+
             charList.close();
             statement.close();
-            
+
         }
         catch (Exception e)
         {
 			_log.warning("Could not restore char subclass info: " + e);
-        } 
-        finally 
+        }
+        finally
         {
 			try { con.close(); } catch (Exception e) {}
 		}
 
-    } 
+    }
 
 
     private CharSelectInfoPackage restoreChar(ResultSet chardata) throws Exception
     {
         int objectId = chardata.getInt("obj_id");
-        
+
         // See if the char must be deleted
         long deletetime = chardata.getLong("deletetime");
         if (deletetime > 0)
         {
-            if (System.currentTimeMillis() > deletetime) 
+            if (System.currentTimeMillis() > deletetime)
             {
                 L2PcInstance cha = L2PcInstance.load(objectId);
                 L2Clan clan = cha.getClan();
                 if(clan != null)
-                    clan.removeClanMember(cha.getName());
-                    
+                    clan.removeClanMember(cha.getName(), 0);
+
                 ClientThread.deleteCharByObjId(objectId);
                 return null;
             }
         }
-        
+
         String name = chardata.getString("char_name");
-        
+
         CharSelectInfoPackage charInfopackage = new CharSelectInfoPackage(objectId, name);
         charInfopackage.setLevel(chardata.getInt("level"));
         charInfopackage.setMaxHp(chardata.getInt("maxhp"));

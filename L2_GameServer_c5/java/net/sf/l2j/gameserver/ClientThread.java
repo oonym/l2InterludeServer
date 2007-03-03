@@ -31,7 +31,6 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread.SessionKey;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.CharSelectInfoPackage;
-import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.L2Event;
@@ -159,13 +158,6 @@ public final class ClientThread
         }
 	}
 
-	public void deleteFromClan(L2PcInstance cha)
-	{
-		L2Clan clan = cha.getClan();
-		if (clan != null)
-			clan.removeClanMember(cha.getName());
-	}
-
 	public void markRestoredChar(int charslot) throws Exception
 	{	
 		//have to make sure active character must be nulled
@@ -197,8 +189,8 @@ public final class ClientThread
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-	public void markToDeleteChar(int charslot) throws Exception
-	{	
+	public L2PcInstance markToDeleteChar(int charslot) throws Exception
+	{
 		//have to make sure active character must be nulled
 		if (getActiveChar() != null)
 		{
@@ -209,8 +201,12 @@ public final class ClientThread
 
 		int objid = getObjectIdForSlot(charslot);
 		if (objid < 0)
-		    return;
-    	
+		    return null;
+
+		L2PcInstance character = L2PcInstance.load(objid);
+		if (character.getClanId() != 0)
+			return character;
+
 		java.sql.Connection con = null;
 		try 
 		{
@@ -229,9 +225,11 @@ public final class ClientThread
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
+	    return null;
 	}
-	public void deleteChar(int charslot) throws Exception
-	{	
+
+	public L2PcInstance deleteChar(int charslot) throws Exception
+	{
 		//have to make sure active character must be nulled
 		if (getActiveChar() != null)
 		{
@@ -242,13 +240,14 @@ public final class ClientThread
 	
 		int objid = getObjectIdForSlot(charslot);
 		if (objid < 0)
-    	    return;
+    	    return null;
 
 		L2PcInstance character = L2PcInstance.load(objid);
-		deleteFromClan(character);
-		//character.deleteMe();
+		if (character.getClanId() != 0)
+			return character;
 
 		deleteCharByObjId(objid);
+		return null;
 	}
 
 	public static void deleteCharByObjId(int objid)	{

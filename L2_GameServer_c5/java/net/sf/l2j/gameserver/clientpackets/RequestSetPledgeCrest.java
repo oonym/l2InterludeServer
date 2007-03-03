@@ -63,12 +63,18 @@ public class RequestSetPledgeCrest extends ClientBasePacket
 		if (clan == null)
 		    return;
 		
+		if (clan.getDissolvingExpiryTime() > System.currentTimeMillis())
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_SET_CREST_WHILE_DISSOLUTION_IN_PROGRESS));
+        	return;
+		}
+		
 		if (_length == 0 || _data.length == 0)
 		{
 			CrestCache.getInstance().removePledgeCrest(clan.getCrestId());
 			
             clan.setHasCrest(false);
-            activeChar.sendMessage("The clan crest has been removed.");
+			activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_CREST_HAS_BEEN_DELETED));
             
             for (L2PcInstance member : clan.getOnlineMembers(""))
                 member.broadcastUserInfo();
@@ -85,9 +91,7 @@ public class RequestSetPledgeCrest extends ClientBasePacket
 		{	
 			if (clan.getLevel() < 3)
 			{	
-				SystemMessage sm = new SystemMessage(SystemMessage.CLAN_LVL_3_NEEDED_TO_SET_CREST);
-				activeChar.sendPacket(sm);
-				sm = null;
+				activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_LVL_3_NEEDED_TO_SET_CREST));
 				return;
 			}
 			

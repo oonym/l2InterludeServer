@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.AskJoinPledge;
@@ -53,65 +52,38 @@ public class RequestJoinPledge extends ClientBasePacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
-		
-		if (_target == activeChar.getObjectId())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_INVITE_YOURSELF);
-			activeChar.sendPacket(sm);
-			sm = null;
-			return;
+		    return;
 		}
-		
-		//is the guy leader of the clan ?
-		if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_JOIN_CLAN) == L2Clan.CP_CL_JOIN_CLAN)  
-		{	
-			L2Object object = L2World.getInstance().findObject(_target);
-			if (object instanceof L2PcInstance)
-			{
-				L2PcInstance member = (L2PcInstance) object;
-				L2Clan clan = activeChar.getClan();
-				
-				int limit = clan.getMaxNrOfMembers(_pledgetype);
-                
-				if (member.getClanId() != 0)
-				{
-					SystemMessage sm = new SystemMessage(SystemMessage.S1_WORKING_WITH_ANOTHER_CLAN);
-					sm.addString(member.getName());
-					activeChar.sendPacket(sm);
-					sm = null;
-					return;				
-				}
-				else if ((member.getLevel() > 40 || member.getClassId().level() >= 2) && _pledgetype == -1)
-                {
-                    activeChar.sendMessage("A player can't join an Accademy if his/her level is higher than 40 OR he/she has already completed the second class clange");
-                    return;
-                }
-				else if (member.isProcessingRequest())
-				{
-					SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
-					sm.addString(member.getName());
-					activeChar.sendPacket(sm);
-					sm = null;
-					return;
-				} 
-				else if (clan.getSubPledgeMembersCount(_pledgetype) >= limit)
-                {
-                    SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
-                    sm.addString("The clan is full, you cannot invite any more players."); 
-                    activeChar.sendPacket(sm);
-                    return;
-                }
-				else
-				{
-					activeChar.onTransactionRequest(member);
-					activeChar.tempJoinPledgeType = _pledgetype;
-					AskJoinPledge ap = new AskJoinPledge(activeChar.getObjectId(), activeChar.getClan().getName()); 
-					member.sendPacket(ap);
-					
-				}
-			}
+		if (!(L2World.getInstance().findObject(_target) instanceof L2PcInstance))
+		{
+        	activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_INVITED_THE_WRONG_TARGET));
+		    return;
 		}
+
+		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_target);
+        L2Clan clan = activeChar.getClan();
+        if (!clan.CheckClanJoinCondition(activeChar, target, _pledgetype))
+        {
+        	return;
+        } 
+        if (!activeChar.getRequest().setRequest(target, this))
+        {
+        	return;
+        } 
+
+        SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_INVITED_YOU_TO_JOIN_THE_CLAN_S2);
+		sm.addString(activeChar.getName());
+		sm.addString(activeChar.getClan().getName());
+		target.sendPacket(sm);
+		sm = null;
+    	AskJoinPledge ap = new AskJoinPledge(activeChar.getObjectId(), activeChar.getClan().getName()); 
+    	target.sendPacket(ap);
+	}
+
+	public int getPledgeType()
+	{
+		return _pledgetype;
 	}
 
 	/* (non-Javadoc)

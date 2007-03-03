@@ -36,7 +36,6 @@ import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.CropProcure;
 import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.SeedProduction;
@@ -506,14 +505,7 @@ public class Castle
             {
     		    clan.setHasCastle(getCastleId()); // Set has castle flag for new owner
     		    new Announcements().announceToAll(clan.getName() + " has taken " + getName() + " castle!");
-
-    		    for (L2ClanMember member : clan.getMembers())
-        		{
-        			if (member.isOnline() && member.getPlayerInstance() != null)
-        			{
-        				member.getPlayerInstance().sendPacket(new PledgeShowInfoUpdate(clan, member.getPlayerInstance()));
-        			}
-        		}
+    		    clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 
     		    ThreadPoolManager.getInstance().scheduleGeneral(new CastleUpdater(clan, 1), 3600000);	// Schedule owner tasks to start running 
             }

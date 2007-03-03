@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.L2Clan;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
@@ -30,12 +29,10 @@ public class PledgeShowInfoUpdate extends ServerBasePacket
 {
 	private static final String _S__A1_PLEDGESHOWINFOUPDATE = "[S] 88 PledgeShowInfoUpdate";
 	private L2Clan _clan;
-	//private L2PcInstance _activeChar;
 	
-	public PledgeShowInfoUpdate(L2Clan clan, L2PcInstance activeChar)
+	public PledgeShowInfoUpdate(L2Clan clan)
 	{
 		_clan = clan;
-		//_activeChar = activeChar;
 	}	
 	
 	final void runImpl()

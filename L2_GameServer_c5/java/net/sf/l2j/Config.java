@@ -213,12 +213,25 @@ public final class Config
     public static int ALT_CLAN_JOIN_DAYS;
     /** Number of days before creating a new clan */
     public static int ALT_CLAN_CREATE_DAYS;
+    /** Number of days it takes to dissolve a clan */
+    public static int ALT_CLAN_DISSOLVE_DAYS;
+    /** Number of days before joining a new alliance when clan voluntarily leave an alliance */
+    public static int ALT_ALLY_JOIN_DAYS_WHEN_LEAVED;
+    /** Number of days before joining a new alliance when clan was dismissed from an alliance */
+    public static int ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED;
+    /** Number of days before accepting a new clan for alliance when clan was dismissed from an alliance */
+    public static int ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED;
+    /** Number of days before creating a new alliance when dissolved an alliance */
+    public static int ALT_CREATE_ALLY_DAYS_WHEN_DISSOLVED;
     
     /** Alternative gaming - all new characters always are newbies. */
     public static boolean ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE;
     
     /** Alternative gaming - clan members with see privilege can also withdraw from clan warehouse. */
     public static boolean ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH;
+    
+    /** Maximum number of clans in ally */
+    public static int ALT_MAX_NUM_OF_CLANS_IN_ALLY;
     
     /** Enable Rate Hp  */
     public static boolean ENABLE_RATE_HP;
@@ -1489,12 +1502,18 @@ public final class Config
                 ALT_GAME_VIEWNPC                    				= Boolean.parseBoolean(altSettings.getProperty("AltGameViewNpc", "False"));
                 ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE                  = Boolean.parseBoolean(altSettings.getProperty("AltNewCharAlwaysIsNewbie", "False"));
                 ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH                = Boolean.parseBoolean(altSettings.getProperty("AltMembersCanWithdrawFromClanWH", "False"));
+                ALT_MAX_NUM_OF_CLANS_IN_ALLY                        = Integer.parseInt(altSettings.getProperty("AltMaxNumOfClansInAlly", "3"));
                 DWARF_RECIPE_LIMIT                                  = Integer.parseInt(altSettings.getProperty("DwarfRecipeLimit","50"));
                 COMMON_RECIPE_LIMIT                                 = Integer.parseInt(altSettings.getProperty("CommonRecipeLimit","50"));
                 
                 ALT_CLAN_MEMBERS_FOR_WAR    = Integer.parseInt(altSettings.getProperty("AltClanMembersForWar", "15"));
                 ALT_CLAN_JOIN_DAYS          = Integer.parseInt(altSettings.getProperty("DaysBeforeJoinAClan", "5"));
                 ALT_CLAN_CREATE_DAYS        = Integer.parseInt(altSettings.getProperty("DaysBeforeCreateAClan", "10"));
+                ALT_CLAN_DISSOLVE_DAYS      = Integer.parseInt(altSettings.getProperty("DaysToPassToDissolveAClan", "7"));
+                ALT_ALLY_JOIN_DAYS_WHEN_LEAVED       = Integer.parseInt(altSettings.getProperty("DaysBeforeJoinAllyWhenLeaved", "1"));
+                ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED    = Integer.parseInt(altSettings.getProperty("DaysBeforeJoinAllyWhenDismissed", "1"));
+                ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED  = Integer.parseInt(altSettings.getProperty("DaysBeforeAcceptNewClanWhenDismissed", "1"));
+                ALT_CREATE_ALLY_DAYS_WHEN_DISSOLVED  = Integer.parseInt(altSettings.getProperty("DaysBeforeCreateNewAllyWhenDissolved", "10"));
                 
                 ALT_OLY_START_TIME                                  = Integer.parseInt(altSettings.getProperty("AltOlyStartTime", "20"));
                 ALT_OLY_MIN                                         = Integer.parseInt(altSettings.getProperty("AltOlyMin","00"));

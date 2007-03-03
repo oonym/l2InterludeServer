@@ -27,6 +27,11 @@ public class PledgeShowMemberListDeleteAll extends ServerBasePacket
 {
 	private static final String _S__9B_PLEDGESHOWMEMBERLISTDELETEALL = "[S] 82 PledgeShowMemberListDeleteAll";
 
+	public PledgeShowMemberListDeleteAll()
+	{
+
+	}	
+	
 	final void runImpl()
 	{
 		// no long-running tasks

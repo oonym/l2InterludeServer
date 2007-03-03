@@ -177,7 +177,7 @@ public class PcStat extends PlayableStat
         if (getActiveChar().getClan() != null)
         {
         	getActiveChar().getClan().updateClanMember(getActiveChar());
-        	getActiveChar().getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(getActiveChar()), getActiveChar());
+        	getActiveChar().getClan().broadcastToOnlineMembers(new PledgeShowMemberListUpdate(getActiveChar()));
         }
         if (getActiveChar().isInParty()) getActiveChar().getParty().recalculatePartyLevel(); // Recalculate the party level
 

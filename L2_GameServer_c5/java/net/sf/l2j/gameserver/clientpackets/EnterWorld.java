@@ -273,7 +273,12 @@ public class EnterWorld extends ClientBasePacket
             activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
             activeChar.sendMessage("You have been teleported to the nearest town due to you being in an Olympiad Stadia");
         }
-        
+
+		if (activeChar.getClanJoinExpiryTime() > System.currentTimeMillis())
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_MEMBERSHIP_TERMINATED));
+		}
+
         if(Config.GAMEGUARD_ENFORCE)
             activeChar.sendPacket(new GameGuardQuery());
 	}
@@ -331,16 +336,9 @@ public class EnterWorld extends ClientBasePacket
 			clan.getClanMember(activeChar.getName()).setPlayerInstance(activeChar);
 			SystemMessage msg = new SystemMessage(SystemMessage.CLAN_MEMBER_S1_LOGGED_IN);
 			msg.addString(activeChar.getName());
-
-			L2PcInstance[] clanMembers = clan.getOnlineMembers(activeChar.getName());
-            PledgeShowMemberListUpdate ps = new PledgeShowMemberListUpdate(activeChar);
-			for (int i = 0; i < clanMembers.length; i++)
-			{
-				clanMembers[i].sendPacket(ps);
-				clanMembers[i].sendPacket(msg);
-			}
-			ps = null;
+			clan.broadcastToOtherOnlineMembers(msg, activeChar);
 			msg = null;
+			clan.broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(activeChar), activeChar);
 		}
 	}
 	

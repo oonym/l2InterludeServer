@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -37,53 +38,42 @@ public class AllyLeave extends ClientBasePacket
     
     void runImpl()
     {
-        SystemMessage msg;
         L2PcInstance player = getClient().getActiveChar();
-        if(player == null)
+        if (player == null)
+        {
             return;
-        
+        }
+		if (player.getClan() == null)
+        {
+			player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_A_CLAN_MEMBER));
+            return;
+        }
+		if (!player.isClanLeader())
+		{
+			player.sendPacket(new SystemMessage(SystemMessage.ONLY_CLAN_LEADER_WITHDRAW_ALLY));
+			return;
+		}
         L2Clan clan = player.getClan();
-        
-        if(clan == null)
-            return;
-        
-        if(!player.isClanLeader())
-        {
-            //not clan leader to withdraw from alliance
-            msg = new SystemMessage(470);
-            msg.addString(player.getName());
-            player.sendPacket(msg);
-            msg = null;
-            return;
-        }
-        
-        if(clan.getAllyId() == 0)
-        {
-            // no current alliance
-            msg = new SystemMessage(465);
-            player.sendPacket(msg);
-            msg = null;
-            return;
-        }
-        
-        if(clan.getAllyId() == clan.getClanId())
-        {
-            //alliance leader cant withdraw
-            msg = new SystemMessage(471);
-            player.sendPacket(msg);
-            msg = null;
-            return;
-        }
-        
+		if (clan.getAllyId() == 0)
+		{
+			player.sendPacket(new SystemMessage(SystemMessage.NO_CURRENT_ALLIANCES));
+			return;
+		}
+		if (clan.getClanId() == clan.getAllyId())
+		{
+			player.sendPacket(new SystemMessage(SystemMessage.ALLIANCE_LEADER_CANT_WITHDRAW));
+			return;
+		}
+		
+		long currentTime = System.currentTimeMillis();
         clan.setAllyId(0);
         clan.setAllyName(null);
+        clan.setAllyPenaltyExpiryTime(
+        		currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_LEAVED * 86400000,
+        		L2Clan.PENALTY_TYPE_CLAN_LEAVED); //24*60*60*1000 = 86400000
         clan.updateClanInDB();
         
-        //You have withdrawn from the alliance
-        msg = new SystemMessage(519);
-        player.sendPacket(msg);
-        msg = null;
-        
+        player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_WITHDRAWN_FROM_ALLIANCE));
     }
     
     public String getType()

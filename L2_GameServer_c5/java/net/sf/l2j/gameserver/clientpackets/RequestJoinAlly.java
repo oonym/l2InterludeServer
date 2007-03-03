@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.nio.ByteBuffer;
 
 import net.sf.l2j.gameserver.ClientThread;
+import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.AskJoinAlly;
@@ -46,73 +47,39 @@ public class RequestJoinAlly extends ClientBasePacket{
 
 	void runImpl()
 	{
-		SystemMessage sm;
 		L2PcInstance activeChar = getClient().getActiveChar();
-		if(activeChar == null)
-    	    return;
+		if (activeChar == null)
+		{
+		    return;
+		}
+		if (!(L2World.getInstance().findObject(_id) instanceof L2PcInstance))
+		{
+        	activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_INVITED_THE_WRONG_TARGET));
+		    return;
+		}
 		if(activeChar.getClan() == null)
-    	    return;
-		if(activeChar.getAllyId() == 0)
-    	    return;
-		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_id);
-    	if(target == null){
-		    //Target is not found in the game.
-		    sm = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
-		    activeChar.sendPacket(sm);
-		    sm = null;
-		    return;
-		}
-    		if(target.getClan() == null)
-        	    return;
-		if (!activeChar.isClanLeader() || activeChar.getClanId() != activeChar.getAllyId()){
-		    //feature available only for alliance leader
-		    sm = new SystemMessage(SystemMessage.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
-		    activeChar.sendPacket(sm);
-		    sm = null;
-        	    return;
-		}
-		if (activeChar == target){
-		    //you don't need invite yourself
-            //FIXME: i dont think it's the good msg ID 502 is SystemMessage.ALREADY_JOINED_ALLIANCE
-		    sm = new SystemMessage(502);
-		    activeChar.sendPacket(sm);
-		    sm = null;
-        	    return;
-		}
-		if(target.getAllyId() == activeChar.getAllyId()){
-	    //same alliance - no need to invite
-	    sm = new SystemMessage(SystemMessage.S1_CLAN_ALREADY_MEMBER_OF_S2_ALLIANCE);
-	    sm.addString(activeChar.getClan().getName());
-	    sm.addString(activeChar.getClan().getAllyName());
-	    activeChar.sendPacket(sm);
-	    sm = null;
-    	    return;
-		}
-		if(!target.isClanLeader()){
-		    //not clan leader
-		    sm = new SystemMessage(9);
-		    sm.addString(target.getName());
-		    activeChar.sendPacket(sm);
-		    sm = null;
-        	    return;
-		}
-
-        if (target.isProcessingRequest())
         {
-		    sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
-		    activeChar.sendPacket(sm);
-		    sm = null;
-		    return;
+			activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_A_CLAN_MEMBER));
+            return;
         }
-	    activeChar.onTransactionRequest(target);
-	    //leader of alliance request an alliance.
-	    sm = new SystemMessage(SystemMessage.S2_ALLIANCE_LEADER_OF_S1_REQUESTED_ALLIANCE);
-	    sm.addString(activeChar.getClan().getAllyName());
-	    sm.addString(activeChar.getName());
-	    target.sendPacket(sm);
-	    sm = null;
-	    AskJoinAlly aja = new AskJoinAlly(activeChar.getObjectId(), activeChar.getClan().getAllyName());
-	    target.sendPacket(aja);
+		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_id);
+        L2Clan clan = activeChar.getClan();
+        if (!clan.CheckAllyJoinCondition(activeChar, target))
+        {
+        	return;
+        } 
+        if (!activeChar.getRequest().setRequest(target, this))
+        {
+        	return;
+        } 
+		
+		SystemMessage sm = new SystemMessage(SystemMessage.S2_ALLIANCE_LEADER_OF_S1_REQUESTED_ALLIANCE);
+		sm.addString(activeChar.getClan().getAllyName());
+		sm.addString(activeChar.getName());
+		target.sendPacket(sm);
+		sm = null;
+		AskJoinAlly aja = new AskJoinAlly(activeChar.getObjectId(), activeChar.getClan().getAllyName());
+		target.sendPacket(aja);
 	    return;
 	}
 	

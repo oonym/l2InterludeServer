@@ -18,37 +18,34 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.sql.PreparedStatement;
 import java.util.Iterator;
 import java.util.Set;
 
 import javolution.text.TextBuilder;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.datatables.CharTemplateTable;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Clan;
+import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
 import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
 import net.sf.l2j.gameserver.model.base.ClassType;
 import net.sf.l2j.gameserver.model.base.PlayerClass;
 import net.sf.l2j.gameserver.model.base.PlayerRace;
 import net.sf.l2j.gameserver.model.base.SubClass;
+import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
-import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
-import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
-import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
@@ -86,7 +83,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         {
             if (cmdParams.equals("")) return;
 
-            createClan(player, cmdParams);
+            ClanTable.getInstance().createClan(player, cmdParams);
         }
         else if (actualCommand.equalsIgnoreCase("create_academy"))
         {
@@ -116,19 +113,44 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         {
             if (cmdParams.equals("")) return;
 
-            createAlly(player, cmdParams);
+            if (!player.isClanLeader())
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.ONLY_CLAN_LEADER_CREATE_ALLIANCE));
+                return;
+            }
+            player.getClan().createAlly(player, cmdParams);
         }
         else if (actualCommand.equalsIgnoreCase("dissolve_ally"))
         {
-            dissolveAlly(player);
+            if (!player.isClanLeader())
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
+                return;
+            }
+            player.getClan().dissolveAlly(player);
         }
         else if (actualCommand.equalsIgnoreCase("dissolve_clan"))
         {
             dissolveClan(player, player.getClanId());
         }
+        else if (actualCommand.equalsIgnoreCase("change_clan_leader"))
+        {
+            if (cmdParams.equals("")) return;
+
+            changeClanLeader(player, cmdParams);
+        }
+        else if (actualCommand.equalsIgnoreCase("recover_clan"))
+        {
+        	recoverClan(player, player.getClanId());
+        }
         else if (actualCommand.equalsIgnoreCase("increase_clan_level"))
         {
-            levelUpClan(player, player.getClanId());
+            if (!player.isClanLeader())
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
+                return;
+            }
+            player.getClan().levelUpClan(player);
         }
         else if (actualCommand.equalsIgnoreCase("learn_clan_skills"))
         {
@@ -439,523 +461,192 @@ public final class L2VillageMasterInstance extends L2FolkInstance
     }
 
     //Private stuff
-    public void createClan(L2PcInstance player, String clanName)
+    public void dissolveClan(L2PcInstance player, int clanId)
     {
         if (Config.DEBUG)
-            _log.fine(player.getObjectId() + "(" + player.getName() + ") requested clan creation from "
+            _log.fine(player.getObjectId() + "(" + player.getName() + ") requested dissolve a clan from "
                 + getObjectId() + "(" + getName() + ")");
-        if (player.getLevel() < 10)
-        {
-            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
-            player.sendPacket(sm);
-            return;
-        }
 
-        if (player.getClanId() != 0)
-        {
-            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
-            player.sendPacket(sm);
-            return;
-        }
-
-        if (!player.canCreateClan())
-        {
-            // you can't create clan 10 days
-            SystemMessage sm = new SystemMessage(230);
-            player.sendPacket(sm);
-            return;
-        }
-        if (clanName.length() > 16)
-        {
-            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_NAME_TOO_LONG);
-            player.sendPacket(sm);
-            return;
-        }
-
-        L2Clan clan = ClanTable.getInstance().createClan(player, clanName.trim());
-        if (clan == null)
-        {
-            // clan name is already taken
-            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_NAME_INCORRECT);
-            player.sendPacket(sm);
-            return;
-        }
-
-        //should be update packet only
-        PledgeShowInfoUpdate pu = new PledgeShowInfoUpdate(clan, player);
-        player.sendPacket(pu);
-        
-        PledgeShowMemberListAll psmla = new PledgeShowMemberListAll(clan, player);
-        player.sendPacket(psmla);
-
-        UserInfo ui = new UserInfo(player);
-        player.sendPacket(ui);
-
-        SystemMessage sm = new SystemMessage(SystemMessage.CLAN_CREATED);
-        player.sendPacket(sm);
-    }
-
-    private void dissolveClan(L2PcInstance player, int clanId)
-    {
-        if (player.getClan() == null) return;
         if (!player.isClanLeader())
         {
-            //only clan leader
-            SystemMessage sm = new SystemMessage(785);
-            player.sendPacket(sm);
+            player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
             return;
         }
-
-        L2PcInstance[] clanMembers = player.getClan().getOnlineMembers(player.getName());
-        player.setClan(null);
-        player.setTitle(null);
-
-        long deleteclantime = System.currentTimeMillis();
-        player.setDeleteClanTime(deleteclantime);
-        SiegeManager.getInstance().removeSiegeSkills(player);
-
-        // The clan leader should take the XP penalty of a full death.
-        player.deathPenalty(false);
-
-        SystemMessage sm = new SystemMessage(193);
-
-        for (int i = 0; i < clanMembers.length; i++)
-        {
-            clanMembers[i].setClan(null);
-            clanMembers[i].setTitle(null);
-
-            clanMembers[i].sendPacket(sm);
-            clanMembers[i].broadcastUserInfo();
-        }
-
-        java.sql.Connection con = null;
-
-        try
-        {
-            con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid = 0, clan_privs = 0 WHERE clanid=?");
-            statement.setInt(1, clanId);
-            statement.execute();
-            statement.close();
-
-            // save the leader DeleteClanTime
-            statement = con.prepareStatement("UPDATE characters SET deleteclan = ? WHERE obj_Id=?");
-            statement.setLong(1, deleteclantime);
-            statement.setInt(2, player.getObjectId());
-            statement.close();
-
-            statement = con.prepareStatement("DELETE FROM clan_data WHERE clan_id=?");
-            statement.setInt(1, clanId);
-            statement.execute();
-            statement.close();
-            
-            statement = con.prepareStatement("DELETE FROM clan_privs WHERE clan_id=?");
-            statement.setInt(1, clanId);
-            statement.execute();
-            statement.close();
-
-            statement = con.prepareStatement("DELETE FROM clan_subpledges WHERE clan_id=?");
-            statement.setInt(1, clanId);
-            statement.execute();
-            statement.close();
-            
-            player.sendPacket(sm);
-            player.broadcastUserInfo();
-
-            con.close();
-        }
-        catch (Exception e)
-        {
-            _log.warning("could not dissolve clan:" + e);
-        }
-        finally
-        {
-            try
-            {
-                con.close();
-            }
-            catch (Exception e)
-            {
-            }
-        }
-    }
-
-    public void levelUpClan(L2PcInstance player, int clanId)
-    {
         L2Clan clan = player.getClan();
-        if (clan == null)
+        if (clan.getAllyId() != 0)
         {
+            player.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISPERSE_THE_CLANS_IN_ALLY));
             return;
         }
-        if (!player.isClanLeader())
+        if (clan.isAtWar() != 0)
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
-            sm.addString("Only clan leader can increase the clan level."); //i was too lazy to check if such a sysmsg already exists
-            player.sendPacket(sm);
+            player.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISSOLVE_WHILE_IN_WAR));
+            return;
+        }
+        if (clan.getHasCastle() !=0 || clan.getHasHideout() != 0)
+        {
+            player.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISSOLVE_WHILE_OWNING_CLAN_HALL_OR_CASTLE));
+            return;
+        }
+        for (Castle castle : CastleManager.getInstance().getCastles())
+        {
+            if (SiegeManager.getInstance().checkIsRegistered(clan, castle.getCastleId()))
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISSOLVE_CAUSE_CLAN_WILL_PARTICIPATE_IN_CASTLE_SIEGE));
+                return;
+            }
+        }
+        if (SiegeManager.getInstance().checkIfInZone(player))
+        {
+            player.sendPacket(new SystemMessage(SystemMessage.CANNOT_DISSOLVE_WHILE_IN_SIEGE));
+            return;
+        }
+        if (clan.getDissolvingExpiryTime() > System.currentTimeMillis())
+        {
+            player.sendPacket(new SystemMessage(SystemMessage.DISSOLUTION_IN_PROGRESS));
             return;
         }
 
-        boolean increaseClanLevel = false;
+        clan.setDissolvingExpiryTime(System.currentTimeMillis() + Config.ALT_CLAN_DISSOLVE_DAYS * 86400000); //24*60*60*1000 = 86400000
+        clan.updateClanInDB();
 
-        switch (clan.getLevel())
-        {
-            case 0:
-            {
-                // upgrade to 1
-                if (player.getSp() >= 35000 && player.getAdena() >= 650000)
-                {
-                    if (player.reduceAdena("ClanLvl", 650000, this, true))
-                    {
-	                    player.setSp(player.getSp() - 35000);
-	                    increaseClanLevel = true;
-                    }
-                }
-                break;
-            }
-            case 1:
-            {
-                // upgrade to 2
-                if (player.getSp() >= 150000 && player.getAdena() >= 2500000)
-                {
-                    if (player.reduceAdena("ClanLvl", 2500000, this, true))
-                    {
-	                    player.setSp(player.getSp() - 150000);
-	                    increaseClanLevel = true;
-                    }
-                }
-                break;
-            }
-            case 2:
-            {
-                // upgrade to 3
-                if (player.getSp() >= 500000 && player.getInventory().getItemByItemId(1419) != null)
-                {
-                    // itemid 1419 == proof of blood
-                    if (player.destroyItemByItemId("ClanLvl", 1419, 1, player.getTarget(), false))
-                    {
-	                    player.setSp(player.getSp() - 500000);
-	                    increaseClanLevel = true;
-                    }
-                }
-                break;
-            }
-            case 3:
-            {
-                // upgrade to 4
-                if (player.getSp() >= 1400000 && player.getInventory().getItemByItemId(3874) != null)
-                {
-                    // itemid 3874 == proof of alliance
-                	if (player.destroyItemByItemId("ClanLvl", 3874, 1, player.getTarget(), false))
-                	{
-	                    player.setSp(player.getSp() - 1400000);
-	                    increaseClanLevel = true;
-                	}
-                }
-                break;
-            }
-            case 4:
-            {
-                // upgrade to 5
-                if (player.getSp() >= 3500000 && player.getInventory().getItemByItemId(3870) != null)
-                {
-                    // itemid 3870 == proof of aspiration
-                	if (player.destroyItemByItemId("ClanLvl", 3870, 1, player.getTarget(), false))
-                	{
-                		player.setSp(player.getSp() - 3500000);
-                        increaseClanLevel = true;
-                	}
-                	/*
-                    if (player.getInventory().getItemByItemId(3870) != null)
-                    {
-                        player.getInventory().destroyItemByItemId("ClanLvl", 3870, 1, player,
-                                                                  player.getTarget());
-                    }
-                    else
-                    {
-                        player.reduceAdena("ClanLvl", 30000000, this, true);
-                    }
-                    increaseClanLevel = true;
-                    */
-                }
-                break;
-            }
-            case 5:
-                if(clan.getReputationScore() >= 10000 && clan.getMembersCount() >= 30)
-                {
-                    clan.setReputationScore(clan.getReputationScore()-10000, true);
-                    increaseClanLevel = true;
-                }
-                break;
-            	
-            case 6:
-                if(clan.getReputationScore() >= 20000 && clan.getMembersCount() >= 80)
-                {
-                    clan.setReputationScore(clan.getReputationScore()-20000, true);
-                    increaseClanLevel = true;
-                }
-                break;
-            case 7:
-                if(clan.getReputationScore() >= 40000 && clan.getMembersCount() >= 120)
-                {
-                    clan.setReputationScore(clan.getReputationScore()-40000, true);
-                    increaseClanLevel = true;
-                }
-                break;
-            default:
-            	return;
-        }
+        ClanTable.getInstance().scheduleRemoveClan(clan.getClanId());
 
-        if (increaseClanLevel)
-        {
-            // the player should know that he has less sp now :p
-            StatusUpdate su = new StatusUpdate(player.getObjectId());
-            su.addAttribute(StatusUpdate.SP, player.getSp());
-            sendPacket(su);
-
-            ItemList il = new ItemList(player, false);
-            player.sendPacket(il);
-
-            java.sql.Connection con = null;
-            try
-            {
-                con = L2DatabaseFactory.getInstance().getConnection();
-                PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET clan_level = ? WHERE clan_id = ?");
-                statement.setInt(1, clan.getLevel() + 1);
-                statement.setInt(2, clanId);
-                statement.execute();
-                statement.close();
-
-                con.close();
-            }
-            catch (Exception e)
-            {
-                _log.warning("could not increase clan level:" + e);
-            }
-            finally
-            {
-                try
-                {
-                    con.close();
-                }
-                catch (Exception e)
-                {
-                }
-            }
-
-            clan.setLevel(clan.getLevel() + 1);
-            if (clan.getLevel() > 3) SiegeManager.getInstance().addSiegeSkills(player);
-
-            // notify all the members about it
-            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_LEVEL_INCREASED);
-            clan.broadcastToOnlineMembers(sm);
-            clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan, player));
-            /*
-             * Micht :
-             * 	- use PledgeShowInfoUpdate instead of PledgeStatusChanged
-             * 		to update clan level ingame
-             * 	- remove broadcastClanStatus() to avoid members duplication
-             */
-            //clan.broadcastToOnlineMembers(new PledgeStatusChanged(clan));
-            //clan.broadcastClanStatus();
-        }
-        else
-        {
-            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_INCREASE_CLAN_LEVEL);
-            player.sendPacket(sm);
-        }
+        // The clan leader should take the XP penalty of a full death.
+        player.deathPenalty(false);
     }
 
-    public void createAlly(L2PcInstance player, String allyName)
+    public void recoverClan(L2PcInstance player, int clanId)
     {
-        //D5 You may not ally with clan you are battle with.
-        //D6 Only the clan leader may apply for withdraw from alliance.
-        //DD No response. Invitation to join an 
-        //D7 Alliance leaders cannot withdraw.
-        //D9 Different Alliance 
-        //EB alliance information
-        //Ec alliance name $s1
-        //ee alliance leader: $s2 of $s1
-        //ef affilated clans: total $s1 clan(s)
-        //f6 you have already joined an alliance
-        //f9 you cannot new alliance 10 days
-        //fd cannot accept. clan ally is register as enemy during siege batle.
-        //fe you have invited someone to your alliance.
-        //100 do you wish to withdraw from the alliance
-        //102 enter the name of the clan you wish to expel.
-        //202 do you realy wish to dissolve the alliance
-        //502 you have accepted alliance
-        //602 you have failed to invite a clan into the alliance
-        //702 you have withdrwa
-
-        if (player.getClanId() == 0) return;
-
         if (Config.DEBUG)
-            _log.fine(player.getObjectId() + "(" + player.getName() + ") requested ally creation from "
+            _log.fine(player.getObjectId() + "(" + player.getName() + ") requested recover a clan from "
                 + getObjectId() + "(" + getName() + ")");
 
         if (!player.isClanLeader())
         {
-            //only clan leaders may create alliances.
-            SystemMessage sm = new SystemMessage(504);
-            player.sendPacket(sm);
+            player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
             return;
         }
-        if (player.getClan().getAllyId() != 0)
-        {
-            //is in ally
-            SystemMessage sm = new SystemMessage(502);
-            player.sendPacket(sm);
-            return;
-        }
-        if (allyName.length() < 2)
-        {
-            // incorect alliance name
-            SystemMessage sm = new SystemMessage(506);
-            player.sendPacket(sm);
-            return;
-        }
-        if (allyName.length() > 16)
-        {
-            // incorect length of alliance name
-            SystemMessage sm = new SystemMessage(507);
-            player.sendPacket(sm);
-            return;
-        }
-        if (player.getClan().getLevel() < 5)
-        {
-            //only clan level 5 or higher.
-            SystemMessage sm = new SystemMessage(549);
-            player.sendPacket(sm);
-            return;
-        }
-        if (ClanTable.getInstance().isAllyExists(allyName))
-        {
-            //name exists.
-            SystemMessage sm = new SystemMessage(508);
-            player.sendPacket(sm);
-            return;
-        }
+        L2Clan clan = player.getClan();
 
-        player.getClan().setAllyId(player.getClanId());
-        player.getClan().setAllyName(allyName.trim());
-        player.getClan().updateClanInDB();
-
-        UserInfo ui = new UserInfo(player);
-        player.sendPacket(ui);
-
-        SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
-        sm.addString("Alliance " + allyName + " has been created.");
-        player.sendPacket(sm);
+        clan.setDissolvingExpiryTime(0);
+        clan.updateClanInDB();
     }
 
-    private void dissolveAlly(L2PcInstance player)
+    public void changeClanLeader(L2PcInstance player, String target)
     {
-        L2Clan playerClan = player.getClan();
+        if (Config.DEBUG)
+            _log.fine(player.getObjectId() + "(" + player.getName() + ") requested change a clan leader from "
+                + getObjectId() + "(" + getName() + ")");
 
-        if (player.getClan() == null) return;
-
-        int allyId = playerClan.getAllyId();
-
-        if (allyId == 0) return;
-
-        if (allyId != player.getClanId() || !player.isClanLeader())
+        if (!player.isClanLeader())
         {
-            player.sendPacket(new SystemMessage(SystemMessage.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
+            player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
             return;
         }
+		if (player.getName().equalsIgnoreCase(target))
+		{
+			return;
+		}
+        L2Clan clan = player.getClan();
 
-        playerClan.setAllyId(0);
-        playerClan.setAllyName(null);
-
-        // The clan leader should take the XP penalty of a full death.
-        player.deathPenalty(false);
-
-        SystemMessage sm = new SystemMessage(SystemMessage.ALLIANCE_DISOLVED);
-        java.sql.Connection con = null;
-
-        try
-        {
-            con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET ally_id = 0, ally_name = '' WHERE ally_id=?");
-            statement.setInt(1, allyId);
-            statement.execute();
-            statement.close();
-
-            player.sendPacket(sm);
-            player.broadcastUserInfo();
-
-            con.close();
-        }
-        catch (Exception e)
-        {
-            _log.warning("could not dissolve clan:" + e);
-        }
-        finally
-        {
-            try
-            {
-                con.close();
-            }
-            catch (Exception e)
-            {
-            }
-        }
+        L2ClanMember member = clan.getClanMember(target);
+		if (member == null)
+		{
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_DOES_NOT_EXIST);
+			sm.addString(target);
+			player.sendPacket(sm);
+			sm = null;
+			return;
+		}
+		if (!member.isOnline())
+		{
+            player.sendPacket(new SystemMessage(SystemMessage.INVITED_USER_NOT_ONLINE));
+			return;
+		}
+		clan.setNewLeader(member);
     }
-    
+
     public void createSubPledge(L2PcInstance player, String clanName, String leaderName, int pledgeType, int minClanLvl)
     {
         //if (Config.DEBUG)
             _log.fine(player.getObjectId() + "(" + player.getName() + ") requested sub clan creation from "
                 + getObjectId() + "(" + getName() + ")");
         
-        if (player.getClanId() == 0)
-        {
-            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
-            player.sendPacket(sm);
-            return;
-        }
-        
         if (!player.isClanLeader())
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
-            player.sendPacket(sm);
-            return;
-        }
-        
-        if (player.getClan().getLevel() < minClanLvl)
-        {
-            SystemMessage sm = new SystemMessage(SystemMessage.FAILED_TO_CREATE_CLAN);
-            player.sendPacket(sm);
+            player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
             return;
         }
 
-        if (clanName.length() > 16)
+        L2Clan clan = player.getClan();
+        if (clan.getLevel() < minClanLvl)
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_NAME_TOO_LONG);
-            player.sendPacket(sm);
+            if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_CLAN_ACADEMY));
+            }
+            else
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_MILITARY_UNIT));
+            }
             return;
         }
+		if (!Util.isAlphaNumeric(clanName) || 2 > clanName.length())
+		{
+			player.sendPacket(new SystemMessage(SystemMessage.CLAN_NAME_INCORRECT));
+			return;
+		}
+        if (clanName.length() > 16)
+        {
+            player.sendPacket(new SystemMessage(SystemMessage.CLAN_NAME_TOO_LONG));
+            return;
+        }
+		for (L2Clan tempClan : ClanTable.getInstance().getClans())
+		{
+			if (tempClan.getSubPledge(clanName) != null)
+			{
+	            if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
+	            {
+	            	SystemMessage sm = new SystemMessage(SystemMessage.S1_ALREADY_EXISTS);
+	            	sm.addString(clanName);
+	            	player.sendPacket(sm);
+	            	sm = null;
+	            }
+	            else
+	            {
+	                player.sendPacket(new SystemMessage(SystemMessage.ANOTHER_MILITARY_UNIT_IS_ALREADY_USING_THAT_NAME));
+	            }
+				return;
+			}
+
+		}
         
-        if(!(pledgeType == L2Clan.SUBUNIT_ACADEMY))
-            if(player.getClan().getClanMember(leaderName) == null || player.getClan().getClanMember(leaderName).getPledgeType() != 0)
+        if (pledgeType != L2Clan.SUBUNIT_ACADEMY)
+            if (clan.getClanMember(leaderName) == null || clan.getClanMember(leaderName).getPledgeType() != 0)
             {
-                player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
+                if (pledgeType >= L2Clan.SUBUNIT_KNIGHT1)
+                {
+                    player.sendPacket(new SystemMessage(SystemMessage.CAPTAIN_OF_ORDER_OF_KNIGHTS_CANNOT_BE_APPOINTED));
+                }
+                else if (pledgeType >= L2Clan.SUBUNIT_ROYAL1)
+                {
+                    player.sendPacket(new SystemMessage(SystemMessage.CAPTAIN_OF_ROYAL_GUARD_CANNOT_BE_APPOINTED));
+                }
                 return;
             }
 
-        if (player.getClan().createSubPledge(pledgeType, leaderName, clanName) == 0)
+        if (clan.createSubPledge(pledgeType, leaderName, clanName) == null)
         {
-            player.sendMessage("You can't create any more sub-units of this type");
+            if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.CLAN_HAS_ALREADY_ESTABLISHED_A_CLAN_ACADEMY));
+            }
+            else
+            	player.sendMessage("You can't create any more sub-units of this type");
             return;
         }
 
-        /*//should be update packet only
-        PledgeShowInfoUpdate pu = new PledgeShowInfoUpdate(clan, player);
-        player.sendPacket(pu);
-
-        UserInfo ui = new UserInfo(player);
-        player.sendPacket(ui);*/
-        
         SystemMessage sm; 
         if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
         {
@@ -980,63 +671,58 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
     public void assignSubPledgeLeader(L2PcInstance player, String clanName, String leaderName)
     {
-        // TODO: System messages for this
-    	//if (Config.DEBUG)
-        //    _log.fine(player.getObjectId() + "(" + player.getName() + ") requested to change sub clan leader "
-        //         + "(" + leaderName + ")");
-    	_log.fine(player.getObjectId() + "(" + player.getName() + ") requested to change sub clan"+clanName +"leader "
+    	if (Config.DEBUG)
+    		_log.fine(player.getObjectId() + "(" + player.getName() + ") requested to assign sub clan" + clanName + "leader "
     	                + "(" + leaderName + ")");
-        
-        if (player.getClanId() == 0)
-        {
-        	player.sendMessage("The clan doesn't exist.");
-            return;
-        }
         
         if (!player.isClanLeader())
         {
-        	player.sendMessage("Only the clan leader can do this.");
+            player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
             return;
-        }
-        
-        if (leaderName.length() > 20)
-        {
-        	player.sendMessage("Leader name too long.");
-            return;
-        }
-        
-        SubPledge[] subPledge = player.getClan().getAllSubPledges();
-
-		int match = -1;
-        for (int i = 0; i<subPledge.length; i++)
-		{
-			if (subPledge[i].getName().equals(clanName)) 
-			{
-				match = i;
-				break;
-			}
-		}
-        if(match < 0) 
-        {
-        	player.sendMessage("Sub-unit not found.");
-            return;
-        }
-        
-        if(player.getClan().getClanMember(leaderName) == null)
-        {
-            player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
-            return;
-        }
-        
-        if(!(subPledge[match].getId() == -1) && player.getClan().getClanMember(leaderName).getPledgeType() != 0)
-        {
-        	player.sendMessage("The selected player can't be assigned as sub-unit leader: he isn't a direct member of your clan");
-        	return;
         }
 
-        subPledge[match].setLeaderName(leaderName);
+        if (leaderName.length() > 16)
+        {
+            player.sendPacket(new SystemMessage(SystemMessage.NAMING_CHARNAME_UP_TO_16CHARS));
+            return;
+        }
+        
+        L2Clan clan = player.getClan();
+        SubPledge subPledge = player.getClan().getSubPledge(clanName);
 
-        player.sendMessage("New sub-unit leader has been assigned.");
+        if (null == subPledge) 
+        {
+			player.sendPacket(new SystemMessage(SystemMessage.CLAN_NAME_INCORRECT));
+            return;
+        }
+        if (subPledge.getId() == L2Clan.SUBUNIT_ACADEMY)
+        {
+			player.sendPacket(new SystemMessage(SystemMessage.CLAN_NAME_INCORRECT));
+            return;
+        }
+        
+        if (null == clan.getClanMember(leaderName) || 0 != clan.getClanMember(leaderName).getPledgeType())
+        {
+            if (subPledge.getId() >= L2Clan.SUBUNIT_KNIGHT1)
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.CAPTAIN_OF_ORDER_OF_KNIGHTS_CANNOT_BE_APPOINTED));
+            }
+            else if (subPledge.getId() >= L2Clan.SUBUNIT_ROYAL1)
+            {
+                player.sendPacket(new SystemMessage(SystemMessage.CAPTAIN_OF_ROYAL_GUARD_CANNOT_BE_APPOINTED));
+            }
+            return;
+        }
+        
+        subPledge.setLeaderName(leaderName);
+        clan.updateSubPledgeInDB(subPledge.getId());
+
+        clan.broadcastClanStatus();
+    	SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_BEEN_SELECTED_AS_CAPTAIN_OF_S2);
+    	sm.addString(leaderName);
+    	sm.addString(clanName);
+    	clan.broadcastToOnlineMembers(sm);
+    	sm = null;
     }
 
     private final Set<PlayerClass> getAvailableSubClasses(L2PcInstance player)

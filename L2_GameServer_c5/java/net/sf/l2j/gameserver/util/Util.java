@@ -246,11 +246,24 @@ public final class Util
         if (numPlaces <= 1)
             return Math.round(val);
         
-        float exponent = 10;
-        
-        for (int i = 1; i < numPlaces; i++)
-            exponent *= 10;
+        float exponent = (float) Math.pow(10, numPlaces);
         
         return (Math.round(val * exponent) / exponent);
     }
+
+	public static boolean isAlphaNumeric(String text)
+	{
+		boolean result = true;
+		char[] chars = text.toCharArray();
+		for (int i = 0; i < chars.length; i++)
+		{
+			if (!Character.isLetterOrDigit(chars[i]))
+			{
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+	
 }

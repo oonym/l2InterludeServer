@@ -183,9 +183,17 @@ public class SystemMessage extends ServerBasePacket
     public static final int CANNOT_DISCARD_DISTANCE_TOO_FAR = 151;
     public static final int CANNOT_DISCARD_THIS_ITEM = 98;
 
-	// trade 
-	public static final int S1_IS_BUSY_TRY_LATER = 153;
+	//Request
 	public static final int TARGET_IS_INCORRECT = 144;
+	public static final int YOU_HAVE_INVITED_THE_WRONG_TARGET = 152;
+    public static final int S1_IS_BUSY_TRY_LATER = 153;
+	public static final int WAITING_FOR_ANOTHER_REPLY = 164;
+	public static final int S1_DID_NOT_RESPOND_TO_CLAN_INVITATION = 224;
+	public static final int YOU_DID_NOT_RESPOND_TO_S1_CLAN_INVITATION = 225;
+	public static final int NO_RESPONSE_TO_ALLY_INVITATION = 477;
+	public static final int YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION = 478;
+
+	// trade
 	public static final int ALREADY_TRADING = 142;
 	public static final int REQUEST_S1_FOR_TRADE = 118;
 	public static final int S1_DENIED_TRADE_REQUEST = 119;
@@ -213,30 +221,75 @@ public class SystemMessage extends ServerBasePacket
     public static final int CB_OFFLINE = 938;
     
 	//Clan stuff
+	public static final int YOU_ARE_WORKING_WITH_ANOTHER_CLAN = 8;
+	public static final int S1_IS_NOT_A_CLAN_LEADER = 9;
+	public static final int YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_CLAN = 229;
 	public static final int FAILED_TO_CREATE_CLAN = 190;
+	public static final int YOU_MUST_WAIT_XX_DAYS_BEFORE_CREATING_A_NEW_CLAN = 230;
 	public static final int CLAN_NAME_INCORRECT = 261;
 	public static final int CLAN_NAME_TOO_LONG = 262;
-	
+	public static final int S1_ALREADY_EXISTS = 5;
+	public static final int S1_DOES_NOT_EXIST = 6;
+
 	public static final int CLAN_CREATED = 189;
 	public static final int CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE = 271;
+	public static final int CLAN_CREST_HAS_BEEN_DELETED = 1861;
 	public static final int CLAN_LVL_3_NEEDED_TO_SET_CREST = 272;
+	public static final int CANNOT_SET_CREST_WHILE_DISSOLUTION_IN_PROGRESS = 552;
 	public static final int THE_S1S_CLAN_ACADEMY_HAS_BEEN_CREATED = 1741;
 	public static final int THE_KNIGHTS_OF_S1_HAVE_BEEN_CREATED = 1794;	
 	public static final int THE_ROYAL_GUARD_OF_S1_HAVE_BEEN_CREATED = 1795;	
+	public static final int YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_CLAN_ACADEMY = 1730;
+	public static final int YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_MILITARY_UNIT = 1791;
+	public static final int CLAN_HAS_ALREADY_ESTABLISHED_A_CLAN_ACADEMY = 1738;
+	public static final int ANOTHER_MILITARY_UNIT_IS_ALREADY_USING_THAT_NAME = 1855;
+	public static final int S1_HAS_BEEN_SELECTED_AS_CAPTAIN_OF_S2 = 1793;
+	public static final int CAPTAIN_OF_ORDER_OF_KNIGHTS_CANNOT_BE_APPOINTED = 1850;
+	public static final int CAPTAIN_OF_ROYAL_GUARD_CANNOT_BE_APPOINTED = 1851;
 
 	public static final int CANNOT_INVITE_YOURSELF = 4;
 	public static final int S1_WORKING_WITH_ANOTHER_CLAN = 10;
+	public static final int S1_HAS_INVITED_YOU_TO_JOIN_THE_CLAN_S2 = 67;
+	public static final int S1_DOESNOT_MEET_REQUIREMENTS_TO_JOIN_ACADEMY = 1735;
+	public static final int ACADEMY_REQUIREMENTS = 1734;
+	public static final int YOU_MUST_WAIT_BEFORE_ACCEPTING_A_NEW_MEMBER = 231;
+	public static final int YOU_MUST_WAIT_BEFORE_JOINING_ANOTHER_CLAN = 232;
+	public static final int S1_MUST_WAIT_BEFORE_JOINING_ANOTHER_CLAN = 760;
 	public static final int ENTERED_THE_CLAN = 195;
 	public static final int S1_REFUSED_TO_JOIN_CLAN = 196;
 	public static final int S1_HAS_JOINED_CLAN = 222;
 	public static final int CLAN_MEMBER_S1_LOGGED_IN = 304;
-	
+	public static final int YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT = 794;
+	public static final int S1_CLAN_IS_FULL = 1835;
+	public static final int SUBCLAN_IS_FULL = 233;
+
 	public static final int CLAN_LEVEL_INCREASED = 274;
-	public static final int FAILED_TO_INCREASE_CLAN_LEVEL = 275;
-	
+	public static final int FAILED_TO_INCREASE_CLAN_LEVEL = 1790;
+	public static final int CLAN_CAN_ACCUMULATE_CLAN_REPUTATION_POINTS = 1771;
+
+	public static final int CLAN_LEADERS_MAY_NOT_BE_DELETED = 540;
+	public static final int CLAN_MEMBER_MAY_NOT_BE_DELETED = 541;
 	public static final int CLAN_MEMBER_S1_EXPELLED = 191;
+	public static final int YOU_HAVE_SUCCEEDED_IN_EXPELLING_CLAN_MEMBER = 309;
+	public static final int YOU_HAVE_WITHDRAWN_FROM_CLAN = 197;
 	public static final int CLAN_MEMBERSHIP_TERMINATED = 199;
-    
+	public static final int ACADEMY_MEMBERSHIP_TERMINATED = 1749;
+	public static final int S1_HAS_WITHDRAWN_FROM_THE_CLAN = 223;
+	public static final int CLAN_LEADER_CANNOT_WITHDRAW = 239;
+	public static final int YOU_CANNOT_DISMISS_YOURSELF = 269;
+	public static final int CLAN_MEMBER_CANNOT_BE_DISMISSED_DURING_COMBAT = 1117;
+	public static final int YOU_CANNOT_LEAVE_DURING_COMBAT = 1116;
+	public static final int CANNOT_DISSOLVE_WHILE_IN_WAR = 264;
+	public static final int CANNOT_DISSOLVE_WHILE_IN_SIEGE = 265;
+	public static final int CANNOT_DISSOLVE_WHILE_OWNING_CLAN_HALL_OR_CASTLE = 266;
+	public static final int CANNOT_DISSOLVE_CAUSE_CLAN_WILL_PARTICIPATE_IN_CASTLE_SIEGE = 13;
+	public static final int CANNOT_RISE_LEVEL_WHILE_DISSOLUTION_IN_PROGRESS = 551;
+	public static final int CANNOT_DISPERSE_THE_CLANS_IN_ALLY = 554;
+	public static final int DISSOLUTION_IN_PROGRESS = 263;
+	public static final int CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS = 1114;
+	public static final int CLAN_HAS_DISPERSED = 193;
+	public static final int CLAN_LEADER_PRIVILEGES_HAVE_BEEN_TRANSFERRED_TO_S1 = 1798;
+
 	public static final int CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED = 1663;
 	
     public static final int YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE = 709;
@@ -446,16 +499,17 @@ public class SystemMessage extends ServerBasePacket
     public static final int WAR_PROCLAMATION_HAS_BEEN_REFUSED = 626;
     
     //alliance
+    public static final int YOU_ARE_NOT_A_CLAN_MEMBER = 212;
     public static final int FEATURE_ONLY_FOR_ALLIANCE_LEADER = 464;
     public static final int NO_CURRENT_ALLIANCES = 465;
+    public static final int YOU_HAVE_EXCEEDED_THE_LIMIT = 466;
+    public static final int CANT_INVITE_CLAN_WITHIN_1_DAY = 467;
     public static final int CANT_ENTER_ALLIANCE_WITHIN_1_DAY = 468;
     public static final int MAY_NOT_ALLY_CLAN_BATTLE = 469;
     public static final int ONLY_CLAN_LEADER_WITHDRAW_ALLY = 470;
-    public static final int ALLIANCE_LEADER_CANT_WITHDRW= 471;
+    public static final int ALLIANCE_LEADER_CANT_WITHDRAW= 471;
     public static final int DIFFERANT_ALLIANCE = 473;
     public static final int CLAN_DOESNT_EXISTS = 474;
-    public static final int NO_RESPONSE_INVIT_CANCEL = 477;
-    public static final int NO_RESPONSE_ENTRANCE_CANCEL = 478;
     public static final int ALREADY_JOINED_ALLIANCE = 502;
     public static final int ONLY_CLAN_LEADER_CREATE_ALLIANCE = 504;
     public static final int CANT_CREATE_ALLIANCE_10_DAYS_DISOLUTION = 505;
@@ -477,8 +531,13 @@ public class SystemMessage extends ServerBasePacket
     public static final int ALLIANCE_DISOLVED = 523;
     public static final int FAILED_TO_DISOLVE_ALLIANCE = 524;
     public static final int S2_ALLIANCE_LEADER_OF_S1_REQUESTED_ALLIANCE = 527;
+    public static final int TO_CREATE_AN_ALLY_YOU_CLAN_MUST_BE_LEVEL_5_OR_HIGHER = 549;
+    public static final int YOU_MAY_NOT_CREATE_ALLY_WHILE_DISSOLVING = 550;
     public static final int S1_CLAN_ALREADY_MEMBER_OF_S2_ALLIANCE = 691;
-    
+    public static final int CANNOT_DISSOLVE_ALLY_WHILE_IN_SIEGE = 722;
+    public static final int OPPOSING_CLAN_IS_PARTICIPATING_IN_SIEGE = 723;
+    public static final int S1_CANT_ENTER_ALLIANCE_WITHIN_1_DAY = 761;
+
     public static final int ALLIANCE_INFO_HEAD = 491;
     public static final int ALLIANCE_NAME_S1 = 492;
     public static final int CONNECTION_S1_TOTAL_S2 = 493;

@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.model;
 import java.sql.PreparedStatement;
 
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -87,9 +88,16 @@ public class L2ClanMember
 			_classId = _player.getClassId().getId();
 			_objectId = _player.getObjectId();
 			_powerGrade = _player.getPowerGrade();
+			_pledgeType = _player.getPledgeType();
 			_title = _player.getTitle();
+			_apprentice = _player.getApprentice();
+			_sponsor = _player.getSponsor();
 		}
+		
 		if (player != null) {
+	        if (_clan.getLevel() > 3)
+	        	SiegeManager.getInstance().addSiegeSkills(player);
+
 			L2Skill[] skills = _clan.getAllSkills();
 			for (L2Skill sk : skills) 
 			{
@@ -97,6 +105,7 @@ public class L2ClanMember
 					player.addSkill(sk, false);
 			}
 		}
+
 		_player = player;
 	}
 

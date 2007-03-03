@@ -434,9 +434,9 @@ public class PacketHandler
             case 0x85:
                 msg = new AllyDismiss(data, client);
                 break;
-//			case 0x86:
-//				// RequestDismissAlly
-//				break;
+			case 0x86:
+                msg = new RequestDismissAlly(data, client);
+				break;
 			case 0x87:
 				msg = new RequestSetAllyCrest(data, client);
 				break;

@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
@@ -57,10 +58,17 @@ public class RequestJoinSiege extends ClientBasePacket{
         if (castle == null) return;
 
         if (_IsJoining == 1)
+        {
+        	if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
+        	{
+        		activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS));
+        		return;
+        	}
             if (_IsAttacker == 1)
                 castle.getSiege().registerAttacker(activeChar);
             else
                 castle.getSiege().registerDefender(activeChar);
+        }
         else
             castle.getSiege().removeSiegeClan(activeChar);
 
