@@ -311,13 +311,12 @@ public class ClanTable
 	{
 		for (L2Clan clan : getClans())
 		{
-			if (clan.getAllyName().equalsIgnoreCase(allyName))
+			if (clan.getAllyName() != null &&
+				clan.getAllyName().equalsIgnoreCase(allyName))
 			{
 				return true;
 			}
-
 		}
-
 		return false;
 	}
 
