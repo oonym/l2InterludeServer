@@ -707,9 +707,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	private L2PcInstance(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
 	{
 		super(objectId, template);
-		super.setKnownList(new PcKnownList(this));
-		super.setStat(new PcStat(this));
-		super.setStatus(new PcStatus(this));
+		this.getKnownList();	// init knownlist
+        this.getStat();			// init stats
+        this.getStatus();		// init status
 		
 		_accountName  = accountName;
 		_baseLoad     = template.baseLoad;
@@ -732,17 +732,38 @@ public final class L2PcInstance extends L2PlayableInstance
 	private L2PcInstance(int objectId)
 	{
 		super(objectId, null);
-		super.setKnownList(new PcKnownList(this));
-		super.setStat(new PcStat(this));
-		super.setStatus(new PcStatus(this));
+		this.getKnownList();	// init knownlist
+        this.getStat();			// init stats
+        this.getStatus();		// init status
 		
 		_baseLoad = 0;
 	}
 	
-	public final PcKnownList getKnownList() { return (PcKnownList)super.getKnownList(); }
-	public final PcStat getStat() { return (PcStat)super.getStat(); }
-	public final PcStatus getStatus() { return (PcStatus)super.getStatus(); }
-	public final PcAppearance getAppearance() { return _appearance; }
+	public final PcKnownList getKnownList()
+	{
+		if(super.getKnownList() == null || !(super.getKnownList() instanceof PcKnownList))
+    		this.setKnownList(new PcKnownList(this));
+		return (PcKnownList)super.getKnownList();
+	}
+	
+	public final PcStat getStat()
+	{
+		if(super.getStat() == null || !(super.getStat() instanceof PcStat))
+    		this.setStat(new PcStat(this));
+		return (PcStat)super.getStat();
+	}
+
+	public final PcStatus getStatus()
+	{
+		if(super.getStatus() == null || !(super.getStatus() instanceof PcStatus))
+    		this.setStatus(new PcStatus(this));
+		return (PcStatus)super.getStatus();
+	}
+	
+	public final PcAppearance getAppearance()
+	{
+		return _appearance;
+	}
 	
 	/**
 	 * Return the base L2PcTemplate link to the L2PcInstance.<BR><BR>

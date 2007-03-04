@@ -33,14 +33,31 @@ public abstract class L2PlayableInstance extends L2Character
 	public L2PlayableInstance(int objectId, L2CharTemplate template)
 	{
 		super(objectId, template);
-        super.setKnownList(new PlayableKnownList(this));
-        super.setStat(new PlayableStat(this));
-        super.setStatus(new PlayableStatus(this));
+		this.getKnownList();	// init knownlist
+        this.getStat();			// init stats
+        this.getStatus();		// init status
 	}
     
-    public PlayableKnownList getKnownList() { return (PlayableKnownList)super.getKnownList(); }
-    public PlayableStat getStat() { return (PlayableStat)super.getStat(); }
-    public PlayableStatus getStatus() { return (PlayableStatus)super.getStatus(); }
+    public PlayableKnownList getKnownList()
+    {
+    	if(super.getKnownList() == null || !(super.getKnownList() instanceof PlayableKnownList))
+    		this.setKnownList(new PlayableKnownList(this));
+    	return (PlayableKnownList)super.getKnownList();
+    }
+    
+    public PlayableStat getStat()
+    {
+    	if(super.getStat() == null || !(super.getStat() instanceof PlayableStat))
+    		this.setStat(new PlayableStat(this));
+    	return (PlayableStat)super.getStat();
+    }
+    
+    public PlayableStatus getStatus()
+    {
+    	if(super.getStatus() == null || !(super.getStatus() instanceof PlayableStatus))
+    		this.setStatus(new PlayableStatus(this));
+    	return (PlayableStatus)super.getStatus();
+    }
 
     public void doDie(L2Character killer)
     {

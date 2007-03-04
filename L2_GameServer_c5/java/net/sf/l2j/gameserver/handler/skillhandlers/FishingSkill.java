@@ -41,6 +41,8 @@ public class FishingSkill implements ISkillHandler
 		}
 		L2Weapon weaponItem = player.getActiveWeaponItem();
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+		if(weaponInst == null || weaponItem == null)
+			return;
 		int SS = 1;
 		int pen = 0;
 		if (weaponInst != null && weaponInst.getChargedFishshot()) SS = 2;

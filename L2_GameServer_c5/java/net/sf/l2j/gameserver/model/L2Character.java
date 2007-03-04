@@ -188,7 +188,7 @@ public abstract class L2Character extends L2Object
 	public L2Character(int objectId, L2CharTemplate template)
 	{
 		super(objectId);
-		super.setKnownList(new CharKnownList(this));
+		this.getKnownList();
 		
 		// Set its template to the new L2Character
 		_Template = template;
@@ -1546,7 +1546,12 @@ public abstract class L2Character extends L2Object
 	public boolean isInvul(){return _isInvul  || _IsTeleporting;}
 	public boolean isUndead() { return false; }
 	
-	public CharKnownList getKnownList() { return ((CharKnownList)super.getKnownList()); }
+	public CharKnownList getKnownList()
+	{
+		if(super.getKnownList() == null || !(super.getKnownList() instanceof CharKnownList))
+			this.setKnownList(new CharKnownList(this));
+		return ((CharKnownList)super.getKnownList());
+	}
 	
 	public CharStat getStat()
 	{

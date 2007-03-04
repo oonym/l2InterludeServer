@@ -77,9 +77,9 @@ public abstract class L2Summon extends L2PlayableInstance
 	public L2Summon(int objectId, L2NpcTemplate template, L2PcInstance owner)
 	{
 		super(objectId, template);
-        super.setKnownList(new SummonKnownList(this));
-        super.setStat(new SummonStat(this));
-        super.setStatus(new SummonStatus(this));
+        this.getKnownList();	// init knownlist
+        this.getStat();			// init stats
+        this.getStatus();		// init status
         
         _showSummonAnimation = true;
 		_owner = owner;
@@ -88,9 +88,26 @@ public abstract class L2Summon extends L2PlayableInstance
 		setXYZInvisible(owner.getX()+50, owner.getY()+100, owner.getZ()+100);
 	}
 
-    public final SummonKnownList getKnownList() { return (SummonKnownList)super.getKnownList(); }
-    public SummonStat getStat() { return (SummonStat)super.getStat(); }
-    public SummonStatus getStatus() { return (SummonStatus)super.getStatus(); }
+    public final SummonKnownList getKnownList()
+    {
+    	if(super.getKnownList() == null || !(super.getKnownList() instanceof SummonKnownList))
+    		this.setKnownList(new SummonKnownList(this));
+    	return (SummonKnownList)super.getKnownList();
+    }
+    
+    public SummonStat getStat()
+    {
+    	if(super.getStat() == null || !(super.getStat() instanceof SummonStat))
+    		this.setStat(new SummonStat(this));
+    	return (SummonStat)super.getStat();
+    }
+    
+    public SummonStatus getStatus()
+    {
+    	if(super.getStatus() == null || !(super.getStatus() instanceof SummonStatus))
+    		this.setStatus(new SummonStatus(this));
+    	return (SummonStatus)super.getStatus();
+    }
 	
 	public L2CharacterAI getAI() 
     {

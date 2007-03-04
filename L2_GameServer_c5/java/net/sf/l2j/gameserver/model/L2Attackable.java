@@ -273,12 +273,17 @@ public class L2Attackable extends L2NpcInstance
     public L2Attackable(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        super.setKnownList(new AttackableKnownList(this));
+        this.getKnownList(); // init knownlist
         _haveToDrop = true;
         _mustGiveExpSp = true;
     }
 
-    public AttackableKnownList getKnownList() { return (AttackableKnownList)super.getKnownList(); }
+    public AttackableKnownList getKnownList()
+    {
+    	if(super.getKnownList() == null || !(super.getKnownList() instanceof AttackableKnownList))
+    		this.setKnownList(new AttackableKnownList(this));
+    	return (AttackableKnownList)super.getKnownList();
+    }
     
     /**
      * Return the L2Character AI of the L2Attackable and if its null create a new one.<BR><BR>

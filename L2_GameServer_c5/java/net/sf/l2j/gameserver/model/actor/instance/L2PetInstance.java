@@ -196,7 +196,12 @@ public final class L2PetInstance extends L2Summon
         _mountable = L2PetDataTable.isMountable(npcId);
 	}
 	
-    public PetStat getStat() { return (PetStat)super.getStat(); }
+    public PetStat getStat()
+    {
+    	if(super.getStat() == null || !(super.getStat() instanceof PetStat))
+    		this.setStat(new PetStat(this));
+    	return (PetStat)super.getStat();
+    }
 	
     public double getLevelMod() { return (100.0 - 11 + getLevel()) / 100.0; }
     

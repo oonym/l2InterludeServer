@@ -190,9 +190,9 @@ public class L2NpcInstance extends L2Character
         // Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object 
         // and link _calculators to NPC_STD_CALCULATOR
         super(objectId, template);
-        super.setKnownList(new NpcKnownList(this));
-        super.setStat(new NpcStat(this));
-        super.setStatus(new NpcStatus(this));
+        this.getKnownList();	// init knownlist
+        this.getStat();			// init stats
+        this.getStatus();		// init status
         
         if (template == null)
         {
@@ -208,9 +208,26 @@ public class L2NpcInstance extends L2Character
             startRandomAnimation();
     }
 
-    public NpcKnownList getKnownList() { return (NpcKnownList)super.getKnownList(); }
-    public NpcStat getStat() { return (NpcStat)super.getStat(); }
-    public NpcStatus getStatus() { return (NpcStatus)super.getStatus(); }
+    public NpcKnownList getKnownList()
+    {
+    	if(super.getKnownList() == null || !(super.getKnownList() instanceof NpcKnownList))
+    		this.setKnownList(new NpcKnownList(this));
+    	return (NpcKnownList)super.getKnownList();
+    }
+    
+    public NpcStat getStat()
+    {
+    	if(super.getStat() == null || !(super.getStat() instanceof NpcStat))
+    		this.setStat(new NpcStat(this));
+    	return (NpcStat)super.getStat();
+    }
+    
+    public NpcStatus getStatus()
+    {
+    	if(super.getStatus() == null || !(super.getStatus() instanceof NpcStatus))
+    		this.setStatus(new NpcStatus(this));
+    	return (NpcStatus)super.getStatus();
+    }
     
     /**
      * Check if the server allow Random Animation.<BR><BR>

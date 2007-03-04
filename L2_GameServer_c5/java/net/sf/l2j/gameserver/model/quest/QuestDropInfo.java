@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.sf.l2j.gameserver.model.quest;
 
 import java.util.List;

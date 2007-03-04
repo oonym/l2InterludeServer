@@ -65,11 +65,16 @@ public class L2MonsterInstance extends L2Attackable
 	public L2MonsterInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-        super.setKnownList(new MonsterKnownList(this));
+		this.getKnownList();	// init knownlist
         minionList  = new MinionList(this);
 	}	
 
-    public final MonsterKnownList getKnownList() { return (MonsterKnownList)super.getKnownList(); }
+    public final MonsterKnownList getKnownList()
+    {
+    	if(super.getKnownList() == null || !(super.getKnownList() instanceof MonsterKnownList))
+    		this.setKnownList(new MonsterKnownList(this));
+    	return (MonsterKnownList)super.getKnownList();
+    }
 		
 	/**
 	 * Return True if the attacker is not another L2MonsterInstance.<BR><BR>
