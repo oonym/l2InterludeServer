@@ -118,7 +118,7 @@ import net.sf.l2j.gameserver.util.Util;
 public abstract class L2Character extends L2Object
 {
 	protected static final Logger _log = Logger.getLogger(L2Character.class.getName());
-	
+
 	// =========================================================
 	// Data Field
 	private List<L2Character> _AttackByList;
@@ -153,13 +153,13 @@ public abstract class L2Character extends L2Object
 	private double _hpUpdateIncCheck;
 	private double _hpUpdateDecCheck;
 	private double _hpUpdateInterval;
-	
+
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _Calculators;
-	
+
 	/** FastMap(Integer, L2Skill) containing all skills of the L2Character */
 	protected final Map<Integer, L2Skill> _Skills;
-	
+
 	// =========================================================
 	// Constructor
 	/**
@@ -189,15 +189,15 @@ public abstract class L2Character extends L2Object
 	{
 		super(objectId);
 		this.getKnownList();
-		
+
 		// Set its template to the new L2Character
 		_Template = template;
-		
+
 		if (template != null && this instanceof L2NpcInstance)
 		{
 			// Copy the Standard Calcultors of the L2NPCInstance in _calculators
 			_Calculators = NPC_STD_CALCULATOR;
-			
+
 			// Copy the skills of the L2NPCInstance from its template to the L2Character Instance
 			// The skills list can be affected by spell effects so it's necessary to make a copy
 			// to avoid that a spell affecting a L2NPCInstance, affects others L2NPCInstance of the same type too.
@@ -212,17 +212,17 @@ public abstract class L2Character extends L2Object
 		{
 			// Initialize the FastMap _skills to null
 			_Skills = new FastMap<Integer,L2Skill>();
-			
+
 			// If L2Character is a L2PcInstance or a L2Summon, create the basic calculator set
 			_Calculators = new Calculator[Stats.NUM_STATS];
 			Formulas.getInstance().addFuncsToNewCharacter(this);
 		}
-		
-		_hpUpdateInterval = getMaxHp()/352; // MAX_HP div MAX_HP_BAR_PX
+
+		_hpUpdateInterval = getMaxHp()/352.0; // MAX_HP div MAX_HP_BAR_PX
 		_hpUpdateIncCheck = getMaxHp();
 		_hpUpdateDecCheck = getMaxHp()-_hpUpdateInterval;
 	}
-	
+
 	// =========================================================
 	// Event - Public
 	/**
@@ -236,19 +236,19 @@ public abstract class L2Character extends L2Object
 	{
 		decayMe();
 	}
-	
+
 	public void onTeleported()
 	{
 		setIsTeleporting(false);
-		
+
 		spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
-		
+
 		if (_IsPendingRevive) doRevive();
-		
+
 		// Modify the position of the pet if necessary
 		if(getPet() != null) getPet().teleToLocation(getPosition().getX() + Rnd.get(-100,100), getPosition().getY() + Rnd.get(-100,100), getPosition().getZ(), false);
 	}
-	
+
 	// =========================================================
 	// Method - Public
 	/**
@@ -260,7 +260,7 @@ public abstract class L2Character extends L2Object
 		if (player == null || player == this || getAttackByList() == null || getAttackByList().contains(player)) return;
 		getAttackByList().add(player);
 	}
-	
+
 	/**
 	 * Send a packet to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character.<BR><BR>
 	 *
@@ -272,15 +272,15 @@ public abstract class L2Character extends L2Object
 	public final void broadcastPacket(ServerBasePacket mov)
 	{
 		sendPacket(mov);
-		
+
 		if (getKnownList().getKnownPlayers() == null) return;
-		
+
 		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
-		
+
 		if (knownPlayers == null) return;
-		
+
 		if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
-		
+
         try {
         	for (L2PcInstance player : knownPlayers)
         	{
@@ -290,16 +290,16 @@ public abstract class L2Character extends L2Object
         	}
         } catch (Exception e) { } // this npe catch might not be necessary any more
 	}
-	
+
 	/**
-	 * Returns true if status update should be done, false if not 
+	 * Returns true if status update should be done, false if not
 	 * @return boolean
 	 */
 	private boolean needStatusUpdate()
 	{
 		if (!(this instanceof L2MonsterInstance))
 			return true;
-		
+
 		double currentHp = getCurrentHp();
 
 	    if (currentHp <= 0.00 || getMaxHp() < 352)
@@ -322,10 +322,10 @@ public abstract class L2Character extends L2Object
 	        _hpUpdateDecCheck += _hpUpdateInterval;
 	        _hpUpdateIncCheck += _hpUpdateInterval;
 	    }
-	    
+
 	    return needUpdate;
 	}
-	
+
 	/**
 	 * Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform.<BR><BR>
 	 *
@@ -343,24 +343,24 @@ public abstract class L2Character extends L2Object
 	public void broadcastStatusUpdate()
 	{
 		if (getStatus().getStatusListener() == null || getStatus().getStatusListener().isEmpty()) return;
-		
+
 		if (!needStatusUpdate())
 			return;
-		
+
 		// Create the Server->Client packet StatusUpdate with current HP and MP
 		StatusUpdate su = new StatusUpdate(getObjectId());
 		su.addAttribute(StatusUpdate.CUR_HP, (int)getCurrentHp());
 		su.addAttribute(StatusUpdate.CUR_MP, (int)getCurrentMp());
-		
+
 		// Go through the StatusListener
 		// Send the Server->Client packet StatusUpdate with current HP and MP
-		
+
 		Set<L2Character> listeners = getStatus().getStatusListener();
 		if (listeners != null)
 			for (L2Character temp : listeners)
 				temp.sendPacket(su);
 	}
-	
+
 	/**
 	 * Not Implemented.<BR><BR>
 	 *
@@ -371,7 +371,7 @@ public abstract class L2Character extends L2Object
 	{
 		// default implementation
 	}
-	
+
 	/**
 	 * Teleport a L2Character and its pet if necessary.<BR><BR>
 	 *
@@ -388,39 +388,39 @@ public abstract class L2Character extends L2Object
 		stopMove(null, false);
 		this.abortAttack();
 		this.abortCast();
-		
+
 		setIsTeleporting(true);
 		setTarget(null);
-		
+
         if (Config.RESPAWN_RANDOM_ENABLED && allowRandomOffset)
         {
             x += Rnd.get(-Config.RESPAWN_RANDOM_MAX_OFFSET, Config.RESPAWN_RANDOM_MAX_OFFSET);
             y += Rnd.get(-Config.RESPAWN_RANDOM_MAX_OFFSET, Config.RESPAWN_RANDOM_MAX_OFFSET);
         }
-        
+
         z += 5;
-        
-		if (Config.DEBUG) 
+
+		if (Config.DEBUG)
             _log.fine("Teleporting to: " + x + ", " + y + ", " + z);
-		
+
 		// Send a Server->Client packet TeleportToLocationt to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 		broadcastPacket(new TeleportToLocation(this, x, y, z));
-		
+
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
 		getPosition().setXYZ(x, y, z);
-		
+
 		decayMe();
-		
-		if (!(this instanceof L2PcInstance)) 
+
+		if (!(this instanceof L2PcInstance))
             onTeleported();
 	}
-	
-	public void teleToLocation(int x, int y, int z) { teleToLocation(x, y, z, false); } 
-	
+
+	public void teleToLocation(int x, int y, int z) { teleToLocation(x, y, z, false); }
+
 	public void teleToLocation(Location loc, boolean allowRandomOffset) { teleToLocation(loc.getX(), loc.getY(), loc.getZ(), allowRandomOffset); }
-	
+
 	public void teleToLocation(TeleportWhereType teleportWhere) { teleToLocation(MapRegionTable.getInstance().getTeleToLocation(this, teleportWhere), true); }
-	
+
 	// =========================================================
 	// Method - Private
 	/**
@@ -440,24 +440,24 @@ public abstract class L2Character extends L2Object
 	 */
 	protected void doAttack(L2Character target)
 	{
-		if (Config.DEBUG) 
+		if (Config.DEBUG)
             _log.fine(this.getName()+" doAttack: target="+target);
-		
-		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead()) 
-                || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) 
+
+		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead())
+                || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath())
                 || !getKnownList().knowsObject(target)
                 || (this instanceof L2PcInstance && isDead()))
 		{
 			// If L2PcInstance is dead or the target is dead, the action is stoped
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			
+
 			sendPacket(new ActionFailed());
 			return;
 		}
-		
-		if (isAttackingDisabled()) 
+
+		if (isAttackingDisabled())
             return;
-        
+
 		if (this instanceof L2PcInstance) {
 	        if (((L2PcInstance)this).inObserverMode())
 	        {
@@ -465,7 +465,7 @@ public abstract class L2Character extends L2Object
 	            sendPacket(new ActionFailed());
 	            return;
 	        }
-	
+
 	        if (target instanceof L2PcInstance)
 	        {
 		        if (((L2PcInstance)target).isCursedWeaponEquiped() && ((L2PcInstance)this).getLevel()<=20){
@@ -473,7 +473,7 @@ public abstract class L2Character extends L2Object
 		        	sendPacket(new ActionFailed());
 		        	return;
 		        }
-		        
+
 		        if (((L2PcInstance)this).isCursedWeaponEquiped() && ((L2PcInstance)target).getLevel()<=20){
 		        	((L2PcInstance)this).sendMessage("Cant attack a newbie player with Zarike");
 		        	sendPacket(new ActionFailed());
@@ -481,13 +481,13 @@ public abstract class L2Character extends L2Object
 		        }
 	        }
 		}
-        
+
 		// Get the active weapon instance (always equiped in the right hand)
 		L2ItemInstance weaponInst = getActiveWeaponInstance();
-		
+
 		// Get the active weapon item corresponding to the active weapon instance (always equiped in the right hand)
 		L2Weapon weaponItem = getActiveWeaponItem();
-		
+
 		if (weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD)
 		{
 			//	You can't make an attack with a fishing pole.
@@ -506,7 +506,7 @@ public abstract class L2Character extends L2Object
             sendPacket(new ActionFailed());
             return;
         }
-        
+
 		// Check for a bow
 		if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.BOW))
 		{
@@ -518,21 +518,21 @@ public abstract class L2Character extends L2Object
 				{
 				    // Verify if L2PcInstance owns enough MP
 					int saMpConsume = (int)getStat().calcStat(Stats.MP_CONSUME, 0, null, null);
-					int mpConsume = saMpConsume == 0 ? weaponItem.getMpConsume() : saMpConsume; 
+					int mpConsume = saMpConsume == 0 ? weaponItem.getMpConsume() : saMpConsume;
 
 				    if (getCurrentMp() < mpConsume)
 				    {
 				        // If L2PcInstance doesn't have enough MP, stop the attack
-				        
+
 				        ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), 1000);
-				        
+
 				        sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_MP));
 				        sendPacket(new ActionFailed());
 				        return;
 				    }
 				    // If L2PcInstance have enough MP, the bow consummes it
 				    getStatus().reduceMp(mpConsume);
-				    
+
 					// Set the period of bow non re-use
 					_disableBowAttackEndTime = 5 * GameTimeController.TICKS_PER_SECOND + GameTimeController.getGameTicks();
 				}
@@ -540,17 +540,17 @@ public abstract class L2Character extends L2Object
 				{
 					// Cancel the action because the bow can't be re-use at this moment
 					ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), 1000);
-					
+
 					sendPacket(new ActionFailed());
 					return;
 				}
-				
+
 				// Equip arrows needed in left hand and send a Server->Client packet ItemList to the L2PcINstance then return True
 				if (!checkAndEquipArrows())
 				{
 					// Cancel the action because the L2PcInstance have no arrow
 					getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-					
+
 					sendPacket(new ActionFailed());
 					sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ARROWS));
 					return;
@@ -558,27 +558,27 @@ public abstract class L2Character extends L2Object
 			}
 			else if (this instanceof L2NpcInstance)
 			{
-				if (_disableBowAttackEndTime > GameTimeController.getGameTicks()) 
+				if (_disableBowAttackEndTime > GameTimeController.getGameTicks())
 				    return;
 			}
 		}
-		
+
 		// Add the L2PcInstance to _knownObjects and _knownPlayer of the target
 		target.getKnownList().addKnownObject(this);
-		
+
 		// Reduce the current CP if TIREDNESS configuration is activated
-		if (Config.ALT_GAME_TIREDNESS) 
+		if (Config.ALT_GAME_TIREDNESS)
             setCurrentCp(getCurrentCp() - 10);
-		
+
         // Recharge any active auto soulshot tasks for player (or player's summon if one exists).
-		if (this instanceof L2PcInstance) 
+		if (this instanceof L2PcInstance)
             ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
         else if (this instanceof L2Summon)
             ((L2Summon)this).getOwner().rechargeAutoSoulShot(true, false, true);
-		
+
         // Verify if soulshots are charged.
         boolean wasSSCharged;
-        
+
         if (this instanceof L2Summon && !(this instanceof L2PetInstance))
             wasSSCharged = (((L2Summon)this).getChargedSoulShot() != L2ItemInstance.CHARGED_NONE);
         else
@@ -589,20 +589,20 @@ public abstract class L2Character extends L2Object
 		_attackEndTime = GameTimeController.getGameTicks();
 		_attackEndTime += (sAtk / GameTimeController.MILLIS_IN_TICK);
 		_attackEndTime -= 1;
-        
+
         int ssGrade = 0;
-        
+
         if (weaponItem != null)
             ssGrade = weaponItem.getCrystalType();
-        
+
         // Create a Server->Client packet Attack
 		Attack attack = new Attack(this, wasSSCharged, ssGrade);
-		
+
 		boolean hitted;
-		
+
 		// Set the Attacking Body part to CHEST
 		setAttackingBodypart();
-		
+
 		// Select the type of attack to start
 		if (weaponItem == null)
 			hitted = doAttackHitSimple(attack, target);
@@ -617,15 +617,15 @@ public abstract class L2Character extends L2Object
 
         // Flag the attacker if it's a L2PcInstance outside a PvP area
         L2PcInstance player = null;
-        
+
         if (this instanceof L2PcInstance)
             player = (L2PcInstance)this;
         else if (this instanceof L2Summon)
             player = ((L2Summon)this).getOwner();
-        
-        if (player != null) 
+
+        if (player != null)
             player.updatePvPStatus(target);
-		
+
 		// Check if hit isn't missed
 		if (!hitted)
 			// Abort the attack of the L2Character and send Server->Client ActionFailed packet
@@ -633,11 +633,11 @@ public abstract class L2Character extends L2Object
         else
         {
             /* ADDED BY nexus - 2006-08-17
-             * 
+             *
              * As soon as we know that our hit landed, we must discharge any active soulshots.
              * This must be done so to avoid unwanted soulshot consumption.
              */
-            
+
             // If we didn't miss the hit, discharge the shoulshots, if any
             if (this instanceof L2Summon && !(this instanceof L2PetInstance))
                 ((L2Summon)this).setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
@@ -645,7 +645,7 @@ public abstract class L2Character extends L2Object
                 if (weaponInst != null)
                     weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 
-            
+
         	if (player != null)
         	{
         		if (player.isCursedWeaponEquiped())
@@ -661,19 +661,19 @@ public abstract class L2Character extends L2Object
         		}
         	}
         }
-		
+
 		// If the Server->Client packet Attack contains at least 1 hit, send the Server->Client packet Attack
 		// to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
-		if (attack.hasHits()) 
+		if (attack.hasHits())
 			broadcastPacket(attack);
-		
+
 		// Get the Attack Reuse Delay of the L2Weapon
 		int reuse = (weaponItem == null) ? 0 : weaponItem.getAttackReuseDelay();
-		
+
 		// Notify AI with EVT_READY_TO_ACT
 		ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), sAtk+reuse);
 	}
-	
+
 	/**
 	 * Launch a Bow attack.<BR><BR>
 	 *
@@ -700,63 +700,63 @@ public abstract class L2Character extends L2Object
 		int damage1 = 0;
 		boolean shld1 = false;
 		boolean crit1 = false;
-		
+
 		// Calculate if hit is missed or not
 		boolean miss1 = Formulas.getInstance().calcHitMiss(this, target);
-		
+
 		// Consumme arrows
 		reduceArrowCount();
-		
+
 		_move = null;
-		
+
 		// Check if hit isn't missed
 		if (!miss1)
 		{
 			// Calculate if shield defense is efficient
 			shld1 = Formulas.getInstance().calcShldUse(this, target);
-			
+
 			// Calculate if hit is critical
 			crit1 = Formulas.getInstance().calcCrit(getStat().getCriticalHit(target, null));
-			
+
 			// Calculate physical damages
 			damage1 = (int)Formulas.getInstance().calcPhysDam(this, target, null, shld1, crit1, false, attack._soulshot);
 		}
-		
+
 		// Calculate the bow re-use delay
 		int reuse;
-		
+
 		L2Weapon bow = getActiveWeaponItem();
-		
+
 		if (bow == null)
 			reuse = 1500;
 		else
 			reuse = bow.getAttackReuseDelay();
 		reuse *= getStat().getReuseModifier(target);
-		
+
 		// Check if the L2Character is a L2PcInstance
 		if (this instanceof L2PcInstance)
 		{
 			// Send a system message
 			sendPacket(new SystemMessage(SystemMessage.GETTING_READY_TO_SHOOT_AN_ARROW));
-			
+
 			// Send a Server->Client packet SetupGauge
 			SetupGauge sg = new SetupGauge(SetupGauge.RED, sAtk+reuse);
 			sendPacket(sg);
 		}
-		
+
 		// Create a new hit task with Medium priority
 		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), sAtk);
-		
+
 		// Calculate and set the disable delay of the bow in function of the Attack Speed
 		_disableBowAttackEndTime = (sAtk+reuse)/GameTimeController.MILLIS_IN_TICK + GameTimeController.getGameTicks();
-		
+
 		// Add this hit to the Server-Client packet Attack
 		attack.addHit(target, damage1, miss1, crit1, shld1);
-		
+
 		// Return true if hit isn't missed
 		return !miss1;
 	}
-	
+
 	/**
 	 * Launch a Dual attack.<BR><BR>
 	 *
@@ -782,53 +782,53 @@ public abstract class L2Character extends L2Object
 		boolean shld2 = false;
 		boolean crit1 = false;
 		boolean crit2 = false;
-		
+
 		// Calculate if hits are missed or not
 		boolean miss1 = Formulas.getInstance().calcHitMiss(this, target);
 		boolean miss2 = Formulas.getInstance().calcHitMiss(this, target);
-		
+
 		// Check if hit 1 isn't missed
 		if (!miss1)
 		{
 			// Calculate if shield defense is efficient against hit 1
 			shld1 = Formulas.getInstance().calcShldUse(this, target);
-			
+
 			// Calculate if hit 1 is critical
 			crit1 = Formulas.getInstance().calcCrit(getStat().getCriticalHit(target, null));
-			
+
 			// Calculate physical damages of hit 1
 			damage1 = (int)Formulas.getInstance().calcPhysDam(this, target, null, shld1, crit1, true, attack._soulshot);
 			damage1 /= 2;
 		}
-		
+
 		// Check if hit 2 isn't missed
 		if (!miss2)
 		{
 			// Calculate if shield defense is efficient against hit 2
 			shld2 = Formulas.getInstance().calcShldUse(this, target);
-			
+
 			// Calculate if hit 2 is critical
 			crit2 = Formulas.getInstance().calcCrit(getStat().getCriticalHit(target, null));
-			
+
 			// Calculate physical damages of hit 2
 			damage2 = (int)Formulas.getInstance().calcPhysDam(this, target, null, shld2, crit2, true, attack._soulshot);
 			damage2 /= 2;
 		}
-		
+
 		// Create a new hit task with Medium priority for hit 1
 		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), 650);
-		
+
 		// Create a new hit task with Medium priority for hit 2 with a higher delay
 		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage2, crit2, miss2, attack._soulshot, shld2), 1250);
-		
+
 		// Add those hits to the Server-Client packet Attack
 		attack.addHit(target, damage1, miss1, crit1, shld1);
 		attack.addHit(target, damage2, miss2, crit2, shld2);
-		
+
 		// Return true if hit 1 or hit 2 isn't missed
 		return (!miss1 || !miss2);
 	}
-	
+
 	/**
 	 * Launch a Pole attack.<BR><BR>
 	 *
@@ -845,20 +845,20 @@ public abstract class L2Character extends L2Object
 	private boolean doAttackHitByPole(Attack attack)
 	{
 		boolean hitted = false;
-		
+
 		double angleChar, angleTarget;
 		int maxRadius = (int)getStat().calcStat(Stats.POWER_ATTACK_RANGE, 66, null, null);
 		int maxAngleDiff = (int)getStat().calcStat(Stats.POWER_ATTACK_ANGLE, 120, null, null);
-		
-		if(getTarget() == null) 
+
+		if(getTarget() == null)
             return false;
-		
+
         if (Config.DEBUG)
         {
             _log.info("doAttackHitByPole: Max radius = " + maxRadius);
             _log.info("doAttackHitByPole: Max angle = " + maxAngleDiff);
         }
-          
+
 		// o1 x: 83420 y: 148158 (Giran)
 		// o2 x: 83379 y: 148081 (Giran)
 		// dx = -41
@@ -879,23 +879,23 @@ public abstract class L2Character extends L2Object
 		// In the diagram above
 		// o1 has a heading of -80 (280) degree from horizontal (facing north east)
 		// Degree of o2 in respect to 01 = -40 (320) degree
-		
+
 		// ===========================================================
 		// Make sure that char is facing selected target
 		angleTarget = Util.calculateAngleFrom(this, getTarget());
 		this.setHeading((int)((angleTarget / 9.0) * 1610.0)); // = this.setHeading((int)((angleTarget / 360.0) * 64400.0));
-		
+
 		// Update char's heading degree
 		angleChar = Util.convertHeadingToDegree(this.getHeading());
 		double attackpercent = 85;
 		int attackcountmax = (int)getStat().calcStat(Stats.ATTACK_COUNT_MAX, 3, null, null);
 		int attackcount = 0;
-  
-		
-		if (angleChar <= 0) 
+
+
+		if (angleChar <= 0)
             angleChar += 360;
 		// ===========================================================
-		
+
 		L2Character target;
 		for (L2Object obj : getKnownList().getKnownObjects().values())
 		{
@@ -905,9 +905,9 @@ public abstract class L2Character extends L2Object
 				if (obj instanceof L2PetInstance &&
 						this instanceof L2PcInstance &&
 						((L2PetInstance)obj).getOwner() == ((L2PcInstance)this)) continue;
-				
+
 				if (!Util.checkIfInRange(maxRadius, this, obj, false)) continue;
-                
+
 				//otherwise hit too high/low. 650 because mob z coord sometimes wrong on hills
                 if(Math.abs(obj.getZ() - this.getZ()) > 650) continue;
 				angleTarget = Util.calculateAngleFrom(this, obj);
@@ -916,9 +916,9 @@ public abstract class L2Character extends L2Object
 						Math.abs((angleChar + 360) - angleTarget) > maxAngleDiff &&     // Example: char is at 1 degree and target is at 359 degree
 						Math.abs(angleChar - (angleTarget + 360)) > maxAngleDiff        // Example: target is at 1 degree and char is at 359 degree
 				) continue;
-				
+
 				target = (L2Character) obj;
-				
+
 				// Launch a simple attack against the L2Character targeted
 				if(!target.isAlikeDead())
 				{
@@ -927,19 +927,19 @@ public abstract class L2Character extends L2Object
 					{
 						if (target == getAI().getAttackTarget() || target.isAutoAttackable(this))
 						{
-							
+
 							hitted |= doAttackHitSimple(attack, target, attackpercent);
 							attackpercent /= 1.15;
-						}	
+						}
 					}
 				}
 			}
 		}
-        
+
 		// Return true if one hit isn't missed
 		return hitted;
 	}
-	
+
 	/**
 	 * Launch a simple attack.<BR><BR>
 	 *
@@ -961,42 +961,42 @@ public abstract class L2Character extends L2Object
 	{
 		return doAttackHitSimple(attack, target, 100);
 	}
-    
+
 	private boolean doAttackHitSimple(Attack attack, L2Character target, double attackpercent)
 	{
 		int damage1 = 0;
 		boolean shld1 = false;
 		boolean crit1 = false;
-		
+
 		// Calculate if hit is missed or not
 		boolean miss1 = Formulas.getInstance().calcHitMiss(this, target);
-		
+
 		// Check if hit isn't missed
 		if (!miss1)
 		{
 			// Calculate if shield defense is efficient
 			shld1 = Formulas.getInstance().calcShldUse(this, target);
-			
+
 			// Calculate if hit is critical
 			crit1 = Formulas.getInstance().calcCrit(getStat().getCriticalHit(target, null));
-			
+
 			// Calculate physical damages
 			damage1 = (int)Formulas.getInstance().calcPhysDam(this, target, null, shld1, crit1, false, attack._soulshot);
-            
+
 			if (attackpercent != 100)
 				damage1 = (int)(damage1*attackpercent/100);
 		}
-		
+
 		// Create a new hit task with Medium priority
 		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), 980);
-		
+
 		// Add this hit to the Server-Client packet Attack
 		attack.addHit(target, damage1, miss1, crit1, shld1);
-		
+
 		// Return true if hit isn't missed
 		return !miss1;
 	}
-	
+
 	/**
 	 * Manage the casting task (casting and interrupt time, re-use delay...) and display the casting bar and animation on client.<BR><BR>
 	 *
@@ -1019,19 +1019,19 @@ public abstract class L2Character extends L2Object
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
-		
+
 		if (isSkillDisabled(skill.getId()))
 		{
-			if (this instanceof L2PcInstance) 
+			if (this instanceof L2PcInstance)
             {
 				SystemMessage sm = new SystemMessage(SystemMessage.S1_PREPARED_FOR_REUSE);
 				sm.addSkillName(skill.getId());
 				sendPacket(sm);
 			}
-            
+
 			return;
 		}
-		
+
 		// Check if the skill is a magic spell and if the L2Character is not muted
 		if (skill.isMagic() && isMuted() && !skill.isPotion())
 		{
@@ -1048,36 +1048,36 @@ public abstract class L2Character extends L2Object
         //Recharge AutoSoulShot
         if (skill.useSoulShot())
         {
-            if (this instanceof L2PcInstance) 
+            if (this instanceof L2PcInstance)
                 ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
             else if (this instanceof L2Summon)
                 ((L2Summon)this).getOwner().rechargeAutoSoulShot(true, false, true);
         }
         else if (skill.useSpiritShot())
         {
-            if (this instanceof L2PcInstance) 
+            if (this instanceof L2PcInstance)
                 ((L2PcInstance)this).rechargeAutoSoulShot(false, true, false);
             else if (this instanceof L2Summon)
                 ((L2Summon)this).getOwner().rechargeAutoSoulShot(false, true, true);
         }
         //else if (skill.useFishShot())
         //{
-        //	if (this instanceof L2PcInstance) 
+        //	if (this instanceof L2PcInstance)
         //	  ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
         //}
-        
+
 		// Get all possible targets of the skill in a table in function of the skill target type
 		L2Object[] targets = skill.getTargetList(this);
-        
+
 		if (targets == null || targets.length == 0)
 		{
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
-		
+
 		// Set the target of the skill in function of Skill Type and Target Type
 		L2Character target = null;
-        
+
 		if(     skill.getSkillType() == SkillType.BUFF ||
 				skill.getSkillType() == SkillType.HEAL ||
 				skill.getSkillType() == SkillType.COMBATPOINTHEAL ||
@@ -1087,16 +1087,16 @@ public abstract class L2Character extends L2Object
 				skill.getTargetType() == L2Skill.SkillTargetType.TARGET_SELF ||
 				skill.getTargetType() == L2Skill.SkillTargetType.TARGET_PET ||
 				skill.getTargetType() == L2Skill.SkillTargetType.TARGET_PARTY ||
-				skill.getTargetType() == L2Skill.SkillTargetType.TARGET_CLAN || 
+				skill.getTargetType() == L2Skill.SkillTargetType.TARGET_CLAN ||
 				skill.getTargetType() == L2Skill.SkillTargetType.TARGET_ALLY)
 		{
 			target = (L2Character) targets[0];
-			
+
 			if (this instanceof L2PcInstance && target instanceof L2PcInstance && target.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
 			{
 				if(skill.getSkillType() == SkillType.BUFF || skill.getSkillType() == SkillType.HOT || skill.getSkillType() == SkillType.HEAL || skill.getSkillType() == SkillType.HEAL_PERCENT || skill.getSkillType() == SkillType.MANAHEAL || skill.getSkillType() == SkillType.MANAHEAL_PERCENT || skill.getSkillType() == SkillType.BALANCE_LIFE)
 					target.setLastBuffer(this);
-				
+
 				if (((L2PcInstance)this).isInParty() && skill.getTargetType() == L2Skill.SkillTargetType.TARGET_PARTY)
 				{
 					for (L2PcInstance member : ((L2PcInstance)this).getParty().getPartyMembers())
@@ -1105,50 +1105,50 @@ public abstract class L2Character extends L2Object
 			}
 		} else
 			target = (L2Character) getTarget();
-		
+
 		// AURA skills should always be using caster as target
 		if (skill.getTargetType() == SkillTargetType.TARGET_AURA)
 			target = this;
-		
+
 		if (target == null)
 		{
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
-		
+
         setAttackingChar(this);
         setAttackingCharSkill(skill);
-        
+
 		// Get the Identifier of the skill
 		int magicId = skill.getId();
-		
+
 		// Get the Display Identifier for a skill that client can't display
 		int displayId = skill.getDisplayId();
-		
+
 		// Get the level of the skill
 		int level = getSkillLevel(magicId);
-        
-		if (level < 1) 
+
+		if (level < 1)
             level = 1;
-		
+
 		// Get the casting time of the skill (base)
 		int skillTime = skill.getSkillTime();
-		
+
 		// Get the delay under wich the cast can be aborted (base)
 		int skillInterruptTime = skill.getSkillInterruptTime();
-		
+
 		// Calculate the casting time of the skill (base + modifier of MAtkSpd)
 		skillTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillTime);
-		
+
 		// Calculate the Interrupt Time of the skill (base + modifier) if the skill is a spell else 0
 		if (skill.isMagic())
 			skillInterruptTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillInterruptTime);
 		else
 			skillInterruptTime = 0;
-		
+
 		// Calculate altered Cast Speed due to BSpS/SpS
 		L2ItemInstance weaponInst = this.getActiveWeaponInstance();
-        
+
 		if ((weaponInst != null)&&(skill.isMagic())&&((skill.getTargetType())!=(SkillTargetType.TARGET_SELF))) {
 			if ((weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 					|| (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT))
@@ -1156,7 +1156,7 @@ public abstract class L2Character extends L2Object
 				//Only takes 70% of the time to cast a BSpS/SpS cast
 				skillTime = (int)(0.70 * skillTime);
 				skillInterruptTime = (int)(0.70 * skillInterruptTime);
-				
+
 				//Because the following are magic skills that do not actively 'eat' BSpS/SpS,
 				//I must 'eat' them here so players don't take advantage of infinite speed increase
 				if ((skill.getSkillType() == SkillType.BUFF)||
@@ -1175,33 +1175,33 @@ public abstract class L2Character extends L2Object
 				}
 			}
 		}
-		
+
 		// Set the _castEndTime and _castInterruptTim
 		_castEndTime = 10 + GameTimeController.getGameTicks() + skillTime / GameTimeController.MILLIS_IN_TICK;
 		_castInterruptTime = GameTimeController.getGameTicks() + skillInterruptTime / GameTimeController.MILLIS_IN_TICK;
-		
+
 		// Init the reuse time of the skill
 		int reuseDelay = (int)(skill.getReuseDelay() * getStat().getMReuseRate(skill));
         if (skill.isMagic())
             reuseDelay *= 333.0 / getMAtkSpd();
         else
             reuseDelay *= 333.0 / getPAtkSpd();
-		
+
 		// Send a Server->Client packet MagicSkillUser with target, displayId, level, skillTime, reuseDelay
 		// to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 		broadcastPacket(new MagicSkillUser(this, target, displayId, level, skillTime, reuseDelay));
-		
+
 		// Send a system message USE_S1 to the L2Character
-		if (this instanceof L2PcInstance && magicId != 1312) 
+		if (this instanceof L2PcInstance && magicId != 1312)
         {
 			SystemMessage sm = new SystemMessage(SystemMessage.USE_S1);
 			sm.addSkillName(magicId);
 			sendPacket(sm);
 		}
-		
+
 		// Skill reuse check
 		if (reuseDelay > 30000) addTimeStamp(skill.getId(),reuseDelay);
-		
+
 		// Check if this skill consume mp on start casting
 		int initmpcons = getStat().getMpInitialConsume(skill);
 		if (initmpcons > 0)
@@ -1211,13 +1211,13 @@ public abstract class L2Character extends L2Object
 			su.addAttribute(StatusUpdate.CUR_MP, (int) getCurrentMp());
 			sendPacket(su);
 		}
-		
+
 		// Disable the skill during the re-use delay and create a task EnableSkill with Medium priority to enable it at the end of the re-use delay
 		if (reuseDelay > 10)
 		{
 			disableSkill(skill.getId(), reuseDelay);
 		}
-		
+
 		// launch the magic in skillTime milliseconds
 		if (skillTime > 50)
 		{
@@ -1227,17 +1227,17 @@ public abstract class L2Character extends L2Object
 				SetupGauge sg = new SetupGauge(SetupGauge.BLUE, skillTime);
 				sendPacket(sg);
 			}
-			
+
 			// Disable all skills during the casting time and create a task EnableAllSkills with Medium priority to enable all skills at the end of the cating time
 			disableAllSkills();
 			ThreadPoolManager.getInstance().scheduleAi(new EnableAllSkills(skill), skillTime);
-			
+
 			if (_skillCast != null)
 			{
 				_skillCast.cancel(true);
 				_skillCast = null;
 			}
-			
+
 			// Create a task MagicUseTask with Medium priority to launch the MagicSkill at the end of the casting time
 			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill), skillTime);
 		}
@@ -1249,7 +1249,7 @@ public abstract class L2Character extends L2Object
 
 	/**
 	 * Index according to skill id the current timestamp of use.<br><br>
-	 * 
+	 *
 	 * @param skill id
 	 * @param reuse delay
 	 * <BR><B>Overriden in :</B>  (L2PcInstance)
@@ -1258,7 +1258,7 @@ public abstract class L2Character extends L2Object
 
 	/**
 	 * Index according to skill id the current timestamp of use.<br><br>
-	 * 
+	 *
 	 * @param skill id
 	 * <BR><B>Overriden in :</B>  (L2PcInstance)
 	 */
@@ -1287,22 +1287,22 @@ public abstract class L2Character extends L2Object
 	{
 		// Set target to null and cancel Attack or Cast
 		setTarget(null);
-		
+
 		// Stop movement
 		stopMove(null);
-		
+
 		// Stop HP/MP/CP Regeneration task
 		getStatus().stopHpMpRegeneration();
-		
+
 		// Stop all active skills effects in progress on the L2Character
 		stopAllEffects();
-		
+
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 		broadcastStatusUpdate();
-		
+
 		// Notify L2Character AI
 		getAI().notifyEvent(CtrlEvent.EVT_DEAD, null);
-		
+
 		if (killer != null)
 		{
 			// Notify Quest of character's death
@@ -1316,29 +1316,29 @@ public abstract class L2Character extends L2Object
 		}
 		getAttackByList().clear();
 	}
-	
+
 	/** Sets HP, MP and CP and revives the L2Character. */
 	public void doRevive()
 	{
 		if (!isTeleporting())
 		{
 			setIsPendingRevive(false);
-			
+
 			_Status.setCurrentCp(getMaxCp() * Config.RESPAWN_RESTORE_CP);
 			_Status.setCurrentHp(getMaxHp() * Config.RESPAWN_RESTORE_HP);
 			//_Status.setCurrentMp(getMaxMp() * Config.RESPAWN_RESTORE_MP);
-			
-			// Start broadcast status 
-			broadcastPacket(new SocialAction(getObjectId(), 15)); 
+
+			// Start broadcast status
+			broadcastPacket(new SocialAction(getObjectId(), 15));
 			broadcastPacket(new Revive(this));
 		}
 		else
 			setIsPendingRevive(true);
 	}
-	
+
 	/** Revives the L2Character using skill. */
 	public void doRevive(double revivePower) { doRevive(); }
-	
+
 	/**
 	 * Check if the active L2Skill can be casted.<BR><BR>
 	 *
@@ -1354,21 +1354,21 @@ public abstract class L2Character extends L2Object
 	{
 		if (skill == null || isDead())
 			return;
-		
+
 		// Check if the L2Character can cast
 		if (isAllSkillsDisabled())
 		{
 			// must be checked by caller
 			return;
 		}
-		
+
 		// Ignore the passive skill request. why does the client send it anyway ??
 		if (skill.isPassive())
 			return;
-		
+
 		// Get the target for the skill
 		L2Object target = null;
-        
+
 		switch (skill.getTargetType())
 		{
 			case TARGET_AURA:    // AURA, SELF should be cast even if no target has been found
@@ -1381,17 +1381,17 @@ public abstract class L2Character extends L2Object
 			    target = skill.getFirstOfTargetList(this);
 			    break;
 		}
-		
+
 		// Notify the AI with AI_INTENTION_CAST and target
 		getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
-        
+
 	}
-	
-    
+
+
 	// =========================================================
 	// Property - Public
-	/** 
-     * Return the L2CharacterAI of the L2Character and if its null create a new one. 
+	/**
+     * Return the L2CharacterAI of the L2Character and if its null create a new one.
      */
 	public L2CharacterAI getAI()
 	{
@@ -1402,35 +1402,35 @@ public abstract class L2Character extends L2Object
 				if (_ai == null) _ai = new L2CharacterAI(new AIAccessor());
 			}
 		}
-		
+
 		return _ai;
 	}
-	
-    
+
+
 	public void setAI(L2CharacterAI newAI)
 	{
-        L2CharacterAI oldAI = getAI(); 
+        L2CharacterAI oldAI = getAI();
         if(oldAI != null && oldAI != newAI && oldAI instanceof L2AttackableAI)
             ((L2AttackableAI)oldAI).stopAITask();
-        _ai = newAI; 
+        _ai = newAI;
     }
-	
+
 	/** Return True if the L2Character has a L2CharacterAI. */
-	public boolean hasAI() { return _ai != null; }	
-	
+	public boolean hasAI() { return _ai != null; }
+
 	/** Return True if the L2Character is RaidBoss or his minion. */
 	public boolean isRaid()
 	{
-		return false; 
+		return false;
 	}
-	
+
 	/** Return a list of L2Character that attacked. */
 	public final List<L2Character> getAttackByList ()
 	{
 		if (_AttackByList == null) _AttackByList = new FastList<L2Character>();
 		return _AttackByList;
 	}
-	
+
 	public final L2Character getAttackingChar() { return _AttackingChar; }
 	/**
 	 * Set _attackingChar to the L2Character that attacks this one.<BR><BR>
@@ -1442,85 +1442,85 @@ public abstract class L2Character extends L2Object
 		_AttackingChar = player;
 		addAttackerToAttackByList(player);
 	}
-	
+
 	public final L2Skill getAttackingCharSkill() { return _AttackingCharSkill; }
 	/**
 	 * Set _attackingCharSkill to the L2Skill used against this L2Character.<BR><BR>
 	 * @param skill The L2Skill used against this L2Character
 	 */
 	public void setAttackingCharSkill (L2Skill skill) { _AttackingCharSkill = skill; }
-	
+
 	public final boolean isAffraid() { return _IsAffraid; }
 	public final void setIsAffraid(boolean value) { _IsAffraid = value; }
-	
+
 	/** Return True if the L2Character is dead or use fake death.  */
 	public final boolean isAlikeDead() { return isFakeDeath() || !(getCurrentHp() > 0.5); }
-	
+
 	/** Return True if the L2Character can't use its skills (ex : stun, sleep...). */
 	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isStunned() || isSleeping() || isParalyzed(); }
-	
+
 	/** Return True if the L2Character can't attack (stun, sleep, attackEndTime, fakeDeath, paralyse). */
 	public final boolean isAttackingDisabled() { return isStunned() || isSleeping() || _attackEndTime > GameTimeController.getGameTicks() || isFakeDeath() || isParalyzed(); }
-	
+
 	public final Calculator[] getCalculators() { return _Calculators; }
-	
+
 	public final boolean isConfused() { return _IsConfused; }
 	public final void setIsConfused(boolean value) { _IsConfused = value; }
-	
+
 	/** Return True if the L2Character is dead. */
 	public final boolean isDead() { return !(isFakeDeath()) && !(getCurrentHp() > 0.5); }
-	
+
 	public final boolean isFakeDeath() { return _IsFakeDeath; }
 	public final void setIsFakeDeath(boolean value) { _IsFakeDeath = value; }
-	
+
 	/** Return True if the L2Character is flying. */
 	public final boolean isFlying() { return _IsFlying; }
 	/** Set the L2Character flying mode to True. */
 	public final void setIsFlying(boolean mode) { _IsFlying = mode; }
-	
+
 	public boolean isImobilised() { return _IsImobilised; }
 	public void setIsImobilised(boolean value){ _IsImobilised = value; }
-	
+
 	public final boolean isKilledAlready() { return _IsKilledAlready; }
 	public final void setIsKilledAlready(boolean value) { _IsKilledAlready = value; }
-	
+
 	public final boolean isMuted() { return _IsMuted; }
 	public final void setIsMuted(boolean value) { _IsMuted = value; }
-	
+
 	public final boolean isPsychicalMuted() { return _IsPsychicalMuted; }
     public final void setIsPsychicalMuted(boolean value) { _IsPsychicalMuted = value; }
 
 	/** Return True if the L2Character can't move (stun, root, sleep, overload, paralyzed). */
 	public final boolean isMovementDisabled() { return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImobilised() || isFakeDeath(); }
-	
+
 	/** Return True if the L2Character can be controlled by the player (confused, affraid). */
 	public final boolean isOutOfControl() { return isConfused() || isAffraid(); }
-	
+
 	public final boolean isOverloaded() { return _IsOverloaded; }
 	/** Set the overloaded status of the L2Character is overloaded (if True, the L2PcInstance can't take more item). */
 	public final void setIsOverloaded(boolean value) { _IsOverloaded = value; }
-	
+
 	public final boolean isParalyzed() { return _IsParalyzed; }
 	public final void setIsParalyzed(boolean value) { _IsParalyzed = value; }
-	
+
 	public final boolean isPendingRevive() { return isDead() && _IsPendingRevive; }
 	public final void setIsPendingRevive(boolean value) { _IsPendingRevive = value; }
-	
+
 	/**
 	 * Return the L2Summon of the L2Character.<BR><BR>
 	 * <B><U> Overriden in </U> :</B><BR><BR>
 	 * <li> L2PcInstance</li><BR><BR>
 	 */
 	public L2Summon getPet() { return null; }
-	
+
 	/** Return True if the L2Character is ridding. */
 	public final boolean isRiding() { return _IsRiding; }
 	/** Set the L2Character riding mode to True. */
 	public final void setIsRiding(boolean mode) { _IsRiding = mode; }
-	
+
 	public final boolean isRooted() { return _IsRooted; }
 	public final void setIsRooted(boolean value) { _IsRooted = value; }
-	
+
 	/** Return True if the L2Character is running. */
 	public final boolean isRunning() { return _IsRunning; }
 	public final void setIsRunning(boolean value)
@@ -1530,43 +1530,43 @@ public abstract class L2Character extends L2Object
 	}
 	/** Set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance. */
 	public final void setRunning() { if (!isRunning()) setIsRunning(true); }
-	
+
 	public final boolean isSleeping() { return _IsSleeping; }
 	public final void setIsSleeping(boolean value) { _IsSleeping = value; }
-	
+
 	public final boolean isStunned() { return _IsStunned; }
 	public final void setIsStunned(boolean value) { _IsStunned = value; }
-	
-	public final boolean isBetrayed() { return _IsBetrayed; } 
-	public final void setIsBetrayed(boolean value) { _IsBetrayed = value; } 
-	 
+
+	public final boolean isBetrayed() { return _IsBetrayed; }
+	public final void setIsBetrayed(boolean value) { _IsBetrayed = value; }
+
 	public final boolean isTeleporting() { return _IsTeleporting; }
 	public final void setIsTeleporting(boolean value) { _IsTeleporting = value; }
 	public void setIsInvul(boolean b){_isInvul = b;}
 	public boolean isInvul(){return _isInvul  || _IsTeleporting;}
 	public boolean isUndead() { return false; }
-	
+
 	public CharKnownList getKnownList()
 	{
 		if(super.getKnownList() == null || !(super.getKnownList() instanceof CharKnownList))
 			this.setKnownList(new CharKnownList(this));
 		return ((CharKnownList)super.getKnownList());
 	}
-	
+
 	public CharStat getStat()
 	{
 		if (_Stat == null) _Stat = new CharStat(this);
 		return _Stat;
 	}
 	public final void setStat(CharStat value) { _Stat = value; }
-	
+
 	public CharStatus getStatus()
 	{
 		if (_Status == null) _Status = new CharStatus(this);
 		return _Status;
 	}
 	public final void setStatus(CharStatus value) { _Status = value; }
-	
+
 	public L2CharTemplate getTemplate() { return _Template; }
 	/**
 	 * Set the template of the L2Character.<BR><BR>
@@ -1582,25 +1582,25 @@ public abstract class L2Character extends L2Object
 	 * <li> this instanceof L2Character</li><BR><BR
 	 */
 	protected final void setTemplate(L2CharTemplate template) { _Template = template; }
-	
+
 	/** Return the Title of the L2Character. */
 	public final String getTitle() { return _Title; }
 	/** Set the Title of the L2Character. */
 	public final void setTitle(String value) { _Title = value; }
-	
+
 	/** Set the L2Character movement type to walk and send Server->Client packet ChangeMoveType to all others L2PcInstance. */
 	public final void setWalking() { if (isRunning()) setIsRunning(false); }
-	
+
 	/** Task lauching the function enableAllSkills() */
 	class EnableAllSkills implements Runnable
 	{
 		L2Skill _skill;
-		
+
 		public EnableAllSkills(L2Skill skill)
 		{
 			_skill = skill;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -1611,17 +1611,17 @@ public abstract class L2Character extends L2Object
 			}
 		}
 	}
-	
+
 	/** Task lauching the function enableSkill() */
 	class EnableSkill implements Runnable
 	{
 		int _skillId;
-		
+
 		public EnableSkill(int skillId)
 		{
 			_skillId = skillId;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -1632,7 +1632,7 @@ public abstract class L2Character extends L2Object
 			}
 		}
 	}
-	
+
 	/**
 	 * Task lauching the function onHitTimer().<BR><BR>
 	 *
@@ -1651,7 +1651,7 @@ public abstract class L2Character extends L2Object
 		boolean _miss;
 		boolean _shld;
 		boolean _soulshot;
-		
+
 		public HitTask(L2Character target, int damage, boolean crit, boolean miss, boolean soulshot, boolean shld)
 		{
 			_hitTarget = target;
@@ -1661,7 +1661,7 @@ public abstract class L2Character extends L2Object
 			_miss = miss;
 			_soulshot = soulshot;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -1674,19 +1674,19 @@ public abstract class L2Character extends L2Object
 			}
 		}
 	}
-	
+
 	/** Task lauching the function onMagicUseTimer() */
 	class MagicUseTask implements Runnable
 	{
 		L2Object[] _targets;
 		L2Skill _skill;
-		
+
 		public MagicUseTask(L2Object[] targets, L2Skill skill)
 		{
 			_targets = targets;
 			_skill = skill;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -1700,7 +1700,7 @@ public abstract class L2Character extends L2Object
 			}
 		}
 	}
-    
+
     /** Task lauching the function useMagic() */
     class QueuedMagicUseTask implements Runnable
     {
@@ -1708,7 +1708,7 @@ public abstract class L2Character extends L2Object
         L2Skill _queuedSkill;
         boolean _isCtrlPressed;
         boolean _isShiftPressed;
-        
+
         public QueuedMagicUseTask(L2PcInstance currPlayer, L2Skill queuedSkill, boolean isCtrlPressed, boolean isShiftPressed)
         {
             _currPlayer = currPlayer;
@@ -1716,7 +1716,7 @@ public abstract class L2Character extends L2Object
             _isCtrlPressed = isCtrlPressed;
             _isShiftPressed = isShiftPressed;
         }
-        
+
         public void run()
         {
             try
@@ -1729,17 +1729,17 @@ public abstract class L2Character extends L2Object
             }
         }
     }
-	
+
 	/** Task of AI notification */
 	public class NotifyAITask implements Runnable
 	{
 		private final CtrlEvent _evt;
-		
+
 		NotifyAITask(CtrlEvent evt)
 		{
 			this._evt = evt;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -1752,7 +1752,7 @@ public abstract class L2Character extends L2Object
 			}
 		}
 	}
-	
+
 	/** Task lauching the function stopPvPFlag() */
 	class PvPFlag implements Runnable
 	{
@@ -1786,34 +1786,34 @@ public abstract class L2Character extends L2Object
 		}
 	}
 	// =========================================================
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 	// =========================================================
 	// Abnormal Effect - NEED TO REMOVE ONCE L2CHARABNORMALEFFECT IS COMPLETE
 	// Data Field
 	/** Map 16 bits (0x0000) containing all abnormal effect in progress */
 	private short _AbnormalEffects;
-	
+
 	/**
 	 * FastTable containing all active skills effects in progress of a L2Character.
 	 */
 	private FastTable<L2Effect> _effects;
-	
+
 	/** The table containing the List of all stacked effect in progress for each Stack group Identifier */
 	protected Map<String, List<L2Effect>> _stackedEffects;
-	
+
 	/** Table EMPTY_EFFECTS shared by all L2Character without effects in progress */
 	private static final L2Effect[] EMPTY_EFFECTS = new L2Effect[0];
-	
+
 	public static final int ABNORMAL_EFFECT_BLEEDING   = 0x0001; // not sure
 	public static final int ABNORMAL_EFFECT_POISON     = 0x0002;
 	public static final int ABNORMAL_EFFECT_UNKNOWN_3  = 0x0004;
@@ -1834,7 +1834,7 @@ public abstract class L2Character extends L2Object
 	public static final int ABNORMAL_EFFECT_CONFUSED   = 0x0020;
 	// FIXME : correct the value of the abnormal effect affraid
 	public static final int ABNORMAL_EFFECT_AFFRAID    = 0x0010;
-	
+
 	// Method - Public
 	/**
 	 * Launch and add L2Effect (including Stack Group management) to L2Character and update client magic icone.<BR><BR>
@@ -1859,49 +1859,49 @@ public abstract class L2Character extends L2Object
 	public final void addEffect(L2Effect newEffect)
 	{
 		if(newEffect == null) return;
-		
+
 		synchronized (this)
 		{
 			if (_effects == null)
 				_effects = new FastTable<L2Effect>();
-			
+
 			if (_stackedEffects == null)
 				_stackedEffects = new FastMap<String, List<L2Effect>>();
 		}
-		synchronized(_effects) 
+		synchronized(_effects)
 		{
 			L2Effect tempEffect = null;
-			
-			// Make sure there's no same effect previously  
-			for (int i=0; i<_effects.size(); i++)   
-			{ 	
-				if (_effects.get(i).getSkill().getId() == newEffect.getSkill().getId())   
-					return;  
-			} 
-		
+
+			// Make sure there's no same effect previously
+			for (int i=0; i<_effects.size(); i++)
+			{
+				if (_effects.get(i).getSkill().getId() == newEffect.getSkill().getId())
+					return;
+			}
+
 			// Remove first Buff if number of buffs > 19
-			L2Skill tempskill = newEffect.getSkill(); 
+			L2Skill tempskill = newEffect.getSkill();
 			if (getBuffCount() > Config.BUFFS_MAX_AMOUNT && !doesStack(tempskill) && ((
 				tempskill.getSkillType() == L2Skill.SkillType.BUFF ||
                 tempskill.getSkillType() == L2Skill.SkillType.DEBUFF ||
                 tempskill.getSkillType() == L2Skill.SkillType.REFLECT ||
                 tempskill.getSkillType() == L2Skill.SkillType.HEAL_PERCENT ||
-                tempskill.getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT)&& 
+                tempskill.getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT)&&
                 tempskill.getId() != 4267 &&
                 tempskill.getId() != 4270 &&
                 !(tempskill.getId() > 4360  && tempskill.getId() < 4367))
         	) removeFirstBuff(tempskill.getId());
 
 			// Add the L2Effect to all effect in progress on the L2Character
-			if (!newEffect.getSkill().isToggle()) 
+			if (!newEffect.getSkill().isToggle())
 			{
 				int pos=0;
-            	for (int i=0; i<_effects.size(); i++) 
+            	for (int i=0; i<_effects.size(); i++)
             	{
-            		if (_effects.get(i) != null) 
+            		if (_effects.get(i) != null)
             		{
             			int skillid = _effects.get(i).getSkill().getId();
-            			if (!_effects.get(i).getSkill().isToggle() && 
+            			if (!_effects.get(i).getSkill().isToggle() &&
             				(skillid != 4267 && skillid != 4270 && !(skillid > 4360  && skillid < 4367))
             				) pos++;
             		}
@@ -1916,73 +1916,73 @@ public abstract class L2Character extends L2Object
 			{
 				// Set this L2Effect to In Use
 				newEffect.setInUse(true);
-			
+
 				// Add Funcs of this effect to the Calculator set of the L2Character
 				addStatFuncs(newEffect.getStatFuncs());
-			
+
 				// Update active skills in progress icones on player client
 				updateEffectIcons();
 				return;
 			}
-		
+
 			// Get the list of all stacked effects corresponding to the stack type of the L2Effect to add
 			List<L2Effect> stackQueue = _stackedEffects.get(newEffect.getStackType());
-		
+
 			if (stackQueue == null)
 				stackQueue = new FastList<L2Effect>();
-		
+
 			if (stackQueue.size() > 0)
 			{
 				// Get the first stacked effect of the Stack group selected
 				tempEffect = null;
-				for (int i=0; i<_effects.size(); i++) 
+				for (int i=0; i<_effects.size(); i++)
 				{
-					if (_effects.get(i) == stackQueue.get(0)) 
+					if (_effects.get(i) == stackQueue.get(0))
 					{
 						tempEffect = _effects.get(i);
 						break;
 					}
 				}
-			
+
 				if (tempEffect != null)
 				{
 					// Remove all Func objects corresponding to this stacked effect from the Calculator set of the L2Character
 					removeStatsOwner(tempEffect);
-				
+
 					// Set the L2Effect to Not In Use
 					tempEffect.setInUse(false);
 				}
 			}
-		
+
 			// Add the new effect to the stack group selected at its position
 			stackQueue = effectQueueInsert(newEffect, stackQueue);
-        
+
 			if (stackQueue == null) return;
-		
+
 			// Update the Stack Group table _stackedEffects of the L2Character
 			_stackedEffects.put(newEffect.getStackType(), stackQueue);
-		
+
 			// Get the first stacked effect of the Stack group selected
 			tempEffect = null;
-			for (int i=0; i<_effects.size(); i++) 
+			for (int i=0; i<_effects.size(); i++)
 			{
-				if (_effects.get(i) == stackQueue.get(0)) 
+				if (_effects.get(i) == stackQueue.get(0))
 				{
 					tempEffect = _effects.get(i);
 					break;
 				}
 			}
-		
+
 			// Set this L2Effect to In Use
 			tempEffect.setInUse(true);
-		
+
 			// Add all Func objects corresponding to this stacked effect to the Calculator set of the L2Character
 			addStatFuncs(tempEffect.getStatFuncs());
 		}
 		// Update active skills in progress (In Use and Not In Use because stacked) icones on client
 		updateEffectIcons();
 	}
-	
+
 	/**
 	 * Insert an effect at the specified position in a Stack Group.<BR><BR>
 	 *
@@ -2000,7 +2000,7 @@ public abstract class L2Character extends L2Object
 	private List<L2Effect> effectQueueInsert(L2Effect newStackedEffect, List<L2Effect> stackQueue)
 	{
 		// Get the L2Effect corresponding to the Effect Identifier from the L2Character _effects
-		if(_effects == null) 
+		if(_effects == null)
             return null;
 
 		// Create an Iterator to go through the list of stacked effects in progress on the L2Character
@@ -2013,30 +2013,30 @@ public abstract class L2Character extends L2Object
             	i++;
             else break;
         }
-		
+
 		// Add the new effect to the Stack list in function of its position in the Stack group
 		stackQueue.add(i, newStackedEffect);
-		
-		// skill.exit() could be used, if the users don't wish to see "effect 
-		// removed" always when a timer goes off, even if the buff isn't active 
+
+		// skill.exit() could be used, if the users don't wish to see "effect
+		// removed" always when a timer goes off, even if the buff isn't active
 		// any more (has been replaced). but then check e.g. npc hold and raid petrify.
-		if (Config.EFFECT_CANCELING && !newStackedEffect.isHerbEffect() && stackQueue.size() > 1) 
+		if (Config.EFFECT_CANCELING && !newStackedEffect.isHerbEffect() && stackQueue.size() > 1)
 		{
 			// only keep the current effect, cancel other effects
-			for (int n=0; n<_effects.size(); n++) 
+			for (int n=0; n<_effects.size(); n++)
 			{
-				if (_effects.get(n) == stackQueue.get(1)) 
+				if (_effects.get(n) == stackQueue.get(1))
 				{
 					_effects.remove(n);
 					break;
 				}
 			}
-			stackQueue.remove(1); 
+			stackQueue.remove(1);
 		}
-		
+
 		return stackQueue;
 	}
-	
+
 	/**
 	 * Stop and remove L2Effect (including Stack Group management) from L2Character and update client magic icone.<BR><BR>
 	 *
@@ -2061,9 +2061,9 @@ public abstract class L2Character extends L2Object
 		if(effect == null || _effects == null)
 			return;
 
-		synchronized(_effects) 
+		synchronized(_effects)
 		{
-			
+
 			if (effect.getStackType() == "none")
 			{
 				// Remove Func added by this effect from the L2Character Calculator
@@ -2073,19 +2073,19 @@ public abstract class L2Character extends L2Object
 			{
 				if(_stackedEffects == null)
 					return;
-			
+
 				// Get the list of all stacked effects corresponding to the stack type of the L2Effect to add
 				List<L2Effect> stackQueue = _stackedEffects.get(effect.getStackType());
-			
+
 				if (stackQueue == null || stackQueue.size() < 1)
 					return;
-			
+
 				// Get the Identifier of the first stacked effect of the Stack group selected
 				L2Effect frontEffect = stackQueue.get(0);
-			
+
 				// Remove the effect from the Stack Group
 				boolean removed = stackQueue.remove(effect);
-			
+
 				if (removed)
 				{
 					// Check if the first stacked effect was the effect to remove
@@ -2093,14 +2093,14 @@ public abstract class L2Character extends L2Object
 					{
 						// Remove all its Func objects from the L2Character calculator set
 						removeStatsOwner(effect);
-					
+
 						// Check if there's another effect in the Stack Group
 						if (stackQueue.size() > 0)
 						{
 							// Add its list of Funcs to the Calculator set of the L2Character
-							for (int i=0; i<_effects.size(); i++) 
+							for (int i=0; i<_effects.size(); i++)
 							{
-								if (_effects.get(i) == stackQueue.get(0)) 
+								if (_effects.get(i) == stackQueue.get(0))
 								{
 									// Add its list of Funcs to the Calculator set of the L2Character
 									addStatFuncs(_effects.get(i).getStatFuncs());
@@ -2118,24 +2118,24 @@ public abstract class L2Character extends L2Object
 						_stackedEffects.put(effect.getStackType(), stackQueue);
 				}
 			}
-		
+
 
 			// Remove the active skill L2effect from _effects of the L2Character
 			// The Integer key of _effects is the L2Skill Identifier that has created the effect
-			for (int i=0; i<_effects.size(); i++) 
+			for (int i=0; i<_effects.size(); i++)
 			{
-				if (_effects.get(i) == effect) 
+				if (_effects.get(i) == effect)
 				{
 					_effects.remove(i);
 					break;
 				}
 			}
-			
+
 		}
 		// Update active skills in progress (In Use and Not In Use because stacked) icones on client
 		updateEffectIcons();
 	}
-	
+
 	/**
 	 * Active abnormal effects flags in the binary mask and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
@@ -2144,7 +2144,7 @@ public abstract class L2Character extends L2Object
 		_AbnormalEffects |= mask;
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Active the abnormal effect Confused flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
@@ -2154,7 +2154,7 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_CONFUSED);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Active the abnormal effect Fake Death flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
@@ -2167,7 +2167,7 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_FAKE_DEATH, null);
 		broadcastPacket(new ChangeWaitType(this,ChangeWaitType.WT_START_FAKEDEATH));
 	}
-	
+
 	/**
 	 * Active the abnormal effect Fear flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
@@ -2177,7 +2177,7 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_AFFRAID);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Active the abnormal effect Muted flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
@@ -2189,7 +2189,7 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_MUTED);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
      * Active the abnormal effect Psychical_Muted flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
      */
@@ -2209,7 +2209,7 @@ public abstract class L2Character extends L2Object
         getAI().notifyEvent(CtrlEvent.EVT_ROOTED, null);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Active the abnormal effect Sleep flag, notify the L2Character AI and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
@@ -2222,7 +2222,7 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_SLEEPING, null);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Launch a Stun Abnormal Effect on the L2Character.<BR><BR>
 	 *
@@ -2241,19 +2241,19 @@ public abstract class L2Character extends L2Object
 		getAI().notifyEvent(CtrlEvent.EVT_STUNNED, null);
 		updateAbnormalEffect();
 	}
-	public final void startBetray() 
-	{ 
-		setIsBetrayed(true); 
-		getAI().notifyEvent(CtrlEvent.EVT_BETRAYED, null); 
-		updateAbnormalEffect(); 
-	} 
+	public final void startBetray()
+	{
+		setIsBetrayed(true);
+		getAI().notifyEvent(CtrlEvent.EVT_BETRAYED, null);
+		updateAbnormalEffect();
+	}
 
-	public final void stopBetray() 
-	{ 
-		stopEffects(L2Effect.EffectType.BETRAY); 
-		setIsBetrayed(false); 
-		updateAbnormalEffect(); 
-	} 
+	public final void stopBetray()
+	{
+		stopEffects(L2Effect.EffectType.BETRAY);
+		setIsBetrayed(false);
+		updateAbnormalEffect();
+	}
 	/**
 	 * Modify the abnormal effect map according to the mask.<BR><BR>
 	 */
@@ -2262,7 +2262,7 @@ public abstract class L2Character extends L2Object
 		_AbnormalEffects &= ~mask;
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Stop all active skills effects in progress on the L2Character.<BR><BR>
 	 */
@@ -2271,12 +2271,12 @@ public abstract class L2Character extends L2Object
 		// Get all active skills effects in progress on the L2Character
 		L2Effect[] effects = getAllEffects();
 		if (effects == null) return;
-		
+
 		// Go through all active skills effects
 		for(L2Effect e : effects)
 			if(e != null) e.exit();
 	}
-	
+
 	/**
 	 * Stop a specified/all Confused abnormal L2Effect.<BR><BR>
 	 *
@@ -2293,12 +2293,12 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.CONFUSION);
 		else
 			removeEffect(effect);
-		
+
 		setIsConfused(false);
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Stop and remove the L2Effect corresponding to the L2Skill Identifier and update client magic icone.<BR><BR>
 	 *
@@ -2314,7 +2314,7 @@ public abstract class L2Character extends L2Object
 		L2Effect effect = getEffect(effectId);
 		if(effect != null) effect.exit();
 	}
-	
+
 	/**
 	 * Stop and remove all L2Effect of the selected type (ex : BUFF, DMG_OVER_TIME...) from the L2Character and update client magic icone.<BR><BR>
 	 *
@@ -2334,9 +2334,9 @@ public abstract class L2Character extends L2Object
 	{
 		// Get all active skills effects in progress on the L2Character
 		L2Effect[] effects = getAllEffects();
-		
+
 		if (effects == null) return;
-		
+
 		// Go through all active skills effects
 		for(L2Effect e : effects)
 		{
@@ -2344,7 +2344,7 @@ public abstract class L2Character extends L2Object
 			if (e.getEffectType() == type) e.exit();
 		}
 	}
-	
+
 	/**
 	 * Stop a specified/all Fake Death abnormal L2Effect.<BR><BR>
 	 *
@@ -2360,13 +2360,13 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.FAKE_DEATH);
 		else
 			removeEffect(effect);
-		
+
 		setIsFakeDeath(false);
 		ChangeWaitType revive = new ChangeWaitType(this,ChangeWaitType.WT_STOP_FAKEDEATH);
-		broadcastPacket(revive); 
+		broadcastPacket(revive);
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 	}
-	
+
 	/**
 	 * Stop a specified/all Fear abnormal L2Effect.<BR><BR>
 	 *
@@ -2383,11 +2383,11 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.FEAR);
 		else
 			removeEffect(effect);
-		
+
 		setIsAffraid(false);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Stop a specified/all Muted abnormal L2Effect.<BR><BR>
 	 *
@@ -2404,18 +2404,18 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.MUTE);
 		else
 			removeEffect(effect);
-		
+
 		setIsMuted(false);
 		updateAbnormalEffect();
 	}
-	
+
 	public final void stopPsychicalMuted(L2Effect effect)
     {
         if (effect == null)
             stopEffects(L2Effect.EffectType.PSYCHICAL_MUTE);
         else
             removeEffect(effect);
-        
+
         setIsPsychicalMuted(false);
         updateAbnormalEffect();
     }
@@ -2436,12 +2436,12 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.ROOT);
 		else
 			removeEffect(effect);
-		
+
 		setIsRooted(false);
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Stop a specified/all Sleep abnormal L2Effect.<BR><BR>
 	 *
@@ -2458,12 +2458,12 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.SLEEP);
 		else
 			removeEffect(effect);
-		
+
 		setIsSleeping(false);
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Stop a specified/all Stun abnormal L2Effect.<BR><BR>
 	 *
@@ -2480,12 +2480,12 @@ public abstract class L2Character extends L2Object
 			stopEffects(L2Effect.EffectType.STUN);
 		else
 			removeEffect(effect);
-		
+
 		setIsStunned(false);
 		getAI().notifyEvent(CtrlEvent.EVT_THINK, null);
 		updateAbnormalEffect();
 	}
-	
+
 	/**
 	 * Not Implemented.<BR><BR>
 	 *
@@ -2497,7 +2497,7 @@ public abstract class L2Character extends L2Object
 	 *
 	 */
 	public abstract void updateAbnormalEffect();
-	
+
 	/**
 	 * Update active skills in progress (In Use and Not In Use because stacked) icones on client.<BR><BR>
 	 *
@@ -2525,27 +2525,27 @@ public abstract class L2Character extends L2Object
             summon = (L2Summon)this;
             player = summon.getOwner();
         }
-        
+
         // Create the main packet if needed
 		MagicEffectIcons mi = null;
         if (!partyOnly)
             mi = new MagicEffectIcons();
-        
+
         // Create the party packet if needed
         PartySpelled ps = null;
         if (summon != null)
             ps = new PartySpelled(summon);
         else if (player != null && player.isInParty())
             ps = new PartySpelled(player);
-        
+
         // Create the olympiad spectator packet if needed
         ExOlympiadSpelledInfo os = null;
         if (player != null && player.isInOlympiadMode())
             os = new ExOlympiadSpelledInfo(player);
-        
+
         if (mi == null && ps ==null && os == null)
-            return; // nothing to do (should not happen) 
-		
+            return; // nothing to do (should not happen)
+
         // Add special effects
 		if (player != null && mi != null)
 		{
@@ -2563,10 +2563,10 @@ public abstract class L2Character extends L2Object
 			for (int i = 0; i < effects.length; i++)
 			{
 				L2Effect effect = effects[i];
-                
+
 				if (effect == null)
 					continue;
-				
+
 				if (effect.getInUse())
 				{
                     if (mi != null)
@@ -2577,8 +2577,8 @@ public abstract class L2Character extends L2Object
                         effect.addOlympiadSpelledIcon(os);
 				}
 			}
-        
-        
+
+
         // Send the packets if needed
         if (mi != null)
             sendPacket(mi);
@@ -2601,7 +2601,7 @@ public abstract class L2Character extends L2Object
             }
         }
 	}
-	
+
 	// Property - Public
 	/**
 	 * Return a map of 16 bits (0x0000) containing all abnormal effect in progress for this L2Character.<BR><BR>
@@ -2624,7 +2624,7 @@ public abstract class L2Character extends L2Object
 		if (isAffraid())  ae |= ABNORMAL_EFFECT_AFFRAID;
 		return ae;
 	}
-	
+
 	/**
 	 * Return all active skills effects in progress on the L2Character.<BR><BR>
 	 *
@@ -2639,10 +2639,10 @@ public abstract class L2Character extends L2Object
 	{
 		// Create a copy of the effects set
 		FastTable<L2Effect> effects = _effects;
-		
+
 		// If no effect found, return EMPTY_EFFECTS
 		if (effects == null || effects.isEmpty()) return EMPTY_EFFECTS;
-		
+
 		// Return all effects in progress in a table
         int ArraySize = effects.size();
         L2Effect[] effectArray = new L2Effect[ArraySize];
@@ -2652,7 +2652,7 @@ public abstract class L2Character extends L2Object
         }
 		return effectArray;
 	}
-	
+
 	/**
 	 * Return L2Effect in progress on the L2Character corresponding to the L2Skill Identifier.<BR><BR>
 	 *
@@ -2668,12 +2668,12 @@ public abstract class L2Character extends L2Object
 	{
 		FastTable<L2Effect> effects = _effects;
 		if (effects == null) return null;
-       
+
 		L2Effect e;
 		L2Effect eventNotInUse = null;
         for (int i=0; i<effects.size(); i++) {
             e = effects.get(i);
-            if (e.getSkill().getId() == index) 
+            if (e.getSkill().getId() == index)
             {
             	if (e.getInUse()) return e;
             	else eventNotInUse = e;
@@ -2681,7 +2681,7 @@ public abstract class L2Character extends L2Object
         }
         return eventNotInUse;
 	}
-	
+
 	/**
 	 * Return the first L2Effect in progress on the L2Character created by the L2Skill.<BR><BR>
 	 *
@@ -2697,12 +2697,12 @@ public abstract class L2Character extends L2Object
 	{
 		FastTable<L2Effect> effects = _effects;
 		if (effects == null) return null;
-        
+
         L2Effect e;
         L2Effect eventNotInUse = null;
         for (int i=0; i<effects.size(); i++) {
             e = effects.get(i);
-            if (e.getSkill() == skill) 
+            if (e.getSkill() == skill)
             {
             	if (e.getInUse()) return e;
             	else eventNotInUse = e;
@@ -2710,7 +2710,7 @@ public abstract class L2Character extends L2Object
         }
         return eventNotInUse;
 	}
-	
+
 	/**
 	 * Return the first L2Effect in progress on the L2Character corresponding to the Effect Type (ex : BUFF, STUN, ROOT...).<BR><BR>
 	 *
@@ -2727,7 +2727,7 @@ public abstract class L2Character extends L2Object
 	{
 		FastTable<L2Effect> effects = _effects;
 		if (effects == null) return null;
-		
+
         L2Effect e;
         L2Effect eventNotInUse = null;
         for (int i=0; i<effects.size(); i++) {
@@ -2741,37 +2741,37 @@ public abstract class L2Character extends L2Object
         return eventNotInUse;
 	}
 	// =========================================================
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// =========================================================
 	// NEED TO ORGANIZE AND MOVE TO PROPER PLACE
 	/** This class permit to the L2Character AI to obtain informations and uses L2Character method */
 	public class AIAccessor
 	{
 		public AIAccessor() {}
-		
+
 		/**
 		 * Return the L2Character managed by this Accessor AI.<BR><BR>
 		 */
@@ -2779,7 +2779,7 @@ public abstract class L2Character extends L2Object
 		{
 			return L2Character.this;
 		}
-		
+
 		/**
 		 * Accessor to L2Character moveToLocation() method with an interaction area.<BR><BR>
 		 */
@@ -2787,7 +2787,7 @@ public abstract class L2Character extends L2Object
 		{
 			L2Character.this.moveToLocation(x, y, z, offset);
 		}
-		
+
 		/**
 		 * Accessor to L2Character moveToLocation() method without interaction area.<BR><BR>
 		 */
@@ -2795,7 +2795,7 @@ public abstract class L2Character extends L2Object
 		{
 			L2Character.this.moveToLocation(x, y, z, 0);
 		}
-		
+
 		/**
 		 * Accessor to L2Character stopMove() method.<BR><BR>
 		 */
@@ -2803,7 +2803,7 @@ public abstract class L2Character extends L2Object
 		{
 			L2Character.this.stopMove(pos);
 		}
-		
+
 		/**
 		 * Accessor to L2Character doAttack() method.<BR><BR>
 		 */
@@ -2811,7 +2811,7 @@ public abstract class L2Character extends L2Object
 		{
 			L2Character.this.doAttack(target);
 		}
-		
+
 		/**
 		 * Accessor to L2Character doCast() method.<BR><BR>
 		 */
@@ -2819,7 +2819,7 @@ public abstract class L2Character extends L2Object
 		{
 			L2Character.this.doCast(skill);
 		}
-		
+
 		/**
 		 * Create a NotifyAITask.<BR><BR>
 		 */
@@ -2827,7 +2827,7 @@ public abstract class L2Character extends L2Object
 		{
 			return new NotifyAITask(evt);
 		}
-		
+
 		/**
 		 * Cancel the AI.<BR><BR>
 		 */
@@ -2836,8 +2836,8 @@ public abstract class L2Character extends L2Object
 			L2Character.this._ai = null;
 		}
 	}
-	
-	
+
+
 	/**
 	 * This class group all mouvement data.<BR><BR>
 	 *
@@ -2868,61 +2868,61 @@ public abstract class L2Character extends L2Object
 		public float _xSpeedTicks;
 		public float _ySpeedTicks;
 	}
-	
-	
+
+
 	/** Table containing all skillId that are disabled */
 	protected List<Integer> _disabledSkills;
 	private boolean _allSkillsDisabled;
-	
+
 //	private int _flyingRunSpeed;
 //	private int _floatingWalkSpeed;
 //	private int _flyingWalkSpeed;
 //	private int _floatingRunSpeed;
-	
+
 	/** Movement data of this L2Character */
 	protected MoveData _move;
-	
+
 	/** Orientation of the L2Character */
 	private int _heading;
-	
+
 	/** L2Charcater targeted by the L2Character */
 	private L2Object _target;
-	
+
 	// setted by the start of casting, in game ticks
 	private int     _castEndTime;
 	private int     _castInterruptTime;
-	
+
 	private boolean _inCombat;
-	
+
 	// setted by the start of attack, in game ticks
 	private int     _attackEndTime;
 	private int     _attacking;
 	private int     _disableBowAttackEndTime;
-	
-	
+
+
 	/** Table of calculators containing all standard NPC calculator (ex : ACCURACY_COMBAT, EVASION_RATE */
 	private static final Calculator[] NPC_STD_CALCULATOR;
 	static {NPC_STD_CALCULATOR = Formulas.getInstance().getStdNPCCalculators();}
-	
+
 	protected L2CharacterAI _ai;
-	
+
 	/** Future Skill Cast */
 	protected Future _skillCast;
-	
+
 	/** Char Coords from Client */
 	private int _clientX;
 	private int _clientY;
 	private int _clientZ;
 	private int _clientHeading;
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	/** List of all QuestState instance that needs to be notified of this character's death */
 	private List<QuestState> _NotifyQuestOfDeathList = new FastList<QuestState>();
-	
+
 	/**
 	 * Add QuestState instance that is to be notified of character's death.<BR><BR>
 	 *
@@ -2933,10 +2933,10 @@ public abstract class L2Character extends L2Object
 	{
 		if (qs == null || _NotifyQuestOfDeathList.contains(qs))
 			return;
-		
+
 		_NotifyQuestOfDeathList.add(qs);
 	}
-	
+
 	/**
 	 * Return a list of L2Character that attacked.<BR><BR>
 	 */
@@ -2944,12 +2944,12 @@ public abstract class L2Character extends L2Object
 	{
 		if (_NotifyQuestOfDeathList == null)
 			_NotifyQuestOfDeathList = new FastList<QuestState>();
-		
+
 		return _NotifyQuestOfDeathList;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Add a Func to the Calculator set of the L2Character.<BR><BR>
 	 *
@@ -2972,33 +2972,33 @@ public abstract class L2Character extends L2Object
 	{
 		if (f == null)
 			return;
-		
-		
+
+
 		// Check if Calculator set is linked to the standard Calculator set of NPC
 		if (_Calculators == NPC_STD_CALCULATOR)
 		{
 			// Create a copy of the standard NPC Calculator set
 			_Calculators = new Calculator[Stats.NUM_STATS];
-			
+
 			for (int i=0; i < Stats.NUM_STATS; i++)
 			{
 				if (NPC_STD_CALCULATOR[i] != null)
 					_Calculators[i] = new Calculator(NPC_STD_CALCULATOR[i]);
 			}
 		}
-		
+
 		// Select the Calculator of the affected state in the Calculator set
 		int stat = f._stat.ordinal();
-		
+
 		if (_Calculators[stat] == null)
 			_Calculators[stat] = new Calculator();
-		
+
 		// Add the Func to the calculator corresponding to the state
 		_Calculators[stat].addFunc(f);
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Add a list of Funcs to the Calculator set of the L2Character.<BR><BR>
 	 *
@@ -3022,8 +3022,8 @@ public abstract class L2Character extends L2Object
 			addStatFunc(f);
 		if (funcs.length > 0) updateStats();
 	}
-	
-	
+
+
 	/**
 	 * Remove a Func from the Calculator set of the L2Character.<BR><BR>
 	 *
@@ -3047,20 +3047,20 @@ public abstract class L2Character extends L2Object
 	{
 		if (f == null)
 			return;
-		
+
 		// Select the Calculator of the affected state in the Calculator set
 		int stat = f._stat.ordinal();
-		
+
 		if (_Calculators[stat] == null)
 			return;
-		
+
 		// Remove the Func object from the Calculator
 		_Calculators[stat].removeFunc(f);
-		
+
 		if (_Calculators[stat].size() == 0)
 			_Calculators[stat] = null;
-		
-		
+
+
 		// If possible, free the memory and just create a link on NPC_STD_CALCULATOR
 		if (this instanceof L2NpcInstance)
 		{
@@ -3070,13 +3070,13 @@ public abstract class L2Character extends L2Object
 				if (!Calculator.equalsCals(_Calculators[i], NPC_STD_CALCULATOR[i]))
 					break;
 			}
-			
+
 			if (i >= Stats.NUM_STATS)
 				_Calculators = NPC_STD_CALCULATOR;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Remove a list of Funcs from the Calculator set of the L2PcInstance.<BR><BR>
 	 *
@@ -3099,8 +3099,8 @@ public abstract class L2Character extends L2Object
 			removeStatFunc(f);
 		if (funcs.length > 0) updateStats();
 	}
-	
-	
+
+
 	/**
 	 * Remove all Func objects with the selected owner from the Calculator set of the L2Character.<BR><BR>
 	 *
@@ -3126,7 +3126,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void removeStatsOwner(Object owner)
 	{
-		
+
 		// Go through the Calculator set
 		for (int i=0; i < _Calculators.length; i++)
 		{
@@ -3134,12 +3134,12 @@ public abstract class L2Character extends L2Object
 			{
 				// Delete all Func objects of the selected owner
 				_Calculators[i].removeOwner(owner);
-				
+
 				if (_Calculators[i].size() == 0)
 					_Calculators[i] = null;
 			}
 		}
-		
+
 		// If possible, free the memory and just create a link on NPC_STD_CALCULATOR
 		if (this instanceof L2NpcInstance)
 		{
@@ -3149,12 +3149,12 @@ public abstract class L2Character extends L2Object
 				if (!Calculator.equalsCals(_Calculators[i], NPC_STD_CALCULATOR[i]))
 					break;
 			}
-			
+
 			if (i >= Stats.NUM_STATS)
 				_Calculators = NPC_STD_CALCULATOR;
 		}
 	}
-	
+
 	/**
 	 * Return the orientation of the L2Character.<BR><BR>
 	 */
@@ -3162,7 +3162,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _heading;
 	}
-	
+
 	/**
 	 * Set the orientation of the L2Character.<BR><BR>
 	 */
@@ -3170,7 +3170,7 @@ public abstract class L2Character extends L2Object
 	{
 		_heading = heading;
 	}
-	
+
 	/**
 	 * Get zone L2Character is currently located in
 	 */
@@ -3180,7 +3180,7 @@ public abstract class L2Character extends L2Object
 			if (zone.checkIfInZone(this))return zone;
 		return null;
 	}
-	
+
 	/**
 	 * Return the X destination of the L2Character or the X position if not in movement.<BR><BR>
 	 */
@@ -3219,39 +3219,39 @@ public abstract class L2Character extends L2Object
 	public final int getXdestination()
 	{
 		MoveData m = _move;
-		
+
 		if (m != null)
 			return m._xDestination;
-		
+
 		return getX();
 	}
-	
+
 	/**
 	 * Return the Y destination of the L2Character or the Y position if not in movement.<BR><BR>
 	 */
 	public final int getYdestination()
 	{
 		MoveData m = _move;
-		
+
 		if (m != null)
 			return m._yDestination;
-		
+
 		return getY();
 	}
-	
+
 	/**
 	 * Return the Z destination of the L2Character or the Z position if not in movement.<BR><BR>
 	 */
 	public final int getZdestination()
 	{
 		MoveData m = _move;
-		
+
 		if (m != null)
 			return m._zDestination;
-		
+
 		return getZ();
 	}
-	
+
 	/**
 	 * Return True if the L2Character is in combat.<BR><BR>
 	 */
@@ -3259,7 +3259,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _inCombat;
 	}
-	
+
 	/**
 	 * Return True if the L2Character is moving.<BR><BR>
 	 */
@@ -3267,7 +3267,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _move != null;
 	}
-	
+
 	/**
 	 * Return True if the L2Character is casting.<BR><BR>
 	 */
@@ -3275,7 +3275,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _castEndTime > GameTimeController.getGameTicks();
 	}
-	
+
 	/**
 	 * Return True if the cast of the L2Character can be aborted.<BR><BR>
 	 */
@@ -3283,7 +3283,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _castInterruptTime > GameTimeController.getGameTicks();
 	}
-	
+
 	/**
 	 * Return True if the L2Character is attacking.<BR><BR>
 	 */
@@ -3291,7 +3291,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _attackEndTime > GameTimeController.getGameTicks();
 	}
-	
+
 	/**
 	 * Return True if the L2Character has aborted its attack.<BR><BR>
 	 */
@@ -3299,8 +3299,8 @@ public abstract class L2Character extends L2Object
 	{
 		return _attacking <= 0;
 	}
-	
-	
+
+
 	/**
 	 * Abort the attack of the L2Character and send Server->Client ActionFailed packet.<BR><BR>
 	 */
@@ -3312,7 +3312,7 @@ public abstract class L2Character extends L2Object
 			sendPacket(new ActionFailed());
 		}
 	}
-	
+
 	/**
 	 * Returns body part (paperdoll slot) we are targeting right now
 	 */
@@ -3320,7 +3320,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _attacking;
 	}
-	
+
 	/**
 	 * Abort the cast of the L2Character and send Server->Client MagicSkillCanceld/ActionFailed packet.<BR><BR>
 	 */
@@ -3341,7 +3341,7 @@ public abstract class L2Character extends L2Object
 			sendPacket(new ActionFailed());                         // send an "action failed" packet to the caster
 		}
 	}
-	
+
 	/**
 	 * Update the position of the L2Character during a movement and return True if the movement is finished.<BR><BR>
 	 *
@@ -3366,33 +3366,33 @@ public abstract class L2Character extends L2Object
 	{
 		// Get movement data
 		MoveData m = _move;
-		
+
 		if (m == null)
 			return true;
-		
+
 		if (!isVisible())
 		{
 			_move = null;
 			return true;
 		}
-		
+
 		// Check if the position has alreday be calculated
 		if (m._moveTimestamp == gameTicks)
 			return false;
-		
+
 		// Calculate the time between the beginning of the deplacement and now
 		int elapsed = gameTicks - m._moveStartTime;
-		
+
 		// If estimated time needed to achieve the destination is passed,
 		// the L2Character is positionned to the destination position
 		if (elapsed >= m._ticksToMove)
 		{
 			// Set the timer of last position update to now
 			m._moveTimestamp = gameTicks;
-			
+
 			// Set the position of the L2Character to the destination
 			if(this instanceof L2BoatInstance )
-			{        	   
+			{
 				super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
 				((L2BoatInstance)this).updatePeopleInTheBoat(m._xDestination, m._yDestination, m._zDestination);
 			}
@@ -3400,17 +3400,17 @@ public abstract class L2Character extends L2Object
 			{
 				super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
 			}
-			
+
 			// Cancel the move action
 			_move = null;
-			
+
 			return true;
 		}
-		
+
 		// Estimate the position of the L2Character dureing the movement according to its _xSpeedTicks and _ySpeedTicks
 		// The Z position is obtained from the client
 		if(this instanceof L2BoatInstance )
-		{    	   
+		{
 			super.getPosition().setXYZ(m._xMoveFrom + (int)(elapsed * m._xSpeedTicks),m._yMoveFrom + (int)(elapsed * m._ySpeedTicks),super.getZ());
 			((L2BoatInstance)this).updatePeopleInTheBoat(m._xMoveFrom + (int)(elapsed * m._xSpeedTicks),m._yMoveFrom + (int)(elapsed * m._ySpeedTicks),super.getZ());
 		}
@@ -3418,16 +3418,16 @@ public abstract class L2Character extends L2Object
 		{
 			super.getPosition().setXYZ(m._xMoveFrom + (int)(elapsed * m._xSpeedTicks),m._yMoveFrom + (int)(elapsed * m._ySpeedTicks),super.getZ());
 		}
-		
-		
+
+
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
-		
+
 		return false;
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Stop movement of the L2Character (Called by AI Accessor only).<BR><BR>
 	 *
@@ -3445,10 +3445,10 @@ public abstract class L2Character extends L2Object
 	{
 		// Delete movement data of the L2Character
 		_move = null;
-		
+
 		//if (getAI() != null)
 		//  getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-		
+
 		// Set the current position (x,y,z), its current L2WorldRegion if necessary and its heading
 		// All data are contained in a L2CharPosition object
 		if (pos != null)
@@ -3459,12 +3459,12 @@ public abstract class L2Character extends L2Object
 		sendPacket(new StopMove(this));
 		if (updateKnownObjects) ThreadPoolManager.getInstance().executeTask(new KnownListAsynchronousUpdateTask(this));
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	/**
 	 * Target a L2Object (add the target to the L2Character _target, _knownObject and L2Character to _KnownObject of the L2Object).<BR><BR>
 	 *
@@ -3487,13 +3487,13 @@ public abstract class L2Character extends L2Object
 	{
 		if (object != null && !object.isVisible())
 			object = null;
-		
+
 		if (object != null && object != _target)
 		{
 			this.getKnownList().addKnownObject(object);
 			object.getKnownList().addKnownObject(this);
 		}
-		
+
 		// If object==null, Cancel Attak or Cast
 		if (object == null)
 		{
@@ -3504,9 +3504,9 @@ public abstract class L2Character extends L2Object
 			/*if (isAttackingNow() && getAI().getAttackTarget() == _target)
 			{
 				abortAttack();
-				
+
 				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				
+
 				if (this instanceof L2PcInstance) {
 					sendPacket(new ActionFailed());
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
@@ -3514,7 +3514,7 @@ public abstract class L2Character extends L2Object
 					sendPacket(sm);
 				}
 			}
-			
+
 			if (isCastingNow() && canAbortCast() && getAI().getCastTarget() == _target)
 			{
 				abortCast();
@@ -3527,10 +3527,10 @@ public abstract class L2Character extends L2Object
 				}
 			}*/
 		}
-		
+
 		_target = object;
 	}
-	
+
 	/**
 	 * Return the identifier of the L2Object targeted or -1.<BR><BR>
 	 */
@@ -3540,10 +3540,10 @@ public abstract class L2Character extends L2Object
 		{
 			return _target.getObjectId();
 		}
-		
+
 		return -1;
 	}
-	
+
 	/**
 	 * Return the L2Object targeted or null.<BR><BR>
 	 */
@@ -3551,7 +3551,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _target;
 	}
-	
+
 	// called from AIAccessor only
 	/**
 	 * Calculate movement data for a move to location action and add the L2Character to movingObjects of GameTimeController (only called by AI Accessor).<BR><BR>
@@ -3587,14 +3587,14 @@ public abstract class L2Character extends L2Object
 		final int curX = super.getX();
 		final int curY = super.getY();
 		final int curZ = super.getZ();
-		
+
 		// Calculate distance (dx,dy) between current position and destination
 		final double dx = (x - curX);
 		final double dy = (y - curY);
 		double distance = Math.sqrt(dx*dx + dy*dy);
-		
+
 		if (Config.DEBUG) _log.fine("distance to target:" + distance);
-		
+
 		// Define movement angles needed
 		// ^
 		// |     X (x,y)
@@ -3604,11 +3604,11 @@ public abstract class L2Character extends L2Object
 		// |/ angle
 		// X ---------->
 		// (curx,cury)
-		
+
 		double cos;
 		double sin;
-		
-		
+
+
 		// Check if a movement offset is defined or no distance to go through
 		if (offset > 0 || distance < 1)
 		{
@@ -3620,24 +3620,24 @@ public abstract class L2Character extends L2Object
 				distance = 0;
 				x = curX;
 				y = curY;
-				
+
 				if (Config.DEBUG) _log.fine("already in range, no movement needed.");
-				
+
 				// Notify the AI that the L2Character is arrived at destination
 				getAI().notifyEvent(CtrlEvent.EVT_ARRIVED, null);
-				
+
 				return;
 			}
 			// Calculate movement angles needed
 			sin = dy/distance;
 			cos = dx/distance;
-			
+
 			distance -= (offset-5); // due to rounding error, we have to move a bit closer to be in range
-			
+
 			// Calculate the new destination with offset included
 			x = curX + (int)(distance * cos);
 			y = curY + (int)(distance * sin);
-			
+
 		}
 		else
 		{
@@ -3645,66 +3645,66 @@ public abstract class L2Character extends L2Object
 			sin = dy/distance;
 			cos = dx/distance;
 		}
-		
+
 		// Get the Move Speed of the L2Charcater
 		float speed = getStat().getMoveSpeed();
-		
+
 		// Create and Init a MoveData object
 		MoveData m = new MoveData();
-		
+
 		// Caclulate the Nb of ticks between the current position and the destination
 		m._ticksToMove = (int)(GameTimeController.TICKS_PER_SECOND * (distance + 25) / speed);
-		
+
 		// Calculate the xspeed and yspeed in unit/ticks in function of the movement speed
 		m._xSpeedTicks = (float)(cos * speed / GameTimeController.TICKS_PER_SECOND);
 		m._ySpeedTicks = (float)(sin * speed / GameTimeController.TICKS_PER_SECOND);
-		
+
 		// Calculate and set the heading of the L2Character
 		int heading = (int) (Math.atan2(-sin, -cos) * 10430.378350470452724949566316381);
 		heading += 32768;
 		setHeading(heading);
-		
+
 		if (Config.DEBUG)
 			_log.fine("dist:"+ distance +"speed:" + speed + " ttt:" +m._ticksToMove +
 			          " dx:"+(int)m._xSpeedTicks + " dy:"+(int)m._ySpeedTicks + " heading:" + heading);
-		
+
 		m._xDestination = x;
 		m._yDestination = y;
 		m._zDestination = z; // this is what was requested from client
 		m._heading = 0;
-		
+
 		m._moveStartTime = GameTimeController.getGameTicks();
 		m._xMoveFrom = curX;
 		m._yMoveFrom = curY;
 		m._zMoveFrom = curZ;
-		
+
 		// If necessary set Nb ticks needed to a min value to ensure small distancies movements
 		if (m._ticksToMove < 1 )
 			m._ticksToMove = 1;
-		
+
 		if (Config.DEBUG) _log.fine("time to target:" + m._ticksToMove);
-		
+
 		// Set the L2Character _move object to MoveData object
 		_move = m;
-		
+
 		// Add the L2Character to movingObjects of the GameTimeController
 		// The GameTimeController manage objects movement
 		GameTimeController.getInstance().registerMovingObject(this);
-		
+
 		int tm = m._ticksToMove*GameTimeController.MILLIS_IN_TICK;
-		
+
 		// Create a task to notify the AI that L2Character arrives at a check point of the movement
 		if (tm > 3000)
 			ThreadPoolManager.getInstance().scheduleAi( new NotifyAITask(CtrlEvent.EVT_ARRIVED_REVALIDATE), 2000);
-		
+
 		// the CtrlEvent.EVT_ARRIVED will be sent when the character will actually arrive
 		// to destination by GameTimeController
 	}
-	
+
 	public boolean validateMovementHeading(int heading)
 	{
 		if (_move == null) return true;
-		
+
 		boolean result = true;
 //		if (_move._heading < heading - 5 || _move._heading > heading  5)
 		if (_move._heading != heading)
@@ -3712,10 +3712,10 @@ public abstract class L2Character extends L2Object
 			result = (_move._heading == 0);
 			_move._heading = heading;
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Return the distance between the current position of the L2Character and the target (x,y).<BR><BR>
 	 *
@@ -3730,7 +3730,7 @@ public abstract class L2Character extends L2Object
     {
        double dx = x - getX();
        double dy = y - getY();
-      
+
         return Math.sqrt(dx*dx + dy*dy);
     }
 
@@ -3740,83 +3740,83 @@ public abstract class L2Character extends L2Object
      * @param x   X position of the target
      * @param y   Y position of the target
      * @return the plan distance
-     * 
+     *
      * @deprecated use getPlanDistanceSq(int x, int y, int z)
      */
 	@Deprecated
-    public final double getDistance(int x, int y, int z) 
+    public final double getDistance(int x, int y, int z)
     {
         double dx = x - getX();
         double dy = y - getY();
         double dz = z - getZ();
-            
+
         return Math.sqrt(dx*dx + dy*dy + dz*dz);
     }
 
     /**
      * Return the squared distance between the current position of the L2Character and the given object.<BR><BR>
-     * 
+     *
      * @param object   L2Object
      * @return the squared distance
      */
-    public final double getDistanceSq(L2Object object) 
-    { 
+    public final double getDistanceSq(L2Object object)
+    {
         return getDistanceSq(object.getX(), object.getY(), object.getZ());
     }
 
     /**
      * Return the squared distance between the current position of the L2Character and the given x, y, z.<BR><BR>
-     * 
+     *
      * @param x   X position of the target
      * @param y   Y position of the target
      * @param z   Z position of the target
      * @return the squared distance
      */
-    public final double getDistanceSq(int x, int y, int z) 
+    public final double getDistanceSq(int x, int y, int z)
     {
         double dx = x - getX();
         double dy = y - getY();
         double dz = z - getZ();
-       
+
         return (dx*dx + dy*dy + dz*dz);
     }
 
     /**
      * Return the squared plan distance between the current position of the L2Character and the given object.<BR>
      * (check only x and y, not z)<BR><BR>
-     * 
+     *
      * @param object   L2Object
      * @return the squared plan distance
      */
-    public final double getPlanDistanceSq(L2Object object) 
+    public final double getPlanDistanceSq(L2Object object)
     {
         return getPlanDistanceSq(object.getX(), object.getY());
     }
     /**
      * Return the squared plan distance between the current position of the L2Character and the given x, y, z.<BR>
      * (check only x and y, not z)<BR><BR>
-     * 
+     *
      * @param x   X position of the target
      * @param y   Y position of the target
      * @return the squared plan distance
      */
-    public final double getPlanDistanceSq(int x, int y) 
-    { 
+    public final double getPlanDistanceSq(int x, int y)
+    {
         double dx = x - getX();
         double dy = y - getY();
-            
+
         return (dx*dx + dy*dy);
     }
 
     /**
      * Check if this object is inside the given radius around the given object.<BR><BR>
-     * 
+     *
      * @param object   the target
      * @param radius  the radius around the target
      * @param checkZ  should we check Z axis also
      * @param strictCheck  true if (distance < radius), false if (distance <= radius)
      * @return true is the L2Character is inside the radius.
-     * 
+     *
      * @see net.sf.l2j.gameserver.model.L2Character.isInsideRadius(int x, int y, int z, int radius, boolean checkZ, boolean strictCheck)
      */
     public final boolean isInsideRadius(L2Object object, int radius, boolean checkZ, boolean strictCheck)
@@ -3825,7 +3825,7 @@ public abstract class L2Character extends L2Object
     }
     /**
      * Check if this object is inside the given plan radius around the given point.<BR><BR>
-     * 
+     *
      * @param x   X position of the target
      * @param y   Y position of the target
      * @param radius  the radius around the target
@@ -3838,7 +3838,7 @@ public abstract class L2Character extends L2Object
     }
     /**
      * Check if this object is inside the given radius around the given point.<BR><BR>
-     * 
+     *
      * @param x   X position of the target
      * @param y   Y position of the target
      * @param z   Z position of the target
@@ -3852,7 +3852,7 @@ public abstract class L2Character extends L2Object
         double dx = x - getX();
         double dy = y - getY();
         double dz = z - getZ();
-        
+
         if (strictCheck)
         {
             if (checkZ)
@@ -3867,49 +3867,49 @@ public abstract class L2Character extends L2Object
                 return (dx*dx + dy*dy) <= radius * radius;
         }
     }
-       
+
 //	/**
 //	* event that is called when the destination coordinates are reached
 //	*/
 //	public void onTargetReached()
 //	{
 //	L2Character pawn = getPawnTarget();
-//	
+//
 //	if (pawn != null)
 //	{
 //	int x = pawn.getX(), y=pawn.getY(),z = pawn.getZ();
-//	
+//
 //	double distance = getDistance(x,y);
 //	if (getCurrentState() == STATE_FOLLOW)
 //	{
 //	calculateMovement(x,y,z,distance);
 //	return;
 //	}
-//	
+//
 //	//          takes care of moving away but distance is 0 so i won't follow problem
-//	
-//	
+//
+//
 //	if (((distance > getAttackRange()) && (getCurrentState() == STATE_ATTACKING)) || (pawn.isMoving() && getCurrentState() != STATE_ATTACKING))
 //	{
 //	calculateMovement(x,y,z,distance);
 //	return;
 //	}
-//	
+//
 //	}
 //	//       update x,y,z with the current calculated position
 //	stopMove();
-//	
+//
 //	if (Config.DEBUG)
 //	_log.fine(this.getName() +":: target reached at: x "+getX()+" y "+getY()+ " z:" + getZ());
-//	
+//
 //	if (getPawnTarget() != null)
 //	{
-//	
+//
 //	setPawnTarget(null);
 //	setMovingToPawn(false);
 //	}
 //	}
-//	
+//
 //	public void setTo(int x, int y, int z, int heading)
 //	{
 //	setX(x);
@@ -3928,12 +3928,12 @@ public abstract class L2Character extends L2Object
 //	ValidateLocation setto = new ValidateLocation(this);
 //	broadcastPacket(setto);
 //	}
-//	
+//
 //	FinishRotation fr = new FinishRotation(this);
 //	broadcastPacket(fr);
 //	}
-	
-	
+
+
 //	protected void startCombat()
 //	{
 //	if (_currentAttackTask == null )//&& !isInCombat())
@@ -3945,8 +3945,8 @@ public abstract class L2Character extends L2Object
 //	_log.info("multiple attacks want to start in parallel. prevented.");
 //	}
 //	}
-//	
-	
+//
+
 	/**
 	 * Return the Weapon Expertise Penalty of the L2Character.<BR><BR>
 	 */
@@ -3954,7 +3954,7 @@ public abstract class L2Character extends L2Object
 	{
 		return 1.f;
 	}
-	
+
 	/**
 	 * Return the Armour Expertise Penalty of the L2Character.<BR><BR>
 	 */
@@ -3962,8 +3962,8 @@ public abstract class L2Character extends L2Object
 	{
 		return 1.f;
 	}
-	
-	
+
+
 	/**
 	 * Set _attacking corresponding to Attacking Body part to CHEST.<BR><BR>
 	 */
@@ -3971,7 +3971,7 @@ public abstract class L2Character extends L2Object
 	{
 		_attacking = Inventory.PAPERDOLL_CHEST;
 	}
-	
+
 	/**
 	 * Retun True if arrows are available.<BR><BR>
 	 *
@@ -3983,7 +3983,7 @@ public abstract class L2Character extends L2Object
 	{
 		return true;
 	}
-	
+
 	/**
 	 * Add Exp and Sp to the L2Character.<BR><BR>
 	 *
@@ -3996,7 +3996,7 @@ public abstract class L2Character extends L2Object
 	{
 		// Dummy method (overridden by players and pets)
 	}
-	
+
 	/**
 	 * Return the active weapon instance (always equiped in the right hand).<BR><BR>
 	 *
@@ -4005,7 +4005,7 @@ public abstract class L2Character extends L2Object
 	 *
 	 */
 	public abstract L2ItemInstance getActiveWeaponInstance();
-	
+
 	/**
 	 * Return the active weapon item (always equiped in the right hand).<BR><BR>
 	 *
@@ -4014,7 +4014,7 @@ public abstract class L2Character extends L2Object
 	 *
 	 */
 	public abstract L2Weapon getActiveWeaponItem();
-	
+
 	/**
 	 * Return the secondary weapon instance (always equiped in the left hand).<BR><BR>
 	 *
@@ -4023,7 +4023,7 @@ public abstract class L2Character extends L2Object
 	 *
 	 */
 	public abstract L2ItemInstance getSecondaryWeaponInstance();
-	
+
 	/**
 	 * Return the secondary weapon item (always equiped in the left hand).<BR><BR>
 	 *
@@ -4032,8 +4032,8 @@ public abstract class L2Character extends L2Object
 	 *
 	 */
 	public abstract L2Weapon getSecondaryWeaponItem();
-	
-	
+
+
 	/**
 	 * Manage hit process (called by Hit Task).<BR><BR>
 	 *
@@ -4060,23 +4060,23 @@ public abstract class L2Character extends L2Object
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
-		
-		if ((this instanceof L2NpcInstance && target.isAlikeDead()) || target.isDead() 
+
+		if ((this instanceof L2NpcInstance && target.isAlikeDead()) || target.isDead()
                 || (!getKnownList().knowsObject(target) && !(this instanceof L2DoorInstance)))
 		{
 			//getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
-			
+
 			sendPacket(new ActionFailed());
 			return;
 		}
-		
+
         if (miss)
         {
             if (target instanceof L2PcInstance)
             {
                 SystemMessage sm = new SystemMessage(SystemMessage.AVOIDED_S1s_ATTACK);
-    
+
                 if (this instanceof L2Summon)
                 {
                     int mobId = ((L2Summon)this).getTemplate().npcId;
@@ -4086,7 +4086,7 @@ public abstract class L2Character extends L2Object
                 {
                     sm.addString(getName());
                 }
-                
+
                 ((L2PcInstance)target).sendPacket(sm);
             }
         }
@@ -4100,7 +4100,7 @@ public abstract class L2Character extends L2Object
 				// Check if hit is critical
 				if (crit)
 					sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT));
-				
+
 				// Check if hit is missed
 				if (miss)
 				{
@@ -4120,13 +4120,13 @@ public abstract class L2Character extends L2Object
             else if (this instanceof L2Summon)
             {
                 L2Summon activeSummon = (L2Summon)this;
-                
+
                 // Prevents the double spam of system messages, if the target is the owning player.
                 if (target.getObjectId() != activeSummon.getOwner().getObjectId())
                 {
                     if (crit)
                         activeSummon.getOwner().sendPacket(new SystemMessage(SystemMessage.PET_CRITICAL_HIT));
-                    
+
                     if (miss)
                     {
                         activeSummon.getOwner().sendMessage("The pet missed the target.");
@@ -4139,12 +4139,12 @@ public abstract class L2Character extends L2Object
                     }
                 }
             }
-			
+
 			// If L2Character target is a L2PcInstance, send a system message
 			if (target instanceof L2PcInstance)
 			{
 				L2PcInstance enemy = (L2PcInstance)target;
-				
+
 				// Check if shield is efficient
 				if (shld)
 					enemy.sendPacket(new SystemMessage(SystemMessage.SHIELD_DEFENCE_SUCCESSFULL));
@@ -4154,36 +4154,36 @@ public abstract class L2Character extends L2Object
             else if (target instanceof L2Summon)
             {
                 L2Summon activeSummon = (L2Summon)target;
-                
+
                 SystemMessage sm = new SystemMessage(SystemMessage.PET_RECEIVED_DAMAGE_OF_S2_BY_S1);
                 sm.addString(getName());
                 sm.addNumber(damage);
                 activeSummon.getOwner().sendPacket(sm);
             }
-            
+
 			if (!miss && damage > 0)
 			{
 				L2Weapon weapon = getActiveWeaponItem();
 				boolean isBow = (weapon != null && weapon.getItemType().toString().equalsIgnoreCase("Bow"));
-                
+
 				if (!isBow) // Do not reflect or absorb if weapon is of type bow
 				{
 					// Reduce HP of the target and calculate reflection damage to reduce HP of attacker if necessary
 					double reflectPercent = target.getStat().calcStat(Stats.REFLECT_DAMAGE_PERCENT,0,null,null);
-                    
+
 					if (reflectPercent > 0)
 					{
 						int reflectedDamage = (int)(reflectPercent / 100. * damage);
 						damage -= reflectedDamage;
-						
+
 						if(reflectedDamage > target.getMaxHp()) // to prevent extreme damage when hitting a low lvl char...
 							reflectedDamage = target.getMaxHp();
-						
+
 						getStatus().reduceHp(reflectedDamage, null, true);
-                        
+
 						// Custom messages - nice but also more network load
 						/*
-						if (target instanceof L2PcInstance) 
+						if (target instanceof L2PcInstance)
                             ((L2PcInstance)target).sendMessage("You reflected " + reflectedDamage + " damage.");
                         else if (target instanceof L2Summon)
                             ((L2Summon)target).getOwner().sendMessage("Summon reflected " + reflectedDamage + " damage.");
@@ -4194,18 +4194,18 @@ public abstract class L2Character extends L2Object
                             ((L2Summon)this).getOwner().sendMessage("Target reflected to your summon " + reflectedDamage + " damage.");
                         */
 					}
-					
+
 					// Absorb HP from the damage inflicted
 					double absorbPercent = this.getStat().calcStat(Stats.ABSORB_DAMAGE_PERCENT,0, null,null);
-                    
+
 					if (absorbPercent > 0)
 					{
 						int maxCanAbsorb = (int)(this.getMaxHp() - this.getCurrentHp());
 						int absorbDamage = (int)(absorbPercent / 100. * damage);
-                        
-						if (absorbDamage > maxCanAbsorb) 
+
+						if (absorbDamage > maxCanAbsorb)
                             absorbDamage = maxCanAbsorb; // Can't absord more than max hp
-                        
+
                         if (absorbDamage > 0)
                         {
                             setCurrentHp(getCurrentHp() + absorbDamage);
@@ -4222,7 +4222,7 @@ public abstract class L2Character extends L2Object
                         }
 					}
 				}
-				
+
 				target.reduceCurrentHp(damage, this);
 
                 // Notify AI with EVT_ATTACKED
@@ -4236,13 +4236,13 @@ public abstract class L2Character extends L2Object
 					target.breakCast();
 				}
 			}
-        
+
 			// Launch weapon Special ability effect if available
 			L2Weapon activeWeapon = getActiveWeaponItem();
-            
+
 			if (activeWeapon != null)
 				activeWeapon.getSkillEffects(this, target, crit);
-			
+
 			// Check Raidboss attack
 			if (target.isRaid())
 			{
@@ -4251,25 +4251,25 @@ public abstract class L2Character extends L2Object
 					level = getLevel();
 				else if (this instanceof L2Summon)
 					level = ((L2Summon)this).getOwner().getLevel();
-				
+
 				if (level > target.getLevel() + 8)
 				{
 					L2Skill skill = SkillTable.getInstance().getInfo(4515, 99);
-	                
+
 					if (skill != null)
 						skill.getEffects(target, this);
 					else
 						_log.warning("Skill 4515 at level 99 is missing in DP.");
 				}
 			}
-            
+
             /* COMMENTED OUT BY nexus - 2006-08-17
-             * 
+             *
              * We must not discharge the soulshouts at the onHitTimer method,
              * as this can cause unwanted soulshout consumption if the attacker
              * recharges the soulshot right after an attack request but before
              * his hit actually lands on the target.
-             * 
+             *
              * The soulshot discharging has been moved to the doAttack method:
              * As soon as we know that we didn't missed the hit there, then we
              * must discharge any charged soulshots.
@@ -4291,13 +4291,13 @@ public abstract class L2Character extends L2Object
                 }
             }
             */
-            
+
             return;
 		}
 
 		getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 	}
-	
+
 	/**
 	 * Break an attack and send Server->Client ActionFailed packet and a System Message to the L2Character.<BR><BR>
 	 */
@@ -4307,19 +4307,19 @@ public abstract class L2Character extends L2Object
 		{
 			// Abort the attack of the L2Character and send Server->Client ActionFailed packet
 			abortAttack();
-			
+
 			if (this instanceof L2PcInstance)
 			{
 				//TODO Remove sendPacket because it's always done in abortAttack
 				sendPacket(new ActionFailed());
-				
+
 				// Send a system message
 				sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Break a cast and send Server->Client ActionFailed packet and a System Message to the L2Character.<BR><BR>
 	 */
@@ -4329,7 +4329,7 @@ public abstract class L2Character extends L2Object
 		{
 			// Abort the cast of the L2Character and send Server->Client MagicSkillCanceld/ActionFailed packet.
 			abortCast();
-			
+
 			if (this instanceof L2PcInstance)
 			{
 				// Send a system message
@@ -4337,7 +4337,7 @@ public abstract class L2Character extends L2Object
 			}
 		}
 	}
-	
+
 	/**
 	 * Reduce the arrow number of the L2Character.<BR><BR>
 	 *
@@ -4349,7 +4349,7 @@ public abstract class L2Character extends L2Object
 	{
 		// default is to do nothin
 	}
-	
+
 	/**
 	 * Manage Forced attack (shift + select target).<BR><BR>
 	 *
@@ -4390,15 +4390,15 @@ public abstract class L2Character extends L2Object
 		{
 			//_log.config("Not within a zone");
 			//player.startAttack(this);
-			
+
 			// Send a Server->Client packet MyTargetSelected to start attack
 			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
-			
+
 			// Notify AI with AI_INTENTION_ATTACK
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 		}
 	}
-	
+
 	/**
 	 * Return True if inside peace zone.<BR><BR>
 	 */
@@ -4406,7 +4406,7 @@ public abstract class L2Character extends L2Object
 	{
 		return isInsidePeaceZone(attacker, this);
 	}
-	
+
 	public boolean isInsidePeaceZone(L2PcInstance attacker, L2Object target)
 	{
 		return  (
@@ -4414,7 +4414,7 @@ public abstract class L2Character extends L2Object
 				isInsidePeaceZone((L2Object)attacker, target)
 		);
 	}
-	
+
 	public boolean isInsidePeaceZone(L2Object attacker, L2Object target)
 	{
 		return (
@@ -4431,7 +4431,7 @@ public abstract class L2Character extends L2Object
 				)                                                                           // )
 		);
 	}
-   
+
     /**
      * return true if this character is inside an active grid.
      */
@@ -4448,7 +4448,7 @@ public abstract class L2Character extends L2Object
 	{
 		return false;
 	}
-    
+
 	/**
 	 * Return the L2Party object of the L2Character.<BR><BR>
 	 */
@@ -4456,7 +4456,7 @@ public abstract class L2Character extends L2Object
 	{
 		return null;
 	}
-    
+
 	/**
 	 * Return the Attack Speed of the L2Character (delay (in milliseconds) before next attack).<BR><BR>
 	 */
@@ -4485,7 +4485,7 @@ public abstract class L2Character extends L2Object
 
 		return Formulas.getInstance().calcPAtkSpd(this, target, atkSpd);
 	}
-	
+
 	/**
 	 * Return True if the L2Character use a dual weapon.<BR><BR>
 	 */
@@ -4493,7 +4493,7 @@ public abstract class L2Character extends L2Object
 	{
 		return false;
 	}
-	
+
 	/**
 	 * Add a skill to the L2Character _skills and its Func objects to the calculator set of the L2Character.<BR><BR>
 	 *
@@ -4516,24 +4516,24 @@ public abstract class L2Character extends L2Object
 	public L2Skill addSkill(L2Skill newSkill)
 	{
 		L2Skill oldSkill    = null;
-		
+
 		if (newSkill != null)
 		{
 			// Replace oldSkill by newSkill or Add the newSkill
 			oldSkill = _Skills.put(newSkill.getId(), newSkill);
-			
+
 			// If an old skill has been replaced, remove all its Func objects
 			if (oldSkill != null)
 				removeStatsOwner(oldSkill);
-			
+
 			// Add Func objects of newSkill to the calculator set of the L2Character
 			addStatFuncs(newSkill.getStatFuncs(null, this));
 		}
-		
+
 		return oldSkill;
 	}
-	
-	
+
+
 	/**
 	 * Remove a skill from the L2Character and its Func objects from calculator set of the L2Character.<BR><BR>
 	 *
@@ -4555,17 +4555,17 @@ public abstract class L2Character extends L2Object
 	public L2Skill removeSkill(L2Skill skill)
 	{
 		if (skill == null) return null;
-		
+
 		// Remove the skill from the L2Character _skills
 		L2Skill oldSkill = _Skills.remove(skill.getId());
-		
+
 		// Remove all its Func objects from the L2Character calculator set
 		if (oldSkill != null)
 			removeStatsOwner(oldSkill);
-		
+
 		return oldSkill;
 	}
-	
+
 	/**
 	 * Return all skills own by the L2Character in a table of L2Skill.<BR><BR>
 	 *
@@ -4577,10 +4577,10 @@ public abstract class L2Character extends L2Object
 	{
 		if (_Skills == null)
 			return new L2Skill[0];
-		
+
 		return _Skills.values().toArray(new L2Skill[_Skills.values().size()]);
 	}
-	
+
 	/**
 	 * Return the level of a skill owned by the L2Character.<BR><BR>
 	 *
@@ -4593,14 +4593,14 @@ public abstract class L2Character extends L2Object
 	{
 		if (_Skills == null)
 			return -1;
-		
+
 		L2Skill skill = _Skills.get(skillId);
-		
+
 		if (skill == null)
 			return -1;
 		return skill.getLevel();
 	}
-	
+
 	/**
 	 * Return True if the skill is known by the L2Character.<BR><BR>
 	 *
@@ -4611,7 +4611,7 @@ public abstract class L2Character extends L2Object
 	{
 		if (_Skills == null)
 			return null;
-		
+
 		return _Skills.get(skillId);
 	}
 
@@ -4631,7 +4631,7 @@ public abstract class L2Character extends L2Object
                         e.getSkill().getSkillType() == L2Skill.SkillType.DEBUFF ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.REFLECT ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.HEAL_PERCENT ||
-                        e.getSkill().getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT) && 
+                        e.getSkill().getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT) &&
                         e.getSkill().getId() != 4267 &&
                         e.getSkill().getId() != 4270 &&
                         !(e.getSkill().getId() > 4360  && e.getSkill().getId() < 4367)) { // 7s buffs
@@ -4642,7 +4642,7 @@ public abstract class L2Character extends L2Object
         }
         return numBuffs;
     }
-    
+
     /**
      * Removes the first Buff of this L2Character.<BR><BR>
      *
@@ -4658,7 +4658,7 @@ public abstract class L2Character extends L2Object
                         e.getSkill().getSkillType() == L2Skill.SkillType.DEBUFF ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.REFLECT ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.HEAL_PERCENT ||
-                        e.getSkill().getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT) && 
+                        e.getSkill().getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT) &&
                         e.getSkill().getId() != 4267 &&
                         e.getSkill().getId() != 4270 &&
                         !(e.getSkill().getId() > 4360  && e.getSkill().getId() < 4367)) {
@@ -4671,13 +4671,13 @@ public abstract class L2Character extends L2Object
         }
         if (removeMe != null) removeMe.exit();
     }
-    
+
     public int getDanceCount()
     {
     	int danceCount = 0;
     	L2Effect[] effects = getAllEffects();
     	for (L2Effect effect : effects)
-		{    		 
+		{
     		if (effect == null)
     			continue;
     		if (effect.getSkill().isDance() && effect.getInUse())
@@ -4685,17 +4685,17 @@ public abstract class L2Character extends L2Object
 		}
     	return danceCount;
     }
-    
+
     /**
      * Checks if the given skill stacks with an existing one.<BR><BR>
      *
      * @param checkSkill the skill to be checked
-     * 
+     *
      * @return Returns whether or not this skill will stack
      */
     public boolean doesStack(L2Skill checkSkill) {
         if (_effects == null || _effects.size() < 1 ||
-                checkSkill._effectTemplates == null || 
+                checkSkill._effectTemplates == null ||
                 checkSkill._effectTemplates.length < 1 ||
                 checkSkill._effectTemplates[0]._stackType == null) return false;
         String stackType=checkSkill._effectTemplates[0]._stackType;
@@ -4707,7 +4707,7 @@ public abstract class L2Character extends L2Object
         }
         return false;
     }
-	
+
 	/**
 	 * Manage the magic skill launching task (MP, HP, Item consummation...) and display the magic skill animation on client.<BR><BR>
 	 *
@@ -4734,13 +4734,13 @@ public abstract class L2Character extends L2Object
 
             return;
         }
-		
+
 		// Escaping from under skill's radius. First version, not perfect in AoE skills.
 		int escapeRange = 0;
 		if(skill.getEffectRange() > escapeRange) escapeRange = skill.getEffectRange();
 		else if(skill.getCastRange() < 0 && skill.getSkillRadius() > 80) escapeRange = skill.getSkillRadius();
-			
-		if(escapeRange > 0) 
+
+		if(escapeRange > 0)
 		{
 			List<L2Character> targetList = new FastList<L2Character>();
 			for (int i = 0; i < targets.length; i++)
@@ -4752,42 +4752,42 @@ public abstract class L2Character extends L2Object
 				}
 				//else
 				//{
-				//	if (Config.DEBUG) 
+				//	if (Config.DEBUG)
 				//        _log.warning("Class cast bad: "+targets[i].getClass().toString());
 				//}
 			}
-			if(targetList.isEmpty()) 
+			if(targetList.isEmpty())
 			{
-				abortCast();	
+				abortCast();
 				return;
 			}
 			else targets = targetList.toArray(new L2Character[targetList.size()]);
 		}
-        
+
 		// Check if player is using fake death.
         if (isAlikeDead())
 		{
             setAttackingChar(null);
             setAttackingCharSkill(null);
             getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
-            
+
 			_castEndTime = 0;
 			_castInterruptTime = 0;
 			return;
 		}
-		
+
 		// Check if a cast is in progress
 		if (isCastingNow())
 		{
 			// Get the display identifier of the skill
 			int magicId = skill.getDisplayId();
-			
+
 			// Get the level of the skill
 			int level = getSkillLevel(skill.getId());
-            
-			if (level < 1) 
+
+			if (level < 1)
                 level = 1;
-			
+
 			// Go through targets table
 			for (int i = 0;i < targets.length;i++)
 			{
@@ -4801,13 +4801,13 @@ public abstract class L2Character extends L2Object
 						smsg.addString(skill.getName());
 						target.sendPacket(smsg);
 					}
-					
-					if (Config.DEBUG) 
+
+					if (Config.DEBUG)
                         _log.fine("msl: "+getName()+" "+magicId+" "+level+" "+target.getTitle());
-					
+
 					// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 					broadcastPacket(new MagicSkillLaunched(this, magicId, level, target));
-                    
+
 					if (this instanceof L2PcInstance && target instanceof L2Summon)
 					{
 						if (this.equals(((L2Summon)target).getOwner()))
@@ -4817,10 +4817,10 @@ public abstract class L2Character extends L2Object
 					}
 				}
 			}
-			
+
 			StatusUpdate su = new StatusUpdate(getObjectId());
 			boolean isSendStatus = false;
-			
+
 			// Consume MP of the L2Character and Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 			if (getStat().getMpConsume(skill) > 0)
 			{
@@ -4828,33 +4828,33 @@ public abstract class L2Character extends L2Object
 				su.addAttribute(StatusUpdate.CUR_MP, (int) getCurrentMp());
 				isSendStatus = true;
 			}
-			
+
 			// Consume HP if necessary and Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 			if (skill.getHpConsume() > 0)
 			{
 				double consumeHp;
-				
+
 				consumeHp = calcStat(Stats.HP_CONSUME_RATE,skill.getHpConsume(),null,null);
 				if(consumeHp+1 >= getCurrentHp())
 					consumeHp = getCurrentHp()-1.0;
-				
+
 				getStatus().reduceHp(consumeHp, this);
-				
+
 				su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
 				isSendStatus = true;
 			}
-			
+
 			// Send a Server->Client packet StatusUpdate with MP modification to the L2PcInstance
 			if (isSendStatus) sendPacket(su);
-			
+
 			// Consume Items if necessary and Send the Server->Client packet InventoryUpdate with Item modification to all the L2Character
 			if (skill.getItemConsume() > 0)
 				consumeItem(skill.getItemConsumeId(), skill.getItemConsume());
-			
+
             _castEndTime = 0;
             _castInterruptTime = 0;
             _skillCast = null;
-            
+
 			// Launch the magic skill in order to calculate its effects
 			callSkill(skill, targets);
 
@@ -4862,37 +4862,37 @@ public abstract class L2Character extends L2Object
 			//then just leave it that way, otherwise switch back to STATE_IDLE.
 			//if(isCastingNow())
 			//  getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
-			
+
 			// If the skill type is PDAM or DRAIN_SOUL, notify the AI of the target with AI_INTENTION_ATTACK
 			if (skill.getSkillType() == SkillType.PDAM || skill.getSkillType() == SkillType.DRAIN_SOUL)
 			{
 				if ((getTarget() != null) && (getTarget() instanceof L2Character))
 					getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, getTarget());
 			}
-			
+
             if (skill.isOffensive())
                 getAI().clientStartAutoAttack();
 
             // Notify the AI of the L2Character with EVT_FINISH_CASTING
 			getAI().notifyEvent(CtrlEvent.EVT_FINISH_CASTING);
-            
-            /* 
-             * If character is a player, then wipe their current cast state and  
+
+            /*
+             * If character is a player, then wipe their current cast state and
              * check if a skill is queued.
-             * 
+             *
              * If there is a queued skill, launch it and wipe the queue.
              */
             if (this instanceof L2PcInstance)
             {
                 L2PcInstance currPlayer = (L2PcInstance)this;
                 SkillDat queuedSkill = currPlayer.getQueuedSkill();
-                
+
                 currPlayer.setCurrentSkill(null, false, false);
-                
+
                 if (queuedSkill != null)
-                {                     
+                {
                     currPlayer.setQueuedSkill(null, false, false);
-                    
+
                     // DON'T USE : Recursive call to useMagic() method
                     // currPlayer.useMagic(queuedSkill.getSkill(), queuedSkill.isCtrlPressed(), queuedSkill.isShiftPressed());
                     ThreadPoolManager.getInstance().executeTask(new QueuedMagicUseTask(currPlayer, queuedSkill.getSkill(), queuedSkill.isCtrlPressed(), queuedSkill.isShiftPressed()) );
@@ -4900,8 +4900,8 @@ public abstract class L2Character extends L2Object
             }
 		}
 	}
-	
-	
+
+
 	/**
 	 * Reduce the item number of the L2Character.<BR><BR>
 	 *
@@ -4912,7 +4912,7 @@ public abstract class L2Character extends L2Object
 	public void consumeItem(@SuppressWarnings("unused") int itemConsumeId, @SuppressWarnings("unused") int itemCount)
 	{
 	}
-	
+
 	/**
 	 * Enable a skill (remove it from _disabledSkills of the L2Character).<BR><BR>
 	 *
@@ -4925,16 +4925,16 @@ public abstract class L2Character extends L2Object
 	public void enableSkill(int skillId)
 	{
 		if (_disabledSkills == null) return;
-		
+
 		synchronized (_disabledSkills)
 		{
 			_disabledSkills.remove(new Integer(skillId));
-			
+
 			if (this instanceof L2PcInstance)
 				removeTimeStamp(skillId);
 		}
 	}
-	
+
 	/**
 	 * Disable a skill (add it to _disabledSkills of the L2Character).<BR><BR>
 	 *
@@ -4947,7 +4947,7 @@ public abstract class L2Character extends L2Object
 	public void disableSkill(int skillId)
 	{
 		if (_disabledSkills == null) _disabledSkills = Collections.synchronizedList(new FastList<Integer>());
-		
+
 		_disabledSkills.add(skillId);
 	}
 
@@ -4961,7 +4961,7 @@ public abstract class L2Character extends L2Object
 	    disableSkill(skillId);
 	    if (delay > 10) ThreadPoolManager.getInstance().scheduleAi(new EnableSkill(skillId), delay);
 	}
-	
+
 	/**
 	 * Check if a skill is disabled.<BR><BR>
 	 *
@@ -4974,12 +4974,12 @@ public abstract class L2Character extends L2Object
 	public boolean isSkillDisabled(int skillId)
 	{
 		if (isAllSkillsDisabled()) return true;
-		
+
 		if (_disabledSkills == null) return false;
-        
+
 		return _disabledSkills.contains(skillId);
 	}
-	
+
 	/**
 	 * Disable all skills (set _allSkillsDisabled to True).<BR><BR>
 	 */
@@ -4988,7 +4988,7 @@ public abstract class L2Character extends L2Object
 		if (Config.DEBUG) _log.fine("all skills disabled");
 		_allSkillsDisabled = true;
 	}
-	
+
 	/**
 	 * Enable all skills (set _allSkillsDisabled to False).<BR><BR>
 	 */
@@ -4997,7 +4997,7 @@ public abstract class L2Character extends L2Object
 		if (Config.DEBUG) _log.fine("all skills enabled");
 		_allSkillsDisabled = false;
 	}
-	
+
 	/**
 	 * Launch the magic skill and calculate its effects on each target contained in the targets table.<BR><BR>
 	 *
@@ -5009,7 +5009,7 @@ public abstract class L2Character extends L2Object
 	{
 		try
 		{
-            
+
 			// Do initial checkings for skills and set pvp flag/draw aggro when needed
 			for (L2Object target : targets)
 			{
@@ -5017,7 +5017,7 @@ public abstract class L2Character extends L2Object
 				{
 					// Set some values inside target's instance for later use
 					L2Character player = (L2Character) target;
-					
+
                     L2Weapon activeWeapon = getActiveWeaponItem();
 					// Launch weapon Special ability skill effect if available
 					if (activeWeapon != null && !((L2Character)target).isDead())
@@ -5025,7 +5025,7 @@ public abstract class L2Character extends L2Object
 						if (activeWeapon.getSkillEffects(this, player, skill).length > 0 && this instanceof L2PcInstance)
 							this.sendPacket(SystemMessage.sendString("Target affected by weapon special ability!"));
 					}
-					
+
 					// Check Raidboss attack
 					if (player.isRaid() && getLevel() > player.getLevel() + 8)
 					{
@@ -5033,7 +5033,7 @@ public abstract class L2Character extends L2Object
 						if(tempSkill != null)
 						{
 							tempSkill.getEffects(player, this);
-						}	
+						}
 						else
 						{
 							_log.warning("Skill 4515 at level 99 is missing in DP.");
@@ -5076,9 +5076,9 @@ public abstract class L2Character extends L2Object
 					}
 				}
 			}
-			
+
 			ISkillHandler handler = null;
-			
+
 			// TODO Remove this useless section
 			if(skill.isToggle())
 			{
@@ -5086,16 +5086,16 @@ public abstract class L2Character extends L2Object
 				if(getEffect(skill.getId()) != null)
 				{
 					handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
-					
+
 					if (handler != null)
 						handler.useSkill(this, skill, targets);
 					else
 						skill.useSkill(this, targets);
-					
+
 					return;
 				}
 			}
-            
+
             // Check if over-hit is possible
             if(skill.isOverhit())
             {
@@ -5109,23 +5109,23 @@ public abstract class L2Character extends L2Object
                     }
                 }
             }
-			
+
 			// Get the skill handler corresponding to the skill type (PDAM, MDAM, SWEEP...) started in gameserver
 			handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
-			
+
 			// Launch the magic skill and calculate its effects
 			if (handler != null)
 				handler.useSkill(this, skill, targets);
 			else
 				skill.useSkill(this, targets);
-			
+
 		}
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "", e);
 		}
 	}
-	
+
 	/**
 	 * Return True if the L2Character is behind the target and can't be seen.<BR><BR>
 	 */
@@ -5135,7 +5135,7 @@ public abstract class L2Character extends L2Object
 
         if(getTarget() == null)
 			return false;
-		
+
 		if (getTarget() instanceof L2Character)
 		{
 			L2Character target = (L2Character) getTarget();
@@ -5157,9 +5157,9 @@ public abstract class L2Character extends L2Object
 		}
 		return false;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Return 1.<BR><BR>
 	 */
@@ -5167,7 +5167,7 @@ public abstract class L2Character extends L2Object
 	{
 		return 1;
 	}
-	
+
 	public final void setSkillCast(Future newSkillCast)
 	{
 		_skillCast = newSkillCast;
@@ -5176,44 +5176,44 @@ public abstract class L2Character extends L2Object
 	{
 		_castEndTime = newSkillCastEndTime;
 	}
-	
+
 	/**
 	 * Not Implemented.<BR><BR>
 	 */
 	public void updateStats()
 	{
 	}
-	
+
 	private Future _PvPRegTask;
-	
+
 	private long _lastPvpAttack;
-	
+
 	public void setlastPvpAttack(long time)
 	{
 		_lastPvpAttack = time;
 	}
-	
+
 	public long getlastPvpAttack()
 	{
 		return _lastPvpAttack;
 	}
-	
+
 	public void startPvPFlag()
 	{
 		updatePvPFlag(1);
-		
+
 		_PvPRegTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(
 		                                                                   new PvPFlag(), 1000, 1000);
 	}
-	
+
 	public void stopPvPFlag() {
 		if (_PvPRegTask != null) _PvPRegTask.cancel(false);
-		
+
 		updatePvPFlag(0);
-		
+
 		_PvPRegTask = null;
 	}
-	
+
 	public void updatePvPFlag(int value) {
 		if (!(this instanceof L2PcInstance))
 			return;
@@ -5221,7 +5221,7 @@ public abstract class L2Character extends L2Object
 		if (player.getPvpFlag() == value)
 			return;
 		player.setPvpFlag(value);
-		
+
 		if (player.getKarma() < 1)
 		{
 			StatusUpdate su = new StatusUpdate(getObjectId());
@@ -5230,7 +5230,7 @@ public abstract class L2Character extends L2Object
 		}
 		else return;
 	}
-	
+
 //	public void checkPvPFlag()
 //	{
 //	if (Config.DEBUG) _log.fine("Checking PvpFlag");
@@ -5239,47 +5239,47 @@ public abstract class L2Character extends L2Object
 //	_PvPRegActive = true;
 //	//  _log.fine("PvP recheck");
 //	}
-//	
-	
+//
+
 	/**
 	 * Return a Random Damage in function of the weapon.<BR><BR>
 	 */
 	public final int getRandomDamage(@SuppressWarnings("unused") L2Character target)
 	{
 		L2Weapon weaponItem = getActiveWeaponItem();
-		
+
 		if (weaponItem == null)
 			return 5+(int)Math.sqrt(getLevel());
-		
+
 		return weaponItem.getRandomDamage();
 	}
-	
+
 	public String toString()
 	{
 		return "mob "+this.getObjectId();
 	}
-	
+
 	public int getAttackEndTime()
 	{
 		return _attackEndTime;
 	}
-	
+
 	/**
 	 * Not Implemented.<BR><BR>
 	 */
 	public abstract int getLevel();
 	// =========================================================
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	// =========================================================
 	// Stat - NEED TO REMOVE ONCE L2CHARSTAT IS COMPLETE
 	// Property - Public
 	public final double calcStat(Stats stat, double init, L2Character target, L2Skill skill) { return getStat().calcStat(stat, init, target, skill); }
-	
+
 	// Property - Public
 	public int getAccuracy() { return getStat().getAccuracy(); }
 	public final float getAttackSpeedMultiplier() { return getStat().getAttackSpeedMultiplier(); }
@@ -5317,8 +5317,8 @@ public abstract class L2Character extends L2Object
 	public final int getWalkSpeed() { return getStat().getWalkSpeed(); }
 	public int getWIT() { return getStat().getWIT(); }
 	// =========================================================
-	
-	
+
+
 	// =========================================================
 	// Status - NEED TO REMOVE ONCE L2CHARTATUS IS COMPLETE
 	// Method - Public
@@ -5328,7 +5328,7 @@ public abstract class L2Character extends L2Object
 	public void reduceCurrentMp(double i) { getStatus().reduceMp(i); }
 	public void removeStatusListener(L2Character object) { getStatus().removeStatusListener(object); }
 	protected synchronized void stopHpMpRegeneration() { getStatus().stopHpMpRegeneration(); }
-	
+
 	// Property - Public
 	public final double getCurrentCp() { return getStatus().getCurrentCp(); }
 	public final void setCurrentCp(Double newCp) { setCurrentCp((double) newCp); }
@@ -5340,12 +5340,12 @@ public abstract class L2Character extends L2Object
 	public final void setCurrentMp(Double newMp) { setCurrentMp((double)newMp); }
 	public final void setCurrentMp(double newMp) { getStatus().setCurrentMp(newMp); }
 	// =========================================================
-	
+
 	public void setAiClass(String aiClass)
 	{
 		_aiClass = aiClass;
 	}
-	
+
 	public String getAiClass()
 	{
 		return _aiClass;
@@ -5380,7 +5380,7 @@ public abstract class L2Character extends L2Object
 		double reflect = calcStat(skill.isMagic() ? Stats.REFLECT_SKILL_MAGIC : Stats.REFLECT_SKILL_PHYSIC, 0, null, null);
 		if( Rnd.get(100) < reflect)
 			return true;
-		
+
 		return false;
 	}
 }
