@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.List;
 
 import javolution.util.FastList;
+import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
@@ -67,8 +68,9 @@ public class L2ControlTowerInstance extends L2NpcInstance {
             player.sendPacket(my);
             
             if (
-                    isAutoAttackable(player) &&                 // Object is attackable
-                    Math.abs(player.getZ() - getZ()) < 100      // Less then max height difference
+                    isAutoAttackable(player)                       // Object is attackable
+                    && Math.abs(player.getZ() - getZ()) < 100      // Less then max height difference, delete check when geo
+                    && GeoData.getInstance().canSeeTarget(player, this)
                 )
                 player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
             else 

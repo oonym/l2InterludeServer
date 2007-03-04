@@ -34,13 +34,13 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 
 /**
  * This class manages AI of L2Attackable.<BR><BR>
@@ -124,14 +124,21 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
      */
     private boolean autoAttackCondition(L2Character target)
     {
-        // Check if the target isn't a Folk or a Door
-        if (target instanceof L2FolkInstance || target instanceof L2DoorInstance) return false;
+        // Check if the target isn't another guard, folk or a door
+        if (target instanceof L2SiegeGuardInstance ||
+            target instanceof L2FolkInstance || 
+        	target instanceof L2DoorInstance) return false;
 
         // Check if the target isn't dead
         if (target.isAlikeDead()) return false;
 
         // Get the owner if the target is a summon
-        if (target instanceof L2SummonInstance) target = ((L2SummonInstance) target).getOwner();
+        if (target instanceof L2Summon)
+        {
+        	L2PcInstance owner = ((L2Summon)target).getOwner();
+        	if (_actor.isInsideRadius(owner, 1000, true, false))
+        		target = owner;
+        }
 
         // Check if the target isn't invulnerable
         if (target.isInvul()) return false;
@@ -163,7 +170,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         if (Config.DEBUG)
             _log.info("L2SiegeAI.changeIntention(" + intention + ", " + arg0 + ", " + arg1 + ")");
 
-        if (intention == AI_INTENTION_IDLE || intention == AI_INTENTION_ACTIVE)
+        if (intention == AI_INTENTION_IDLE /*|| intention == AI_INTENTION_ACTIVE*/) // active becomes idle if only a summon is present
         {
             // Check if actor is not dead
             if (!_actor.isAlikeDead())
@@ -297,6 +304,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         L2Skill[] skills = null;
         double dist_2 = 0;
         int range = 0;
+        L2SiegeGuardInstance sGuard = (L2SiegeGuardInstance) _actor;
 
         try
         {
@@ -313,6 +321,16 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         	return;
         }
 
+        // never attack defenders 
+        if(_attack_target instanceof L2PcInstance && sGuard.getCastle().getSiege().checkIsDefender(((L2PcInstance)_attack_target).getClan())) 
+        {
+        	// Cancel the target
+        	sGuard.clearHating(_attack_target);
+        	_actor.setTarget(null);
+        	setIntention(AI_INTENTION_IDLE, null, null);
+        	return;
+        }
+        
         // Check if the actor isn't muted and if it is far from target
         if (!_actor.isMuted() && dist_2 > (range + 20) * (range + 20))
         {
@@ -366,15 +384,16 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
             if (!(_actor.isAttackingNow()) && (_actor.getRunSpeed() == 0)
                 && (_actor.getKnownList().knowsObject(_attack_target)))
             {
-                // Cancel the target
+            	// Cancel the target
                 _actor.getKnownList().removeKnownObject(_attack_target);
                 _actor.setTarget(null);
+                setIntention(AI_INTENTION_IDLE, null, null);
             }
             else
             {
-                L2SiegeGuardInstance sGuard = (L2SiegeGuardInstance) _actor;
                 double dx = _actor.getX() - _attack_target.getX();
                 double dy = _actor.getY() - _attack_target.getY();
+                double dz = _actor.getZ() - _attack_target.getZ();
                 double homeX = _attack_target.getX() - sGuard.getHomeX();
                 double homeY = _attack_target.getY() - sGuard.getHomeY();
 
@@ -387,10 +406,12 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                     _actor.setTarget(null);
                     setIntention(AI_INTENTION_IDLE, null, null);
                 }
-                else
+                else // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
                 {
-                    // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
-                    moveToPawn(_attack_target, range);
+                	// Temporary hack for preventing guards jumping off towers, 
+                	// before replacing this with geodata check
+                	if(dz*dz < 170*170) // normally 130 if guard z coordinates correct 
+                		moveToPawn(_attack_target, range);
                 }
             }
 
@@ -400,7 +421,11 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         // Else, if the actor is muted and far from target, just "move to pawn"
         else if (_actor.isMuted() && dist_2 > (range + 20) * (range + 20))
         {
-            moveToPawn(_attack_target, range);
+        	// Temporary hack for preventing guards jumping off towers, 
+        	// before replacing this with geodata check
+        	double dz = _actor.getZ() - _attack_target.getZ();
+        	if(dz*dz < 170*170) // normally 130 if guard z coordinates correct
+        		moveToPawn(_attack_target, range);
             return;
         }
         // Else, if this is close enough to attack
@@ -537,11 +562,13 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         // Call all L2Object of its Faction inside the Faction Range
         if (((L2NpcInstance) _actor).getFactionId() == null || _attack_target == null || _actor == null)
             return;
+        
+        if (_attack_target.isInvul()) return;
 
         String faction_id = ((L2NpcInstance) _actor).getFactionId();
 
         // Go through all L2Object that belong to its faction
-        for (L2Character cha : _actor.getKnownList().getKnownCharactersInRadius(1200))
+        for (L2Character cha : _actor.getKnownList().getKnownCharactersInRadius(1000))
         {
             if (cha == null) continue;
 
@@ -556,7 +583,9 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                 && _actor.isInsideRadius(npc, npc.getFactionRange(), false, true) 
                 && npc.getTarget() == null
                 && _attack_target.isInsideRadius(npc, npc.getFactionRange(), false, true) 
-                && Math.abs(_attack_target.getZ() - npc.getZ()) < 600)
+                && Math.abs(_attack_target.getZ() - npc.getZ()) < 600
+                // && GeoData.getInstance().canSeeTarget(npc, _attack_target) // LOS from balconies not working yet
+                )
             {
                 // Notify the L2Object AI with EVT_AGGRESSION
                 npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attack_target, 1);
