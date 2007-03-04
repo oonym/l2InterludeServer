@@ -308,7 +308,9 @@ public class MultiSellChoose extends ClientBasePacket
             		newEntry.addIngredient(newIngredient);
                 	double taxableCount = newIngredient.getItemCount()*5.0/6;
                 	_transactionTax = (int)Math.round(taxableCount*taxRate);
-            		newIngredient = L2Multisell.getInstance().new MultiSellIngredient(57, (int)Math.round(taxableCount*taxRate));
+                	if (_transactionTax==0)
+                		continue;
+            		newIngredient = L2Multisell.getInstance().new MultiSellIngredient(57, _transactionTax);
             	}
         	}
         	// if it is an armor/weapon, modify the enchantment level appropriately, if necessary

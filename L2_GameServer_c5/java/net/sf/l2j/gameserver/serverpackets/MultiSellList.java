@@ -189,6 +189,8 @@ public class MultiSellList extends ServerBasePacket
             		// add the ancient adena count normally
             		newEntry.addIngredient(newIngredient);
                 	double taxableCount = ing.getItemCount()*5.0/6;
+                	if (taxableCount==0)
+                		continue;
             		newIngredient = L2Multisell.getInstance().new MultiSellIngredient(57, (int)Math.round(taxableCount*taxRate));
             	}
         	}
