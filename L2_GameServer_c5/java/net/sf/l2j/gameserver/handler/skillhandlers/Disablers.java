@@ -287,7 +287,11 @@ public class Disablers implements ISkillHandler
                 }
                 case ERASE:
                 {
-                	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss))
+                	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss)
+                		// doesn't affect siege golem or wild hog cannon
+                		&& !(((L2Summon)target).getNpcId() == L2Summon.SIEGE_GOLEM_ID)
+                		&& !(((L2Summon)target).getNpcId() <= 14798 && ((L2Summon)target).getNpcId() >= 14768)
+                		)
                 	{
                 		L2PcInstance summonOwner = null;
                 		L2Summon summonPet = null;
@@ -297,6 +301,16 @@ public class Disablers implements ISkillHandler
                         SystemMessage sm = new SystemMessage(1667);
 				        summonOwner.sendPacket(sm);                		 
                 	}
+                	else
+                    {
+                        if (activeChar instanceof L2PcInstance)
+                        {
+                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                            sm.addString(target.getName());
+                            sm.addSkillName(skill.getId());
+                            activeChar.sendPacket(sm);
+                        }
+                    }
                 	break;
                 }
                 case MAGE_BANE:
