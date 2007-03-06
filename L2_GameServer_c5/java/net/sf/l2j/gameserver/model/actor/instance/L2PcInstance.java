@@ -568,13 +568,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _ReviveRequested = 0;
 	private double _RevivePower = 0;
 	private boolean _RevivePet = false;
-	
-	private double _cpUpdateIncCheck = .0;
-	private double _cpUpdateDecCheck = .0;
-	private double _cpUpdateInterval = .0;
-	private double _mpUpdateIncCheck = .0;
-	private double _mpUpdateDecCheck = .0;
-	private double _mpUpdateInterval = .0;
     
     
 	/** Skill casting information (used to queue when several skills are cast in a short time) **/
@@ -698,19 +691,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 	
 	/**
-	 * Initialize the values to prevent useless status upadtes
-	 */
-	private void initStatusUpdateValues()
-	{
-		_cpUpdateInterval = getMaxCp()/352.0;
-		_cpUpdateIncCheck = getMaxCp();
-		_cpUpdateDecCheck = getMaxCp()/_cpUpdateInterval;
-		_mpUpdateInterval = getMaxMp()/352.0;
-		_mpUpdateIncCheck = getMaxMp();
-		_mpUpdateDecCheck = getMaxMp()/_mpUpdateInterval;
-	}
-	
-	/**
 	 * Constructor of L2PcInstance (use L2Character constructor).<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
@@ -747,8 +727,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (!Config.WAREHOUSE_CACHE)
 			getWarehouse();
 		getFreight().restore();
-		
-		initStatusUpdateValues();
 	}
 	
 	private L2PcInstance(int objectId)
@@ -759,7 +737,6 @@ public final class L2PcInstance extends L2PlayableInstance
         this.getStatus();		// init status
 		
 		_baseLoad = 0;
-		initStatusUpdateValues();
 	}
 	
 	public final PcKnownList getKnownList()
@@ -3089,52 +3066,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 	
 	/**
-	 * Returns true if cp update should be done, false if not 
-	 * @return boolean
-	 */
-	protected boolean needCpUpdate(int barPixels)
-	{
-		double currentCp = getCurrentCp();
-
-	    if (currentCp <= .0 || getMaxCp() < barPixels)
-	        return true;
-
-	    if (currentCp < _cpUpdateDecCheck || currentCp > _cpUpdateIncCheck)
-	    {
-	        _cpUpdateDecCheck = Double.MAX_VALUE;
-	        _cpUpdateIncCheck = Double.MAX_VALUE;
-	        _cpUpdateDecCheck -= (_cpUpdateDecCheck-currentCp)/_cpUpdateInterval*_cpUpdateInterval;
-	        _cpUpdateIncCheck -= (_cpUpdateDecCheck-currentCp)/_cpUpdateInterval*_cpUpdateInterval-_cpUpdateInterval;
-	        return true;
-	    }
-	    
-	    return false;
-	}
-	
-	/**
-	 * Returns true if mp update should be done, false if not 
-	 * @return boolean
-	 */
-	protected boolean needMpUpdate(int barPixels)
-	{
-		double currentMp = getCurrentMp();
-
-	    if (currentMp <= .0 || getMaxMp() < barPixels)
-	        return true;
-
-	    if (currentMp < _mpUpdateDecCheck || currentMp > _mpUpdateIncCheck)
-	    {
-	        _mpUpdateDecCheck = Double.MAX_VALUE;
-	        _mpUpdateIncCheck = Double.MAX_VALUE;
-	        _mpUpdateDecCheck -= (_mpUpdateDecCheck-currentMp)/_mpUpdateInterval*_mpUpdateInterval;
-	        _mpUpdateIncCheck -= (_mpUpdateDecCheck-currentMp)/_mpUpdateInterval*_mpUpdateInterval-_mpUpdateInterval;
-	        return true;
-	    }
-	    
-	    return false;
-	}
-	
-	/**
 	 * Send packet StatusUpdate with current HP,MP and CP to the L2PcInstance and only current HP, MP and Level to all other L2PcInstance of the Party.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
@@ -3158,8 +3089,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		su.addAttribute(StatusUpdate.MAX_CP, 	   getMaxCp());
 		sendPacket(su);
 		
-		// Check if a party is in progress and if upadte is needed
-		if (isInParty() && (needCpUpdate(352) || super.needHpUpdate(352) || needMpUpdate(352)))
+		// Check if a party is in progress
+		if (isInParty())
 		{
 			// Send the Server->Client packet PartySmallWindowUpdate with current HP, MP and Level to all other L2PcInstance of the Party
 			PartySmallWindowUpdate update = new PartySmallWindowUpdate(this);

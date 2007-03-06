@@ -150,9 +150,9 @@ public abstract class L2Character extends L2Object
 	private L2CharTemplate _Template;                       // The link on the L2CharTemplate object containing generic and static properties of this L2Character type (ex : Max HP, Speed...)
 	private String _Title;
 	private String _aiClass = "default";
-	private double _hpUpdateIncCheck = .0;
-	private double _hpUpdateDecCheck = .0;
-	private double _hpUpdateInterval = .0;
+	private double _hpUpdateIncCheck;
+	private double _hpUpdateDecCheck;
+	private double _hpUpdateInterval;
 
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _Calculators;
@@ -292,26 +292,38 @@ public abstract class L2Character extends L2Object
 	}
 
 	/**
-	 * * Returns true if hp update should be done, false if not
+	 * Returns true if status update should be done, false if not
 	 * @return boolean
 	 */
-	protected boolean needHpUpdate(int barPixels)
+	private boolean needStatusUpdate()
 	{
+		if (!(this instanceof L2MonsterInstance))
+			return true;
+
 		double currentHp = getCurrentHp();
 
-	    if (currentHp <= .0 || getMaxHp() < barPixels)
+	    if (currentHp <= 0.00 || getMaxHp() < 352)
 	        return true;
 
-	    if (currentHp < _hpUpdateDecCheck || currentHp > _hpUpdateIncCheck)
- 	    {
-	        _hpUpdateDecCheck = Double.MAX_VALUE;
-	        _hpUpdateIncCheck = Double.MAX_VALUE;
-	        _hpUpdateDecCheck -= (_hpUpdateDecCheck-currentHp)/_hpUpdateInterval*_hpUpdateInterval;
-	        _hpUpdateIncCheck -= (_hpUpdateDecCheck-currentHp)/_hpUpdateInterval*_hpUpdateInterval-_hpUpdateInterval;
-	        return true;
- 	    }
+	    boolean needUpdate = false;
 
-	    return false;
+/*	    if (currentHp > getMaxHp())
+	        currentHp = getMaxHp();*/
+
+	    if (currentHp < _hpUpdateDecCheck)
+	    {
+	        needUpdate = true;
+	        _hpUpdateDecCheck -= _hpUpdateInterval;
+	        _hpUpdateIncCheck -= _hpUpdateInterval;
+	    }
+	    else if (currentHp > _hpUpdateIncCheck)
+	    {
+	        needUpdate = true;
+	        _hpUpdateDecCheck += _hpUpdateInterval;
+	        _hpUpdateIncCheck += _hpUpdateInterval;
+	    }
+
+	    return needUpdate;
 	}
 
 	/**
@@ -332,7 +344,7 @@ public abstract class L2Character extends L2Object
 	{
 		if (getStatus().getStatusListener() == null || getStatus().getStatusListener().isEmpty()) return;
 
-		if (!needHpUpdate(352))
+		if (!needStatusUpdate())
 			return;
 
 		// Create the Server->Client packet StatusUpdate with current HP and MP
