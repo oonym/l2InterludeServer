@@ -219,7 +219,7 @@ public class Disablers implements ISkillHandler
                         {
                             if (activeChar instanceof L2PcInstance)
                             {
-                                SystemMessage sm = new SystemMessage(139);
+                                SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                                 sm.addString(target.getName());
                                 sm.addSkillName(skill.getId());
                                 activeChar.sendPacket(sm);
@@ -230,7 +230,7 @@ public class Disablers implements ISkillHandler
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(139);
+                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
                             sm.addSkillName(skill.getId());
                             activeChar.sendPacket(sm);
@@ -257,22 +257,70 @@ public class Disablers implements ISkillHandler
                 }
                 case AGGREDUCE:
                 {
-                    if (target instanceof L2Attackable)
-                        target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -(int) skill.getPower());
+                	// these skills needs to be rechecked
+                	if (target instanceof L2Attackable)
+                    {
+                    	skill.getEffects(activeChar, target);
+
+                    	double aggdiff = ((L2Attackable)target).getHating(activeChar) 
+                    					   - target.calcStat(Stats.AGGRESSION, ((L2Attackable)target).getHating(activeChar), target, skill); 
+                    						
+                    	if (skill.getPower() > 0)
+                    		target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -(int) skill.getPower());
+                    	else if (aggdiff > 0)
+                    		target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -(int) aggdiff);
+                    }
                     break;
                 }
                 case AGGREDUCE_CHAR:
                 {
-                    if (target instanceof L2Attackable)
-                        target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, -(int) skill.getPower());
+                	// these skills needs to be rechecked
+                	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss))
+                	{
+                		if (target instanceof L2Attackable)
+                		{
+                			target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, -((L2Attackable)target).getHating(activeChar));
+                        }
+                    	skill.getEffects(activeChar, target);
+                    }
+                	else
+                	{
+                		if (activeChar instanceof L2PcInstance)
+                		{
+                			SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                			sm.addString(target.getName());
+                			sm.addSkillName(skill.getId());
+                			activeChar.sendPacket(sm);
+                		}
+                	}
                     break;
                 }
                 case AGGREMOVE:
                 {
-                    // 1034 = repose, 1049 = requiem
-                    //if (skill.getId() == 1034 || skill.getId() == 1049)
-                    if ((skill.getTargetType() == L2Skill.SkillTargetType.TARGET_UNDEAD && target.isUndead()) || target.isAttackable())                    
-                    	target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -(int) skill.getPower());
+                	// these skills needs to be rechecked
+                	if (target instanceof L2Attackable)
+                	{
+                		if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, sps, bss))
+                		{
+                			if (skill.getTargetType() == L2Skill.SkillTargetType.TARGET_UNDEAD)
+                			{
+                				if(target.isUndead())
+                					target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -((L2Attackable)target).getHating(((L2Attackable)target).getMostHated()));
+                			}
+                			else
+                				target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -((L2Attackable)target).getHating(((L2Attackable)target).getMostHated()));
+                		}
+                		else
+                		{
+                			if (activeChar instanceof L2PcInstance)
+                			{
+                				SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                				sm.addString(target.getName());
+                				sm.addSkillName(skill.getId());
+                				activeChar.sendPacket(sm);
+                			}
+                		}
+                	}
                     break;
                 }
                 case UNBLEED:
