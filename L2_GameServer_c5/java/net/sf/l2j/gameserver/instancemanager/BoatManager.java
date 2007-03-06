@@ -157,8 +157,8 @@ public class BoatManager
 		npcDat.set("baseAtkRange", 0);
         npcDat.set("baseMpMax", 0);
         npcDat.set("baseCpMax", 0);
-		npcDat.set("revardExp", 0);
-		npcDat.set("revardSp", 0);
+		npcDat.set("rewardExp", 0);
+		npcDat.set("rewardSp", 0);
 		npcDat.set("basePAtk", 0);
 		npcDat.set("baseMAtk", 0);
 		npcDat.set("basePAtkSpd", 0);

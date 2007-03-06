@@ -159,7 +159,7 @@ public class CharStatus
                 getActiveChar().setIsKilledAlready(true);
             }
 
-            // first die (and calculate revards), if currentHp < 0,
+            // first die (and calculate rewards), if currentHp < 0,
             // then overhit may be calculated
             if (Config.DEBUG) _log.fine("char is dead.");
 

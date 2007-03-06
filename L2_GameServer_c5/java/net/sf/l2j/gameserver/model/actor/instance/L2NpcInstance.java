@@ -2087,7 +2087,7 @@ public class L2NpcInstance extends L2Character
      */
     public int getExpReward()
     {
-        return (int)(getTemplate().revardExp * getTemplate().rateHp * Config.RATE_XP);
+        return (int)(getTemplate().rewardExp * getTemplate().rateHp * Config.RATE_XP);
     }
     
     /**
@@ -2095,7 +2095,7 @@ public class L2NpcInstance extends L2Character
      */
     public int getSpReward()
     {
-        return (int)(getTemplate().revardSp * getTemplate().rateHp * Config.RATE_SP);
+        return (int)(getTemplate().rewardSp * getTemplate().rateHp * Config.RATE_SP);
     }
     
     /**

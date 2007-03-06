@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.skills.Stats;
  * 
  * <B><U> Data</U> :</B><BR><BR>
  * <li>npcId, type, name, sex</li>
- * <li>revardExp, revardSp</li>
+ * <li>rewardExp, rewardSp</li>
  * <li>aggroRange, factionId, factionRange</li>
  * <li>rhand, lhand, armor</li>
  * <li>isUndead</li>
@@ -59,8 +59,8 @@ public final class L2NpcTemplate extends L2CharTemplate
     public final boolean serverSideTitle;
 	public final String  sex;
 	public final byte    level;
-	public final int     revardExp;
-	public final int     revardSp;
+	public final int     rewardExp;
+	public final int     rewardSp;
 	public final int     aggroRange;
 	public final int     rhand;
 	public final int     lhand;
@@ -106,8 +106,8 @@ public final class L2NpcTemplate extends L2CharTemplate
         serverSideTitle = set.getBool("serverSideTitle");
 		sex       = set.getString("sex");
 		level     = set.getByte("level");
-		revardExp = set.getInteger("revardExp");
-		revardSp  = set.getInteger("revardSp");
+		rewardExp = set.getInteger("rewardExp");
+		rewardSp  = set.getInteger("rewardSp");
 		aggroRange= set.getInteger("aggroRange");
 		rhand     = set.getInteger("rhand");
 		lhand     = set.getInteger("lhand");

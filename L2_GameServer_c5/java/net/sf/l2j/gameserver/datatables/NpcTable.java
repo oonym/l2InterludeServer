@@ -324,8 +324,8 @@ public class NpcTable
 			npcDat.set("sex", NpcData.getString("sex"));
 			npcDat.set("type", NpcData.getString("type"));
 			npcDat.set("baseAtkRange", NpcData.getInt("attackrange"));
-			npcDat.set("revardExp", NpcData.getInt("exp"));
-			npcDat.set("revardSp", NpcData.getInt("sp"));
+			npcDat.set("rewardExp", NpcData.getInt("exp"));
+			npcDat.set("rewardSp", NpcData.getInt("sp"));
 			npcDat.set("basePAtkSpd", NpcData.getInt("atkspd"));
 			npcDat.set("baseMAtkSpd", NpcData.getInt("matkspd"));
 			npcDat.set("aggroRange", NpcData.getInt("aggro"));
