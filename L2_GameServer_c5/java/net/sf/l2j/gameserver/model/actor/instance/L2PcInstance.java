@@ -6089,7 +6089,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * @param dontMove used to prevent movement, if not in range
 	 *
 	 */
-	public void useMagic(L2Skill skill, boolean forceUse, boolean dontMove)
+	public synchronized void useMagic(L2Skill skill, boolean forceUse, boolean dontMove)
 	{
         if (isDead())
         {
