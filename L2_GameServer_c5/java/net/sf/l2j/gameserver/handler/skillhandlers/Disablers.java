@@ -536,8 +536,10 @@ public class Disablers implements ISkillHandler
         	{
         		if (e.getSkill().getSkillType() == type || (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type)) {
         			if (skillId != 0)
+        			{
         				if (skillId == e.getSkill().getId())
         					e.exit();
+        			}
         			else
         				e.exit();
         		}
@@ -545,8 +547,10 @@ public class Disablers implements ISkillHandler
         	else if ((e.getSkill().getSkillType() == type && e.getSkill().getPower() <= power) 
         			|| (e.getSkill().getEffectType() != null && e.getSkill().getEffectType() == type && e.getSkill().getEffectLvl() <= power)) {
     			if (skillId != 0)
+    			{
     				if (skillId == e.getSkill().getId())
     					e.exit();
+    			}
     			else
     				e.exit();
         	}
