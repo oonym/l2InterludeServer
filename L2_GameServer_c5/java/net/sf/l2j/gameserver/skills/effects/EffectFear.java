@@ -22,9 +22,10 @@ package net.sf.l2j.gameserver.skills.effects;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -70,6 +71,7 @@ final class EffectFear extends L2Effect {
     	// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread is the exception.
     	if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376) return false;
     	if(getEffected() instanceof L2FolkInstance) return false;
+    	if(getEffected() instanceof L2SiegeGuardInstance) return false;
     	// Fear skills cannot be used on Headquarters Flag.  
     	if(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062) return false;  
 
