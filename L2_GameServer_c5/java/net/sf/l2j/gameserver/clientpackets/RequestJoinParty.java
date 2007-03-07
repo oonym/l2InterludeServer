@@ -90,6 +90,12 @@ public class RequestJoinParty extends ClientBasePacket
 			return;
 		}
         
+		if (target.isInJail() || requestor.isInJail()) 
+        {
+			SystemMessage sm = SystemMessage.sendString("Player is in Jail");
+			requestor.sendPacket(sm);
+			return;
+		}
         
         if (target.isInOlympiadMode() || requestor.isInOlympiadMode())
             return;
