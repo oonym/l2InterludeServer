@@ -3,6 +3,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.TradeController;
 import net.sf.l2j.gameserver.model.L2TradeList;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -109,9 +110,10 @@ public final class L2MercManagerInstance extends L2FolkInstance
             if (player.getClan() != null)
             {
                 if (getCastle().getSiege().getIsInProgress()) return Cond_Busy_Because_Of_Siege; // Busy because of siege
-                else if (getCastle().getOwnerId() == player.getClanId() // Clan owns castle
-                    && player.isClanLeader()) // Leader of clan
-                    return Cond_Owner; // Owner
+                else if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
+                {
+                    if ((player.getClanPrivileges() & L2Clan.CP_CS_MERCENARIES) == L2Clan.CP_CS_MERCENARIES) return Cond_Owner;
+                }
             }
         }
 
