@@ -91,8 +91,10 @@ public class RequestExEnchantSkill extends ClientBasePacket
         if (player.getSkillLevel(_skillID) >= _skillLvl)// already knows the skill with this level
             return;
         
-        if(player.getClassId().getId() < 88) // requires to have 3rd class quest completed
+        if (player.getClassId().getId() < 88) // requires to have 3rd class quest completed
     		return;
+        
+        if (player.getLevel() < 76) return;
         
         L2Skill skill = SkillTable.getInstance().getInfo(_skillID, _skillLvl);
         
