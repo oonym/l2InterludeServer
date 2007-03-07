@@ -270,15 +270,15 @@ public class RequestAquireSkill extends ClientBasePacket
                 }
                 
                 SystemMessage sm = new SystemMessage(SystemMessage.DISSAPEARED_ITEM);
-                sm.addNumber(1);
                 sm.addItemName(itemId);
+                sm.addNumber(1);
                 sendPacket(sm);
                 sm = null;
             }
             else
             {
-                //SystemMessage sm = new SystemMessage(SystemMessage.NOT_ENOUGH_SP_TO_LEARN_SKILL);
-                player.sendMessage("Your clan doesn't have enough reputation points to learn this skill");
+                SystemMessage sm = new SystemMessage(1852);
+                player.sendPacket(sm);
                 //sm = null;
                 return;
             }
@@ -289,7 +289,10 @@ public class RequestAquireSkill extends ClientBasePacket
             
             player.getClan().setReputationScore(player.getClan().getReputationScore()-repCost, true);
             
-            SystemMessage sm = new SystemMessage(SystemMessage.LEARNED_SKILL_S1);
+            SystemMessage cr = new SystemMessage(1787);
+            cr.addNumber(repCost);
+            player.sendPacket(cr);
+            SystemMessage sm = new SystemMessage(1788);
             sm.addSkillName(_id);
             player.sendPacket(sm);
             sm = null;
@@ -317,6 +320,10 @@ public class RequestAquireSkill extends ClientBasePacket
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.SP, player.getSp());
 		player.sendPacket(su);
+
+        SystemMessage sp = new SystemMessage(538);
+        sp.addNumber(_requiredSp);
+        sendPacket(sp);
 
 		SystemMessage sm = new SystemMessage(SystemMessage.LEARNED_SKILL_S1);
 		sm.addSkillName(_id);
