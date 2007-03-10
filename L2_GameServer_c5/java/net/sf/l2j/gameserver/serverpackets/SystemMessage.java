@@ -568,7 +568,7 @@ public class SystemMessage extends ServerBasePacket
     public static final int CANT_RESTART_WHILE_FIGHTING = 0x66;
 	public static final int ENTER_FILE_NAME_CREST = 515;
     public static final int FILE_NOT_FOUND = 528;
-    public static final int S1_ROLLED_S2 = 814;
+    public static final int S1_ROLLED_S2 = 834;
     public static final int NO_GM_PROVIDING_SERVICE_NOW = 702;
     public static final int TARGET_TOO_FAR = 22;
     public static final int S1_DISAPPEARED = 302;

@@ -58,15 +58,13 @@ public class RollingDice implements IItemHandler
 			int number = Rnd.get(1, 6);
 			
 			Dice d = new Dice (activeChar.getObjectId(),item.getItemId(),number,activeChar.getX()-30,activeChar.getY()-30,activeChar.getZ() );
-            Broadcast.toKnownPlayers(activeChar, d);
+            Broadcast.toSelfAndKnownPlayers(activeChar, d);
             
 			SystemMessage sm = new SystemMessage(SystemMessage.S1_ROLLED_S2);
 			sm.addString(activeChar.getName());
 			sm.addNumber(number);
 
 			activeChar.sendPacket(sm);
-            activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
-
             if (!TownManager.getInstance().checkIfInZone(activeChar))
 			    Broadcast.toKnownPlayers(activeChar, sm);
 			else if (activeChar.isInParty())
