@@ -91,8 +91,8 @@ public class QuestList extends ServerBasePacket
 	     * 		2 byte - Number of Quests
 	     * 		for Quest in AvailibleQuests
 	     * 		{
-	     * 			4 byte - Quest.ID
-	     * 			4 byte - 1
+	     * 			4 byte - Quest ID
+	     * 			4 byte - Quest Status
 	     * 		}
 	     * 		2 byte - Number of All Quests Item
 	     * 		for Item in AllQuestsItem
