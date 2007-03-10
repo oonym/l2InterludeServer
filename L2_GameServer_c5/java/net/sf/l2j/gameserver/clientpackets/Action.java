@@ -32,14 +32,14 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.4.4 $ $Date: 2005/03/27 18:46:19 $
  */
 public class Action extends ClientBasePacket
 {
 	private static final String ACTION__C__04 = "[C] 04 Action";
 	private static Logger _log = Logger.getLogger(Action.class.getName());
-	
+
 	// cddddc
 	private final int _objectId;
 	@SuppressWarnings("unused")
@@ -52,7 +52,7 @@ public class Action extends ClientBasePacket
 
 	/** urgent messages, execute immediatly */
     public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
-	
+
 	/**
 	 * @param decrypt
 	 */
@@ -70,26 +70,28 @@ public class Action extends ClientBasePacket
 	{
 		if (Config.DEBUG) _log.fine("Action:" + _actionId);
 		if (Config.DEBUG) _log.fine("oid:" + _objectId);
-        
+
         // Get the current L2PcInstance of the player
         L2PcInstance activeChar = getClient().getActiveChar();
-        
+
 		if (activeChar == null)
 			return;
-		
+
         // Get the L2OPbject targeted corresponding to _objectId
 		L2Object obj = L2World.getInstance().findObject(_objectId);
-        
+
+		// If object requested does not exist, add warn msg into logs
+		if (obj == null) {
+        	_log.warning("Character: " + activeChar.getName() + " request action with non existent ObjectID:" + _objectId);
+        	sendPacket(new ActionFailed());
+        	return;
+        }
         // Check if the target is valid, if the player haven't a shop or isn't the requester of a transaction (ex : FriendInvite, JoinAlly, JoinParty...)
-		if (obj != null && activeChar.getPrivateStoreType()==0 && activeChar.getActiveRequester()==null)
+		if (activeChar.getPrivateStoreType()==0 && activeChar.getActiveRequester()==null)
 		{
 			switch (_actionId)
 			{
 				case 0:
-                    // if(!activeChar.isGM() && obj instanceof L2PcInstance)
-                    // if (Math.abs(activeChar.getZ()-obj.getZ())>600)
-                    // if (Math.abs(activeChar.getZ()-_originZ)>800)
-                    // return;
 					obj.onAction(activeChar);
 					break;
 				case 1:
@@ -98,15 +100,16 @@ public class Action extends ClientBasePacket
 					else
 						obj.onActionShift(getClient());
 					break;
+				default:
+					// Ivalid action detected (probably client cheating), log this
+					_log.warning("Character: " + activeChar.getName() + " requested invalid action: " + _actionId);
+					sendPacket(new ActionFailed());
+					break;
 			}
 		}
 		else
-		{
+			// Actions prohibited when in trade
 			activeChar.sendPacket(new ActionFailed());
-            
-            if (Config.DEBUG)
-                _log.warning("object not found, oid "+_objectId+ " or player is dead");
-		}
 	}
 
 	/* (non-Javadoc)

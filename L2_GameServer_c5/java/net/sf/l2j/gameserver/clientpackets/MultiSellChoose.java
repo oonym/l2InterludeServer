@@ -1,7 +1,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
-//import java.util.logging.Logger;
+import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import net.sf.l2j.gameserver.ClientThread;
@@ -25,13 +25,13 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 public class MultiSellChoose extends ClientBasePacket
 {
     private static final String _C__A7_MULTISELLCHOOSE = "[C] A7 MultiSellChoose";
-    //private static Logger _log = Logger.getLogger(MultiSellChoose.class.getName());
+    private static Logger _log = Logger.getLogger(MultiSellChoose.class.getName());
     private int _listId;
     private int _entryId;
     private int _amount;
     private int _enchantment;
     private int _transactionTax;	// local handling of taxation
-    
+
     public MultiSellChoose(ByteBuffer buf, ClientThread client)
     {
         super(buf,client);
@@ -43,7 +43,7 @@ public class MultiSellChoose extends ClientBasePacket
         _entryId = _entryId / 100000;
         _transactionTax = 0;	// initialize tax amount to 0...
     }
-    
+
     public void runImpl()
     {
     	if(_amount < 1 || _amount > 5000 || _amount > Integer.MAX_VALUE )
@@ -51,7 +51,7 @@ public class MultiSellChoose extends ClientBasePacket
 
         MultiSellListContainer list = L2Multisell.getInstance().getList(_listId);
         if(list == null) return;
-        
+
         L2PcInstance player = getClient().getActiveChar();
         if(player == null) return;
 
@@ -64,25 +64,25 @@ public class MultiSellChoose extends ClientBasePacket
             }
         }
     }
-    
+
     private void doExchange(L2PcInstance player, MultiSellEntry templateEntry, boolean applyTaxes, boolean maintainEnchantment, int enchantment)
     {
     	PcInventory inv = player.getInventory();
-        
+
         // given the template entry and information about maintaining enchantment and applying taxes
         // re-create the instance of the entry that will be used for this exchange
     	// i.e. change the enchantment level of select ingredient/products and adena amount appropriately.
         L2NpcInstance merchant = (L2NpcInstance)player.getTarget();
         MultiSellEntry entry = prepareEntry(merchant, templateEntry, applyTaxes, maintainEnchantment, enchantment);
-        
-        // Generate a list of distinct ingredients and counts in order to check if the correct item-counts 
+
+        // Generate a list of distinct ingredients and counts in order to check if the correct item-counts
         // are possessed by the player
     	FastList<MultiSellIngredient> _ingredientsList = new FastList<MultiSellIngredient>();
     	boolean newIng = true;
     	for(MultiSellIngredient e: entry.getIngredients())
     	{
     		newIng = true;
-    		
+
     		// at this point, the template has already been modified so that enchantments are properly included
     		// whenever they need to be applied.  Uniqueness of items is thus judged by item id AND enchantment level
     		for(MultiSellIngredient ex: _ingredientsList)
@@ -112,7 +112,7 @@ public class MultiSellChoose extends ClientBasePacket
                 return;
             }
             // if this is not a list that maintains enchantment, check the count of all items that have the given id.
-            // otherwise, check only the count of items with exactly the needed enchantment level 
+            // otherwise, check only the count of items with exactly the needed enchantment level
     		if( inv.getInventoryItemCount(e.getItemId(), maintainEnchantment? e.getEnchantmentLevel() : -1) < (e.getItemCount() * _amount) )
     		{
     			player.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
@@ -121,16 +121,20 @@ public class MultiSellChoose extends ClientBasePacket
     			return;
     		}
     	}
-    	
+
     	_ingredientsList.clear();
     	_ingredientsList = null;
     	/** All ok, remove items and add final product */
-    	
+
     	for(MultiSellIngredient e : entry.getIngredients())
     	{
 			L2ItemInstance itemToTake = inv.getItemByItemId(e.getItemId());		// initialize and initial guess for the item to take.
-			// if it's a stackable item, just reduce the amount from the first (only) instance that is found in the inventory 
-			if (itemToTake.isStackable())	
+			if (itemToTake == null) { //this is a cheat, transaction will be aborted and if any items already tanken will not be returned back to inventory!
+				_log.severe("Character: " + player.getName() + " is trying to cheat in multisell, merchatnt id:" + merchant.getNpcId());
+				return;
+			}
+			// if it's a stackable item, just reduce the amount from the first (only) instance that is found in the inventory
+			if (itemToTake.isStackable())
                 player.destroyItem("Multisell", itemToTake.getObjectId(), (e.getItemCount() * _amount), player.getTarget(), true);
 			else
 			{
@@ -152,44 +156,44 @@ public class MultiSellChoose extends ClientBasePacket
 				else	// b) enchantment is not maintained.  Get the instances with the LOWEST enchantment level
 				{
 					/* NOTE: There are 2 ways to achieve the above goal.
-					 * 1) Get all items that have the correct itemId, loop through them until the lowest enchantment 
-					 * 		level is found.  Repeat all this for the next item until proper count of items is reached. 
-					 * 2) Get all items that have the correct itemId, sort them once based on enchantment level, 
+					 * 1) Get all items that have the correct itemId, loop through them until the lowest enchantment
+					 * 		level is found.  Repeat all this for the next item until proper count of items is reached.
+					 * 2) Get all items that have the correct itemId, sort them once based on enchantment level,
 					 * 		and get the range of items that is necessary.
 					 * Method 1 is faster for a small number of items to be exchanged.
 					 * Method 2 is faster for large amounts.
-					 * 
+					 *
 					 * EXPLANATION:
 					 *   Worst case scenario for algorithm 1 will make it run in a number of cycles given by:
 					 * m*(2n-m+1)/2 where m is the number of items to be exchanged and n is the total
 					 * number of inventory items that have a matching id.
-					 *   With algorithm 2 (sort), sorting takes n*log(n) time and the choice is done in a single cycle 
+					 *   With algorithm 2 (sort), sorting takes n*log(n) time and the choice is done in a single cycle
 					 * for case b (just grab the m first items) or in linear time for case a (find the beginning of items
 					 * with correct enchantment, index x, and take all items from x to x+m).
-					 * Basically, whenever m > log(n) we have: m*(2n-m+1)/2 = (2nm-m*m+m)/2 > 
+					 * Basically, whenever m > log(n) we have: m*(2n-m+1)/2 = (2nm-m*m+m)/2 >
 					 * (2nlogn-logn*logn+logn)/2 = nlog(n) - log(n*n) + log(n) = nlog(n) + log(n/n*n) =
-					 * nlog(n) + log(1/n) = nlog(n) - log(n) = (n-1)log(n) 
-					 * So for m < log(n) then m*(2n-m+1)/2 > (n-1)log(n) and m*(2n-m+1)/2 > nlog(n) 
-					 * 
+					 * nlog(n) + log(1/n) = nlog(n) - log(n) = (n-1)log(n)
+					 * So for m < log(n) then m*(2n-m+1)/2 > (n-1)log(n) and m*(2n-m+1)/2 > nlog(n)
+					 *
 					 * IDEALLY:
 					 * In order to best optimize the performance, choose which algorithm to run, based on whether 2^m > n
 					 * if ( (2<<(e.getItemCount() * _amount)) < inventoryContents.length )
 					 *   // do Algorithm 1, no sorting
 					 * else
-					 *   // do Algorithm 2, sorting  
-					 * 
+					 *   // do Algorithm 2, sorting
+					 *
 					 * CURRENT IMPLEMENTATION:
 					 * In general, it is going to be very rare for a person to do a massive exchange of non-stackable items
 					 * For this reason, we assume that algorithm 1 will always suffice and we keep things simple.
 					 * If, in the future, it becomes necessary that we optimize, the above discussion should make it clear
-					 * what optimization exactly is necessary (based on the comments under "IDEALLY"). 
+					 * what optimization exactly is necessary (based on the comments under "IDEALLY").
 					 */
-					
+
 					// choice 1.  Small number of items exchanged.  No sorting.
 	                for (int i = 1; i <= (e.getItemCount() * _amount); i++)
 	                {
 	    				L2ItemInstance[] inventoryContents = inv.getAllItemsByItemId(e.getItemId());
-	
+
 	        			synchronized (inventoryContents)
 	        			{
 	        				itemToTake = inventoryContents[0];
@@ -207,13 +211,13 @@ public class MultiSellChoose extends ClientBasePacket
 		        					}
 		        				}
 	        				}
-	        			}				
+	        			}
 						player.destroyItem("Multisell", itemToTake.getObjectId(), 1, player.getTarget(), true);
 	                }
 				}
 			}
     	}
-    	
+
     	// Generate the appropriate items
     	for(MultiSellIngredient e : entry.getProducts())
     	{
@@ -232,7 +236,7 @@ public class MultiSellChoose extends ClientBasePacket
 	    	}
 	         // msg part
 	        SystemMessage sm;
-	        
+
 	        if (e.getItemCount() * _amount > 1)
 	        {
 	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
@@ -259,17 +263,17 @@ public class MultiSellChoose extends ClientBasePacket
 	        }
     	}
         player.sendPacket(new ItemList(player, false));
-        
+
         StatusUpdate su = new StatusUpdate(player.getObjectId());
         su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
         player.sendPacket(su);
         su = null;
-        
+
         // finally, give the tax to the castle...
 		if (merchant != null && merchant.getIsInTown() && merchant.getCastle().getOwnerId() > 0)
 		    merchant.getCastle().addToTreasury(_transactionTax * _amount);
     }
-    
+
 	// Regarding taxation, the following appears to be the case:
 	// a) The count of aa remains unchanged (taxes do not affect aa directly).
 	// b) 5/6 of the amount of aa is taxed by the normal tax rate.
@@ -292,11 +296,11 @@ public class MultiSellChoose extends ClientBasePacket
         	// if taxes are to be applied, modify/add the adena count based on the template adena/ancient adena count
         	if ( applyTaxes && ((newIngredient.getItemId() == 57) || (newIngredient.getItemId() == 5575)) )
         	{
-            	
+
             	double taxRate = 0.0;
-            	if (merchant != null && merchant.getIsInTown()) 
+            	if (merchant != null && merchant.getIsInTown())
             		taxRate = merchant.getCastle().getTaxRate();
-            	
+
             	if (newIngredient.getItemId() == 57)
             	{
                 	_transactionTax = (int)Math.round(newIngredient.getItemCount()*taxRate);
@@ -320,7 +324,7 @@ public class MultiSellChoose extends ClientBasePacket
             	if ((tempItem instanceof L2Armor) || (tempItem instanceof L2Weapon))
             		newIngredient.setEnchantmentLevel(enchantLevel);
         	}
-        	
+
         	// finally, add this ingredient to the entry
         	newEntry.addIngredient(newIngredient);
         }
@@ -342,7 +346,7 @@ public class MultiSellChoose extends ClientBasePacket
         }
         return newEntry;
     }
-    
+
     public String getType()
     {
         return _C__A7_MULTISELLCHOOSE;

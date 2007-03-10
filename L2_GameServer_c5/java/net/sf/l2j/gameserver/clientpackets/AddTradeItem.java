@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.TradeOwnAdd;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.2.2.2.5 $ $Date: 2005/03/27 15:29:29 $
  */
 public class AddTradeItem extends ClientBasePacket
@@ -61,17 +61,18 @@ public class AddTradeItem extends ClientBasePacket
         TradeList trade = player.getActiveTradeList();
         if (trade == null)
         	{
-            _log.warning("player.getTradeList == null in "+getType()+"!?");
+            _log.warning("Character: " + player.getName() + " requested item:" + _objectId + " add without active tradelist:" + _tradeId);
         	return;
         	}
 
         if (trade.getPartner() == null || L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null)
         {
             // Trade partner not found, cancel trade
+            if (trade.getPartner() != null)
+            	_log.warning("Character:" + player.getName() + " requested ivalid trade object: " + _objectId);
             SystemMessage msg = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             player.sendPacket(msg);
             player.cancelActiveTrade();
-            msg = null;
             return;
         }
 

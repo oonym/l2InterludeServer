@@ -25,7 +25,7 @@ import net.sf.l2j.gameserver.ClientThread;
 /**
  * Format: (ch) d
  * @author  -Wooden-
- * 
+ *
  */
 public class AnswerJoinPartyRoom extends ClientBasePacket
 {
@@ -48,7 +48,7 @@ public class AnswerJoinPartyRoom extends ClientBasePacket
     void runImpl()
     {
         // TODO
-        System.out.println("C5:AnswerJoinPartyRoom: d: "+_requesterID);
+        //System.out.println("C5:AnswerJoinPartyRoom: d: "+_requesterID);
     }
 
     /**
@@ -59,5 +59,5 @@ public class AnswerJoinPartyRoom extends ClientBasePacket
     {
         return _C__D0_15_ANSWERJOINPARTYROOM;
     }
-    
+
 }
