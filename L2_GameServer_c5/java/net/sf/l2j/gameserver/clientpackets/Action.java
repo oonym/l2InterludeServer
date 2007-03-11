@@ -82,7 +82,8 @@ public class Action extends ClientBasePacket
 
 		// If object requested does not exist, add warn msg into logs
 		if (obj == null) {
-        	_log.warning("Character: " + activeChar.getName() + " request action with non existent ObjectID:" + _objectId);
+			// pressing e.g. pickup many times quickly would get you here
+			// _log.warning("Character: " + activeChar.getName() + " request action with non existent ObjectID:" + _objectId);
         	sendPacket(new ActionFailed());
         	return;
         }
