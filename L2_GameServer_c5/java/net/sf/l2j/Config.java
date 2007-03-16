@@ -232,9 +232,6 @@ public final class Config
     
     /** Maximum number of clans in ally */
     public static int ALT_MAX_NUM_OF_CLANS_IN_ALLY;
-    
-    /** Enable Rate Hp  */
-    public static boolean ENABLE_RATE_HP;
 
     /** Spell Book needed to learn skill */
     public static boolean SP_BOOK_NEEDED;
@@ -1486,7 +1483,6 @@ public final class Config
 	            ALT_GAME_FREIGHTS       = Boolean.parseBoolean(altSettings.getProperty("AltGameFreights", "false"));
 	            ALT_GAME_FREIGHT_PRICE  = Integer.parseInt(altSettings.getProperty("AltGameFreightPrice", "1000"));
 	            ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(altSettings.getProperty("AltGameSkillHitRate", "1."));
-	            ENABLE_RATE_HP          = Boolean.parseBoolean(altSettings.getProperty("EnableRateHp", "false"));
 	            IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
 	            SP_BOOK_NEEDED          = Boolean.parseBoolean(altSettings.getProperty("SpBookNeeded", "true"));
 	            AUTO_LOOT               = altSettings.getProperty("AutoLoot").equalsIgnoreCase("True");
@@ -1981,7 +1977,6 @@ public final class Config
         else if (pName.equalsIgnoreCase("AltGameFreightPrice")) ALT_GAME_FREIGHT_PRICE = Integer.parseInt(pValue);
 
         else if (pName.equalsIgnoreCase("AltGameSkillHitRate")) ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(pValue);
-        else if (pName.equalsIgnoreCase("EnableRateHp")) ENABLE_RATE_HP = Boolean.valueOf(pValue);
 
         else if (pName.equalsIgnoreCase("CraftingEnabled")) IS_CRAFTING_ENABLED = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("SpBookNeeded")) SP_BOOK_NEEDED = Boolean.valueOf(pValue);

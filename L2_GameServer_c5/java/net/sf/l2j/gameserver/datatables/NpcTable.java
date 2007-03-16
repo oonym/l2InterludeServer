@@ -115,26 +115,6 @@ public class NpcTable
 				        }
                     }
 				    
-				    if (npcDat.rateHp == 1)
-				    {
-				        if (skillId >= 4303 && skillId <= 4310)
-				        {
-				            if (!Config.ENABLE_RATE_HP)
-				                continue;
-				            
-				            npcDat.setRateHp(skillId - 4301);
-				            continue;
-				        }
-				        else if (skillId == 4311)
-				        {
-				            if (!Config.ENABLE_RATE_HP)
-				                continue;
-				            
-				            npcDat.setRateHp(0.5);
-				            continue;
-				        }
-				    }
-				
 					switch (skillId)
 					{
 					    case 4084:

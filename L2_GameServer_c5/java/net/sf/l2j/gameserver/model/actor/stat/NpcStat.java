@@ -27,5 +27,5 @@ public class NpcStat extends CharStat
     // Property - Public
     public L2NpcInstance getActiveChar() { return (L2NpcInstance)super.getActiveChar(); }
 
-    public final int getMaxHp() { return (int)calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax * getActiveChar().getTemplate().rateHp , null, null); }
+    public final int getMaxHp() { return (int)calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax , null, null); }
 }

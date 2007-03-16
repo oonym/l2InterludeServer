@@ -75,6 +75,7 @@ import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
+import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 import net.sf.l2j.gameserver.templates.L2HelperBuff;
 import net.sf.l2j.gameserver.templates.L2Item;
@@ -636,7 +637,7 @@ public class L2NpcInstance extends L2Character
             html1.append("<font color=\"LEVEL\">Combat</font>");
             html1.append("<table border=\"0\" width=\"100%\">");
             html1.append("<tr><td>Current HP</td><td>"+getCurrentHp()+"</td><td>Current MP</td><td>"+getCurrentMp()+"</td></tr>");
-            html1.append("<tr><td>Max.HP</td><td>"+(int)(getMaxHp()/getTemplate().rateHp)+"*"+getTemplate().rateHp+"</td><td>Max.MP</td><td>"+getMaxMp()+"</td></tr>");
+            html1.append("<tr><td>Max.HP</td><td>"+(int)(getMaxHp()/(int) getStat().calcStat(Stats.MAX_HP , 1, this, null))+"*"+(int) getStat().calcStat(Stats.MAX_HP , 1, this, null)+"</td><td>Max.MP</td><td>"+getMaxMp()+"</td></tr>");
             html1.append("<tr><td>P.Atk.</td><td>"+getPAtk(null)+"</td><td>M.Atk.</td><td>"+getMAtk(null,null)+"</td></tr>");
             html1.append("<tr><td>P.Def.</td><td>"+getPDef(null)+"</td><td>M.Def.</td><td>"+getMDef(null,null)+"</td></tr>");
             html1.append("<tr><td>Accuracy</td><td>"+getAccuracy()+"</td><td>Evasion</td><td>"+getEvasionRate(null)+"</td></tr>");
@@ -685,7 +686,7 @@ public class L2NpcInstance extends L2Character
             
             html1.append("<br><center><font color=\"LEVEL\">[Combat Stats]</font></center>");
             html1.append("<table border=0 width=\"100%\">");
-            html1.append("<tr><td>Max.HP</td><td>"+(int)(getMaxHp()/getTemplate().rateHp)+"*"+getTemplate().rateHp+"</td><td>Max.MP</td><td>"+getMaxMp()+"</td></tr>");
+            html1.append("<tr><td>Max.HP</td><td>"+(int)(getMaxHp()/(int) getStat().calcStat(Stats.MAX_HP , 1, this, null))+"*"+(int) getStat().calcStat(Stats.MAX_HP , 1, this, null)+"</td><td>Max.MP</td><td>"+getMaxMp()+"</td></tr>");
             html1.append("<tr><td>P.Atk.</td><td>"+getPAtk(null)+"</td><td>M.Atk.</td><td>"+getMAtk(null,null)+"</td></tr>");
             html1.append("<tr><td>P.Def.</td><td>"+getPDef(null)+"</td><td>M.Def.</td><td>"+getMDef(null,null)+"</td></tr>");
             html1.append("<tr><td>Accuracy</td><td>"+getAccuracy()+"</td><td>Evasion</td><td>"+getEvasionRate(null)+"</td></tr>");
@@ -2088,7 +2089,8 @@ public class L2NpcInstance extends L2Character
      */
     public int getExpReward()
     {
-        return (int)(getTemplate().rewardExp * getTemplate().rateHp * Config.RATE_XP);
+    	int rateXp = (int) getStat().calcStat(Stats.MAX_HP , 1, this, null);
+        return (int)(getTemplate().rewardExp * rateXp * Config.RATE_XP);
     }
     
     /**
@@ -2096,7 +2098,8 @@ public class L2NpcInstance extends L2Character
      */
     public int getSpReward()
     {
-        return (int)(getTemplate().rewardSp * getTemplate().rateHp * Config.RATE_SP);
+    	int rateSp = (int) getStat().calcStat(Stats.MAX_HP , 1, this, null);
+        return (int)(getTemplate().rewardSp * rateSp * Config.RATE_SP);
     }
     
     /**
