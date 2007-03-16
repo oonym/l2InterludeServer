@@ -170,7 +170,7 @@ public class L2FolkInstance extends L2NpcInstance
         }
         if (counts == 0)
         {
-            player.sendMessage("there are no enchant skills");
+        	player.sendPacket(new SystemMessage(SystemMessage.THERE_IS_NO_SKILL_THAT_ENABLES_ENCHANT));
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             int level = player.getLevel();
             
