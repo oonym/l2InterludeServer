@@ -1173,7 +1173,8 @@ public final class Formulas
 		}
 		
 		// Dmg bonusses in PvP fight
-		if(attacker instanceof L2PcInstance && target instanceof L2PcInstance)
+		if((attacker instanceof L2PcInstance || attacker instanceof L2Summon)
+				&& (target instanceof L2PcInstance || target instanceof L2Summon))
 			damage *= attacker.calcStat(Stats.PVP_PHYSICAL_DMG, 1, null, null);
 		
 		return damage;
@@ -1245,7 +1246,8 @@ public final class Formulas
 		else if (mcrit) damage *= 4;
 
 		// Pvp bonusses for dmg
-		if(attacker instanceof L2PcInstance && target instanceof L2PcInstance)
+		if((attacker instanceof L2PcInstance || attacker instanceof L2Summon)
+				&& (target instanceof L2PcInstance || target instanceof L2Summon))
 		{
 			if(skill.isMagic())
 				damage *= attacker.calcStat(Stats.PVP_MAGICAL_DMG, 1, null, null);
