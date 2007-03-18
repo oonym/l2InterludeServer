@@ -24,6 +24,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.lib.Log;
 import net.sf.l2j.gameserver.lib.Rnd;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -35,6 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.skills.effects.EffectCharge;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 
@@ -135,9 +137,9 @@ public class Pdam implements ISkillHandler
                     }
                     else
                     {
-                        SystemMessage sm = new SystemMessage(139);
+                        SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                         sm.addString(target.getName());
-                        sm.addSkillName(skill.getId());
+                        sm.addSkillName(skill.getDisplayId());
                         activeChar.sendPacket(sm);
                     }
                 }
@@ -220,6 +222,42 @@ public class Pdam implements ISkillHandler
             {
             	activeChar.sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
             }
+            
+            if (skill.getId() == 345 || skill.getId() == 346) // Sonic Rage or Raging Force
+            {
+                EffectCharge effect = (EffectCharge)activeChar.getEffect(L2Effect.EffectType.CHARGE);
+                if (effect != null) 
+                {
+                    int effectcharge = effect.getLevel();
+                    if (effectcharge < 7)
+                    {
+                        effectcharge++;
+                        effect.addNumCharges(1);
+                        activeChar.updateEffectIcons();
+                        SystemMessage sm = new SystemMessage(SystemMessage.FORCE_INCREASED_TO_S1);
+                        sm.addNumber(effectcharge);
+                        activeChar.sendPacket(sm);
+                    }
+                    else
+                    {
+                        SystemMessage sm = new SystemMessage(SystemMessage.FORCE_MAXLEVEL_REACHED);
+                        activeChar.sendPacket(sm);
+                    }
+                }
+                else
+                {
+                    if (skill.getId() == 345) // Sonic Rage
+                    {
+                        L2Skill dummy = SkillTable.getInstance().getInfo(8, 7); // Lv7 Sonic Focus
+                        dummy.getEffects(activeChar, activeChar);
+                    }
+                    else if (skill.getId() == 346) // Raging Force
+                    {
+                        L2Skill dummy = SkillTable.getInstance().getInfo(50, 7); // Lv7 Focused Force
+                        dummy.getEffects(activeChar, activeChar);
+                    }
+                }
+            }            
             //self Effect :]
             L2Effect effect = activeChar.getEffect(skill.getId());        
             if (effect != null && effect.isSelfEffect())        

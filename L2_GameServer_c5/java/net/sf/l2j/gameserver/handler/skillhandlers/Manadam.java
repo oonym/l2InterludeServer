@@ -7,6 +7,8 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
+import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
@@ -65,19 +67,32 @@ public class Manadam implements ISkillHandler
 				target.setCurrentMp(target.getCurrentMp() - mp);
 				StatusUpdate sump = new StatusUpdate(target.getObjectId());
 				sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
-				if (target instanceof L2PcInstance)
+				// [L2J_JP EDIT START - TSL]
+				target.sendPacket(sump);
+				SystemMessage sm = new SystemMessage(SystemMessage.S2_MP_HAS_BEEN_DRAINED_BY_S1);
+				if (activeChar instanceof L2NpcInstance)
 				{
-				   target.sendPacket(sump);
-				   SystemMessage sm = new SystemMessage(614);
-				   sm.addString("You have been drained for " + (int) mp + " Mana");
-				   target.sendPacket(sm);
+					int mobId = ((L2NpcInstance)activeChar).getNpcId();
+					sm.addNpcName(mobId);
 				}
+				else if (activeChar instanceof L2Summon)
+				{
+					int mobId = ((L2Summon)activeChar).getNpcId();
+					sm.addNpcName(mobId);
+				}
+				else
+				{
+					sm.addString(activeChar.getName());
+				}
+				sm.addNumber((int)mp);
+				target.sendPacket(sm);
 				if (activeChar instanceof L2PcInstance)
 	            {
-	                SystemMessage sm2 = new SystemMessage(614);
-	                sm2.addString("You drained for " + (int) mp + " Mana");
+	                SystemMessage sm2 = new SystemMessage(SystemMessage.YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1);
+					sm2.addNumber((int)mp);
 	                activeChar.sendPacket(sm2);
 	            }
+				// [L2J_JP EDIT END - TSL]
 			}
 		}
 	}

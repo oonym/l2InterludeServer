@@ -103,7 +103,7 @@ public class Continuous implements ISkillHandler
 				boolean acted = Formulas.getInstance().calcMagicAffected(
 						activeChar, target, skill);
 				if (!acted) {
-					activeChar.sendPacket(new SystemMessage(SystemMessage.MISSED_TARGET));
+					activeChar.sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
 					continue;
 				}
 				

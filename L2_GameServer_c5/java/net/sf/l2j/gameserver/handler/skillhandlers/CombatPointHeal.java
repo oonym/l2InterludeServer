@@ -55,14 +55,14 @@ public class CombatPointHeal implements ISkillHandler
             
             double cp = skill.getPower(); 
             //int cLev = activeChar.getLevel();
-            //hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/; 
+            //hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_CP_WILL_BE_RESTORED); 
+            sm.addNumber((int)cp); 
+            target.sendPacket(sm);            
             target.setCurrentCp(cp+target.getCurrentCp()); 
             StatusUpdate sump = new StatusUpdate(target.getObjectId()); 
             sump.addAttribute(StatusUpdate.CUR_CP, (int)target.getCurrentCp()); 
-            target.sendPacket(sump); 
-            SystemMessage sm = new SystemMessage(614); 
-            sm.addString((int)cp+" CPs have been restored.");
-            target.sendPacket(sm); 
+            target.sendPacket(sump);  
         }
     }
     

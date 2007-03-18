@@ -64,6 +64,8 @@ public class SystemMessage extends ServerBasePacket
     public static final int S2_HP_RESTORED_BY_S1 = 1067;
     public static final int S1_MP_RESTORED = 1068;
     public static final int S2_MP_RESTORED_BY_S1 = 1069;
+    public static final int S2_MP_HAS_BEEN_DRAINED_BY_S1 = 970;
+    public static final int YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1 = 1867;
 
     public static final int EARNED_S2_S1_s = 53;
     public static final int EARNED_ITEM = 54;
@@ -107,8 +109,10 @@ public class SystemMessage extends ServerBasePacket
 	public static final int NOT_ENOUGH_SPIRITSHOTS = 531;
 	public static final int CANNOT_USE_SPIRITSHOTS = 532;
     public static final int ENABLED_SPIRITSHOT = 533;
+    public static final int S1_CP_WILL_BE_RESTORED = 1405;
     public static final int USE_OF_S1_WILL_BE_AUTO = 1433;
 	public static final int AUTO_USE_OF_S1_CANCELLED = 1434;
+	public static final int CANNOT_CREATED_WHILE_ENGAGED_IN_TRADING = 1125;
 	
 	public static final int S1_IS_NOT_ONLINE = 3;
 	

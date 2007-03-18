@@ -169,9 +169,9 @@ public class Disablers implements ISkillHandler
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(139);
+                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
-                            sm.addSkillName(skill.getId());
+                            sm.addSkillName(skill.getDisplayId());
                             activeChar.sendPacket(sm);
                         }
                     }
@@ -189,9 +189,9 @@ public class Disablers implements ISkillHandler
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(139);
+                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
-                            sm.addSkillName(skill.getId());
+                            sm.addSkillName(skill.getDisplayId());
                             activeChar.sendPacket(sm);
                         }
                     }
@@ -221,7 +221,7 @@ public class Disablers implements ISkillHandler
                             {
                                 SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                                 sm.addString(target.getName());
-                                sm.addSkillName(skill.getId());
+                                sm.addSkillName(skill.getDisplayId());
                                 activeChar.sendPacket(sm);
                             }
                         }
@@ -232,7 +232,7 @@ public class Disablers implements ISkillHandler
                         {
                             SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
-                            sm.addSkillName(skill.getId());
+                            sm.addSkillName(skill.getDisplayId());
                             activeChar.sendPacket(sm);
                         }
                     }
@@ -459,10 +459,13 @@ public class Disablers implements ISkillHandler
                     		}
                     	} else
                     	{
-                    		SystemMessage sm = new SystemMessage(614);
-                    		sm.addString(skill.getName() + " failed."); 
-                    		if (activeChar instanceof L2PcInstance)
-                    			activeChar.sendPacket(sm);
+                            if (activeChar instanceof L2PcInstance)
+                            {
+                                SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                                sm.addString(target.getName());
+                                sm.addSkillName(skill.getDisplayId());
+                                activeChar.sendPacket(sm);
+                            }
                     	}
                         break;
                     }
