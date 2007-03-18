@@ -158,6 +158,7 @@ public class L2SkillSummon extends L2Skill {
 		L2NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(npcId);
         L2SummonInstance summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
 		
+        summon.setName(summonTemplate.name);
         summon.setTitle(activeChar.getName());
         summon.setExpPenalty(expPenalty);
         if (summon.getLevel() >= Experience.LEVEL.length)
