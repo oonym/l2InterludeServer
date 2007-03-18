@@ -74,9 +74,9 @@ public class RequestFriendList extends ClientBasePacket
             L2PcInstance friend = null;
 			while (rset.next())
 			{
-				int friendId = rset.getInt("friend_id");
+				// int friendId = rset.getInt("friend_id");
 				String friendName = rset.getString("friend_name");
-				friend = (L2PcInstance)L2World.getInstance().findObject(friendId);
+				friend = L2World.getInstance().getPlayer(friendName);
 					
 				if (friend == null)
 				{
