@@ -32,8 +32,8 @@ public class EffectCharge extends L2Effect
 		super(env, template);
 		num_charges = 1;
 		env._target.updateEffectIcons();
-        SystemMessage sm = new SystemMessage(614);
-        sm.addString("Charged to 1");
+        SystemMessage sm = new SystemMessage(323);
+        sm.addNumber(num_charges);
         getEffected().sendPacket(sm);
 	}
 

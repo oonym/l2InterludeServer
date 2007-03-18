@@ -48,8 +48,7 @@ class EffectDamOverTime extends L2Effect
 		{
 			if (getSkill().isToggle())
 			{
-				SystemMessage sm = new SystemMessage(614);
-				sm.addString("Not enough HP. Effect of " + getSkill().getName() + " has been removed.");
+				SystemMessage sm = new SystemMessage(140);
 				getEffected().sendPacket(sm);
 				return false;
 			}

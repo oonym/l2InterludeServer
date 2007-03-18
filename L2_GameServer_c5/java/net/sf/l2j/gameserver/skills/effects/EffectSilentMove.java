@@ -72,8 +72,7 @@ final class EffectSilentMove extends L2Effect
 		
 		if(manaDam > getEffected().getCurrentMp())
 		{
-			SystemMessage sm = new SystemMessage(614);
-			sm.addString("Not enough mana. Effect of " + getSkill().getName() + " has been removed.");
+			SystemMessage sm = new SystemMessage(140);
 			getEffected().sendPacket(sm);
 			return false;
 		}

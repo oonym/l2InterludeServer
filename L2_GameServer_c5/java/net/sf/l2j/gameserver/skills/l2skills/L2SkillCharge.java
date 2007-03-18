@@ -45,11 +45,16 @@ public class L2SkillCharge extends L2Skill {
 			{
 				effect.num_charges++;
 				caster.updateEffectIcons();
-                SystemMessage sm = new SystemMessage(614);
-                sm.addString("Charged to " + effect.num_charges);
+                SystemMessage sm = new SystemMessage(323);
+                sm.addNumber(effect.num_charges);
                 caster.sendPacket(sm);
 			}
-			return;
+			else
+            {
+                SystemMessage sm = new SystemMessage(1196);
+                caster.sendPacket(sm);
+            }
+            return;
 		}
 		this.getEffects(caster, caster);
 		

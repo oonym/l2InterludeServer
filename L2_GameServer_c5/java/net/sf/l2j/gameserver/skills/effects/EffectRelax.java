@@ -80,8 +80,7 @@ class EffectRelax extends L2Effect
 		{
 			if(getSkill().isToggle())
 			{
-				SystemMessage sm = new SystemMessage(614);
-				sm.addString("Not enough mana. Effect of " + getSkill().getName() + " has been removed.");
+				SystemMessage sm = new SystemMessage(140);
 				getEffected().sendPacket(sm);
 				//if (getEffected() instanceof L2PcInstance)
 					//((L2PcInstance)getEffected()).standUp();
