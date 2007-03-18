@@ -142,7 +142,7 @@ public class ScrollOfEscape implements IItemHandler
                 { _activeChar.teleToLocation(MapRegionTable.TeleportWhereType.ClanHall); }
                 else if(_itemId == 5858) // do nothing
                 {
-                	_activeChar.sendPacket(SystemMessage.sendString("Your clan does not own a clan hall."));
+                	_activeChar.sendPacket(new SystemMessage(681));
                     return;
                 }
                 else if(_itemId == 5859) // do nothing
