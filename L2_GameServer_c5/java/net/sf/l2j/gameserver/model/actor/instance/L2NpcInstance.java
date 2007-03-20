@@ -1756,6 +1756,28 @@ public class L2NpcInstance extends L2Character
     {
         showChatWindow(player, 0);
     }
+    
+    /**
+     * Returns true if html exists
+     * @param player
+     * @param type
+     * @return boolean
+     */
+    private boolean showPkDenyChatWindow(L2PcInstance player, String type)
+    {
+    	String html = HtmCache.getInstance().getHtm("data/html/" + type + "/" + getNpcId() + "-pk.htm");
+
+    	if (html != null)
+    	{
+    		NpcHtmlMessage pkDenyMsg = new NpcHtmlMessage(getObjectId());
+    		pkDenyMsg.setHtml(html);
+    		player.sendPacket(pkDenyMsg);
+    		player.sendPacket(new ActionFailed());
+    		return true;
+    	}
+
+    	return false;
+    }
 
     /**
      * Open a chat window on client with the text of the L2NpcInstance.<BR><BR>
@@ -1771,8 +1793,33 @@ public class L2NpcInstance extends L2Character
      */
     public void showChatWindow(L2PcInstance player, int val)
     {
+    	if (player.getKarma() > 0)
+        {	
+			if (this instanceof L2MerchantInstance && !Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP)
+			{
+				if (showPkDenyChatWindow(player, "merchant"))
+					return;
+			}
+			else if (this instanceof L2TeleporterInstance && !Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK)
+			{
+				if (showPkDenyChatWindow(player, "teleporter"))
+					return;
+			}
+			else if (this instanceof L2WarehouseInstance)
+			{
+				if (showPkDenyChatWindow(player, "warehouse") && !Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE)
+					return;
+			}
+			else if (this instanceof L2FishermanInstance && !Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP)
+			{
+				if (showPkDenyChatWindow(player, "fisherman"))
+					return;
+			}
+        }
+    	
     	if (getTemplate().type == "L2Auctioneer" && val==0)
             return;
+
         int npcId = getTemplate().npcId;
         
         /* For use with Seven Signs implementation */
