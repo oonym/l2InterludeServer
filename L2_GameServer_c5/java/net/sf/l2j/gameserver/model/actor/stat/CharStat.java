@@ -430,22 +430,22 @@ public class CharStat
 			switch (skill.getElement())
 			{
 			case L2Skill.ELEMENT_EARTH:
-				defence += defence * calcStat(Stats.EARTH_RES, 0, target, skill) / 100;
+				defence = calcStat(Stats.EARTH_RES, defence, target, skill);
 				break;
 			case L2Skill.ELEMENT_FIRE:
-				defence += defence * calcStat(Stats.FIRE_RES, 0, target, skill) / 100;
+				defence = calcStat(Stats.FIRE_RES, defence, target, skill);
 				break;
 			case L2Skill.ELEMENT_WATER:
-				defence += defence * calcStat(Stats.WATER_RES, 0, target, skill) / 100;
+				defence = calcStat(Stats.WATER_RES, defence, target, skill);
 				break;
 			case L2Skill.ELEMENT_WIND:
-				defence += defence * calcStat(Stats.WIND_RES, 0, target, skill) / 100;
+				defence = calcStat(Stats.WIND_RES, defence, target, skill);
 				break;
 			case L2Skill.ELEMENT_HOLY:
-				defence += defence * calcStat(Stats.HOLY_RES, 0, target, skill) / 100;
+				defence = calcStat(Stats.HOLY_RES, defence, target, skill);
 				break;
 			case L2Skill.ELEMENT_DARK:
-				defence += defence * calcStat(Stats.DARK_RES, 0, target, skill) / 100;
+				defence = calcStat(Stats.DARK_RES, defence, target, skill);
 				break;
 			}
 		}
