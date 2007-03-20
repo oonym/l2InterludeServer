@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.skills.effects;
 
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -38,6 +39,9 @@ class EffectHealOverTime extends L2Effect
 	public boolean onActionTime()
 	{	
 		if(getEffected().isDead())
+			return false;
+		
+		if(getEffected() instanceof L2DoorInstance)
 			return false;
 		
 		double hp = getEffected().getCurrentHp(); 

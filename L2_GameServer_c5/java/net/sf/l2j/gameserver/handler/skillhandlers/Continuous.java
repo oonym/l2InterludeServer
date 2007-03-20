@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -85,6 +86,12 @@ public class Continuous implements ISkillHandler
                 if(target.reflectSkill(skill))
                 	target = activeChar;
             }
+            
+            // Walls and Door should not be buffed
+            if(target instanceof L2DoorInstance && (skill.getSkillType() == L2Skill.SkillType.BUFF || skill.getSkillType() == L2Skill.SkillType.HOT))
+            	continue;
+            
+            
             // Player holding a cursed weapon can't be buffed and can't buff
             if (skill.getSkillType() == L2Skill.SkillType.BUFF)
             {
