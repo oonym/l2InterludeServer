@@ -158,14 +158,14 @@ public class L2SignsPriestInstance extends L2FolkInstance
                                     return;
                                 }
                             }
-                            if (!getPlayerAllyHasCastle(player))
+                            /*if (!getPlayerAllyHasCastle(player))
                             {
                             	if (cabal == SevenSigns.CABAL_DAWN)
                             	{
                             		player.sendMessage("You must be a member of a castle-owning clan to join the Lords Of Dawn.");
                             		return;
                             	}
-                            }
+                            }*/
                             else
                             {
                                 /*

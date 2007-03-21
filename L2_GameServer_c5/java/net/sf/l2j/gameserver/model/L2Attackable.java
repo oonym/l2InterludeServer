@@ -1903,7 +1903,7 @@ public class L2Attackable extends L2NpcInstance
                         
             // Ember and Anakazel(78) are not 100% success rate and each individual 
             // member of the party has a failure rate on leveling.           
-            if(isBossMob && (getNpcId() == 10319 || getNpcId() == 10338))
+            if(isBossMob && (getNpcId() == 25319 || getNpcId() == 25338))
                 doLevelup = false;
             
             // If succeeds or it is a boss mob, level up the crystal.
