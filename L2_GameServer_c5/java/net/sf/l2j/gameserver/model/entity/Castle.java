@@ -88,7 +88,17 @@ public class Castle
 	{
         if (getOwnerId() <= 0) return;
 
-        if (!_Name.equalsIgnoreCase("aden"))    // If current castle instance is not Aden
+        if (_Name.equalsIgnoreCase("Schuttgart") || _Name.equalsIgnoreCase("Goddard"))
+        {
+        	Castle rune = CastleManager.getInstance().getCastle("rune");
+        	if (rune != null )
+        	{
+        		int runeTax = (int)(amount * rune.getTaxRate());
+        		if (rune.getOwnerId() > 0 ) rune.addToTreasury(runeTax);
+        		amount -= runeTax;
+        	}
+        }
+        if (!_Name.equalsIgnoreCase("aden") && !_Name.equalsIgnoreCase("Rune") && !_Name.equalsIgnoreCase("Schuttgart") && !_Name.equalsIgnoreCase("Goddard"))    // If current castle instance is not Aden, Rune, Goddard or Schuttgart.
         {
             Castle aden = CastleManager.getInstance().getCastle("aden");
             if (aden != null)

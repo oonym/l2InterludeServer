@@ -56,6 +56,7 @@ public class Loc implements IUserCommandHandler
     	case 13: msg = SystemMessage.LOC_HEINE_S1_S2_S3; break;
         case 14: msg = SystemMessage.LOC_RUNE_S1_S2_S3; break;
         case 15: msg = SystemMessage.LOC_GODDARD_S1_S2_S3; break;
+        case 16: msg = SystemMessage.LOC_SCHUTTGART_S1_S2_S3;break;
         default: msg = SystemMessage.LOC_ADEN_S1_S2_S3;
     	}
         SystemMessage sm = new SystemMessage(msg);

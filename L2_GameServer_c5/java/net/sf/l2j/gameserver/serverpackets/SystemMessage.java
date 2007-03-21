@@ -344,7 +344,8 @@ public class SystemMessage extends ServerBasePacket
     public static final int LOC_COLISEUM_S1_S2_S3 = 925;
     public static final int LOC_HEINE_S1_S2_S3 = 926;
     public static final int LOC_RUNE_S1_S2_S3 = 1537;
-    public static final int LOC_GODDARD_S1_S2_S3 = 1538;    
+    public static final int LOC_GODDARD_S1_S2_S3 = 1538;
+    public static final int LOC_SCHUTTGART_S1_S2_S3 = 1714;
 	
 	//Crystallize
 	public static final int CRYSTALLIZE_LEVEL_TOO_LOW = 562;

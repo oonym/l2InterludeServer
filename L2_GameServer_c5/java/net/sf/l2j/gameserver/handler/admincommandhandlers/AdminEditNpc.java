@@ -127,7 +127,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
                 activeChar.sendPacket(sm);
             }
         }
-        else if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
+        else if (!Config.ALT_PRIVILEGES_ADMIN && !(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
         else if(command.startsWith("admin_addShopItem "))
         {
             String[] args = command.split(" ");

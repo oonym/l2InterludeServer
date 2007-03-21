@@ -38,7 +38,7 @@ public class TownManager
     {
         if (_Instance == null)
         {
-    		System.out.println("Initializing TownManager");
+    		_log.info("Initializing TownManager");
         	_Instance = new TownManager();
         	_Instance.load();
         }
@@ -119,13 +119,16 @@ public class TownManager
 				return getTown(14); // Rune
 			case 15:
 				return getTown(13); // Goddard
+			case 16:
+				return getTown(17); //Shuttgart
 		}
 
         return getTown(16); // Default to floran
     }
     public final boolean townHasCastleInSeige(int townId)
     {
-    	int[] castleidarray = {0,0,0,0,0,0,0,1,2,3,4,0,5,0,0,6,0};
+    	//int[] castleidarray = {0,0,0,0,0,0,0,1,2,3,4,0,5,0,0,6,0};
+    	int[] castleidarray = {0,0,0,0,0,0,0,1,2,3,4,0,5,7,8,6,0,9};
     	int castleIndex= castleidarray[townId] ;
      
     	if ( castleIndex > 0 )
@@ -140,7 +143,8 @@ public class TownManager
     public final boolean townHasCastleInSeige(int x, int y)
     {
         int curtown= (MapRegionTable.getInstance().getMapRegion(x, y));
-        int[] castleidarray = {0,0,0,0,0,1,0,2,3,4,5,0,0,6,0,0,0};
+        //int[] castleidarray = {0,0,0,0,0,1,0,2,3,4,5,0,0,6,0,0,0,0};
+        int[] castleidarray = {0,0,0,0,0,1,0,2,3,4,5,0,0,6,8,7,9,0}; 
         //find an instance of the castle for this town.
         int castleIndex = castleidarray[curtown];
         if ( castleIndex > 0 )
