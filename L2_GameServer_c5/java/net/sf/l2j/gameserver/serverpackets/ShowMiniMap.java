@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
+import net.sf.l2j.gameserver.SevenSigns;
+
 /**
  * sample
   
@@ -48,6 +50,7 @@ public class ShowMiniMap extends ServerBasePacket
 	{
 		writeC(0x9d);
 		writeD(_mapId);
+		writeD(SevenSigns.getInstance().getCurrentPeriod());
 	}
 
 	/* (non-Javadoc)
