@@ -56,6 +56,8 @@ public class DoorStatusUpdate extends ServerBasePacket
 		writeD(_door.getDamage());
 		writeD(_door.isEnemyOf(getClient().getActiveChar()) ? 1 : 0);
 		writeD(_door.getDoorId());
+		writeD(_door.getMaxHp());
+		writeD((int)_door.getCurrentHp());
 	}
 	
 	/* (non-Javadoc)
