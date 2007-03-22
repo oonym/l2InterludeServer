@@ -70,7 +70,7 @@ public class BitSetIDFactory extends IdFactory
         super();
         ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new BitSetCapacityCheck(), 30000, 30000);
         initialize();
-        _log.info("IDFactory: "+ freeIds.size() + " id's avaliable.");
+        _log.info("IDFactory: "+ freeIds.size() + " id's available.");
     }
     
     public synchronized void initialize()

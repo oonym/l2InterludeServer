@@ -48,7 +48,7 @@ public class HennaEquipList extends ServerBasePacket
     {
         writeC(0xe2);
         writeD(_player.getAdena());          //activeChar current amount of aden
-        writeD(3);     //avaliable equip slot
+        writeD(3);     //available equip slot
         //writeD(10);    // total amount of symbol available which depends on difference classes
         writeD(_hennaEquipList.length);
         
