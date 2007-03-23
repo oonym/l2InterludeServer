@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -150,6 +151,7 @@ public class RequestDestroyItem extends ClientBasePacket
 				}
 
 				// if it's a pet control item, delete the pet
+				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
 				statement.setInt(1, _objectId);
 				statement.execute();
