@@ -804,8 +804,8 @@ public class L2NpcInstance extends L2Character
                     	)
                     {
                         int exchangeItem = L2PetDataTable.getWyvernItemId();
-                        if (!player.reduceAdena("PetUpate", 20000000, this, true)) return;
-                        player.getInventory().destroyItem("PetUpate", summon.getControlItemId(), 1, player, this);
+                        if (!player.reduceAdena("PetUpdate", 20000000, this, true)) return;
+                        player.getInventory().destroyItem("PetUpdate", summon.getControlItemId(), 1, player, this);
                         
                         L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(629);
                         try 
