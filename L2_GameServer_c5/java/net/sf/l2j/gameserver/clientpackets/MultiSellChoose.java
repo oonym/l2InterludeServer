@@ -72,7 +72,7 @@ public class MultiSellChoose extends ClientBasePacket
         // given the template entry and information about maintaining enchantment and applying taxes
         // re-create the instance of the entry that will be used for this exchange
     	// i.e. change the enchantment level of select ingredient/products and adena amount appropriately.
-        L2NpcInstance merchant = (L2NpcInstance)player.getTarget();
+        L2NpcInstance merchant = (player.getTarget() instanceof L2NpcInstance)? (L2NpcInstance) player.getTarget() : null;
         if (merchant == null) return;
 
         MultiSellEntry entry = prepareEntry(merchant, templateEntry, applyTaxes, maintainEnchantment, enchantment);
