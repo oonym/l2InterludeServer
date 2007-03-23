@@ -109,6 +109,9 @@ public class L2SkillChargeDmg extends L2Skill
                 double finalDamage = damage;
                 finalDamage = finalDamage+(modifier*finalDamage);
 				target.reduceCurrentHp(finalDamage, caster);
+				
+				if (crit) caster.sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT));
+				
 				SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
 				sm.addNumber((int)finalDamage);
 				caster.sendPacket(sm);
