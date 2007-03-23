@@ -150,9 +150,9 @@ public abstract class L2Character extends L2Object
 	private L2CharTemplate _Template;                       // The link on the L2CharTemplate object containing generic and static properties of this L2Character type (ex : Max HP, Speed...)
 	private String _Title;
 	private String _aiClass = "default";
-	private double _hpUpdateIncCheck;
-	private double _hpUpdateDecCheck;
-	private double _hpUpdateInterval;
+	private double _hpUpdateIncCheck = .0;
+	private double _hpUpdateDecCheck = .0;
+	private double _hpUpdateInterval = .0;
 
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _Calculators;
@@ -217,7 +217,10 @@ public abstract class L2Character extends L2Object
 			_Calculators = new Calculator[Stats.NUM_STATS];
 			Formulas.getInstance().addFuncsToNewCharacter(this);
 		}
-
+	}
+	
+	protected void initCharStatusUpdateValues()
+	{
 		_hpUpdateInterval = getMaxHp()/352.0; // MAX_HP div MAX_HP_BAR_PX
 		_hpUpdateIncCheck = getMaxHp();
 		_hpUpdateDecCheck = getMaxHp()-_hpUpdateInterval;
@@ -292,38 +295,36 @@ public abstract class L2Character extends L2Object
 	}
 
 	/**
-	 * Returns true if status update should be done, false if not
+	 * Returns true if hp update should be done, false if not
 	 * @return boolean
 	 */
-	private boolean needStatusUpdate()
+	protected boolean needHpUpdate(int barPixels)
 	{
-		if (!(this instanceof L2MonsterInstance))
-			return true;
-
 		double currentHp = getCurrentHp();
 
-	    if (currentHp <= 0.00 || getMaxHp() < 352)
+	    if (currentHp <= 1.0 || getMaxHp() < barPixels)
 	        return true;
 
-	    boolean needUpdate = false;
-
-/*	    if (currentHp > getMaxHp())
-	        currentHp = getMaxHp();*/
-
-	    if (currentHp < _hpUpdateDecCheck)
+	    if (currentHp <= _hpUpdateDecCheck || currentHp >= _hpUpdateIncCheck)
 	    {
-	        needUpdate = true;
-	        _hpUpdateDecCheck -= _hpUpdateInterval;
-	        _hpUpdateIncCheck -= _hpUpdateInterval;
-	    }
-	    else if (currentHp > _hpUpdateIncCheck)
-	    {
-	        needUpdate = true;
-	        _hpUpdateDecCheck += _hpUpdateInterval;
-	        _hpUpdateIncCheck += _hpUpdateInterval;
+	    	if (currentHp == getMaxHp())
+	    	{
+	    		_hpUpdateIncCheck = getMaxHp();
+	    		_hpUpdateDecCheck = _hpUpdateIncCheck - _hpUpdateInterval;
+	    	}
+	    	else
+	    	{
+	    		double doubleMulti = currentHp / _hpUpdateInterval;
+		    	int intMulti = (int)doubleMulti;
+
+	    		_hpUpdateDecCheck = _hpUpdateInterval * (doubleMulti < intMulti ? intMulti-- : intMulti);
+	    		_hpUpdateIncCheck = _hpUpdateDecCheck + _hpUpdateInterval;
+	    	}
+
+	    	return true;
 	    }
 
-	    return needUpdate;
+	    return false;
 	}
 
 	/**
@@ -344,8 +345,11 @@ public abstract class L2Character extends L2Object
 	{
 		if (getStatus().getStatusListener() == null || getStatus().getStatusListener().isEmpty()) return;
 
-		if (!needStatusUpdate())
+		if (!needHpUpdate(352))
 			return;
+		
+		if (Config.DEBUG)
+			_log.fine("Broadcast Status Update for " + getObjectId() + "(" + getName() + "). HP: " + getCurrentHp());
 
 		// Create the Server->Client packet StatusUpdate with current HP and MP
 		StatusUpdate su = new StatusUpdate(getObjectId());
