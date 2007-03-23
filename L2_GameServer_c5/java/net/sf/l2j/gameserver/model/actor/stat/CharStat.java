@@ -151,7 +151,13 @@ public class CharStat
 		if (_ActiveChar == null)
 			return 1;
 
-		return (int) calcStat(Stats.CRITICAL_RATE, _ActiveChar.getTemplate().baseCritRate, target, skill);
+		int criticalHit = (int) calcStat(Stats.CRITICAL_RATE, _ActiveChar.getTemplate().baseCritRate, target, skill);
+		
+		// Set a cap of Critical Hit at 500
+		if(criticalHit > 500)
+			criticalHit = 500;
+		
+		return criticalHit;
 	}
 
 	/** Return the DEX of the L2Character (base+modifier). */
