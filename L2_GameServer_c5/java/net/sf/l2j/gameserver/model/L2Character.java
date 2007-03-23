@@ -1547,7 +1547,7 @@ public abstract class L2Character extends L2Object
 	public final void setIsTeleporting(boolean value) { _IsTeleporting = value; }
 	public void setIsInvul(boolean b){_isInvul = b;}
 	public boolean isInvul(){return _isInvul  || _IsTeleporting;}
-	public boolean isUndead() { return false; }
+	public boolean isUndead() { return _Template.isUndead; }
 
 	public CharKnownList getKnownList()
 	{

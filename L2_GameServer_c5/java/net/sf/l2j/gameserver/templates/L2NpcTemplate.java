@@ -67,7 +67,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final int     armor;
 	public final String  factionId;
 	public final int     factionRange;
-	public final boolean isUndead;
     public final int     absorb_level;
 	
 	private final StatsSet npcStatsSet;
@@ -117,7 +116,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 		else
 			factionId = f.intern();
 		factionRange  = set.getInteger("factionRange");
-		isUndead      = (set.getInteger("isUndead", 0) == 1);
         absorb_level  = set.getInteger("absorb_level", 0);
 		//String r = set.getString("race", null);
 		//if (r == null)

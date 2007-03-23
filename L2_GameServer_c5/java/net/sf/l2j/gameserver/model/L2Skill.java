@@ -1788,9 +1788,9 @@ public abstract class L2Skill
             }
             case TARGET_UNDEAD:
             {
-                if (target instanceof L2NpcInstance)
+                if (target instanceof L2NpcInstance || target instanceof L2SummonInstance)
                 {
-                    if (!((L2NpcInstance) target).isUndead() || target.isDead())
+                    if (!target.isUndead() || target.isDead())
                     {
                         activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
                         return null;
