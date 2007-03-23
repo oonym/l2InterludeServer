@@ -120,18 +120,18 @@ public class Logout extends ClientBasePacket
 		try {
 		    con = L2DatabaseFactory.getInstance().getConnection();
 		    PreparedStatement statement;
-		    statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id=?");
+		    statement = con.prepareStatement("SELECT friend_name FROM character_friends WHERE char_id=?");
 		    statement.setInt(1, cha.getObjectId());
 		    ResultSet rset = statement.executeQuery();
 
 		    L2PcInstance friend;
-            int objectId;
+            String friendName;
             
             while (rset.next())
             {
-                objectId = rset.getInt("friend_id");
+            	friendName = rset.getString("friend_name");
 
-                friend = (L2PcInstance)L2World.getInstance().findObject(objectId);
+            	friend = L2World.getInstance().getPlayer(friendName);
 
                 if (friend != null) //friend logged in.
                 {

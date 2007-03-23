@@ -94,7 +94,7 @@ public class FriendList extends ServerBasePacket
     				if (friendId == _cha.getObjectId())
                         continue;
     				
-    				L2PcInstance friend = (L2PcInstance)L2World.getInstance().findObject(friendId);
+    				L2PcInstance friend = L2World.getInstance().getPlayer(friendName);
     
     				writeH(0); // ??
     				writeD(friendId);
