@@ -46,7 +46,7 @@ public class ScrollOfEscape implements IItemHandler
     // all the items ids that this handler knowns
     private static int[] _itemIds = { 736, 1830, 1829, 1538, 3958, 5858, 5859,
                                       7117,7118,7119,7120,7121,7122,7123,7124,
-                                      7125,7126,7127,7128,7129,7130,7131,7132,7133,7134,7554,7555,7556,7557,7558,7559};
+                                      7125,7126,7127,7128,7129,7130,7131,7132,7133,7134,7554,7555,7556,7557,7558,7559,7618,7619};
     
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -232,6 +232,12 @@ public class ScrollOfEscape implements IItemHandler
                 				break;
                 			case 7135 :
                 				//_activeChar.teleToLocation(,,);  // Schuttgart Castle Town
+                				break;
+                			case 7618 :
+                				_activeChar.teleToLocation(149864,-81062,-5618, true);  // Ketra Orc Village
+                				break;
+                			case 7619 :
+                				_activeChar.teleToLocation(108275,-53785,-2524, true);  // Varka Silenos Village
                 				break;
 					default:
 					     _activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
