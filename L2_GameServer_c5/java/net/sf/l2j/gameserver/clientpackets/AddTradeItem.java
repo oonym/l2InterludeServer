@@ -69,7 +69,7 @@ public class AddTradeItem extends ClientBasePacket
         {
             // Trade partner not found, cancel trade
             if (trade.getPartner() != null)
-            	_log.warning("Character:" + player.getName() + " requested ivalid trade object: " + _objectId);
+            	_log.warning("Character:" + player.getName() + " requested invalid trade object: " + _objectId);
             SystemMessage msg = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
             player.sendPacket(msg);
             player.cancelActiveTrade();
