@@ -54,8 +54,8 @@ public class FriendRecvMsg extends ServerBasePacket
 		writeC(0xfd);
 		
 		writeD(0); // ??
-		writeS(_sender);
 		writeS(_receiver);
+		writeS(_sender);
 		writeS(_message);
 	}
 
