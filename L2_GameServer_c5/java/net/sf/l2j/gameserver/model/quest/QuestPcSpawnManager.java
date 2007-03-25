@@ -188,7 +188,7 @@ public class QuestPcSpawnManager
             if (getPcSpawns().get(i).getPlayer() != null && getPcSpawns().get(i).getPlayer().getObjectId() == player.getObjectId())
                 return getPcSpawns().get(i);
         }
-        getPcSpawns().add(new QuestPcSpawn(new L2PcInstance[] {player}));
+        getPcSpawns().add(new QuestPcSpawn(player));
         return getPcSpawns().get(getPcSpawns().size() - 1);
     }
 

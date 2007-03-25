@@ -27,7 +27,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
-import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2DropData;
@@ -35,7 +34,6 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
-import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.QuestList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
@@ -357,21 +355,6 @@ public final class QuestState
         return varint;
     }
     
-    /**
-     * Return true if ID of the L2Attackable attcked is needed for the quest, otherwise, return false.
-     * @param npcId
-     * @return boolean
-     */
-    public boolean waitsForAttack(L2NpcInstance npc) 
-    {
-        for (int k : getState().getAttackIds()) 
-            if (k == npc.getNpcId()) 
-                return true;
-
-        return false;
-    }
-
-    
 	public boolean waitsForEvent(String event) 
     {
 		for (String se : getState().getEvents()) 
@@ -381,34 +364,6 @@ public final class QuestState
         return false;
 	}
 	
-	/**
-	 * Return true if ID of the L2Attackable killed is needed for the quest, otherwise, return false.
-	 * @param npcId
-	 * @return boolean
-	 */
-	public boolean waitsForKill(L2NpcInstance npc) 
-    {
-		for (int k : getState().getKillIds())
-			if (k == npc.getNpcId())
-				return true;
-
-		return false;
-	}
-	
-	/**
-	 * Return true if the L2NpcInstance has to be talked to 
-	 * @param npcId
-	 * @return boolean
-	 */
-	public boolean waitsForTalk(int npcId) 
-    {
-		for (int k : getState().getTalkIds())
-			if (k == npcId)
-				return true;
-
-		return false;
-	}
-
     /**
      * Add player to get notification of characters death
      * @param character : L2Character of the character to get notification of death
@@ -784,6 +739,8 @@ public final class QuestState
     }
     
     /**
+     * NOTE: This is to be deprecated; replaced by Quest.getPcSpawn(L2PcInstance)
+     * For now, I shall leave it as is
      * Return a QuestPcSpawn for curren player instance
      */
     public final QuestPcSpawn getPcSpawn()
@@ -791,34 +748,9 @@ public final class QuestState
         return QuestPcSpawnManager.getInstance().getPcSpawn(this.getPlayer());
     }
 
-	/**
-	 * Show HTML file to client
-	 * @param fileName
-	 * @return String : message sent to client 
-	 */
 	public String showHtmlFile(String fileName) 
     {
-        String questId = getQuest().getName();
-
-        //Create handler to file linked to the quest
-        String directory    = getQuest().getDescr().toLowerCase();
-        String content = HtmCache.getInstance().getHtm("data/jscript/" + directory + "/" + questId + "/"+fileName);
-        
-        if (content == null)
-            content = HtmCache.getInstance().getHtmForce("data/jscript/quests/"+questId+"/"+fileName);
-
-        if (getPlayer() != null && getPlayer().getTarget() != null)
-            content = content.replaceAll("%objectId%", String.valueOf(getPlayer().getTarget().getObjectId()));
-
-        //Send message to client if message not empty     
-         if (content != null) 
-         {
-             NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
-             npcReply.setHtml(content);
-             getPlayer().sendPacket(npcReply);
-         }
-         
-         return content;
+    	return getQuest().showHtmlFile(getPlayer(), fileName);
 	}
 
 	/**

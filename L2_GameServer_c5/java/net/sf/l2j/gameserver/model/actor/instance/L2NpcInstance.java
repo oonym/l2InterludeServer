@@ -1307,7 +1307,7 @@ public class L2NpcInstance extends L2Character
             if (q != null) 
             {
                 // check for start point
-                Quest[] qlst = getTemplate().getStartQuests();
+                Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
                 
                 if (qlst != null && qlst.length > 0) 
                 {
@@ -1374,7 +1374,7 @@ public class L2NpcInstance extends L2Character
         List<Quest> options = new FastList<Quest>();
         
         QuestState[] awaits = player.getQuestsForTalk(getTemplate().npcId);
-        Quest[] starts = getTemplate().getStartQuests();
+        Quest[] starts = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
         
         // Quests are limited between 1 and 999 because those are the quests that are supported by the client. 
         // By limitting them there, we are allowed to create custom quests at higher IDs without interfering 

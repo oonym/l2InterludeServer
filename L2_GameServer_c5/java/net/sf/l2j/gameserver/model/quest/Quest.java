@@ -28,16 +28,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+
 
 /**
  * @author Luis Arias
@@ -83,6 +88,13 @@ public abstract class Quest
 		}
 	}
 	
+    public static enum QuestEventType 
+    {
+        QUEST_START,
+        QUEST_TALK,
+        MOBGOTATTACKED,
+        MOBKILLED
+    }	
 	/**
 	 * Return ID of the quest
 	 * @return int
@@ -152,47 +164,55 @@ public abstract class Quest
      */
     public L2NpcTemplate addStartNpc(int npcId)
     {
+    	try
+    	{
 		L2NpcTemplate t = NpcTable.getInstance().getTemplate(npcId);
 		if (t != null) {
-			t.addStartQuests(this);
+			t.addQuestEvent(Quest.QuestEventType.QUEST_START, this);
 		}
 		return t;
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		return null;
+    	}
     }
     
 	// these are methods to call from java
-    public final boolean notifyAttack(L2NpcInstance npc, QuestState qs) {
+    public final boolean notifyAttack(L2NpcInstance npc, L2PcInstance attacker) {
         String res = null;
-        try { res = onAttack(npc, qs); } catch (Exception e) { return showError(qs, e); }
-        return showResult(qs, res);
+        try { res = onAttack(npc, attacker); } catch (Exception e) { return showError(attacker, e); }
+        return showResult(attacker, res);
     } 
     public final boolean notifyDeath(L2NpcInstance npc, L2Character character, QuestState qs) {
         String res = null;
-        try { res = onDeath(npc, character, qs); } catch (Exception e) { return showError(qs, e); }
-        return showResult(qs, res);
+        try { res = onDeath(npc, character, qs); } catch (Exception e) { return showError(qs.getPlayer(), e); }
+        return showResult(qs.getPlayer(), res);
     } 
     public final boolean notifyEvent(String event, QuestState qs) {
         String res = null;
-        try { res = onEvent(event, qs); } catch (Exception e) { return showError(qs, e); }
-        return showResult(qs, res);
+        try { res = onEvent(event, qs); } catch (Exception e) { return showError(qs.getPlayer(), e); }
+        return showResult(qs.getPlayer(), res);
     } 
-	public final boolean notifyKill (L2NpcInstance npc, QuestState qs) {
+	public final boolean notifyKill (L2NpcInstance npc, L2PcInstance killer) {
 		String res = null;
-		try { res = onKill(npc, qs); } catch (Exception e) { return showError(qs, e); }
-		return showResult(qs, res);
+		try { res = onKill(npc, killer); } catch (Exception e) { return showError(killer, e); }
+		return showResult(killer, res);
 	}
 	public final boolean notifyTalk (L2NpcInstance npc, QuestState qs) {
 		String res = null;
-		try { res = onTalk(npc, qs); } catch (Exception e) { return showError(qs, e); }
-        qs.getPlayer().setLastQuestNpcObject(npc.getObjectId());
-		return showResult(qs, res);
+		try { res = onTalk(npc, qs.getPlayer()); } catch (Exception e) { return showError(qs.getPlayer(), e); }
+		qs.getPlayer().setLastQuestNpcObject(npc.getObjectId());
+		return showResult(qs.getPlayer(), res);
 	}
 
 	// these are methods that java calls to invoke scripts
-    @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, QuestState qs) { return onEvent("", qs); } 
+    @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker) { return null; } 
     @SuppressWarnings("unused") public String onDeath (L2NpcInstance npc, L2Character character, QuestState qs) { return onEvent("", qs); }
     @SuppressWarnings("unused") public String onEvent(String event, QuestState qs) { return null; } 
-    @SuppressWarnings("unused") public String onKill (L2NpcInstance npc, QuestState qs) { return onEvent("", qs); }
-    @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, QuestState qs) { return onEvent("", qs); }
+    @SuppressWarnings("unused") public String onKill (L2NpcInstance npc, L2PcInstance killer) { return null; }
+    @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
 	
 	/**
 	 * Show message error to player who has an access level greater than 0
@@ -200,15 +220,15 @@ public abstract class Quest
 	 * @param t : Throwable
 	 * @return boolean
 	 */
-	private boolean showError(QuestState qs, Throwable t) {
+	private boolean showError(L2PcInstance player, Throwable t) {
 		_log.log(Level.WARNING, "", t);
-		if (qs.getPlayer().getAccessLevel() > 0) {
+		if (player.getAccessLevel() > 0) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			t.printStackTrace(pw);
 			pw.close();
 			String res = "<html><body><title>Script error</title>"+sw.toString()+"</body></html>";
-			return showResult(qs, res);
+			return showResult(player, res);
 		}
 		return false;
 	}
@@ -224,21 +244,21 @@ public abstract class Quest
 	 * @param res : String pointing out the message to show at the player
 	 * @return boolean
 	 */
-	private boolean showResult(QuestState qs, String res) {
+	private boolean showResult(L2PcInstance player, String res) {
 		if (res == null)
 			return true;
 		if (res.endsWith(".htm")) {
-			qs.showHtmlFile(res);
+			showHtmlFile(player, res);
 		}
 		else if (res.startsWith("<html>")) {
 			NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
 			npcReply.setHtml(res);
-			qs.getPlayer().sendPacket(npcReply);
+			player.sendPacket(npcReply);
 		}
 		else {
 			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString(res);
-			qs.getPlayer().sendPacket(sm);
+			player.sendPacket(sm);
 		}
 		return false;
 	}
@@ -488,4 +508,199 @@ public abstract class Quest
 		updateQuestVarInDb(qs, "<state>", val);
 	}
 	
+    /**
+     * Add this quest to the list of quests that the passed mob will respond to for Attack Events.<BR><BR>
+     * @param attackId
+     * @return int : attackId
+     */
+    public int addAttackId(int attackId) {
+    	NpcTable.getInstance().getTemplate(attackId).addQuestEvent(Quest.QuestEventType.MOBGOTATTACKED, this);
+        return attackId;
+    }
+    
+	/**
+     * Add this quest to the list of quests that the passed mob will respond to for Kill Events.<BR><BR>
+	 * @param killId
+	 * @return int : killId
+	 */
+	public int addKillId(int killId) {
+    	NpcTable.getInstance().getTemplate(killId).addQuestEvent(Quest.QuestEventType.MOBKILLED, this);
+		return killId;
+	}
+	
+    /**
+     * Add this quest to the list of quests that the passed npc will respond to for Talk Events.<BR><BR>
+     * @param talkId : ID of the NPC
+     * @return int : ID of the NPC
+     */
+    public int addTalkId(int talkId) {
+    	NpcTable.getInstance().getTemplate(talkId).addQuestEvent(Quest.QuestEventType.QUEST_TALK, this);
+        return talkId;
+    }
+    
+    /**
+     * Return a QuestPcSpawn for the given player instance
+     */
+    public final QuestPcSpawn getPcSpawn(L2PcInstance player)
+    {
+        return QuestPcSpawnManager.getInstance().getPcSpawn(player);
+    }
+    
+    // returns a random party member's L2PcInstance for the passed player's party
+    // returns the passed player if he has no party.
+    public L2PcInstance getRandomPartyMember(L2PcInstance player)
+    {
+    	// NPE prevention.  If the player is null, there is nothing to return
+    	if (player == null )
+    		return null;
+    	if ((player.getParty() == null) || (player.getParty().getPartyMembers().size()==0))
+    		return player;
+    	L2Party party = player.getParty();
+    	return party.getPartyMembers().get(Rnd.get(party.getPartyMembers().size()));
+    }
+
+    /**
+     * Auxilary function for party quests. 
+     * Note: This function is only here because of how commonly it may be used by quest developers.
+     * For any variations on this function, the quest script can always handle things on its own
+     * @param player: the instance of a player whose party is to be searched
+     * @param value: the value of the "cond" variable that must be matched
+     * @return L2PcInstance: L2PcInstance for a random party member that matches the specified 
+     * 			condition, or null if no match.
+     */
+    public L2PcInstance getRandomPartyMember(L2PcInstance player, String value)
+    {
+    	return getRandomPartyMember(player, "cond", value);
+    }
+
+    /**
+     * Auxilary function for party quests. 
+     * Note: This function is only here because of how commonly it may be used by quest developers.
+     * For any variations on this function, the quest script can always handle things on its own
+     * @param player: the instance of a player whose party is to be searched
+     * @param var/value: a tuple specifying a quest condition that must be satisfied for
+     *     a party member to be considered.
+     * @return L2PcInstance: L2PcInstance for a random party member that matches the specified 
+     * 				condition, or null if no match.  If the var is null, any random party 
+     * 				member is returned (i.e. no condition is applied).
+     */
+    public L2PcInstance getRandomPartyMember(L2PcInstance player, String var, String value)
+    {
+    	// if no valid player instance is passed, there is nothing to check...
+    	if (player == null)
+    		return null;
+    	
+    	// for null var condition, return any random party member.
+    	if (var == null) 
+    		return getRandomPartyMember(player);
+    	
+    	// normal cases...if the player is not in a partym check the player's state
+    	QuestState temp = null;
+    	L2Party party = player.getParty();
+    	// if this player is not in a party, just check if this player instance matches the conditions itself
+    	if ( (party == null) || (party.getPartyMembers().size()==0) )
+    	{
+    		temp = player.getQuestState(getName());
+    		if( (temp != null) && (temp.get(var)!=null) && ((String) temp.get(var)).equalsIgnoreCase(value) )
+				return player;  // match
+    		
+    		return null;	// no match
+    	}
+    	
+    	// if the player is in a party, gather a list of all matching party members (possibly 
+    	// including this player) 
+    	FastList<L2PcInstance> candidates = new FastList<L2PcInstance>();
+    	for(L2PcInstance partyMember: party.getPartyMembers())
+    	{
+    		temp = partyMember.getQuestState(getName());
+    		if( (temp != null) && (temp.get(var)!=null) && ((String) temp.get(var)).equalsIgnoreCase(value) )
+    			candidates.add(partyMember);
+    	}
+    	// if there was no match, return null...
+    	if (candidates.size()==0)
+    		return null;
+    	
+    	// if a match was found from the party, return one of them at random.
+    	return candidates.get( Rnd.get(candidates.size()) );
+    }
+
+    /**
+     * Auxilary function for party quests. 
+     * Note: This function is only here because of how commonly it may be used by quest developers.
+     * For any variations on this function, the quest script can always handle things on its own
+     * @param player: the instance of a player whose party is to be searched
+     * @param state: the state in which the party member's queststate must be in order to be considered.
+     * @return L2PcInstance: L2PcInstance for a random party member that matches the specified 
+     * 				condition, or null if no match.  If the var is null, any random party 
+     * 				member is returned (i.e. no condition is applied).
+     */
+    public L2PcInstance getRandomPartyMemberState(L2PcInstance player, State state)
+    {
+    	// if no valid player instance is passed, there is nothing to check...
+    	if (player == null)
+    		return null;
+    	
+    	// for null var condition, return any random party member.
+    	if (state == null) 
+    		return getRandomPartyMember(player);
+    	
+    	// normal cases...if the player is not in a partym check the player's state
+    	QuestState temp = null;
+    	L2Party party = player.getParty();
+    	// if this player is not in a party, just check if this player instance matches the conditions itself
+    	if ( (party == null) || (party.getPartyMembers().size()==0) )
+    	{
+    		temp = player.getQuestState(getName());
+    		if( (temp != null) && (temp.getState() == state) )
+				return player;  // match
+    		
+    		return null;	// no match
+    	}
+    	
+    	// if the player is in a party, gather a list of all matching party members (possibly 
+    	// including this player) 
+    	FastList<L2PcInstance> candidates = new FastList<L2PcInstance>();
+    	for(L2PcInstance partyMember: party.getPartyMembers())
+    	{
+    		temp = partyMember.getQuestState(getName());
+    		if( (temp != null) && (temp.getState() == state) )
+    			candidates.add(partyMember);
+    	}
+    	// if there was no match, return null...
+    	if (candidates.size()==0)
+    		return null;
+    	
+    	// if a match was found from the party, return one of them at random.
+    	return candidates.get( Rnd.get(candidates.size()) );
+    }
+
+	/**
+	 * Show HTML file to client
+	 * @param fileName
+	 * @return String : message sent to client 
+	 */
+	public String showHtmlFile(L2PcInstance player, String fileName) 
+    {
+        String questId = getName();
+
+        //Create handler to file linked to the quest
+        String directory    = getDescr().toLowerCase();
+        String content = HtmCache.getInstance().getHtm("data/jscript/" + directory + "/" + questId + "/"+fileName);
+        
+        if (content == null)
+            content = HtmCache.getInstance().getHtmForce("data/jscript/quests/"+questId+"/"+fileName);
+
+        if (player != null && player.getTarget() != null)
+            content = content.replaceAll("%objectId%", String.valueOf(player.getTarget().getObjectId()));
+
+        //Send message to client if message not empty     
+         if (content != null) 
+         {
+             NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
+             npcReply.setHtml(content);
+             player.sendPacket(npcReply);
+         }
+         
+         return content;
+	}
 }

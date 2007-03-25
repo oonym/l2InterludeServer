@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
@@ -41,13 +42,13 @@ public class QuestPcSpawn
 
     // =========================================================
     // Data Field
-    private L2PcInstance[] _Player;
+    private L2PcInstance _Player;
     private List<AutoSpawnInstance> _autoSpawns = new FastList<AutoSpawnInstance>();
     private List<L2Spawn> _Spawns = new FastList<L2Spawn>();
     
     // =========================================================
     // Constructor
-    public QuestPcSpawn(L2PcInstance[] player)
+    public QuestPcSpawn(L2PcInstance player)
     {
         _Player = player;
     }
@@ -130,7 +131,7 @@ public class QuestPcSpawn
             {
                 L2Spawn spawn = new L2Spawn(template1);
 
-                spawn.setId(npcId);
+                spawn.setId(IdFactory.getInstance().getNextId());
                 spawn.setHeading(getPlayer().getHeading());
                 spawn.setLocx(x);
                 spawn.setLocy(y);
@@ -141,7 +142,7 @@ public class QuestPcSpawn
                 
                 _Spawns.add(spawn);
 
-                return spawn.getId();
+                return spawn.getLastSpawn().getObjectId();
             }
           } catch (Exception e1) {_log.warning("Could not spawn Npc " + npcId);}
           
@@ -343,8 +344,7 @@ public class QuestPcSpawn
     /** Return current player instance */
     public L2PcInstance getPlayer()
     {
-        if (_Player == null || _Player.length <= 0) return null;
-        return _Player[0];
+        return _Player;
     }
 
     /**

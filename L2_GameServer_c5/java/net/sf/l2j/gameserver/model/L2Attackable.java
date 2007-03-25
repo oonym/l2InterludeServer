@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -50,7 +49,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.AttackableKnownList;
 import net.sf.l2j.gameserver.model.base.SoulCrystal;
-import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -431,57 +430,12 @@ public class L2Attackable extends L2NpcInstance
         }
         // Notify the Quest Engine of the L2Attackable death if necessary
         try {
-
-        	if (killer instanceof L2PcInstance || killer instanceof L2SummonInstance)
-        	{
-        		L2PcInstance player = killer instanceof L2PcInstance ? (L2PcInstance)killer : ((L2SummonInstance)killer).getOwner();
-        		List<QuestState> questList = new FastList<QuestState>(); 
-        		
-        		if (player.getParty() != null)
-        		{
-        			Map<String, List<QuestState>> tempMap = new FastMap<String, List<QuestState>>();
-        			
-	        		for (L2PcInstance pl : player.getParty().getPartyMembers())
-	        		{
-	        			if (pl.getQuestsForKills(this) == null) continue;
-	        			
-	        			for (QuestState qs : pl.getQuestsForKills(this))
-	        			{
-	        				if (qs.getState().isParty())
-	        				{
-	        					if (!qs.isCompleted() && !pl.isDead() && Util.checkIfInRange(1150, this, pl, true))
-	        					{
-	        						if (tempMap.get(qs.getQuest().getName()) != null)
-	        							tempMap.get(qs.getQuest().getName()).add(qs);
-	        						else
-	        						{
-	        							List<QuestState> tempList = new FastList<QuestState>();
-	        							tempList.add(qs);
-	        							tempMap.put(qs.getQuest().getName(), tempList);
-	        						}
-	        					}
-	        				}
-	        				else if (pl == player)
-	        					questList.add(qs);
-	        			}
-	        		}
-	        		
-	        		for (List<QuestState> list : tempMap.values())
-	        		{
-	        			Random rnd = new Random();
-	        			questList.add((QuestState)list.toArray()[rnd.nextInt(list.size())]);
-	        		}
-        		}
-        		else
-        		{
-        			if (player.getQuestsForKills(this) != null)
-        				for (QuestState qs : player.getQuestsForKills(this))
-        					questList.add(qs);
-        		}
-        		
-       			for (QuestState qs : questList)
-       				qs.getQuest().notifyKill(this, qs);
-        	}
+            if (killer instanceof L2PcInstance)
+            {
+            	if (getTemplate().getEventQuests(Quest.QuestEventType.MOBKILLED) != null)
+            		for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.MOBKILLED))
+            			quest.notifyKill(this, (L2PcInstance) killer);
+            }
         } 
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
 
@@ -850,12 +804,9 @@ public class L2Attackable extends L2NpcInstance
             {
                 L2PcInstance player = attacker instanceof L2PcInstance?(L2PcInstance)attacker:((L2SummonInstance)attacker).getOwner();
                 
-                QuestState[] quests = player.getQuestsForAttacks(this);
-                if (quests != null) 
-                {
-                    for (QuestState qs : quests) 
-                        qs.getQuest().notifyAttack(this, qs);
-                }
+                if (getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED) !=null)
+                	for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED))
+                		quest.notifyAttack(this, player);
             }
         } 
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }

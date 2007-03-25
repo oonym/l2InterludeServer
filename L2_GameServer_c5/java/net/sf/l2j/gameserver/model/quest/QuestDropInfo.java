@@ -46,39 +46,30 @@ public class QuestDropInfo
 		dropList = new FastList<DropInfo>();
 		if (questState == null)
 		    return;
-		State 		currentState	= questState.getState();
-		
-		for(int npcId : currentState.getKillIds())
-		{
-			// Get drops given by the mob
-            
-            if (questState.getDrops() != null)
-            {
-                List<L2DropData> questDrop = questState.getDrops().get(npcId);
+
+		if (questState.getDrops() != null)
+        {
+			for(List<L2DropData> questDrop : questState.getDrops().values())
+			{
+				// Get drops given by the mob
                 if(questDrop == null)
-                {
                     continue;
-                }
                 
-            // Go through all drops of the mob 
+                // Go through all drops of the mob 
     			for(L2DropData dropInfo : questDrop)
     			{
     				int dropID 		= dropInfo.getItemId();
     				int dropObjID	= 0;
     				int dropCount	= questState.getQuestItemsCount(dropID);
-    				//If player don't have this quest item(don't kill need npc? or other) then skip it
+    				//If player doesn't have this quest item(doesn't kill need npc? or other) then skip it
     				if(pcInstance.getInventory().getItemByItemId(dropID) == null)
-    				{
     					continue;
-    				}
     				
     				dropObjID = pcInstance.getInventory().getItemByItemId(dropID).getObjectId();
     				// Add info for the dropped item in the player's inventory 
     				dropList.add(new DropInfo(dropID, dropCount, dropObjID));
     			}
             }
-            else
-                continue;
 		}
 	}
 }

@@ -60,6 +60,7 @@ import net.sf.l2j.gameserver.datatables.HennaTable;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.datatables.NobleSkillTable;
+import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
@@ -1081,16 +1082,16 @@ public final class L2PcInstance extends L2PlayableInstance
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (QuestState qs : _quests.values())
+		for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED))
 		{
 			// Check if the Identifier of the L2Attackable attck is needed for the current quest
-			if (qs.waitsForAttack(npc))
+			if (getQuestState(quest.getName())!=null)
 			{
 				// Copy the current L2PcInstance QuestState in the QuestState table
 				if (states == null)
-					states = new QuestState[]{qs};
+					states = new QuestState[]{getQuestState(quest.getName())};
 				else
-					states = addToQuestStateArray(states, qs);
+					states = addToQuestStateArray(states, getQuestState(quest.getName()));
 			}
 		}
 		
@@ -1110,16 +1111,16 @@ public final class L2PcInstance extends L2PlayableInstance
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (QuestState qs : _quests.values())
+		for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.MOBKILLED))
 		{
 			// Check if the Identifier of the L2Attackable killed is needed for the current quest
-			if (qs.waitsForKill(npc))
+			if (getQuestState(quest.getName())!=null)
 			{
 				// Copy the current L2PcInstance QuestState in the QuestState table
 				if (states == null)
-					states = new QuestState[]{qs};
+					states = new QuestState[]{getQuestState(quest.getName())};
 				else
-					states = addToQuestStateArray(states, qs);
+					states = addToQuestStateArray(states, getQuestState(quest.getName()));
 			}
 		}
 		
@@ -1139,16 +1140,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (QuestState qs : _quests.values())
+		for (Quest quest: NpcTable.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.QUEST_TALK))
 		{
-			// Check if the Identifier of the L2Attackable talk is needed for the current quest
-			if (qs.waitsForTalk(npcId))
+			// Copy the current L2PcInstance QuestState in the QuestState table
+			if (getQuestState(quest.getName())!=null)
 			{
-				// Copy the current L2PcInstance QuestState in the QuestState table
 				if (states == null)
-					states = new QuestState[]{qs};
+					states = new QuestState[]{getQuestState(quest.getName())};
 				else
-					states = addToQuestStateArray(states, qs);
+					states = addToQuestStateArray(states, getQuestState(quest.getName()));
 			}
 		}
 		

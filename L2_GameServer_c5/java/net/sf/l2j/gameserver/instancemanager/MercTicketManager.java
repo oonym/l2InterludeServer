@@ -309,7 +309,7 @@ public class MercTicketManager
             if (_ItemIds[i] == itemId) // Find the index of the item used
             {
                // Temporary tap into QuestPcSpawn to spawn, auto chat, and despawn merc
-                QuestPcSpawn qps = new QuestPcSpawn(new L2PcInstance[] {activeChar});
+                QuestPcSpawn qps = new QuestPcSpawn(activeChar);
                 int spawnObjectId = qps.addSpawn(_NpcIds[i], x, y, z, 3000, messages, 0); // Spawn, auto chat, and despawn merc.
                 /*L2Spawn spawn = */qps.getSpawn(spawnObjectId);
 

@@ -84,8 +84,9 @@ public final class L2NpcTemplate extends L2CharTemplate
 	private List<ClassId>             _teachInfo;
 	private Map<Integer, L2Skill> _skills;
 	private Map<Stats, Integer> _resists;
-	private Quest[]                   _questsStart;
-
+	// contains a list of quests for each event type (questStart, questAttack, questKill, etc)
+	private Map<Quest.QuestEventType, Quest[]> _questEvents;
+	
 	/**
 	 * Constructor of L2Character.<BR><BR>
 	 * 
@@ -126,7 +127,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 		npcStatsSet = set;
 		_teachInfo = null;
 	}
-    
+	
     public void addTeachInfo(ClassId classId)
 	{
 		if (_teachInfo == null)
@@ -261,10 +262,15 @@ public final class L2NpcTemplate extends L2CharTemplate
 		return _skills;
 	}
 	    
-	public void addStartQuests(Quest q) {
-		if (_questsStart == null) {
-			_questsStart = new Quest[]{q};
+    public void addQuestEvent(Quest.QuestEventType EventType, Quest q)
+    {
+    	if (_questEvents == null) 
+    		_questEvents = new FastMap<Quest.QuestEventType, Quest[]>();
+    		
+		if (_questEvents.get(EventType) == null) {
+			_questEvents.put(EventType, new Quest[]{q});
 		} else {
+			Quest[] _questsStart = _questEvents.get(EventType);
 			int len = _questsStart.length;
 			Quest[] tmp = new Quest[len+1];
 			for (int i=0; i < len; i++) {
@@ -275,12 +281,14 @@ public final class L2NpcTemplate extends L2CharTemplate
 				tmp[i] = _questsStart[i];
 	        }
 			tmp[len] = q;
-			_questsStart = tmp;
+			_questEvents.put(EventType, tmp);
 	    }
-	}
-	
-	public Quest[] getStartQuests() {
-		return _questsStart;
+    }
+    	
+	public Quest[] getEventQuests(Quest.QuestEventType EventType) {
+		if (_questEvents == null)
+			return null;
+		return _questEvents.get(EventType);
 	}
 	
 	public StatsSet getStatsSet()
