@@ -211,19 +211,19 @@ public class MapRegionTable
             case 2: nearestTown = "Dark Elven Village"; break;
             case 3: nearestTown = "Orc Village"; break;
             case 4: nearestTown = "Dwarven Village"; break;
-            case 5: nearestTown = "Gludio Castle Town"; break;
+            case 5: nearestTown = "Town of Gludio"; break;
             case 6: nearestTown = "Gludin Village"; break;
-            case 7: nearestTown = "Dion Castle Town"; break;
-            case 8: nearestTown = "Giran Castle Town"; break;
-            case 9: nearestTown = "Oren Castle Town"; break;
-            case 10: nearestTown = "Aden Castle Town"; break;
+            case 7: nearestTown = "Town of Dion"; break;
+            case 8: nearestTown = "Town of Giran"; break;
+            case 9: nearestTown = "Town of Oren"; break;
+            case 10: nearestTown = "Town of Aden"; break;
             case 11: nearestTown = "Hunters Village"; break;
             case 12: nearestTown = "Giran Harbor"; break;
             case 13: nearestTown = "Heine"; break;
-            case 14: nearestTown = "Rune Castle Town"; break;
-            case 15: nearestTown = "Goddard"; break;
-            case 16: nearestTown = "Shuttgart"; break;  ////TODO@ (Check mapregion table)[Luno]
-            default: nearestTown = "Aden Castle Town"; break;
+            case 14: nearestTown = "Rune Township"; break;
+            case 15: nearestTown = "Town of Goddard"; break;
+            case 16: nearestTown = "Town of Shuttgart"; break;  ////TODO@ (Check mapregion table)[Luno]
+            default: nearestTown = "Town of Aden"; break;
            
         }
         
