@@ -38,8 +38,7 @@ public class EffectRemoveTarget extends L2Effect
     
     /** Notify started */
     public void onStart() {
-        //just start effect
-        onActionTime();
+        getEffected().setTarget(null);
     }
     
     /** Notify exited */
@@ -49,7 +48,7 @@ public class EffectRemoveTarget extends L2Effect
     
     public boolean onActionTime()
     {        
-        getEffected().setTarget(null);
-        return true;
+    	//nothing
+        return false;
     }
 }

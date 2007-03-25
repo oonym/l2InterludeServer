@@ -40,8 +40,13 @@ public class EffectTargetMe extends L2Effect
     
     /** Notify started */
     public void onStart() {
-        //just start effect
-        onActionTime();
+    	//Should only work on PC?  
+    	if (getEffected() instanceof L2PcInstance)
+    	{
+    		getEffected().setTarget(getEffector());
+    		MyTargetSelected my = new MyTargetSelected(getEffector().getObjectId(), 0);
+    		getEffected().sendPacket(my);
+    	} 
     }
     
     /** Notify exited */
@@ -51,13 +56,7 @@ public class EffectTargetMe extends L2Effect
     
     public boolean onActionTime()
     {
-    	//Should only work on PC?
-    	if (getEffected() instanceof L2PcInstance)
-    	{
-    		getEffected().setTarget(getEffector());
-    		MyTargetSelected my = new MyTargetSelected(getEffector().getObjectId(), 0);
-    		getEffected().sendPacket(my);
-    	}    		
-        return true;
+    	//nothing
+        return false;
     }
 }
