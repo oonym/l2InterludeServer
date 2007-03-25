@@ -61,7 +61,13 @@ public abstract class ClientBasePacket extends BasePacket implements Runnable
 		}
 		catch (Throwable e)
 		{
-			_log.log(Level.SEVERE, "error handling client message "+getType(), e);
+       L2PcInstance player = getClient().getActiveChar();
+       if (player != null)
+       {
+       	  _log.log( Level.SEVERE, "Character "+player.getName()+" of account "+player.getAccountName()+" caused the following error at packet-handling: "+getType(), e);			
+       }
+       else
+			   _log.log(Level.SEVERE, "error handling client message "+getType(), e);
 		}
 		
 	}

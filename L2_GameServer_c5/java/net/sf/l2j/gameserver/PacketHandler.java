@@ -761,7 +761,7 @@ public class PacketHandler
 			{
 				msg = null;
 				int sz = data.remaining(); 
-				_log.warning("Unknown Packet:" + Integer.toHexString(id));
+				_log.warning("Unknown Packet 0x" + Integer.toHexString(id) + " from " + client.getActiveChar());
 				byte[] arr = new byte[sz];
 				data.get(arr);
 				_log.warning(Util.printData(arr, sz));

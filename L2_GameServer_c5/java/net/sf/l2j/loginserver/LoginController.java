@@ -455,7 +455,7 @@ public class LoginController
                     _log.warning("Invalid username creation/use attempt: " + user);
                     return false;
                 }
-                _log.warning("account missing for user " + user);
+                _log.warning("["+address.getHostAddress()+"]: account missing for user " + user);
                 return false;
             }
 
