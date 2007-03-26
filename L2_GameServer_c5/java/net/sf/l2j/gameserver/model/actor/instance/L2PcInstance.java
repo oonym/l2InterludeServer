@@ -8882,7 +8882,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (skilllvl <= 0) return 1;
 		int randomlvl;
 		int check = Rnd.get(100);
-		
+
 		if (check <= 50)
 		{
 			randomlvl = skilllvl;
