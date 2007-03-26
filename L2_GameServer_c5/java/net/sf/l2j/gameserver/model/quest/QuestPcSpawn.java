@@ -396,8 +396,8 @@ public class QuestPcSpawn
 
         for (L2Spawn spawn: getSpawns())
         {
-            if (spawn.getId() == objectId)
-                return spawn;
+        	  if (spawn.getLastSpawn().getObjectId() == objectId)
+                  return spawn;
         }
         return null;
     }
