@@ -1234,15 +1234,16 @@ public class L2Attackable extends L2NpcInstance
          {
         	 boolean _hp = false;
         	 boolean _mp = false;
-        	 boolean _mtk = false;
+        	 boolean _spec = false;
         	 
         	 //ptk - patk type enhance
         	 int random = Rnd.get(1000); // note *10
-             if (random < Config.RATE_DROP_SPECIAL_HERBS)
+             if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec) // && !_spec useless yet
              {                  
                  RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
+                 _spec = true;
              }
              else for (int i = 0; i < 3; i++)
              {
@@ -1259,45 +1260,41 @@ public class L2Attackable extends L2NpcInstance
             		 break;
             	 }
              }
+             
              //mtk - matk type enhance
              random = Rnd.get(1000); // note *10
-             if (random < Config.RATE_DROP_SPECIAL_HERBS)
+             if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec)
              {
                  RewardItem item = new RewardItem(8613, 1); // Herb of Mystic
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
-                 _mtk = true;
+                 _spec = true;
              }
-             if (!_mtk)
+             else for (int i = 0; i < 2; i++)
              {
             	 random = Rnd.get(100);
-            	 if (random < Config.RATE_DROP_COMMON_HERBS)
+            	 if (random < Config.RATE_DROP_COMMON_HERBS) 
             	 {
-            		 RewardItem item = new RewardItem(8607, 1); // Herb of Magic
+            		 RewardItem item = null;
+            		 if (i == 0) item = new RewardItem(8607, 1); // Herb of Magic
+            		 if (i == 1) item = new RewardItem(8609, 1); // Herb of Casting Speed
+            		 
             		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
-            		 _mtk = true;
+            		 break;
             	 }
              }
-             if (!_mtk)
-             {
-            	 random = Rnd.get(100);
-            	 if (random < Config.RATE_DROP_COMMON_HERBS)
-            	 {
-            		 RewardItem item = new RewardItem(8609, 1); // Herb of Casting Spd.
-            		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-            		 else DropItem(player, item);
-            	 }
-             }
+             
              //hp+mp type
              random = Rnd.get(1000); // note *10
-             if (random < Config.RATE_DROP_SPECIAL_HERBS)
+             if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec)
              {
                  RewardItem item = new RewardItem(8614, 1); // Herb of Recovery       
                  if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
                  else DropItem(player, item);
                  _mp = true;
                  _hp = true;
+                 _spec = true;
              }
              //hp - restore hp type
              if (!_hp)
@@ -1308,7 +1305,7 @@ public class L2Attackable extends L2NpcInstance
             		 RewardItem item = new RewardItem(8600, 1); // Herb of Life 
             		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
-            		 _mp = true;
+            		 _hp = true;
             	 }
              }
              if (!_hp)
@@ -1319,7 +1316,7 @@ public class L2Attackable extends L2NpcInstance
             		 RewardItem item = new RewardItem(8601, 1); // Greater Herb of Life
             		 if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS) player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
             		 else DropItem(player, item);
-            		 _mp = true;
+            		 _hp = true;
             	 }
              }
              if (!_hp)
