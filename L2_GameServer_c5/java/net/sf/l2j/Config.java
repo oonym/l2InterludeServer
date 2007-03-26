@@ -169,6 +169,9 @@ public final class Config
     
     /** Alternative gaming - allow free teleporting around the world. */
     public static boolean ALT_GAME_FREE_TELEPORT;
+
+    /** Disallow recommend character twice or more a day ? */
+    public static boolean ALT_RECOMMEND;
     
     /** Alternative gaming - allow sub-class addition without quest completion. */
     public static boolean ALT_GAME_SUBCLASS_WITHOUT_QUESTS;
@@ -1494,6 +1497,7 @@ public final class Config
                 ALT_GAME_KARMA_PLAYER_CAN_TRADE                     = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanTrade", "true"));
                 ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE             = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanUseWareHouse", "true"));
                 ALT_GAME_FREE_TELEPORT                              = Boolean.parseBoolean(altSettings.getProperty("AltFreeTeleporting", "False"));
+                ALT_RECOMMEND                                       = Boolean.parseBoolean(altSettings.getProperty("AltRecommend", "False"));
                 ALT_GAME_SUBCLASS_WITHOUT_QUESTS                    = Boolean.parseBoolean(altSettings.getProperty("AltSubClassWithoutQuests", "False"));
                 ALT_GAME_VIEWNPC                    				= Boolean.parseBoolean(altSettings.getProperty("AltGameViewNpc", "False"));
                 ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE                  = Boolean.parseBoolean(altSettings.getProperty("AltNewCharAlwaysIsNewbie", "False"));

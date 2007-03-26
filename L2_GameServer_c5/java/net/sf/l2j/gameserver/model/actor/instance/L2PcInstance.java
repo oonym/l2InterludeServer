@@ -214,6 +214,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String DELETE_CHAR_HENNA = "DELETE FROM character_hennas WHERE char_obj_id=? AND slot=? AND class_index=?";
 	private static final String DELETE_CHAR_HENNAS = "DELETE FROM character_hennas WHERE char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SHORTCUTS = "DELETE FROM character_shortcuts WHERE char_obj_id=? AND class_index=?";
+
+	private static final String RESTORE_CHAR_RECOMS = "SELECT char_id,target_id FROM character_recommends WHERE char_id=?";
+	private static final String ADD_CHAR_RECOM = "INSERT INTO character_recommends (char_id,target_id) VALUES (?,?)";
+	private static final String DELETE_CHAR_RECOMS = "DELETE FROM character_recommends WHERE char_id=?";
 	
 	public static final int REQUEST_TIMEOUT = 15;
 	
@@ -1554,14 +1558,35 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void giveRecom(L2PcInstance target)
 	{
+		if (Config.ALT_RECOMMEND)
+		{
+			java.sql.Connection con = null;
+			try
+			{
+				con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement(ADD_CHAR_RECOM);
+				statement.setInt(1, getObjectId());
+				statement.setInt(2, target.getObjectId());
+				statement.execute();
+				statement.close();
+			}
+			catch (Exception e)
+			{
+				_log.warning("could not update char recommendations:"+e);
+			}
+			finally
+			{
+				try { con.close(); } catch (Exception e) {}
+			}
+		}
 		target.incRecomHave();
 		decRecomLeft();
-		_recomChars.add(target.getName().hashCode());
+		_recomChars.add(target.getObjectId());
 	}
 	
 	public boolean canRecom(L2PcInstance target)
 	{
-		return !_recomChars.contains(target.getName().hashCode());
+		return !_recomChars.contains(target.getObjectId());
 	}
 	
 	/**
@@ -5237,6 +5262,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Retrieve from the database all henna of this L2PcInstance and add them to _henna.
 		restoreHenna();
 		
+		// Retrieve from the database all recom data of this L2PcInstance and add to _recomChars.
+		if (Config.ALT_RECOMMEND) restoreRecom();
+		
 		// Retrieve from the database the recipe book of this L2PcInstance.
 		if (!isSubClassActive())
 			restoreRecipeBook();
@@ -5899,6 +5927,37 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		// Calculate Henna modifiers of this L2PcInstance
 		recalcHennaStats();
+	}
+
+	/**
+	 * Retrieve from the database all Recommendation data of this L2PcInstance, add to _recomChars and calculate stats of the L2PcInstance.<BR><BR>
+	 */
+	private void restoreRecom()
+	{
+		java.sql.Connection con = null;
+		
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement(RESTORE_CHAR_RECOMS);
+			statement.setInt(1, getObjectId());
+			ResultSet rset = statement.executeQuery();
+			while (rset.next())
+			{
+				_recomChars.add(rset.getInt("target_id"));
+			}
+			
+			rset.close();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.warning("could not restore recommendations: "+e);
+		}
+		finally
+		{
+			try { con.close(); } catch (Exception e) {}
+		}
 	}
 	
 	/**
@@ -7922,15 +7981,36 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void restartRecom()
 	{
-		_recomChars.clear();
-		
+		if (Config.ALT_RECOMMEND)
+		{
+			java.sql.Connection con = null;
+			try
+			{
+				con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement(DELETE_CHAR_RECOMS);
+				statement.setInt(1, getObjectId());
+				statement.execute();
+				statement.close();
+
+				_recomChars.clear();
+			}
+			catch (Exception e)
+			{
+				_log.warning("could not clear char recommendations: "+e);
+			}
+			finally
+			{
+				try { con.close(); } catch (Exception e) {}
+			}
+		}
+
 		if (getStat().getLevel() < 20) 
-        {
+		{
 			_recomLeft = 3;
 			_recomHave--;
 		}
 		else if (getStat().getLevel() < 40) 
-        {
+		{
 			_recomLeft = 6;
 			_recomHave -= 2;
 		}
@@ -7939,16 +8019,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			_recomLeft = 9;
 			_recomHave -= 3;
 		}
-		
-		if (_recomHave < 0) 
-			_recomHave = 0;
-		
+		if (_recomHave < 0) _recomHave = 0;
+
+		// If we have to update last update time, but it's now before 13, we should set it to yesterday
 		Calendar update = Calendar.getInstance();
-		 // If we have to update last update time, but it's now before 13, we should set it to yesterday
-		if(update.get(Calendar.HOUR_OF_DAY) < 13)
-		{
-			update.add(Calendar.DAY_OF_MONTH,-1);
-		}
+		if(update.get(Calendar.HOUR_OF_DAY) < 13) update.add(Calendar.DAY_OF_MONTH,-1);
 		update.set(Calendar.HOUR_OF_DAY,13);
 		_lastRecomUpdate = update.getTimeInMillis();
 	}
