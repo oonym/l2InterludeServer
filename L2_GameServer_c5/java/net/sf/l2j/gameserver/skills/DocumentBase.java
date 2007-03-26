@@ -53,6 +53,7 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionTargetLevel;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetUsesWeaponKind;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingItemType;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingSkill;
+import net.sf.l2j.gameserver.skills.conditions.ConditionWithSkill;
 import net.sf.l2j.gameserver.skills.conditions.ConditionGameTime.CheckGameTime;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState.CheckPlayerState;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
@@ -518,6 +519,11 @@ abstract class DocumentBase
         for (int i = 0; i < attrs.getLength(); i++)
         {
             Node a = attrs.item(i);
+            if ("skill".equalsIgnoreCase(a.getNodeName()))
+            {
+                boolean val = Boolean.valueOf(a.getNodeValue());
+                cond = joinAnd(cond, new ConditionWithSkill(val));
+            }
             if ("night".equalsIgnoreCase(a.getNodeName()))
             {
                 boolean val = Boolean.valueOf(a.getNodeValue());

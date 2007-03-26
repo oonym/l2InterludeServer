@@ -661,12 +661,10 @@ public class CharStat
 	{
     	if (skill == null)
     		return 1;
-    	
 		int mpconsume = skill.getMpConsume();
 		if (skill.isDance() && _ActiveChar != null && _ActiveChar.getDanceCount() > 0)
 			mpconsume += _ActiveChar.getDanceCount() * skill.getNextDanceMpCost();
-
-		return (int) calcStat(Stats.MP_CONSUME, mpconsume, null, null);
+		return (int) calcStat(Stats.MP_CONSUME, mpconsume, null, skill);
 	}
 
 	/** Return the mpInitialConsume. */
@@ -675,6 +673,6 @@ public class CharStat
     	if (skill == null)
     		return 1;
     	
-		return (int) calcStat(Stats.MP_CONSUME, skill.getMpInitialConsume(), null, null);
+		return (int) calcStat(Stats.MP_CONSUME, skill.getMpInitialConsume(), null, skill);
 	}
 }

@@ -4806,9 +4806,10 @@ public abstract class L2Character extends L2Object
 			boolean isSendStatus = false;
 
 			// Consume MP of the L2Character and Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
-			if (getStat().getMpConsume(skill) > 0)
+			double mpConsume = getStat().getMpConsume(skill);
+			if (mpConsume > 0)
 			{
-				getStatus().reduceMp(calcStat(Stats.MP_CONSUME_RATE,getStat().getMpConsume(skill),null,null));
+				getStatus().reduceMp(calcStat(Stats.MP_CONSUME_RATE,mpConsume,null,null));
 				su.addAttribute(StatusUpdate.CUR_MP, (int) getCurrentMp());
 				isSendStatus = true;
 			}
