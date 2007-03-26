@@ -582,6 +582,36 @@ public final class L2PcInstance extends L2PlayableInstance
 	private double _mpUpdateDecCheck = .0;
 	private double _mpUpdateInterval = .0;
     
+	/** Herbs Task Time **/
+	private int _herbstask = 0;
+	/** Task for Herbs */
+	public class HerbTask implements Runnable
+	{
+		String _process;
+		int _itemId;
+		int _count;
+		L2Object _reference;
+		boolean _sendMessage;
+		HerbTask(String process, int itemId, int count, L2Object reference, boolean sendMessage)
+		{
+			_process = process;
+			_itemId = itemId;
+			_count = count;
+			_reference = reference;
+			_sendMessage = sendMessage;
+		}
+		public void run()
+		{
+			try
+			{
+				addItem(_process, _itemId, _count, _reference, _sendMessage);
+			}
+			catch (Throwable t)
+			{
+				_log.log(Level.WARNING, "", t);
+			}
+		}
+	}
     
 	/** Skill casting information (used to queue when several skills are cast in a short time) **/
     public class SkillDat
@@ -2459,7 +2489,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (count > 0)
 		{
 			// Sends message to client if requested
-			if (sendMessage)
+			if (sendMessage && (!isCastingNow() 
+					&& ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB 
+					|| ItemTable.getInstance().createDummyItem(itemId).getItemType() != L2EtcItemType.HERB)) 			
 			{
 				if (count > 1)
 				{
@@ -2497,12 +2529,19 @@ public final class L2PcInstance extends L2PlayableInstance
 			//Auto use herbs - autoloot
 			if (ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB) //If item is herb dont add it to iv :]
 			{
-				L2ItemInstance herb = new L2ItemInstance(this._charId, itemId);
-                IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());                
-                if (handler == null)
-                    _log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
-                else
-                    handler.useItem(this, herb);
+				if(!isCastingNow()){
+					L2ItemInstance herb = new L2ItemInstance(this._charId, itemId);
+	                IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());                
+	                if (handler == null)
+	                    _log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
+	                else{
+	                    handler.useItem(this, herb);
+	                    if(_herbstask>=100)_herbstask -=100;
+	                }
+				}else{
+					_herbstask += 100;
+					ThreadPoolManager.getInstance().scheduleAi(new HerbTask(process, itemId, count, reference, sendMessage), _herbstask);
+				}
             }
 			else
             {

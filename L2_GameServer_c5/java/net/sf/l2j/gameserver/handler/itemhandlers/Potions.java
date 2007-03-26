@@ -18,6 +18,9 @@
  */
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2Effect;
@@ -28,6 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.ThreadPoolManager;
 
 /**
  * This class ...
@@ -37,6 +41,32 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Potions implements IItemHandler
 {
+	protected static final Logger _log = Logger.getLogger(Potions.class.getName());
+	private int _herbstask = 0;
+	/** Task for Herbs */
+	public class HerbTask implements Runnable
+	{
+		L2PcInstance _activeChar;
+		int _magicId;
+		int _level;
+		HerbTask(L2PcInstance activeChar, int magicId, int level)
+		{
+			_activeChar = activeChar;
+			_magicId = magicId;
+			_level = level;
+		}
+		public void run()
+		{
+			try
+			{
+				usePotion(_activeChar, _magicId, _level);
+			}
+			catch (Throwable t)
+			{
+				_log.log(Level.WARNING, "", t);
+			}
+		}
+	}
 	private static int[] _itemIds =
 		{ 65, 725, 726, 727, 728, 734, 735, 1060, 1061, 1062, 1073, 1374, 1375,
 				1539, 1540, 5591, 5592, 6035, 6036, 6652, 6553, 6554, 6555,
@@ -355,12 +385,21 @@ public class Potions implements IItemHandler
 
 	public boolean usePotion(L2PcInstance activeChar, int magicId, int level)
 	{
-		L2Skill skill = SkillTable.getInstance().getInfo(magicId, level);
-		if (skill != null)
+		if (activeChar.isCastingNow() && magicId>2277 && magicId<2285)
 		{
-			activeChar.doCast(skill);
-			if (!(activeChar.isSitting() && !skill.isPotion()))
-				return true;
+			_herbstask += 100;
+			ThreadPoolManager.getInstance().scheduleAi(new HerbTask(activeChar, magicId, level), _herbstask);
+		} 
+		else 
+		{
+			if (magicId>2277 && magicId<2285 && _herbstask>=100) _herbstask -= 100;
+			L2Skill skill = SkillTable.getInstance().getInfo(magicId, level);
+			if (skill != null)
+			{
+				activeChar.doCast(skill);
+				if (!(activeChar.isSitting() && !skill.isPotion()))
+					return true;
+			}
 		}
 		return false;
 	}
