@@ -68,14 +68,20 @@ public class RequestConfirmSiegeWaitingList extends ClientBasePacket{
         if (clan == null) return;
         
         if (!castle.getSiege().getIsRegistrationOver())
+        {
             if (_Approved == 1)
+            {
                 if (castle.getSiege().checkIsDefenderWaiting(clan))
                     castle.getSiege().approveSiegeDefenderClan(_ClanId);
                 else
                     return;
+            }
             else
+            {
                 if ((castle.getSiege().checkIsDefenderWaiting(clan)) || (castle.getSiege().checkIsDefender(clan)))
                     castle.getSiege().removeSiegeClan(_ClanId);
+            }
+        }
         
         //Update the defender list
         activeChar.sendPacket(new SiegeDefenderList(castle));
