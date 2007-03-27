@@ -23,8 +23,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;

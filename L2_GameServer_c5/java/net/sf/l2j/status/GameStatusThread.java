@@ -17,10 +17,6 @@
  */
 package net.sf.l2j.status;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,12 +28,14 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import java.util.NoSuchElementException;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;

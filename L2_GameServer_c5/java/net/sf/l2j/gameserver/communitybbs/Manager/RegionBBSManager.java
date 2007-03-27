@@ -28,7 +28,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameServer;
 import net.sf.l2j.gameserver.GameTimeController;

@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.TradeController;

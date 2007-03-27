@@ -18,7 +18,8 @@
  */
 package net.sf.l2j.gameserver.geoeditorcon;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;

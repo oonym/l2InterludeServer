@@ -33,11 +33,10 @@ import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import junit.framework.TestCase;
 import net.sf.l2j.Config;
 import net.sf.l2j.Server;
 import net.sf.l2j.Config.IdFactoryType;
-
-import junit.framework.TestCase;
 
 /**
  * This class ...

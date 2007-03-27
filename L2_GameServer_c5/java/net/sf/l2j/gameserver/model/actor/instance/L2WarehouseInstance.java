@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.PcFreight;

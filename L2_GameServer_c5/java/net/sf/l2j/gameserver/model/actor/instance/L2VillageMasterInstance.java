@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.datatables.CharTemplateTable;

@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.handler.voicedcommandhandlers;
 import java.util.Iterator;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.gameserver.handler.IVoicedCommandHandler;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;

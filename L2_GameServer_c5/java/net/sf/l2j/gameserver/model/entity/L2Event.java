@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.gameserver.clientpackets.Say2;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;

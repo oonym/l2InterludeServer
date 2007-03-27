@@ -18,13 +18,13 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
-import net.sf.l2j.gameserver.ThreadPoolManager;
 
 /**
  * This class manages all RaidBoss. 

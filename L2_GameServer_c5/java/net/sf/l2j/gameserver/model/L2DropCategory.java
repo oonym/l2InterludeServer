@@ -17,9 +17,9 @@
  */
 package net.sf.l2j.gameserver.model;
 
+import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.lib.Rnd;
-import javolution.util.FastList;
 
 /**
  *

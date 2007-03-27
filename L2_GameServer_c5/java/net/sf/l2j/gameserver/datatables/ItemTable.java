@@ -23,10 +23,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.LogRecord;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import net.sf.l2j.Config;

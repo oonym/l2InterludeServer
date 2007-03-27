@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
 import net.sf.l2j.gameserver.pathfinding.Node;

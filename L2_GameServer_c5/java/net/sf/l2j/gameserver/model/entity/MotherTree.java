@@ -20,8 +20,6 @@
 package net.sf.l2j.gameserver.model.entity;
 
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
-import net.sf.l2j.gameserver.model.entity.Zone;
-import net.sf.l2j.gameserver.model.entity.ZoneType;
 import net.sf.l2j.gameserver.model.L2Object;
 
 public class MotherTree

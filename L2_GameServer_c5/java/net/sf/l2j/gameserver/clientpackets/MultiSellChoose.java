@@ -2,8 +2,8 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
-import javolution.util.FastList;
 
+import javolution.util.FastList;
 import net.sf.l2j.gameserver.ClientThread;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.L2ItemInstance;

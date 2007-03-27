@@ -23,12 +23,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.BasePacket;
 import net.sf.l2j.gameserver.ClientThread;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.TaskPriority;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ServerBasePacket;
 
 /**

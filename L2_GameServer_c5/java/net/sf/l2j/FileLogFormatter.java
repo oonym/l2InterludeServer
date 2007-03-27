@@ -18,10 +18,10 @@
  */
 package net.sf.l2j;
 
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 
 import javolution.text.TextBuilder;
 

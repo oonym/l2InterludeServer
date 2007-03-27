@@ -27,9 +27,9 @@ package net.sf.l2j.gameserver.datatables;
 
 import java.io.File;
 import java.util.Scanner;
-import net.sf.l2j.gameserver.model.L2SummonItem;
 
 import javolution.util.FastMap;
+import net.sf.l2j.gameserver.model.L2SummonItem;
 
 public class SummonItemsData
 {

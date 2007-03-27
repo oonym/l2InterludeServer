@@ -28,11 +28,10 @@ package net.sf.l2j.gameserver.datatables;
 import java.io.File;
 import java.util.Scanner;
 
-import net.sf.l2j.gameserver.model.L2ExtractableItem;
-import net.sf.l2j.gameserver.model.L2ExtractableProductItem;
-
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import net.sf.l2j.gameserver.model.L2ExtractableItem;
+import net.sf.l2j.gameserver.model.L2ExtractableProductItem;
 
 public class ExtractableItemsData
 {

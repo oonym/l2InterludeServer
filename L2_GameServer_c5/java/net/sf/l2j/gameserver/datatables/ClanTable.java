@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.AuctionManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
@@ -39,7 +40,6 @@ import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.util.Util;
-import net.sf.l2j.gameserver.ThreadPoolManager;;
 
 /**
  * This class ...

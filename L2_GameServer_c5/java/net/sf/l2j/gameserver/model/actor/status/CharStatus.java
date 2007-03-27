@@ -11,12 +11,12 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.lib.Rnd;
-import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Attackable;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.stat.CharStat;
 import net.sf.l2j.gameserver.skills.Formulas;
-import net.sf.l2j.gameserver.model.actor.stat.CharStat;;
 
 public class CharStatus
 {

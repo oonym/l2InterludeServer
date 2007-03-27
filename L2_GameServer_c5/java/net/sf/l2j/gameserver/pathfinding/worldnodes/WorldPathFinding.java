@@ -21,7 +21,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 import java.util.Map;
-//import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;

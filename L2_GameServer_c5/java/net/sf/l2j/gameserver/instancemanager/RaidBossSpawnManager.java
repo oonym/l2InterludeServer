@@ -38,11 +38,11 @@ import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
+import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
-import net.sf.l2j.gameserver.lib.Rnd;
 public class RaidBossSpawnManager {
     
     private static Logger _log = Logger.getLogger(RaidBossSpawnManager.class.getName());

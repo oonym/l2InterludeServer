@@ -25,9 +25,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.l2j.Config;
-
 import javolution.util.FastMap;
+import net.sf.l2j.Config;
 
 /**
  * 

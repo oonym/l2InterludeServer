@@ -31,7 +31,6 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;

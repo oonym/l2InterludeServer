@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.Shutdown;
