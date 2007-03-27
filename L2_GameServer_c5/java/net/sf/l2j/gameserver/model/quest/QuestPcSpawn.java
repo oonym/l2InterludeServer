@@ -1,6 +1,7 @@
 package net.sf.l2j.gameserver.model.quest;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -10,9 +11,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
-import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.AutoChatHandler.AutoChatInstance;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler.AutoSpawnInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
@@ -133,6 +132,27 @@ public class QuestPcSpawn
 
                 spawn.setId(IdFactory.getInstance().getNextId());
                 spawn.setHeading(getPlayer().getHeading());
+
+                // Sometimes, even if the quest script specifies some xyz (for example npc.getX() etc) by the time the code
+            	// reaches here, xyz have become 0!  Also, a questdev might have purposely set xy to 0,0...however,
+            	// the spawn code is coded such that if x=y=0, it looks into location for the spawn loc!  This will NOT work
+            	// with quest spawns!  For both of the above cases, we need a fail-safe spawn.  For this, we use the 
+                // default spawn location, which is at the player's loc.
+                if ((x == 0) && (y == 0))
+                {
+                	_log.log(Level.WARNING, getPlayer().getName() + " requested quest spawn with loc 0,0.  Loc is being adjusted");
+
+                	// attempt to use the player's xyz as a the default spawn location.
+                	x = getPlayer().getX();
+                	y = getPlayer().getY();
+                	z = getPlayer().getZ();
+                	// if the fail-safe also did not help, abort this spawning and give a severe log 
+                    if ((x == 0) && (y == 0))
+                    {
+                    	_log.log(Level.SEVERE, "Failed to adjust bad locks for quest spawn requested by "+getPlayer().getName() + "!  Spawn aborted!");
+                    	return 0;
+                    }
+                }
                 spawn.setLocx(x);
                 spawn.setLocy(y);
                 spawn.setLocz(z + 20);
@@ -210,7 +230,7 @@ public class QuestPcSpawn
     {
         int objectId = addSpawn(npcId, x, y, z, randomOffset);
         addDeSpawnTask(objectId, spawnLength);
-        addChatTask(objectId, messages, chatDelay);
+        addChatTask(getSpawn(objectId).getLastSpawn(), messages, chatDelay);
         return objectId;
     }
 
@@ -241,7 +261,7 @@ public class QuestPcSpawn
 
         for (L2NpcInstance npcInst: randomSpawn.getNPCInstanceList())
         {
-            addChatTask(npcInst.getObjectId(), messages, chatDelay);
+            addChatTask(npcInst, messages, chatDelay);
         }
     }
     
@@ -286,22 +306,29 @@ public class QuestPcSpawn
      */
     public void removeSpawn(int objectId)
     {
+        // these spawns are used more commonly.  Might as well
+        // make them the first to be checked and avoid wasting cycles
+    	for (int i = getSpawns().size() - 1; i >= 0; i--)
+        {
+            // also use this opportunity to get rid of junk 
+    		// (for example old spawns of killed NPCs or old failed spawns, etc)
+    		L2NpcInstance npc = getSpawns().get(i).getLastSpawn();
+            if (npc == null)
+                getSpawns().remove(i);
+            else if (npc.getObjectId() == objectId)
+            {
+                npc.decayMe();
+                getSpawns().remove(i);
+                return;
+            }
+        }
+
         for (int i = 0; i < _autoSpawns.size(); i++)
         {
             if (_autoSpawns.get(i).getObjectId() == objectId)
             {
                 AutoSpawnHandler.getInstance().removeSpawn(objectId);
                 _autoSpawns.remove(i);
-                return;
-            }
-        }
-
-        for (int i = 0; i < getSpawns().size(); i++)
-        {
-            if (getSpawns().get(i).getId() == objectId)
-            {
-                getSpawns().get(i).getLastSpawn().decayMe();
-                getSpawns().remove(i);
                 return;
             }
         }
@@ -320,16 +347,9 @@ public class QuestPcSpawn
     
     // =========================================================
     // Method - Private
-    private void addChatTask(int objectId, String[] messages, int chatDelay)
+    private void addChatTask(L2NpcInstance npcInst, String[] messages, int chatDelay)
     {
-        L2Object obj = L2World.getInstance().findObject(objectId);
-        
-        if (!(obj instanceof L2NpcInstance))
-            return;
-        
-        L2NpcInstance npcInst = (L2NpcInstance)obj;
-        
-        if (messages != null)
+    	if ( (messages != null) && (npcInst != null) )
             AutoChatHandler.getInstance().registerChat(npcInst, messages, chatDelay);
     }
     
@@ -394,10 +414,14 @@ public class QuestPcSpawn
             }
         }
 
-        for (L2Spawn spawn: getSpawns())
+        for (int i = getSpawns().size() - 1; i >= 0; i--)
         {
-        	  if (spawn.getLastSpawn().getObjectId() == objectId)
-                  return spawn;
+        	L2Spawn spawn = getSpawns().get(i);
+        	// get rid of junk in the process...if any...
+        	if ( (spawn == null) || (spawn.getLastSpawn() == null) )
+        		getSpawns().remove(i);
+        	else if (spawn.getLastSpawn().getObjectId() == objectId)
+                  return getSpawns().get(i);
         }
         return null;
     }
