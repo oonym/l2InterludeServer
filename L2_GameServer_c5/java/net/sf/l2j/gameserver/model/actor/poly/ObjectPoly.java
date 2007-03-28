@@ -6,13 +6,13 @@ public class ObjectPoly
 {
     // =========================================================
     // Data Field
-    private L2Object[] _ActiveObject;           // Use array as a dirty trick to keep object as byref instead of byval
+    private L2Object _ActiveObject;          
     private int _PolyId;
     private String _PolyType;
     
     // =========================================================
     // Constructor
-    public ObjectPoly(L2Object[] activeObject)
+    public ObjectPoly(L2Object activeObject)
     {
         _ActiveObject = activeObject;
     }
@@ -32,8 +32,7 @@ public class ObjectPoly
     // Property - Public
     public final L2Object getActiveObject()
     {
-        if (_ActiveObject == null || _ActiveObject.length <= 0) return null;
-        return _ActiveObject[0];
+        return _ActiveObject;
     }
     
     public final boolean isMorphed() { return getPolyType() != null; }

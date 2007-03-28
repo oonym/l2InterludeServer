@@ -16,14 +16,14 @@ public class ObjectPosition
 
     // =========================================================
     // Data Field
-    private L2Object[] _ActiveObject;           // Use array as a dirty trick to keep object as byref instead of byval
+    private L2Object _ActiveObject;
     private int _Heading    = 0;
     private Point3D _WorldPosition;
     private L2WorldRegion _WorldRegion;         // Object localization : Used for items/chars that are seen in the world
     
     // =========================================================
     // Constructor
-    public ObjectPosition(L2Object[] activeObject)
+    public ObjectPosition(L2Object activeObject)
     {
         _ActiveObject = activeObject;
         setWorldRegion(L2World.getInstance().getRegion(getWorldPosition()));
@@ -116,8 +116,7 @@ public class ObjectPosition
     // Property - Public
     public final L2Object getActiveObject()
     {
-        if (_ActiveObject == null || _ActiveObject.length <= 0) return null;
-        return _ActiveObject[0];
+        return _ActiveObject;
     }
     
     public final int getHeading() { return _Heading; }

@@ -359,13 +359,13 @@ public abstract class L2Object
     
     public final ObjectPoly getPoly()
     {
-        if (_Poly == null) _Poly = new ObjectPoly(new L2Object[] {this});
+        if (_Poly == null) _Poly = new ObjectPoly(this);
         return _Poly;
     }
     
     public final ObjectPosition getPosition()
     {
-        if (_Position == null) _Position = new ObjectPosition(new L2Object[] {this});
+        if (_Position == null) _Position = new ObjectPosition(this);
         return _Position;
     }
 
