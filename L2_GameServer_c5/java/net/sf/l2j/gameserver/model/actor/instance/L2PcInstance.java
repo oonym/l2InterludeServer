@@ -1181,15 +1181,22 @@ public final class L2PcInstance extends L2PlayableInstance
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (Quest quest: NpcTable.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.QUEST_TALK))
+		Quest[] quests = NpcTable.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.QUEST_TALK);
+		if (quests != null)
 		{
-			// Copy the current L2PcInstance QuestState in the QuestState table
-			if (getQuestState(quest.getName())!=null)
+			for (Quest quest: quests)
 			{
-				if (states == null)
-					states = new QuestState[]{getQuestState(quest.getName())};
-				else
-					states = addToQuestStateArray(states, getQuestState(quest.getName()));
+				if (quest != null)
+				{
+					// Copy the current L2PcInstance QuestState in the QuestState table
+					if (getQuestState(quest.getName())!=null)
+					{
+						if (states == null)
+							states = new QuestState[]{getQuestState(quest.getName())};
+						else
+							states = addToQuestStateArray(states, getQuestState(quest.getName()));
+					}
+				}
 			}
 		}
 		
