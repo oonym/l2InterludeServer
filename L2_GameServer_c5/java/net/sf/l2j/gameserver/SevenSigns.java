@@ -74,8 +74,8 @@ public class SevenSigns
     public static final int PERIOD_START_DAY = Calendar.MONDAY;
 
     // The quest event and seal validation periods last for approximately one week
-    // with a 1 hour "interval" period sandwiched between them.
-    public static final int PERIOD_MINOR_LENGTH = 3600000;
+    // with a 15 minutes "interval" period sandwiched between them.
+    public static final int PERIOD_MINOR_LENGTH = 900000;
     public static final int PERIOD_MAJOR_LENGTH = 604800000 - PERIOD_MINOR_LENGTH;
 	
 	public static final int ANCIENT_ADENA_ID = 5575;

@@ -1926,16 +1926,24 @@ public class L2NpcInstance extends L2Character
             case 31102: //
                 if (isSealValidationPeriod) 
                 {
-                    if (compWinner == SevenSigns.CABAL_DAWN && (playerCabal != SevenSigns.CABAL_DAWN || sealAvariceOwner != SevenSigns.CABAL_DAWN)) 
-                        player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DAWN));
-                    else if (compWinner == SevenSigns.CABAL_DUSK && (playerCabal != SevenSigns.CABAL_DUSK || sealAvariceOwner != SevenSigns.CABAL_DUSK))
-                        player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DUSK));
-                    
-                    if (compWinner != playerCabal)
-                        filename += "necro_no.htm";
-                    else if (sealAvariceOwner != playerCabal)
-                        filename += "necro_no.htm";
-                    else
+        			if (playerCabal != compWinner || sealAvariceOwner != compWinner)
+        			{
+	                	switch (compWinner)
+	                	{
+	                		case SevenSigns.CABAL_DAWN:
+                                player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DAWN));
+                                filename += "necro_no.htm";
+	                			break;
+	                		case SevenSigns.CABAL_DUSK:
+                                player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DUSK));
+                                filename += "necro_no.htm";
+	                			break;
+	                		case SevenSigns.CABAL_NULL:
+	                        	filename = (getHtmlPath(npcId, val)); // do the default!
+	                        	break;
+	                	}
+        			}
+        			else
                     	filename = (getHtmlPath(npcId, val)); // do the default!
                 }
                 else 
@@ -1954,17 +1962,25 @@ public class L2NpcInstance extends L2Character
             case 31119: //
                 if (isSealValidationPeriod) 
                 {
-                    if (compWinner == SevenSigns.CABAL_DAWN && (playerCabal != SevenSigns.CABAL_DAWN || sealGnosisOwner != SevenSigns.CABAL_DAWN)) 
-                        player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DAWN));
-                    else if (compWinner == SevenSigns.CABAL_DUSK && (playerCabal != SevenSigns.CABAL_DUSK || sealGnosisOwner != SevenSigns.CABAL_DUSK))
-                        player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DUSK));
-                    
-                    if (compWinner != playerCabal)
-                        filename += "cata_no.htm";
-                    else if (sealGnosisOwner != playerCabal)
-                        filename += "cata_no.htm";
-                    else
-                        filename = (getHtmlPath(npcId, val)); // do the default!
+        			if (playerCabal != compWinner || sealGnosisOwner != compWinner)
+        			{
+	                	switch (compWinner)
+	                	{
+	                		case SevenSigns.CABAL_DAWN:
+                                player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DAWN));
+                                filename += "cata_no.htm";
+	                			break;
+	                		case SevenSigns.CABAL_DUSK:
+                                player.sendPacket(new SystemMessage(SystemMessage.CAN_BE_USED_BY_DUSK));
+                                filename += "cata_no.htm";
+	                			break;
+	                		case SevenSigns.CABAL_NULL:
+	                        	filename = (getHtmlPath(npcId, val)); // do the default!
+	                        	break;
+	                	}
+        			}
+        			else
+                    	filename = (getHtmlPath(npcId, val)); // do the default!
                 }
                 else 
                 {
