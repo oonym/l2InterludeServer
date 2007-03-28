@@ -148,10 +148,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         if (target.isInvul())
             return false;
         
-        // Check if the target is a L2PcInstance
+    	// Check if the target is a L2PcInstance
         if (target instanceof L2PcInstance)
         {
-            // Don't take the aggro if the GM has the access level below or equal to GM_DONT_TAKE_AGGRO
+        	// Don't take the aggro if the GM has the access level below or equal to GM_DONT_TAKE_AGGRO
             if (((L2PcInstance)target).isGM() && ((L2PcInstance)target).getAccessLevel() <= Config.GM_DONT_TAKE_AGGRO)
                 return false;
             
@@ -165,6 +165,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 return false;
             if (me.getFactionId() == "ketra" && ((L2PcInstance)target).isAlliedWithKetra())
                 return false;
+        	// check if the target is within the grace period for JUST getting up from fake death
+        	if (((L2PcInstance)target).isRecentFakeDeath())
+        		return false;
         }
         
         // Check if the actor is a L2GuardInstance

@@ -260,6 +260,8 @@ public final class L2PcInstance extends L2PlayableInstance
         {
 			super.doAttack(target);
 			
+			// cancel the recent fake-death protection instantly if the player attacks or casts spells 
+			getPlayer().setRecentFakeDeath(false);
 			for (L2CubicInstance cubic : getCubics().values())
 				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
 					cubic.doAction(target);
@@ -269,6 +271,8 @@ public final class L2PcInstance extends L2PlayableInstance
         {
 			super.doCast(skill);
 			
+			// cancel the recent fake-death protection instantly if the player attacks or casts spells 
+			getPlayer().setRecentFakeDeath(false);
 			if(skill == null) return;
 			if(!skill.isOffensive()) return;
 			L2Object mainTarget = skill.getFirstOfTargetList(L2PcInstance.this);
@@ -501,6 +505,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	// Used for protection after teleport
 	private long _protectEndTime = 0;
 	
+	// protects a char from agro mobs when getting up from fake death
+	private long _recentFakeDeathEndTime = 0;	
+
 	/** The fists L2Weapon of the L2PcInstance (used when no weapon is equiped) */
 	private L2Weapon _fistsWeaponItem;
 	
@@ -3057,6 +3064,19 @@ public final class L2PcInstance extends L2PlayableInstance
             System.out.println(this.getName() + ": Protection " + (protect?"ON " + (GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND) :"OFF") + " (currently " + GameTimeController.getGameTicks() + ")");
         
 		_protectEndTime = protect ? GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND : 0;
+	}
+	
+	/**
+	 * Set protection from agro mobs when getting up from fake death, according settings.
+	 */
+	public void setRecentFakeDeath(boolean protect)
+	{
+		_recentFakeDeathEndTime = protect ? GameTimeController.getGameTicks() + Config.PLAYER_FAKEDEATH_UP_PROTECTION * GameTimeController.TICKS_PER_SECOND : 0;
+	}
+	
+	public boolean isRecentFakeDeath()
+	{
+		return _recentFakeDeathEndTime > GameTimeController.getGameTicks();
 	}
 	
 	/**
