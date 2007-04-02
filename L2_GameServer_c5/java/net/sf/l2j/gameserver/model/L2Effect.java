@@ -76,6 +76,7 @@ public abstract class L2Effect
         TARGET_ME,
         SILENCE_MAGIC_PHYSICAL,
         BETRAY,
+        NOBLESSE_BLESSING,
         PETRIFICATION,
         ROTATE // for bluff skill
     }

@@ -1,6 +1,7 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.knownlist.PlayableKnownList;
@@ -20,6 +21,8 @@ import net.sf.l2j.gameserver.templates.L2CharTemplate;
 public abstract class L2PlayableInstance extends L2Character 
 {
 
+	private boolean _IsNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
+	
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
 	 *  
@@ -125,6 +128,28 @@ public abstract class L2PlayableInstance extends L2Character
     public boolean isAttackable()
     {
         return true;
+    }
+    
+    // Support for Noblesse Blessing skill, where buffs are retained
+    // after resurrect
+    public final boolean isNoblesseBlessed() { return _IsNoblesseBlessed; }
+    public final void setIsNoblesseBlessed(boolean value) { _IsNoblesseBlessed = value; }
+     
+    public final void startNoblesseBlessing()
+    {
+    	setIsNoblesseBlessed(true);
+    	updateAbnormalEffect();
+    }
+    
+    public final void stopNoblesseBlessing(L2Effect effect)
+    {
+    	if (effect == null)
+    		stopEffects(L2Effect.EffectType.NOBLESSE_BLESSING);
+    	else
+    		removeEffect(effect);
+    			
+    	setIsNoblesseBlessed(false);
+    	updateAbnormalEffect();
     }
     
 	public abstract boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference, boolean sendMessage);

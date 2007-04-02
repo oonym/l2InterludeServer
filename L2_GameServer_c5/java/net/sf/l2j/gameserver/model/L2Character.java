@@ -55,8 +55,10 @@ import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance.SkillDat;
+import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.CharKnownList;
 import net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 import net.sf.l2j.gameserver.model.actor.stat.CharStat;
@@ -1297,8 +1299,16 @@ public abstract class L2Character extends L2Object
 		// Stop HP/MP/CP Regeneration task
 		getStatus().stopHpMpRegeneration();
 
-		// Stop all active skills effects in progress on the L2Character
-		stopAllEffects();
+		// Stop all active skills effects in progress on the L2Character, 
+		// if the Character isn't a Noblesse Blessed L2PlayableInstance and killed by a raid boss
+		if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isNoblesseBlessed())
+		{
+			((L2PlayableInstance)this).stopNoblesseBlessing(null);
+			if (!(killer instanceof L2RaidBossInstance))
+				stopAllEffects();
+		}
+		else
+			stopAllEffects();
 
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 		broadcastStatusUpdate();
