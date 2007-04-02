@@ -430,11 +430,13 @@ public class L2Attackable extends L2NpcInstance
         }
         // Notify the Quest Engine of the L2Attackable death if necessary
         try {
-            if (killer instanceof L2PcInstance)
+            if (killer instanceof L2PcInstance || killer instanceof L2Summon) 
             {
+                L2PcInstance player = killer instanceof L2PcInstance?(L2PcInstance)killer:((L2Summon)killer).getOwner();
+
             	if (getTemplate().getEventQuests(Quest.QuestEventType.MOBKILLED) != null)
             		for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.MOBKILLED))
-            			quest.notifyKill(this, (L2PcInstance) killer);
+            			quest.notifyKill(this, player);
             }
         } 
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
@@ -800,9 +802,9 @@ public class L2Attackable extends L2NpcInstance
         if (damage > 0) getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
         
         try {
-            if (attacker instanceof L2PcInstance || attacker instanceof L2SummonInstance) 
+            if (attacker instanceof L2PcInstance || attacker instanceof L2Summon) 
             {
-                L2PcInstance player = attacker instanceof L2PcInstance?(L2PcInstance)attacker:((L2SummonInstance)attacker).getOwner();
+                L2PcInstance player = attacker instanceof L2PcInstance?(L2PcInstance)attacker:((L2Summon)attacker).getOwner();
                 
                 if (getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED) !=null)
                 	for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED))
