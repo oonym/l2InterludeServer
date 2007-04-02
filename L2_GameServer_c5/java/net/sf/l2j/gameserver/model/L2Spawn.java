@@ -502,6 +502,9 @@ public class L2Spawn
             mob.setHeading(getHeading());
         }
         
+        // Reset decay info
+        mob.setDecayed(false);
+        
         // Link the L2NpcInstance to this L2Spawn
         mob.setSpawn(this);
         
