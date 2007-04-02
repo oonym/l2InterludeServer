@@ -6418,7 +6418,7 @@ public final class L2PcInstance extends L2PlayableInstance
             return;
         }
         // GeoData Los Check here
-        if (!GeoData.getInstance().canSeeTarget(this, target))
+        if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
         {
             sendPacket(new SystemMessage(SystemMessage.CANT_SEE_TARGET));
             sendPacket(new ActionFailed());
