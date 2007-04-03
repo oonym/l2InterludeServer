@@ -8607,11 +8607,11 @@ public final class L2PcInstance extends L2PlayableInstance
             if (_lure != null)
             {
         		int lureid = _lure.getItemId();
-        		isNoob = (lureid >= 7807 && lureid <= 7809);
+        		isNoob = _fish.getGroup() == 0;
         		isUpperGrade = _fish.getGroup() == 2;
                 if (lureid == 6519 || lureid == 6522 || lureid == 6525 || lureid == 8505 || lureid == 8508 || lureid == 8511) //low grade
                 	checkDelay = Math.round((float)(_fish.getGutsCheckTime() * (1.33)));
-                else if (lureid == 6520 || lureid == 6523 || lureid == 6526 || lureid == 8506 || lureid == 8509 || lureid == 8512 || (lureid >= 7610 && lureid <= 7613) || (lureid >= 7807 && lureid <= 7809) || (lureid >= 8484 && lureid <= 8486)) //medium grade, beginner, prize-winning & quest special bait
+                else if (lureid == 6520 || lureid == 6523 || lureid == 6526 || (lureid >= 8505 && lureid <= 8513) || (lureid >= 7610 && lureid <= 7613) || (lureid >= 7807 && lureid <= 7809) || (lureid >= 8484 && lureid <= 8486)) //medium grade, beginner, prize-winning & quest special bait
                 	checkDelay = Math.round((float)(_fish.getGutsCheckTime() * (1.00)));
                 else if (lureid == 6521 || lureid == 6524 || lureid == 6527 || lureid == 8507 || lureid == 8510 || lureid == 8513) //high grade
                 	checkDelay = Math.round((float)(_fish.getGutsCheckTime() * (0.66)));
@@ -8623,21 +8623,15 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int GetRandomGroup() 
 	{
 		switch (_lure.getItemId()) {
-			case 7807:
-			case 7808:
-			case 7809:
-			case 8486:
+			case 7807: //green for beginners
+			case 7808: //purple for beginners
+			case 7809: //yellow for beginners
+			case 8486: //prize-winning for beginners
 				return 0;
-			case 8485:
-			case 8505:
-			case 8506:
-			case 8507:
-			case 8508:
-			case 8509:
-			case 8510:
-			case 8511:
-			case 8512:
-			case 8513:
+			case 8485: //prize-winning luminous
+			case 8506: //green luminous
+			case 8509: //purple luminous
+			case 8512: //yellow luminous
 				return 2;
 			default:
 				return 1;
@@ -8648,43 +8642,43 @@ public final class L2PcInstance extends L2PlayableInstance
 		int check = Rnd.get(100);
 		int type = 1;
 		switch (group) {
-			case 0:
+			case 0:	//fish for novices
 				switch (_lure.getItemId()) {
-					case 7807:
-						if (check <= 55)
-							type = 4;
-						else if (check <= 85)
+					case 7807: //green lure, preferred by fast-moving (nimble) fish (type 5)
+						if (check <= 54)
 							type = 5;
+						else if (check <= 77)
+							type = 4;
 						else
 							type = 6;
 						break;
-					case 7808:
-						if (check <= 55)
-							type = 6;
-						else if (check <= 85)
+					case 7808: //purple lure, preferred by fat fish (type 4)
+						if (check <= 54)
 							type = 4;
+						else if (check <= 77)
+							type = 6;
 						else
 							type = 5;
 						break;
-					case 7809:
-						if (check <= 55)
-							type = 5;
-						else if (check <= 85)
+					case 7809: //yellow lure, preferred by ugly fish (type 6)
+						if (check <= 54)
 							type = 6;
+						else if (check <= 77)
+							type = 5;
 						else
 							type = 4;
 						break;
-					case 8486:
+					case 8486:	//prize-winning fishing lure for beginners
 						if (check <= 33)
 							type = 4;
 						else if (check <= 66)
 							type = 5;
-						else if (check <= 99)
+						else
 							type = 6;
 						break;
 				}
 				break;
-			case 1:
+			case 1:	//normal fish
 				switch (_lure.getItemId()) {
 					case 7610:
 					case 7611:
@@ -8692,201 +8686,85 @@ public final class L2PcInstance extends L2PlayableInstance
 					case 7613:
 						type = 3;
 						break;
-					case 6519:
+					case 6519:  //all theese lures (green) are prefered by fast-moving (nimble) fish (type 1)
 					case 8505:
-						if (check <= 55)
-							type = 0;
-						else if (check <= 85)
-							type = 1;
-						else if (check <= 99)
-							type = 2;
-						else
-							type = 3;
-						break;
 					case 6520:
-					case 8506:
-						if (check <= 55)
-							type = 0;
-						else if (check <= 85)
-							type = 1;
-						else if (check <= 99)
-							type = 2;
-						else
-							type = 3;
-						break;
 					case 6521:
 					case 8507:
-						if (check <= 55)
-							type = 0;
-						else if (check <= 85)
+						if (check <= 54)
 							type = 1;
-						else if (check <= 99)
+						else if (check <= 74)
+							type = 0;
+						else if (check <= 94)
 							type = 2;
 						else
 							type = 3;
 						break;
-					case 6522:
+					case 6522:	 //all theese lures (purple) are prefered by fat fish (type 0)
 					case 8508:
-						if (check <= 55)
-							type = 2;
-						else if (check <= 85)
-							type = 0;
-						else if (check <= 99)
-							type = 1;
-						else
-							type = 3;
-						break;
 					case 6523:
-					case 8509:
-						if (check <= 55)
-							type = 2;
-						else if (check <= 85)
-							type = 0;
-						else if (check <= 99)
-							type = 1;
-						else
-							type = 3;
-						break;
 					case 6524:
 					case 8510:
-						if (check <= 55)
-							type = 2;
-						else if (check <= 85)
+						if (check <= 54)
 							type = 0;
-						else if (check <= 99)
+						else if (check <= 74)
 							type = 1;
+						else if (check <= 94)
+							type = 2;
 						else
 							type = 3;
 						break;
-					case 6525:
+					case 6525:	//all theese lures (yellow) are prefered by ugly fish (type 2)
 					case 8511:
-						if (check <= 55)
-							type = 1;
-						else if (check <= 85)
-							type = 2;
-						else if (check <= 99)
-							type = 0;
-						else
-							type = 3;
-						break;
 					case 6526:
-					case 8512:
-						if (check <= 55)
-							type = 1;
-						else if (check <= 85)
-							type = 2;
-						else if (check <= 99)
-							type = 0;
-						else
-							type = 3;
-						break;
 					case 6527:
 					case 8513:
 						if (check <= 55)
-							type = 1;
-						else if (check <= 85)
 							type = 2;
-						else if (check <= 99)
+						else if (check <= 74)
+							type = 1;
+						else if (check <= 94)
 							type = 0;
 						else
 							type = 3;
 						break;
-					case 8484:
+					case 8484:	//prize-winning fishing lure
 						if (check <= 33)
 							type = 0;
 						else if (check <= 66)
 							type = 1;
-						else if (check <= 99)
-							type = 2;
 						else
-							type = 3;
+							type = 2;
 						break;
 				}
 				break;
-			case 2:
+			case 2:	//upper grade fish, luminous lure
 				switch (_lure.getItemId()) {
-					case 6519:
-					case 8505:
-						if (check <= 55)
-							type = 7;
-						else if (check <= 85)
+					case 8506: //green lure, preferred by fast-moving (nimble) fish (type 8)
+						if (check <= 54)
 							type = 8;
+						else if (check <= 77)
+							type = 7;
 						else
 							type = 9;
 						break;
-					case 6520:
-					case 8506:
-						if (check <= 55)
+					case 8509: //purple lure, preferred by fat fish (type 7)
+						if (check <= 54)
 							type = 7;
-						else if (check <= 85)
-							type = 8;
-						else
+						else if (check <= 77)
 							type = 9;
-						break;
-					case 6521:
-					case 8507:
-						if (check <= 55)
-							type = 7;
-						else if (check <= 85)
-							type = 8;
-						else
-							type = 9;
-						break;
-					case 6522:
-					case 8508:
-						if (check <= 55)
-							type = 9;
-						else if (check <= 85)
-							type = 7;
 						else
 							type = 8;
 						break;
-					case 6523:
-					case 8509:
-						if (check <= 55)
+					case 8512: //yellow lure, preferred by ugly fish (type 9)
+						if (check <= 54)
 							type = 9;
-						else if (check <= 85)
-							type = 7;
-						else
+						else if (check <= 77)
 							type = 8;
-						break;
-					case 6524:
-					case 8510:
-						if (check <= 55)
-							type = 9;
-						else if (check <= 85)
-							type = 7;
-						else
-							type = 8;
-						break;
-					case 6525:
-					case 8511:
-						if (check <= 55)
-							type = 8;
-						else if (check <= 85)
-							type = 9;
 						else
 							type = 7;
 						break;
-					case 6526:
-					case 8512:
-						if (check <= 55)
-							type = 8;
-						else if (check <= 85)
-							type = 9;
-						else
-							type = 7;
-						break;
-					case 6527:
-					case 8513:
-						if (check <= 55)
-							type = 8;
-						else if (check <= 85)
-							type = 9;
-						else
-							type = 7;
-						break;
-					case 8485:
+					case 8485: //prize-winning fishing lure
 						if (check <= 33)
 							type = 7;
 						else if (check <= 66)
