@@ -1302,11 +1302,7 @@ public abstract class L2Character extends L2Object
 		// Stop all active skills effects in progress on the L2Character, 
 		// if the Character isn't a Noblesse Blessed L2PlayableInstance and killed by a raid boss
 		if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isNoblesseBlessed())
-		{
 			((L2PlayableInstance)this).stopNoblesseBlessing(null);
-			if (!(killer instanceof L2RaidBossInstance))
-				stopAllEffects();
-		}
 		else
 			stopAllEffects();
 
