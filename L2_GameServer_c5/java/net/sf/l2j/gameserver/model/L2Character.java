@@ -1031,7 +1031,7 @@ public abstract class L2Character extends L2Object
 			if (this instanceof L2PcInstance)
             {
 				SystemMessage sm = new SystemMessage(SystemMessage.S1_PREPARED_FOR_REUSE);
-				sm.addSkillName(skill.getId());
+				sm.addSkillName(skill.getId(),skill.getLevel());
 				sendPacket(sm);
 			}
 
@@ -1201,7 +1201,7 @@ public abstract class L2Character extends L2Object
 		if (this instanceof L2PcInstance && magicId != 1312)
         {
 			SystemMessage sm = new SystemMessage(SystemMessage.USE_S1);
-			sm.addSkillName(magicId);
+			sm.addSkillName(magicId,skill.getLevel());
 			sendPacket(sm);
 		}
 
