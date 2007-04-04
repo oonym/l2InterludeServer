@@ -229,7 +229,11 @@ public class ClanTable
 		    }
 	    }
 
-	    clan.getWarehouse().destroyAllItems("ClanRemove", clan.getLeader().getPlayerInstance(), null);
+	    L2ClanMember leaderMember = clan.getLeader();
+	    if(leaderMember == null)
+	    	clan.getWarehouse().destroyAllItems("ClanRemove", null, null);
+	    else
+	    	clan.getWarehouse().destroyAllItems("ClanRemove", clan.getLeader().getPlayerInstance(), null);
 
 	    for (L2ClanMember member : clan.getMembers())
 	    {
