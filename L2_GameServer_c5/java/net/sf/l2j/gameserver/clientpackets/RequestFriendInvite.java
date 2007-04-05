@@ -65,7 +65,7 @@ public class RequestFriendInvite extends ClientBasePacket{
     	if (friend == null)
         {
     	    //Target is not found in the game.
-    	    sm = new SystemMessage(170);
+    	    sm = new SystemMessage(SystemMessage.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
     	    activeChar.sendPacket(sm);
     	    sm = null;
     	    return;
@@ -73,7 +73,7 @@ public class RequestFriendInvite extends ClientBasePacket{
         else if (friend == activeChar)
         {
     	    //You cannot add yourself to your own friend list.
-    	    sm = new SystemMessage(165);
+    	    sm = new SystemMessage(SystemMessage.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
     	    activeChar.sendPacket(sm);
     	    sm = null;
     	    return;
@@ -90,7 +90,7 @@ public class RequestFriendInvite extends ClientBasePacket{
             if (rset.next())
             {
     			//Player already is in your friendlist
-    			sm = new SystemMessage(167);
+    			sm = new SystemMessage(SystemMessage.S1_ALREADY_IN_FRIENDS_LIST);
     			sm.addString(_name);
 		    } 
             else 
@@ -99,7 +99,7 @@ public class RequestFriendInvite extends ClientBasePacket{
 		        {
 		    	    //requets to become friend
     			    activeChar.onTransactionRequest(friend);
-    			    sm = new SystemMessage(168);
+    			    sm = new SystemMessage(SystemMessage.S1_REQUESTED_TO_BECOME_FRIENDS);
     			    sm.addString(_name);
     			    AskJoinFriend ajf = new AskJoinFriend(activeChar.getName());
     			    friend.sendPacket(ajf);

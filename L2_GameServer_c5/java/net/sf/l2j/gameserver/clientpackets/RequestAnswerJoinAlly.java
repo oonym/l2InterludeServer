@@ -79,7 +79,7 @@ public class RequestAnswerJoinAlly extends ClientBasePacket
 			if (clan.CheckAllyJoinCondition(requestor, activeChar))
 	        {
 		        //TODO: Need correct message id
-				requestor.sendPacket(new SystemMessage(SystemMessage.INVITED_A_FRIEND));
+				requestor.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_SUCCEEDED_INVITING_FRIEND));
 
 				activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_ACCEPTED_ALLIANCE));
 

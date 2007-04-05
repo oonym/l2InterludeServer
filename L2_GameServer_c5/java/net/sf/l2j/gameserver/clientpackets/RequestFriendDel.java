@@ -72,7 +72,7 @@ public class RequestFriendDel extends ClientBasePacket{
                 {
     			    statement.close();
     			    // Player is not in your friendlist
-    			    sm = new SystemMessage(171);
+    			    sm = new SystemMessage(SystemMessage.S1_NOT_ON_YOUR_FRIENDS_LIST);
     			    sm.addString(_name);
     			    activeChar.sendPacket(sm);
     			    sm = null;
@@ -88,7 +88,7 @@ public class RequestFriendDel extends ClientBasePacket{
                 {
     				statement.close();
     				// Player is not in your friendlist
-    				sm = new SystemMessage(171);
+    				sm = new SystemMessage(SystemMessage.S1_NOT_ON_YOUR_FRIENDS_LIST);
     				sm.addString(_name);
     				activeChar.sendPacket(sm);
     				sm = null;
@@ -105,7 +105,7 @@ public class RequestFriendDel extends ClientBasePacket{
 			statement.setInt(2, objectId);
 			statement.execute();
 			// Player deleted from your friendlist
-			sm = new SystemMessage(133);
+			sm = new SystemMessage(SystemMessage.S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST);
 			sm.addString(_name);
 			activeChar.sendPacket(sm);
 			sm = null;

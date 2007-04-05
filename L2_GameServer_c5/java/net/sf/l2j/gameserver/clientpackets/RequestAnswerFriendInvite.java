@@ -74,7 +74,7 @@ public class RequestAnswerFriendInvite extends ClientBasePacket
                     statement.setString(6, requestor.getName());
         		    statement.execute();
         		    statement.close();
-        			SystemMessage msg = new SystemMessage(SystemMessage.INVITED_A_FRIEND);
+        			SystemMessage msg = new SystemMessage(SystemMessage.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
         			requestor.sendPacket(msg);
                     
         			//Player added to your friendlist

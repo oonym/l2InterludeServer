@@ -552,7 +552,6 @@ public class SystemMessage extends ServerBasePacket
     
     //Friend
     public static final int SI_INVITED_YOU_AS_FRIEND = 516;
-    public static final int INVITED_A_FRIEND = 525;
     public static final int FAILED_TO_INVITE_A_FRIEND = 526;
     public static final int S1_ADDED_TO_FRIENDS = 132;
     public static final int S1_JOINED_AS_FRIEND = 479;
@@ -567,6 +566,23 @@ public class SystemMessage extends ServerBasePacket
     public static final int S1_ONLINE = 488;
     public static final int S1_OFFLINE = 489;
     public static final int FRIEND_LIST_FOOT = 490;
+    
+    public static final int S1_REMOVED_FROM_YOUR_FRIENDS_LIST = 133;
+    public static final int PLEACE_CHECK_YOUR_FRIEND_LIST_AGAIN = 134; //not used
+    public static final int YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST = 165;
+    public static final int FRIEND_LIST_NOT_READY_YET_REGISTER_LATER = 166; //not used
+    public static final int S1_ALRADY_ON_LIST = 167;
+    public static final int S1_REQUESTED_TO_BECOME_FRIENDS = 168;
+    public static final int THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME = 170;
+    public static final int S1_NOT_ON_YOUR_FRIENDS_LIST = 171;
+    public static final int S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST = 481;
+    public static final int YOU_CANNOT_ADD_YOURSELF_TO_YOUR_OWN_FRIENDS_LIST = 482;
+    public static final int S1_ALREADY_IN_FRIENDS_LIST = 484;
+    public static final int NO_NEW_INVITATIONS_ACCEPTED = 485; //not used
+    public static final int THE_USER_NOT_IN_FRIENDS_LIST = 486; //not used
+    public static final int YOU_HAVE_SUCCEEDED_INVITING_FRIEND = 525;
+    public static final int THE_PLAYER_IS_REJECTING_FRIEND_INVITATIONS = 662; //not used
+    public static final int DO_YOU_WISH_TO_DELETE_FRIENDLIST = 1235; //not used
     
     //
     public static final int S1_S2 = 614;
