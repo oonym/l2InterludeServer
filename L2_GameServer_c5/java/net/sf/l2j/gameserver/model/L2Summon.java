@@ -23,6 +23,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.ai.L2SummonAI;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.SummonKnownList;
@@ -45,6 +46,7 @@ public abstract class L2Summon extends L2PlayableInstance
     //private static Logger _log = Logger.getLogger(L2Summon.class.getName());
     
 	public static final int SIEGE_GOLEM_ID = 14737;
+	public static final int HOG_CANNON_ID = 14768;
 	
 	protected int _pkKills;
     private byte _pvpFlag;
@@ -578,23 +580,30 @@ public abstract class L2Summon extends L2PlayableInstance
 			}
 
             // Check if the target is attackable
-            if (!target.isAttackable() 
+			if (target instanceof L2DoorInstance) 
+        	{
+				if(!((L2DoorInstance)target).isAttackable(getOwner()))
+					return;
+        	}
+			else
+			{
+				if (!target.isAttackable() 
             		&& getOwner() != null 
             		&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
-			{
-				return;
-			}
+				{
+					return;
+				}
 
-			// Check if a Forced ATTACK is in progress on non-attackable target
-			if (!target.isAutoAttackable(this) && !forceUse &&
+				// Check if a Forced ATTACK is in progress on non-attackable target
+				if (!target.isAutoAttackable(this) && !forceUse &&
 					skill.getTargetType() != SkillTargetType.TARGET_AURA &&
 					skill.getTargetType() != SkillTargetType.TARGET_CLAN &&
 					skill.getTargetType() != SkillTargetType.TARGET_ALLY &&
 					skill.getTargetType() != SkillTargetType.TARGET_PARTY &&
-					skill.getTargetType() != SkillTargetType.TARGET_SELF &&
-					this.getNpcId() != SIEGE_GOLEM_ID)
-			{
-				return;
+					skill.getTargetType() != SkillTargetType.TARGET_SELF)
+				{
+					return;
+				}
 			}
 		}
 
