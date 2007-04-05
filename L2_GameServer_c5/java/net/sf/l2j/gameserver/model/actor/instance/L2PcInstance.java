@@ -7754,6 +7754,8 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             try {
                 setClassId(getSubClasses().get(classIndex).getClassId());
+                if(isInParty())
+                	getParty().recalculatePartyLevel();
             } 
             catch (Exception e) {
                 _log.info("Could not switch " + getName() + "'s sub class to class index " + classIndex + ": " + e); 
