@@ -69,10 +69,6 @@ public class AdminSpawn implements IAdminCommandHandler
         {
             AdminHelpPage.showHelpPage(activeChar, "spawns.htm");
         }
-        else if (command.equals("admin_show_spawns"))
-        {
-            AdminHelpPage.showHelpPage(activeChar, "spawns.htm");
-        }
         else if (command.startsWith("admin_spawn_index"))
         {
         	StringTokenizer st = new StringTokenizer(command, " ");
