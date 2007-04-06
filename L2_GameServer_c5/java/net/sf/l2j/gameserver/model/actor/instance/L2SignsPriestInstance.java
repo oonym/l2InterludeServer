@@ -84,7 +84,16 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     }
                     catch (Exception e2)
                     {
-                        _log.warning("Failed to retrieve cabal from bypass command.");
+                    	try
+                    	{
+                    		StringTokenizer st = new StringTokenizer(command.trim());
+                    		st.nextToken();
+                    		cabal = Integer.parseInt(st.nextToken());
+                    	}
+                    	catch (Exception e3)
+                    	{
+                    		_log.warning("Failed to retrieve cabal from bypass command. NpcId: " + this.getNpcId() + "; Command: " + command);
+                    	}
                     }
                 }
             }
