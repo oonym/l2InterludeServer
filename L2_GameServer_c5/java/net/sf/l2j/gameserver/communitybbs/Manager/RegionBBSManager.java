@@ -32,6 +32,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameServer;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.clientpackets.Say2;
+import net.sf.l2j.gameserver.model.BlockList;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
@@ -315,49 +316,58 @@ public class RegionBBSManager extends BaseBBSManager
 		if (ar1.equals("PM"))
 		{			
             TextBuilder htmlCode = new TextBuilder("<html><body><br>");
-				htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2J Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
+            htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2J Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
 
-				try
-				{
+            try
+            {
 					
-					L2PcInstance reciever = L2World.getInstance().getPlayer(ar2);
-                    if (reciever == null)
-                    {
-                        htmlCode.append("Player not found!<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;"+ar2+"\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
-                        htmlCode.append("</td></tr></table></body></html>");
-                        separateAndSend(htmlCode.toString(),activeChar);
-                        return;
-                    }
+            	L2PcInstance receiver = L2World.getInstance().getPlayer(ar2);
+            	if (receiver == null)
+            	{
+            		htmlCode.append("Player not found!<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;"+ar2+"\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
+            		htmlCode.append("</td></tr></table></body></html>");
+            		separateAndSend(htmlCode.toString(),activeChar);
+            		return;
+            	}
                     
-					if (Config.LOG_CHAT)  
-					{ 
-						LogRecord record = new LogRecord(Level.INFO, ar3); 
-						record.setLoggerName("chat"); 
-						record.setParameters(new Object[]{"TELL", "[" + activeChar.getName() + " to "+reciever.getName()+"]"}); 
-						_logChat.log(record); 
-					} 
-					CreatureSay cs = new CreatureSay(activeChar.getObjectId(), Say2.TELL, activeChar.getName(), ar3);
-					if (!reciever.getMessageRefusal())
-					{
-						reciever.sendPacket(cs);
-						activeChar.sendPacket(cs);
-						htmlCode.append("Message Sent<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;"+reciever.getName()+"\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
-						htmlCode.append("</td></tr></table></body></html>");
-						separateAndSend(htmlCode.toString(),activeChar)  ;
+            	if (Config.LOG_CHAT)  
+            	{ 
+            		LogRecord record = new LogRecord(Level.INFO, ar3); 
+            		record.setLoggerName("chat"); 
+            		record.setParameters(new Object[]{"TELL", "[" + activeChar.getName() + " to "+receiver.getName()+"]"}); 
+            		_logChat.log(record); 
+				} 
+            	CreatureSay cs = new CreatureSay(activeChar.getObjectId(), Say2.TELL, activeChar.getName(), ar3);
+            	if (receiver != null && 
+            			!BlockList.isBlocked(receiver, activeChar))
+				{	
+            		if (!receiver.getMessageRefusal())
+            		{
+            			receiver.sendPacket(cs);
+            			activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(), Say2.TELL, "->" + receiver.getName(), ar3));
+            			htmlCode.append("Message Sent<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;"+receiver.getName()+"\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
+            			htmlCode.append("</td></tr></table></body></html>");
+            			separateAndSend(htmlCode.toString(),activeChar)  ;
 					}
-                    else
-                    {
-                        SystemMessage sm = new SystemMessage(SystemMessage.THE_PERSON_IS_IN_MESSAGE_REFUSAL_MODE);        
-                        activeChar.sendPacket(sm);
-                        parsecmd("_bbsloc;playerinfo;"+reciever.getName(), activeChar);
-                    }
+            		else
+            		{
+            			SystemMessage sm = new SystemMessage(SystemMessage.THE_PERSON_IS_IN_MESSAGE_REFUSAL_MODE);        
+            			activeChar.sendPacket(sm);
+            			parsecmd("_bbsloc;playerinfo;"+receiver.getName(), activeChar);
+					}
 				}
-				catch (StringIndexOutOfBoundsException e)
+				else
 				{
-					// ignore
+					SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_NOT_ONLINE);
+					sm.addString(receiver.getName());
+					activeChar.sendPacket(sm);
+					sm = null;
 				}
-				
-			
+			}
+            catch (StringIndexOutOfBoundsException e)
+            {
+            	// ignore
+			}
 		}
 		else
 		{
