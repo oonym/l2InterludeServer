@@ -24,7 +24,6 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
@@ -58,10 +57,6 @@ public class SiegeFlag implements ISkillHandler
         
         try
         {
-            L2ItemInstance itemToTake = player.getInventory().getItemByItemId(SiegeManager.getInstance().getFlagBuyItemId());
-            if(!player.destroyItem("Consume", itemToTake.getObjectId(), SiegeManager.getInstance().getFlagBuyCost(), null, true))
-            	return;
-
             // Spawn a new flag
             L2SiegeFlagInstance flag = new L2SiegeFlagInstance(player, IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(35062));
             flag.setTitle(player.getClan().getName());
@@ -100,7 +95,6 @@ public class SiegeFlag implements ISkillHandler
         
         SystemMessage sm = new SystemMessage(614);
         L2PcInstance player = (L2PcInstance)activeChar;
-        L2ItemInstance itemToTake = player.getInventory().getItemByItemId(SiegeManager.getInstance().getFlagBuyItemId());
 
         if (castle == null || castle.getCastleId() <= 0)
             sm.addString("You must be on castle ground to place a flag");
@@ -110,10 +104,6 @@ public class SiegeFlag implements ISkillHandler
             sm.addString("You must be an attacker to place a flag");
         else if (player.getClan() == null || !player.isClanLeader())
             sm.addString("You must be a clan leader to place a flag");
-        else if (SiegeManager.getInstance().getFlagBuyItemId() > 0 && itemToTake == null)
-            sm.addString("You do not have the required construction items");
-        else if (itemToTake != null && itemToTake.getCount() < SiegeManager.getInstance().getFlagBuyCost())
-            sm.addString("You do not have enough items");
         else if (castle.getSiege().getAttackerClan(player.getClan()).getNumFlags() >= SiegeManager.getInstance().getFlagMaxCount())
         	sm.addString("You have already placed the maximum number of flags possible");
         else
