@@ -183,16 +183,6 @@ public class L2MerchantInstance extends L2FolkInstance
         }
         else if (actualCommand.equalsIgnoreCase("Exc_Multisell"))
         {
-            if (!player.isGM())
-            {
-                if (player.getLevel() > 25 || !player.isNewbie())
-                {
-                    String content = "<html><body>Merchant:<br>The right to exchange equipment is reserved for <font color=\"LEVEL\">new characters of level 25 and below.</font><br>A new character is the first character that you've developed past level 5 in this world.</body></html>";
-                    insertObjectIdAndShowChatWindow(player, content);
-                    return;
-                }
-            }
-            
             if (st.countTokens() < 1) return;
 
             int val = Integer.parseInt(st.nextToken());
