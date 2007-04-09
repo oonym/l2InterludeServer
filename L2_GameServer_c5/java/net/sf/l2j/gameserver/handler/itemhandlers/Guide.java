@@ -36,7 +36,7 @@ public class Guide implements IItemHandler {
 			return;
 		L2PcInstance activeChar = (L2PcInstance) playable;
         
-        String filename = "data/html/tutorial/" + item.getItemId() + ".htm";
+        String filename = "data/html/help/tutorial/" + item.getItemId() + ".htm";
         String content = HtmCache.getInstance().getHtm(filename);
         
 		if (content == null)
