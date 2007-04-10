@@ -29,6 +29,7 @@ public class SystemMessage extends ServerBasePacket
 {
 	// d d (d S/d d/d dd)
 	//      |--------------> 0 - String  1-number 2-textref npcname (1000000-1002655)  3-textref itemname 4-textref skills 5-??	
+	private static final int TYPE_ZONE_NAME = 7;
 	private static final int TYPE_SKILL_NAME = 4;
 	private static final int TYPE_ITEM_NAME = 3;
 	private static final int TYPE_NPC_NAME = 2;
@@ -777,6 +778,15 @@ public class SystemMessage extends ServerBasePacket
         return this;
 	}
 
+	public SystemMessage addZoneName(int x, int y, int z)
+	{
+		_types.add(new Integer(TYPE_ZONE_NAME));
+		int[] coord = {x, y, z};
+		_values.add(coord);
+        
+        return this;
+	}
+
 	public SystemMessage addSkillName(int id){return addSkillName(id, 1);}
 	
 	public SystemMessage addSkillName(int id, int lvl)
@@ -826,6 +836,16 @@ public class SystemMessage extends ServerBasePacket
 					int t1 = ((Integer)_values.get(i)).intValue();
 					writeD(t1); // Skill Id
 					writeD(_SkillLvL); // Skill lvl
+					break;
+				}
+				case TYPE_ZONE_NAME:
+				{
+					int t1 = ((int[])_values.get(i))[0];
+					int t2 = ((int[])_values.get(i))[1];
+					int t3 = ((int[])_values.get(i))[2];
+					writeD(t1);	
+					writeD(t2);	
+					writeD(t3);	
 					break;
 				}
 			}

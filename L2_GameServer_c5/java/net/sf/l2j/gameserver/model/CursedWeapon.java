@@ -174,8 +174,7 @@ public class CursedWeapon
 		CursedWeaponsManager.getInstance().removeFromDb(_itemId);
 		
 		SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_DISAPPEARED);
-		sm.addString(_name);
-		//sm.addItemName(_itemId);
+		sm.addItemName(_itemId);
 		CursedWeaponsManager.getInstance().announce(sm);
 		
 		// Reset  state
@@ -228,10 +227,11 @@ public class CursedWeapon
 			
 			// RedSky and Earthquake
 			ExRedSky packet = new ExRedSky(10);
-			for (L2PcInstance aPlayer : L2World.getInstance().getAllPlayers())
+			Earthquake eq = new Earthquake(player.getX(), player.getY(), player.getZ(), 14, 3);
+			for (L2PcInstance aPlayer : L2World.getInstance().getAllPlayers()) {
 				aPlayer.sendPacket(packet);
-			Earthquake eq = new Earthquake(player.getX(), player.getY(), player.getZ(), 30, 12);
-			player.broadcastPacket(eq);
+				aPlayer.sendPacket(eq);
+			}
 		} else
 		{
 			_player.dropItem("DieDrop", _item, killer, true);
@@ -247,9 +247,8 @@ public class CursedWeapon
 
 		_isDropped = true;
 		SystemMessage sm = new SystemMessage(SystemMessage.S2_WAS_DROPPED_IN_THE_S1_REGION);
-		sm.addString(""); // Region Name
-		sm.addString(_name);
-		//sm.addItemName(_itemId);
+		sm.addZoneName(player.getX(), player.getY(), player.getZ()); // Region Name
+		sm.addItemName(_itemId);
 		CursedWeaponsManager.getInstance().announce(sm); // in the Hot Spring region
 	}
 	
@@ -360,9 +359,8 @@ public class CursedWeapon
 		_player.broadcastUserInfo();
 
 		sm = new SystemMessage(SystemMessage.THE_OWNER_OF_S2_HAS_APPEARED_IN_THE_S1_REGION);
-		sm.addString(""); // Region Name
-		sm.addString(_name);
-		//sm.addItemName(_itemId);
+		sm.addZoneName(_player.getX(), _player.getY(), _player.getZ()); // Region Name
+		sm.addItemName(_item.getItemId());
 		CursedWeaponsManager.getInstance().announce(sm);
 	}
     
