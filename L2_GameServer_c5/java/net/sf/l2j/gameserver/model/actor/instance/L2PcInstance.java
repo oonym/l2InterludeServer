@@ -3745,6 +3745,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				pk.kills.add(getName());
 			}
             
+			// Clear resurrect xp calculation
+			_expBeforeDeath = 0;
+			
 			if (isCursedWeaponEquiped())
 			{
 				CursedWeaponsManager.getInstance().drop(_cursedWeaponEquipedId, killer);
@@ -7828,6 +7831,9 @@ public final class L2PcInstance extends L2PlayableInstance
         setCurrentCp(getMaxCp());
         updateStats();
 
+        // Clear resurrect xp calculation
+        _expBeforeDeath = 0;
+        
         //_macroses.restore();
         //_macroses.sendUpdate();
         _shortCuts.restore();
