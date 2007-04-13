@@ -147,13 +147,7 @@ public class MultiSellChoose extends ClientBasePacket
 				// a) if enchantment is maintained, then get a list of items that exactly match this enchantment
 				if (maintainEnchantment)
 				{
-					L2ItemInstance[] inventoryContents = null;
-					// loop through this list and remove (one by one) each item until the required amount is taken.
-	            	L2Item tempItem = ItemTable.getInstance().createDummyItem(e.getItemId()).getItem();
-	            	if ((tempItem instanceof L2Armor) || (tempItem instanceof L2Weapon))
-	            		inventoryContents = inv.getAllItemsByItemId(e.getItemId(), _enchantment);
-	            	else
-	            		inventoryContents = inv.getAllItemsByItemId(e.getItemId(), 0);
+					L2ItemInstance[] inventoryContents = inv.getAllItemsByItemId(e.getItemId(), e.getEnchantmentLevel());
 					
         			synchronized (inventoryContents)
         			{
@@ -305,7 +299,6 @@ public class MultiSellChoose extends ClientBasePacket
         	// if taxes are to be applied, modify/add the adena count based on the template adena/ancient adena count
         	if ( applyTaxes && ((newIngredient.getItemId() == 57) || (newIngredient.getItemId() == 5575)) )
         	{
-
             	double taxRate = 0.0;
             	if (merchant != null && merchant.getIsInTown())
             		taxRate = merchant.getCastle().getTaxRate();
