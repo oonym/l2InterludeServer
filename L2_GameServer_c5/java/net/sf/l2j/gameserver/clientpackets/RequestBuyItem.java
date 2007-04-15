@@ -117,6 +117,8 @@ public class RequestBuyItem extends ClientBasePacket
         		htmlFolder = "merchant";
         	else if (target instanceof L2FishermanInstance)
         		htmlFolder = "fisherman";
+        	else if (target instanceof L2MercManagerInstance)
+        		ok = true;
         	else
         		ok = false;
         }
