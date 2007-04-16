@@ -943,6 +943,10 @@ public final class Config
     
     /** Bypass exploit protection ? */
     public static boolean BYPASS_VALIDATION;
+    
+    /** Only GM buy items for free**/
+    public static boolean ONLY_GM_ITEMS_FREE;
+    
     /** GM Audit ?*/
     public static boolean GMAUDIT;
     
@@ -1107,6 +1111,8 @@ public final class Config
                 MULTIPLE_ITEM_DROP              = Boolean.valueOf(optionsSettings.getProperty("MultipleItemDrop", "True"));
              
                 COORD_SYNCHRONIZE               = Integer.parseInt(optionsSettings.getProperty("CoordSynchronize", "-1"));
+                
+                ONLY_GM_ITEMS_FREE				= Boolean.valueOf(optionsSettings.getProperty("OnlyGMItemsFree", "True"));
              
                 ALLOW_WAREHOUSE                 = Boolean.valueOf(optionsSettings.getProperty("AllowWarehouse", "True"));
                 WAREHOUSE_CACHE                 = Boolean.valueOf(optionsSettings.getProperty("WarehouseCache", "False"));
