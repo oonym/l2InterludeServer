@@ -72,7 +72,13 @@ public class Potions implements IItemHandler
 				1539, 1540, 5591, 5592, 6035, 6036, 6652, 6553, 6554, 6555,
 				8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202,
 				8600, 8601, 8602, 8603, 8604, 8605, 8606, 8607, 8608, 8609,
-				8610, 8611, 8612, 8613, 8614 };
+				8610, 8611, 8612, 8613, 8614,
+				//elixir of life
+				8622, 8623, 8624, 8625, 8626, 8627,
+				//elixir of Strength
+				8628, 8629, 8630, 8631, 8632, 8633,
+				//elixir of cp 
+				8634, 8635, 8636, 8637, 8638, 8639};
 
 	public synchronized void useItem(L2PlayableInstance playable,
 			L2ItemInstance item)
@@ -231,7 +237,6 @@ public class Potions implements IItemHandler
 
 			res = usePotion(activeChar, 2038, 1);
 		} else if (itemId == 5591 || itemId == 5592) // CP and Greater CP
-														// Potion
 		{
 			if (activeChar.getAllEffects() != null)
 			{
@@ -254,7 +259,64 @@ public class Potions implements IItemHandler
 			// int amountCP = (itemId == 5591) ? 50 : 200;
 			// activeChar.setCurrentCp(activeChar.getCurrentCp() + amountCP);
 			// res = true;
-
+		
+		} else if (	itemId == 8622 || itemId == 8623 || itemId == 8624 || itemId == 8625 || itemId == 8626 || itemId == 8627)
+		{
+			// elixir of Life
+			if ( 
+					(itemId == 8622 && activeChar.getExpertiseIndex()==0) ||
+					(itemId == 8623 && activeChar.getExpertiseIndex()==1) ||
+					(itemId == 8624 && activeChar.getExpertiseIndex()==2) ||
+					(itemId == 8625 && activeChar.getExpertiseIndex()==3) ||
+					(itemId == 8626 && activeChar.getExpertiseIndex()==4) ||
+					(itemId == 8627 && activeChar.getExpertiseIndex()==5)
+				)
+				res = usePotion(activeChar, 2287, (activeChar.getExpertiseIndex()+1));
+			else
+			{
+				SystemMessage sm = new SystemMessage(1902); // INCOMPATIBLE_ITEM_GRADE
+				sm.addItemName(itemId);
+				activeChar.sendPacket(sm);
+				return;
+			}
+		} else if (	itemId == 8628 || itemId == 8629 || itemId == 8630 || itemId == 8631 || itemId == 8632 || itemId == 8633)
+		{
+			// elixir of Strength
+			if ( 
+					(itemId == 8628 && activeChar.getExpertiseIndex()==0) ||
+					(itemId == 8629 && activeChar.getExpertiseIndex()==1) ||
+					(itemId == 8630 && activeChar.getExpertiseIndex()==2) ||
+					(itemId == 8631 && activeChar.getExpertiseIndex()==3) ||
+					(itemId == 8632 && activeChar.getExpertiseIndex()==4) ||
+					(itemId == 8633 && activeChar.getExpertiseIndex()==5)
+				)
+				res = usePotion(activeChar, 2288, (activeChar.getExpertiseIndex()+1));
+			else
+			{
+				SystemMessage sm = new SystemMessage(1902); // INCOMPATIBLE_ITEM_GRADE
+				sm.addItemName(itemId);
+				activeChar.sendPacket(sm);
+				return;
+			}			
+		} else if (	itemId == 8634 || itemId == 8635 || itemId == 8636 || itemId == 8637 || itemId == 8638 || itemId == 8639)
+		{
+			// elixir of cp
+			if ( 
+					(itemId == 8634 && activeChar.getExpertiseIndex()==0) ||
+					(itemId == 8635 && activeChar.getExpertiseIndex()==1) ||
+					(itemId == 8636 && activeChar.getExpertiseIndex()==2) ||
+					(itemId == 8637 && activeChar.getExpertiseIndex()==3) ||
+					(itemId == 8638 && activeChar.getExpertiseIndex()==4) ||
+					(itemId == 8639 && activeChar.getExpertiseIndex()==5)
+				)
+				res = usePotion(activeChar, 2289, (activeChar.getExpertiseIndex()+1));
+			else
+			{
+				SystemMessage sm = new SystemMessage(1902); // INCOMPATIBLE_ITEM_GRADE
+				sm.addItemName(itemId);
+				activeChar.sendPacket(sm);
+				return;
+			}			
 		} else if (itemId == 6035) // Magic Haste Potion, xml: 2169
 			res = usePotion(activeChar, 2169, 1);
 		else if (itemId == 6036) // Greater Magic Haste Potion, xml: 2169

@@ -596,6 +596,8 @@ public class SystemMessage extends ServerBasePacket
     public static final int TARGET_TOO_FAR = 22;
     public static final int S1_DISAPPEARED = 302;
     public static final int INCORRECT_TARGET = 109;
+    public static final int INCOMPATIBLE_ITEM_GRADE = 1902; 
+
     
     public static final int S1_DIED_DROPPED_S3_S2 = 1208;//$s1 died and dropped $s3 $s2.
     
