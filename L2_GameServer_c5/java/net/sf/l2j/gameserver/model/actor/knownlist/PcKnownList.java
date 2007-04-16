@@ -21,7 +21,9 @@ import net.sf.l2j.gameserver.serverpackets.GetOnVehicle;
 import net.sf.l2j.gameserver.serverpackets.NpcInfo;
 import net.sf.l2j.gameserver.serverpackets.PetInfo;
 import net.sf.l2j.gameserver.serverpackets.PetItemList;
+import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgBuy;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgSell;
+import net.sf.l2j.gameserver.serverpackets.RecipeShopMsg;
 import net.sf.l2j.gameserver.serverpackets.SpawnItem;
 import net.sf.l2j.gameserver.serverpackets.SpawnItemPoly;
 import net.sf.l2j.gameserver.serverpackets.StaticObject;
@@ -176,12 +178,12 @@ public class PcKnownList extends PlayableKnownList
                 	getActiveChar().sendPacket(new CharInfo(otherPlayer));
                 }
 
-                if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY)
+                if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
                 	getActiveChar().sendPacket(new PrivateStoreMsgSell(otherPlayer));
-                else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
-                	getActiveChar().sendPacket(new PrivateStoreMsgSell(otherPlayer));
-// TODO: corrrect msg                else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_MANUFACTURE)
-//                	getActiveChar().sendPacket(new PrivateStoreMsgSell(otherPlayer));
+                else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY)
+                	getActiveChar().sendPacket(new PrivateStoreMsgBuy(otherPlayer));
+                else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_MANUFACTURE)
+                	getActiveChar().sendPacket(new RecipeShopMsg(otherPlayer));
             }
 
             if (object instanceof L2Character)
