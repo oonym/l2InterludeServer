@@ -607,18 +607,22 @@ public abstract class L2Character extends L2Object
 
 		// Set the Attacking Body part to CHEST
 		setAttackingBodypart();
+		
+		// Get the Attack Reuse Delay of the L2Weapon
+		int reuse = (weaponItem == null) ? 0 : weaponItem.getAttackReuseDelay();
+		reuse *= getStat().getReuseModifier(target);
 
 		// Select the type of attack to start
 		if (weaponItem == null)
-			hitted = doAttackHitSimple(attack, target);
+			hitted = doAttackHitSimple(attack, target, sAtk);
 		else if (weaponItem.getItemType() == L2WeaponType.BOW)
-			hitted = doAttackHitByBow(attack, target, sAtk);
+			hitted = doAttackHitByBow(attack, target, sAtk, reuse);
 		else if (weaponItem.getItemType() == L2WeaponType.POLE)
-			hitted = doAttackHitByPole(attack);
+			hitted = doAttackHitByPole(attack, sAtk);
 		else if (isUsingDualWeapon())
-			hitted = doAttackHitByDual(attack, target);
+			hitted = doAttackHitByDual(attack, target, sAtk);
 		else
-			hitted = doAttackHitSimple(attack, target);
+			hitted = doAttackHitSimple(attack, target, sAtk);
 
         // Flag the attacker if it's a L2PcInstance outside a PvP area
         L2PcInstance player = null;
@@ -672,9 +676,6 @@ public abstract class L2Character extends L2Object
 		if (attack.hasHits())
 			broadcastPacket(attack);
 
-		// Get the Attack Reuse Delay of the L2Weapon
-		int reuse = (weaponItem == null) ? 0 : weaponItem.getAttackReuseDelay();
-
 		// Notify AI with EVT_READY_TO_ACT
 		ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), sAtk+reuse);
 	}
@@ -700,7 +701,7 @@ public abstract class L2Character extends L2Object
 	 * @return True if the hit isn't missed
 	 *
 	 */
-	private boolean doAttackHitByBow(Attack attack, L2Character target, int sAtk)
+	private boolean doAttackHitByBow(Attack attack, L2Character target, int sAtk, int reuse)
 	{
 		int damage1 = 0;
 		boolean shld1 = false;
@@ -727,16 +728,8 @@ public abstract class L2Character extends L2Object
 			damage1 = (int)Formulas.getInstance().calcPhysDam(this, target, null, shld1, crit1, false, attack._soulshot);
 		}
 
-		// Calculate the bow re-use delay
-		int reuse;
-
-		L2Weapon bow = getActiveWeaponItem();
-
-		if (bow == null)
-			reuse = 1500;
-		else
-			reuse = bow.getAttackReuseDelay();
-		reuse *= getStat().getReuseModifier(target);
+		// Double check the bow re-use delay
+		if (reuse == 0) reuse = 1500;
 
 		// Check if the L2Character is a L2PcInstance
 		if (this instanceof L2PcInstance)
@@ -779,7 +772,7 @@ public abstract class L2Character extends L2Object
 	 * @return True if hit 1 or hit 2 isn't missed
 	 *
 	 */
-	private boolean doAttackHitByDual(Attack attack, L2Character target)
+	private boolean doAttackHitByDual(Attack attack, L2Character target, int sAtk)
 	{
 		int damage1 = 0;
 		int damage2 = 0;
@@ -821,10 +814,10 @@ public abstract class L2Character extends L2Object
 		}
 
 		// Create a new hit task with Medium priority for hit 1
-		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), 650);
+		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), sAtk/2);
 
 		// Create a new hit task with Medium priority for hit 2 with a higher delay
-		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage2, crit2, miss2, attack._soulshot, shld2), 1250);
+		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage2, crit2, miss2, attack._soulshot, shld2), sAtk);
 
 		// Add those hits to the Server-Client packet Attack
 		attack.addHit(target, damage1, miss1, crit1, shld1);
@@ -847,7 +840,7 @@ public abstract class L2Character extends L2Object
 	 * @return True if one hit isn't missed
 	 *
 	 */
-	private boolean doAttackHitByPole(Attack attack)
+	private boolean doAttackHitByPole(Attack attack, int sAtk)
 	{
 		boolean hitted = false;
 
@@ -933,7 +926,7 @@ public abstract class L2Character extends L2Object
 						if (target == getAI().getAttackTarget() || target.isAutoAttackable(this))
 						{
 
-							hitted |= doAttackHitSimple(attack, target, attackpercent);
+							hitted |= doAttackHitSimple(attack, target, attackpercent, sAtk);
 							attackpercent /= 1.15;
 						}
 					}
@@ -962,12 +955,12 @@ public abstract class L2Character extends L2Object
 	 * @return True if the hit isn't missed
 	 *
 	 */
-	private boolean doAttackHitSimple(Attack attack, L2Character target)
+	private boolean doAttackHitSimple(Attack attack, L2Character target, int sAtk)
 	{
-		return doAttackHitSimple(attack, target, 100);
+		return doAttackHitSimple(attack, target, 100, sAtk);
 	}
 
-	private boolean doAttackHitSimple(Attack attack, L2Character target, double attackpercent)
+	private boolean doAttackHitSimple(Attack attack, L2Character target, double attackpercent, int sAtk)
 	{
 		int damage1 = 0;
 		boolean shld1 = false;
@@ -993,7 +986,7 @@ public abstract class L2Character extends L2Object
 		}
 
 		// Create a new hit task with Medium priority
-		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), 980);
+		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack._soulshot, shld1), sAtk);
 
 		// Add this hit to the Server-Client packet Attack
 		attack.addHit(target, damage1, miss1, crit1, shld1);
