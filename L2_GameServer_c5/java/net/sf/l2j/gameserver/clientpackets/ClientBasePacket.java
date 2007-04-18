@@ -55,21 +55,29 @@ public abstract class ClientBasePacket extends BasePacket implements Runnable
 		//assert _isValid;
 		try
 		{
-//            if (Config.DEVELOPER) System.out.println(getType());
+			// if (Config.DEVELOPER) System.out.println(getType());
             runImpl();
-            if (!(this instanceof ValidatePosition || this instanceof Appearing || this instanceof EnterWorld || this instanceof RequestPledgeInfo || this instanceof RequestSkillList || this instanceof RequestQuestList || getClient().getActiveChar() == null)) getClient().getActiveChar().onActionRequest();
+            if (this instanceof MoveBackwardToLocation 
+            	|| this instanceof AttackRequest 
+            	|| this instanceof RequestMagicSkillUse)
+            	// could include pickup and talk too, but less is better
+            {
+            	// Removes onspawn protection - player has faster computer than
+            	// average
+            	if (getClient().getActiveChar() != null)
+            		getClient().getActiveChar().onActionRequest();
+            }
 		}
 		catch (Throwable e)
 		{
-       L2PcInstance player = getClient().getActiveChar();
-       if (player != null)
-       {
-       	  _log.log( Level.SEVERE, "Character "+player.getName()+" of account "+player.getAccountName()+" caused the following error at packet-handling: "+getType(), e);			
-       }
-       else
-			   _log.log(Level.SEVERE, "error handling client message "+getType(), e);
+			L2PcInstance player = getClient().getActiveChar();
+			if (player != null)
+			{
+				_log.log( Level.SEVERE, "Character "+player.getName()+" of account "+player.getAccountName()+" caused the following error at packet-handling: "+getType(), e);			
+			}
+			else
+				_log.log(Level.SEVERE, "error handling client message "+getType(), e);
 		}
-		
 	}
 	
 	/**
