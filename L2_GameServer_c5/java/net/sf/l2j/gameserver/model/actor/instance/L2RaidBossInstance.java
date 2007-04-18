@@ -95,7 +95,8 @@ public final class L2RaidBossInstance extends L2MonsterInstance
             
             L2NpcTemplate boxTemplate = NpcTable.getInstance().getTemplate(boxId);
             final L2NpcInstance box = new L2NpcInstance(IdFactory.getInstance().getNextId(), boxTemplate);
-            box.spawnMe(this.getX(), this.getY(), this.getZ());
+            box.setCurrentHpMp(box.getMaxHp(), box.getMaxMp());
+            box.spawnMe(this.getX(), this.getY(), (this.getZ()+20));
             
             ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
                 public void run()
