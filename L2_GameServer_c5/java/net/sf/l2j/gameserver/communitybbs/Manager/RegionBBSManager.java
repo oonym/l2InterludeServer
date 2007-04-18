@@ -330,6 +330,12 @@ public class RegionBBSManager extends BaseBBSManager
             		return;
             	}
                     
+                if (activeChar.isInJail() && Config.JAIL_DISABLE_CHAT)
+                {
+                    activeChar.sendMessage("You can not chat while in jail.");
+                    return;
+                }
+                
             	if (Config.LOG_CHAT)  
             	{ 
             		LogRecord record = new LogRecord(Level.INFO, ar3); 
