@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * 0000: 04 03 15 00 00 77 ff 00 00 80 f1 ff ff 00 00 00    .....w..........
@@ -205,7 +206,11 @@ public class UserInfo extends ServerBasePacket
         String title = _cha.getTitle();
         if (_cha.getAppearance().getInvisible()&& _cha.isGM()) title = "Invisible";
         if (_cha.getPoly().isMorphed())
-            title += " - " + NpcTable.getInstance().getTemplate(_cha.getPoly().getPolyId()).name;
+        {
+        	L2NpcTemplate polyObj = NpcTable.getInstance().getTemplate(_cha.getPoly().getPolyId());
+        	if(polyObj != null)
+        		title += " - " + polyObj.name;
+        }
         writeS(title);
 
         writeD(_cha.getClanId());
