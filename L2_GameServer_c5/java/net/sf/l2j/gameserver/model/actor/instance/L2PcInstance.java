@@ -3547,7 +3547,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				handler.useItem(this, target);
             	ItemTable.getInstance().destroyItem("Consume", target, this, null);
         }
-		else 
+		// Cursed Weapons are not distributed
+		else if(CursedWeaponsManager.getInstance().isCursed(target.getItemId()))
+		{
+			addItem("Pickup", target, null, true);
+		}
+		else
 		{
 			// Check if a Party is in progress
 			if (isInParty()) getParty().distributeItem(this, target);
