@@ -101,6 +101,7 @@ public class RequestWearItem extends ClientBasePacket
 		_count = readD();  // Number of Item to Wear
         
 		if (_count < 0) _count = 0;
+		if (_count > 100) _count = 0; // prevent too long lists
 
         // Create _items table that will contain all ItemID to Wear
         _items = new int[_count];

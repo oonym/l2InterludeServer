@@ -26,7 +26,6 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.lib.Rnd;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.knownlist.MonsterKnownList;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.MinionList;
@@ -47,7 +46,7 @@ public class L2MonsterInstance extends L2Attackable
     protected final MinionList minionList;
     
     @SuppressWarnings("unused")
-    private ScheduledFuture minionMaintainTask = null;
+    protected ScheduledFuture minionMaintainTask = null;
     
     private static final int MONSTER_MAINTENANCE_INTERVAL = 1000;
 	
@@ -118,26 +117,7 @@ public class L2MonsterInstance extends L2Attackable
                 }
                 minionList.clearRespawnList();
                 
-                if(this instanceof L2RaidBossInstance) // respawn minions
-                {
-                	minionList.spawnMinions();
-                	minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
-                		public void run()
-                		{
-                			// teleport raid boss home if it's too far from home location
-                			L2Spawn bossSpawn = getSpawn();
-                			if(!isInsideRadius(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz(), 5000, true, false))
-                				teleToLocation(bossSpawn.getLocx(),bossSpawn.getLocy(),bossSpawn.getLocz(), true);
-                			minionList.maintainMinions();
-                		}
-                	}, 60000, getMaintenanceInterval()+Rnd.get(5000));
-                }
-                else minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-                    public void run()
-                    {
-                        minionList.spawnMinions();
-                    }
-                }, getMaintenanceInterval());
+                manageMinions();
     		}
     		catch ( NullPointerException e )
     		{
@@ -146,6 +126,20 @@ public class L2MonsterInstance extends L2Attackable
 	}
     
     protected int getMaintenanceInterval() { return MONSTER_MAINTENANCE_INTERVAL; }
+    
+    /**
+     * Spawn all minions at a regular interval
+     *
+     */
+    protected void manageMinions ()
+    {
+        minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
+            public void run()
+            {
+                minionList.spawnMinions();
+            }
+        }, getMaintenanceInterval());
+    }
     
     public void callMinions()
     {
