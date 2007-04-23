@@ -85,18 +85,24 @@ public class AttackStanceTaskManager
         public void run()
         {
             Long current = System.currentTimeMillis();
-            if (_attackStanceTasks != null)
-            	synchronized (this) {
-                for(L2Character actor : _attackStanceTasks.keySet())
-                {
-                    if((current - _attackStanceTasks.get(actor)) > 15000)
-                    {
-                        actor.broadcastPacket(new AutoAttackStop(actor.getObjectId()));
-                        actor.getAI().setAutoAttacking(false);
-                        _attackStanceTasks.remove(actor);
-                    }
-                }
-            	}
+            try 
+            {
+            	if (_attackStanceTasks != null)
+            		synchronized (this) {
+            			for(L2Character actor : _attackStanceTasks.keySet())
+            			{
+            				if((current - _attackStanceTasks.get(actor)) > 15000)
+            				{
+            					actor.broadcastPacket(new AutoAttackStop(actor.getObjectId()));
+            					actor.getAI().setAutoAttacking(false);
+            					_attackStanceTasks.remove(actor);
+            				}
+            			}
+            		}
+            } catch (Throwable e) {
+            	// TODO: Find out the reason for exception. Unless caught here, players remain in attack positions. 
+            	_log.warning(e.toString());
+            }
         }
     }
 }

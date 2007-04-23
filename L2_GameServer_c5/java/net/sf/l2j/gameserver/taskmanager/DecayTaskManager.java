@@ -19,6 +19,7 @@ package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 import net.sf.l2j.gameserver.ThreadPoolManager;
@@ -31,7 +32,8 @@ import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
  */
 public class DecayTaskManager
 {
-    protected Map<L2Character,Long> _decayTasks = new FastMap<L2Character,Long>().setShared(true);
+    protected static final Logger _log = Logger.getLogger(DecayTaskManager.class.getName());
+	protected Map<L2Character,Long> _decayTasks = new FastMap<L2Character,Long>().setShared(true);
 
     public static DecayTaskManager _instance;
     
@@ -78,17 +80,23 @@ public class DecayTaskManager
         {
             Long current = System.currentTimeMillis();
             int delay;
-            if (_decayTasks != null)
-                for(L2Character actor : _decayTasks.keySet())
-                {
-                    if(actor instanceof L2RaidBossInstance) delay = 30000;
-                    else delay = 8500;
-                    if((current - _decayTasks.get(actor)) > delay)
-                    {
-                        actor.onDecay();
-                        _decayTasks.remove(actor);
-                    }
-                }
+            try 
+            {
+            	if (_decayTasks != null)
+            		for(L2Character actor : _decayTasks.keySet())
+            		{
+            			if(actor instanceof L2RaidBossInstance) delay = 30000;
+            			else delay = 8500;
+            			if((current - _decayTasks.get(actor)) > delay)
+            			{
+            				actor.onDecay();
+            				_decayTasks.remove(actor);
+            			}
+            		}
+            } catch (Throwable e) {
+				// TODO: Find out the reason for exception. Unless caught here, mob decay would stop. 
+            	_log.warning(e.toString());
+			}
         }
     }
 
