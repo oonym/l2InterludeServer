@@ -492,7 +492,7 @@ public class LoginController
 	{
 		boolean ok = false;
 		InetAddress address = client.getConnection().getSocketChannel().socket().getInetAddress();
-		Log.add("'" + user + "' " + address == null ? "null" : address.getHostAddress(), "logins_ip");
+		Log.add("'" + (user == null ? "null" : user) + "' " + (address == null ? "null" : address.getHostAddress()), "logins_ip");
 		
 		java.sql.Connection con = null;
 		try
