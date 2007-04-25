@@ -56,13 +56,13 @@ public class RegionBBSManager extends BaseBBSManager
 			StringTokenizer st = new StringTokenizer(command, ";");
 			st.nextToken();
 			st.nextToken();
-			int inex = 0;
+			int page = 0;
             try
             {
-                inex = Integer.parseInt(st.nextToken());
+                page = Integer.parseInt(st.nextToken());
             } catch (NumberFormatException nfe) {}
             
-			showOldCommunity(activeChar, inex);	
+			showOldCommunity(activeChar, page);	
 		}
 		else if (command.startsWith("_bbsloc;playerinfo;"))
 		{
@@ -167,7 +167,7 @@ public class RegionBBSManager extends BaseBBSManager
 	 */
 	private void showOldCommunity(L2PcInstance activeChar,int page)
 	{		
-          separateAndSend(getCommunityPage(page, activeChar.isGM() ? "gm" : "pl"),activeChar);
+        separateAndSend(getCommunityPage(page, activeChar.isGM() ? "gm" : "pl"),activeChar);
 	}
 
 	/* (non-Javadoc)
@@ -302,6 +302,7 @@ public class RegionBBSManager extends BaseBBSManager
 			addOnlinePlayer(player);
 		}
 
+		_communityPages.clear();
 		writeCommunityPages();
 	}
 
@@ -329,13 +330,14 @@ public class RegionBBSManager extends BaseBBSManager
 				break;
 			}
 		}
-		
+
 		if (!added)
 		{
 			FastList<L2PcInstance> temp = new FastList<L2PcInstance>();
+			int page = _onlinePlayers.size()+1;
 			if (temp.add(player))
 			{
-				_onlinePlayers.put(_onlinePlayers.size()+1, temp);
+				_onlinePlayers.put(page, temp);
 				if (!player.getAppearance().getInvisible())
 					_onlineCount++;
 				_onlineCountGm++;
@@ -345,10 +347,9 @@ public class RegionBBSManager extends BaseBBSManager
 	
 	private void writeCommunityPages()
 	{
-        FastMap<String, String> communityPage = new FastMap<String, String>();
-		
 		for (int page : _onlinePlayers.keySet())
 		{
+	        FastMap<String, String> communityPage = new FastMap<String, String>();
 	        TextBuilder htmlCode = new TextBuilder("<html><body><br>");
 	        String tdClose = "</td>";
 	        String tdOpen = "<td align=left valign=top>";
@@ -359,9 +360,13 @@ public class RegionBBSManager extends BaseBBSManager
 	        htmlCode.append("<table>");
 	
 	        htmlCode.append(trOpen);
-	        htmlCode.append("<td align=left valign=top colspan=3>Server Restarted: " + GameServer.DateTimeServerStarted.getTime() + tdClose);
+	        htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.DateTimeServerStarted.getTime() + tdClose);
 	        htmlCode.append(trClose);
+
+	        htmlCode.append("</table>");
 	
+	        htmlCode.append("<table>");
+	    	
 	        htmlCode.append(trOpen);
 	        htmlCode.append(tdOpen + "XP Rate: " + Config.RATE_XP + tdClose);
 	        htmlCode.append(colSpacer);
@@ -390,7 +395,7 @@ public class RegionBBSManager extends BaseBBSManager
 	
 	        htmlCode.append("<table>");
 	        htmlCode.append(trOpen);
-	        htmlCode.append("<td><img src=\"sek.cbui355\" width=625 height=1><br></td>");
+	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
 	        htmlCode.append(trClose);
 	
             htmlCode.append(trOpen);
@@ -431,28 +436,35 @@ public class RegionBBSManager extends BaseBBSManager
 	            }
 	        }
 	        if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(trClose);
-	        htmlCode.append("</table></td></tr>");
-	
+	        htmlCode.append("</table><br></td></tr>");
+	    	
+	        htmlCode.append(trOpen);
+	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
+	        htmlCode.append(trClose);
+
+	        htmlCode.append("</table>");
+	        
 	        if (getOnlineCount("gm") > Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 	        {
-	            htmlCode.append("<tr><td align=center valign=top>Displaying " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + 1) + " - "
-	                + (((page -1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + getOnlinePlayers(page).size()) + " player(s)</td></tr>");
-	            htmlCode.append("<tr><td align=center valign=top><table border=0 width=610>");
-	            htmlCode.append("<tr>");
-	            if (page == 1) htmlCode.append("<td><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-	            else htmlCode.append("<td><button value=\"Prev\" action=\"bypass _bbsloc;page;"
+		        htmlCode.append("<table border=0 width=600>");
+		    	
+		        htmlCode.append("<tr>");
+	            if (page == 1) htmlCode.append("<td align=right width=190><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+	            else htmlCode.append("<td align=right width=190><button value=\"Prev\" action=\"bypass _bbsloc;page;"
 	                + (page - 1)
 	                + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 	            htmlCode.append("<td FIXWIDTH=10></td>");
-	            if (getOnlineCount("gm") <= (page * Config.NAME_PAGE_SIZE_COMMUNITYBOARD)) htmlCode.append("<td><button value=\"Next\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-	            else htmlCode.append("<td><button value=\"Next\" action=\"bypass _bbsloc;page;"
+	            htmlCode.append("<td align=center valign=top width=200>Displaying " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + 1) + " - "
+	                + (((page -1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + getOnlinePlayers(page).size()) + " player(s)</td>");
+	            htmlCode.append("<td FIXWIDTH=10></td>");
+	            if (getOnlineCount("gm") <= (page * Config.NAME_PAGE_SIZE_COMMUNITYBOARD)) htmlCode.append("<td width=190><button value=\"Next\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+	            else htmlCode.append("<td width=190><button value=\"Next\" action=\"bypass _bbsloc;page;"
 	                + (page + 1)
 	                + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 	            htmlCode.append("</tr>");
-	            htmlCode.append("</table></td></tr>");
+	            htmlCode.append("</table>");
 	        }
-	
-	        htmlCode.append("</table>");
+
 	        htmlCode.append("</body></html>");
 
 	        communityPage.put("gm", htmlCode.toString());
@@ -461,9 +473,13 @@ public class RegionBBSManager extends BaseBBSManager
 	        htmlCode.append("<table>");
 	
 	        htmlCode.append(trOpen);
-	        htmlCode.append("<td align=left valign=top colspan=3>Server Restarted: " + GameServer.DateTimeServerStarted.getTime() + tdClose);
+	        htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.DateTimeServerStarted.getTime() + tdClose);
 	        htmlCode.append(trClose);
+
+	        htmlCode.append("</table>");
 	
+	        htmlCode.append("<table>");
+	    	
 	        htmlCode.append(trOpen);
 	        htmlCode.append(tdOpen + "XP Rate: " + Config.RATE_XP + tdClose);
 	        htmlCode.append(colSpacer);
@@ -492,7 +508,7 @@ public class RegionBBSManager extends BaseBBSManager
 	
 	        htmlCode.append("<table>");
 	        htmlCode.append(trOpen);
-	        htmlCode.append("<td><img src=\"sek.cbui355\" width=625 height=1><br></td>");
+	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
 	        htmlCode.append(trClose);
 	
 	        htmlCode.append(trOpen);
@@ -531,28 +547,35 @@ public class RegionBBSManager extends BaseBBSManager
 	            }
 	        }
 	        if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD) htmlCode.append(trClose);
-	        htmlCode.append("</table></td></tr>");
-	
+	        htmlCode.append("</table><br></td></tr>");
+	    	
+	        htmlCode.append(trOpen);
+	        htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
+	        htmlCode.append(trClose);
+	    	
+	        htmlCode.append("</table>");
+	        
 	        if (getOnlineCount("pl") > Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 	        {
-	            htmlCode.append("<tr><td align=center valign=top>Displaying " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + 1) + " - "
-	                + (((page -1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + getOnlinePlayers(page).size()) + " player(s)</td></tr>");
-	            htmlCode.append("<tr><td align=center valign=top><table border=0 width=610>");
-	            htmlCode.append("<tr>");
-	            if (page == 1) htmlCode.append("<td><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-	            else htmlCode.append("<td><button value=\"Prev\" action=\"bypass _bbsloc;page;"
+		        htmlCode.append("<table border=0 width=600>");
+
+		        htmlCode.append("<tr>");
+	            if (page == 1) htmlCode.append("<td align=right width=190><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+	            else htmlCode.append("<td align=right width=190><button value=\"Prev\" action=\"bypass _bbsloc;page;"
 	                + (page - 1)
 	                + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 	            htmlCode.append("<td FIXWIDTH=10></td>");
-	            if (getOnlineCount("pl") <= (page * Config.NAME_PAGE_SIZE_COMMUNITYBOARD)) htmlCode.append("<td><button value=\"Next\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-	            else htmlCode.append("<td><button value=\"Next\" action=\"bypass _bbsloc;page;"
+	            htmlCode.append("<td align=center valign=top width=200>Displaying " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + 1) + " - "
+	                + (((page -1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + getOnlinePlayers(page).size()) + " player(s)</td>");
+	            htmlCode.append("<td FIXWIDTH=10></td>");
+	            if (getOnlineCount("pl") <= (page * Config.NAME_PAGE_SIZE_COMMUNITYBOARD)) htmlCode.append("<td width=190><button value=\"Next\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+	            else htmlCode.append("<td width=190><button value=\"Next\" action=\"bypass _bbsloc;page;"
 	                + (page + 1)
 	                + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 	            htmlCode.append("</tr>");
-	            htmlCode.append("</table></td></tr>");
+	            htmlCode.append("</table>");
 	        }
-	
-	        htmlCode.append("</table>");
+
 	        htmlCode.append("</body></html>");
 	        
 	        communityPage.put("pl", htmlCode.toString());
