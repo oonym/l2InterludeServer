@@ -18,6 +18,7 @@
  */
 package net.sf.l2j.loginserver.clientpackets;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.SessionKey;
 import net.sf.l2j.loginserver.serverpackets.PlayOk;
@@ -81,7 +82,9 @@ public class RequestServerLogin extends L2LoginClientPacket
 	public void run()
 	{
 		SessionKey sk = this.getClient().getSessionKey();
-		if (sk.checkLoginPair(_skey1, _skey2))
+		
+		// if we didnt showed the license we cant check these values
+		if (!Config.SHOW_LICENCE || sk.checkLoginPair(_skey1, _skey2))
 		{
 			if (LoginController.getInstance().isLoginPossible(this.getClient().getAccessLevel(), _serverId))
 			{
@@ -94,7 +97,6 @@ public class RequestServerLogin extends L2LoginClientPacket
 		}
 		else
 		{
-			System.out.println("PAR INVALIDO");
 			this.getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
 		}
 	}
