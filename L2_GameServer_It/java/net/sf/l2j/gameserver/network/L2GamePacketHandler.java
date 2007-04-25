@@ -90,6 +90,9 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					case 0x62:
 						msg = new CharacterRestore();
 						break;
+					case 0x68:
+						msg = new RequestPledgeCrest();
+						break;
 					default:
 						this.printDebug(opcode, buf, state, client);
 						break;
