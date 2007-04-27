@@ -83,12 +83,12 @@ abstract class DocumentBase
     static Logger _log = Logger.getLogger(DocumentBase.class.getName());
 
     private File file;
-    protected Map<String, Number[]> tables;
+    protected Map<String, String[]> tables;
 
     DocumentBase(File pFile)
     {
         this.file = pFile;
-        tables = new FastMap<String, Number[]>();
+        tables = new FastMap<String, String[]>();
     }
 
     Document parse()
@@ -122,16 +122,16 @@ abstract class DocumentBase
 
     protected abstract StatsSet getStatsSet();
 
-    protected abstract Number getTableValue(String name);
+    protected abstract String getTableValue(String name);
 
-    protected abstract Number getTableValue(String name, int idx);
+    protected abstract String getTableValue(String name, int idx);
 
     protected void resetTable()
     {
-        tables = new FastMap<String, Number[]>();
+        tables = new FastMap<String, String[]>();
     }
 
-    protected void setTable(String name, Number[] table)
+    protected void setTable(String name, String[] table)
     {
         tables.put(name, table);
     }
@@ -171,7 +171,7 @@ abstract class DocumentBase
         Stats stat = Stats.valueOfXml(n.getAttributes().getNamedItem("stat").getNodeValue());
         String order = n.getAttributes().getNamedItem("order").getNodeValue();
         Lambda lambda = getLambda(n, template);
-        int ord = getNumber(order, template).intValue();
+        int ord = Integer.decode(getValue(order, template));
         Condition applayCond = parseCondition(n.getFirstChild(), template);
         FuncTemplate ft = new FuncTemplate(attachCond, applayCond, name, stat, ord, lambda);
         if (template instanceof L2Item) ((L2Item) template).attach(ft);
@@ -196,15 +196,18 @@ abstract class DocumentBase
         String name = attrs.getNamedItem("name").getNodeValue();
         int time, count = 1;
         if (attrs.getNamedItem("count") != null)
-            count = getNumber(attrs.getNamedItem("count").getNodeValue(), template).intValue();
-        if (attrs.getNamedItem("time") != null) time = getNumber(
-                                                                 attrs.getNamedItem("time").getNodeValue(),
-                                                                 template).intValue();
+        {
+            count = Integer.decode(getValue(attrs.getNamedItem("count").getNodeValue(), template));
+        }
+        if (attrs.getNamedItem("time") != null)
+        {
+        	time = Integer.decode(getValue(attrs.getNamedItem("time").getNodeValue(),template));
+        }
         else time = ((L2Skill) template).getBuffDuration() / 1000 / count;
         boolean self = false;
         if (attrs.getNamedItem("self") != null)
         {
-            if (getNumber(attrs.getNamedItem("self").getNodeValue(),template).intValue() == 1)
+            if (Integer.decode(getValue(attrs.getNamedItem("self").getNodeValue(),template)) == 1)
                 self = true;
         }
         Lambda lambda = getLambda(n, template);
@@ -221,9 +224,13 @@ abstract class DocumentBase
         float stackOrder = 0;
         String stackType = "none";
         if (attrs.getNamedItem("stackType") != null)
+        {
             stackType = attrs.getNamedItem("stackType").getNodeValue();
+        }
         if (attrs.getNamedItem("stackOrder") != null)
-            stackOrder = getNumber(attrs.getNamedItem("stackOrder").getNodeValue(), template).floatValue();
+        {
+            stackOrder = Float.parseFloat(getValue(attrs.getNamedItem("stackOrder").getNodeValue(), template));
+        }
         EffectTemplate lt = new EffectTemplate(attachCond, applayCond, name, lambda, count, time,
                                                abnormal, stackType, stackOrder);
         parseTemplate(n, lt);
@@ -237,19 +244,24 @@ abstract class DocumentBase
         NamedNodeMap attrs = n.getAttributes();
         int id = 0, lvl = 1;
         if (attrs.getNamedItem("id") != null)
-            id = getNumber(attrs.getNamedItem("id").getNodeValue(), template).intValue();
+        {
+            id = Integer.decode(getValue(attrs.getNamedItem("id").getNodeValue(), template));
+        }
         if (attrs.getNamedItem("lvl") != null)
-            lvl = getNumber(attrs.getNamedItem("lvl").getNodeValue(), template).intValue();
-
+        {
+            lvl = Integer.decode(getValue(attrs.getNamedItem("lvl").getNodeValue(), template));
+        }
         L2Skill skill = SkillTable.getInstance().getInfo(id, lvl);
         if (attrs.getNamedItem("chance") != null) 
         {
         	if (template instanceof L2Weapon || template instanceof L2Item)
-        		skill.attach(new ConditionGameChance(getNumber(attrs.getNamedItem("chance").getNodeValue(),
-        						template).intValue()), true);
+        	{
+        		skill.attach(new ConditionGameChance(Integer.decode(getValue(attrs.getNamedItem("chance").getNodeValue(), template))), true);
+        	}
         	else 
-        		skill.attach(new ConditionGameChance(getNumber(attrs.getNamedItem("chance").getNodeValue(),
-        						template).intValue()), false);
+        	{
+        		skill.attach(new ConditionGameChance(Integer.decode(getValue(attrs.getNamedItem("chance").getNodeValue(), template))), false);
+        	}
         }
         if (template instanceof L2Weapon)
         {
@@ -333,7 +345,7 @@ abstract class DocumentBase
             }
             else if ("level".equalsIgnoreCase(a.getNodeName()))
             {
-                int lvl = getNumber(a.getNodeValue(), null).intValue();
+                int lvl = Integer.decode(getValue(a.getNodeValue(), null));
                 cond = joinAnd(cond, new ConditionPlayerLevel(lvl));
             }
             else if ("resting".equalsIgnoreCase(a.getNodeName()))
@@ -363,33 +375,33 @@ abstract class DocumentBase
             }
             else if ("hp".equalsIgnoreCase(a.getNodeName()))
             {
-                int hp = getNumber(a.getNodeValue(), null).intValue();
+                int hp = Integer.decode(getValue(a.getNodeValue(), null));
                 cond = joinAnd(cond, new ConditionPlayerHp(hp));
             }
             else if ("hprate".equalsIgnoreCase(a.getNodeName()))
             {
-                double rate = getNumber(a.getNodeValue(), null).doubleValue();
+                double rate = Double.parseDouble(getValue(a.getNodeValue(), null));
                 cond = joinAnd(cond, new ConditionPlayerHpPercentage(rate));
             }
             else if ("seed_fire".equalsIgnoreCase(a.getNodeName()))
             {
-                ElementSeeds[0] = getNumber(a.getNodeValue(), null).intValue();
+                ElementSeeds[0] = Integer.decode(getValue(a.getNodeValue(), null));
             }
             else if ("seed_water".equalsIgnoreCase(a.getNodeName()))
             {
-                ElementSeeds[1] = getNumber(a.getNodeValue(), null).intValue();
+                ElementSeeds[1] = Integer.decode(getValue(a.getNodeValue(), null));
             }
             else if ("seed_wind".equalsIgnoreCase(a.getNodeName()))
             {
-                ElementSeeds[2] = getNumber(a.getNodeValue(), null).intValue();
+                ElementSeeds[2] = Integer.decode(getValue(a.getNodeValue(), null));
             }
             else if ("seed_various".equalsIgnoreCase(a.getNodeName()))
             {
-                ElementSeeds[3] = getNumber(a.getNodeValue(), null).intValue();
+                ElementSeeds[3] = Integer.decode(getValue(a.getNodeValue(), null));
             }
             else if ("seed_any".equalsIgnoreCase(a.getNodeName()))
             {
-                ElementSeeds[4] = getNumber(a.getNodeValue(), null).intValue();
+                ElementSeeds[4] = Integer.decode(getValue(a.getNodeValue(), null));
             }
         }
 
@@ -419,7 +431,7 @@ abstract class DocumentBase
             }
             else if ("level".equalsIgnoreCase(a.getNodeName()))
             {
-                int lvl = getNumber(a.getNodeValue(), template).intValue();
+                int lvl = Integer.decode(getValue(a.getNodeValue(), template));
                 cond = joinAnd(cond, new ConditionTargetLevel(lvl));
             }
             else if ("using".equalsIgnoreCase(a.getNodeName()))
@@ -531,7 +543,7 @@ abstract class DocumentBase
             }
             if ("chance".equalsIgnoreCase(a.getNodeName()))
             {
-                int val = getNumber(a.getNodeValue(), null).intValue();
+                int val = Integer.decode(getValue(a.getNodeValue(), null));
                 cond = joinAnd(cond, new ConditionGameChance(val));
             }
         }
@@ -548,9 +560,12 @@ abstract class DocumentBase
         List<String> array = new FastList<String>();
         while (data.hasMoreTokens())
             array.add(data.nextToken());
-        Number[] res = new Number[array.size()];
-        for (int i = 0; i < array.size(); i++)
-            res[i] = getNumber(array.get(i), null);
+        String[] res = new String[array.size()];
+        int i = 0;
+        for (String str : array)
+        {
+            res[i++] = str;
+        }
         setTable(name, res);
     }
 
@@ -560,7 +575,7 @@ abstract class DocumentBase
         String value = n.getAttributes().getNamedItem("val").getNodeValue().trim();
         char ch = value.length() == 0 ? ' ' : value.charAt(0);
         if (ch == '#' || ch == '-' || Character.isDigit(ch)) set.set(name,
-                                                                     String.valueOf(getNumber(value,
+                                                                     String.valueOf(getValue(value,
                                                                                               level)));
         else set.set(name, value);
     }
@@ -573,7 +588,7 @@ abstract class DocumentBase
             String val = nval.getNodeValue();
             if (val.charAt(0) == '#')
             { // table by level
-                return new LambdaConst(getTableValue(val).doubleValue());
+                return new LambdaConst(Double.parseDouble(getTableValue(val)));
             }
             else if (val.charAt(0) == '$')
             {
@@ -588,7 +603,10 @@ abstract class DocumentBase
                 // try to find value out of item fields
                 StatsSet set = getStatsSet();
                 String field = set.getString(val.substring(1));
-                if (field != null) return new LambdaConst(getNumber(field, template).doubleValue());
+                if (field != null)
+                {
+                	return new LambdaConst(Double.parseDouble(getValue(field, template)));
+                }
                 // failed
                 throw new IllegalArgumentException("Unknown value " + val);
             }
@@ -612,26 +630,16 @@ abstract class DocumentBase
         return calc;
     }
 
-    protected Number getNumber(String value, Object template)
+    protected String getValue(String value, Object template)
     {
+    	// is it a table?
         if (value.charAt(0) == '#')
-        {// table by level
+        {
             if (template instanceof L2Skill) return getTableValue(value);
-            else if (template instanceof Integer) return getTableValue(value,
-                                                                       ((Integer) template).intValue());
+            else if (template instanceof Integer) return getTableValue(value, ((Integer) template).intValue());
             else throw new IllegalStateException();
         }
-        if (value.indexOf('.') == -1)
-        {
-            int radix = 10;
-            if (value.length() > 2 && value.substring(0, 2).equalsIgnoreCase("0x"))
-            {
-                value = value.substring(2);
-                radix = 16;
-            }
-            return Integer.valueOf(value, radix);
-        }
-        return Double.valueOf(value);
+        return value;
     }
 
     protected Condition joinAnd(Condition cond, Condition c)

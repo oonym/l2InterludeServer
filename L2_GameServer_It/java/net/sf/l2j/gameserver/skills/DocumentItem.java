@@ -72,12 +72,12 @@ final class DocumentItem extends DocumentBase
         return currentItem.set;
     }
 
-    protected Number getTableValue(String name)
+    protected String getTableValue(String name)
     {
         return tables.get(name)[currentItem.currentLevel];
     }
 
-    protected Number getTableValue(String name, int idx)
+    protected String getTableValue(String name, int idx)
     {
         return tables.get(name)[idx - 1];
     }

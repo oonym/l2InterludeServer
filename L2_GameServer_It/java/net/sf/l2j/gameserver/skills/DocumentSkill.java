@@ -75,27 +75,29 @@ final class DocumentSkill extends DocumentBase {
         return skillsInFile;
 	}
     
-	protected Number getTableValue(String name)
+	protected String getTableValue(String name)
 	{
 		try
         {
             return tables.get(name)[currentSkill.currentLevel];
-        } catch (RuntimeException e)
+        }
+		catch (RuntimeException e)
         {
-            _log.log(Level.SEVERE, "error in table: "+name+" of skill Id "+currentSkill.id, e);
-            return 0;
+            _log.log(Level.SEVERE, "Error in table: "+name+" of Skill Id "+currentSkill.id, e);
+            return "";
         }
 	}
     
-	protected Number getTableValue(String name, int idx)
+	protected String getTableValue(String name, int idx)
 	{
 		try
         {
             return tables.get(name)[idx-1];
-        } catch (RuntimeException e)
+        }
+		catch (RuntimeException e)
         {
             _log.log(Level.SEVERE, "wrong level count in skill Id "+currentSkill.id, e);
-            return 0;
+            return "";
         }
 	}
 	
