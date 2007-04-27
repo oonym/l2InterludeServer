@@ -25,16 +25,28 @@ import net.sf.l2j.gameserver.model.L2HennaInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 
-public class HennaInfo extends L2GameServerPacket
+public final class HennaInfo extends L2GameServerPacket
 {
 	private static final String _S__E4_HennaInfo = "[S] E4 HennaInfo";
 
-	//private int _id;
-	private L2PcInstance _player;
+	private final L2PcInstance _player;
+	private final L2HennaInstance[] _hennas = new L2HennaInstance[3];
+	private int _count;
 
 	public HennaInfo(L2PcInstance player)
 	{
-		_player = player;                   
+		_player = player;
+		
+		int j = 0;
+		for (int i = 0; i < 3; i++)
+		{
+			L2HennaInstance h = _player.getHenna(i+1);
+			if (h != null)
+			{
+				_hennas[j++] = h;
+			}
+		}
+		_count = j;
 	}
 
 
@@ -43,30 +55,20 @@ public class HennaInfo extends L2GameServerPacket
 
 		writeC(0xe4);
 
-		writeC(_player.getHennaStatINT());    //equip INT
-		writeC(_player.getHennaStatSTR());   //equip STR
-		writeC(_player.getHennaStatCON());    //equip CON
-		writeC(_player.getHennaStatMEN());		//equip MEM
-		writeC(_player.getHennaStatDEX());		//equip DEX
-		writeC(_player.getHennaStatWIT());		//equip WIT
+		writeC(_player.getHennaStatINT());	//equip INT
+		writeC(_player.getHennaStatSTR());	//equip STR
+		writeC(_player.getHennaStatCON());	//equip CON
+		writeC(_player.getHennaStatMEN());	//equip MEM
+		writeC(_player.getHennaStatDEX());	//equip DEX
+		writeC(_player.getHennaStatWIT());	//equip WIT
 		
-		writeD(0x00); //c6
-		writeD(0x00); //c6
+		writeD(3); // slots?
 		
-		writeD(3);
-		for (int i = 0; i < 3; i++)
+		writeD(_count); //size
+		for (int i = 0; i < _count; i++)
 		{
-			L2HennaInstance h = _player.getHenna(i+1);
-			if (h != null)
-			{
-				writeD(3);
-				writeD(h.getSymbolId());
-			}
-			else 
-			{
-				writeD(3);
-				writeD(0);
-			}
+			writeD(_hennas[i].getSymbolId());
+			writeD(_hennas[i].getSymbolId());
 		}
 	}
 
