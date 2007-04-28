@@ -227,8 +227,8 @@ public class GameStatusThread extends Thread
                 {
                 	_print.println("The following is a list of all available debug commands: ");
                 	_print.println("decay               - prints info about the DecayManager");
-                	_print.println("PacketTP            - prints info about the Packet ThreadPool");
-                	_print.println("UrgentPacketTP      - prints info about the UrgentPacket ThreadPool");
+                	_print.println("PacketTP            - prints info about the General Packet ThreadPool");
+                	_print.println("IOPacketTP          - prints info about the I/O Packet ThreadPool");
                 	_print.println("GeneralTP           - prints info about the General ThreadPool");
                 }
                 else if (_usrCommand.equals("status"))
@@ -543,7 +543,7 @@ public class GameStatusThread extends Thread
                         if (Config.DEBUG) e.printStackTrace();
                     }
                 }
-                else if (_usrCommand.startsWith("debug"))
+                else if (_usrCommand.startsWith("debug") && _usrCommand.length() > 6)
                 {
                 	StringTokenizer st = new StringTokenizer(_usrCommand.substring(6));
                 	try
@@ -587,16 +587,16 @@ public class GameStatusThread extends Thread
                 			out.close();
                 			fos.close();
                 		}
-                		else if(dbg.equals("UrgentPacketTP"))
+                		else if(dbg.equals("IOPacketTP"))
                 		{
-                			String str = ThreadPoolManager.getInstance().getUrgentPacketStats();
+                			String str = ThreadPoolManager.getInstance().getIOPacketStats();
                 			_print.println(str);
                 			int i = 0;
-                			File f = new File("./log/StackTrace-UrgentPacketTP-"+i+".txt");
+                			File f = new File("./log/StackTrace-IOPacketTP-"+i+".txt");
                 			while(f.exists())
                 			{
                 				i++;
-                				f = new File("./log/StackTrace-UrgentPacketTP-"+i+".txt");
+                				f = new File("./log/StackTrace-IOPacketTP-"+i+".txt");
                 			}
                 			f.getParentFile().mkdirs();
                 			FileOutputStream fos = new FileOutputStream(f);

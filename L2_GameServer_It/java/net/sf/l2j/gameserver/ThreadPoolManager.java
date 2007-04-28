@@ -56,7 +56,7 @@ import net.sf.l2j.gameserver.network.L2GameClient;
  * that can grow/shrink according to their load.:
  * <ul>
  * <li>{@link #_generalPacketsThreadPool GeneralPackets} where most packets handler are executed.</li>
- * <li>{@link #_urgentPacketsThreadPool UrgentPackets} where all the urgent packets are executed.</li>
+ * <li>{@link #_ioPacketsThreadPool I/O Packets} where all the i/o packets are executed.</li>
  * <li>There will be an AI ThreadPool where AI events should be executed</li>
  * <li>A general ThreadPool where everything else that needs to run asynchronously with no delay should be executed ({@link net.sf.l2j.gameserver.model.actor.knownlist KnownList} updates, SQL updates/inserts...)?</li>
  * </ul>
@@ -72,7 +72,7 @@ public class ThreadPoolManager
 	private ScheduledThreadPoolExecutor _generalScheduledThreadPool;
 	
 	private ThreadPoolExecutor _generalPacketsThreadPool;
-	private ThreadPoolExecutor _urgentPacketsThreadPool;
+	private ThreadPoolExecutor _ioPacketsThreadPool;
 	// will be really used in the next AI implementation.
 	private ThreadPoolExecutor _aiThreadPool;
 	private ThreadPoolExecutor _generalThreadPool;
@@ -96,10 +96,10 @@ public class ThreadPoolManager
 		_effectsScheduledThreadPool = new ScheduledThreadPoolExecutor(Config.THREAD_P_EFFECTS, new PriorityThreadFactory("EffectsSTPool", Thread.MIN_PRIORITY));
 		_generalScheduledThreadPool = new ScheduledThreadPoolExecutor(Config.THREAD_P_GENERAL, new PriorityThreadFactory("GerenalSTPool", Thread.NORM_PRIORITY));
 		
-		_urgentPacketsThreadPool = new ThreadPoolExecutor(Config.URGENT_PACKET_THREAD_CORE_SIZE, Integer.MAX_VALUE,
+		_ioPacketsThreadPool = new ThreadPoolExecutor(Config.IO_PACKET_THREAD_CORE_SIZE, Integer.MAX_VALUE,
 		                                                  5L, TimeUnit.SECONDS,
 		                                                  new LinkedBlockingQueue<Runnable>(),
-		                                                  new PriorityThreadFactory("High Packet Pool",Thread.NORM_PRIORITY+3));
+		                                                  new PriorityThreadFactory("I/O Packet Pool",Thread.NORM_PRIORITY+1));
 		
 		_generalPacketsThreadPool = new ThreadPoolExecutor(Config.GENERAL_PACKET_THREAD_CORE_SIZE, Config.GENERAL_PACKET_THREAD_CORE_SIZE+2,
 		                                                   15L, TimeUnit.SECONDS,
@@ -183,7 +183,7 @@ public class ThreadPoolManager
 	
 	public void executeIOPacket(ReceivablePacket<L2GameClient> pkt)
 	{
-		_urgentPacketsThreadPool.execute(pkt);
+		_ioPacketsThreadPool.execute(pkt);
 	}
 	
 	public void executeTask(Runnable r)
@@ -233,14 +233,14 @@ public class ThreadPoolManager
 		                     " |- CompletedTasks:  "+_generalPacketsThreadPool.getCompletedTaskCount(),
 		                     " |- QueuedTasks:     "+_generalPacketsThreadPool.getQueue().size(),
 		                     " | -------",
-		                     " + Urgent Packets:",
-		                     " |- ActiveThreads:   "+_urgentPacketsThreadPool.getActiveCount(),
-		                     " |- getCorePoolSize: "+_urgentPacketsThreadPool.getCorePoolSize(),
-		                     " |- MaximumPoolSize: "+_urgentPacketsThreadPool.getMaximumPoolSize(),
-		                     " |- LargestPoolSize: "+_urgentPacketsThreadPool.getLargestPoolSize(),
-		                     " |- PoolSize:        "+_urgentPacketsThreadPool.getPoolSize(),
-		                     " |- CompletedTasks:  "+_urgentPacketsThreadPool.getCompletedTaskCount(),
-		                     " |- QueuedTasks:     "+_urgentPacketsThreadPool.getQueue().size(),
+		                     " + I/O Packets:",
+		                     " |- ActiveThreads:   "+_ioPacketsThreadPool.getActiveCount(),
+		                     " |- getCorePoolSize: "+_ioPacketsThreadPool.getCorePoolSize(),
+		                     " |- MaximumPoolSize: "+_ioPacketsThreadPool.getMaximumPoolSize(),
+		                     " |- LargestPoolSize: "+_ioPacketsThreadPool.getLargestPoolSize(),
+		                     " |- PoolSize:        "+_ioPacketsThreadPool.getPoolSize(),
+		                     " |- CompletedTasks:  "+_ioPacketsThreadPool.getCompletedTaskCount(),
+		                     " |- QueuedTasks:     "+_ioPacketsThreadPool.getQueue().size(),
 		                     " | -------",
 		                     " + General Tasks:",
 		                     " |- ActiveThreads:   "+_generalThreadPool.getActiveCount(),
@@ -297,13 +297,13 @@ public class ThreadPoolManager
 			_effectsScheduledThreadPool.awaitTermination(1,TimeUnit.SECONDS);
 			_generalScheduledThreadPool.awaitTermination(1,TimeUnit.SECONDS);
 			_generalPacketsThreadPool.awaitTermination(1,TimeUnit.SECONDS);
-			_urgentPacketsThreadPool.awaitTermination(1,TimeUnit.SECONDS);
+			_ioPacketsThreadPool.awaitTermination(1,TimeUnit.SECONDS);
 			_generalThreadPool.awaitTermination(1,TimeUnit.SECONDS);
 			_aiThreadPool.awaitTermination(1,TimeUnit.SECONDS);
 			_effectsScheduledThreadPool.shutdown();
 			_generalScheduledThreadPool.shutdown();
 			_generalPacketsThreadPool.shutdown();
-			_urgentPacketsThreadPool.shutdown();
+			_ioPacketsThreadPool.shutdown();
 			_generalThreadPool.shutdown();
 			_aiThreadPool.shutdown();
 			System.out.println("All ThreadPools are now stoped");
@@ -329,7 +329,7 @@ public class ThreadPoolManager
 		_effectsScheduledThreadPool.purge();
 		_generalScheduledThreadPool.purge();
 		_aiScheduledThreadPool.purge();
-		_urgentPacketsThreadPool.purge();
+		_ioPacketsThreadPool.purge();
 		_generalPacketsThreadPool.purge();
 		_generalThreadPool.purge();
 		_aiThreadPool.purge();
@@ -368,14 +368,14 @@ public class ThreadPoolManager
 		return tb.toString();
 	}
 	
-	public String getUrgentPacketStats()
+	public String getIOPacketStats()
 	{
 		TextBuilder tb = new TextBuilder();
-		ThreadFactory tf = _urgentPacketsThreadPool.getThreadFactory();
+		ThreadFactory tf = _ioPacketsThreadPool.getThreadFactory();
 		if (tf instanceof PriorityThreadFactory)
 		{
-			tb.append("Urgent Packet Thread Pool:\r\n");
-			tb.append("Tasks in the queue: "+_urgentPacketsThreadPool.getQueue().size()+"\r\n");
+			tb.append("I/O Packet Thread Pool:\r\n");
+			tb.append("Tasks in the queue: "+_ioPacketsThreadPool.getQueue().size()+"\r\n");
 			tb.append("Showing threads stack trace:\r\n");
 			PriorityThreadFactory ptf = (PriorityThreadFactory) tf;
 			int count = ptf.getGroup().activeCount();
