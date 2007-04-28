@@ -80,6 +80,7 @@ public class ThreadPoolManager
 	// temp
 	private ScheduledThreadPoolExecutor _aiScheduledThreadPool;
 	
+	private boolean _shutdown;
 	
 	public static ThreadPoolManager getInstance()
 	{
@@ -290,6 +291,7 @@ public class ThreadPoolManager
 	 */
 	public void shutdown()
 	{
+		_shutdown = true;
 		try
 		{
 			_effectsScheduledThreadPool.awaitTermination(1,TimeUnit.SECONDS);
@@ -314,6 +316,11 @@ public class ThreadPoolManager
 		}
 	}
 
+	public boolean isShutdown()
+	{
+		return _shutdown;
+	}
+	
 	/**
 	 * 
 	 */
