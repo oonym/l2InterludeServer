@@ -258,19 +258,20 @@
     	<concat destfile="${build.dist.game}/config/l2j-version.properties">
     	version=${l2j.revision}
     	builddate=${build.tstamp} 
-
-   Detailed Info:
-    	</concat>  
-
-   
-        <concat destfile="${build.dist.game}/config/l2j-version.properties" append="true">
-		<filelist dir="${src}/../.svn/" files="entries"/> 
-         <filterchain>
-         <headfilter lines="5" skip="4"/>
-             </filterchain>
-        </concat>
-
-	</target>
+      detailed info:
+</concat>
+      <concat destfile="${build.dist.game}/config/l2j-version.properties" append="true">
+        <filelist dir="${src}/../.svn/" files="entries"/>
+        <filterchain>
+          <prefixlines prefix="          "/>
+          <headfilter lines="8" skip="4"/>
+          <tokenfilter>
+             <ignoreblank/>
+          </tokenfilter>
+        </filterchain>
+</concat>
+</target>
+	
     
     <target name="clean"
             description="Remove the output directories">
