@@ -19,6 +19,8 @@
 package net.sf.l2j.gameserver.communitybbs.Manager;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -269,35 +271,25 @@ public class RegionBBSManager extends BaseBBSManager
 	
 	public synchronized void changeCommunityBoard()
 	{
-		Collection<L2PcInstance> _players = L2World.getInstance().getAllPlayers();
-		FastList<L2PcInstance> _sortedPlayers = new FastList<L2PcInstance>();
+		Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers();
+		FastList<L2PcInstance> sortedPlayers = new FastList<L2PcInstance>();
+		sortedPlayers.addAll(players);
+		players = null;
 		
-		for (L2PcInstance pl : _players)
-		{
-			String name = pl.getName();
-			boolean greaterFound = false;
-			int compareIndex = 0;
-			
-			for (L2PcInstance pl2 : _sortedPlayers)
-			{
-				if (name.compareToIgnoreCase(pl2.getName()) < 0)
+		Collections.sort(sortedPlayers, new Comparator<L2PcInstance>()
 				{
-					greaterFound = true;
-					_sortedPlayers.add(compareIndex, pl);
+					public int compare(L2PcInstance p1, L2PcInstance p2)
+					{
+						return p1.getName().compareToIgnoreCase(p2.getName());
+					}
 				}
-				compareIndex++;
-			}
-			
-			if (!greaterFound)
-				_sortedPlayers.add(pl);
-		}
+		);
 		
-		_players = null;
 		_onlinePlayers.clear();
 		_onlineCount = 0;
 		_onlineCountGm = 0;
 		
-		for (L2PcInstance player : _sortedPlayers)
+		for (L2PcInstance player : sortedPlayers)
 		{
 			addOnlinePlayer(player);
 		}
