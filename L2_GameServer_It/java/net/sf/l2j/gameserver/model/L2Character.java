@@ -4189,7 +4189,7 @@ public abstract class L2Character extends L2Object
 						if(reflectedDamage > target.getMaxHp()) // to prevent extreme damage when hitting a low lvl char...
 							reflectedDamage = target.getMaxHp();
 
-						getStatus().reduceHp(reflectedDamage, null, true);
+						getStatus().reduceHp(reflectedDamage, target, true);
 
 						// Custom messages - nice but also more network load
 						/*
