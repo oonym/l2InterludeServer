@@ -66,7 +66,7 @@ public class Resurrect implements ISkillHandler
                     if (player.getClanId() != targetPlayer.getClanId()) continue;
                 }
             }
-            targetToRes.add(target);
+            if(target.isVisible()) targetToRes.add(target);
         }
 
         if (targetToRes.size() == 0)
