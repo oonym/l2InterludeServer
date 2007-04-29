@@ -726,7 +726,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
     private final Set<PlayerClass> getAvailableSubClasses(L2PcInstance player)
     {
-        int charClassId = player.getClassId().ordinal();
+        int charClassId = player.getBaseClass();
 
         if (charClassId >= 88) charClassId = player.getClassId().getParent().ordinal();
 
