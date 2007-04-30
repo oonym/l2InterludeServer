@@ -49,6 +49,11 @@ public class ScrollOfResurrection implements IItemHandler
         if (!(playable instanceof L2PcInstance)) return;
         
         L2PcInstance activeChar = (L2PcInstance)playable;
+        if (activeChar.isSitting())
+        {
+        	activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_MOVE_SITTING));
+        	return;
+        }
         if (activeChar.isMovementDisabled()) return;
 
         int itemId = item.getItemId();
