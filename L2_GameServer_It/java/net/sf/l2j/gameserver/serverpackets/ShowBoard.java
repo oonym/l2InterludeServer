@@ -93,8 +93,12 @@ public class ShowBoard extends L2GameServerPacket
 		writeS("bypass bbs_add_fav"); // add fav.	
 		if (!_id.equals("1002"))
 		{
+			// getBytes is a very costy operation, and should only be called once
+			byte htmlBytes[] = null;
+			if (_htmlCode != null)
+				htmlBytes = _htmlCode.getBytes();
 			byte data[] = new byte[2 + 2 + 2 + _id.getBytes().length * 2 + 2
-				* ((_htmlCode != null) ? _htmlCode.getBytes().length : 0)];
+				* ((_htmlCode != null) ? htmlBytes.length : 0)];
 			int i = 0;
 			for (int j = 0; j < _id.getBytes().length; j++, i += 2)
 			{
@@ -111,9 +115,9 @@ public class ShowBoard extends L2GameServerPacket
 			}
 			else
 			{
-				for (int j = 0; j < _htmlCode.getBytes().length; i += 2, j++)
+				for (int j = 0; j < htmlBytes.length; i += 2, j++)
 				{
-					data[i] = _htmlCode.getBytes()[j];
+					data[i] = htmlBytes[j];
 					data[i + 1] = 0;
 				}
 			}
