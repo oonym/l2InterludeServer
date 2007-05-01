@@ -67,7 +67,7 @@ public class RequestUnEquipItem extends L2GameClientPacket
 			return;
 		}
         
-		// Prevent player to remove the weapon on special conditions
+		// Prevent player from unequipping items in special conditions
        	if (activeChar.isStunned() || activeChar.isSleeping() 
        			|| activeChar.isParalyzed() || activeChar.isAlikeDead())
         {

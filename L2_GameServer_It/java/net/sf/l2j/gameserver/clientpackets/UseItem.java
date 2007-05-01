@@ -122,19 +122,17 @@ public final class UseItem extends L2GameClientPacket
 
 			if (item.isEquipable())
 			{
-                // Don't allow weapon/shield equipment if mounted
+				// No unequipping/equipping while the player is in special conditions
+				if (activeChar.isStunned() || activeChar.isSleeping() || activeChar.isParalyzed()
+						|| activeChar.isAlikeDead())
+				{
+					activeChar.sendMessage("Your status does not allow you to do that.");
+					return;
+				}
+
 				int bodyPart = item.getItem().getBodyPart();
-                if (activeChar.isMounted() 
-                	&& (bodyPart == L2Item.SLOT_LR_HAND 
-                        || bodyPart == L2Item.SLOT_L_HAND 
-                        || bodyPart == L2Item.SLOT_R_HAND))
-                {
-                	return;
-                }
-                
                 // Prevent player to remove the weapon on special conditions
-                if ((activeChar.isStunned() || activeChar.isSleeping() || activeChar.isAttackingNow()
-                		|| activeChar.isCastingNow() || activeChar.isParalyzed() || activeChar.isAlikeDead())
+                if ((activeChar.isAttackingNow() || activeChar.isCastingNow() || activeChar.isMounted())
                         && (bodyPart == L2Item.SLOT_LR_HAND 
                             || bodyPart == L2Item.SLOT_L_HAND 
                             || bodyPart == L2Item.SLOT_R_HAND))
