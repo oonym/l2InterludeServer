@@ -139,7 +139,7 @@ public class UserInfo extends L2GameServerPacket
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_HAIR));
         writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
         
-        writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_UNDER));
+        writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
         writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_REAR));
         writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LEAR));
         writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_NECK));
