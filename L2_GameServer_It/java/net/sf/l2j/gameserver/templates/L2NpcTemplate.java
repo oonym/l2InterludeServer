@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.templates;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -50,6 +51,8 @@ import net.sf.l2j.gameserver.skills.Stats;
  */
 public final class L2NpcTemplate extends L2CharTemplate
 {
+	protected static Logger _log = Logger.getLogger(Quest.class.getName());
+
 	public final int     npcId;
     public final int     idTemplate;
 	public final String  type;
@@ -269,20 +272,33 @@ public final class L2NpcTemplate extends L2CharTemplate
     		
 		if (_questEvents.get(EventType) == null) {
 			_questEvents.put(EventType, new Quest[]{q});
-		} else {
-			Quest[] _questsStart = _questEvents.get(EventType);
-			int len = _questsStart.length;
-			Quest[] tmp = new Quest[len+1];
-			for (int i=0; i < len; i++) {
-				if (_questsStart[i].getName().equals(q.getName())) {
-					_questsStart[i] = q;
-					return;
-	            }
-				tmp[i] = _questsStart[i];
-	        }
-			tmp[len] = q;
-			_questEvents.put(EventType, tmp);
-	    }
+		} 
+		else 
+		{
+			Quest[] _quests = _questEvents.get(EventType);
+			int len = _quests.length;
+			
+			// if only one registration per npc is allowed for this event type
+			// then only register this NPC if not already registered for the specified event.
+			// if a quest allows multiple registrations, then register regardless of count
+			if (EventType.isMultipleRegistrationAllowed() || (len < 1))
+			{
+				Quest[] tmp = new Quest[len+1];
+				for (int i=0; i < len; i++) {
+					if (_quests[i].getName().equals(q.getName())) {
+						_quests[i] = q;
+						return;
+		            }
+					tmp[i] = _quests[i];
+		        }
+				tmp[len] = q;
+				_questEvents.put(EventType, tmp);
+			}
+			else
+			{
+				_log.warning("Quest event not allowed in multiple quests.  Skipped addition of Event Type \""+EventType+"\" for NPC \""+this.name +"\" and quest \""+q.getName()+"\".");
+			}
+		}
     }
     	
 	public Quest[] getEventQuests(Quest.QuestEventType EventType) {

@@ -93,10 +93,26 @@ public abstract class Quest
 	
     public static enum QuestEventType 
     {
-        QUEST_START,
-        QUEST_TALK,
-        MOBGOTATTACKED,
-        MOBKILLED
+    	NPC_FIRST_TALK(false),  // control the first dialog shown by NPCs when they are clicked (some quests must override the default npc action)
+        QUEST_START(true),	// onTalk action from start npcs
+        QUEST_TALK(true),		// onTalk action from npcs participating in a quest
+        MOBGOTATTACKED(true),	// onAttack action triggered when a mob gets attacked by someone
+        MOBKILLED(true);		// onKill action triggered when a mob gets killed. 
+        
+        // control whether this event type is allowed for the same npc template in multiple quests
+        // or if the npc must be registered in at most one quest for the specified event 
+        private boolean _allowMultipleRegistration;
+    	
+        QuestEventType(boolean allowMultipleRegistration)
+        {
+        	_allowMultipleRegistration = allowMultipleRegistration;
+        }
+        
+        public boolean isMultipleRegistrationAllowed()
+        {
+        	return _allowMultipleRegistration;
+        }
+        
     }	
 	/**
 	 * Return ID of the quest
@@ -160,28 +176,6 @@ public abstract class Quest
 		return state;
     }
     
-    /**
-     * Add the quest to the NPC's startQuest
-     * @param npcId
-     * @return L2NpcTemplate : Start NPC
-     */
-    public L2NpcTemplate addStartNpc(int npcId)
-    {
-    	try
-    	{
-		L2NpcTemplate t = NpcTable.getInstance().getTemplate(npcId);
-		if (t != null) {
-			t.addQuestEvent(Quest.QuestEventType.QUEST_START, this);
-		}
-		return t;
-    	}
-    	catch(Exception e)
-    	{
-    		e.printStackTrace();
-    		return null;
-    	}
-    }
-    
 	// these are methods to call from java
     public final boolean notifyAttack(L2NpcInstance npc, L2PcInstance attacker) {
         String res = null;
@@ -209,6 +203,17 @@ public abstract class Quest
 		qs.getPlayer().setLastQuestNpcObject(npc.getObjectId());
 		return showResult(qs.getPlayer(), res);
 	}
+	// override the default NPC dialogs when a quest defines this for the given NPC
+	public final boolean notifyFirstTalk (L2NpcInstance npc, L2PcInstance player) {
+		String res = null;
+		try { res = onFirstTalk(npc, player); } catch (Exception e) { return showError(player, e); }
+		player.setLastQuestNpcObject(npc.getObjectId());
+		// if the quest returns text to display, display it.  Otherwise, use the default npc text.
+		if (res!=null && res.length()>0)
+			return showResult(player, res);
+		npc.showChatWindow(player);
+		return true;
+	}
 
 	// these are methods that java calls to invoke scripts
     @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker) { return null; } 
@@ -216,10 +221,11 @@ public abstract class Quest
     @SuppressWarnings("unused") public String onEvent(String event, QuestState qs) { return null; } 
     @SuppressWarnings("unused") public String onKill (L2NpcInstance npc, L2PcInstance killer) { return null; }
     @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
+    @SuppressWarnings("unused") public String onFirstTalk(L2NpcInstance npc, L2PcInstance player) { return null; } 
 	
 	/**
 	 * Show message error to player who has an access level greater than 0
-	 * @param qs : QuestState
+	 * @param player : L2PcInstance
 	 * @param t : Throwable
 	 * @return boolean
 	 */
@@ -512,13 +518,56 @@ public abstract class Quest
 	}
 	
     /**
+     * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.<BR><BR>
+     * @param npcId : id of the NPC to register
+     * @param eventType : type of event being registered 
+     * @return int : npcId
+     */
+	public L2NpcTemplate addEventId(int npcId, QuestEventType eventType)
+	{
+    	try
+    	{
+		L2NpcTemplate t = NpcTable.getInstance().getTemplate(npcId);
+		if (t != null) 
+		{
+			t.addQuestEvent(eventType, this);
+		}
+		return t;
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		return null;
+    	}
+	}
+	
+    /**
+     * Add the quest to the NPC's startQuest
+     * @param npcId
+     * @return L2NpcTemplate : Start NPC
+     */
+    public L2NpcTemplate addStartNpc(int npcId)
+    {
+    	return addEventId(npcId, Quest.QuestEventType.QUEST_START);
+    }
+
+    /**
+     * Add the quest to the NPC's first-talk (default action dialog)
+     * @param npcId
+     * @return L2NpcTemplate : Start NPC
+     */
+    public L2NpcTemplate addFirstTalkId(int npcId)
+    {
+    	return addEventId(npcId, Quest.QuestEventType.NPC_FIRST_TALK);
+    }
+
+    /**
      * Add this quest to the list of quests that the passed mob will respond to for Attack Events.<BR><BR>
      * @param attackId
      * @return int : attackId
      */
-    public int addAttackId(int attackId) {
-    	NpcTable.getInstance().getTemplate(attackId).addQuestEvent(Quest.QuestEventType.MOBGOTATTACKED, this);
-        return attackId;
+    public L2NpcTemplate addAttackId(int attackId) {
+    	return addEventId(attackId, Quest.QuestEventType.MOBGOTATTACKED);
     }
     
 	/**
@@ -526,9 +575,8 @@ public abstract class Quest
 	 * @param killId
 	 * @return int : killId
 	 */
-	public int addKillId(int killId) {
-    	NpcTable.getInstance().getTemplate(killId).addQuestEvent(Quest.QuestEventType.MOBKILLED, this);
-		return killId;
+	public L2NpcTemplate addKillId(int killId) {
+    	return addEventId(killId, Quest.QuestEventType.MOBKILLED);
 	}
 	
     /**
@@ -536,9 +584,8 @@ public abstract class Quest
      * @param talkId : ID of the NPC
      * @return int : ID of the NPC
      */
-    public int addTalkId(int talkId) {
-    	NpcTable.getInstance().getTemplate(talkId).addQuestEvent(Quest.QuestEventType.QUEST_TALK, this);
-        return talkId;
+    public L2NpcTemplate addTalkId(int talkId) {
+    	return addEventId(talkId, Quest.QuestEventType.QUEST_TALK);
     }
     
     /**

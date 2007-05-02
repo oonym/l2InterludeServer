@@ -562,7 +562,14 @@ public class L2NpcInstance extends L2Character
                     
                     // Open a chat window on client with the text of the L2NpcInstance
                     if(this.isEventMob){ L2Event.showEventHtml(player, String.valueOf(this.getObjectId())); }
-                    else showChatWindow(player, 0);
+                    else 
+                    {
+                        Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.NPC_FIRST_TALK);
+                        if ( (qlst != null) && qlst.length == 1)
+                        	qlst[0].notifyFirstTalk(this, player);
+                        else
+                        	showChatWindow(player, 0);
+                    }
                     
                     // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
                     player.sendPacket(new ActionFailed());					
