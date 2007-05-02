@@ -397,6 +397,9 @@ public class SystemMessage extends L2GameServerPacket
     public static final int PET_CANNOT_SENT_BACK_DURING_BATTLE = 579;
     public static final int YOU_ALREADY_HAVE_A_PET = 543;
     public static final int YOU_CANNOT_SUMMON_IN_COMBAT = 578;
+    public static final int PETS_ARE_NOT_AVAILABLE_AT_THIS_TIME = 574;
+    public static final int SOULSHOTS_AND_SPIRITSHOTS_ARE_NOT_AVAILABLE_FOR_A_DEAD_PET = 1598;
+    public static final int NOT_ENOUGH_SOULSHOTS_FOR_PET = 1701;
     
     public static final int STRIDER_CANT_BE_RIDDEN_WHILE_DEAD = 1009;
     public static final int DEAD_STRIDER_CANT_BE_RIDDEN = 1010;

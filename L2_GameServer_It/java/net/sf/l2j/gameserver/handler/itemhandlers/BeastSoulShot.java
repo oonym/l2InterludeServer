@@ -62,13 +62,13 @@ public class BeastSoulShot implements IItemHandler
         
         if (activePet == null)
         {
-            activeOwner.sendPacket(new SystemMessage(574));
+            activeOwner.sendPacket(new SystemMessage(SystemMessage.PETS_ARE_NOT_AVAILABLE_AT_THIS_TIME));
             return;
         }
         
         if (activePet.isDead())
         {
-            activeOwner.sendPacket(new SystemMessage(1598));
+            activeOwner.sendPacket(new SystemMessage(SystemMessage.SOULSHOTS_AND_SPIRITSHOTS_ARE_NOT_AVAILABLE_FOR_A_DEAD_PET));
             return;
         }
         
@@ -106,7 +106,7 @@ public class BeastSoulShot implements IItemHandler
             if (!(shotCount > shotConsumption))
             {
                 // Not enough Soulshots to use.
-                activeOwner.sendPacket(new SystemMessage(1701));
+                activeOwner.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_SOULSHOTS_FOR_PET));
                 return;
             }
 
