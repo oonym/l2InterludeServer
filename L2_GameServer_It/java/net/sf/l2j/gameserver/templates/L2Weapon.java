@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javolution.util.FastList;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Character;
@@ -29,6 +30,7 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.skills.funcs.FuncTemplate;
@@ -53,6 +55,8 @@ public final class L2Weapon  extends L2Item
 	private final int _atkReuse;
 	private final int _mpConsume;
 	private final int _mDam;
+    private L2Skill _itemSkill = null;     // for passive skill
+    private L2Skill _enchant4Skill = null; // skill that activates when item is enchanted +4 (for duals)
     
     // Attached skills for Special Abilities
     protected L2Skill[] _skillsOnCast;
@@ -89,6 +93,36 @@ public final class L2Weapon  extends L2Item
 		_atkReuse        = set.getInteger("atk_reuse", type==L2WeaponType.BOW ? 1500 : 0);
 		_mpConsume       = set.getInteger("mp_consume");
 		_mDam            = set.getInteger("m_dam");
+		
+		int sId = set.getInteger("item_skill_id");
+		int sLv = set.getInteger("item_skill_lvl");
+		if(sId > 0 && sLv > 0)
+			_itemSkill = SkillTable.getInstance().getInfo(sId,sLv);
+		
+		sId = set.getInteger("enchant4_skill_id");
+		sLv = set.getInteger("enchant4_skill_lvl");
+		if(sId > 0 && sLv > 0)
+			_enchant4Skill = SkillTable.getInstance().getInfo(sId, sLv);
+		
+		sId = set.getInteger("onCast_skill_id");
+		sLv = set.getInteger("onCast_skill_lvl");
+		int sCh = set.getInteger("onCast_skill_chance");
+		if(sId > 0 && sLv > 0 && sCh > 0)
+		{
+			L2Skill skill = SkillTable.getInstance().getInfo(sId, sLv);
+			skill.attach(new ConditionGameChance(sCh),true);
+			attachOnCast(skill);
+		}
+		
+		sId = set.getInteger("onCrit_skill_id");
+		sLv = set.getInteger("onCrit_skill_lvl");
+		sCh = set.getInteger("onCrit_skill_chance");
+		if(sId > 0 && sLv > 0 && sCh > 0)
+		{
+			L2Skill skill = SkillTable.getInstance().getInfo(sId, sLv);
+			skill.attach(new ConditionGameChance(sCh),true);
+			attachOnCrit(skill);
+		}
 	}
 	
 	/**
@@ -226,6 +260,24 @@ public final class L2Weapon  extends L2Item
 		return _shieldDefRate;
 	}
 
+	/** 
+	 * Returns passive skill linked to that weapon
+	 * @return
+	 */
+	public L2Skill getSkill()
+	{
+		return _itemSkill;
+	}
+	
+ 	/**
+	 * Returns skill that player get when has equiped weapon +4  or more  (for duals SA)
+	 * @return
+	 */
+	public L2Skill getEnchant4Skill()
+	{
+		return _enchant4Skill;
+	}
+	
 	/**
 	 * Returns array of Func objects containing the list of functions used by the weapon 
 	 * @param instance : L2ItemInstance pointing out the weapon

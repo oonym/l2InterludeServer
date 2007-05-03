@@ -35,6 +35,7 @@ import net.sf.l2j.Server;
 import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
+import net.sf.l2j.gameserver.datatables.ArmorSetsTable;
 import net.sf.l2j.gameserver.datatables.CharNameTable;
 import net.sf.l2j.gameserver.datatables.CharTemplateTable;
 import net.sf.l2j.gameserver.datatables.ClanTable;
@@ -293,6 +294,7 @@ public class GameServer
 		RecipeController.getInstance();
 
 		SkillTreeTable.getInstance();
+		ArmorSetsTable.getInstance();
 		FishTable.getInstance();
 		SkillSpellbookTable.getInstance();
 		CharTemplateTable.getInstance();

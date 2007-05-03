@@ -158,9 +158,17 @@ public class ItemTable
     private static final String[] SQL_ITEM_SELECTS  =
     {
         "SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, durability, price, crystal_count, sellable, dropable, destroyable, tradeable FROM etcitem",
-        "SELECT item_id, name, bodypart, crystallizable, armor_type, weight, material, crystal_type, avoid_modify, durability, p_def, m_def, mp_bonus, price, crystal_count, sellable, dropable, destroyable, tradeable FROM armor",
-        "SELECT item_id, name, bodypart, crystallizable, weight, soulshots, spiritshots, material, crystal_type, p_dam, rnd_dam, weaponType, critical, hit_modify, avoid_modify, shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, durability, price, crystal_count, sellable, dropable, destroyable, tradeable FROM weapon"
-    };
+        
+        "SELECT item_id, name, bodypart, crystallizable, armor_type, weight," +
+        	" material, crystal_type, avoid_modify, durability, p_def, m_def, mp_bonus," +
+        	" price, crystal_count, sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl FROM armor",
+        
+        "SELECT item_id, name, bodypart, crystallizable, weight, soulshots, spiritshots," +
+        	" material, crystal_type, p_dam, rnd_dam, weaponType, critical, hit_modify, avoid_modify," +
+        	" shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, durability, price, crystal_count," +
+        	" sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl,enchant4_skill_id,enchant4_skill_lvl, onCast_skill_id, onCast_skill_lvl," +
+        	" onCast_skill_chance, onCrit_skill_id, onCrit_skill_lvl, onCrit_skill_chance FROM weapon"
+     };
     /** List of etcItem */
     private static final Map<Integer, Item> itemData    = new FastMap<Integer, Item>();
     /** List of weapons */
@@ -313,6 +321,20 @@ public class ItemTable
         item.set.set("destroyable",       Boolean.valueOf(rset.getString("destroyable")));
         item.set.set("tradeable",       Boolean.valueOf(rset.getString("tradeable")));
         
+        item.set.set("item_skill_id", rset.getInt("item_skill_id"));
+        item.set.set("item_skill_lvl", rset.getInt("item_skill_lvl"));
+        
+        item.set.set("enchant4_skill_id", rset.getInt("enchant4_skill_id"));
+        item.set.set("enchant4_skill_lvl", rset.getInt("enchant4_skill_lvl"));
+        
+        item.set.set("onCast_skill_id", rset.getInt("onCast_skill_id"));
+        item.set.set("onCast_skill_lvl", rset.getInt("onCast_skill_lvl"));
+        item.set.set("onCast_skill_chance", rset.getInt("onCast_skill_chance"));
+        
+        item.set.set("onCrit_skill_id", rset.getInt("onCrit_skill_id"));
+        item.set.set("onCrit_skill_lvl", rset.getInt("onCrit_skill_lvl"));
+        item.set.set("onCrit_skill_chance", rset.getInt("onCrit_skill_chance"));
+        
         if (item.type == L2WeaponType.PET)
         {
             item.set.set("type1", L2Item.TYPE1_WEAPON_RING_EARRING_NECKLACE);
@@ -353,6 +375,9 @@ public class ItemTable
         item.set.set("dropable", Boolean.valueOf(rset.getString("dropable")));
         item.set.set("destroyable", Boolean.valueOf(rset.getString("destroyable")));
         item.set.set("tradeable", Boolean.valueOf(rset.getString("tradeable")));
+        item.set.set("item_skill_id", rset.getInt("item_skill_id"));
+        item.set.set("item_skill_lvl", rset.getInt("item_skill_lvl"));
+        
         if (bodypart == L2Item.SLOT_NECK ||
                 bodypart == L2Item.SLOT_HAIR ||
                 bodypart == L2Item.SLOT_FACE ||
