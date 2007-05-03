@@ -25,14 +25,17 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.StringTokenizer;
 
 import javolution.util.FastList;
+import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.Siege;
@@ -56,9 +59,6 @@ public class SiegeManager
     }
 
     // =========================================================
-
-    
-    // =========================================================
     // Data Field
     private int _Attacker_Max_Clans                              = 500; // Max number of clans
     private int _Attacker_RespawnDelay                           = 20000; // Time in ms. Changeable in siege.config
@@ -66,15 +66,9 @@ public class SiegeManager
     private int _Defender_RespawnDelay                           = 10000; // Time in ms. Changeable in siege.config
 
     // Siege settings
-    private int[][] artifactSpawnList                            = {{}, // nowhere
-                                                                        {-18120,107984,-2483,16384,30250}, //gludio
-                                                                        {22081,161771,-2677,49017,35105}, //dion
-                                                                        {117939,145090,-2550,32768,35147}, //giran
-                                                                        {84014,37184,-2277,16384,35189}, //oren
-                                                                        {147465,1537,-373,16384,35233}, //aden
-                                                                        {116031,250555,-798,49200,35279}, //innadril
-                                                                        {146601,-50441,-1505,32768,35322}, //goddard1
-                                                                        {148353,-50457,-1505,0,35323}}; //goddard2
+    private FastMap<Integer,FastList<SiegeSpawn>>  _artefactSpawnList;
+    private FastMap<Integer,FastList<SiegeSpawn>>  _controlTowerSpawnList;
+    
     private int _ControlTowerLosePenalty                         = 20000; // Time in ms. Changeable in siege.config
     private int _Flag_MaxCount                                   = 1; // Changeable in siege.config
     private int _Siege_Clan_MinLevel                             = 4; // Changeable in siege.config
@@ -189,6 +183,69 @@ public class SiegeManager
             _Flag_MaxCount = Integer.decode(siegeSettings.getProperty("MaxFlags", "1"));
             _Siege_Clan_MinLevel = Integer.decode(siegeSettings.getProperty("SiegeClanMinLevel", "4"));
             _Siege_Length = Integer.decode(siegeSettings.getProperty("SiegeLength", "120"));
+            
+            // Siege spawns settings
+            _controlTowerSpawnList = new FastMap<Integer,FastList<SiegeSpawn>>();
+            _artefactSpawnList = new FastMap<Integer,FastList<SiegeSpawn>>();
+
+            for (Castle castle: CastleManager.getInstance().getCastles())
+            {
+            	FastList<SiegeSpawn> _controlTowersSpawns = new FastList<SiegeSpawn>();
+            	
+            	for (int i=1; i<0xFF; i++)
+            	{
+            		String _spawnParams = siegeSettings.getProperty(castle.getName() + "ControlTower" + Integer.toString(i), "");
+            		
+            		if (_spawnParams.length() == 0) break;
+            		
+            		StringTokenizer st = new StringTokenizer(_spawnParams.trim(), ",");
+            		
+            		try
+            		{
+            			int x = Integer.parseInt(st.nextToken());
+            			int y = Integer.parseInt(st.nextToken());
+            			int z = Integer.parseInt(st.nextToken());
+            			int npc_id = Integer.parseInt(st.nextToken());
+            			int hp = Integer.parseInt(st.nextToken());
+            			
+            			_controlTowersSpawns.add(new SiegeSpawn(castle.getCastleId(),x,y,z,0,npc_id,hp));
+            		}
+            		catch (Exception e)
+            		{
+            			_log.warning("Error while loading control tower(s) for "+castle.getName()+" castle.");
+            		}
+            	}
+            	
+            	FastList<SiegeSpawn> _artefactSpawns = new FastList<SiegeSpawn>();
+            	
+            	for (int i=1; i<0xFF; i++)
+            	{
+            		String _spawnParams = siegeSettings.getProperty(castle.getName() + "Artefact" + Integer.toString(i), "");
+            		
+            		if (_spawnParams.length() == 0) break;
+            		
+            		StringTokenizer st = new StringTokenizer(_spawnParams.trim(), ",");
+            		
+            		try
+            		{
+            			int x = Integer.parseInt(st.nextToken());
+            			int y = Integer.parseInt(st.nextToken());
+            			int z = Integer.parseInt(st.nextToken());
+            			int heading = Integer.parseInt(st.nextToken()); 
+            			int npc_id = Integer.parseInt(st.nextToken());
+            			
+            			_artefactSpawns.add(new SiegeSpawn(castle.getCastleId(),x,y,z,heading,npc_id));
+            		}
+            		catch (Exception e)
+            		{
+            			_log.warning("Error while loading artefact(s) for "+castle.getName()+" castle.");
+            		}
+            	}
+            	
+            	_controlTowerSpawnList.put(castle.getCastleId(), _controlTowersSpawns);
+            	_artefactSpawnList.put(castle.getCastleId(), _artefactSpawns);
+            }
+            	
         } catch (Exception e) {
             //_initialized = false;
             System.err.println("Error while loading siege data.");
@@ -198,8 +255,22 @@ public class SiegeManager
 
     // =========================================================
     // Property - Public
-    public final int[][] getArtifactSpawnList() { return artifactSpawnList; }
-
+    public final FastList<SiegeSpawn> getArtefactSpawnList(int _castleId) 
+    { 
+    	if (_artefactSpawnList.containsKey(_castleId))
+    		return _artefactSpawnList.get(_castleId);
+    	else 
+    		return null;
+    }
+        
+    public final FastList<SiegeSpawn> getControlTowerSpawnList(int _castleId) 
+    { 
+    	if (_controlTowerSpawnList.containsKey(_castleId))
+    		return _controlTowerSpawnList.get(_castleId);
+    	else 
+    		return null;
+    }
+    
     public final int getAttackerMaxClans() { return _Attacker_Max_Clans; }
 
     public final int getAttackerRespawnDelay() { return _Attacker_RespawnDelay; }
@@ -229,5 +300,56 @@ public class SiegeManager
     {
         if (_Sieges == null) _Sieges = new FastList<Siege>();
         return _Sieges;
+    }
+    
+    public class  SiegeSpawn
+    {
+    	Location _location; 
+    	private int _npc_id;
+    	private int _heading;
+    	private int _castle_id;
+    	private int _hp;
+    	
+    	public SiegeSpawn(int castle_id, int x, int y, int z, int heading, int npc_id)
+    	{
+    		_castle_id = castle_id;
+    		_location = new Location(x,y,z,heading);
+    		_heading = heading;
+    		_npc_id = npc_id;
+    	}
+    	
+    	public SiegeSpawn(int castle_id, int x, int y, int z, int heading, int npc_id, int hp)
+    	{
+    		_castle_id = castle_id;
+    		_location = new Location(x,y,z,heading);
+    		_heading = heading;
+    		_npc_id = npc_id;
+    		_hp = hp;
+    	}
+    	
+    	public int getCastleId()
+    	{
+    		return _castle_id;
+    	}
+
+    	public int getNpcId()
+    	{
+    		return _npc_id;
+    	}
+
+    	public int getHeading()
+    	{
+    		return _heading;
+    	}
+    	
+    	public int getHp()
+    	{
+    		return _hp;
+    	}
+    	
+    	public Location getLocation()
+    	{
+    		return _location;
+    	}
     }
 }
