@@ -31,6 +31,8 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.serverpackets.ClanHallDecoration;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -139,7 +141,14 @@ public class ScrollOfEscape implements IItemHandler
                 if ((_itemId == 1830 || _itemId == 5859) && CastleManager.getInstance().getCastleByOwner(_activeChar.getClan()) != null) // escape to castle if own's one
                 { _activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Castle); }
                 else if ((_itemId == 1829 || _itemId == 5858) && _activeChar.getClan() != null && ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan()) != null) // escape to clan hall if own's one
-                { _activeChar.teleToLocation(MapRegionTable.TeleportWhereType.ClanHall); }
+                {
+                	_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.ClanHall);
+                	ClanHall clanHall = ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan());
+	            	if(clanHall != null){
+                		ClanHallDecoration bl = new ClanHallDecoration(clanHall);
+	            		_activeChar.sendPacket(bl);
+	            	}
+                }
                 else if(_itemId == 5858) // do nothing
                 {
                 	_activeChar.sendPacket(new SystemMessage(681));

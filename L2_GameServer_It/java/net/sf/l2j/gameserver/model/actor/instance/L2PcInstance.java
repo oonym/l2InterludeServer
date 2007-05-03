@@ -135,6 +135,7 @@ import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChangeWaitType;
 import net.sf.l2j.gameserver.serverpackets.CharInfo;
+import net.sf.l2j.gameserver.serverpackets.ClanHallDecoration;
 import net.sf.l2j.gameserver.serverpackets.ConfirmDlg;
 import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.serverpackets.ExFishingEnd;
@@ -1469,14 +1470,20 @@ public final class L2PcInstance extends L2PlayableInstance
     
 	public void revalidateInClanHall()
     {
+		ClanHall clanHall;
+        if (ZoneManager.getInstance().checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.ClanHall), this)){
+        	clanHall = ClanHallManager.getInstance().getClanHall(getX(), getY());
+	    	if(clanHall != null){
+        		ClanHallDecoration bl = new ClanHallDecoration(clanHall);
+	    		sendPacket(bl);
+	    	}
+    	}
 		if(this.getClan() == null) return;
 		int clanHallIndex = this.getClan().getHasHideout();
 		if( clanHallIndex == 0 ) return;
-		ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex); 
-		if(clansHall != null) setIsInClanHall(clansHall.checkIfInZone(this.getX(),this.getY()));
+		clanHall = ClanHallManager.getInstance().getClanHall(clanHallIndex); 
+		if(clanHall != null) setIsInClanHall(clanHall.checkIfInZone(this.getX(),this.getY()));
     }
-
-
     public void revalidateZone()
     {
         revalidateInPvpZone();
@@ -4877,8 +4884,12 @@ public final class L2PcInstance extends L2PlayableInstance
     
     public void setIsInClanHall(boolean inCH)
     {
-        if (inCH && !_inClanHall) sendMessage("You have entered your clan hall");
-        else if (!inCH && _inClanHall) sendMessage("You have left your clan hall");
+        if (inCH && !_inClanHall){
+        	sendMessage("You have entered your clan hall");
+        }
+        else if (!inCH && _inClanHall) {
+        	sendMessage("You have left your clan hall");
+        }
         _inClanHall = inCH;
     }
 

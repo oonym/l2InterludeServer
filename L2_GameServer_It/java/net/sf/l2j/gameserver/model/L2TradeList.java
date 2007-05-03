@@ -79,7 +79,28 @@ public class L2TradeList
             }
         }
     }
-    
+    public void decreaseCount(int itemID, int count)
+    {
+        for (int i = 0; i < _items.size(); i++)
+        {
+            L2ItemInstance item = _items.get(i);
+            if (item.getItemId() == itemID)
+            {
+                item.setCount(item.getCount()-count);
+            }
+        }
+    }
+    public void restoreCount(int time)
+    {
+        for (int i = 0; i < _items.size(); i++)
+        {
+            L2ItemInstance item = _items.get(i);
+            if (item.getCountDecrease() && item.getTime() == time)
+            {
+                item.restoreInitCount();
+            }
+        }
+    }
     public void removeItem(int itemID)
     {
         for (int i = 0; i < _items.size(); i++)
@@ -141,7 +162,18 @@ public class L2TradeList
 		}
 		return -1;
 	}
-	
+	public boolean countDecrease(int itemId)
+	{
+		for (int i = 0; i < _items.size(); i++)
+		{
+			L2ItemInstance item = _items.get(i);
+			if (item.getItemId() == itemId)
+			{
+				return item.getCountDecrease();
+			}
+		}
+		return false;
+	}
 	public boolean containsItemId(int itemId)
 	{
 		for (L2ItemInstance item : _items)

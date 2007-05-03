@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2TradeList;
+import net.sf.l2j.gameserver.model.actor.instance.L2ClanHallManagerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FishermanInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MercManagerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MerchantInstance;
@@ -86,7 +87,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 
         L2Object target = player.getTarget();
         if (!player.isGM() && (target == null								// No target (ie GM Shop)
-        		|| !(target instanceof L2MerchantInstance || target instanceof L2FishermanInstance || target instanceof L2MercManagerInstance)	// Target not a merchant, fisherman or mercmanager
+        		|| !(target instanceof L2MerchantInstance || target instanceof L2FishermanInstance || target instanceof L2MercManagerInstance || target instanceof L2ClanHallManagerInstance)	// Target not a merchant, fisherman or mercmanager
 			    || !player.isInsideRadius(target, L2NpcInstance.INTERACTION_DISTANCE, false, false) 	// Distance is too far
 			        )) return;
 
@@ -100,6 +101,8 @@ public final class RequestBuyItem extends L2GameClientPacket
         	else if (target instanceof L2FishermanInstance)
         		htmlFolder = "fisherman";
         	else if (target instanceof L2MercManagerInstance)
+        		ok = true;
+        	else if (target instanceof L2ClanHallManagerInstance)
         		ok = true;
         	else
         		ok = false;
@@ -130,7 +133,6 @@ public final class RequestBuyItem extends L2GameClientPacket
         			Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
         			return;
         		}
-        	
 	        	for (L2TradeList tradeList : lists)
 	        	{
 	        		if (tradeList.getListId() == _listId)
@@ -141,12 +143,11 @@ public final class RequestBuyItem extends L2GameClientPacket
         	}
         	else
         	{
-        		list = TradeController.getInstance().getBuyList(_listId);	
+        		list = TradeController.getInstance().getBuyList(_listId);
         	}
         }
         else
         	list = TradeController.getInstance().getBuyList(_listId);
-        
         if (list == null)
         {
         	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
@@ -163,13 +164,11 @@ public final class RequestBuyItem extends L2GameClientPacket
 				return;
 			}
 		}
-
         if(_count < 1)
 		{
             sendPacket(new ActionFailed());
 		    return;
 		}
-
 		double taxRate = 0;
 		if (merchant != null && merchant.getIsInTown()) taxRate = merchant.getCastle().getTaxRate();
 		long subTotal = 0;
@@ -193,7 +192,6 @@ public final class RequestBuyItem extends L2GameClientPacket
             L2Item template = ItemTable.getInstance().getTemplate(itemId);
             
             if (template == null) continue;
-
             if (count > Integer.MAX_VALUE || (!template.isStackable() && count > 1))
 			{
 				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to purchase invalid quantity of items at the same time.",Config.DEFAULT_PUNISH);
@@ -288,11 +286,10 @@ public final class RequestBuyItem extends L2GameClientPacket
 				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
 				return;
 			}
-
+			if(list.countDecrease(itemId))
+				list.decreaseCount(itemId,count);
 			// Add item to Inventory and adjust update packet
 			player.getInventory().addItem("Buy", itemId, count, player, merchant);
-
-
 /* TODO: Disabled until Leaseholders are rewritten ;-)
 			// Update Leaseholder list
 			if (_listId >= 1000000) 

@@ -68,6 +68,12 @@ public final class L2ItemInstance extends L2Object
 	
 	/** Quantity of the item */
 	private int _count;
+	/** Initial Quantity of the item */
+	private int _initCount;
+	/** Time after restore Item count (in Hours) */
+	private int _time;
+	/** Quantity of the item can decrease */
+	private boolean _decrease = false;
 	
 	/** ID of the item */
 	private final int _itemId;
@@ -274,7 +280,7 @@ public final class L2ItemInstance extends L2Object
 	{
 		if (_count == count) return;
 
-		_count = count > 0 ? count : 0;
+		_count = count >= -1 ? count : 0;
 		_storedInDb = false;
 	}
 
@@ -915,5 +921,30 @@ public final class L2ItemInstance extends L2Object
     }
     public boolean isNightLure() {
     	return ((_itemId >= 8505 && _itemId <= 8513) || _itemId == 8485);
+    }
+    public void setCountDecrease(boolean decrease){
+    	_decrease = decrease;
+    }
+    public boolean getCountDecrease(){
+    	return _decrease;
+    }
+    public void setInitCount(int InitCount){
+    	_initCount = InitCount;
+    }
+    public int getInitCount(){
+    	return _initCount;
+    }
+    public void restoreInitCount(){
+    	if(_decrease)
+    		_count = _initCount;	
+    }
+    public void setTime(int time){
+    	if(time>0)
+    		_time = time;
+    	else
+    		_time = 0;
+    }
+    public int getTime(){
+    	return _time;
     }
 }

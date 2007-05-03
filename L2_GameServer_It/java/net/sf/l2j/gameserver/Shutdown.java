@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.TradeController;
 import net.sf.l2j.gameserver.gameserverpackets.ServerStatus;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
@@ -413,7 +414,8 @@ public class Shutdown extends Thread
         // Save all raidboss status ^_^
         RaidBossSpawnManager.getInstance().cleanUp();
         System.err.println("RaidBossSpawnManager: All raidboss info saved!!");
-        
+        TradeController.getInstance().dataCountStore();
+        System.err.println("TradeController: All count Item Saved");
         try
         {
             Olympiad.getInstance().save();

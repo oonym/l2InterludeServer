@@ -67,6 +67,8 @@ public class ClanHall
     public static final int FUNC_RESTORE_MP = 4;
     public static final int FUNC_RESTORE_EXP = 5;
     public static final int FUNC_SUPPORT = 6;
+    public static final int FUNC_DECO_FRONTPLATEFORM = 7;
+    public static final int FUNC_DECO_CURTAINS = 8;
     
     private class AutoTask implements Runnable
     {

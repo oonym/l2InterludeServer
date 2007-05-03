@@ -101,32 +101,37 @@ public final class BuyList extends L2GameServerPacket
 
 		for (L2ItemInstance item : _list)
 		{
-			writeH(item.getItem().getType1()); // item type1
-			writeD(item.getObjectId());
-			writeD(item.getItemId());
-			writeD(0x00);   // max amount of items that a player can buy at a time (with this itemid)
-			writeH(item.getItem().getType2());	// item type2
-			writeH(0x00);	// ?
-
-			if (item.getItem().getType1() != L2Item.TYPE1_ITEM_QUESTITEM_ADENA)
-			{
-				writeD(item.getItem().getBodyPart());	// rev 415  slot    0006-lr.ear  0008-neck  0030-lr.finger  0040-head  0080-??  0100-l.hand  0200-gloves  0400-chest  0800-pants  1000-feet  2000-??  4000-r.hand  8000-r.hand
-				writeH(item.getEnchantLevel());	// enchant level
+			if(item.getCount() >0 || item.getCount() == -1){
+				writeH(item.getItem().getType1()); // item type1
+				writeD(item.getObjectId());
+				writeD(item.getItemId());
+				if(item.getCount() <0)
+					writeD(0x00);   // max amount of items that a player can buy at a time (with this itemid)
+				else
+					writeD(item.getCount());
+				writeH(item.getItem().getType2());	// item type2
 				writeH(0x00);	// ?
-				writeH(0x00);
+	
+				if (item.getItem().getType1() != L2Item.TYPE1_ITEM_QUESTITEM_ADENA)
+				{
+					writeD(item.getItem().getBodyPart());	// rev 415  slot    0006-lr.ear  0008-neck  0030-lr.finger  0040-head  0080-??  0100-l.hand  0200-gloves  0400-chest  0800-pants  1000-feet  2000-??  4000-r.hand  8000-r.hand
+					writeH(item.getEnchantLevel());	// enchant level
+					writeH(0x00);	// ?
+					writeH(0x00);
+				}
+				else
+				{
+					writeD(0x00);	// rev 415  slot    0006-lr.ear  0008-neck  0030-lr.finger  0040-head  0080-??  0100-l.hand  0200-gloves  0400-chest  0800-pants  1000-feet  2000-??  4000-r.hand  8000-r.hand
+					writeH(0x00);	// enchant level
+					writeH(0x00);	// ?
+					writeH(0x00);
+				}
+				
+	            if (item.getItemId() >= 3960 && item.getItemId() <= 4026)//Config.RATE_SIEGE_GUARDS_PRICE-//'
+	                writeD((int)(item.getPriceToSell() * Config.RATE_SIEGE_GUARDS_PRICE * (1 + _TaxRate)));
+	            else
+	                writeD((int)(item.getPriceToSell() * (1 + _TaxRate)));
 			}
-			else
-			{
-				writeD(0x00);	// rev 415  slot    0006-lr.ear  0008-neck  0030-lr.finger  0040-head  0080-??  0100-l.hand  0200-gloves  0400-chest  0800-pants  1000-feet  2000-??  4000-r.hand  8000-r.hand
-				writeH(0x00);	// enchant level
-				writeH(0x00);	// ?
-				writeH(0x00);
-			}
-			
-            if (item.getItemId() >= 3960 && item.getItemId() <= 4026)//Config.RATE_SIEGE_GUARDS_PRICE-//'
-                writeD((int)(item.getPriceToSell() * Config.RATE_SIEGE_GUARDS_PRICE * (1 + _TaxRate)));
-            else
-                writeD((int)(item.getPriceToSell() * (1 + _TaxRate)));
 		}
 	}
 
