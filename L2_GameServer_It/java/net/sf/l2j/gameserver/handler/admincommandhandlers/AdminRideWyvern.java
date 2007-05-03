@@ -67,6 +67,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
                 activeChar.sendPacket(sm);
                 return false;
             }
+            if(!activeChar.disarmWeapons()) return false;
             Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, PetRideId);
             activeChar.sendPacket(mount);
             activeChar.broadcastPacket(mount);

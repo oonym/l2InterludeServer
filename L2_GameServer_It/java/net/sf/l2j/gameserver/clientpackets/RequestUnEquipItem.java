@@ -60,6 +60,11 @@ public class RequestUnEquipItem extends L2GameClientPacket
 		if (activeChar == null)
 		    return;
 		
+		if (activeChar.getInventory().getPaperdollItemByL2ItemId(_slot).isWear())
+		{
+			// Wear-items are not to be unequipped
+			return;
+		}
 		// Prevent of unequiping a cursed weapon
 		if (_slot == L2Item.SLOT_LR_HAND && activeChar.isCursedWeaponEquiped())
 		{
@@ -85,9 +90,6 @@ public class RequestUnEquipItem extends L2GameClientPacket
         
 		for (int i = 0; i < unequiped.length; i++)
 		{
-            if (unequiped[i].isWear())
-                return;
-            
             activeChar.checkSSMatch(null, unequiped[i]);
 			
 			iu.addModifiedItem(unequiped[i]);
@@ -103,8 +105,6 @@ public class RequestUnEquipItem extends L2GameClientPacket
 		// this can be 0 if the user pressed the right mousebutton twice very fast
 		if (unequiped.length > 0)
 		{
-            if (unequiped[0].isWear())
-                return;
         	
             SystemMessage sm = null;
             if (unequiped[0].getEnchantLevel() > 0)

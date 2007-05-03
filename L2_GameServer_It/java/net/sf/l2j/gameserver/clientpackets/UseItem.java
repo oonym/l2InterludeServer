@@ -75,6 +75,12 @@ public final class UseItem extends L2GameClientPacket
 
 			if (item == null)
                 return;
+			
+			if (item.isWear())
+			{
+				// No unequipping wear-items
+				return;
+			}
 
 			// Alt game - Karma punishment // SOE
 			int itemId = item.getItemId();
@@ -191,6 +197,32 @@ public final class UseItem extends L2GameClientPacket
                 }
                 else
                 {
+                	int tempBodyPart = item.getItem().getBodyPart();
+                	L2ItemInstance tempItem = activeChar.getInventory().getPaperdollItemByL2ItemId(tempBodyPart);
+                	if (tempItem != null && tempItem.isWear())
+                	{
+                		// dont allow an item to replace a wear-item
+                		return;
+                	}
+                	else if (tempBodyPart == 0x4000) // left+right hand equipment
+                	{
+                		// this may not remove left OR right hand equipment
+                		tempItem = activeChar.getInventory().getPaperdollItem(7);
+                		if (tempItem != null && tempItem.isWear()) return;
+                		
+                		tempItem = activeChar.getInventory().getPaperdollItem(8);
+                		if (tempItem != null && tempItem.isWear()) return;
+                	}
+                	else if (tempBodyPart == 0x8000) // fullbody armor
+                	{
+                		// this may not remove chest or leggins
+                		tempItem = activeChar.getInventory().getPaperdollItem(10);
+                		if (tempItem != null && tempItem.isWear()) return;
+                		
+                		tempItem = activeChar.getInventory().getPaperdollItem(11);
+                		if (tempItem != null && tempItem.isWear()) return;
+                	}
+
 					if (item.getEnchantLevel() > 0)
 					{
 						sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED);

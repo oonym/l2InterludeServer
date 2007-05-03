@@ -50,6 +50,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         			}
         			else
         			{
+        				if(!player.disarmWeapons()) return;
         				player.getPet().unSummon(player);
         				player.getInventory().destroyItemByItemId("Wyvern", 1460, 10, player, player.getTarget());
         				Ride mount = new Ride(player.getObjectId(), Ride.ACTION_MOUNT, 12621);

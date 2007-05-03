@@ -100,7 +100,8 @@ public class PetSummon implements IItemHandler
         
         if (L2PetDataTable.isWyvern(npcId))
         {
-            Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
+        	if(!activeChar.disarmWeapons()) return;
+        	Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
             activeChar.sendPacket(mount);
             activeChar.broadcastPacket(mount);
             activeChar.setMountType(mount.getMountType());

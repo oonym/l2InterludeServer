@@ -3121,7 +3121,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (item.isWear())
 		{
-			Util.handleIllegalPlayerAction(this, "Warning!! Character "+getName()+" tried to  " + action + "  weared item: "+item.getObjectId(),Config.DEFAULT_PUNISH);
+			// cannot drop/trade wear-items
 			return null;
 		}
 		
@@ -4658,6 +4658,88 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _arrowItem != null;
 	}
 	
+	/**
+	 * Disarm the player's weapon and shield.<BR><BR>
+	 */
+	public synchronized boolean disarmWeapons()
+	{
+        // Don't allow disarming a cursed weapon
+        if (isCursedWeaponEquiped()) return false;
+
+        // Unequip the weapon
+        L2ItemInstance wpn = getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
+        if (wpn == null) wpn = getInventory().getPaperdollItem(Inventory.PAPERDOLL_LRHAND);
+        if (wpn != null)
+        {
+        	if (wpn.isWear())
+        		return false;
+        	
+            L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
+            InventoryUpdate iu = new InventoryUpdate();
+            for (int i = 0; i < unequiped.length; i++)
+                iu.addModifiedItem(unequiped[i]);
+            sendPacket(iu);
+
+            abortAttack();
+            refreshExpertisePenalty();
+            broadcastUserInfo();
+
+            // this can be 0 if the user pressed the right mousebutton twice very fast
+            if (unequiped.length > 0)
+            {
+                SystemMessage sm = null;
+                if (unequiped[0].getEnchantLevel() > 0)
+                {
+                    sm = new SystemMessage(SystemMessage.EQUIPMENT_S1_S2_REMOVED);
+                    sm.addNumber(unequiped[0].getEnchantLevel());
+                    sm.addItemName(unequiped[0].getItemId());
+                }
+                else
+                {
+                    sm = new SystemMessage(SystemMessage.S1_DISARMED);
+                    sm.addItemName(unequiped[0].getItemId());
+                }
+                sendPacket(sm);
+            }
+        }
+        
+        // Unequip the shield
+        L2ItemInstance sld = getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
+        if (sld != null)
+        {
+        	if (sld.isWear())
+        		return false;
+        	
+            L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(sld.getItem().getBodyPart());
+            InventoryUpdate iu = new InventoryUpdate();
+            for (int i = 0; i < unequiped.length; i++)
+                iu.addModifiedItem(unequiped[i]);
+            sendPacket(iu);
+
+            abortAttack();
+            refreshExpertisePenalty();
+            broadcastUserInfo();
+
+            // this can be 0 if the user pressed the right mousebutton twice very fast
+            if (unequiped.length > 0)
+            {
+                SystemMessage sm = null;
+                if (unequiped[0].getEnchantLevel() > 0)
+                {
+                    sm = new SystemMessage(SystemMessage.EQUIPMENT_S1_S2_REMOVED);
+                    sm.addNumber(unequiped[0].getEnchantLevel());
+                    sm.addItemName(unequiped[0].getItemId());
+                }
+                else
+                {
+                    sm = new SystemMessage(SystemMessage.S1_DISARMED);
+                    sm.addItemName(unequiped[0].getItemId());
+                }
+                sendPacket(sm);
+            }
+        }
+        return true;
+	}
 	
 	/**
 	 * Return True if the L2PcInstance use a dual weapon.<BR><BR>
@@ -8449,7 +8531,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (item.isWear())
 		{
-			Util.handleIllegalPlayerAction(this, "Warning!! Character "+getName()+" tried to "+action+" weared item: "+item.getObjectId(),Config.DEFAULT_PUNISH);
+			// cannot drop/trade wear-items
 			return false;
 		}
 		

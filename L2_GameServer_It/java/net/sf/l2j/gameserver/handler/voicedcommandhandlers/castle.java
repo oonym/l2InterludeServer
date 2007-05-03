@@ -57,6 +57,7 @@ public class castle implements IVoicedCommandHandler
     	}
     	else if(command.startsWith("ride wyvern")&&target.equals("castle")){
     		if(activeChar.getClan().getHasCastle()>0&&activeChar.isClanLeader()){
+    			 if(!activeChar.disarmWeapons()) return false;
     			 Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
                  activeChar.sendPacket(mount);
                  activeChar.broadcastPacket(mount);
