@@ -1303,8 +1303,7 @@ public class L2NpcInstance extends L2Character
         String content;
         
         if (player.getWeightPenalty()>=3){	
-            content = "<html><body>I do not have any tasks for you, because of your weight penalty. Go away.</body></html>";
-            insertObjectIdAndShowChatWindow(player, content);
+            player.sendPacket(new SystemMessage(1118));
             return;
         }
         
