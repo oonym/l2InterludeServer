@@ -4206,7 +4206,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		final int lvl = getLevel();
 		
 		//The death steal you some Exp
-		double percentLost = -0.07 * lvl + 6.5;
+		double percentLost = 7.0;
+		if (getLevel() >= 76)
+			percentLost = 2.0;
+		else if (getLevel() >= 40)
+			percentLost = 4.0;
         
 		if (getKarma() > 0) 
             percentLost *= Config.RATE_KARMA_EXP_LOST;
