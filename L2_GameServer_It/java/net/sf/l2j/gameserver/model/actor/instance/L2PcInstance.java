@@ -4167,6 +4167,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void updatePvPStatus(L2Character target)
 	{
 		if (target instanceof L2PcInstance)
+		{
 			if ((isInDuel() && ((L2PcInstance)target).getDuelId() == getDuelId())) return;
 			if (!ZoneManager.getInstance().checkIfInZonePvP(this) || !ZoneManager.getInstance().checkIfInZonePvP(target)) {
 				if (checkIfPvP(target))
@@ -4176,6 +4177,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (getPvpFlag() == 0)
 					startPvPFlag();
 			}
+		}
 	}
 	
 	/**

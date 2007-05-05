@@ -33,6 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.ExDuelReady;
 import net.sf.l2j.gameserver.serverpackets.ExDuelStart;
 import net.sf.l2j.gameserver.serverpackets.ExDuelEnd;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
+import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -365,6 +366,11 @@ public class Duel
 			_playerA.broadcastUserInfo();
 			_playerB.broadcastUserInfo();
 		}
+		
+		// play sound
+		PlaySound ps = new PlaySound(1, "B04_S01", 0, 0, 0, 0, 0);
+		broadcastToTeam1(ps);
+		broadcastToTeam2(ps);
 
 		// start duelling task
 		ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleDuelTask(this), 1000);
