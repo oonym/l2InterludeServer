@@ -17,6 +17,7 @@ import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.Duel;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.model.actor.stat.CharStat;
@@ -113,13 +114,13 @@ public class CharStatus
     		if (((L2PcInstance)getActiveChar()).isInDuel())
 			{
 				// the duel is finishing - players do not recive damage
-				if (((L2PcInstance)getActiveChar()).getDuelState() == ((L2PcInstance)getActiveChar()).DUELSTATE_DEAD) return;
-				else if (((L2PcInstance)getActiveChar()).getDuelState() == ((L2PcInstance)getActiveChar()).DUELSTATE_WINNER) return;
+				if (((L2PcInstance)getActiveChar()).getDuelState() == Duel.DUELSTATE_DEAD) return;
+				else if (((L2PcInstance)getActiveChar()).getDuelState() == Duel.DUELSTATE_WINNER) return;
 				
 				// cancel duel if player got hit by another player, that is not part of the duel or a monster
 				if ( !(attacker instanceof L2SummonInstance) && !(attacker instanceof L2PcInstance
 						&& ((L2PcInstance)attacker).getDuelId() == ((L2PcInstance)getActiveChar()).getDuelId()) )
-					((L2PcInstance)getActiveChar()).setDuelState(((L2PcInstance)getActiveChar()).DUELSTATE_INTERRUPTED);
+					((L2PcInstance)getActiveChar()).setDuelState(Duel.DUELSTATE_INTERRUPTED);
 			}
     	    if (getActiveChar().isDead() && !getActiveChar().isFakeDeath()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
     	} else {

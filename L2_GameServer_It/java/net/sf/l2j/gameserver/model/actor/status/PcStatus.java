@@ -7,6 +7,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
+import net.sf.l2j.gameserver.model.entity.Duel;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.util.Util;
@@ -35,18 +36,18 @@ public class PcStatus extends PlayableStatus
 			if (getActiveChar().isInDuel())
 			{
 				// the duel is finishing - players do not recive damage
-				if (getActiveChar().getDuelState() == getActiveChar().DUELSTATE_DEAD) return;
-				else if (getActiveChar().getDuelState() == getActiveChar().DUELSTATE_WINNER) return;
+				if (getActiveChar().getDuelState() == Duel.DUELSTATE_DEAD) return;
+				else if (getActiveChar().getDuelState() == Duel.DUELSTATE_WINNER) return;
 				
 				// cancel duel if player got hit by another player, that is not part of the duel
 				if (((L2PcInstance)attacker).getDuelId() != getActiveChar().getDuelId())
-					getActiveChar().setDuelState(getActiveChar().DUELSTATE_INTERRUPTED);
+					getActiveChar().setDuelState(Duel.DUELSTATE_INTERRUPTED);
 			}
 			
 			if (getActiveChar().isDead() && !getActiveChar().isFakeDeath()) return;
 		} else {
 			// if attacked by a non L2PcInstance & non L2SummonInstance the duel gets canceled
-			if (getActiveChar().isInDuel() && !(attacker instanceof L2SummonInstance)) getActiveChar().setDuelState(getActiveChar().DUELSTATE_INTERRUPTED);
+			if (getActiveChar().isInDuel() && !(attacker instanceof L2SummonInstance)) getActiveChar().setDuelState(Duel.DUELSTATE_INTERRUPTED);
 			if (getActiveChar().isDead()) return;
 		}
 		

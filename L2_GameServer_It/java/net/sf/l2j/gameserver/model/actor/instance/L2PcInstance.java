@@ -126,6 +126,7 @@ import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.model.base.SubClass;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.model.entity.Duel;
 import net.sf.l2j.gameserver.model.entity.L2Event;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.model.entity.Zone;
@@ -367,14 +368,8 @@ public final class L2PcInstance extends L2PlayableInstance
     private int _olympiadSide = -1;
     
     /** Duel */
-    public final int DUELSTATE_NODUEL		= 0;
-    public final int DUELSTATE_DUELLING		= 1;
-    public final int DUELSTATE_DEAD			= 2;
-    public final int DUELSTATE_WINNER		= 3;
-    public final int DUELSTATE_INTERRUPTED	= 4;
-
     private boolean _isInDuel = false;
-    private int _duelState = DUELSTATE_NODUEL;
+    private int _duelState = Duel.DUELSTATE_NODUEL;
     private int _duelId = 0;
     private int _noDuelReason = 0;
     
@@ -6423,7 +6418,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (attacker instanceof L2PcInstance)
 		{
 			// is AutoAttackable if both players are in the same duel and the duel is still going on
-			if ( getDuelState() == DUELSTATE_DUELLING
+			if ( getDuelState() == Duel.DUELSTATE_DUELLING
 					&& getDuelId() == ((L2PcInstance)attacker).getDuelId() )
 				return true;
 			// Check if the L2PcInstance is in an arena or a siege area
@@ -7671,14 +7666,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (duelId > 0)
 		{
 			_isInDuel = true;
-			_duelState = DUELSTATE_DUELLING;
+			_duelState = Duel.DUELSTATE_DUELLING;
 			_duelId = duelId;
 		}
 		else
 		{
-			if (_duelState == DUELSTATE_DEAD) enableAllSkills();
+			if (_duelState == Duel.DUELSTATE_DEAD) enableAllSkills();
 			_isInDuel = false;
-			_duelState = DUELSTATE_NODUEL;
+			_duelState = Duel.DUELSTATE_NODUEL;
 			_duelId = 0;
 		}
 	}

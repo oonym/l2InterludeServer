@@ -42,6 +42,12 @@ public class Duel
 {
 	protected static Logger _log = Logger.getLogger(Duel.class.getName());
 
+    public static final int DUELSTATE_NODUEL		= 0;
+    public static final int DUELSTATE_DUELLING		= 1;
+    public static final int DUELSTATE_DEAD			= 2;
+    public static final int DUELSTATE_WINNER		= 3;
+    public static final int DUELSTATE_INTERRUPTED	= 4;
+
 	// =========================================================
 	// Data Field
 	private int _DuelId;
@@ -557,8 +563,8 @@ public class Duel
 	public L2PcInstance getWinner()
 	{
 		if (!getFinished() || _playerA == null || _playerB == null) return null;
-		if (_playerA.getDuelState() == _playerA.DUELSTATE_WINNER) return _playerA;
-		if (_playerB.getDuelState() == _playerB.DUELSTATE_WINNER) return _playerB;
+		if (_playerA.getDuelState() == DUELSTATE_WINNER) return _playerA;
+		if (_playerB.getDuelState() == DUELSTATE_WINNER) return _playerB;
 		return null;
 	}
 	
@@ -569,8 +575,8 @@ public class Duel
 	public L2PcInstance getLooser()
 	{
 		if (!getFinished() || _playerA == null || _playerB == null) return null;
-		if (_playerA.getDuelState() == _playerA.DUELSTATE_WINNER) return _playerB;
-		else if (_playerA.getDuelState() == _playerA.DUELSTATE_WINNER) return _playerA;
+		if (_playerA.getDuelState() == DUELSTATE_WINNER) return _playerB;
+		else if (_playerA.getDuelState() == DUELSTATE_WINNER) return _playerA;
 		return null;
 	}
 	
@@ -738,15 +744,15 @@ public class Duel
 			return DuelResultEnum.Timeout;
 		}
 		// Has a player been declared winner yet?
-		else if (_playerA.getDuelState() == _playerA.DUELSTATE_WINNER) return DuelResultEnum.Team1Win;
-		else if (_playerB.getDuelState() == _playerB.DUELSTATE_WINNER) return DuelResultEnum.Team2Win;
+		else if (_playerA.getDuelState() == DUELSTATE_WINNER) return DuelResultEnum.Team1Win;
+		else if (_playerB.getDuelState() == DUELSTATE_WINNER) return DuelResultEnum.Team2Win;
 
 		// More end duel conditions for 1on1 duels
 		else if (!_partyDuel)
 		{
 			// Duel was interrupted e.g.: player was attacked by mobs / other players
-			if (_playerA.getDuelState() == _playerA.DUELSTATE_INTERRUPTED
-					|| _playerB.getDuelState() == _playerB.DUELSTATE_INTERRUPTED) return DuelResultEnum.Canceled;
+			if (_playerA.getDuelState() == DUELSTATE_INTERRUPTED
+					|| _playerB.getDuelState() == DUELSTATE_INTERRUPTED) return DuelResultEnum.Canceled;
 
 			// Are the players too far apart?
 			if (!_playerA.isInsideRadius(_playerB, 1600, false, false)) return DuelResultEnum.Canceled;
@@ -782,11 +788,11 @@ public class Duel
 				_surrenderRequest = 1;
 				for (L2PcInstance temp : _playerA.getParty().getPartyMembers())
 				{
-					temp.setDuelState(temp.DUELSTATE_DEAD);
+					temp.setDuelState(DUELSTATE_DEAD);
 				}
 				for (L2PcInstance temp : _playerB.getParty().getPartyMembers())
 				{
-					temp.setDuelState(temp.DUELSTATE_WINNER);
+					temp.setDuelState(DUELSTATE_WINNER);
 				}
 			}
 			else if (_playerB.getParty().getPartyMembers().contains(player))
@@ -794,11 +800,11 @@ public class Duel
 				_surrenderRequest = 2;
 				for (L2PcInstance temp : _playerB.getParty().getPartyMembers())
 				{
-					temp.setDuelState(temp.DUELSTATE_DEAD);
+					temp.setDuelState(DUELSTATE_DEAD);
 				}
 				for (L2PcInstance temp : _playerA.getParty().getPartyMembers())
 				{
-					temp.setDuelState(temp.DUELSTATE_WINNER);
+					temp.setDuelState(DUELSTATE_WINNER);
 				}
 				
 			}
@@ -810,14 +816,14 @@ public class Duel
 			if (player == _playerA)
 			{
 				_surrenderRequest = 1;
-				_playerA.setDuelState(_playerA.DUELSTATE_DEAD);
-				_playerB.setDuelState(_playerB.DUELSTATE_WINNER);
+				_playerA.setDuelState(DUELSTATE_DEAD);
+				_playerB.setDuelState(DUELSTATE_WINNER);
 			}
 			else if (player == _playerB)
 			{
 				_surrenderRequest = 2;
-				_playerB.setDuelState(_playerB.DUELSTATE_DEAD);
-				_playerA.setDuelState(_playerA.DUELSTATE_WINNER);
+				_playerB.setDuelState(DUELSTATE_DEAD);
+				_playerA.setDuelState(DUELSTATE_WINNER);
 			}
 		}
 	}
@@ -829,14 +835,14 @@ public class Duel
 	public void onPlayerDefeat(L2PcInstance player)
 	{
 		// Set player as defeated
-		player.setDuelState(player.DUELSTATE_DEAD);
+		player.setDuelState(DUELSTATE_DEAD);
 		
 		if (_partyDuel)
 		{
 			boolean teamdefeated = true;
 			for (L2PcInstance temp : player.getParty().getPartyMembers())
 			{
-				if (temp.getDuelState() == temp.DUELSTATE_DUELLING)
+				if (temp.getDuelState() == DUELSTATE_DUELLING)
 				{
 					teamdefeated = false;
 					break;
@@ -850,7 +856,7 @@ public class Duel
 
 				for (L2PcInstance temp : winner.getParty().getPartyMembers())
 				{
-					temp.setDuelState(temp.DUELSTATE_WINNER);
+					temp.setDuelState(DUELSTATE_WINNER);
 				}
 			}			
 		}
@@ -858,8 +864,8 @@ public class Duel
 		{
 			if (player != _playerA && player != _playerB) _log.warning("Error in onPlayerDefeat(): player is not part of this 1vs1 duel");
 
-			if (_playerA == player) _playerB.setDuelState(player.DUELSTATE_WINNER);
-			else _playerA.setDuelState(player.DUELSTATE_WINNER);
+			if (_playerA == player) _playerB.setDuelState(DUELSTATE_WINNER);
+			else _playerA.setDuelState(DUELSTATE_WINNER);
 		}
 	}
 	
