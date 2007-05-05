@@ -69,6 +69,13 @@ public class Recall implements ISkillHandler
                         targetChar.sendPacket(SystemMessage.sendString("You can not escape from jail."));
                         continue;
                     }
+                    
+                    // Check to see if player is in a duel
+                    if (targetChar.isInDuel())
+                    {
+                        targetChar.sendPacket(SystemMessage.sendString("You cannot use escape skills during a duel."));
+                        continue;
+                    }
                 }
                   
                 target.teleToLocation(MapRegionTable.TeleportWhereType.Town);

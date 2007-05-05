@@ -71,7 +71,7 @@ public class RequestSocialAction extends L2GameClientPacket
 		if (	activeChar.getPrivateStoreType()==0 &&
 				activeChar.getActiveRequester()==null &&
 				!activeChar.isAlikeDead() &&
-				!activeChar.isAllSkillsDisabled() &&
+				(!activeChar.isAllSkillsDisabled() || activeChar.isInDuel()) &&
 				activeChar.getAI().getIntention()==CtrlIntention.AI_INTENTION_IDLE)
 		{
 			if (Config.DEBUG) _log.fine("Social Action:" + _actionId);

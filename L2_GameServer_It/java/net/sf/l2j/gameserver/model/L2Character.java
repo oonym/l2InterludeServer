@@ -461,7 +461,8 @@ public abstract class L2Character extends L2Object
 		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead())
                 || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath())
                 || !getKnownList().knowsObject(target)
-                || (this instanceof L2PcInstance && isDead()))
+                || (this instanceof L2PcInstance && isDead())
+                || (target instanceof L2PcInstance && ((L2PcInstance)target).getDuelState() == ((L2PcInstance)target).DUELSTATE_DEAD))
 		{
 			// If L2PcInstance is dead or the target is dead, the action is stoped
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);

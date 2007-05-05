@@ -17,6 +17,8 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import net.sf.l2j.gameserver.instancemanager.DuelManager;
+
 /**
  * Format:(ch)
  * just a trigger
@@ -37,9 +39,7 @@ public final class RequestDuelSurrender extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// TODO
-		System.out.println("C6: RequestDuelSurrender.");
-
+		DuelManager.getInstance().doSurrender(getClient().getActiveChar());
 	}
 
 	/**

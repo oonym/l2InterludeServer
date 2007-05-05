@@ -74,6 +74,7 @@ import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
+import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
@@ -142,6 +143,7 @@ import net.sf.l2j.gameserver.serverpackets.ExFishingEnd;
 import net.sf.l2j.gameserver.serverpackets.ExFishingStart;
 import net.sf.l2j.gameserver.serverpackets.ExOlympiadMode;
 import net.sf.l2j.gameserver.serverpackets.ExOlympiadUserInfo;
+import net.sf.l2j.gameserver.serverpackets.ExDuelUpdateUserInfo;
 import net.sf.l2j.gameserver.serverpackets.HennaInfo;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
@@ -363,6 +365,18 @@ public final class L2PcInstance extends L2PlayableInstance
     private boolean _inOlympiadMode = false;
     private int _olympiadGameId = -1;
     private int _olympiadSide = -1;
+    
+    /** Duel */
+    public final int DUELSTATE_NODUEL		= 0;
+    public final int DUELSTATE_DUELLING		= 1;
+    public final int DUELSTATE_DEAD			= 2;
+    public final int DUELSTATE_WINNER		= 3;
+    public final int DUELSTATE_INTERRUPTED	= 4;
+
+    private boolean _isInDuel = false;
+    private int _duelState = DUELSTATE_NODUEL;
+    private int _duelId = 0;
+    private int _noDuelReason = 0;
     
 	/** Boat */
 	private boolean _inBoat;
@@ -3357,6 +3371,11 @@ public final class L2PcInstance extends L2PlayableInstance
                 }
             }
         }
+        if (isInDuel())
+        {
+        	ExDuelUpdateUserInfo update = new ExDuelUpdateUserInfo(this);
+        	DuelManager.getInstance().broadcastToOppositTeam(this, update);
+        }
 	}
 	
 	/**
@@ -4148,6 +4167,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void updatePvPStatus(L2Character target)
 	{
 		if (target instanceof L2PcInstance)
+			if ((isInDuel() && ((L2PcInstance)target).getDuelId() == getDuelId())) return;
 			if (!ZoneManager.getInstance().checkIfInZonePvP(this) || !ZoneManager.getInstance().checkIfInZonePvP(target)) {
 				if (checkIfPvP(target))
 					setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_PVP_TIME);
@@ -6400,6 +6420,10 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check if the attacker is a L2PcInstance
 		if (attacker instanceof L2PcInstance)
 		{
+			// is AutoAttackable if both players are in the same duel and the duel is still going on
+			if ( getDuelState() == DUELSTATE_DUELLING
+					&& getDuelId() == ((L2PcInstance)attacker).getDuelId() )
+				return true;
 			// Check if the L2PcInstance is in an arena or a siege area
 			if (ZoneManager.getInstance().checkIfInZonePvP(this) && ZoneManager.getInstance().checkIfInZonePvP(attacker))
 				return true;
@@ -6902,11 +6926,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// check for PC->PC Pvp status
 		if (
-				target != null &&                                           // target not null and
-				target != this &&                                           // target is not self and
-				target instanceof L2PcInstance &&                           // target is L2PcInstance and
-				!ZoneManager.getInstance().checkIfInZonePvP(this) &&        // Pc is not in PvP zone
-				!ZoneManager.getInstance().checkIfInZonePvP(target)         // target is not in PvP zone
+				target != null &&                                           			// target not null and
+				target != this &&                                           			// target is not self and
+				target instanceof L2PcInstance &&                           			// target is L2PcInstance and
+				!(isInDuel() && ((L2PcInstance)target).getDuelId() == getDuelId()) &&	// self is not in a duel and attacking opponent
+				!ZoneManager.getInstance().checkIfInZonePvP(this) &&        			// Pc is not in PvP zone
+				!ZoneManager.getInstance().checkIfInZonePvP(target)         			// target is not in PvP zone
 		)
 		{
 			if(skill.isPvpSkill()) // pvp skill
@@ -7615,6 +7640,86 @@ public final class L2PcInstance extends L2PlayableInstance
     	return _inOlympiadMode;
     }
     
+	public boolean isInDuel()
+	{
+		return _isInDuel;
+	}
+	
+	public int getDuelId()
+	{
+		return _duelId;
+	}
+	
+	public void setDuelState(int mode)
+	{
+		_duelState = mode;
+	}
+	
+	public int getDuelState()
+	{
+		return _duelState;
+	}
+	
+	/**
+	 * Sets up the duel state using a non 0 duelId. 
+	 * @param duelId 0=not in a duel
+	 */
+	public void setIsInDuel(int duelId)
+	{
+		if (duelId > 0)
+		{
+			_isInDuel = true;
+			_duelState = DUELSTATE_DUELLING;
+			_duelId = duelId;
+		}
+		else
+		{
+			if (_duelState == DUELSTATE_DEAD) enableAllSkills();
+			_isInDuel = false;
+			_duelState = DUELSTATE_NODUEL;
+			_duelId = 0;
+		}
+	}
+	
+	/**
+	 * This returns a SystemMessage stating why
+	 * the player is not available for duelling.
+	 * @return S1_CANNOT_DUEL... message
+	 */
+	public SystemMessage getNoDuelReason()
+	{
+		// This is somewhat hacky - but that case should never happen anyway...
+		if (_noDuelReason == 0) _noDuelReason = SystemMessage.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
+
+		SystemMessage sm = new SystemMessage(_noDuelReason);
+		sm.addString(getName());
+		_noDuelReason = 0;
+		return sm;
+	}
+	
+	/**
+	 * Checks if this player might join / start a duel.
+	 * To get the reason use getNoDuelReason() after calling this function. 
+	 * @return true if the player might join/start a duel.
+	 */
+	public boolean canDuel()
+	{
+		if (isInCombat() || isInJail()) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_ENGAGED_IN_BATTLE; return false; }
+		if (isDead() || isAlikeDead() || (getCurrentHp() < getMaxHp()/2 || getCurrentMp() < getMaxMp()/2)) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1S_HP_OR_MP_IS_BELOW_50_PERCENT; return false; }
+		if (isInDuel()) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_ALREADY_ENGAGED_IN_A_DUEL; return false;}
+		if (isInOlympiadMode()) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_PARTICIPATING_IN_THE_OLYMPIAD; return false; }
+		if (isCursedWeaponEquiped()) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_IN_A_CHAOTIC_STATE; return false; }
+		if (getPrivateStoreType() != STORE_PRIVATE_NONE) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_ENGAGED_IN_A_PRIVATE_STORE_OR_MANUFACTURE; return false; }
+		if (isMounted() || isInBoat()) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_RIDING_A_BOAT_WYVERN_OR_STRIDER; return false; }
+		if (isFishing()) { _noDuelReason = SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_FISHING; return false; }
+		if (getInPvpZone() || ZoneManager.getInstance().checkIfInZonePeace(this) || SiegeManager.getInstance().checkIfInZone(this))
+		{
+			_noDuelReason = SystemMessage.S1_CANNOT_MAKE_A_CHALLANGE_TO_A_DUEL_BECAUSE_S1_IS_CURRENTLY_IN_A_DUEL_PROHIBITED_AREA;
+			return false;
+		}
+		return true;
+	}
+	
     public boolean isNoble()
     {
     	return _noble;

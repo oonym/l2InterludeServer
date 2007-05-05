@@ -95,6 +95,9 @@ public final class RequestJoinParty extends L2GameClientPacket
         
         if (target.isInOlympiadMode() || requestor.isInOlympiadMode())
             return;
+        
+        if (target.isInDuel() || requestor.isInDuel())
+            return;
 		
 		if (!requestor.isInParty())
             //asker has no party

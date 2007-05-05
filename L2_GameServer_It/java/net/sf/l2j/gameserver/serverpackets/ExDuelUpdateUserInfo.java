@@ -17,6 +17,8 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+
 /**
  * Format: ch Sddddddddd
  * @author  KenM
@@ -24,10 +26,11 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExDuelUpdateUserInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_4F_EXDUELUPDATEUSERINFO = "[S] FE:4F ExDuelUpdateUserInfo";
+	private L2PcInstance _cha;
 
-	public ExDuelUpdateUserInfo()
+	public ExDuelUpdateUserInfo(L2PcInstance cha)
 	{
-		// TODO as we may only need a char reference, i'm not going to place a bunch of temps
+		_cha = cha;
 	}
 
 	/**
@@ -38,9 +41,17 @@ public class ExDuelUpdateUserInfo extends L2GameServerPacket
 	void writeImpl()
 	{
 		writeC(0xfe);
-		writeH(0x4c);
-		//Sddddddddd
-		
+		writeH(0x4f);
+		writeS(_cha.getName());
+		writeD(_cha.getObjectId());
+		writeD(_cha.getClassId().getId());
+		writeD(_cha.getLevel());
+		writeD((int)_cha.getCurrentHp());
+		writeD(_cha.getMaxHp());
+		writeD((int)_cha.getCurrentMp());
+		writeD(_cha.getMaxMp());
+		writeD((int)_cha.getCurrentCp());
+		writeD(_cha.getMaxCp());
 	}
 
 	/**

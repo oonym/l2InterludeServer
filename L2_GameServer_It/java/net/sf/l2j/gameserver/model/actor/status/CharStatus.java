@@ -9,12 +9,16 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.skills.Formulas;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.model.actor.stat.CharStat;
 import net.sf.l2j.util.Rnd;
 
@@ -104,12 +108,23 @@ public class CharStatus
     {
     	if (getActiveChar().isInvul()) return;
     	
-	if (getActiveChar() instanceof L2PcInstance)
-	{
+    	if (getActiveChar() instanceof L2PcInstance)
+    	{
+    		if (((L2PcInstance)getActiveChar()).isInDuel())
+			{
+				// the duel is finishing - players do not recive damage
+				if (((L2PcInstance)getActiveChar()).getDuelState() == ((L2PcInstance)getActiveChar()).DUELSTATE_DEAD) return;
+				else if (((L2PcInstance)getActiveChar()).getDuelState() == ((L2PcInstance)getActiveChar()).DUELSTATE_WINNER) return;
+				
+				// cancel duel if player got hit by another player, that is not part of the duel or a monster
+				if ( !(attacker instanceof L2SummonInstance) && !(attacker instanceof L2PcInstance
+						&& ((L2PcInstance)attacker).getDuelId() == ((L2PcInstance)getActiveChar()).getDuelId()) )
+					((L2PcInstance)getActiveChar()).setDuelState(((L2PcInstance)getActiveChar()).DUELSTATE_INTERRUPTED);
+			}
     	    if (getActiveChar().isDead() && !getActiveChar().isFakeDeath()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
-	} else {
+    	} else {
     	    if (getActiveChar().isDead()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
-	}
+    	}
         if (awake && getActiveChar().isSleeping()) getActiveChar().stopSleeping(null);
         if (getActiveChar().isStunned() && Rnd.get(10) == 0) getActiveChar().stopStunning(null);
 
@@ -128,7 +143,21 @@ public class CharStatus
                     ((L2Attackable)getActiveChar()).overhitEnabled(false);
             }
             value = getCurrentHp() - value;             // Get diff of Hp vs value
-            if (value < 0) value = 0;                   // Set value to 0 if Hp < 0
+            if (value <= 0)
+            {
+            	// is the dieing one a duelist? if so change his duel state to dead
+            	if (getActiveChar() instanceof L2PcInstance && ((L2PcInstance)getActiveChar()).isInDuel())
+            	{
+            		getActiveChar().disableAllSkills();
+           			attacker.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+           			attacker.sendPacket(new ActionFailed());
+
+            		// let the DuelManager know of his defeat
+            		DuelManager.getInstance().onPlayerDefeat((L2PcInstance)getActiveChar());
+            		value = 1;
+            	}
+            	else value = 0;                         // Set value to 0 if Hp < 0
+            }
             setCurrentHp(value);                        // Set Hp
         }
         else

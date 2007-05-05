@@ -24,6 +24,7 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.SevenSignsFestival;
+import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
@@ -273,6 +274,9 @@ public class L2Party {
 			if (player.isFestivalParticipant())
 				SevenSignsFestival.getInstance().updateParticipants(player, this);
 			
+			if(player.isInDuel())
+				DuelManager.getInstance().onRemoveFromParty(player);
+			
 			SystemMessage msg = new SystemMessage(SystemMessage.YOU_LEFT_PARTY);
 			player.sendPacket(msg);
 			player.sendPacket(new PartySmallWindowDeleteAll());
@@ -286,6 +290,8 @@ public class L2Party {
 			if (getPartyMembers().size() == 1) 
 			{
 				getPartyMembers().get(0).setParty(null);
+				if (getPartyMembers().get(0).isInDuel())
+					DuelManager.getInstance().onRemoveFromParty(getPartyMembers().get(0));
 			}
 		}
 	}
@@ -299,7 +305,7 @@ public class L2Party {
 	{
 		L2PcInstance player = getPlayerByName(name);
 		
-		if (player != null)
+		if (player != null && !player.isInDuel())
 		{
 			if (getPartyMembers().contains(player))
 			{
