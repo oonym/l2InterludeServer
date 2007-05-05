@@ -1269,7 +1269,8 @@ public class L2Attackable extends L2NpcInstance
     	 // Glittering medals for champions
     	 if (isChampion() && (player.getLevel() <= getLevel()) && (Rnd.get(100) < Config.L2JMOD_CHAMPION_MEDAL)) {
     		 RewardItem item = new RewardItem(6393, 1);
-    		 player.addItem("ChampionLoot", item.getItemId(), item.getCount(), this, true);
+    		 if (Config.AUTO_LOOT) player.addItem("ChampionLoot", item.getItemId(), item.getCount(), this, true); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
+             else DropItem(player, item);	 
     	 }
          
          //Instant Item Drop :>
@@ -2052,10 +2053,6 @@ public class L2Attackable extends L2NpcInstance
                 ((L2SiegeGuardAI) getAI()).stopAITask();
             else
                 ((L2AttackableAI) getAI()).stopAITask();
-        if(Config.L2JMOD_CHAMPION_ENABLE && isChampion())
-        	setTitle("Champion");
-        else
-        	setTitle("");
     }
     
     public void setSeeded(int id, int seederLvl)
