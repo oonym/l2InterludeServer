@@ -157,6 +157,7 @@ public abstract class L2Character extends L2Object
 	private double _hpUpdateIncCheck = .0;
 	private double _hpUpdateDecCheck = .0;
 	private double _hpUpdateInterval = .0;
+	private boolean _champion = false;
 
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _Calculators;
@@ -5338,7 +5339,13 @@ public abstract class L2Character extends L2Object
 	// Method - Public
 	public void addStatusListener(L2Character object) { getStatus().addStatusListener(object); }
 	public void reduceCurrentHp(double i, L2Character attacker) { reduceCurrentHp(i, attacker, true); }
-	public void reduceCurrentHp(double i, L2Character attacker, boolean awake) { getStatus().reduceHp(i, attacker, awake); }
+	public void reduceCurrentHp(double i, L2Character attacker, boolean awake) 
+	{ 
+		if (Config.L2JMOD_CHAMPION_ENABLE && isChampion() && Config.L2JMOD_CHAMPION_HP != 0)
+			getStatus().reduceHp(i/Config.L2JMOD_CHAMPION_HP, attacker, awake);
+		else 
+			getStatus().reduceHp(i, attacker, awake);
+	}
 	public void reduceCurrentMp(double i) { getStatus().reduceMp(i); }
 	public void removeStatusListener(L2Character object) { getStatus().removeStatusListener(object); }
 	protected synchronized void stopHpMpRegeneration() { getStatus().stopHpMpRegeneration(); }
@@ -5369,6 +5376,16 @@ public abstract class L2Character extends L2Object
 	{
 		return _LastBuffer;
 	}
+
+	public void setChampion(boolean champ)
+	{
+		_champion = champ;
+    	}
+    
+	public boolean isChampion()
+	{
+		return _champion;
+    	}
 
 	public int getLastHealAmount()
 	{
