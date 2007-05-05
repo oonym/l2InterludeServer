@@ -33,6 +33,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 
@@ -346,7 +347,8 @@ public class AutoChatHandler implements SpawnListener
         {
             int objectId = npcInst.getObjectId();
             AutoChatDefinition chatDef = new AutoChatDefinition(this, npcInst, chatTexts, chatDelay);
-
+            if(npcInst instanceof L2SiegeGuardInstance)
+            	chatDef.setRandomChat(true);
             _chatDefinitions.put(objectId, chatDef);
             return objectId;
         }
@@ -637,10 +639,12 @@ public class AutoChatHandler implements SpawnListener
                 if (activeValue)
                 {
                     AutoChatRunner acr = new AutoChatRunner(_npcId, _npcInstance.getObjectId());
-                    _chatTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(
-                                                                                           acr,
-                                                                                           getChatDelay(),
-                                                                                           getChatDelay());
+                    if(getChatDelay() == 0)
+                    	// Schedule it set to 5Ms, isn't error, if use 0 sometine
+                    	// chatDefinition return null in AutoChatRunner
+                    	_chatTask = ThreadPoolManager.getInstance().scheduleGeneral(acr, 5);
+                    else
+                    	_chatTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate( acr,getChatDelay(),getChatDelay());
                 }
                 else
                 {
