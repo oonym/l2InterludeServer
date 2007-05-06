@@ -4165,6 +4165,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		return karmaLost;
 	}
 	
+	public void updatePvPStatus()
+	{
+		if (ZoneManager.getInstance().checkIfInZonePvP(this)) return;
+		setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
+		
+		if (getPvpFlag() == 0)
+			startPvPFlag();
+	}
+	
 	public void updatePvPStatus(L2Character target)
 	{
 		if (target instanceof L2PcInstance)
@@ -4179,13 +4188,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (getPvpFlag() == 0)
 					startPvPFlag();
 			}
-		}
-		else // buffing a mob
-		{
-			setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
-			
-			if (getPvpFlag() == 0)
-				startPvPFlag();
 		}
 	}
 	
