@@ -4164,7 +4164,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (target instanceof L2PcInstance)
 		{
 			if ((isInDuel() && ((L2PcInstance)target).getDuelId() == getDuelId())) return;
-			if (!ZoneManager.getInstance().checkIfInZonePvP(this) || !ZoneManager.getInstance().checkIfInZonePvP(target)) {
+			if ((!ZoneManager.getInstance().checkIfInZonePvP(this) || !ZoneManager.getInstance().checkIfInZonePvP(target)) && ((L2PcInstance)target).getKarma() == 0)
+			{
 				if (checkIfPvP(target))
 					setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_PVP_TIME);
 				else
@@ -4172,6 +4173,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (getPvpFlag() == 0)
 					startPvPFlag();
 			}
+		}
+		else // buffing a mob
+		{
+			setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
+			
+			if (getPvpFlag() == 0)
+				startPvPFlag();
 		}
 	}
 	

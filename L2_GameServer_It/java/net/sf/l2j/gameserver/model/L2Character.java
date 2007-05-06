@@ -5065,7 +5065,7 @@ public abstract class L2Character extends L2Object
 					{
 						if (skill.isOffensive())
 						{
-							if ((player instanceof L2PcInstance || player instanceof L2Summon) && activeChar.checkIfPvP(player))
+							if (player instanceof L2PcInstance || player instanceof L2Summon)
                             {
                                 player.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
                                 activeChar.updatePvPStatus(player);
