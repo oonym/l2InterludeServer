@@ -373,6 +373,9 @@ public final class L2PcInstance extends L2PlayableInstance
     private int _duelId = 0;
     private int _noDuelReason = 0;
     
+    /** Dice */
+    private long _nextRollDiceTime=0;
+    
 	/** Boat */
 	private boolean _inBoat;
     private L2BoatInstance _boat;
@@ -7730,6 +7733,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			return false;
 		}
 		return true;
+	}
+	
+	public long getRollDiceTime()
+	{
+		return _nextRollDiceTime;
+	}
+	
+	public void setRollDiceTime(long nextTime)
+	{
+		_nextRollDiceTime = nextTime;
 	}
 	
     public boolean isNoble()

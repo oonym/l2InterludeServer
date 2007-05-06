@@ -595,6 +595,7 @@ public class SystemMessage extends L2GameServerPacket
 	public static final int ENTER_FILE_NAME_CREST = 515;
     public static final int FILE_NOT_FOUND = 528;
     public static final int S1_ROLLED_S2 = 834;
+    public static final int YOU_MAY_NOT_THROW_THE_DICE_AT_THIS_TIME_TRY_AGAIN_LATER = 835;
     public static final int NO_GM_PROVIDING_SERVICE_NOW = 702;
     public static final int TARGET_TOO_FAR = 22;
     public static final int S1_DISAPPEARED = 302;

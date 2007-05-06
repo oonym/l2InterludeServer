@@ -37,6 +37,9 @@ import net.sf.l2j.util.Rnd;
 
 public class RollingDice implements IItemHandler
 {
+	// Roll dice rate (a bit about 4 seconds feels right)
+	private static final int ROLL_DICE_RATE = 4200;
+	
 	private static int[] _itemIds = { 4625, 4626, 4627, 4628 };
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -55,7 +58,12 @@ public class RollingDice implements IItemHandler
 	    
 		if (itemId == 4625 || itemId == 4626 || itemId == 4627 || itemId == 4628)
 		{
-			int number = Rnd.get(1, 6);
+			int number = rollDice(activeChar);
+			if (number == 0)
+			{
+				activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_MAY_NOT_THROW_THE_DICE_AT_THIS_TIME_TRY_AGAIN_LATER));
+				return;
+			}
 			
 			Dice d = new Dice (activeChar.getObjectId(),item.getItemId(),number,activeChar.getX()-30,activeChar.getY()-30,activeChar.getZ() );
             Broadcast.toSelfAndKnownPlayers(activeChar, d);
@@ -71,6 +79,15 @@ public class RollingDice implements IItemHandler
 			    activeChar.getParty().broadcastToPartyMembers(activeChar,sm);
 		}
 	}
+	
+	private int rollDice(L2PcInstance player)
+	{
+		// Check if the dice is ready
+		if ((player.getRollDiceTime() - System.currentTimeMillis()) > 0) return 0;
+		player.setRollDiceTime(System.currentTimeMillis()+ROLL_DICE_RATE);
+		return Rnd.get(1, 6);
+	}
+	
 	public int[] getItemIds()
 	{
 		return _itemIds;
