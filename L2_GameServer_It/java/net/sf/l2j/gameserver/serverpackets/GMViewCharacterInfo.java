@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class GMViewCharacterInfo extends L2GameServerPacket
 {
-	private static final String _S__04_USERINFO = "[S] 8F GMViewCharacterInfo";
+	private static final String _S__8F_GMVIEWCHARINFO = "[S] 8F GMViewCharacterInfo";
 	private L2PcInstance _cha;
 
 	/**
@@ -74,16 +74,14 @@ public class GMViewCharacterInfo extends L2GameServerPacket
 		writeD(_cha.getSp());
 		writeD(_cha.getCurrentLoad());
 		writeD(_cha.getMaxLoad());
-
 		writeD(0x28);  // unknown
-
-		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_UNDER));
+		
+		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_DHAIR));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_REAR));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LEAR));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_NECK));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_RFINGER));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LFINGER));
-
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_HEAD));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_RHAND));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND));
@@ -94,14 +92,14 @@ public class GMViewCharacterInfo extends L2GameServerPacket
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_BACK));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND));
 		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_HAIR));
+		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
 
-		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_UNDER));
+		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_REAR)); 
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LEAR));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_NECK));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_RFINGER));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LFINGER));
-
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_RHAND));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LHAND));
@@ -112,7 +110,46 @@ public class GMViewCharacterInfo extends L2GameServerPacket
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_BACK));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LRHAND));
 		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_HAIR));
+		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_FACE));
 
+        // c6 new h's
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        writeH(0x00);
+        // end of c6 new h's
+		
 		writeD(_cha.getPAtk(null));
 		writeD(_cha.getPAtkSpd());
 		writeD(_cha.getPDef(null));
@@ -163,19 +200,17 @@ public class GMViewCharacterInfo extends L2GameServerPacket
 		writeD(_cha.getMaxCp());
 		writeD((int) _cha.getCurrentCp());
 		
-		//new c5 
        	writeC(_cha.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
-        
-		writeD(_cha.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
-        
-		writeD(_cha.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_FACE));
-        
+       	
+       	writeC(321);
+       	
         writeD(_cha.getPledgeClass()); //changes the text above CP on Status Window
-        writeD(0x00);
+        
+        writeC(_cha.isNoble() ? 0x01 : 0x00);
+        writeC(_cha.isHero() ? 0x01 : 0x00);
         
         writeD(_cha.getAppearance().getNameColor());
-        
-        writeD(0x00);
+        writeD(_cha.getAppearance().getTitleColor());
 	}
 
 	/* (non-Javadoc)
@@ -183,6 +218,6 @@ public class GMViewCharacterInfo extends L2GameServerPacket
 	 */
 	public String getType()
 	{
-		return _S__04_USERINFO;
+		return _S__8F_GMVIEWCHARINFO;
 	}
 }
