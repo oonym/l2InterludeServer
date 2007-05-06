@@ -4021,6 +4021,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		}
 		
+		// If in duel and you kill (only can kill l2summon), do nothing
+		if (this.isInDuel() && targetPlayer.isInDuel()) return;
+		
         // If in Arena, do nothing
 		if (ArenaManager.getInstance().getArenaIndex(this.getX(),this.getY())!=-1 ||
 				ArenaManager.getInstance().getArenaIndex(target.getX(),target.getY())!=-1)
