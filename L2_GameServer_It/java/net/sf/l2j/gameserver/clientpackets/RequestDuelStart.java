@@ -58,6 +58,11 @@ public final class RequestDuelStart extends L2GameClientPacket
         	activeChar.sendPacket(new SystemMessage(SystemMessage.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL));
         	return;
         }	
+        if (activeChar == targetChar) 
+        {
+        	activeChar.sendPacket(new SystemMessage(SystemMessage.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL));
+        	return;
+        }	
         
         // Check if duel is possible
         if (!activeChar.canDuel())
