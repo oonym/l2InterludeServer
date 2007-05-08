@@ -7691,7 +7691,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		else
 		{
-			if (_duelState == Duel.DUELSTATE_DEAD) enableAllSkills();
+			if (_duelState == Duel.DUELSTATE_DEAD) { enableAllSkills(); getStatus().startHpMpRegeneration(); }
 			_isInDuel = false;
 			_duelState = Duel.DUELSTATE_NODUEL;
 			_duelId = 0;

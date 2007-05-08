@@ -150,6 +150,7 @@ public class CharStatus
             	if (getActiveChar() instanceof L2PcInstance && ((L2PcInstance)getActiveChar()).isInDuel())
             	{
             		getActiveChar().disableAllSkills();
+            		stopHpMpRegeneration();
            			attacker.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
            			attacker.sendPacket(new ActionFailed());
 

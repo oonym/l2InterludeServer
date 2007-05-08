@@ -256,7 +256,7 @@ public class Duel
 	
 	/**
 	 * Stops all players from attacking.
-	 * Used for duel timeout.
+	 * Used for duel timeout / interrupt.
 	 *
 	 */
 	private void stopFighting()
@@ -266,19 +266,27 @@ public class Duel
 		{
 			for (L2PcInstance temp : _playerA.getParty().getPartyMembers())
 			{
+				temp.abortCast();
 				temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				temp.setTarget(null);
 				temp.sendPacket(af);
 			}
 			for (L2PcInstance temp : _playerB.getParty().getPartyMembers())
 			{
+				temp.abortCast();
 				temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				temp.setTarget(null);
 				temp.sendPacket(af);
 			}
 		}
 		else
 		{
+			_playerA.abortCast();
+			_playerB.abortCast();
 			_playerA.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+			_playerA.setTarget(null);
 			_playerB.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+			_playerB.setTarget(null);
 			_playerA.sendPacket(af);
 			_playerB.sendPacket(af);
 		}
@@ -688,6 +696,8 @@ public class Duel
 				broadcastToTeam2(sm);
 				break;
 			case Canceled:
+				stopFighting();
+				// dont restore hp, mp, cp
 				restorePlayerConditions(true);
 				//TODO: is there no other message for a canceled duel?
 				// send SystemMessage
@@ -744,8 +754,18 @@ public class Duel
 			return DuelResultEnum.Timeout;
 		}
 		// Has a player been declared winner yet?
-		else if (_playerA.getDuelState() == DUELSTATE_WINNER) return DuelResultEnum.Team1Win;
-		else if (_playerB.getDuelState() == DUELSTATE_WINNER) return DuelResultEnum.Team2Win;
+		else if (_playerA.getDuelState() == DUELSTATE_WINNER)
+		{
+			// If there is a Winner already there should be no more fighting going on
+			stopFighting();
+			return DuelResultEnum.Team1Win;
+		}
+		else if (_playerB.getDuelState() == DUELSTATE_WINNER)
+		{
+			// If there is a Winner already there should be no more fighting going on
+			stopFighting();
+			return DuelResultEnum.Team2Win;
+		}
 
 		// More end duel conditions for 1on1 duels
 		else if (!_partyDuel)
