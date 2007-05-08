@@ -116,7 +116,6 @@ public class CharTemplateTable
 				set.set("baseMAtkSpd", /*classId.isMage()? 166 : 333*/ rset.getInt("char_templates.m_spd"));
 				set.set("baseCritRate", rset.getInt("char_templates.critical")/10);
 				set.set("baseRunSpd", rset.getInt("move_spd"));
-				set.set("baseLoad", rset.getInt("_load"));
 				set.set("baseShldDef", 0);
 				set.set("baseShldRate", 0);
 				set.set("baseAtkRange", 40);

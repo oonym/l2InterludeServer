@@ -348,7 +348,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
 	private byte _pvpFlag;
 	
-	private final int _baseLoad;
 	private int _curWeightPenalty = 0;
 	
 	/** After moving, zones are checked */
@@ -832,7 +831,6 @@ public final class L2PcInstance extends L2PlayableInstance
         initPcStatusUpdateValues();
 		
 		_accountName  = accountName;
-		_baseLoad     = template.baseLoad;
 		_appearance   = app;
 		
 		// Create an AI
@@ -857,8 +855,6 @@ public final class L2PcInstance extends L2PlayableInstance
         this.getStatus();		// init status
         super.initCharStatusUpdateValues();
         initPcStatusUpdateValues();
-		
-		_baseLoad = 0;
 	}
 	
 	public final PcKnownList getKnownList()
@@ -1700,7 +1696,14 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public int getMaxLoad()
 	{
-		return (int)calcStat(Stats.MAX_LOAD, _baseLoad, this, null);
+		// Weight Limit = (CON Modifier*69000)*Skills 
+		// Source http://l2p.bravehost.com/weightlimit.html (May 2007)
+		// Fitted exponential curve to the data
+		int con = getCON();
+		if (con < 1) return 31000;
+		if (con > 59) return 176000;
+		double baseLoad = Math.pow(1.029993928, con)*30495.627366;
+		return (int)calcStat(Stats.MAX_LOAD, baseLoad, this, null);
 	}
 	
 	public int getexpertisePenalty()
@@ -1721,10 +1724,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void refreshOverloaded()
 	{
-		if (getMaxLoad() > 0)
+		int maxLoad = getMaxLoad();
+		if (maxLoad > 0)
 		{
-			setIsOverloaded(getCurrentLoad() > getMaxLoad());
-			int weightproc = getCurrentLoad() * 1000 / getMaxLoad();
+			setIsOverloaded(getCurrentLoad() > maxLoad);
+			int weightproc = getCurrentLoad() * 1000 / maxLoad;
 			int newWeightPenalty;
 			if (weightproc < 500 || _dietMode)
 			{
