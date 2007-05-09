@@ -3859,8 +3859,10 @@ public final class L2PcInstance extends L2PlayableInstance
 						boolean isKillerPc = (killer instanceof L2PcInstance);
 		                if (isKillerPc && ((L2PcInstance)killer).getClan() != null && getClan() != null && _clan.isAtWarWith(((L2PcInstance) killer).getClanId()) && ((L2PcInstance)killer).getClan().isAtWarWith(_clan.getClanId()))
 		                {
-		                    ((L2PcInstance) killer).getClan().setReputationScore(((L2PcInstance) killer).getClan().getReputationScore()+2, true);
-		                    _clan.setReputationScore(_clan.getReputationScore()-2, true);
+		                    if (getClan().getReputationScore() > 0)
+		                		((L2PcInstance) killer).getClan().setReputationScore(((L2PcInstance) killer).getClan().getReputationScore()+2, true);
+		                    if (((L2PcInstance)killer).getClan().getReputationScore() > 0)
+		                    	_clan.setReputationScore(_clan.getReputationScore()-2, true);
 		                }
 						if (Config.ALT_GAME_DELEVEL)
 						{
