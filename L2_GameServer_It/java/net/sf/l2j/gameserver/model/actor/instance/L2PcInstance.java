@@ -3859,9 +3859,9 @@ public final class L2PcInstance extends L2PlayableInstance
 						boolean isKillerPc = (killer instanceof L2PcInstance);
 		                if (isKillerPc && ((L2PcInstance)killer).getClan() != null && getClan() != null && _clan.isAtWarWith(((L2PcInstance) killer).getClanId()) && ((L2PcInstance)killer).getClan().isAtWarWith(_clan.getClanId()))
 		                {
-		                    if (getClan().getReputationScore() > 0)
+		                    if (getClan().getReputationScore() > 0) // when your reputation score is 0 or below, the other clan cannot acquire any reputation points
 		                		((L2PcInstance) killer).getClan().setReputationScore(((L2PcInstance) killer).getClan().getReputationScore()+2, true);
-		                    if (((L2PcInstance)killer).getClan().getReputationScore() > 0)
+		                    if (((L2PcInstance)killer).getClan().getReputationScore() > 0) // when the opposing side’s reputation score is 0 or below, your clan’s reputation score does not decrease
 		                    	_clan.setReputationScore(_clan.getReputationScore()-2, true);
 		                }
 						if (Config.ALT_GAME_DELEVEL)
