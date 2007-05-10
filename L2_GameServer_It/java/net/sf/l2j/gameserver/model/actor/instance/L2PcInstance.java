@@ -4704,7 +4704,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Disarm the player's weapon and shield.<BR><BR>
 	 */
-	public synchronized boolean disarmWeapons()
+	public boolean disarmWeapons()
 	{
         // Don't allow disarming a cursed weapon
         if (isCursedWeaponEquiped()) return false;
