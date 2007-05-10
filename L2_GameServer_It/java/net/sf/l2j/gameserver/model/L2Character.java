@@ -255,7 +255,13 @@ public abstract class L2Character extends L2Object
 		if (_IsPendingRevive) doRevive();
 
 		// Modify the position of the pet if necessary
-		if(getPet() != null) getPet().teleToLocation(getPosition().getX() + Rnd.get(-100,100), getPosition().getY() + Rnd.get(-100,100), getPosition().getZ(), false);
+		if(getPet() != null)
+		{
+			getPet().setFollowStatus(false);
+			getPet().teleToLocation(getPosition().getX() + Rnd.get(-100,100), getPosition().getY() + Rnd.get(-100,100), getPosition().getZ(), false);
+			getPet().setFollowStatus(true);
+		}
+
 	}
 
 	// =========================================================
