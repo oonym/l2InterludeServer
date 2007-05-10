@@ -1266,9 +1266,14 @@ public class L2Attackable extends L2NpcInstance
     		 }
     	 }
    	 
-    	 // Glittering medals for champions
-    	 if (isChampion() && (player.getLevel() <= getLevel()) && (Rnd.get(100) < Config.L2JMOD_CHAMPION_MEDAL)) {
-    		 RewardItem item = new RewardItem(6393, 1);
+    	 // Apply Special Item drop with rnd qty for champions
+    	 if (isChampion() && (player.getLevel() <= getLevel()) && Config.L2JMOD_CHAMPION_REWARD > 0 && (Rnd.get(100) < Config.L2JMOD_CHAMPION_REWARD))
+		 {
+    		 int champqty = Rnd.get(Config.L2JMOD_CHAMPION_REWARD_QTY);
+    		 if (champqty == 0)  //do not allow for a zero drop
+    			 champqty = 1;
+    		 
+    		 RewardItem item = new RewardItem(Config.L2JMOD_CHAMPION_REWARD_ID,champqty);
     		 if (Config.AUTO_LOOT) player.addItem("ChampionLoot", item.getItemId(), item.getCount(), this, true); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
              else DropItem(player, item);	 
     	 }
