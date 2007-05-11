@@ -124,35 +124,11 @@ public class Potions implements IItemHandler
 				res = usePotion(activeChar, 2001, 1);
 				break;
 			case 725: // healing_drug, xml: 2002
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2002, 1);
 				break;
 			case 727: // _healing_potion, xml: 2032
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2032, 1);
 				break;
 			case 734: // quick_step_potion, xml: 2011
@@ -163,35 +139,11 @@ public class Potions implements IItemHandler
 				break;
 			case 1060: // lesser_healing_potion,
 			case 1073: // beginner's potion, xml: 2031
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2031, 1);
 				break;
 			case 1061: // healing_potion, xml: 2032
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2032, 1);
 				break;
 			case 1062: // haste_potion, xml: 2033
@@ -204,52 +156,16 @@ public class Potions implements IItemHandler
 				res = usePotion(activeChar, 2035, 1);
 				break;
 			case 1539: // greater_healing_potion, xml: 2037
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2037, 1);
 				break;
 			case 1540: // quick_healing_potion, xml: 2038
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2038, 1);
 				break;
 			case 5591: 
 			case 5592: // CP and Greater CP
-				if (activeChar.getAllEffects() != null)
-				{
-					for (L2Effect e : activeChar.getAllEffects())
-					{
-						if (e.getEffectType() == L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME)
-						{
-							SystemMessage sm = new SystemMessage(48);
-							sm.addItemName(itemId);
-							activeChar.sendPacket(sm);
-							return;
-						}
-					}
-				}
+				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2166, (itemId == 5591) ? 1 : 2);
 				break;
 			case 6035: // Magic Haste Potion, xml: 2169
@@ -474,6 +390,28 @@ public class Potions implements IItemHandler
 		
 		if (res)
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
+	}
+	
+	private boolean isEffectReplaceable(L2PcInstance activeChar, Enum effectType, int itemId)
+	{
+		L2Effect[] effects = activeChar.getAllEffects();
+		
+		if (effects == null) return true;
+
+		for (L2Effect e : effects)
+		{
+			if (e.getEffectType() == effectType)
+			{
+				// One can reuse pots after 2/3 of their duration is over.
+				// It would be faster to check if its > 10 but that would screw custom pot durations...
+				if (e.getTaskTime() > (e.getSkill().getBuffDuration()*67)/100000) return true;
+				SystemMessage sm = new SystemMessage(48);
+				sm.addItemName(itemId);
+				activeChar.sendPacket(sm);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean usePotion(L2PcInstance activeChar, int magicId, int level)

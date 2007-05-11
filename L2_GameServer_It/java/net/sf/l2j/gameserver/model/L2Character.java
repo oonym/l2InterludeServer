@@ -4784,7 +4784,8 @@ public abstract class L2Character extends L2Object
 		}
 
 		// Check if player is using fake death.
-        if (isAlikeDead())
+		// Potions can be used while faking death.
+        if (isAlikeDead() && !skill.isPotion())
 		{
             setAttackingChar(null);
             setAttackingCharSkill(null);

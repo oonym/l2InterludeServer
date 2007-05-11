@@ -113,6 +113,8 @@ public abstract class L2Effect
     // function templates
     private final FuncTemplate[] _funcTemplates;
 
+    //initial count
+    private int _totalCount;
     // counter
     private int _count;
 
@@ -168,6 +170,7 @@ public abstract class L2Effect
         _lambda = template._lambda;
         _funcTemplates = template._funcTemplates;
         _count = template._counter;
+        _totalCount = _count;
         _period = template._period;
         _abnormalEffect = template._abnormalEffect;
         _stackType = template._stackType;
@@ -180,6 +183,11 @@ public abstract class L2Effect
     public int getCount()
     {
         return _count;
+    }
+    
+    public int getTotalCount()
+    {
+        return _totalCount;
     }
 
     public void setCount(int newcount)
@@ -214,6 +222,16 @@ public abstract class L2Effect
     {
         return (GameTimeController.getGameTicks() - _periodStartTicks)
             / GameTimeController.TICKS_PER_SECOND;
+    }
+    
+    /**
+	 * Returns the elapsed time of the task.
+	 * @return Time in seconds.
+	 */
+    public int getTaskTime()
+    {
+    	if (_count == _totalCount) return 0;
+    	return (Math.abs(_count-_totalCount+1)*_period) + getTime()+1;
     }
 
     public boolean getInUse()
@@ -460,7 +478,11 @@ public abstract class L2Effect
         if (task == null || future == null) return;
         if (_state == EffectState.FINISHING || _state == EffectState.CREATED) return;
         L2Skill sk = getSkill();
-        if (task.rate > 0) mi.addEffect(sk.getId(), getLevel(), -1);
+        if (task.rate > 0)
+        {
+        	if (sk.isPotion()) mi.addEffect(sk.getId(), getLevel(), sk.getBuffDuration()-(getTaskTime()*1000));
+        	else mi.addEffect(sk.getId(), getLevel(), -1);
+        }
         else mi.addEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
     }
 
