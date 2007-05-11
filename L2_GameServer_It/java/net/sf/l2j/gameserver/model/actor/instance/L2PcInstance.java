@@ -210,8 +210,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=?";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
-    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=? WHERE obj_id=?";
-    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time FROM characters WHERE obj_id=?";
+    private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=? WHERE obj_id=?";
+    private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time FROM characters WHERE obj_id=?";
     private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
     private static final String ADD_CHAR_SUBCLASS = "INSERT INTO character_subclasses (char_obj_id,class_id,exp,sp,level,class_index) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_CHAR_SUBCLASS = "UPDATE character_subclasses SET exp=?,sp=?,level=?,class_id=? WHERE char_obj_id=? AND class_index =?";
@@ -335,7 +335,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _charId = 0x00030b7a;
 	
 	/** The Experience of the L2PcInstance before the last Death Penalty */
-	private long _expBeforeDeath = 0;
+	private long _expBeforeDeath;
 	
 	/** The Karma of the L2PcInstance (if higher than 0, the name of the L2PcInstance appears in red) */
 	private int _karma;
@@ -1656,6 +1656,20 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean canRecom(L2PcInstance target)
 	{
 		return !_recomChars.contains(target.getObjectId());
+	}
+	
+	/**
+	 * Set the exp of the L2PcInstance before a death
+	 * @param exp
+	 */
+	public void setExpBeforeDeath(long exp)
+	{
+		_expBeforeDeath = exp;
+	}
+	
+	public long getExpBeforeDeath()
+	{
+		return _expBeforeDeath;
 	}
 	
 	/**
@@ -3871,7 +3885,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
             
 			// Clear resurrect xp calculation
-			_expBeforeDeath = 0;
+			setExpBeforeDeath(0);
 			
 			if (isCursedWeaponEquiped())
 			{
@@ -4232,11 +4246,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void restoreExp(double restorePercent)
 	{ 
-		if (_expBeforeDeath > 0)
+		if (getExpBeforeDeath() > 0)
 		{   
 			// Restore the specified % of lost experience.
-			getStat().addExp((int)Math.round((_expBeforeDeath - getExp()) * restorePercent / 100));
-			_expBeforeDeath = 0;
+			getStat().addExp((int)Math.round((getExpBeforeDeath() - getExp()) * restorePercent / 100));
+			setExpBeforeDeath(0);
 		}
 	}
 	
@@ -4278,7 +4292,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				lostExp = Math.round((getStat().getExpForLevel(Experience.MAX_LEVEL) - getStat().getExpForLevel(Experience.MAX_LEVEL - 1)) * percentLost /100);
 		
 		// Get the Experience before applying penalty
-		_expBeforeDeath = getExp();
+		setExpBeforeDeath(getExp());
 		
         if (Config.DEBUG)
             _log.fine(getName() + " died and lost " + lostExp + " experience.");
@@ -5234,6 +5248,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				player._lastAccess = rset.getLong("lastAccess");
 				
 				player.getStat().setExp(rset.getLong("exp"));
+				player.setExpBeforeDeath(rset.getInt("expBeforeDeath"));
 				player.getStat().setLevel(rset.getByte("level"));
 				player.getStat().setSp(rset.getInt("sp"));
 				
@@ -5659,51 +5674,52 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(19, _observerMode ? _obsY : getY());
 			statement.setInt(20, _observerMode ? _obsZ : getZ());
 			statement.setLong(21, exp);
-			statement.setInt(22, sp);
-			statement.setInt(23, getKarma());
-			statement.setInt(24, getPvpKills());
-			statement.setInt(25, getPkKills());
-			statement.setInt(26, getRecomHave());
-			statement.setInt(27, getRecomLeft());
-			statement.setInt(28, getClanId());
-			statement.setInt(29, getMaxLoad());
-			statement.setInt(30, getRace().ordinal());
+			statement.setLong(22, getExpBeforeDeath());
+			statement.setInt(23, sp);
+			statement.setInt(24, getKarma());
+			statement.setInt(25, getPvpKills());
+			statement.setInt(26, getPkKills());
+			statement.setInt(27, getRecomHave());
+			statement.setInt(28, getRecomLeft());
+			statement.setInt(29, getClanId());
+			statement.setInt(30, getMaxLoad());
+			statement.setInt(31, getRace().ordinal());
 			
 //			if (!isSubClassActive())
 			
 //			else 
 //			statement.setInt(30, getBaseTemplate().race.ordinal());
 			
-			statement.setInt(31, getClassId().getId());
-			statement.setLong(32, getDeleteTimer());
-			statement.setString(33, getTitle());
-			statement.setInt(34, getAccessLevel());
-			statement.setInt(35, isOnline());
-            statement.setInt(36, isIn7sDungeon() ? 1 : 0);
-			statement.setInt(37, getClanPrivileges());
-			statement.setInt(38, getWantsPeace());
-			statement.setInt(39, getBaseClass());
+			statement.setInt(32, getClassId().getId());
+			statement.setLong(33, getDeleteTimer());
+			statement.setString(34, getTitle());
+			statement.setInt(35, getAccessLevel());
+			statement.setInt(36, isOnline());
+            statement.setInt(37, isIn7sDungeon() ? 1 : 0);
+			statement.setInt(38, getClanPrivileges());
+			statement.setInt(39, getWantsPeace());
+			statement.setInt(40, getBaseClass());
 
 			long totalOnlineTime = _onlineTime;
             
 			if (_onlineBeginTime > 0)
 				totalOnlineTime += (System.currentTimeMillis()-_onlineBeginTime)/1000;
 
-            statement.setLong(40, totalOnlineTime);
-            statement.setInt(41, isInJail() ? 1 : 0);
-            statement.setLong(42, getJailTimer());
-            statement.setInt(43, isNewbie() ? 1 : 0);
-            statement.setInt(44, isNoble() ? 1 : 0);
-            statement.setLong(45, getPowerGrade());
-            statement.setInt(46, getPledgeType());
-            statement.setLong(47,getLastRecomUpdate());
-            statement.setInt(48,getLvlJoinedAcademy());
-            statement.setLong(49,getApprentice());
-            statement.setLong(50,getSponsor());
-            statement.setInt(51, getAllianceWithVarkaKetra());
-			statement.setLong(52, getClanJoinExpiryTime());
-			statement.setLong(53, getClanCreateExpiryTime());
-            statement.setInt(54, getObjectId());
+            statement.setLong(41, totalOnlineTime);
+            statement.setInt(42, isInJail() ? 1 : 0);
+            statement.setLong(43, getJailTimer());
+            statement.setInt(44, isNewbie() ? 1 : 0);
+            statement.setInt(45, isNoble() ? 1 : 0);
+            statement.setLong(46, getPowerGrade());
+            statement.setInt(47, getPledgeType());
+            statement.setLong(48,getLastRecomUpdate());
+            statement.setInt(49,getLvlJoinedAcademy());
+            statement.setLong(50,getApprentice());
+            statement.setLong(51,getSponsor());
+            statement.setInt(52, getAllianceWithVarkaKetra());
+			statement.setLong(53, getClanJoinExpiryTime());
+			statement.setLong(54, getClanCreateExpiryTime());
+            statement.setInt(55, getObjectId());
             
 			statement.execute();
 			statement.close();
@@ -8153,7 +8169,7 @@ public final class L2PcInstance extends L2PlayableInstance
         updateStats();
 
         // Clear resurrect xp calculation
-        _expBeforeDeath = 0;
+        setExpBeforeDeath(0);
         
         //_macroses.restore();
         //_macroses.sendUpdate();
