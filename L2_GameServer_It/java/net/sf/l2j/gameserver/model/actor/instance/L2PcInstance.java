@@ -57,6 +57,7 @@ import net.sf.l2j.gameserver.datatables.CharTemplateTable;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.FishTable;
 import net.sf.l2j.gameserver.datatables.HennaTable;
+import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.datatables.NobleSkillTable;
@@ -2101,6 +2102,34 @@ public final class L2PcInstance extends L2PlayableInstance
 		// This function gets called on login, so not such a bad place to check weight
 		refreshOverloaded();		// Update the overloaded status of the L2PcInstance
 		refreshExpertisePenalty();  // Update the expertise status of the L2PcInstance
+	}
+	
+	/**
+	 * Regive all skills which aren't saved to database, like Noble, Hero, Clan Skills<BR><BR>
+	 * 
+	 */
+	private void regiveTemporarySkills()
+	{
+		// Do not call this on enterworld or char load
+		
+		// Add noble skills if noble
+		if (isNoble())
+			setNoble(true);
+				
+		// Add Hero skills if hero
+		if (isHero())
+			setHero(true);
+		
+		// Add clan skills
+		if (getClan() != null) 
+		{
+			L2Skill[] skills = getClan().getAllSkills();
+			for (L2Skill sk : skills)
+			{
+				if(sk.getMinPledgeClass() <= getPledgeClass())
+					addSkill(sk, false);
+			}
+		}
 	}
 	
 	/**
@@ -5344,6 +5373,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			// Retrieve from the database all secondary data of this L2PcInstance 
 			// and reward expertise/lucky skills if necessary.
+			// Note that Clan, Noblesse and Hero skills are given separately and not here.
 			player.restoreCharData();
 			player.rewardSkills();
 			
@@ -5985,9 +6015,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
-        // Update Noble Skills after subclass change
-		if (this.isNoble())
-			this.setNoble(true); 
 	}
 	
     /**
@@ -7638,13 +7665,20 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _blockList;
 	}
 	
-	public void setConnected(boolean connected)
-	{
-		
-	}
-	
 	public void setHero(boolean hero)
 	{
+		/* Commented out until olympiad changes are committed
+		if (hero)
+		{
+			for (L2Skill s : HeroSkillTable.getInstance().GetHeroSkills())
+				addSkill(s, false); //Dont Save Hero skills to database
+		}
+		else
+		{
+			for (L2Skill s : HeroSkillTable.getInstance().GetHeroSkills())
+				super.removeSkill(s); //Just Remove skills from nonHero characters
+		}
+		*/
 		_hero = hero;
 	}
 	
@@ -8104,6 +8138,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
         
         restoreSkills();
+        regiveTemporarySkills();
         rewardSkills();
         restoreEffects();
 
