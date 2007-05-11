@@ -149,11 +149,6 @@ public class ScrollOfEscape implements IItemHandler
                 else if ((_itemId == 1829 || _itemId == 5858) && _activeChar.getClan() != null && ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan()) != null) // escape to clan hall if own's one
                 {
                 	_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.ClanHall);
-                	ClanHall clanHall = ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan());
-	            	if(clanHall != null){
-                		ClanHallDecoration bl = new ClanHallDecoration(clanHall);
-	            		_activeChar.sendPacket(bl);
-	            	}
                 }
                 else if(_itemId == 5858) // do nothing
                 {

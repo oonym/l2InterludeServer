@@ -8497,6 +8497,13 @@ public final class L2PcInstance extends L2PlayableInstance
         
 		if (Config.ALLOW_WATER) 
             checkWaterState();
+        if (ZoneManager.getInstance().checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.ClanHall), this)){ 
+         	ClanHall clanHall = ClanHallManager.getInstance().getClanHall(getX(), getY()); 
+         	if(clanHall != null){ 
+         		ClanHallDecoration bl = new ClanHallDecoration(clanHall); 
+         		sendPacket(bl); 
+         	} 
+         } 
 	}
 	
 	public final boolean updatePosition(int gameTicks)
