@@ -5248,7 +5248,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				player._lastAccess = rset.getLong("lastAccess");
 				
 				player.getStat().setExp(rset.getLong("exp"));
-				player.setExpBeforeDeath(rset.getInt("expBeforeDeath"));
+				player.setExpBeforeDeath(rset.getLong("expBeforeDeath"));
 				player.getStat().setLevel(rset.getByte("level"));
 				player.getStat().setSp(rset.getInt("sp"));
 				
