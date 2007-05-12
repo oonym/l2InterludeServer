@@ -26,6 +26,9 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
+import net.sf.l2j.gameserver.serverpackets.ShortCutInit;
+import net.sf.l2j.gameserver.templates.L2EtcItemType;
 
 /**
  * This class ...
@@ -113,6 +116,21 @@ public class ShortCuts
         
 		if (old != null)
 			deleteShortCutFromDb(old);
+
+		L2ItemInstance item = _owner.getInventory().getItemByObjectId(old.getId());
+        
+        if ((item != null) && (item.getItemType() == L2EtcItemType.SHOT))
+        {
+        	_owner.removeAutoSoulShot(item.getItemId());
+            _owner.sendPacket(new ExAutoSoulShot(item.getItemId(), 0));        	
+        }
+
+        _owner.sendPacket(new ShortCutInit(_owner));
+
+        for (int shotId : _owner.getAutoSoulShot().values())
+        {
+            _owner.sendPacket(new ExAutoSoulShot(shotId, 1));
+        }
     }
     
     public synchronized void deleteShortCutByObjectId(int objectId)
