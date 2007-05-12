@@ -7683,8 +7683,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void setHero(boolean hero)
 	{
-		/* Commented out until olympiad changes are committed
-		if (hero)
+		if (hero && _baseClass == _activeClass)
 		{
 			for (L2Skill s : HeroSkillTable.getInstance().GetHeroSkills())
 				addSkill(s, false); //Dont Save Hero skills to database
@@ -7694,7 +7693,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			for (L2Skill s : HeroSkillTable.getInstance().GetHeroSkills())
 				super.removeSkill(s); //Just Remove skills from nonHero characters
 		}
-		*/
 		_hero = hero;
 	}
 	

@@ -49,4 +49,17 @@ public class HeroSkillTable
 	{
 		return _HeroSkills;
 	}
+	
+	public static boolean isHeroSkill(int skillid)
+	{
+		Integer[] _HeroSkillsId = new Integer[]{395, 396, 1374, 1375, 1376};
+
+		for (int id: _HeroSkillsId)
+		{
+			if (id == skillid)
+				return true;	
+		}
+
+		return false;
+	}
 }

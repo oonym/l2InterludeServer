@@ -28,6 +28,7 @@ import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GeoData;
+import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
@@ -430,7 +431,9 @@ public abstract class L2Skill
     
     private final boolean _isOffensive;
     private final int _num_charges;
-
+    
+    private final boolean _isHeroSkill; // If true the skill is a Hero Skill
+    
     private final int _lethalEffect1;     // percent of success for lethal 1st effect (hit cp to 1 or if mob hp to 50%) (only for PDAM skills)
     private final int _lethalEffect2;     // percent of success for lethal 2nd effect (hit cp,hp to 1 or if mob hp to 1) (only for PDAM skills)
     private final boolean _directHpDmg;  // If true then dmg is being make directly 
@@ -506,6 +509,8 @@ public abstract class L2Skill
         _isOffensive = set.getBool("offensive", isSkillTypeOffensive());
         _num_charges = set.getInteger("num_charges", getLevel());
 
+        _isHeroSkill = HeroSkillTable.isHeroSkill(_id);
+        
         int l1 = set.getInteger("lethal1",0);
         int l2 = set.getInteger("lethal2",0);
     	if( l1 <= l2 || l2 <= 0)
@@ -971,6 +976,12 @@ public abstract class L2Skill
     {
         return _isOffensive;
     }
+    
+    public final boolean isHeroSkill()
+    {
+        return _isHeroSkill;
+    }
+    
     public final int getLethalChance1()
     {
     	return _lethalEffect1;
