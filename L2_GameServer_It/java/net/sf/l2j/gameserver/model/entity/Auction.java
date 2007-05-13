@@ -459,13 +459,14 @@ public class Auction
         {
           if (ClanTable.getInstance().getClanByName(b.getClanName()).getHasHideout() == 0)
           {             
-            returnItem(b.getClanName(), 57, 9*b.getBid()/10, false); // 10 % tax
-            ClanTable.getInstance().getClanByName(b.getClanName()).setAuctionBiddedAt(0, true);
+        	  returnItem(b.getClanName(), 57, 9*b.getBid()/10, false); // 10 % tax
+        	  ClanTable.getInstance().getClanByName(b.getClanName()).setAuctionBiddedAt(0, true);
           }
           if (ClanTable.getInstance().getClanByName(b.getClanName()).getHasHideout() != 0)
           {
-            if (L2World.getInstance().getPlayer(b.getName()) != null)
-              L2World.getInstance().getPlayer(b.getName()).sendMessage("Congratulation you have won ClanHall!");
+        	  ClanTable.getInstance().getClanByName(b.getClanName()).setAuctionBiddedAt(0, true);
+        	  if (L2World.getInstance().getPlayer(b.getName()) != null)
+        		  L2World.getInstance().getPlayer(b.getName()).sendMessage("Congratulation you have won ClanHall!");
           }             
         }
         _bidders.clear();
