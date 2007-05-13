@@ -10,7 +10,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-2.0b4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/c3p0-0.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/mmocore.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.5-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
