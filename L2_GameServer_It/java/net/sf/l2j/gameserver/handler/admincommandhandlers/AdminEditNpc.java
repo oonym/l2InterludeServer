@@ -565,7 +565,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
         try
         {
         	con = L2DatabaseFactory.getInstance().getConnection();
-	        PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists values ("+itemID+","+price+","+tradeListID+","+order+")");
+	        PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists (`item_id`,`price`,`shop_id`,`order`) values ("+itemID+","+price+","+tradeListID+","+order+")");
 	        stmt.execute();
 	        stmt.close();
         }catch (SQLException esql) {esql.printStackTrace();}
