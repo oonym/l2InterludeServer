@@ -1068,8 +1068,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			_log.warning("Attempted to remove unknown RecipeList: "+recipeId);
 
 		L2ShortCut[] allShortCuts = getAllShortCuts();
-		for (L2ShortCut sc : allShortCuts) {
-			if (sc.getId() == recipeId && sc.getType() == L2ShortCut.TYPE_RECIPE)
+
+		for (L2ShortCut sc : allShortCuts)
+		{
+			if (sc != null && sc.getId() == recipeId && sc.getType() == L2ShortCut.TYPE_RECIPE)
 				deleteShortCut(sc.getSlot(), sc.getPage());
 		}
 	}
@@ -5948,8 +5950,10 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 
 		L2ShortCut[] allShortCuts = getAllShortCuts();
-		for (L2ShortCut sc : allShortCuts) {
-			if (sc.getId() == oldSkill.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
+
+		for (L2ShortCut sc : allShortCuts)
+		{
+			if (sc != null && sc.getId() == oldSkill.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
 				deleteShortCut(sc.getSlot(), sc.getPage());
 		}
 				
