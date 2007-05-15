@@ -94,11 +94,13 @@ public class MacroList
             deleteMacroFromDb(toRemove);
         }
 		_macroses.remove(id);
-//		L2ShortCut[] allShortCuts = _owner.getAllShortCuts();
-//		for (L2ShortCut sc : allShortCuts) {
-//			if (sc.getId() == id && sc.getType() == L2ShortCut.TYPE_MACRO)
-//				_owner.sendPacket(new ShortCutRegister(sc.getSlot(), 0, 0, 0, sc.getPage()));
-//		}
+
+		L2ShortCut[] allShortCuts = _owner.getAllShortCuts();
+		for (L2ShortCut sc : allShortCuts) {
+			if (sc.getId() == id && sc.getType() == L2ShortCut.TYPE_MACRO)
+				_owner.deleteShortCut(sc.getSlot(), sc.getPage());
+		}
+
 		sendUpdate();
     }
 

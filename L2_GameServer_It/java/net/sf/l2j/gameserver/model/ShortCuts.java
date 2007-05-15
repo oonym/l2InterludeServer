@@ -128,9 +128,7 @@ public class ShortCuts
         _owner.sendPacket(new ShortCutInit(_owner));
 
         for (int shotId : _owner.getAutoSoulShot().values())
-        {
             _owner.sendPacket(new ExAutoSoulShot(shotId, 1));
-        }
     }
     
     public synchronized void deleteShortCutByObjectId(int objectId)
