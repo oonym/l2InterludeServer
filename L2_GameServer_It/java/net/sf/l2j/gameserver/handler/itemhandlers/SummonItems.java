@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillLaunched;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.PetInfo;
@@ -49,6 +50,9 @@ public class SummonItems implements IItemHandler
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
+			return;
+		
+		if (!TvTEvent.onItemSummon(playable.getName()))
 			return;
 
 		L2PcInstance activeChar = (L2PcInstance)playable;

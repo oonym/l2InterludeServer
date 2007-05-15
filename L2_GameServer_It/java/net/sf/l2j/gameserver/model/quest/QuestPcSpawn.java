@@ -157,9 +157,8 @@ public class QuestPcSpawn
                 spawn.setLocy(y);
                 spawn.setLocz(z + 20);
                 spawn.stopRespawn();
-                
-                spawn.spawnOne();
-                
+                spawn.doSpawn(true);
+
                 _Spawns.add(spawn);
 
                 return spawn.getLastSpawn().getObjectId();

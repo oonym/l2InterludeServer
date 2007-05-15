@@ -56,8 +56,6 @@ public abstract class L2Summon extends L2PlayableInstance
     private boolean _follow = true;
     private boolean _previousFollowStatus = true;
     private int _maxLoad;
-
-    private boolean _showSummonAnimation;
     
     private int _chargedSoulShot;
     private int _chargedSpiritShot;
@@ -358,21 +356,6 @@ public abstract class L2Summon extends L2PlayableInstance
     public boolean isAutoAttackable(L2Character attacker)
     {
         return _owner.isAutoAttackable(attacker);
-    }
-    /**
-     * @return Returns the showSummonAnimation.
-     */
-    public boolean isShowSummonAnimation()
-    {
-        return _showSummonAnimation;
-    }
-    
-    /**
-     * @param showSummonAnimation The showSummonAnimation to set.
-     */
-    public void setShowSummonAnimation(boolean showSummonAnimation)
-    {
-        _showSummonAnimation = showSummonAnimation;
     }
     
     public int getChargedSoulShot()

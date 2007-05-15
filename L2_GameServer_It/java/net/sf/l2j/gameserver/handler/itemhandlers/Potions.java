@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -91,6 +92,12 @@ public class Potions implements IItemHandler
 			activeChar = ((L2PetInstance) playable).getOwner();
 		else
 			return;
+		
+		if (!TvTEvent.onPotionUse(playable.getName()))
+		{
+			playable.sendPacket(new ActionFailed());
+			return;
+		}
 
 		if (activeChar.isInOlympiadMode())
 		{

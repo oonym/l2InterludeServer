@@ -787,6 +787,25 @@ public final class Config
     public static int L2JMOD_CHAMPION_REWARD_ID;
     public static int L2JMOD_CHAMPION_REWARD_QTY;
     
+    /** Team vs. Team Event Engine */
+    public static boolean TVT_EVENT_ENABLED;
+    public static int TVT_EVENT_INTERVAL;
+    public static int TVT_EVENT_PARTICIPATION_TIME;
+    public static int TVT_EVENT_RUNNING_TIME;
+    public static int TVT_EVENT_PARTICIPATION_NPC_ID;
+    public static int[] TVT_EVENT_PARTICIPATION_NPC_COORDINATES = new int[3];
+    public static int TVT_EVENT_MIN_PLAYERS_IN_TEAMS;
+    public static int TVT_EVENT_RESPAWN_TELEPORT_DELAY;
+    public static int TVT_EVENT_START_LEAVE_TELEPORT_DELAY;
+    public static String TVT_EVENT_TEAM_1_NAME;
+    public static int[] TVT_EVENT_TEAM_1_COORDINATES = new int[3];
+    public static String TVT_EVENT_TEAM_2_NAME;
+    public static int[] TVT_EVENT_TEAM_2_COORDINATES = new int[3];
+    public static int[] TVT_EVENT_REWARD = new int[2];
+    public static boolean TVT_EVENT_TARGET_TEAM_MEMBERS_ALLOWED;
+    public static boolean TVT_EVENT_POTIONS_ALLOWED;
+    public static boolean TVT_EVENT_SUMMON_BY_ITEM_ALLOWED;
+    
     // Packet information
     /** Count the amount of packets per minute ? */  
 	public static boolean  COUNT_PACKETS           = false;
@@ -1709,6 +1728,82 @@ public final class Config
                 L2JMOD_CHAMPION_REWARD_ID 			= Integer.parseInt(L2JModSettings.getProperty("ChampionRewardItemID", "6393"));
                 L2JMOD_CHAMPION_REWARD_QTY			= Integer.parseInt(L2JModSettings.getProperty("ChampionRewardItemQty", "1"));
             	
+                TVT_EVENT_ENABLED						= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventEnabled", "false"));
+                TVT_EVENT_INTERVAL						= Integer.parseInt(L2JModSettings.getProperty("TvTEventInterval", "18000"));
+                TVT_EVENT_PARTICIPATION_TIME			= Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationTime", "3600"));
+                TVT_EVENT_RUNNING_TIME					= Integer.parseInt(L2JModSettings.getProperty("TvTEventRunningTime", "1800"));
+                TVT_EVENT_PARTICIPATION_NPC_ID			= Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationNpcId", "0"));
+                
+                if (TVT_EVENT_PARTICIPATION_NPC_ID == 0)
+                {
+                	TVT_EVENT_ENABLED = false;
+                	System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventParticipationNpcId");
+                }
+                else
+                {
+                	String[] propertySplit				= L2JModSettings.getProperty("TvTEventParticipationNpcCoordinates", "0,0,0").split(",");
+                
+                	if (propertySplit.length < 3)
+                	{
+                		TVT_EVENT_ENABLED = false;
+                		System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventParticipationNpcCoordinates");
+                	}
+                	else
+                	{
+                		TVT_EVENT_PARTICIPATION_NPC_COORDINATES[0]	= Integer.parseInt(propertySplit[0]); 
+                		TVT_EVENT_PARTICIPATION_NPC_COORDINATES[1]	= Integer.parseInt(propertySplit[1]);
+                		TVT_EVENT_PARTICIPATION_NPC_COORDINATES[2]	= Integer.parseInt(propertySplit[2]);
+                		
+                    	TVT_EVENT_MIN_PLAYERS_IN_TEAMS				= Integer.parseInt(L2JModSettings.getProperty("TvTEventMinPlayersInTeams", "1"));
+                    	TVT_EVENT_RESPAWN_TELEPORT_DELAY			= Integer.parseInt(L2JModSettings.getProperty("TvTEventRespawnTeleportDelay", "20"));
+                    	TVT_EVENT_START_LEAVE_TELEPORT_DELAY		= Integer.parseInt(L2JModSettings.getProperty("TvTEventStartLeaveTeleportDelay", "20"));
+
+                    	TVT_EVENT_TEAM_1_NAME						= L2JModSettings.getProperty("TvTEventTeam1Name", "Team1");
+                    	propertySplit								= L2JModSettings.getProperty("TvTEventTeam1Coordinates", "0,0,0").split(",");
+                    	
+                    	if (propertySplit.length < 3)
+                    	{
+                    		TVT_EVENT_ENABLED = false;
+                    		System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventTeam1Coordinates");
+                    	}
+                    	else
+                    	{
+                    		TVT_EVENT_TEAM_1_COORDINATES[0]	= Integer.parseInt(propertySplit[0]);
+                    		TVT_EVENT_TEAM_1_COORDINATES[1]	= Integer.parseInt(propertySplit[1]);
+                    		TVT_EVENT_TEAM_1_COORDINATES[2]	= Integer.parseInt(propertySplit[2]);
+
+                    		TVT_EVENT_TEAM_2_NAME			= L2JModSettings.getProperty("TvTEventTeam2Name", "Team2");
+                        	propertySplit					= L2JModSettings.getProperty("TvTEventTeam2Coordinates", "0,0,0").split(",");
+                        	
+                        	if (propertySplit.length < 3)
+                        	{
+                        		TVT_EVENT_ENABLED= false;
+                        		System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventTeam2Coordinates");
+                        	}
+                        	else
+                        	{
+                        		TVT_EVENT_TEAM_2_COORDINATES[0]	= Integer.parseInt(propertySplit[0]);
+                        		TVT_EVENT_TEAM_2_COORDINATES[1]	= Integer.parseInt(propertySplit[1]);
+                        		TVT_EVENT_TEAM_2_COORDINATES[2]	= Integer.parseInt(propertySplit[2]);
+                        		propertySplit					= L2JModSettings.getProperty("TvTEventReward", "57,100000").split(",");
+                        		
+                        		if (propertySplit.length < 2)
+                        		{
+                        			TVT_EVENT_ENABLED = false;
+                        			System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventReward");
+                        		}
+                        		else
+                        		{
+                        			TVT_EVENT_REWARD[0] = Integer.parseInt(propertySplit[0]);
+                        			TVT_EVENT_REWARD[1] = Integer.parseInt(propertySplit[1]);
+                        			TVT_EVENT_TARGET_TEAM_MEMBERS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventTargetTeamMembersAllowed", "true"));
+                        			TVT_EVENT_POTIONS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventPotionsAllowed", "false"));
+                        			TVT_EVENT_SUMMON_BY_ITEM_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventSummonByItemAllowed", "false"));
+                        		}
+                        	}
+                    	}
+                	}
+                }
             	
             }
             catch (Exception e)

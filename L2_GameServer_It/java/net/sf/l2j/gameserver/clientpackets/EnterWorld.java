@@ -46,6 +46,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.model.entity.L2Event;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.entity.ZoneType;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.serverpackets.ClanHallDecoration;
@@ -295,6 +296,8 @@ public class EnterWorld extends L2GameClientPacket
 
         /*if(Config.GAMEGUARD_ENFORCE) - disabled by KenM will be reenabled later
             activeChar.sendPacket(new GameGuardQuery());*/
+        
+        TvTEvent.onLogin(activeChar);
 	}
     
 	/**

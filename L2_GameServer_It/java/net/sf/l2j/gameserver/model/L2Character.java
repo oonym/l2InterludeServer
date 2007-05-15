@@ -159,6 +159,7 @@ public abstract class L2Character extends L2Object
 	private double _hpUpdateDecCheck = .0;
 	private double _hpUpdateInterval = .0;
 	private boolean _champion = false;
+	protected boolean _showSummonAnimation;
 
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _Calculators;
@@ -5432,6 +5433,21 @@ public abstract class L2Character extends L2Object
 
 		return false;
 	}
+    /**
+     * @return Returns the showSummonAnimation.
+     */
+    public boolean isShowSummonAnimation()
+    {
+        return _showSummonAnimation;
+    }
+    
+    /**
+     * @param showSummonAnimation The showSummonAnimation to set.
+     */
+    public void setShowSummonAnimation(boolean showSummonAnimation)
+    {
+        _showSummonAnimation = showSummonAnimation;
+    }
 }
 
 

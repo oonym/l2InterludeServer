@@ -57,7 +57,7 @@ public class NpcInfo extends L2GameServerPacket
 		_isAttackable = cha.isAutoAttackable(attacker);
 		_rhand = cha.getTemplate().rhand;
 		_lhand = cha.getTemplate().lhand;
-		_isSummoned = false;
+		_isSummoned = cha.isShowSummonAnimation();
         collisionHeight = _cha.getTemplate().collisionHeight;
         collisionRadius = _cha.getTemplate().collisionRadius;
         if (cha.getTemplate().serverSideName)

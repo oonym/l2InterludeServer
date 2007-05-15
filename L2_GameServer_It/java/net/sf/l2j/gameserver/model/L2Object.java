@@ -82,7 +82,7 @@ public abstract class L2Object
      * 
      * <B><U> Overriden in </U> :</B><BR><BR>
      * <li> L2GuardInstance :  Set the home location of its L2GuardInstance </li>
-     * <li> L2Attackable    :  Reset the Spoiled falg </li><BR><BR>
+     * <li> L2Attackable    :  Reset the Spoiled flag </li><BR><BR>
      * 
      */
     public void onSpawn()

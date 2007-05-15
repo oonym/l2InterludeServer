@@ -90,7 +90,7 @@ public class QuestPcSpawnManager
     }
     
     /**
-     * Add random spawn location for npc of the  the specified
+     * Add random spawn location for npc of the specified Id
      */
     public void addRandomSpawnLoc(L2PcInstance player, int objectId, int x, int y, int z)
     {
@@ -113,7 +113,7 @@ public class QuestPcSpawnManager
     }
     
     /**
-     * Return true of contain player instance
+     * Return true if contain player instance
      */
     public boolean contains(L2PcInstance player)
     {

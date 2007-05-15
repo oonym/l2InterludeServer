@@ -189,6 +189,7 @@ import net.sf.l2j.gameserver.model.AutoSpawnHandler;
 import net.sf.l2j.gameserver.model.L2PetDataTable;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.entity.Hero;
+import net.sf.l2j.gameserver.model.entity.TvTManager;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.network.L2GamePacketHandler;
 import net.sf.l2j.gameserver.script.faenor.FaenorScriptEngine;
@@ -551,6 +552,8 @@ public class GameServer
         } catch (Exception ex) {
             _log.log(Level.WARNING, "DynamicExtension could not be loaded and initialized", ex);
         }
+        
+        TvTManager.getInstance();
 
 		System.gc();
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of the current allocation pool, freeMemory the unused memory in the allocation pool
