@@ -493,7 +493,14 @@ public class LoginController
 	{
 		boolean ok = false;
 		InetAddress address = client.getConnection().getSocketChannel().socket().getInetAddress();
+		// log it anyway
 		Log.add("'" + (user == null ? "null" : user) + "' " + (address == null ? "null" : address.getHostAddress()), "logins_ip");
+		
+		// player disconnected meanwhile
+		if (address == null)
+		{
+			return false;
+		}
 		
 		java.sql.Connection con = null;
 		try
