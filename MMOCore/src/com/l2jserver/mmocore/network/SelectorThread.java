@@ -306,7 +306,6 @@ public class SelectorThread<T extends MMOClient> extends Thread
                 }
                 else
                 {
-                    key.cancel();
                     sc.socket().close();
                 }
             }
