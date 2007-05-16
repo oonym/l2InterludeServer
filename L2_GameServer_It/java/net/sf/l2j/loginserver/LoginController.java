@@ -43,6 +43,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.lib.Log;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
 import net.sf.l2j.loginserver.crypt.ScrambledKeyPair;
+import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 
 /**
@@ -250,7 +251,7 @@ public class LoginController
 		_bannedIps.put(address, new BanInfo(address,  System.currentTimeMillis() + duration));
 	}
 	
-	public boolean isBannedAddres(InetAddress address)
+	public boolean isBannedAddress(InetAddress address)
 	{
 		BanInfo bi = _bannedIps.get(address);
 		if (bi != null)
@@ -382,7 +383,7 @@ public class LoginController
 		GameServerInfo gsi = GameServerTable.getInstance().getRegisteredGameServerById(serverId);
 		if (gsi != null && gsi.isAuthed())
 		{
-			return (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() || access >= 50);
+			return ((gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= Config.GM_MIN);
 		}
 		return false;
 	}
@@ -517,6 +518,7 @@ public class LoginController
 			rset.close();
 			statement.close();
 
+			// if account doesnt exists
 			if (expected == null)
 			{
 				if (Config.AUTO_CREATE_ACCOUNTS)
@@ -542,16 +544,26 @@ public class LoginController
 				_log.warning("account missing for user " + user);
 				return false;
 			}
-
-			ok = true;
-			for (int i = 0; i < expected.length; i++)
+			else
 			{
-				if (hash[i] != expected[i])
+				// is this account banned?
+				if (access < 0)
 				{
-					ok = false;
-					break;
+					return false;
+				}
+				
+				// check password hash
+				ok = true;
+				for (int i = 0; i < expected.length; i++)
+				{
+					if (hash[i] != expected[i])
+					{
+						ok = false;
+						break;
+					}
 				}
 			}
+			
 			if (ok)
 			{
 				client.setAccessLevel(access);
@@ -715,7 +727,7 @@ public class LoginController
 
 		public boolean hasExpired()
 		{
-			return System.currentTimeMillis() > _expiration;
+			return System.currentTimeMillis() > _expiration && _expiration > 0;
 		}
 	}
 

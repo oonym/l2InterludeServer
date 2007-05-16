@@ -23,6 +23,7 @@ import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.SessionKey;
 import net.sf.l2j.loginserver.serverpackets.PlayOk;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.serverpackets.PlayFail.PlayFailReason;
 
 /**
  * Fromat is ddc
@@ -92,7 +93,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 			}
 			else
 			{
-				this.getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
+				this.getClient().close(PlayFailReason.REASON_TOO_MANY_PLAYERS);
 			}
 		}
 		else

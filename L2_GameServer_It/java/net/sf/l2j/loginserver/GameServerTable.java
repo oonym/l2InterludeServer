@@ -41,6 +41,7 @@ import javolution.xml.stream.XMLStreamException;
 import javolution.xml.stream.XMLStreamReaderImpl;
 
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
 
 /**
  * 
@@ -291,6 +292,7 @@ public class GameServerTable
 			_id = id;
 			_hexId = hexId;
 			_gst = gst;
+			_status = ServerStatus.STATUS_DOWN;
 		}
 		
 		public GameServerInfo(int id, byte[] hexId)
@@ -440,6 +442,7 @@ public class GameServerTable
 			this.setAuthed(false);
 			this.setPort(0);
 			this.setGameServerThread(null);
+			this.setStatus(ServerStatus.STATUS_DOWN);
 		}
 	}
 }

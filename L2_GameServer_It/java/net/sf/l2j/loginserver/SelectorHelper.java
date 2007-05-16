@@ -66,7 +66,7 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 	 */
 	public boolean accept(SocketChannel sc)
 	{
-		return !LoginController.getInstance().isBannedAddres(sc.socket().getInetAddress());
+		return !LoginController.getInstance().isBannedAddress(sc.socket().getInetAddress());
 	}
 
 }

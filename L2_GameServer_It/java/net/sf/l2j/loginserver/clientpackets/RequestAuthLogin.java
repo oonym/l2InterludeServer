@@ -130,6 +130,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 			{
 				L2LoginClient oldClient;
 				GameServerInfo gsi;
+				
 				if ((oldClient = lc.getAuthedClient(_user)) != null)
 				{
 					// kick the other client
@@ -144,6 +145,10 @@ public class RequestAuthLogin extends L2LoginClientPacket
 					{
 						gsi.getGameServerThread().kickPlayer(_user);
 					}
+				}
+				else if (client.getAccessLevel() < 0)
+				{
+					client.close(LoginFailReason.REASON_ACCOUNT_BANNED);
 				}
 				else
 				{
