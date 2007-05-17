@@ -22,7 +22,6 @@ public abstract class L2PlayableInstance extends L2Character
 {
 
 	private boolean _IsNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
-	
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
 	 *  

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class QuestPcSpawnManager
@@ -42,7 +43,7 @@ public class QuestPcSpawnManager
      */
     public int addSpawn(L2PcInstance player, int npcId)
     {
-        return addSpawn(player, npcId, player.getX(), player.getY(), player.getZ());
+        return getPcSpawn(player).addSpawn(npcId);
     }
 
     /**
@@ -51,7 +52,7 @@ public class QuestPcSpawnManager
      */
     public int addSpawn(L2PcInstance player, int npcId, int x, int y, int z)
     {
-        return getPcSpawn(player).addSpawn(npcId, x, y, z);
+        return getPcSpawn(player).addSpawn(npcId, x, y, z, player.getHeading(),false,0);
     }
 
     /**
@@ -60,7 +61,7 @@ public class QuestPcSpawnManager
      */
     public int addSpawn(L2PcInstance player, int npcId, int spawnLength)
     {
-        return addSpawn(player, npcId, player.getX(), player.getY(), player.getZ(), spawnLength);
+        return getPcSpawn(player).addSpawn(npcId, spawnLength);
     }
 
     /**
@@ -69,32 +70,18 @@ public class QuestPcSpawnManager
      */
     public int addSpawn(L2PcInstance player, int npcId, int x, int y, int z, int spawnLength)
     {
-        return getPcSpawn(player).addSpawn(npcId, x, y, z, spawnLength);
+        return getPcSpawn(player).addSpawn(npcId, x, y, z, player.getHeading(),false,spawnLength);
     }
 
     /**
-     * Add random spawn for the specified player instance
+     * Add spawn for player instance
+     * Inherits coords and heading from specified L2Character instance.
+     * It could be either the player, or any killed/attacked mob
      * Return object id of newly spawned npc
-     */
-    public int addRandomSpawn(L2PcInstance player, int npcId, int count, int randomSpawnDelay, int spawnDelay, int offset)
+     */    
+    public int addSpawn(L2PcInstance player, int npcId, L2Character cha, boolean randomOffset)
     {
-        return getPcSpawn(player).addRandomSpawn(npcId, count, randomSpawnDelay, spawnDelay, offset);
-    }
-    
-    /**
-     * Add random spawn location for npc of the  the specified
-     */
-    public void addRandomSpawnLoc(L2PcInstance player, int objectId)
-    {
-        getPcSpawn(player).addRandomSpawnLoc(objectId, player.getX(), player.getY(), player.getZ());
-    }
-    
-    /**
-     * Add random spawn location for npc of the specified Id
-     */
-    public void addRandomSpawnLoc(L2PcInstance player, int objectId, int x, int y, int z)
-    {
-        getPcSpawn(player).addRandomSpawnLoc(objectId, x, y, z);
+        return getPcSpawn(player).addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, 0);
     }
 
     /**

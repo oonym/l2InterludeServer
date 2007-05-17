@@ -10,6 +10,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.AutoChatHandler.AutoChatInstance;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler.AutoSpawnInstance;
@@ -57,41 +58,24 @@ public class QuestPcSpawn
     /**
      * Add spawn for player instance
      * Return object id of newly spawned npc
+     * Inherits player's coords and heading.
+     * Adds a little randomization in the x y coords
      */
     public int addSpawn(int npcId)
     {
-        return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), true);
+        return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), getPlayer().getHeading(), true, 0);
     }
 
     /**
      * Add spawn for player instance
      * Will despawn after the spawn length expires
+     * Uses player's coords and heading.
+     * Adds a little randomization in the x y coords
      * Return object id of newly spawned npc
      */
     public int addSpawn(int npcId, int spawnLength)
     {
-        return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), true, spawnLength);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will random message when chat delay time reached
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, String[] messages, int chatDelay)
-    {
-        return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), true, messages, chatDelay);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will despawn after the spawn length expires
-     * Will random message when chat delay time reached
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, int spawnLength, String[] messages, int chatDelay)
-    {
-        return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), true, spawnLength, messages, chatDelay);
+        return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), getPlayer().getHeading(), true, spawnLength);
     }
 
     /**
@@ -100,16 +84,39 @@ public class QuestPcSpawn
      */
     public int addSpawn(int npcId, int x, int y, int z)
     {
-        return addSpawn(npcId, x, y, z, false);
+    	return addSpawn(npcId, x, y, z, 0, false, 0);
     }
 
     /**
      * Add spawn for player instance
+     * Inherits coords and heading from specified L2Character instance.
+     * It could be either the player, or any killed/attacked mob
      * Return object id of newly spawned npc
      */
-    public int addSpawn(int npcId, int x, int y, int z, boolean randomOffset)
+    public int addSpawn(int npcId, L2Character cha, boolean randomOffset)
     {
-        try {
+        return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, 0);
+    }
+
+    /**
+     * Add spawn for player instance
+     * Will despawn after the spawn length expires
+     * Return object id of newly spawned npc
+     */
+    public int addSpawn(int npcId, int x, int y, int z, int despawnDelay)
+    {
+        return addSpawn(npcId, x, y, z, 0, false, despawnDelay);
+    }
+
+    
+    /**
+     * Add spawn for player instance
+     * Return object id of newly spawned npc
+     */
+    public int addSpawn(int npcId, int x, int y, int z,int heading, boolean randomOffset, int despawnDelay)
+    {
+        try 
+        {
             if (randomOffset)
             {
                 int offset;
@@ -125,13 +132,13 @@ public class QuestPcSpawn
                 y += offset;
             }
             
-            L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(npcId);
-            if (template1 != null)
+            L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+            if (template != null)
             {
-                L2Spawn spawn = new L2Spawn(template1);
+                L2Spawn spawn = new L2Spawn(template);
 
                 spawn.setId(IdFactory.getInstance().getNextId());
-                spawn.setHeading(getPlayer().getHeading());
+                spawn.setHeading(heading);
 
                 // Sometimes, even if the quest script specifies some xyz (for example npc.getX() etc) by the time the code
             	// reaches here, xyz have become 0!  Also, a questdev might have purposely set xy to 0,0...however,
@@ -157,124 +164,37 @@ public class QuestPcSpawn
                 spawn.setLocy(y);
                 spawn.setLocz(z + 20);
                 spawn.stopRespawn();
-                spawn.doSpawn(true);
-
+                spawn.doSpawn();
                 _Spawns.add(spawn);
-
-                return spawn.getLastSpawn().getObjectId();
+                int objectId = spawn.getLastSpawn().getObjectId();
+                if (despawnDelay > 0)
+                	addDeSpawnTask(objectId, despawnDelay);
+                return objectId;
             }
-          } catch (Exception e1) {_log.warning("Could not spawn Npc " + npcId);}
+        }
+        catch (Exception e1)
+        {
+        	_log.warning("Could not spawn Npc " + npcId);
+        }
           
           return 0;
     }
 
-    /**
-     * Add spawn for player instance
-     * Will despawn after the spawn length expires
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, int x, int y, int z, int spawnLength)
-    {
-        return addSpawn(npcId, x, y, z, false, spawnLength);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will despawn after the spawn length expires
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, int x, int y, int z, boolean randomOffset, int spawnLength)
-    {
-        return addSpawn(npcId, x, y, z, randomOffset, spawnLength, null, 0);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will random message when chat delay time reached
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, int x, int y, int z, String[] messages, int chatDelay)
-    {
-        return addSpawn(npcId, x, y, z, false, messages, chatDelay);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will random message when chat delay time reached
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, int x, int y, int z, boolean randomOffset, String[] messages, int chatDelay)
-    {
-        return addSpawn(npcId, x, y, z, randomOffset, 0, messages, chatDelay);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will despawn after the spawn length expires
-     * Will random message when chat delay time reached
-     * Return object id of newly spawned npc
-     */
+    
+	/**
+	 * This method has been kept for compatibility with MercTicketManager only
+	 * and could be deprecated in the near future.
+	 * 
+	 * Any further Quest/AI related developments should take care of any other
+	 * detail that is not strictly <b>spawn</b> related on their own.
+	 * 
+	 */
     public int addSpawn(int npcId, int x, int y, int z, int spawnLength, String[] messages, int chatDelay)
     {
-        return addSpawn(npcId, x, y, z, false, spawnLength, messages, chatDelay);
-    }
-
-    /**
-     * Add spawn for player instance
-     * Will despawn after the spawn length expires
-     * Will random message when chat delay time reached
-     * Return object id of newly spawned npc
-     */
-    public int addSpawn(int npcId, int x, int y, int z, boolean randomOffset, int spawnLength, String[] messages, int chatDelay)
-    {
-        int objectId = addSpawn(npcId, x, y, z, randomOffset);
+        int objectId = addSpawn(npcId, x, y, z, 0, false, spawnLength);
         addDeSpawnTask(objectId, spawnLength);
         addChatTask(getSpawn(objectId).getLastSpawn(), messages, chatDelay);
         return objectId;
-    }
-
-    /**
-     * Add random spawn for player instance
-     * Return object id of newly spawned npc
-     */
-    public int addRandomSpawn(int npcId, int count, int initialDelay, int respawnDelay, int despawnDelay)
-    {
-        _autoSpawns.add(AutoSpawnHandler.getInstance().registerSpawn(npcId, initialDelay, respawnDelay, despawnDelay));
-        _autoSpawns.get(_autoSpawns.size() - 1).setSpawnCount(count);
-        
-        return _autoSpawns.get(_autoSpawns.size() - 1).getObjectId();
-    }
-    
-    /**
-     * Add random chat for npc
-     */
-    public void addRandomSpawnChat(int objectId, String[] messages, int chatDelay)
-    {
-        if (messages != null && chatDelay > 0)
-            return;
-            
-        AutoSpawnInstance randomSpawn = getRandomSpawn(objectId);
-        
-        if (randomSpawn == null)
-            return;
-
-        for (L2NpcInstance npcInst: randomSpawn.getNPCInstanceList())
-        {
-            addChatTask(npcInst, messages, chatDelay);
-        }
-    }
-    
-    /**
-     * Add random spawn location for npc
-     */
-    public void addRandomSpawnLoc(int objectId, int x, int y, int z)
-    {
-        AutoSpawnInstance randomSpawn = getRandomSpawn(objectId);
-        
-        if (randomSpawn == null)
-            return;
-
-        randomSpawn.addSpawnLocation(x, y, z, -1);
     }
     
     /**
@@ -346,6 +266,8 @@ public class QuestPcSpawn
     
     // =========================================================
     // Method - Private
+    // Kept for compatibility only
+    @Deprecated
     private void addChatTask(L2NpcInstance npcInst, String[] messages, int chatDelay)
     {
     	if ( (messages != null) && (npcInst != null) )

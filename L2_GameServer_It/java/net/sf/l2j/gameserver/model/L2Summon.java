@@ -61,6 +61,7 @@ public abstract class L2Summon extends L2PlayableInstance
     private int _chargedSpiritShot;
     private int _usedSoulShots = 0;
     private int _usedSpiritShots = 0;
+	protected boolean _showSummonAnimation;
     
 	public class AIAccessor extends L2Character.AIAccessor
 	{
@@ -615,5 +616,21 @@ public abstract class L2Summon extends L2PlayableInstance
 	public void setOwner(L2PcInstance newOwner)
 	{
 		_owner = newOwner;
+	}
+
+	/**
+	 * @return Returns the showSummonAnimation.
+	 */
+	public boolean isShowSummonAnimation()
+	{
+	    return _showSummonAnimation;
+	}
+
+	/**
+	 * @param showSummonAnimation The showSummonAnimation to set.
+	 */
+	public void setShowSummonAnimation(boolean showSummonAnimation)
+	{
+	    _showSummonAnimation = showSummonAnimation;
 	}
 }

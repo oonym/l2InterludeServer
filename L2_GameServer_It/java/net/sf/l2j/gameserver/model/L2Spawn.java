@@ -417,11 +417,6 @@ public class L2Spawn
 	 */
 	public L2NpcInstance doSpawn()
 	{
-	return doSpawn(false);
-	}
-
-	public L2NpcInstance doSpawn(boolean isSummon)
-	{
 		L2NpcInstance mob = null;		
 		try
 		{
@@ -443,11 +438,7 @@ public class L2Spawn
 			// Check if the Instance is a L2NpcInstance
 			if (!(tmp instanceof L2NpcInstance))
 				return mob;
-			
 			mob = (L2NpcInstance)tmp;
-			// Quest/AI driven summons should be using this feature
-			if (isSummon)
-				mob.setShowSummonAnimation(true);
             return intializeNpcInstance(mob);
 		}
 		catch (Exception e)
