@@ -50,7 +50,6 @@ import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.PetInventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.PetItemList;
 import net.sf.l2j.gameserver.serverpackets.PetStatusShow;
-import net.sf.l2j.gameserver.serverpackets.PetStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.StopMove;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -601,15 +600,6 @@ public final class L2PetInstance extends L2Summon
         {
             _logPet.warning("Error while giving item to owner: " + e);
         }
-	}
-	
-	public void broadcastStatusUpdate()
-	{
-		super.broadcastStatusUpdate();
-		if (getOwner() != null)
-		{
-			getOwner().sendPacket(new PetStatusUpdate(this));
-		}
 	}
 	
 	/**
