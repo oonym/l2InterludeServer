@@ -39,6 +39,8 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 
 /**
  *
@@ -108,10 +110,25 @@ public class GeoEngine extends GeoData
     @Override
     public boolean canSeeTarget(L2Object cha, L2Object target)
     {
+    	// To be able to see over fences and give the player the viewpoint
+    	// game client has, all coordinates are lifted 45 from ground.
+    	// Because of layer selection in LOS algorithm (it selects -45 there
+    	// and some layers can be very close...) do not change this without 
+    	// changing the LOS code.
+    	// Basically the +45 is character height. Raid bosses are naturally higher,
+    	// dwarves shorter, but this should work relatively well.
+    	// If this is going to be improved, use e.g. 
+    	// ((L2Character)cha).getTemplate().collisionHeight
+    	
+    	int z = cha.getZ()+45;
+    	if(cha instanceof L2SiegeGuardInstance) z += 30; // well they don't move closer to balcony fence at the moment :(
+    	int z2 = target.getZ()+45;
+    	if(target instanceof L2DoorInstance) return true; // door coordinates are hinge coords..
+    	if(target instanceof L2SiegeGuardInstance) z2 += 30; // well they don't move closer to balcony fence at the moment :(
     	if(cha.getZ() >= target.getZ())
-    		return canSeeTarget(cha.getX(),cha.getY(),cha.getZ(),target.getX(),target.getY(),target.getZ());
+    		return canSeeTarget(cha.getX(),cha.getY(),z,target.getX(),target.getY(),z2);
     	else
-    		return canSeeTarget(target.getX(),target.getY(),target.getZ(), cha.getX(),cha.getY(),cha.getZ());
+    		return canSeeTarget(target.getX(),target.getY(),z2, cha.getX(),cha.getY(),z);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTargetDebug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, net.sf.l2j.gameserver.model.L2Object)
@@ -119,10 +136,19 @@ public class GeoEngine extends GeoData
     @Override
     public boolean canSeeTargetDebug(L2PcInstance gm, L2Object target)
     {
+    	// comments: see above
+    	int z = gm.getZ()+45;
+    	int z2 = target.getZ()+45;
+    	if(target instanceof L2DoorInstance) 
+    	{
+    		gm.sendMessage("door always true");
+    		return true; // door coordinates are hinge coords..
+    	}
+    	
     	if(gm.getZ() >= target.getZ())
-    		return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ(),(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ());
+    		return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,z,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,z2);
     	else
-    		return canSeeDebug(gm,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,target.getZ(),(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,gm.getZ());
+    		return canSeeDebug(gm,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,z2,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,z);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#getNSWE(int, int, int)
@@ -175,60 +201,71 @@ public class GeoEngine extends GeoData
     
     private static boolean canSee(int x, int y, double z, int tx, int ty, int tz)
     {
-        int dx = (tx - x);
+    	int dx = (tx - x);
         int dy = (ty - y);
         final double dz = (tz - z);
-        final int distance = Math.abs(dx + dy);
-        if (distance > 300)
+        final int distance2 = dx*dx+dy*dy;
+
+        if (distance2 > 90000) // (300*300) 300*16 = 4800 in world coord
         {
             //Avoid too long check
             return false;
         }
-        else if (distance == 0)
-        	return true;
+        // very short checks: 9 => 144 world distance
+        // this ensures NLOS function has enough points to calculate,
+        // it might not work when distance is small and path vertical
+        else if (distance2 < 10)
+        {
+        	if(dz*dz > 40000) // 200 too deep/high. This value should be in sync with NLOS
+        		return false;
+        	else return true;
+        }
+
+        // Increment in Z coordinate when moving along X or Y axis 
+        // and not straight to the target. This is done because
+        // calculation moves either in X or Y direction.
         final int inc_x = sign(dx);
         final int inc_y = sign(dy);
-        final double inc_z = dz/distance;
-        final double dbl_inc_z = inc_z*2;
-        
-      	dx = Math.abs(dx);
-       	dy = Math.abs(dy);
-        
+        dx = Math.abs(dx);
+        dy = Math.abs(dy);
+        final double inc_z_directionx = dz*dx / (distance2);
+        final double inc_z_directiony = dz*dy / (distance2);
+
+        // next_* are used in NLOS check from x,y
         int next_x = x;
         int next_y = y;
         
+        // creates path to the target
+        // calculation stops when next_* == target
         if (dx >= dy)// dy/dx <= 1
         {
         	int delta_A = 2*dy;
         	int d = delta_A - dx;
             int delta_B = delta_A - 2*dx;
             
-            for (int i = 0; i <= dx; i++)
+            for (int i = 0; i < dx; i++) 
             {
             	x = next_x;
             	y = next_y;
-
             	if (d > 0)
             	{
-            		z += dbl_inc_z;
             		d += delta_B;
             		next_x += inc_x;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
-                        return false;
-
+            		z += inc_z_directionx;
             		next_y += inc_y;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		z += inc_z_directiony;
+            		//_log.warning("1: next_x:"+next_x+" next_y"+next_y);
+            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,false))
             			return false;
-
             	}
             	else
             	{
-            		z += inc_z;
             		d += delta_A;
             		next_x += inc_x;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
+            		z += inc_z_directionx;
+            		if (!NLOS(x,y,(int)z,inc_x,0,tz,false))
             			return false;
-
             	}
             }
         }
@@ -237,91 +274,112 @@ public class GeoEngine extends GeoData
         	int delta_A = 2*dx;
         	int d = delta_A - dy;
             int delta_B = delta_A - 2*dy;
-            for (int i = 0; i <= dy; i++)
+            for (int i = 0; i < dy; i++)
             {
             	x = next_x;
             	y = next_y;
-
             	if (d > 0)
             	{
-            		z += dbl_inc_z;
             		d += delta_B;
             		next_y += inc_y;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
-            			return false;
-
+            		z += inc_z_directiony;
             		next_x += inc_x;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		z += inc_z_directionx;
+            		//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
+            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,false))
             			return false;
-
             	}
             	else
             	{
-            		z += inc_z;
             		d += delta_A;
             		next_y += inc_y;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("4: next_x:"+next_x+" next_y"+next_y);
+            		z += inc_z_directiony;
+            		if (!NLOS(x,y,(int)z,0,inc_y,tz,false))
             			return false;
-
             	}
             }
         }
         return true;
     }
+    /*
+     * Debug function for checking if there's a line of sight between
+     * two coordinates.
+     * 
+     * Creates points for line of sight check (x,y,z towards target) and 
+     * in each point, layer and movement checks are made with NLOS function.
+     * 
+     * Coordinates here are geodata x,y but z coordinate is world coordinate
+     */
     private static boolean canSeeDebug(L2PcInstance gm, int x, int y, double z, int tx, int ty, int tz)
     {
     	int dx = (tx - x);
         int dy = (ty - y);
         final double dz = (tz - z);
-        final int distance = Math.abs(dx + dy);
-        if (distance > 300)
+        final int distance2 = dx*dx+dy*dy;
+
+        if (distance2 > 90000) // (300*300) 300*16 = 4800 in world coord
         {
             //Avoid too long check
         	gm.sendMessage("dist > 300");
             return false;
         }
-        else if (distance == 0)
-        	return true;
+        // very short checks: 9 => 144 world distance
+        // this ensures NLOS function has enough points to calculate,
+        // it might not work when distance is small and path vertical
+        else if (distance2 < 10)
+        {
+        	if(dz*dz > 40000) // 200 too deep/high. This value should be in sync with NLOS
+        		return false;
+        	else return true;
+        }
+
+        // Increment in Z coordinate when moving along X or Y axis 
+        // and not straight to the target. This is done because
+        // calculation moves either in X or Y direction.
         final int inc_x = sign(dx);
         final int inc_y = sign(dy);
-        final double inc_z = dz/distance;
-        final double dbl_inc_z = inc_z*2;
-        
-        gm.sendMessage("Los: from X: "+x+ "Y: "+y+ "--->> X: "+tx+" Y: "+ty);
-        
         dx = Math.abs(dx);
         dy = Math.abs(dy);
-        
+        final double inc_z_directionx = dz*dx / (distance2);
+        final double inc_z_directiony = dz*dy / (distance2);
+
+        gm.sendMessage("Los: from X: "+x+ "Y: "+y+ "--->> X: "+tx+" Y: "+ty);
+
+        // next_* are used in NLOS check from x,y
         int next_x = x;
         int next_y = y;
         
+        // creates path to the target
+        // calculation stops when next_* == target
         if (dx >= dy)// dy/dx <= 1
         {
         	int delta_A = 2*dy;
         	int d = delta_A - dx;
             int delta_B = delta_A - 2*dx;
             
-            for (int i = 0; i <= dx; i++)
+            for (int i = 0; i < dx; i++) 
             {
             	x = next_x;
             	y = next_y;
             	if (d > 0)
             	{
-            		z += dbl_inc_z;
             		d += delta_B;
             		next_x += inc_x;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
-                        return false;
+            		z += inc_z_directionx;
             		next_y += inc_y;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		z += inc_z_directiony;
+            		//_log.warning("1: next_x:"+next_x+" next_y"+next_y);
+            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,true))
             			return false;
             	}
             	else
             	{
-            		z += inc_z;
             		d += delta_A;
             		next_x += inc_x;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
+            		z += inc_z_directionx;
+            		if (!NLOS(x,y,(int)z,inc_x,0,tz,true))
             			return false;
             	}
             }
@@ -331,81 +389,99 @@ public class GeoEngine extends GeoData
         	int delta_A = 2*dx;
         	int d = delta_A - dy;
             int delta_B = delta_A - 2*dy;
-            for (int i = 0; i <= dy; i++)
+            for (int i = 0; i < dy; i++)
             {
             	x = next_x;
             	y = next_y;
             	if (d > 0)
             	{
-            		z += dbl_inc_z;
             		d += delta_B;
             		next_y += inc_y;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
-            			return false;
+            		z += inc_z_directiony;
             		next_x += inc_x;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		z += inc_z_directionx;
+            		//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
+            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,true))
             			return false;
             	}
             	else
             	{
-            		z += inc_z;
             		d += delta_A;
             		next_y += inc_y;
-            		if (!NLOS(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("4: next_x:"+next_x+" next_y"+next_y);
+            		z += inc_z_directiony;
+            		if (!NLOS(x,y,(int)z,0,inc_y,tz,true))
             			return false;
             	}
             }
         }
         return true;
     }
+    /*
+     *  MoveCheck
+     */
     private static Location MoveCheck(Location destiny, int x, int y, double z, int tx, int ty, int tz)
     {
     	int dx = (tx - x);
         int dy = (ty - y);
-        final double dz = (tz - z);
-        final int distance = Math.abs(dx + dy);
-    	
-        if (distance == 0)
+        //final double dz = (tz - z);
+        final int distance2 = dx*dx+dy*dy;
+
+        if (distance2 > 15625) // 150*150*16 = 2000 world coord
+        {
+            //Avoid too long check
+            return destiny;
+        }
+        if (distance2 == 0)
         	return destiny;
+     
+        // Increment in Z coordinate when moving along X or Y axis 
+        // and not straight to the target. This is done because
+        // calculation moves either in X or Y direction.
         final int inc_x = sign(dx);
         final int inc_y = sign(dy);
-        final double inc_z = dz/distance;
-        final double dbl_inc_z = inc_z*2;
-        
         dx = Math.abs(dx);
         dy = Math.abs(dy);
-        
+
+        //gm.sendMessage("MoveCheck: from X: "+x+ "Y: "+y+ "--->> X: "+tx+" Y: "+ty);
+
+        // next_* are used in NcanMoveNext check from x,y
         int next_x = x;
         int next_y = y;
+        double tempz = z;
         
+        // creates path to the target, using only x or y direction
+        // calculation stops when next_* == target
         if (dx >= dy)// dy/dx <= 1
         {
         	int delta_A = 2*dy;
         	int d = delta_A - dx;
             int delta_B = delta_A - 2*dx;
             
-            for (int i = 0; i <= dx; i++)
+            for (int i = 0; i < dx; i++) 
             {
             	x = next_x;
             	y = next_y;
             	if (d > 0)
             	{
-            		z += dbl_inc_z;
             		d += delta_B;
             		next_x += inc_x;
-            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
-            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             		next_y += inc_y;
-            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
+            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            		else z = tempz;
             	}
             	else
             	{
-            		z += inc_z;
             		d += delta_A;
             		next_x += inc_x;
-            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
+            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            		else z = tempz;
             	}
             }
         }
@@ -414,33 +490,36 @@ public class GeoEngine extends GeoData
         	int delta_A = 2*dx;
         	int d = delta_A - dy;
             int delta_B = delta_A - 2*dy;
-            for (int i = 0; i <= dy; i++)
+            for (int i = 0; i < dy; i++)
             {
             	x = next_x;
             	y = next_y;
             	if (d > 0)
             	{
-            		z += dbl_inc_z;
             		d += delta_B;
             		next_y += inc_y;
-            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
-            			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             		next_x += inc_x;
-            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("5: next_x:"+next_x+" next_y"+next_y);
+            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            		else z = tempz;
             	}
             	else
             	{
-            		z += inc_z;
             		d += delta_A;
             		next_y += inc_y;
-            		if (!NcanMoveNext(x,y,(int)z,next_x,next_y,tz))
+            		//_log.warning("6: next_x:"+next_x+" next_y"+next_y);
+            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
+            		else z = tempz;
             	}
             }
         }
         return destiny;
     }
+    
     private static byte sign(int x)
     {    	
     	if (x >= 0)
@@ -781,7 +860,7 @@ public class GeoEngine extends GeoData
 	 * @param tz
 	 * @return True if char can move to (tx,ty,tz)
 	 */
-	private static boolean NcanMoveNext(int x, int y, int z, int tx, int ty, int tz)
+	private static double NcanMoveNext(int x, int y, int z, int tx, int ty, int tz)
 	{
 	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
@@ -800,80 +879,83 @@ public class GeoEngine extends GeoData
 		{
 			if(Config.DEBUG)
 				_log.warning("Geo Region - Region Offset: "+region+" dosnt exist!!");
-			return true;
+			return z;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)//flat
-	        return true;
-	    else if(type == 1)//complex
+	    if(type == 0) //flat
+	        return z;
+	    else if(type == 1) //complex
 	    {
 	    	cellX = getCell(x);
 			cellY = getCell(y);
 	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			NSWE = (short)(height&0x0F);		
+			NSWE = (short)(height&0x0F);
+			height = (short)(height&0x0fff0);
+			height = (short)(height >> 1); //height / 2
+			if(CheckNSWE(NSWE,x,y,tx,ty)) return height;
+			else return Double.MIN_VALUE;
 	    }
-	    else//multilevel
+	    else //multilevel, type == 2
 	    {		 
 	    	cellX = getCell(x);
 			cellY = getCell(y);
 	        int offset = (cellX << 3) + cellY;
-	        while(offset > 0)
+	        while(offset > 0) // iterates (too many times?) to get to layer count
 	        {
 	            byte lc = geo.get(index);		                 
 	            index += (lc << 1) + 1;
 	            offset--;
 	        }
 	        byte layers = geo.get(index);
+	        //_log.warning("layers"+layers);
 	        index++;
 	        short height=-1;		 
 	        if(layers <= 0 || layers > 125)		 
 	        {		     
                 _log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
-	            return false;
+	            return z;
 	        }		
 	        short tempz = Short.MIN_VALUE;
-	        short tempz2 = Short.MIN_VALUE;
 	        while(layers > 0)
 	        {	            
 	            height = geo.getShort(index);
 	            height = (short)(height&0x0fff0);
 				height = (short)(height >> 1); //height / 2
 
+				// searches the closest layer to current z coordinate
 	            if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
 	            {
-	                tempz = height;
+	                //layercurr = layers;
+	            	tempz = height;
 	                NSWE = geo.getShort(index);
 	                NSWE = (short)(NSWE&0x0F);                           
 	            }
-	            if ((tz-tempz2)*(tz-tempz2) > (tz-height)*(tz-height))
-	            	tempz2 = height;
 	            layers--;
 	            index += 2;
 	        }
-	        if(tempz != tempz2)
-	        	return false;	        
+	        if(CheckNSWE(NSWE,x,y,tx,ty)) return tempz;
+	        else return Double.MIN_VALUE;
 	    }
-	    return CheckNSWE(NSWE,x,y,tx,ty);
 	}
 	/**
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @param tx
-	 * @param ty
+	 * @param inc_x
+	 * @param inc_y
 	 * @param tz
 	 * @return True if Char can see target
 	 */
-	private static boolean NLOS(int x, int y, int z, int tx, int ty, int tz)
+	private static boolean NLOS(int x, int y, int z, int inc_x, int inc_y, int tz, boolean debug)
 	{
 	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
 		int blockY = getBlock(y);
 		int cellX, cellY;
-	    short NSWE = 0, NSWE2 = 0;
+	    short NSWE = 0;
 	    
 		int index;
 		//Geodata without index - it is just empty so index can be calculated on the fly
@@ -891,68 +973,108 @@ public class GeoEngine extends GeoData
 		//Read current block type: 0-flat,1-complex,2-multilevel
 		byte type = geo.get(index);
 		index++;
-	    if(type == 0)//flat	    
-	        return true;	    
-	    else if(type == 1)//complex
+	    if(type == 0) //flat, movement and sight always possible
+	    {
+	    	if(debug) _log.warning("flatheight:"+geo.getShort(index));	 
+	    	return true;
+	    }
+	    else if(type == 1) //complex
 	    {
 	    	cellX = getCell(x);
 			cellY = getCell(y);
 	        index += ((cellX << 3) + cellY) << 1;
 	        short height = geo.getShort(index);
-			NSWE = (short)(height&0x0F);		
+	        NSWE = (short)(height&0x0F);
+	        height = (short)(height&0x0fff0);
+			height = (short)(height >> 1); //height / 2
+			if(debug) {
+				_log.warning("height:"+height+" z"+z);
+				if(!CheckNSWE(NSWE,x,y,x+inc_x,y+inc_y)) _log.warning("would block");
+			}
+			if(z - height > 50) return true; // this value is just an approximate
 	    }
-	    else//multilevel
+	    else//multilevel, type == 2
 	    {		 
 	    	cellX = getCell(x);
 			cellY = getCell(y);
 	        int offset = (cellX << 3) + cellY;
-	        while(offset > 0)
+	        while(offset > 0) // iterates (too many times?) to get to layer count
 	        {
 	            byte lc = geo.get(index);		                 
 	            index += (lc << 1) + 1;
 	            offset--;
 	        }
 	        byte layers = geo.get(index);
+	        if (debug) _log.warning("layers"+layers);
 	        index++;
 	        short height=-1;		 
 	        if(layers <= 0 || layers > 125)
 	        {
-                _log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
+	        	_log.warning("Geo Engine: - invalid layers count: "+layers+" at: "+x+" "+y);
 	            return false;
 	        }
-	        short tempz = Short.MIN_VALUE;
-	        short tempz2 = Short.MIN_VALUE;
-	        while(layers > 0)
+	        short tempz = Short.MIN_VALUE; // big negative value
+	        byte temp_layers = layers;
+	        boolean highestlayer = true;
+	        
+	        z -= 25; // lowering level temporarily to avoid selecting ceiling
+	        while(temp_layers > 0)
 	        {	            
-	            height = geo.getShort(index);
+	            // reads height for current layer, result in world z coordinate
+	        	height = geo.getShort(index);
 	            height = (short)(height&0x0fff0);
 				height = (short)(height >> 1); //height / 2
-
-	            if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
+				//height -= 8; // old geo files had -8 around giran, new data seems better
+				
+				// searches the closest layer to current z coordinate
+				if ((z-tempz)*(z-tempz) > (z-height)*(z-height))
 	            {
-	                tempz = height;
+					if(tempz > Short.MIN_VALUE) highestlayer = false;
+					tempz = height;
+					if (debug) _log.warning("z"+(z+45)+" tempz"+tempz+" dz"+(z-tempz));
 	                NSWE = geo.getShort(index);
 	                NSWE = (short)(NSWE&0x0F);
 	            }
-	            if ((tz-tempz2)*(tz-tempz2) > (tz-height)*(tz-height))
-	            {
-	                tempz2 = height;
-	                NSWE2 = geo.getShort(index);
-	                NSWE2 = (short)(NSWE2&0x0F);
-	            }                            
-	            layers--;
+				temp_layers--;
 	            index += 2;
 	        }
-	        if(Math.abs((tempz-tempz2)) <= 32)
+	        z += 25; // level rises back
+	        
+	        // Check if LOS goes under a layer/floor  
+	        if((z-tempz) < -20) return false; // -20 => clearly under, approximates also fence width
+	        
+	        // this helps in some cases (occasional under-highest-layer block which isn't wall) 
+	        // but might also create problems in others (passes walls when you're standing high)
+	        if((z-tempz) > 250) return true; 
+	        
+	        // or there's a fence/wall ahead when we're not on highest layer
+	        // this part of the check is problematic
+	        if(!highestlayer)
 	        {
-	        	if (CheckNSWE(NSWE,x,y,tx,ty) || CheckNSWE(NSWE2,x,y,tx,ty))
-	        		return true;
-	        	else return false;
+	        	//a probable wall, there's movement block and layers above you
+	        	if(!CheckNSWE(NSWE,x,y,x+inc_x,y+inc_y)) // cannot move
+	        	{
+	        		// the height after 2 inc_x,inc_y
+	        		short nextheight = NgetHeight(x+2*inc_x,y+2*inc_y,z-50);
+	        		if(debug) 
+	        		{
+	        			_log.warning("0: z:"+z+" tz"+NgetHeight(x,y,z-60));
+	        			_log.warning("1: z:"+z+" tz"+NgetHeight(x+inc_x,y+inc_y,z-60));
+	        			_log.warning("2: z:"+z+" tz"+NgetHeight(x+2*inc_x,y+2*inc_y,z-60));
+	        			_log.warning("3: z:"+z+" tz"+NgetHeight(x+3*inc_x,y+3*inc_y,z-60));
+	        		}
+	        		// Probably a very thin fence (e.g. castle fences above artefact),
+	        		// where height instantly drops after 1-2 cells and layer ends. 
+	        		if(z-nextheight>100) return true;
+	        		// layer continues so close we can see over it
+	        		if(nextheight-tempz>5 && nextheight-tempz<20) return true;
+	        		return false;
+	        	}
+	        	else return true;
 	        }
-	        else
-	        	return false;
+	        else return true;
 	    }
-	    return CheckNSWE(NSWE,x,y,tx,ty);
+	    return CheckNSWE(NSWE,x,y,x+inc_x,y+inc_y);
 	}
 	/**
 	 * @param x
@@ -1001,7 +1123,7 @@ public class GeoEngine extends GeoData
 	        int offset = (cellX << 3) + cellY;
 	        while(offset > 0)
 	        {
-	            short lc = geo.getShort(index);		                 
+	        	byte lc = geo.get(index);		                 
 	            index += (lc << 1) + 1;
 	            offset--;
 	        }
