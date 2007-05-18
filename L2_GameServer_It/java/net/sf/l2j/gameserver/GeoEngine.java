@@ -214,7 +214,7 @@ public class GeoEngine extends GeoData
         // very short checks: 9 => 144 world distance
         // this ensures NLOS function has enough points to calculate,
         // it might not work when distance is small and path vertical
-        else if (distance2 < 10)
+        else if (distance2 < 82)
         {
         	if(dz*dz > 40000) // 200 too deep/high. This value should be in sync with NLOS
         		return false;
@@ -327,7 +327,7 @@ public class GeoEngine extends GeoData
         // very short checks: 9 => 144 world distance
         // this ensures NLOS function has enough points to calculate,
         // it might not work when distance is small and path vertical
-        else if (distance2 < 10)
+        else if (distance2 < 82)
         {
         	if(dz*dz > 40000) // 200 too deep/high. This value should be in sync with NLOS
         		return false;
