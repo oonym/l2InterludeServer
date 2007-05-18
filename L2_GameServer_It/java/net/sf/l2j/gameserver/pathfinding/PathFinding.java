@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.pathfinding.geonodes.GeoPathFinding;
 import net.sf.l2j.gameserver.pathfinding.utils.BinaryNodeHeap;
 import net.sf.l2j.gameserver.pathfinding.utils.FastNodeList;
 
@@ -38,15 +39,17 @@ public abstract class PathFinding
 		{
 			if (true /*Config.GEODATA_PATHFINDING*/)				
 			{
-				//Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)				
+				//Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
+				return GeoPathFinding.getInstance();
 			}
 			else // WORLD_PATHFINDING				
 			{
 				//Higher Memoru Usage, Lower Cpu Usage (PreCalculated)				
-			}			
+			}	
 		}
 		return _instance;
 	}
+		
 	public abstract boolean PathNodesExist(short regionoffset);	
 	public abstract List<AbstractNodeLoc> FindPath(int gx, int gy, short z, int gtx, int gtz, short tz);
 	public abstract Node[] ReadNeighbors(short node_x,short node_y, int idx);
@@ -71,7 +74,9 @@ public abstract class PathFinding
 				i++;
 				visited.add(node);
 				node.attacheNeighbors();
-				for (Node n : node.getNighbors())
+				Node[] neighbors = node.getNeighbors();
+				if (neighbors == null) continue;
+				for (Node n : neighbors)
 				{
 					if (!visited.contains(n) && !to_visit.contains(n))
 					{
@@ -108,7 +113,7 @@ public abstract class PathFinding
 			{
 				visited.add(node);
 				node.attacheNeighbors();
-				for (Node n : node.getNighbors())
+				for (Node n : node.getNeighbors())
 				{
 					if (!visited.contains(n) && !to_visit.contains(n))
 					{

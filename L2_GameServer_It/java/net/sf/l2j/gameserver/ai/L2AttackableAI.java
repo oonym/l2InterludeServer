@@ -140,10 +140,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             || !me.isInsideRadius(target, me.getAggroRange(), false, false) 
             || Math.abs(_actor.getZ() - target.getZ()) > 300) return false;
 
-        // Los Check Here
-        if(!GeoData.getInstance().canSeeTarget(me, target))
-        	return false;
-        
         // Check if the target isn't invulnerable
         if (target.isInvul())
             return false;
@@ -173,28 +169,33 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         // Check if the actor is a L2GuardInstance
         if (_actor instanceof L2GuardInstance)
         {
+            
             // Check if the L2PcInstance target has karma (=PK)
-            if (target instanceof L2PcInstance) return ((L2PcInstance) target).getKarma() > 0;
-
+            if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
+                // Los Check
+            	return GeoData.getInstance().canSeeTarget(me, target); 
+            
             //if (target instanceof L2Summon)
             //	return ((L2Summon)target).getKarma() > 0;
 
             // Check if the L2MonsterInstance target is aggressive
-            if (target instanceof L2MonsterInstance) return ((L2MonsterInstance) target).isAggressive();
+            if (target instanceof L2MonsterInstance) 
+            	return (((L2MonsterInstance) target).isAggressive() && GeoData.getInstance().canSeeTarget(me, target));            	
 
             return false;
         }
         else if (_actor instanceof L2FriendlyMobInstance)
-        {
-            // Check if the actor is a L2FriendlyMobInstance
-
+        { // the actor is a L2FriendlyMobInstance
+            
             // Check if the target isn't another L2NpcInstance
             if (target instanceof L2NpcInstance) return false;
 
             // Check if the L2PcInstance target has karma (=PK)
-            if (target instanceof L2PcInstance) return ((L2PcInstance) target).getKarma() > 0;
-
-            return false;
+            if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
+                // Los Check
+            	return GeoData.getInstance().canSeeTarget(me, target); 
+            else
+            	return false;
         }
         else
         { //The actor is a L2MonsterInstance
@@ -203,7 +204,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             if (target instanceof L2NpcInstance) return false;
 
             // Check if the actor is Aggressive
-            return me.isAggressive();
+            return (me.isAggressive() && GeoData.getInstance().canSeeTarget(me, target));
         }
     }
     public void startAITask()

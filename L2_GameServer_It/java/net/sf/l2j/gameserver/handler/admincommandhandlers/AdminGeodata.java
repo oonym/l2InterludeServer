@@ -52,7 +52,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
-        if (!Config.GEODATA)
+        if (Config.GEODATA < 1)
         {
         	activeChar.sendMessage("Geo Engine is Turned Off!");        			
         	return true;

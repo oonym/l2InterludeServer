@@ -40,6 +40,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.util.Rnd;
 
 /**
@@ -331,6 +332,16 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         	return;
         }
         
+        if (!GeoData.getInstance().canSeeTarget(_actor, _attack_target))
+    	{
+        	// Siege guards differ from normal mobs currently:
+        	// If target cannot seen, don't attack any more
+        	sGuard.clearHating(_attack_target); 
+        	_actor.setTarget(null);
+        	setIntention(AI_INTENTION_IDLE, null, null);
+        	return;
+    	}
+        
         // Check if the actor isn't muted and if it is far from target
         if (!_actor.isMuted() && dist_2 > (range + 20) * (range + 20))
         {
@@ -409,7 +420,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                 else // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
                 {
                 	// Temporary hack for preventing guards jumping off towers, 
-                	// before replacing this with geodata check
+                	// before replacing this with effective geodata checks and AI modification
                 	if(dz*dz < 170*170) // normally 130 if guard z coordinates correct 
                 		moveToPawn(_attack_target, range);
                 }
@@ -422,7 +433,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         else if (_actor.isMuted() && dist_2 > (range + 20) * (range + 20))
         {
         	// Temporary hack for preventing guards jumping off towers, 
-        	// before replacing this with geodata check
+        	// before replacing this with effective geodata checks and AI modification
         	double dz = _actor.getZ() - _attack_target.getZ();
         	if(dz*dz < 170*170) // normally 130 if guard z coordinates correct
         		moveToPawn(_attack_target, range);
@@ -583,12 +594,20 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
                 && _actor.isInsideRadius(npc, npc.getFactionRange(), false, true) 
                 && npc.getTarget() == null
                 && _attack_target.isInsideRadius(npc, npc.getFactionRange(), false, true) 
-                && Math.abs(_attack_target.getZ() - npc.getZ()) < 600
-                // && GeoData.getInstance().canSeeTarget(npc, _attack_target) // LOS from balconies not working yet
                 )
             {
-                // Notify the L2Object AI with EVT_AGGRESSION
-                npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attack_target, 1);
+                if (Config.GEODATA > 0) 
+                {
+                	if (GeoData.getInstance().canSeeTarget(npc, _attack_target))
+                		// Notify the L2Object AI with EVT_AGGRESSION
+                        npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attack_target, 1);                		
+                }
+                else 
+                {
+                	if (Math.abs(_attack_target.getZ() - npc.getZ()) < 600)
+                		// Notify the L2Object AI with EVT_AGGRESSION
+                        npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attack_target, 1);
+                }
             }
         }
     }

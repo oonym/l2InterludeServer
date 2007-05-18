@@ -37,7 +37,7 @@ public class GeoData
     {
         if(_instance == null)
         {        	
-        	if (Config.GEODATA)
+        	if (Config.GEODATA > 0)
         		_instance = GeoEngine.getInstance();
         	else
         	{

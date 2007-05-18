@@ -3311,11 +3311,23 @@ public final class L2PcInstance extends L2PlayableInstance
 						player.sendPacket(new ActionFailed());
 					} else
 					{
-						player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+						if (Config.GEODATA > 0)
+						{
+							if (GeoData.getInstance().canSeeTarget(player, this))
+								player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+						}
+						else
+							player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 					}
 				} else
 				{
-					player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
+					if (Config.GEODATA > 0)
+					{
+						if(GeoData.getInstance().canSeeTarget(player, this))
+							player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
+					}
+					else
+						player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
 				}
 			}
 		}
@@ -3734,7 +3746,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (newTarget != null && !newTarget.isVisible())
 			newTarget = null;
         
-        // Prevents /target exploiting while no geodata
+        // Prevents /target exploiting
 		if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 1000)
             newTarget = null;
 		
@@ -8584,7 +8596,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			// Set the position of the L2Character to the destination
 			super.setXYZ(m._xDestination, m._yDestination, m._zDestination);
-			
 			// Cancel the move action
 			_move = null;
 		}

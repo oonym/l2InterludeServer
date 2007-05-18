@@ -65,6 +65,8 @@ import net.sf.l2j.gameserver.model.entity.Duel;
 import net.sf.l2j.gameserver.model.entity.Zone;
 import net.sf.l2j.gameserver.model.entity.ZoneType;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
+import net.sf.l2j.gameserver.pathfinding.geonodes.GeoPathFinding;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.Attack;
 import net.sf.l2j.gameserver.serverpackets.ChangeMoveType;
@@ -521,10 +523,11 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 
-		// GeoData Los Check here
+		// GeoData Los Check here (or dz > 1000)
         if (!GeoData.getInstance().canSeeTarget(this, target))
         {
             sendPacket(new SystemMessage(SystemMessage.CANT_SEE_TARGET));
+            getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
             sendPacket(new ActionFailed());
             return;
         }
@@ -2892,6 +2895,8 @@ public abstract class L2Character extends L2Object
 		public int _ticksToMove;
 		public float _xSpeedTicks;
 		public float _ySpeedTicks;
+		public int onGeodataPathIndex;
+		//public List<AbstractNodeLoc> geoPath;
 	}
 
 
@@ -2939,9 +2944,6 @@ public abstract class L2Character extends L2Object
 	private int _clientY;
 	private int _clientZ;
 	private int _clientHeading;
-
-
-
 
 
 
@@ -3292,6 +3294,16 @@ public abstract class L2Character extends L2Object
 	{
 		return _move != null;
 	}
+	
+	/**
+	 * Return True if the L2Character is avoiding a geodata obstacle.<BR><BR>
+	 */
+	public final boolean isOnGeodataPath()
+	{
+		if (_move == null) return false;
+		return _move.onGeodataPathIndex != -1;
+	}
+
 
 	/**
 	 * Return True if the L2Character is casting.<BR><BR>
@@ -3426,7 +3438,6 @@ public abstract class L2Character extends L2Object
 			{
 				super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
 			}
-
 			// Cancel the move action
 			_move = null;
 
@@ -3615,10 +3626,10 @@ public abstract class L2Character extends L2Object
 		final int curZ = super.getZ();
 
 		// Calculate distance (dx,dy) between current position and destination
-		final double dx = (x - curX);
-		final double dy = (y - curY);
+		double dx = (x - curX);
+		double dy = (y - curY);
 		double distance = Math.sqrt(dx*dx + dy*dy);
-
+		
 		if (Config.DEBUG) _log.fine("distance to target:" + distance);
 
 		// Define movement angles needed
@@ -3633,7 +3644,6 @@ public abstract class L2Character extends L2Object
 
 		double cos;
 		double sin;
-
 
 		// Check if a movement offset is defined or no distance to go through
 		if (offset > 0 || distance < 1)
@@ -3671,15 +3681,65 @@ public abstract class L2Character extends L2Object
 			sin = dy/distance;
 			cos = dx/distance;
 		}
+		
+		// Create and Init a MoveData object
+		MoveData m = new MoveData();
+		
+		// GEODATA MOVEMENT CHECKS 
+		// TODO: Better integration to code.
+		m.onGeodataPathIndex = -1; // Set not on geodata path
+		if (Config.GEODATA > 0)
+		{
+			double originalDistance = distance;
+			int originalX = x;
+			int originalY = y;
+			int originalZ = z;
 
+			if (Config.GEODATA == 2 || this instanceof L2PlayableInstance) 
+			{			
+				Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
+				// location probably always different due to rounding
+				x = destiny.getX();
+				y = destiny.getY();
+				z = destiny.getZ();
+				distance = Math.sqrt((x - curX)*(x - curX) + (y - curY)*(y - curY));
+			}
+			if(Config.GEODATA == 2 && originalDistance-distance > 100) 
+			{
+				// Path calculation
+				// Note: Overrides previous movement check and currently with
+				// bad results.
+				int gx = (curX - L2World.MAP_MIN_X) >> 4;
+				int gy = (curY - L2World.MAP_MIN_Y) >> 4;
+				int gtx = (originalX - L2World.MAP_MIN_X) >> 4;
+				int gty = (originalY - L2World.MAP_MIN_Y) >> 4;
+				List<AbstractNodeLoc> path = GeoPathFinding.getInstance().FindPath(gx, gy, (short)curZ, gtx, gty, (short)originalZ);
+				if (path == null) // break intention and follow 
+				{
+					getAI().stopFollow();
+					getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+					_log.warning("break, no path");
+					return;
+				}
+				x = path.get(0).getX();
+				y = path.get(0).getY();
+				z = path.get(0).getZ();
+				dx = (x - curX);
+				dy = (y - curY);
+				distance = Math.sqrt(dx*dx + dy*dy);
+				sin = dy/distance;
+				cos = dx/distance;
+				//m.geoPath = path; // not used elsewhere yet
+				m.onGeodataPathIndex = 0; // on first segment
+			}
+		}
+		
 		// Get the Move Speed of the L2Charcater
 		float speed = getStat().getMoveSpeed();
 
-		// Create and Init a MoveData object
-		MoveData m = new MoveData();
-
 		// Caclulate the Nb of ticks between the current position and the destination
-		m._ticksToMove = (int)(GameTimeController.TICKS_PER_SECOND * (distance + 25) / speed);
+		// One tick added for rounding reasons and the other for client animation
+		m._ticksToMove = 2+(int)(GameTimeController.TICKS_PER_SECOND * distance / speed);
 
 		// Calculate the xspeed and yspeed in unit/ticks in function of the movement speed
 		m._xSpeedTicks = (float)(cos * speed / GameTimeController.TICKS_PER_SECOND);
@@ -3703,10 +3763,6 @@ public abstract class L2Character extends L2Object
 		m._xMoveFrom = curX;
 		m._yMoveFrom = curY;
 		m._zMoveFrom = curZ;
-
-		// If necessary set Nb ticks needed to a min value to ensure small distancies movements
-		if (m._ticksToMove < 1 )
-			m._ticksToMove = 1;
 
 		if (Config.DEBUG) _log.fine("time to target:" + m._ticksToMove);
 
@@ -4415,6 +4471,13 @@ public abstract class L2Character extends L2Object
 		}
 		else
 		{
+			// GeoData Los Check or dz > 1000
+	        if (!GeoData.getInstance().canSeeTarget(player, this))
+	        {
+	            player.sendPacket(new SystemMessage(SystemMessage.CANT_SEE_TARGET));
+	            player.sendPacket(new ActionFailed());
+	            return;
+	        }
 			//_log.config("Not within a zone");
 			//player.startAttack(this);
 

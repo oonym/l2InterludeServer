@@ -48,10 +48,11 @@ public class Node
 	
 	public void attacheNeighbors()
 	{
-		_Neighbors = PathFinding.getInstance().ReadNeighbors(_Loc.getNodeX(),_Loc.getNodeY(), _Neighbors_idx);
+		if(_Loc == null) _Neighbors = null;
+		else _Neighbors = PathFinding.getInstance().ReadNeighbors(_Loc.getNodeX(),_Loc.getNodeY(), _Neighbors_idx);
 	}
 
-	public Node[] getNighbors()
+	public Node[] getNeighbors()
 	{
 		return _Neighbors;
 	}

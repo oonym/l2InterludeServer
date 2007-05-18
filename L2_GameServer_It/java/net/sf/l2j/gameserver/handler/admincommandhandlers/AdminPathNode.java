@@ -18,9 +18,14 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import java.util.List;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
+import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
+import net.sf.l2j.gameserver.pathfinding.geonodes.GeoPathFinding;
 
 public class AdminPathNode implements IAdminCommandHandler
 {
@@ -55,7 +60,25 @@ public class AdminPathNode implements IAdminCommandHandler
         }
     	else if(command.equals("admin_find_path"))
         {
-    		
+    		if (Config.GEODATA < 2) 
+    		{
+    			activeChar.sendMessage("PathFinding has not been enabled.");
+    			return true;
+    		}
+    		if (activeChar.getTarget() != null)
+            {
+    			int gx = (activeChar.getX() - L2World.MAP_MIN_X) >> 4;
+    			int gy = (activeChar.getY() - L2World.MAP_MIN_Y) >> 4;
+    			int gtx = (activeChar.getTarget().getX() - L2World.MAP_MIN_X) >> 4;
+    			int gty = (activeChar.getTarget().getY() - L2World.MAP_MIN_Y) >> 4;
+    			List<AbstractNodeLoc> path = GeoPathFinding.getInstance().FindPath(gx, gy, (short)activeChar.getZ(), gtx, gty, (short)activeChar.getTarget().getZ());
+                for(AbstractNodeLoc a : path)
+                {
+                	activeChar.sendMessage("x:"+a.getX()+" y:"+a.getY()+" z:"+a.getZ());
+                }
+            }
+            else            
+                activeChar.sendMessage("No Target!");   
         }
         return true;
     }
