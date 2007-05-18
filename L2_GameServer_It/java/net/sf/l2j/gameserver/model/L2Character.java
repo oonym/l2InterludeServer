@@ -4527,8 +4527,26 @@ public abstract class L2Character extends L2Object
      */
     public Boolean isInActiveRegion()
     {
-        L2WorldRegion region = L2World.getInstance().getRegion(getX(),getY());
-        return  ((region !=null) && (region.isActive()));
+        try
+        {
+        	L2WorldRegion region = L2World.getInstance().getRegion(getX(),getY());
+        	return  ((region !=null) && (region.isActive()));
+        }
+        catch (Exception e)
+        {
+            if (this instanceof L2PcInstance)
+            {
+            	_log.warning("Player "+ this.getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
+            	((L2PcInstance)this).sendMessage("Error with your coords, Please ask a GM for help!");
+            	((L2PcInstance)this).teleToLocation(0,0,0, false);
+            }
+            else 
+            {
+            	_log.warning("Object "+ this.getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");            	
+            	this.decayMe();
+            }
+            return false;
+        }
     }
 
 	/**
