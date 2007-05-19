@@ -30,6 +30,9 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.funcs.Func;
@@ -372,6 +375,12 @@ public final class L2Weapon  extends L2Item
                     handler.useSkill(caster, skill, targets);            
                 else
                     skill.useSkill(caster, targets);
+                
+                if ((caster instanceof L2PcInstance) && (target instanceof L2NpcInstance))
+                {
+                	for (Quest quest: ((L2NpcInstance)target).getTemplate().getEventQuests(Quest.QuestEventType.MOB_TARGETED_BY_SKILL))
+                		quest.notifySkillUse ( (L2NpcInstance) target, (L2PcInstance) caster, skill);
+                }
             }
             catch (IOException e)
             {

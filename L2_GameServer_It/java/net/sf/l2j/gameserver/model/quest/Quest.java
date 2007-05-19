@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -97,7 +98,8 @@ public abstract class Quest
         QUEST_START(true),	// onTalk action from start npcs
         QUEST_TALK(true),		// onTalk action from npcs participating in a quest
         MOBGOTATTACKED(true),	// onAttack action triggered when a mob gets attacked by someone
-        MOBKILLED(true);		// onKill action triggered when a mob gets killed. 
+        MOBKILLED(true),		// onKill action triggered when a mob gets killed. 
+    	MOB_TARGETED_BY_SKILL(true);  // onSkillUse action triggered when a character uses a skill on a mob
         
         // control whether this event type is allowed for the same npc template in multiple quests
         // or if the npc must be registered in at most one quest for the specified event 
@@ -214,6 +216,12 @@ public abstract class Quest
 		npc.showChatWindow(player);
 		return true;
 	}
+	public final boolean notifySkillUse (L2NpcInstance npc, L2PcInstance caster, L2Skill skill) {
+		String res = null;
+		try { res = onSkillUse(npc, caster, skill); } catch (Exception e) { return showError(caster, e); }
+		return showResult(caster, res);
+	}
+
 
 	// these are methods that java calls to invoke scripts
     @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker) { return null; } 
@@ -222,6 +230,7 @@ public abstract class Quest
     @SuppressWarnings("unused") public String onKill (L2NpcInstance npc, L2PcInstance killer) { return null; }
     @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
     @SuppressWarnings("unused") public String onFirstTalk(L2NpcInstance npc, L2PcInstance player) { return null; } 
+    @SuppressWarnings("unused") public String onSkillUse (L2NpcInstance npc, L2PcInstance caster, L2Skill skill) { return null; }
 	
 	/**
 	 * Show message error to player who has an access level greater than 0
@@ -586,6 +595,15 @@ public abstract class Quest
      */
     public L2NpcTemplate addTalkId(int talkId) {
     	return addEventId(talkId, Quest.QuestEventType.QUEST_TALK);
+    }
+    
+    /**
+     * Add this quest to the list of quests that the passed npc will respond to for Skill-Use Events.<BR><BR>
+     * @param npcId : ID of the NPC
+     * @return int : ID of the NPC
+     */
+    public L2NpcTemplate addSkillUseId(int npcId) {
+    	return addEventId(npcId, Quest.QuestEventType.MOB_TARGETED_BY_SKILL);
     }
     
     /**
