@@ -81,8 +81,8 @@ public final class RequestPetUseItem extends L2GameClientPacket
                 useItem(pet, item, activeChar);
                 return;
             }
-            else if (L2PetDataTable.isBaby(pet.getNpcId()) && 
-                    item.getItemId() == 7582) // Baby Spice
+            else if (L2PetDataTable.isBaby(pet.getNpcId()) && // baby pets (buffalo, cougar, kookaboora)
+                    item.getItem().isForBabyPet())
             {
                 useItem(pet, item, activeChar);
                 return;
