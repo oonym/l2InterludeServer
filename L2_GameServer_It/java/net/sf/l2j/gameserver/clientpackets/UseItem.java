@@ -114,7 +114,7 @@ public final class UseItem extends L2GameClientPacket
             
 			// Char cannot use pet items
 			if (item.getItem().isForWolf() || item.getItem().isForHatchling()
-				|| item.getItem().isForStrider())
+				|| item.getItem().isForStrider() || item.getItem().isForBabyPet())
 			{
 				SystemMessage sm = new SystemMessage(600); // You cannot equip a pet item.
 				sm.addItemName(itemId);
