@@ -33,13 +33,13 @@ final class EffectParalyze extends L2Effect {
 		return EffectType.PARALYZE;
 	}
 	
-	public void onStart() {
-		 getEffected().startAbnormalEffect((short)0x0800);
+	public void onStart() 
+	{
        	 getEffected().setIsParalyzed(true);
 	}
 	
-	public void onExit() {
-		 getEffected().stopAbnormalEffect((short)0x0800);
+	public void onExit() 
+	{
 		 getEffected().setIsParalyzed(false);
 	}
 	
