@@ -1973,30 +1973,20 @@ public class L2Attackable extends L2NpcInstance
      */
     private int[] calculateExpAndSp(int diff, int damage)
     {
-        long xp;
-        long sp;
+        double xp;
+        double sp;
 
         if(diff < -5) diff = -5; // makes possible to use ALT_GAME_EXPONENT configuration
-        xp = (long)getExpReward() * damage / getMaxHp(); 
+        xp = (double)getExpReward() * damage / getMaxHp(); 
         if (Config.ALT_GAME_EXPONENT_XP != 0) xp *= Math.pow(2., -diff / Config.ALT_GAME_EXPONENT_XP);
 
-        sp = (long)getSpReward() * damage / getMaxHp();
+        sp = (double)getSpReward() * damage / getMaxHp();
         if (Config.ALT_GAME_EXPONENT_SP != 0) sp *= Math.pow(2., -diff / Config.ALT_GAME_EXPONENT_SP);
         
         if (Config.ALT_GAME_EXPONENT_XP == 0 && Config.ALT_GAME_EXPONENT_SP == 0)
         {
-            // deep blue mob, is more than 8 levels below attacker lvl
-            if (diff > 8)
-            {
-                xp = 0;
-                sp = 0;
-            }
-            // green or light blue mob, is 6 to 8 levels below attacker lvl  
-            else if (diff > 5)
-            {
-                xp -= diff * xp / 10;
-                sp -= diff * sp / 10;
-            }
+            if(diff > 5) // formula revised May 07
+            	xp = xp*Math.pow(5/6, diff-5);
             
             if (xp <= 0)
             {
