@@ -1322,7 +1322,7 @@ public abstract class L2Character extends L2Object
 		getStatus().stopHpMpRegeneration();
 
 		// Stop all active skills effects in progress on the L2Character, 
-		// if the Character isn't a Noblesse Blessed L2PlayableInstance and killed by a raid boss
+		// if the Character isn't a Noblesse Blessed L2PlayableInstance 
 		if (this instanceof L2PlayableInstance && ((L2PlayableInstance)this).isNoblesseBlessed())
 			((L2PlayableInstance)this).stopNoblesseBlessing(null);
 		else
@@ -4328,6 +4328,8 @@ public abstract class L2Character extends L2Object
 				activeWeapon.getSkillEffects(this, target, crit);
 
 			// Check Raidboss attack
+			// Character will be petrified if attacking a raid that's more
+			// than 8 levels lower
 			if (target.isRaid())
 			{
 				int level = 0;
