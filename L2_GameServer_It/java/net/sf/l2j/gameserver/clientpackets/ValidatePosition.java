@@ -22,10 +22,8 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.TaskPriority;
-import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.Universe;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 import net.sf.l2j.gameserver.serverpackets.PartyMemberPosition;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocationInVehicle;
@@ -74,21 +72,23 @@ public class ValidatePosition extends L2GameClientPacket
             activeChar.setClientHeading(_heading);
             int realX = activeChar.getX();
             int realY = activeChar.getY();
-            int realZ = activeChar.getZ();
+            // int realZ = activeChar.getZ();
             
             double dx = _x - realX;
             double dy = _y - realY;
             double diffSq = (dx*dx + dy*dy);
 
+            /*
             if (Config.DEVELOPER && false) 
-                {
-//                int dxs = (_x - activeChar._lastClientPosition.x); 
-//                int dys = (_y - activeChar._lastClientPosition.y);
-//                int dist = (int)Math.sqrt(dxs*dxs + dys*dys);
-//                int heading = dist > 0 ? (int)(Math.atan2(-dys/dist, -dxs/dist) * 10430.378350470452724949566316381) + 32768 : 0;
-                System.out.println("Client X:" + _x + ", Y:" + _y + ", Z:" + _z + ", H:" + _heading/* + "(" + heading + ")"*/ + ", Dist:" + activeChar.getLastClientDistance(_x, _y, _z));
+            {
+            	int dxs = (_x - activeChar._lastClientPosition.x); 
+            	int dys = (_y - activeChar._lastClientPosition.y);
+            	int dist = (int)Math.sqrt(dxs*dxs + dys*dys);
+            	int heading = dist > 0 ? (int)(Math.atan2(-dys/dist, -dxs/dist) * 10430.378350470452724949566316381) + 32768 : 0;
+                System.out.println("Client X:" + _x + ", Y:" + _y + ", Z:" + _z + ", H:" + _heading + ", Dist:" + activeChar.getLastClientDistance(_x, _y, _z));
                 System.out.println("Server X:" + realX + ", Y:" + realY + ", Z:" + realZ + ", H:" + activeChar.getHeading() + ", Dist:" + activeChar.getLastServerDistance(realX, realY, realZ));
-                }
+            }
+        	*/
 
             if (diffSq > 0)
             {
@@ -97,7 +97,10 @@ public class ValidatePosition extends L2GameClientPacket
                     || !activeChar.validateMovementHeading(_heading))) // Heading changed on client = possible obstacle
                 {
                     if (Config.DEVELOPER) System.out.println(activeChar.getName() + ": Synchronizing position Client --> Server" + (activeChar.isMoving()?" (collision)":" (stay sync)"));
-                    activeChar.setXYZ(_x, _y, _z);
+                    if (diffSq < 2500) // 50*50 - attack won't work fluently if even small differences are corrected
+                    	activeChar.setXYZ(realX, realY, _z);
+                    else
+                    	activeChar.setXYZ(_x, _y, _z);
                     activeChar.setHeading(_heading);
                 }
                 else if ((Config.COORD_SYNCHRONIZE & 2) == 2 
@@ -128,7 +131,7 @@ public class ValidatePosition extends L2GameClientPacket
             int realZ = activeChar.getZ();
             
             if (Point3D.distanceSquared(activeChar.getPosition().getWorldPosition(), new Point3D(_x, _y, _z)) < 250000)
-                activeChar.setXYZ(activeChar.getX(),activeChar.getY(),_z);
+                activeChar.setXYZ(realX,realY,_z);
             int realHeading = activeChar.getHeading();
         
             //activeChar.setHeading(_heading);
@@ -165,58 +168,6 @@ public class ValidatePosition extends L2GameClientPacket
                     }
                 }
             }
-            //trigger a KnownList update
-            ThreadPoolManager.getInstance().executeTask( new KnownListAsynchronousUpdateTask(activeChar));
-//          // check for objects that are now out of range
-//          activeChar.updateKnownCounter += 1;
-//          if (activeChar.updateKnownCounter >3)
-//          {
-//          int delete = 0;
-//          Iterator<L2Object> known = activeChar.iterateKnownObjects();
-//          ArrayList<L2Object> toBeDeleted = new ArrayList<L2Object>();
-//          
-//          while (known.hasNext())
-//          {
-//          L2Object obj = known.next();
-//          if (distance(activeChar, obj) > 4000*4000)
-//          {
-//          toBeDeleted.add(obj);
-//          delete++;
-//          }
-//          }
-//          
-//          if (delete >0)
-//          {
-//          for (int i = 0; i < toBeDeleted.size(); i++)
-//          {
-//          L2Object obj = toBeDeleted.get(i);
-//          activeChar.removeKnownObject(obj);
-//          obj.removeKnownObject(activeChar);
-//          
-//          }
-//          if (Config.DEBUG) _log.fine("deleted " +delete+" objects");
-//          }
-//          
-//          
-//          // check for new objects that are now in range
-//          int newObjects = 0;
-//          L2Object[] visible = L2World.getInstance().getVisibleObjects(activeChar, 3000);
-//          for (int i = 0; i < visible.length; i++)
-//          {
-//          if (! activeChar.knownsObject(visible[i]))
-//          {
-//          activeChar.addKnownObject(visible[i]);
-//          visible[i].addKnownObject(activeChar);
-//          newObjects++;
-//          }
-//          }
-//          
-//          if (newObjects >0)
-//          {
-//          if (Config.DEBUG) _log.fine("added " + newObjects + " new objects");
-//          }
-//          activeChar.updateKnownCounter = 0;  
-//          }
         }
 		if(activeChar.getParty() != null)
 			activeChar.getParty().broadcastToPartyMembers(activeChar,new PartyMemberPosition(activeChar));

@@ -3739,8 +3739,8 @@ public abstract class L2Character extends L2Object
 		float speed = getStat().getMoveSpeed();
 
 		// Caclulate the Nb of ticks between the current position and the destination
-		// One tick added for rounding reasons and the other for client animation
-		m._ticksToMove = 2+(int)(GameTimeController.TICKS_PER_SECOND * distance / speed);
+		// One tick added for rounding reasons
+		m._ticksToMove = 1+(int)(GameTimeController.TICKS_PER_SECOND * distance / speed);
 
 		// Calculate the xspeed and yspeed in unit/ticks in function of the movement speed
 		m._xSpeedTicks = (float)(cos * speed / GameTimeController.TICKS_PER_SECOND);

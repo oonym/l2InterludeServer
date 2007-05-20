@@ -661,7 +661,13 @@ abstract class AbstractAI implements Ctrl
                 _actor.broadcastPacket(sr);
             }
         }
-
+    }
+    
+    // Client has already arrived to target, no need to force StopMove packet
+    protected void clientStoppedMoving()
+    {
+    	_client_moving_to_pawn_offset = 0;
+    	_client_moving = false;
     }
     
     public boolean isAutoAttacking()

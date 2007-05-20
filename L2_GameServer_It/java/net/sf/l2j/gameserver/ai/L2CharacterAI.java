@@ -643,7 +643,9 @@ public class L2CharacterAI extends AbstractAI
      */
     protected void onEvtArrived()
     {
-        // If the Intention was AI_INTENTION_MOVE_TO, set the Intention to AI_INTENTION_ACTIVE
+    	clientStoppedMoving();
+    	
+    	// If the Intention was AI_INTENTION_MOVE_TO, set the Intention to AI_INTENTION_ACTIVE
         if (getIntention() == AI_INTENTION_MOVE_TO) setIntention(AI_INTENTION_ACTIVE);
 
         // Launch an explore task if necessary
