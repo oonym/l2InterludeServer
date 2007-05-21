@@ -221,6 +221,7 @@ public abstract class L2Skill
     	UNPOISON, 
     	UNDEAD_DEFENSE, 
     	SEED (L2SkillSeed.class), 
+    	BEAST_FEED,
     	 
         // unimplemented
         NOTDONE;

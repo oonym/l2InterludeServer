@@ -116,6 +116,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTeleport;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTest;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminUnblockIp;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminZone;
+import net.sf.l2j.gameserver.handler.itemhandlers.BeastSpice;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSoulShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.BlessedSpiritShot;
@@ -146,6 +147,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.SpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.SummonItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.WorldMap;
 import net.sf.l2j.gameserver.handler.skillhandlers.BalanceLife;
+import net.sf.l2j.gameserver.handler.skillhandlers.BeastFeed;
 import net.sf.l2j.gameserver.handler.skillhandlers.Charge;
 import net.sf.l2j.gameserver.handler.skillhandlers.CombatPointHeal;
 import net.sf.l2j.gameserver.handler.skillhandlers.Continuous;
@@ -409,6 +411,7 @@ public class GameServer
 		_itemHandler.registerItemHandler(new FishShots());
 		_itemHandler.registerItemHandler(new ExtractableItems());
 		_itemHandler.registerItemHandler(new SummonItems());
+		_itemHandler.registerItemHandler(new BeastSpice());
         _log.config("ItemHandler: Loaded " + _itemHandler.size() + " handlers.");
 
 		_skillHandler = SkillHandler.getInstance();
@@ -436,6 +439,7 @@ public class GameServer
         _skillHandler.registerSkillHandler(new Craft()); 
 		_skillHandler.registerSkillHandler(new Fishing()); 
 		_skillHandler.registerSkillHandler(new FishingSkill()); 
+        _skillHandler.registerSkillHandler(new BeastFeed());
         _log.config("SkillHandler: Loaded " + _skillHandler.size() + " handlers.");
 
 		_adminCommandHandler = AdminCommandHandler.getInstance();

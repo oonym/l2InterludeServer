@@ -6642,7 +6642,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		// If summon siege golem (13), Summon Wild Hog Cannon (299), check its ok to place the flag
 		if ((skill.getId() == 13 || skill.getId() == 299) && !SiegeManager.getInstance().checkIfOkToSummon(this, false))
 			return;
-        
+
+
         //************************************* Check Casting in Progress *******************************************
         
         // If a skill is currently being used, queue this one if this is not the same
@@ -6780,7 +6781,7 @@ public final class L2PcInstance extends L2PlayableInstance
                 }
             }
         }
-        
+       
         //************************************* Check Casting Conditions *******************************************
         
         // Check if the caster own the weapon needed
@@ -6833,7 +6834,7 @@ public final class L2PcInstance extends L2PlayableInstance
         }
 	
         
-        
+      
         //************************************* Check Skill Type *******************************************
 		
         // Check if this is offensive magic skill
@@ -6897,7 +6898,8 @@ public final class L2PcInstance extends L2PlayableInstance
                     && (sklTargetType != SkillTargetType.TARGET_PARTY)
                     && (sklTargetType != SkillTargetType.TARGET_ALLY)
                     && (sklTargetType != SkillTargetType.TARGET_CORPSE_MOB)
-                    && (sklTargetType != SkillTargetType.TARGET_AREA_CORPSE_MOB))
+                    && (sklTargetType != SkillTargetType.TARGET_AREA_CORPSE_MOB)
+                    && (sklType != SkillType.BEAST_FEED))
 			{
 				// send the action failed so that the skill doens't go off.
 				sendPacket (new ActionFailed());

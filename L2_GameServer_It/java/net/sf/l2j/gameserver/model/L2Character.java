@@ -1415,7 +1415,6 @@ public abstract class L2Character extends L2Object
 
 		// Notify the AI with AI_INTENTION_CAST and target
 		getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
-
 	}
 
 
@@ -5185,7 +5184,7 @@ public abstract class L2Character extends L2Object
 										(((L2PcInstance)player).getPvpFlag() > 0 ||
 												((L2PcInstance)player).getKarma() > 0)) activeChar.updatePvPStatus();
 							}
-							else if (player instanceof L2Attackable && !(skill.getSkillType() == L2Skill.SkillType.SUMMON))
+							else if (player instanceof L2Attackable && !(skill.getSkillType() == L2Skill.SkillType.SUMMON)&& !(skill.getSkillType() == L2Skill.SkillType.BEAST_FEED))
 								activeChar.updatePvPStatus();
 						}
 					}
