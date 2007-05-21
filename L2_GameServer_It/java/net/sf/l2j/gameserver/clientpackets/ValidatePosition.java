@@ -90,7 +90,7 @@ public class ValidatePosition extends L2GameClientPacket
             }
         	*/
 
-            if (diffSq > 0)
+            if (diffSq > 0 && diffSq < 250000) // if too large, messes observation
             {
                 if ((Config.COORD_SYNCHRONIZE & 1) == 1
                     && (!activeChar.isMoving() // character is not moving, take coordinates from client
@@ -130,7 +130,10 @@ public class ValidatePosition extends L2GameClientPacket
             int realY = activeChar.getY();
             int realZ = activeChar.getZ();
             
-            if (Point3D.distanceSquared(activeChar.getPosition().getWorldPosition(), new Point3D(_x, _y, _z)) < 250000)
+            double dx = _x - realX;
+            double dy = _y - realY;
+            double diffSq = (dx*dx + dy*dy);
+            if (diffSq < 250000)
                 activeChar.setXYZ(realX,realY,_z);
             int realHeading = activeChar.getHeading();
         
@@ -153,11 +156,8 @@ public class ValidatePosition extends L2GameClientPacket
             
             if (Config.DEVELOPER)
             {
-                double dx = _x - realX;
-                double dy = _y - realY;
-                double diff2 = (dx*dx + dy*dy);
-                if (diff2 > 1000000) {
-                    if (Config.DEBUG) _log.fine("client/server dist diff "+ (int)Math.sqrt(diff2));
+                if (diffSq > 1000000) {
+                    if (Config.DEBUG) _log.fine("client/server dist diff "+ (int)Math.sqrt(diffSq));
                     if (activeChar.isInBoat())
                     {
                         sendPacket(new ValidateLocationInVehicle(activeChar));
