@@ -38,8 +38,6 @@ public class BeastSpice implements IItemHandler
 			return;
 		
 		L2PcInstance activeChar = (L2PcInstance)playable;
-		if (activeChar.getPet() != null)
-			return; 		// cannot feed beasts while having a summoned servitor.
 
 		if (!(activeChar.getTarget() instanceof L2NpcInstance))
 		{
