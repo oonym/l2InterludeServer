@@ -258,9 +258,9 @@ public class MapRegionTable
             	        if (zone != null && !zone.getCoords().isEmpty())
             	        {
             	            coord = zone.getCoords().get(0);
-            	            coord[0] += (coord[2] - coord[0])/2;
-            	            coord[1] += (coord[3] - coord[1])/2;
-            	            return new Location(coord[0], coord[1], coord[4]); 
+            	            int x = coord[0] + (coord[2] - coord[0])/2;
+            			    int y = coord[1] + (coord[3] - coord[1])/2;
+            	            return new Location(x, y, coord[4]); 
             	        }
             	    }
                 }
