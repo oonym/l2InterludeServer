@@ -1,4 +1,5 @@
 @echo off
+title Game Server Console
 :start
 echo Starting L2J Game Server.
 echo.

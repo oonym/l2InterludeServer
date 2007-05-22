@@ -1,4 +1,5 @@
 @echo off
+title Login Server Console
 :start
 echo Starting L2J Login Server.
 echo.
