@@ -60,7 +60,8 @@ public class RequestUnEquipItem extends L2GameClientPacket
 		if (activeChar == null)
 		    return;
 		
-		if (activeChar.getInventory().getPaperdollItemByL2ItemId(_slot).isWear())
+		L2ItemInstance item = activeChar.getInventory().getPaperdollItemByL2ItemId(_slot);
+		if (item != null && item.isWear())
 		{
 			// Wear-items are not to be unequipped
 			return;
