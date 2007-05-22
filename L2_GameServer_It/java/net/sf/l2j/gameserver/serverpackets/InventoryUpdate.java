@@ -115,8 +115,7 @@ public class InventoryUpdate extends L2GameServerPacket
 			writeH(item.getEnchant());	            // Enchant level (pet level shown in control item)
 			writeH(item.getCustomType2());          // Pet name exists or not shown in control item
 			
-			writeH(0x00); // C6
-			writeH(0x00); // C6
+			writeD(item.getAugemtationBoni());
 			writeD(-1); // C6
 		}
 	}

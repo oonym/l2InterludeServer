@@ -62,6 +62,8 @@ import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.ExShowVariationMakeWindow;
+import net.sf.l2j.gameserver.serverpackets.ExShowVariationCancelWindow;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
@@ -1096,6 +1098,21 @@ public class L2NpcInstance extends L2Character
             else if (command.startsWith("exc_multisell"))
             {
             	player.sendPacket(new MultiSellList(Integer.parseInt(command.substring(13).trim()), this, true, player));
+            }
+            else if (command.startsWith("Augment"))
+            {
+            	int cmdChoice = Integer.parseInt(command.substring(8, 9).trim());
+            	switch (cmdChoice)
+            	{
+            		case 1:
+            			player.sendPacket(new SystemMessage(SystemMessage.SELECT_THE_ITEM_TO_BE_AUGMENTED));
+            			player.sendPacket(new ExShowVariationMakeWindow());
+            			break;
+            		case 2:
+            			player.sendPacket(new SystemMessage(SystemMessage.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
+            			player.sendPacket(new ExShowVariationCancelWindow());
+            			break;
+            	}
             }
             else if (command.startsWith("npcfind_byid"))
             {

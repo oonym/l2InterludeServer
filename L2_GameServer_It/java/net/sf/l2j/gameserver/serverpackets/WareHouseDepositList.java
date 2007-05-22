@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import java.util.logging.Logger;
+import javolution.util.FastList;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -39,7 +40,7 @@ public class WareHouseDepositList extends L2GameServerPacket
 	private static final String _S__53_WAREHOUSEDEPOSITLIST = "[S] 41 WareHouseDepositList";
 	private L2PcInstance _player;
 	private int _playerAdena;
-	private L2ItemInstance[] _items;
+	private FastList<L2ItemInstance> _items;
 	private int _whtype;
 
 	public WareHouseDepositList(L2PcInstance player, int type)
@@ -47,7 +48,15 @@ public class WareHouseDepositList extends L2GameServerPacket
         _player = player;
 		_whtype = type;
 		_playerAdena = _player.getAdena();
-		_items = _player.getInventory().getAvailableItems(true);
+		_items = new FastList<L2ItemInstance>();
+		
+		for (L2ItemInstance temp : _player.getInventory().getAvailableItems(true))
+			_items.add(temp);
+		
+		// augmented items can be stored in private wh
+		if (_whtype == Private)
+			for (L2ItemInstance temp : _player.getInventory().getAugmentedItems())
+				if (temp != null && !temp.isEquipped()) _items.add(temp);
 	}
 	
 	protected final void writeImpl()
@@ -59,14 +68,12 @@ public class WareHouseDepositList extends L2GameServerPacket
         * 0x04-Warehouse */  
         writeH(_whtype);        
 		writeD(_playerAdena); 
-		int count = _items.length;
+		int count = _items.size();
 		if (Config.DEBUG) _log.fine("count:"+count);
 		writeH(count);
 		
-		for (int i = 0; i < count; i++)
+		for (L2ItemInstance item : _items)
 		{
-			L2ItemInstance item = _items[i];
-			
 			writeH(item.getItem().getType1()); // item type1 //unconfirmed, works
 			writeD(item.getObjectId()); //unconfirmed, works
 			writeD(item.getItemId()); //unconfirmed, works
@@ -77,9 +84,13 @@ public class WareHouseDepositList extends L2GameServerPacket
 			writeH(item.getEnchantLevel());	// enchant level -confirmed
 			writeH(0x00);	// ? 300
 			writeH(0x00);	// ? 200
-			writeD(item.getObjectId()); // item id - confimed			
-			writeD(0x00); // C6			
-			writeD(0x00); // C6			
+			writeD(item.getObjectId()); // item id - confimed
+			if (item.isAugmented())
+			{
+				writeD(0x0000FFFF&item.getAugmentation().getAugmentationId());
+				writeD(item.getAugmentation().getAugmentationId()>>16);
+			}
+			else writeQ(0x00);
 		}
 	}
 	

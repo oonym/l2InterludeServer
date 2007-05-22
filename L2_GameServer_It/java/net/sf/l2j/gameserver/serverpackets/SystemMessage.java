@@ -703,6 +703,27 @@ public class SystemMessage extends L2GameServerPacket
     public static final int S1_CANNOT_DUEL_BECAUSE_S1_IS_PARTICIPATING_IN_A_SIEGE_WAR = 2026;
     public static final int S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_RIDING_A_BOAT_WYVERN_OR_STRIDER = 2027;
     public static final int S1_CANNOT_RECEIVE_A_DUEL_CHALLENGE_BECAUSE_S1_IS_TOO_FAR_AWAY = 2028;
+    
+    // Augmentation
+    public static final int SELECT_THE_ITEM_TO_BE_AUGMENTED = 1957;
+    public static final int SELECT_THE_CATALYST_FOR_AUGMENTATION = 1958;
+    public static final int REQUIRES_S1_S2 = 1959;
+    public static final int THIS_IS_NOT_A_SUITABLE_ITEM = 1960;
+    public static final int GEMSTONE_QUANTITY_IS_INCORRECT = 1961;
+    public static final int THE_ITEM_WAS_SUCCESSFULLY_AUGMENTED = 1962;
+    public static final int SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION = 1963;
+    public static final int AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM = 1964;
+    public static final int AUGMENTATION_HAS_BEEN_SUCCESSFULLY_REMOVED_FROM_YOUR_S1 = 1965;
+    public static final int ONCE_AN_ITEM_IS_AUGMENTED_IT_CANNOT_BE_AUGMENTED_AGAIN = 1970;
+    
+    public static final int YOU_CANNOT_AUGMENT_ITEMS_WHILE_A_PRIVATE_STORE_OR_PRIVATE_WORKSHOP_IS_IN_OPERATION = 1972;
+    public static final int YOU_CANNOT_AUGMENT_ITEMS_WHILE_DEAD = 1974;
+    public static final int YOU_CANNOT_AUGMENT_ITEMS_WHILE_PARALYZED = 1976;
+    public static final int YOU_CANNOT_AUGMENT_ITEMS_WHILE_FISHING = 1977;
+    public static final int YOU_CANNOT_AUGMENT_ITEMS_WHILE_SITTING_DOWN = 1978;
+    
+    public static final int PRESS_THE_AUGMENT_BUTTON_TO_BEGIN = 1984;
+    public static final int AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS = 2001;
 
     
     // Unlock

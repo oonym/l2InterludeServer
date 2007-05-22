@@ -83,6 +83,12 @@ public class RequestUnEquipItem extends L2GameClientPacket
         if (activeChar.isAttackingNow() || activeChar.isCastingNow()) 
         	return;
         
+        // Remove augmentation boni
+        if (item != null && item.isAugmented())
+        {
+        	item.getAugmentation().removeBoni(activeChar);
+        }
+        
 		L2ItemInstance[] unequiped =
 			activeChar.getInventory().unEquipItemInBodySlotAndRecord(_slot); 
 		

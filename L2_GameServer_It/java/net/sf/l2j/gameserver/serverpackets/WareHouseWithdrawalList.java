@@ -86,8 +86,12 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 			writeH(0x00);	// ?
 			writeH(0x00);	// ?
 			writeD(item.getObjectId()); // item id - confimed		
-			writeD(0x00); // C6		
-			writeD(0x00); // C6		
+			if (item.isAugmented())
+			{
+				writeD(0x0000FFFF&item.getAugmentation().getAugmentationId());
+				writeD(item.getAugmentation().getAugmentationId()>>16);
+			}
+			else writeQ(0x00);
 		}
 	}
 	

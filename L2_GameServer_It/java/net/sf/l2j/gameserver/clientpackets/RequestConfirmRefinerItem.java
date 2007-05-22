@@ -17,6 +17,13 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ExConfirmVariationRefiner;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.templates.L2Item;
+
 /**
  * Fromat(ch) dd
  * @author  -Wooden-
@@ -24,8 +31,12 @@ package net.sf.l2j.gameserver.clientpackets;
 public class RequestConfirmRefinerItem extends L2GameClientPacket
 {
 	private static final String _C__D0_2A_REQUESTCONFIRMREFINERITEM = "[C] D0:2A RequestConfirmRefinerItem";
-	private int _unk;
-	private int _unk2;
+	
+	private static final int GEMSTONE_D = 2130;
+	private static final int GEMSTONE_C = 2131;
+	
+	private int _targetItemObjId;
+	private int _refinerItemObjId;
 
 	/**
 	 * @param buf
@@ -33,8 +44,8 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 	 */
 	protected void readImpl()
 	{
-		_unk = readD();
-		_unk2 = readD();
+		_targetItemObjId = readD();
+		_refinerItemObjId = readD();
 	}
 
 	/**
@@ -44,10 +55,56 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 	protected
 	void runImpl()
 	{
-		// TODO
-		System.out.println("C6: RequestConfirmRefinerItem. unk: "+_unk);
-		System.out.println("C6: RequestConfirmRefinerItem. unk2: "+_unk2);
+		L2PcInstance activeChar = getClient().getActiveChar();
+		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
+		L2ItemInstance refinerItem = (L2ItemInstance)L2World.getInstance().findObject(_refinerItemObjId);
+		
+		if (targetItem == null || refinerItem == null) return;
+		
+		int itemGrade = targetItem.getItem().getItemGrade();
+		int refinerItemId = refinerItem.getItem().getItemId();
 
+		// is the item a life stone?
+		if (refinerItemId < 8723 || refinerItemId > 8762)
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_IS_NOT_A_SUITABLE_ITEM));
+			return;
+		}
+		
+		int gemstoneCount=0;
+		int gemstoneItemId=0;
+		SystemMessage sm = new SystemMessage(SystemMessage.REQUIRES_S1_S2);
+		switch (itemGrade)
+		{
+			case L2Item.CRYSTAL_C:
+				gemstoneCount = 20;
+				gemstoneItemId = GEMSTONE_D;
+				sm.addNumber(gemstoneCount);
+				sm.addString("Gemstone D");
+				break;
+			case L2Item.CRYSTAL_B:
+				gemstoneCount = 30;
+				gemstoneItemId = GEMSTONE_D;
+				sm.addNumber(gemstoneCount);
+				sm.addString("Gemstone D");
+				break;
+			case L2Item.CRYSTAL_A:
+				gemstoneCount = 20;
+				gemstoneItemId = GEMSTONE_C;
+				sm.addNumber(gemstoneCount);
+				sm.addString("Gemstone C");
+				break;
+			case L2Item.CRYSTAL_S:
+				gemstoneCount = 25;
+				gemstoneItemId = GEMSTONE_C;
+				sm.addNumber(gemstoneCount);
+				sm.addString("Gemstone C");
+				break;
+		}
+		
+		activeChar.sendPacket(new ExConfirmVariationRefiner(_refinerItemObjId, refinerItemId, gemstoneItemId, gemstoneCount));
+		
+		activeChar.sendPacket(sm);
 	}
 
 	/**

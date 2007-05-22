@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.datatables.ArmorSetsTable;
+import net.sf.l2j.gameserver.datatables.AugmentationData;
 import net.sf.l2j.gameserver.datatables.CharNameTable;
 import net.sf.l2j.gameserver.datatables.CharTemplateTable;
 import net.sf.l2j.gameserver.datatables.ClanTable;
@@ -352,6 +353,7 @@ public class GameServer
 		Announcements.getInstance();
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
+		AugmentationData.getInstance();
 		
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance();  

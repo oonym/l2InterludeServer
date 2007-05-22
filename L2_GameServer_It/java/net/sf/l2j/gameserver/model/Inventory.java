@@ -602,6 +602,23 @@ public abstract class Inventory extends ItemContainer
 		}
 		return 0;
 	}
+	
+	public int getPaperdollAugmentationId(int slot)
+	{
+		L2ItemInstance item = _paperdoll[slot];
+		if (item != null)
+		{
+			if (item.getAugmentation() != null)
+			{
+				return item.getAugmentation().getAugmentationId();
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		return 0;
+	}
 
 	/**
 	 * Returns the objectID associated to the item in the paperdoll slot

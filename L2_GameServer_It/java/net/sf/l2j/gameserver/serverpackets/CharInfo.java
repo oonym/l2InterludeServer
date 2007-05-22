@@ -179,6 +179,7 @@ public class CharInfo extends L2GameServerPacket
 			writeH(0x00);
 			writeH(0x00);
 			writeH(0x00);
+			writeD(_inv.getPaperdollAugmentationId(Inventory.PAPERDOLL_RHAND));
 			writeH(0x00);
 			writeH(0x00);
 			writeH(0x00);
@@ -191,10 +192,7 @@ public class CharInfo extends L2GameServerPacket
 			writeH(0x00);
 			writeH(0x00);
 			writeH(0x00);
-			writeH(0x00);
-			writeH(0x00);
-			writeH(0x00);
-			writeH(0x00);
+			writeD(_inv.getPaperdollAugmentationId(Inventory.PAPERDOLL_LRHAND));
 			writeH(0x00);
 			writeH(0x00);
 			writeH(0x00);

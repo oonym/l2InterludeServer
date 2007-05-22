@@ -17,6 +17,13 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ExConfirmCancelItem;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.templates.L2Item;
+
 /**
  * Format(ch) d
  * @author  -Wooden-
@@ -24,7 +31,7 @@ package net.sf.l2j.gameserver.clientpackets;
 public final class RequestConfirmCancelItem extends L2GameClientPacket
 {
 	private static final String _C__D0_2D_REQUESTCONFIRMCANCELITEM = "[C] D0:2D RequestConfirmCancelItem";
-	private int _unk;
+	private int _itemId;
 
 	/**
 	 * @param buf
@@ -32,7 +39,7 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 	 */
 	protected void readImpl()
 	{
-		_unk = readD();
+		_itemId = readD();
 	}
 
 	/**
@@ -42,9 +49,39 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 	protected
 	void runImpl()
 	{
-		// TODO
-		System.out.println("C6: RequestConfirmCancelItem. unk: "+_unk);
-
+		L2PcInstance activeChar = getClient().getActiveChar();
+		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemId);
+		
+		if (!item.isAugmented())
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessage.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM));
+			return;
+		}
+		
+		int price=0;
+		switch (item.getItem().getItemGrade())
+		{
+			//TODO: C: low:95k, med:150k, high:210k
+			case L2Item.CRYSTAL_C:
+				price = 150000;
+				break;
+			//TODO: B: low:240k, med:270k
+			case L2Item.CRYSTAL_B:
+				price = 240000;
+				break;
+			//TODO: A: low:330k, med:390k, high:420k
+			case L2Item.CRYSTAL_A:
+				price = 390000;
+				break;
+			case L2Item.CRYSTAL_S:
+				price = 480000;
+				break;
+			// any other item type is not augmentable
+			default:
+				return;
+		}
+		
+		activeChar.sendPacket(new ExConfirmCancelItem(_itemId, price));
 	}
 
 	/**
