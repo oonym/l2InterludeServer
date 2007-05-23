@@ -315,6 +315,39 @@ public abstract class L2Character extends L2Object
 	}
 
 	/**
+	 * Send a packet to the L2Character AND to all L2PcInstance in the radius (max knownlist radius) from the L2Character.<BR><BR>
+	 *
+	 * <B><U> Concept</U> :</B><BR><BR>
+	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.
+	 * In order to inform other players of state modification on the L2Character, server just need to go through _knownPlayers to send Server->Client Packet<BR><BR>
+	 *
+	 */
+	public final void broadcastPacket(L2GameServerPacket mov, int radiusInKnownlist)
+	{
+		if (!(mov instanceof CharInfo))
+			sendPacket(mov);
+
+		if (getKnownList().getKnownPlayers() == null) return;
+
+		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
+
+		if (knownPlayers == null) return;
+
+		if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
+
+        for (L2PcInstance player : knownPlayers)
+        {
+        	if (player == null || player == this || !isInsideRadius(player, radiusInKnownlist, false, false)) continue;
+        	player.sendPacket(mov);
+        	if (mov instanceof CharInfo && this instanceof L2PcInstance) {
+        		int relation = ((L2PcInstance)this).getRelation(player);
+        		if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
+        			player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
+        	}
+        }
+	}
+	
+	/**
 	 * Returns true if hp update should be done, false if not
 	 * @return boolean
 	 */

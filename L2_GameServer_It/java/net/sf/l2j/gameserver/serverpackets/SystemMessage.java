@@ -314,11 +314,14 @@ public class SystemMessage extends L2GameServerPacket
 	public static final int YOU_PICKED_UP_S1_ADENA = 28;
 	public static final int YOU_PICKED_UP_S1_S2 = 29;
 	public static final int YOU_PICKED_UP_S1 = 30;	
+	public static final int YOU_PICKED_UP_A_S1_S2 = 369; //enchanted item
 	public static final int S1_PICKED_UP_S2_S3 = 299;
 	public static final int S1_PICKED_UP_S2 = 300;
     public static final int FAILED_TO_PICKUP_S1_ADENA = 55;
     public static final int FAILED_TO_PICKUP_S1 = 56;
     public static final int FAILED_TO_PICKUP_S2_S1_s = 57;
+    public static final int ATTENTION_S1_PICKED_UP_S2 = 1533;
+    public static final int ATTENTION_S1_PICKED_UP_S2_S3 = 1534;
     
 	//GM LIST
 	public static final int GM_LIST = 703;

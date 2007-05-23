@@ -2609,6 +2609,13 @@ public final class L2PcInstance extends L2PlayableInstance
 					sm.addNumber(item.getCount());
 					sendPacket(sm);
 				}
+				else if (item.getEnchantLevel() > 0)
+				{
+					SystemMessage sm = new SystemMessage(SystemMessage.YOU_PICKED_UP_A_S1_S2);
+					sm.addNumber(item.getEnchantLevel());
+					sm.addItemName(item.getItemId());
+					sendPacket(sm);
+				}
 				else
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.YOU_PICKED_UP_S1);
@@ -3716,6 +3723,26 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		else
 		{
+			// if item is instance of L2ArmorType or L2WeaponType broadcast an "Attention" system message
+			if(target.getItemType() instanceof L2ArmorType || target.getItemType() instanceof L2WeaponType)
+			{
+				if (target.getEnchantLevel() > 0)
+				{
+					SystemMessage msg = new SystemMessage(SystemMessage.ATTENTION_S1_PICKED_UP_S2_S3);
+					msg.addString(getName());
+					msg.addNumber(target.getEnchantLevel());
+					msg.addItemName(target.getItemId());
+					broadcastPacket(msg, 1400);
+				}
+				else
+				{
+					SystemMessage msg = new SystemMessage(SystemMessage.ATTENTION_S1_PICKED_UP_S2);
+					msg.addString(getName());
+					msg.addItemName(target.getItemId());
+					broadcastPacket(msg, 1400);
+				}
+			}
+			
 			// Check if a Party is in progress
 			if (isInParty()) getParty().distributeItem(this, target);
 			// Target is adena 
