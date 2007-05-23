@@ -505,6 +505,10 @@ public class L2Attackable extends L2NpcInstance
                 		ddealer = ((L2SummonInstance)attacker).getOwner();
                 	else
                 		ddealer = info.attacker;
+                	
+                	// Check if ddealer isn't too far from this (killed monster)
+                	if (!Util.checkIfInRange(1600, this, ddealer, true)) continue;
+                	
                 	// Calculate real damages (Summoners should get own damage plus summon's damage)                    
                 	reward = rewards.get(ddealer);
                         
@@ -527,6 +531,7 @@ public class L2Attackable extends L2NpcInstance
         	long exp;
         	int levelDiff;
         	int partyDmg;
+        	int partyLvl;
         	float partyMul;
         	float penalty;
         	RewardInfo reward2;
@@ -610,9 +615,10 @@ public class L2Attackable extends L2NpcInstance
                     //share with party members
                     partyDmg = 0;
                     partyMul = 1.f;
+                    partyLvl = 0;
                     
-                    // Get all L2Character (including L2Summon) that can be rewarded in the party
-                    List<L2Character> rewardedMembers = new FastList<L2Character>();
+                    // Get all L2Character that can be rewarded in the party
+                    List<L2PcInstance> rewardedMembers = new FastList<L2PcInstance>();
                     
                     // Go through all L2PcInstance in the party
                     for (L2PcInstance pl : attackerParty.getPartyMembers())
@@ -625,16 +631,25 @@ public class L2Attackable extends L2NpcInstance
                         // If the L2PcInstance is in the L2Attackable rewards add its damages to party damages
                         if (reward2 != null)
                         {
-                            // Add L2PcInstance damages to party damages
-                            partyDmg += reward2.dmg;
-                            
-                            // Remove the L2PcInstance from the L2Attackable rewards
-                            rewards.remove(pl);
+                        	if (Util.checkIfInRange(1600, this, pl, true))
+                        	{
+                        		partyDmg += reward2.dmg; // Add L2PcInstance damages to party damages
+                        		rewardedMembers.add(pl);
+                        		if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
+                        	}
+                        	rewards.remove(pl); // Remove the L2PcInstance from the L2Attackable rewards
                         }
-                        
-                        // Add L2PcInstance of the party (that have attacked or not) to members that can be rewarded if it's not dead
-                        // and in range of the monster.
-                        if (!pl.isDead() && Util.checkIfInRange(1150, this, pl, true)) rewardedMembers.add(pl);
+                        else
+                        {
+                        	// Add L2PcInstance of the party (that have attacked or not) to members that can be rewarded
+                        	// and in range of the monster.
+                        	if (Util.checkIfInRange(1600, this, pl, true))
+                        	{
+                        		rewardedMembers.add(pl);
+                        		if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
+                        	}
+
+                        }
                     }
                     
                     // If the party didn't killed this L2Attackable alone
@@ -644,7 +659,7 @@ public class L2Attackable extends L2NpcInstance
                     if (partyDmg > getMaxHp()) partyDmg = getMaxHp();
                     
                     // Calculate the level difference between Party and L2Attackable
-                    levelDiff = attackerParty.getLevel() - getLevel();
+                    levelDiff = partyLvl - getLevel();
                     
                     // Calculate Exp and SP rewards
                     tmp = calculateExpAndSp(levelDiff, partyDmg);
@@ -676,7 +691,7 @@ public class L2Attackable extends L2NpcInstance
                     }
                     
                     // Distribute Experience and SP rewards to L2PcInstance Party members in the known area of the last attacker
-                    if (partyDmg > 0) attackerParty.distributeXpAndSp(exp, sp, rewardedMembers, lastAttacker);
+                    if (partyDmg > 0) attackerParty.distributeXpAndSp(exp, sp, rewardedMembers, partyLvl);
                 }
             }
         }

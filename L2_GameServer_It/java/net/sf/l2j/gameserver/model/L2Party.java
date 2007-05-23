@@ -26,7 +26,6 @@ import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.SevenSignsFestival;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.serverpackets.PartySmallWindowAdd;
@@ -51,7 +50,6 @@ public class L2Party {
 	//private static Logger _log = Logger.getLogger(L2Party.class.getName());
 	
 	private List<L2PcInstance> _members = null;
-	private List<L2PcInstance> _validMembers = null;
     private int _pendingInvitation = 0;       // Number of players that already have been invited (but not replied yet)
 	private int _partyLvl = 0;
 	private int _itemDistribution = 0;
@@ -70,10 +68,8 @@ public class L2Party {
 	 */
 	public L2Party(L2PcInstance leader, int itemDistribution) 
 	{
-		_validMembers = new FastList<L2PcInstance>();
 		_itemDistribution = itemDistribution;
 		getPartyMembers().add(leader);
-		_validMembers.add(leader);
 		_partyLvl = leader.getLevel();
 	}
 	
@@ -101,12 +97,6 @@ public class L2Party {
     public void increasePendingInvitationNumber() { _pendingInvitation++; }
     
 	/**
-	 * returns number of party members
-	 * @return
-	 */
-	public int getValidMemberCount() { return _validMembers.size(); }
-	
-	/**
 	 * returns all party members
 	 * @return
 	 */
@@ -127,7 +117,7 @@ public class L2Party {
 		for (L2PcInstance member : getPartyMembers())
 		{
 			if (member.getInventory().validateCapacityByItemId(ItemId) &&
-                    Util.checkIfInRange(1150, target, member, true)) availableMembers.add(member);
+                    Util.checkIfInRange(1400, target, member, true)) availableMembers.add(member);
 		}
 		if (availableMembers.size() > 0) return availableMembers.get(Rnd.get(availableMembers.size()));
 		else return null;
@@ -153,7 +143,7 @@ public class L2Party {
 			L2PcInstance member = getPartyMembers().get(_itemLastLoot);
 			
 			if (member.getInventory().validateCapacityByItemId(ItemId) &&
-                    Util.checkIfInRange(1150, target, member, true)) return member;
+                    Util.checkIfInRange(1400, target, member, true)) return member;
 		}
 		
 		return null;
@@ -247,11 +237,9 @@ public class L2Party {
 		
 		//add player to party, adjust party level
 		getPartyMembers().add(player);
-		if (checkMemberValidity(player)) _validMembers.add(player);
 		if (player.getLevel() > _partyLvl)
 		{
 			_partyLvl = player.getLevel();
-			recalculateValidMembers();
 		}
         
 		// update partySpelled
@@ -268,7 +256,6 @@ public class L2Party {
 		if (getPartyMembers().contains(player)) 
 		{
 			getPartyMembers().remove(player);
-			if (_validMembers.contains(player)) _validMembers.remove(player);
 			recalculatePartyLevel();
 			
 			if (player.isFestivalParticipant())
@@ -378,7 +365,6 @@ public class L2Party {
             {
                 // No more party needed
                 _members = null;
-                _validMembers = null;
             }
 		}
 	}
@@ -414,7 +400,6 @@ public class L2Party {
             {
                 // No more party needed
                 _members = null;
-                _validMembers = null;
             }
 		}
 	}
@@ -526,7 +511,7 @@ public class L2Party {
         List<L2PcInstance> ToReward = new FastList<L2PcInstance>();
 		for(L2PcInstance member : membersList)
 		{
-            if (!Util.checkIfInRange(1150, target, member, true)) continue;
+            if (!Util.checkIfInRange(1400, target, member, true)) continue;
             ToReward.add(member);
 		}
         
@@ -552,24 +537,23 @@ public class L2Party {
 	 * 
 	 * @param xpReward The Experience reward to distribute
 	 * @param spReward The SP reward to distribute
-	 * @param rewardedMembers The list of L2PcInstance to reward and LSummonInstance whose owner must be reward
-	 * @param lastAttacker The L2Character that has killed the L2Attackable
+	 * @param rewardedMembers The list of L2PcInstance to reward
 	 * 
 	 */
-	public void distributeXpAndSp(long xpReward, int spReward, List<L2Character> rewardedMembers, L2Character lastAttacker) 
+	public void distributeXpAndSp(long xpReward, int spReward, List<L2PcInstance> rewardedMembers, int topLvl) 
 	{
 		L2SummonInstance summon = null;
-		L2PcInstance owner      = null;
+		List<L2PcInstance> validMembers = getValidMembers(rewardedMembers, topLvl);
 		
 		float penalty;
 		double sqLevel;
 		double preCalculation;
 		
-		xpReward *= getExpBonus();
-		spReward *= getSpBonus();
+		xpReward *= getExpBonus(validMembers.size());
+		spReward *= getSpBonus(validMembers.size());
 		
 		double sqLevelSum = 0;
-		for (L2PcInstance character : _validMembers)
+		for (L2PcInstance character : validMembers)
 			sqLevelSum += (character.getLevel() * character.getLevel());
 		
 		List<L2Character> ToRemove = new FastList<L2Character>();
@@ -579,53 +563,36 @@ public class L2Party {
 		{
 			for (L2Character member : rewardedMembers)
 			{
-				if(ToRemove != null && ToRemove.contains(member)) continue;
+				if(ToRemove != null && ToRemove.contains(member) || member.isDead()) continue;
 				
-				// Check if members are near the last Attacker
-				if ((member instanceof L2PlayableInstance && lastAttacker.getKnownList().knowsObject(member)) || lastAttacker.getKnownList().knowsThePlayer((L2PcInstance)member))
+				penalty = 0;
+					
+				// The L2SummonInstance penalty
+				if (member.getPet() instanceof L2SummonInstance)
 				{
-					penalty = 0;
+					summon     = (L2SummonInstance)member.getPet();
+					penalty    = summon.getExpPenalty();
 					
-					// The reward can only be given to a L2PcInstance that owns the L2SummonInstance
-					// The Summon and the L2PcInstance are in the rewarded members table, but it's impossible to know which one is first
-					// That's why only one of them must be used (remove the other during the calculation of the first)
-					if (member instanceof L2SummonInstance)
+					// Remove the L2SummonInstance from the rewarded members
+					if (rewardedMembers.contains(member.getPet()))
 					{
-						summon  = (L2SummonInstance)member;
-						penalty = summon.getExpPenalty();
-						owner   = summon.getOwner();
-						
-						// Remove the owner from the rewarded members
-						if (rewardedMembers.contains(owner)) ToRemove.add(owner);
+						ToRemove.add(summon);
 					}
-					else if (member instanceof L2PcInstance)
-					{ 
-						owner   = (L2PcInstance)member;
-						
-						// The L2SummonInstance penalty
-						if (owner.getPet() instanceof L2SummonInstance)
-						{
-							summon     = (L2SummonInstance)owner.getPet();
-							penalty    = summon.getExpPenalty();
-							
-							// Remove the L2SummonInstance from the rewarded members
-							if (rewardedMembers.contains(owner.getPet()))
-							{
-								ToRemove.add(summon);
-							}
-						}
-					}
+				}
 					
-					// Calculate and add the EXP and SP reward to the member
-					if (_validMembers.contains(member))
-					{
-						sqLevel = member.getLevel() * member.getLevel();
-						preCalculation = (sqLevel / sqLevelSum) * (1 - penalty);
-						
-						// Add the XP/SP points to the requested party member
-						member.addExpAndSp(Math.round(member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null)), 
-						                   (int)member.calcStat(Stats.EXPSP_RATE, spReward * preCalculation, null, null));
-					}
+				// Calculate and add the EXP and SP reward to the member
+				if (validMembers.contains(member))
+				{
+					sqLevel = member.getLevel() * member.getLevel();
+					preCalculation = (sqLevel / sqLevelSum) * (1 - penalty);
+					
+					// Add the XP/SP points to the requested party member
+					member.addExpAndSp(Math.round(member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null)), 
+						                  (int)member.calcStat(Stats.EXPSP_RATE, spReward * preCalculation, null, null));
+				}
+				else
+				{
+					member.addExpAndSp(0, 0);
 				}
 			}
 		}
@@ -654,92 +621,92 @@ public class L2Party {
 				newLevel = member.getLevel();
 		}
 		_partyLvl = newLevel;
+	}
+	
+	private List<L2PcInstance> getValidMembers(List<L2PcInstance> members, int topLvl)
+	{
+		List<L2PcInstance> validMembers = new FastList<L2PcInstance>();
 		
-		recalculateValidMembers();
-	}
-	
-	/**
-	 * refresh party valid members
-	 *
-	 */
-	public void recalculateValidMembers()
-	{
-		_validMembers.clear();
-		for (L2PcInstance member : getPartyMembers())
-		{
-			if (checkMemberValidity(member)) _validMembers.add(member);
-		}
-	}
-	
-	private boolean checkMemberValidity(L2PcInstance member)
-	{
 //		Fixed LevelDiff cutoff point
 		if (Config.PARTY_XP_CUTOFF_METHOD.equalsIgnoreCase("level"))
 		{
-			return (getLevel() - member.getLevel() <= Config.PARTY_XP_CUTOFF_LEVEL);
+			for (L2PcInstance member : members)
+			{
+				if (topLvl - member.getLevel() <= Config.PARTY_XP_CUTOFF_LEVEL)
+					validMembers.add(member);
+			}
 		}
 //		Fixed MinPercentage cutoff point
 		else if (Config.PARTY_XP_CUTOFF_METHOD.equalsIgnoreCase("percentage")) 
 		{
-			int sqLevel = member.getLevel() * member.getLevel();
 			int sqLevelSum = 0;
-			for (L2PcInstance character : getPartyMembers())
+			for (L2PcInstance member : members)
 			{
-				sqLevelSum += (character.getLevel() * character.getLevel());
+				sqLevelSum += (member.getLevel() * member.getLevel());
 			}
-			return (sqLevel * 100 >= sqLevelSum * Config.PARTY_XP_CUTOFF_PERCENT);
+			
+			for (L2PcInstance member : members)
+			{
+				int sqLevel = member.getLevel() * member.getLevel();
+				if (sqLevel * 100 >= sqLevelSum * Config.PARTY_XP_CUTOFF_PERCENT)
+					validMembers.add(member);
+			}
 		}
 //		Automatic cutoff method
 		else if (Config.PARTY_XP_CUTOFF_METHOD.equalsIgnoreCase("auto")) 
 		{
-			int sqLevel = member.getLevel() * member.getLevel();
 			int sqLevelSum = 0;
-			for (L2PcInstance character : getPartyMembers())
+			for (L2PcInstance member : members)
 			{
-				sqLevelSum += (character.getLevel() * character.getLevel());
+				sqLevelSum += (member.getLevel() * member.getLevel());
 			}
 			
-			int i = getMemberCount() -1;
-			if (i < 1 ) return true;
+			int i = members.size() - 1;
+			if (i < 1 ) return members;
 			if (i >= _bonusExpSp.length) i = _bonusExpSp.length -1;
 			
-			return (sqLevel >= sqLevelSum * (1-1/(1 +_bonusExpSp[i] -_bonusExpSp[i-1])));
+			for (L2PcInstance member : members)
+			{
+				int sqLevel = member.getLevel() * member.getLevel();
+				if (sqLevel >= sqLevelSum * (1-1/(1 +_bonusExpSp[i] -_bonusExpSp[i-1])))
+					validMembers.add(member);
+			}
 		}
-		return true;
+		return validMembers;
 	}
 	
-	private double getBaseExpSpBonus()
+	private double getBaseExpSpBonus(int membersCount)
 	{
-		int i = getValidMemberCount() -1;
+		int i = membersCount -1;
 		if (i < 1 ) return 1;
 		if (i >= _bonusExpSp.length) i = _bonusExpSp.length -1;
 		
 		return _bonusExpSp[i];
 	}
 	
-	private double getExpBonus() 
+	private double getExpBonus(int membersCount) 
 	{
-		if(_validMembers.size() < 2)
+		if(membersCount < 2)
 		{
 			//not is a valid party		    
-			return getBaseExpSpBonus(); 
+			return getBaseExpSpBonus(membersCount); 
 		}
 		else
 		{
-			return getBaseExpSpBonus() * Config.RATE_PARTY_XP;
+			return getBaseExpSpBonus(membersCount) * Config.RATE_PARTY_XP;
 		}
 	}
 	
-	private double getSpBonus() 
+	private double getSpBonus(int membersCount) 
 	{ 
-		if(_validMembers.size() < 2)
+		if(membersCount < 2)
 		{	
 			//not is a valid party
-			return getBaseExpSpBonus();
+			return getBaseExpSpBonus(membersCount);
 		}			    	 
 		else
 		{
-			return getBaseExpSpBonus() * Config.RATE_PARTY_SP;
+			return getBaseExpSpBonus(membersCount) * Config.RATE_PARTY_SP;
 		}
 	}
 	

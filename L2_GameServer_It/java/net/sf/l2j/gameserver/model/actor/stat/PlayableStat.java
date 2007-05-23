@@ -63,8 +63,8 @@ public class PlayableStat extends CharStat
     {
     	boolean expAdded = false;
     	boolean spAdded = false;
-    	if (addToExp > 0) expAdded = addExp(addToExp);
-    	if (addToSp > 0) spAdded = addSp(addToSp);
+    	if (addToExp >= 0) expAdded = addExp(addToExp);
+    	if (addToSp >= 0) spAdded = addSp(addToSp);
 
     	return expAdded || spAdded;
     }
