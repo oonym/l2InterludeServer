@@ -180,8 +180,6 @@ public class EnterWorld extends L2GameClientPacket
         activeChar.sendPacket(esmc);        
         
         activeChar.getMacroses().sendUpdate();
-        
-        sendPacket(new ItemList(activeChar, false));
 
         sendPacket(new UserInfo(activeChar));
 
@@ -190,6 +188,8 @@ public class EnterWorld extends L2GameClientPacket
         sendPacket(new HennaInfo(activeChar));
         
         sendPacket(new FriendList(activeChar));
+        
+        sendPacket(new ItemList(activeChar, false));
         
         SystemMessage sm = new SystemMessage(34);
         sendPacket(sm);
