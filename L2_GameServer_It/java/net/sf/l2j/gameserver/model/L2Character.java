@@ -4539,8 +4539,8 @@ public abstract class L2Character extends L2Object
             if (this instanceof L2PcInstance)
             {
             	_log.warning("Player "+ this.getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
-            	((L2PcInstance)this).sendMessage("Error with your coords, Please ask a GM for help!");
-            	((L2PcInstance)this).teleToLocation(0,0,0, false);
+            	((L2PcInstance)this).sendMessage("Error with your coordinates! Please reboot your game fully!");
+            	((L2PcInstance)this).teleToLocation(80753,145481,-3532, false); // Near Giran luxury shop
             }
             else 
             {
