@@ -623,7 +623,7 @@ public class L2Attackable extends L2NpcInstance
                     // Go through all L2PcInstance in the party
                     for (L2PcInstance pl : attackerParty.getPartyMembers())
                     {
-                        if (pl == null) continue;
+                        if (pl == null || pl.isDead()) continue;
 
                         // Get the RewardInfo of this L2PcInstance from L2Attackable rewards
                         reward2 = rewards.get(pl);
