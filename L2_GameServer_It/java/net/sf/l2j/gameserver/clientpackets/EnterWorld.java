@@ -183,14 +183,14 @@ public class EnterWorld extends L2GameClientPacket
 
         sendPacket(new UserInfo(activeChar));
 
-		sendPacket(new ShortCutInit(activeChar));
-
         sendPacket(new HennaInfo(activeChar));
         
         sendPacket(new FriendList(activeChar));
         
         sendPacket(new ItemList(activeChar, false));
         
+        sendPacket(new ShortCutInit(activeChar));
+
         SystemMessage sm = new SystemMessage(34);
         sendPacket(sm);
 	    
