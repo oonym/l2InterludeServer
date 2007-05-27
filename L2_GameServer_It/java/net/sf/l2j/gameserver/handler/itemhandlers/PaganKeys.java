@@ -41,8 +41,16 @@ public class PaganKeys implements IItemHandler
 	{
 		
 		int itemId = item.getItemId();
+		if (!(playable instanceof L2PcInstance)) return;
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		L2Object target = activeChar.getTarget();
+		
+		if (!(target instanceof L2DoorInstance))
+		{
+			activeChar.sendMessage("Invalid target.");
+			activeChar.sendPacket(new ActionFailed());
+			return;
+		}
 		L2DoorInstance door = (L2DoorInstance)target;
 		
 		if (!(activeChar.isInsideRadius(door, INTERACTION_DISTANCE, false, false)))
@@ -51,14 +59,9 @@ public class PaganKeys implements IItemHandler
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
-		if (!(target instanceof L2DoorInstance))
-		{
-			activeChar.sendMessage("Invalid target.");
-			activeChar.sendPacket(new ActionFailed());
-		}
 		if (activeChar.getAbnormalEffect() > 0 || activeChar.isInCombat())
 		{
-			activeChar.sendMessage("You cannot use the key,now.");
+			activeChar.sendMessage("You cannot use the key now.");
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
@@ -82,11 +85,11 @@ public class PaganKeys implements IItemHandler
         				PlaySound playSound = new PlaySound("interfacesound.system_close_01");
         				activeChar.sendPacket(playSound);
                 	}
-                }
-               else{
-            	   activeChar.sendMessage("Incorrect Door.");
-               }
-			break;
+			  }
+			  else{
+				  activeChar.sendMessage("Incorrect Door.");
+			  }
+			  break;
 		case 8274: //Chapelkey, Capel Door has a Gatekeeper?? I use this key for Altar Entrance
 			if (door.getDoorName().startsWith("Altar_Entrance")){
             	if (openChance > 0 && Rnd.get(100) < openChance) {
@@ -102,9 +105,9 @@ public class PaganKeys implements IItemHandler
     				activeChar.sendPacket(playSound);
             	}
             }
-           else{
-        	   activeChar.sendMessage("Incorrect Door.");
-           }
+			else{
+				activeChar.sendMessage("Incorrect Door.");
+			}
 			break;
 		case 8275: //Key of Darkness
 			if (door.getDoorName().startsWith("Door_of_Darkness")){
@@ -121,17 +124,15 @@ public class PaganKeys implements IItemHandler
     				activeChar.sendPacket(playSound);
             	}
             }
-           else{
-        	   activeChar.sendMessage("Incorrect Door.");
-           }
+			else{
+				activeChar.sendMessage("Incorrect Door.");
+			}
 			break;
 		}
-		
-		
 	}
+	
 	public int[] getItemIds()
 	{
 		return _itemIds;
 	}
-
 }
