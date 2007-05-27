@@ -2683,6 +2683,7 @@ public abstract class L2Character extends L2Object
 		if (isConfused()) ae |= ABNORMAL_EFFECT_CONFUSED;
 		if (isMuted())    ae |= ABNORMAL_EFFECT_MUTED;
 		if (isAffraid())  ae |= ABNORMAL_EFFECT_AFFRAID;
+		if (isPsychicalMuted()) ae |= ABNORMAL_EFFECT_MUTED;
 		return ae;
 	}
 
