@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
+import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
@@ -129,7 +130,20 @@ public class Continuous implements ISkillHandler
 			}
 			if (skill.isToggle() && stopped)
 				return;
-            skill.getEffects(activeChar, target);
+			
+			// if this is a debuff let the duel manager know about it
+			// so the debuff can be removed after the duel
+			// (player & target must be in the same duel)
+			if (target instanceof L2PcInstance && ((L2PcInstance)target).isInDuel() &&
+					skill.getSkillType() == L2Skill.SkillType.DEBUFF &&
+					player.getDuelId() == ((L2PcInstance)target).getDuelId())
+			{
+				DuelManager dm = DuelManager.getInstance();
+				for (L2Effect debuff : skill.getEffects(activeChar, target))
+					if (debuff != null) dm.onDebuff(((L2PcInstance)target), debuff);
+			}
+			else
+				skill.getEffects(activeChar, target);
 
         	if (skill.getSkillType() == L2Skill.SkillType.AGGDEBUFF)
 			{

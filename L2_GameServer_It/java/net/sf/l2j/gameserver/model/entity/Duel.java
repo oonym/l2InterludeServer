@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ExDuelReady;
@@ -116,6 +117,7 @@ public class Duel
 		private double _cp;
 		private boolean _paDuel;
 		private int _x, _y, _z;
+		private FastList<L2Effect> _debuffs;
 		
 		public PlayerCondition(L2PcInstance player, boolean partyDuel)
 		{
@@ -145,6 +147,19 @@ public class Duel
 			{
 				TeleportBack();
 			}
+			if (_debuffs != null) // Debuff removal
+			{
+				for (L2Effect temp : _debuffs)
+					if (temp != null) temp.exit();
+			}
+		}
+		
+		public void registerDebuff(L2Effect debuff)
+		{
+			if (_debuffs == null)
+				_debuffs = new FastList<L2Effect>();
+			
+			_debuffs.add(debuff);
 		}
 		
 		public void TeleportBack()
@@ -348,7 +363,6 @@ public class Duel
 			}
 			
 			// Send duel Start packets
-			// TODO: verify: is this done correctly?
 			ExDuelReady ready = new ExDuelReady(1);
 			ExDuelStart start = new ExDuelStart(1);
 			
@@ -366,7 +380,6 @@ public class Duel
 			_playerB.setTeam(2);
 			
 			// Send duel Start packets
-			// TODO: verify: is this done correctly?
 			ExDuelReady ready = new ExDuelReady(0);
 			ExDuelStart start = new ExDuelStart(0);
 			
@@ -637,9 +650,6 @@ public class Duel
 	 */
 	public void endDuel(DuelResultEnum result)
 	{
-		//TODO: remove me
-		//System.out.println("Duel->endDuel("+result+")");
-		
 		if (_playerA == null || _playerB == null)
 		{
 			//clean up
@@ -719,7 +729,6 @@ public class Duel
 		}
 		
 		// Send end duel packet
-		//TODO: verify: is this done correctly?
 		ExDuelEnd duelEnd = null;
 		if (_partyDuel) duelEnd = new ExDuelEnd(1);
 		else duelEnd = new ExDuelEnd(0);
@@ -922,6 +931,18 @@ public class Duel
 				}
 			}
 			player.setIsInDuel(0);
+		}
+	}
+	
+	public void onDebuff(L2PcInstance player, L2Effect debuff)
+	{
+		for (FastList.Node<PlayerCondition> e = _playerConditions.head(), end = _playerConditions.tail(); (e = e.getNext()) != end;)
+		{
+			if (e.getValue().getPlayer() == player)
+			{
+				e.getValue().registerDebuff(debuff);
+				return;
+			}
 		}
 	}
 }
