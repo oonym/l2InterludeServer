@@ -1,0 +1,137 @@
+/* This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+package net.sf.l2j.gameserver.handler.itemhandlers;
+
+
+import net.sf.l2j.gameserver.handler.IItemHandler;
+import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.PlaySound;
+import net.sf.l2j.gameserver.serverpackets.SocialAction;
+import net.sf.l2j.util.Rnd;
+
+/**
+ * @author  chris
+ */
+public class PaganKeys implements IItemHandler
+{
+	private static int[] _itemIds = {8273, 8274, 8275};
+	public static final int INTERACTION_DISTANCE = 100;
+	
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	{
+		
+		int itemId = item.getItemId();
+		L2PcInstance activeChar = (L2PcInstance) playable;
+		L2Object target = activeChar.getTarget();
+		L2DoorInstance door = (L2DoorInstance)target;
+		
+		if (!(activeChar.isInsideRadius(door, INTERACTION_DISTANCE, false, false)))
+		{
+			activeChar.sendMessage("Too far.");
+			activeChar.sendPacket(new ActionFailed());
+			return;
+		}
+		if (!(target instanceof L2DoorInstance))
+		{
+			activeChar.sendMessage("Invalid target.");
+			activeChar.sendPacket(new ActionFailed());
+		}
+		if (activeChar.getAbnormalEffect() > 0 || activeChar.isInCombat())
+		{
+			activeChar.sendMessage("You cannot use the key,now.");
+			activeChar.sendPacket(new ActionFailed());
+			return;
+		}
+		
+		int openChance = 35;
+		
+		if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false)) return;
+		
+		switch (itemId){
+		case 8273: //AnteroomKey
+			  if (door.getDoorName().startsWith("Anteroom")){
+                	if (openChance > 0 && Rnd.get(100) < openChance) {
+                		activeChar.sendMessage("You opened Anterooms Door.");
+                		door.openMe();
+                		door.onOpen(); // Closes the door after 60sec
+                		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+                	}
+                	else {
+                		activeChar.sendMessage("You failed to open Anterooms Door.");
+                		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+        				PlaySound playSound = new PlaySound("interfacesound.system_close_01");
+        				activeChar.sendPacket(playSound);
+                	}
+                }
+               else{
+            	   activeChar.sendMessage("Incorrect Door.");
+               }
+			break;
+		case 8274: //Chapelkey, Capel Door has a Gatekeeper?? I use this key for Altar Entrance
+			if (door.getDoorName().startsWith("Altar_Entrance")){
+            	if (openChance > 0 && Rnd.get(100) < openChance) {
+            		activeChar.sendMessage("You opened Altar Entrance.");
+            		door.openMe();
+            		door.onOpen();
+            		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+            	}
+            	else {
+            		activeChar.sendMessage("You failed to open Altar Entrance.");
+            		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+    				PlaySound playSound = new PlaySound("interfacesound.system_close_01");
+    				activeChar.sendPacket(playSound);
+            	}
+            }
+           else{
+        	   activeChar.sendMessage("Incorrect Door.");
+           }
+			break;
+		case 8275: //Key of Darkness
+			if (door.getDoorName().startsWith("Door_of_Darkness")){
+            	if (openChance > 0 && Rnd.get(100) < openChance) {
+            		activeChar.sendMessage("You opened Door of Darkness.");
+            		door.openMe();
+            		door.onOpen();
+            		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+            	}
+            	else {
+            		activeChar.sendMessage("You failed to open Door of Darkness.");
+            		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+    				PlaySound playSound = new PlaySound("interfacesound.system_close_01");
+    				activeChar.sendPacket(playSound);
+            	}
+            }
+           else{
+        	   activeChar.sendMessage("Incorrect Door.");
+           }
+			break;
+		}
+		
+		
+	}
+	public int[] getItemIds()
+	{
+		return _itemIds;
+	}
+
+}
