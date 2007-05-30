@@ -60,6 +60,7 @@ public class Hero
             " WHERE char_id = ?";
     private static final String GET_CLAN_ALLY = "SELECT characters.clanid AS clanid, coalesce(clan_data.ally_Id, 0) AS allyId FROM characters LEFT JOIN clan_data ON clan_data.clan_id = characters.clanid " +
             " WHERE characters.obj_Id = ?";
+    private static final String GET_CLAN_NAME = "SELECT clan_name FROM clan_data WHERE clan_id = (SELECT clanid FROM characters WHERE char_name = ?)";
     private static final String DELETE_ITEMS = "DELETE FROM items WHERE item_id IN " +
             "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) " +
             "AND owner_id NOT IN (SELECT obj_id FROM characters WHERE accesslevel > 0)";
@@ -359,6 +360,39 @@ public class Hero
                     clan.setReputationScore(clan.getReputationScore()+1000, true);
                 player.sendPacket(new UserInfo(player));
                 player.broadcastUserInfo();
+            }
+            else
+            {
+            	java.sql.Connection con = null;
+            	
+            	try
+            	{
+            		con = L2DatabaseFactory.getInstance().getConnection();
+            		PreparedStatement statement = con.prepareStatement(GET_CLAN_NAME);
+            		statement.setString(1, name);
+            		ResultSet rset = statement.executeQuery();
+            		if (rset.next())
+            		{
+            			String clanName = rset.getString("clan_name");
+            			if (clanName != null)
+            			{
+            				L2Clan clan = ClanTable.getInstance().getClanByName(clanName);
+            				if (clan != null)
+            					clan.setReputationScore(clan.getReputationScore()+1000, true);
+            			}
+            		}
+            		
+            		rset.close();
+            		statement.close();
+            	}
+            	catch (Exception e)
+            	{
+            		_log.warning("could not get clan name of " + name + ": "+e);
+            	}
+            	finally
+            	{
+            		try { con.close(); } catch (Exception e) {}
+            	}
             }
         }
     }
