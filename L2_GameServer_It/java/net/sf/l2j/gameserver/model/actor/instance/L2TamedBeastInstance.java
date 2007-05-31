@@ -217,8 +217,6 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 		}
 		float HPRatio = ((float) _owner.getCurrentHp())/_owner.getMaxHp();
 		
-		System.out.println("Owner got attacked.  Current HPRatio: "+HPRatio);
-		
 		// if the owner has a lot of HP, then debuff the enemy with a random debuff among the available skills
 		// use of more than one debuff at this moment is acceptable
 		if (HPRatio >= 0.8 )
