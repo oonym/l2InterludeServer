@@ -52,8 +52,8 @@ public class BeastFeed implements ISkillHandler
 
         _log.fine("Beast Feed casting succeded.");
         
-        // This is just a dummy skill handler for the soul crystal skill,
-        // since the Soul Crystal item handler already does everything.
+        // This is just a dummy skill handler for the golden food and crystal food skills,
+        // since the AI responce onSkillUse handles the rest.
 
     } 
     

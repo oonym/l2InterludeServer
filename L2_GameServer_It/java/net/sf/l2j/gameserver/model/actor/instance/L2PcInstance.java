@@ -480,6 +480,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/** The L2Summon of the L2PcInstance */
 	private L2Summon _summon = null;
+	// apparently, a L2PcInstance CAN have both a summon AND a tamed beast at the same time!!
+	private L2TamedBeastInstance _tamedBeast = null;
 	
 	// client radar
 	//TODO: This needs to be better intergrated and saved/loaded
@@ -4462,6 +4464,22 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setPet(L2Summon summon)
 	{
 		_summon = summon;
+	}
+	
+	/**
+	 * Return the L2Summon of the L2PcInstance or null.<BR><BR>
+	 */
+	public L2TamedBeastInstance getTrainedBeast()
+	{
+		return _tamedBeast;
+	}
+	
+	/**
+	 * Set the L2Summon of the L2PcInstance.<BR><BR>
+	 */
+	public void setTrainedBeast(L2TamedBeastInstance tamedBeast)
+	{
+		_tamedBeast = tamedBeast;
 	}
 	
 	/**
@@ -8680,8 +8698,22 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void addExpAndSp(long addToExp, int addToSp) { getStat().addExpAndSp(addToExp, addToSp); }
     public void removeExpAndSp(long removeExp, int removeSp) { getStat().removeExpAndSp(removeExp, removeSp); }
-    public void reduceCurrentHp(double i, L2Character attacker) { getStatus().reduceHp(i, attacker); }
-	public void reduceCurrentHp(double value, L2Character attacker, boolean awake) { getStatus().reduceHp(value, attacker, awake); }
+    public void reduceCurrentHp(double i, L2Character attacker) 
+    { 
+    	getStatus().reduceHp(i, attacker);
+    	
+    	// notify the tamed beast of attacks
+    	if (getTrainedBeast() != null )
+    		getTrainedBeast().onOwnerGotAttacked(attacker);
+    }
+	public void reduceCurrentHp(double value, L2Character attacker, boolean awake) 
+	{ 
+		getStatus().reduceHp(value, attacker, awake);
+		
+    	// notify the tamed beast of attacks
+    	if (getTrainedBeast() != null )
+    		getTrainedBeast().onOwnerGotAttacked(attacker);
+	}
 	
 	public void broadcastSnoop(int type, String name, String _text)
 	{

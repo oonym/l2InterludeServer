@@ -21,8 +21,8 @@ package net.sf.l2j.gameserver.handler.itemhandlers;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.actor.instance.L2FeedableBeastInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -39,7 +39,7 @@ public class BeastSpice implements IItemHandler
 		
 		L2PcInstance activeChar = (L2PcInstance)playable;
 
-		if (!(activeChar.getTarget() instanceof L2NpcInstance))
+		if (!(activeChar.getTarget() instanceof L2FeedableBeastInstance))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
 			return;				
