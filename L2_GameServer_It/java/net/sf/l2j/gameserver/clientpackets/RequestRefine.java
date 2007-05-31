@@ -114,15 +114,15 @@ public final class RequestRefine extends L2GameClientPacket
 				modifyGemstonCount = 20;
 				break;
 			case L2Item.CRYSTAL_B:
-				if (player.getLevel() < 52 || gemstoneItemId != 2130) return false;
+				if (lifeStoneLevel < 3 || player.getLevel() < 52 || gemstoneItemId != 2130) return false;
 				modifyGemstonCount = 30;
 				break;
 			case L2Item.CRYSTAL_A:
-				if (player.getLevel() < 61 || gemstoneItemId != 2131) return false;
+				if (lifeStoneLevel < 6 || player.getLevel() < 61 || gemstoneItemId != 2131) return false;
 				modifyGemstonCount = 20;
 				break;
 			case L2Item.CRYSTAL_S:
-				if (player.getLevel() < 76 || gemstoneItemId != 2131) return false;
+				if (lifeStoneLevel != 10 || player.getLevel() < 76 || gemstoneItemId != 2131) return false;
 				modifyGemstonCount = 25;
 				break;
 		}
@@ -131,34 +131,34 @@ public final class RequestRefine extends L2GameClientPacket
 		switch (lifeStoneLevel)
 		{
 			case 1:
-				if (player.getLevel() < 46 || player.getLevel() >= 49) return false;
+				if (player.getLevel() < 46) return false;
 				break;
 			case 2:
-				if (player.getLevel() < 49  || player.getLevel() >= 51) return false;
+				if (player.getLevel() < 49) return false;
 				break;
 			case 3:
-				if (player.getLevel() < 51  || player.getLevel() >= 54) return false;
+				if (player.getLevel() < 52) return false;
 				break;
 			case 4:
-				if (player.getLevel() < 54  || player.getLevel() >= 57) return false;
+				if (player.getLevel() < 55) return false;
 				break;
 			case 5:
-				if (player.getLevel() < 57  || player.getLevel() >= 60) return false;
+				if (player.getLevel() < 58) return false;
 				break;
 			case 6:
-				if (player.getLevel() < 60  || player.getLevel() >= 63) return false;
+				if (player.getLevel() < 61) return false;
 				break;
 			case 7:
-				if (player.getLevel() < 63  || player.getLevel() >= 66) return false;
+				if (player.getLevel() < 64) return false;
 				break;
 			case 8:
-				if (player.getLevel() < 66  || player.getLevel() >= 69) return false;
+				if (player.getLevel() < 67) return false;
 				break;
 			case 9:
-				if (player.getLevel() < 69  || player.getLevel() >= 75) return false;
+				if (player.getLevel() < 70) return false;
 				break;
 			case 10:
-				if (player.getLevel() < 75) return false;
+				if (player.getLevel() < 76) return false;
 				break;
 		}
 				
