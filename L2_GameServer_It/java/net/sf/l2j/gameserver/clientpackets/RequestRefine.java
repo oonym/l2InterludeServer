@@ -131,31 +131,34 @@ public final class RequestRefine extends L2GameClientPacket
 		switch (lifeStoneLevel)
 		{
 			case 1:
-				if (player.getLevel() < 46 || player.getLevel() > 48) return false;
+				if (player.getLevel() < 46 || player.getLevel() >= 49) return false;
 				break;
 			case 2:
-				if (player.getLevel() > 51) return false;
+				if (player.getLevel() < 49  || player.getLevel() >= 51) return false;
 				break;
 			case 3:
-				if (player.getLevel() > 54) return false;
+				if (player.getLevel() < 51  || player.getLevel() >= 54) return false;
 				break;
 			case 4:
-				if (player.getLevel() > 57) return false;
+				if (player.getLevel() < 54  || player.getLevel() >= 57) return false;
 				break;
 			case 5:
-				if (player.getLevel() > 60) return false;
+				if (player.getLevel() < 57  || player.getLevel() >= 60) return false;
 				break;
 			case 6:
-				if (player.getLevel() > 63) return false;
+				if (player.getLevel() < 60  || player.getLevel() >= 63) return false;
 				break;
 			case 7:
-				if (player.getLevel() > 66) return false;
+				if (player.getLevel() < 63  || player.getLevel() >= 66) return false;
 				break;
 			case 8:
-				if (player.getLevel() > 69) return false;
+				if (player.getLevel() < 66  || player.getLevel() >= 69) return false;
 				break;
 			case 9:
-				if (player.getLevel() > 75) return false;
+				if (player.getLevel() < 69  || player.getLevel() >= 75) return false;
+				break;
+			case 10:
+				if (player.getLevel() < 75) return false;
 				break;
 		}
 				
