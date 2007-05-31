@@ -126,6 +126,7 @@ public final class MobGroup
             }
         }
         catch (ClassNotFoundException e) {}
+        catch (NoSuchMethodException e2) {}
     }
     
     public void spawnGroup(L2PcInstance activeChar) 
