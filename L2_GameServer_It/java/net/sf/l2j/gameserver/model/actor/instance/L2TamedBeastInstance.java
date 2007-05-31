@@ -24,9 +24,12 @@ import net.sf.l2j.util.Rnd;
 import javolution.util.FastMap;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2FeedableBeastInstance;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.serverpackets.NpcInfo;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Point3D;
@@ -43,6 +46,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 	private final int MAX_DISTANCE_FROM_OWNER = 2000;	
 	private final int MAX_DURATION = 1200000;	// 20 minutes
 	private final int DURATION_CHECK_INTERVAL = 60000;	// 1 minute
+	private final int DURATION_INCREASE_INTERVAL = 20000;	// 20 secs (gained upon feeding)
 	private final int BUFF_INTERVAL = 5000;	// 5 seconds
 	private int _remainingTime = MAX_DURATION;
 	private int _homeX, _homeY, _homeZ;
@@ -70,8 +74,8 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     
     public void onReceiveFood()
     {
-    	// Eating food extends the duration, to a max of 
-    	_remainingTime = _remainingTime + 60000;
+    	// Eating food extends the duration by 20secs, to a max of 20minutes 
+    	_remainingTime = _remainingTime + DURATION_INCREASE_INTERVAL;
     	if (_remainingTime > MAX_DURATION)
     		_remainingTime = MAX_DURATION;
     }
@@ -210,11 +214,22 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     // tamed mobs will heal/recharge or debuff the enemy according to their skills
     public void onOwnerGotAttacked(L2Character attacker)
     {
-		if ((_owner == null) || (_owner.isDead()) || (_owner.isOnline()==0) || !_owner.isInsideRadius(this, MAX_DISTANCE_FROM_OWNER, true, true))
+    	// check if the owner is no longer around...if so, despawn 
+		if ((_owner == null) || (_owner.isOnline()==0) )
 		{
 			doDespawn();
 			return;
 		}
+		// if the owner is too far away, stop anything else and immediately run towards the owner.
+		if (!_owner.isInsideRadius(this, MAX_DISTANCE_FROM_OWNER, true, true))
+		{
+			getAI().startFollow(_owner);
+			return;
+		}
+		// if the owner is dead, do nothing...
+		if (_owner.isDead()) 
+			return;
+		
 		float HPRatio = ((float) _owner.getCurrentHp())/_owner.getMaxHp();
 		
 		// if the owner has a lot of HP, then debuff the enemy with a random debuff among the available skills
@@ -281,15 +296,49 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     	}
     	
     	public void run()
-    	{
-    		int remainingTime = _tamedBeast.getRemainingTime() - DURATION_CHECK_INTERVAL;
-    		if (_tamedBeast.isTooFarFromHome())
-    			remainingTime = -1;
+    	{    		
+    		int foodTypeSkillId = _tamedBeast.getFoodType();
+    		L2PcInstance owner = _tamedBeast.getOwner();
+    		_tamedBeast.setRemainingTime(_tamedBeast.getRemainingTime() - DURATION_CHECK_INTERVAL);
     		
-    		if (remainingTime <= 0)
-    			_tamedBeast.doDespawn();
+    		// I tried to avoid this as much as possible...but it seems I can't avoid hardcoding
+    		// ids further, except by carrying an additional variable just for these two lines...
+    		// Find which food item needs to be consumed.
+    		L2ItemInstance item = null;
+    		if (foodTypeSkillId == 2188)
+    			item = owner.getInventory().getItemByItemId(6643);
+    		else if (foodTypeSkillId == 2189)
+    			item = owner.getInventory().getItemByItemId(6644);
+    		
+    		// if the owner has enough food, call the item handler (use the food and triffer all necessary actions)
+    		if (item != null && item.getCount() >= 1)
+    		{
+    			L2Object oldTarget = owner.getTarget();
+    			owner.setTarget(_tamedBeast);
+    			L2Object[] targets = {_tamedBeast};
+    			
+    			// emulate a call to the owner using food, but bypass all checks for range, etc
+    			// this also causes a call to the AI tasks handling feeding, which may call onReceiveFood as required.
+    			owner.callSkill(SkillTable.getInstance().getInfo(foodTypeSkillId, 1), targets);
+    			owner.setTarget(oldTarget);
+    		}
     		else
-    			_tamedBeast.setRemainingTime(remainingTime);
+    		{
+    			// if the owner has no food, the beast immediately despawns, except when it was only 
+    			// newly spawned.  Newly spawned beasts can last up to 5 minutes
+    			if (_tamedBeast.getRemainingTime() < MAX_DURATION - 300000)
+    				_tamedBeast.setRemainingTime(-1);    				
+    		}
+
+    		/* There are too many conflicting reports about whether distance from home should
+    		 * be taken into consideration.  Disabled for now.
+    		 * 
+    		if (_tamedBeast.isTooFarFromHome())
+    			_tamedBeast.setRemainingTime(-1);  
+    		*/
+    		
+    		if (_tamedBeast.getRemainingTime() <= 0)
+    			_tamedBeast.doDespawn();
     	}
     }
 
@@ -308,12 +357,21 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     	{
     		L2PcInstance owner = _tamedBeast.getOwner();
     		
-    		// if the owner is missing (null), is dead, or is too far away, then unsummon
-    		if ((owner == null) || (owner.isDead()) || (owner.isOnline()==0) || !owner.isInsideRadius(_tamedBeast, MAX_DISTANCE_FROM_OWNER, true, true))
+        	// check if the owner is no longer around...if so, despawn 
+    		if ((owner == null) || (owner.isOnline()==0) )
     		{
-    			_tamedBeast.doDespawn();
+    			doDespawn();
     			return;
     		}
+    		// if the owner is too far away, stop anything else and immediately run towards the owner.
+    		if (!isInsideRadius(owner, MAX_DISTANCE_FROM_OWNER, true, true))
+    		{
+    			getAI().startFollow(owner);
+    			return;
+    		}
+    		// if the owner is dead, do nothing...
+    		if (owner.isDead()) 
+    			return;
     		
     		int totalBuffsOnOwner = 0;
     		int i=0;

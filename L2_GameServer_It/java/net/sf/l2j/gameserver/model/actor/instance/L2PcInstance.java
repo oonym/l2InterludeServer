@@ -8605,6 +8605,15 @@ public final class L2PcInstance extends L2PlayableInstance
          		sendPacket(bl); 
          	} 
          } 
+		// Modify the position of the tamed beast if necessary (normal pets are handled by super...though
+        // L2PcInstance is the only class that actually has pets!!! )
+		if(getTrainedBeast() != null)
+		{
+			getTrainedBeast().getAI().stopFollow();
+			getTrainedBeast().teleToLocation(getPosition().getX() + Rnd.get(-100,100), getPosition().getY() + Rnd.get(-100,100), getPosition().getZ(), false);
+			getTrainedBeast().getAI().startFollow(this);
+		}
+
 	}
 	
 	public final boolean updatePosition(int gameTicks)
