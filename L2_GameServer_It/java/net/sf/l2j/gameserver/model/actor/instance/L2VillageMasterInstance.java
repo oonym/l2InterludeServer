@@ -699,8 +699,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 			player.sendPacket(new SystemMessage(SystemMessage.CLAN_NAME_INCORRECT));
             return;
         }
-        
-        if (null == clan.getClanMember(leaderName) || 0 != clan.getClanMember(leaderName).getPledgeType())
+
+        if (clan.getClanMember(leaderName) == null || (clan.getClanMember(leaderName).getPledgeType() != 0))
         {
             if (subPledge.getId() >= L2Clan.SUBUNIT_KNIGHT1)
             {

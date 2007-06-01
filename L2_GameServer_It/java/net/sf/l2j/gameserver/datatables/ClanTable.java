@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Siege;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.util.Util;
@@ -183,8 +184,10 @@ public class ClanTable
 		L2Clan clan = new L2Clan(IdFactory.getInstance().getNextId(), clanName);
 		L2ClanMember leader = new L2ClanMember(clan, player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle());
 		clan.setLeader(leader);
+		leader.setPlayerInstance(player);
 		clan.store();
 		player.setClan(clan);
+		player.setPledgeClass(leader.calculatePledgeClass(player));
 		player.setClanPrivileges(L2Clan.CP_ALL);
 
 		if (Config.DEBUG)
@@ -196,6 +199,7 @@ public class ClanTable
         player.sendPacket(new PledgeShowInfoUpdate(clan));
         player.sendPacket(new PledgeShowMemberListAll(clan, player));
         player.sendPacket(new UserInfo(player));
+        player.sendPacket(new PledgeShowMemberListUpdate(player));
         player.sendPacket(new SystemMessage(SystemMessage.CLAN_CREATED));
         return clan;
     }

@@ -40,6 +40,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveSubPledgeCreated;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDeleteAll;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeSkillListAdd;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -289,7 +290,12 @@ public class L2Clan
 		L2ClanMember member = new L2ClanMember(this,player.getName(), player.getLevel(), player.getClassId().getId(), player.getObjectId(), player.getPledgeType(), player.getPowerGrade(), player.getTitle());
         // store in memory
 		addClanMember(member);
-	}
+		member.setPlayerInstance(player);
+		player.setClan(this);
+		player.setPledgeClass(member.calculatePledgeClass(player));
+		player.sendPacket(new PledgeShowMemberListUpdate(player));
+		player.sendPacket(new UserInfo(player));
+    }
 	
 	public void updateClanMember(L2PcInstance player)
 	{
@@ -341,6 +347,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
 			}
 			player.setClan(null);
 			player.setClanJoinExpiryTime(clanJoinExpiryTime);
+			player.setPledgeClass(exMember.calculatePledgeClass(player));
 			player.broadcastUserInfo();
 			// disable clan tab
 			player.sendPacket(new PledgeShowMemberListDeleteAll());

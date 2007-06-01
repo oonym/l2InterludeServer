@@ -94,8 +94,6 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 					activeChar.setPowerGrade(5); // new member starts at 5, not confirmed
 				}
 				clan.addClanMember(activeChar);
-				activeChar.setClan(clan);
-				clan.getClanMember(activeChar.getName()).setPlayerInstance(activeChar);
 				activeChar.setClanPrivileges(activeChar.getClan().getRankPrivs(activeChar.getPowerGrade()));
 
 				activeChar.sendPacket(new SystemMessage(SystemMessage.ENTERED_THE_CLAN));
