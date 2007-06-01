@@ -552,7 +552,7 @@ public class CharStat
     		return 1;
     	float bonusAtk = 1;
         if  (Config.L2JMOD_CHAMPION_ENABLE && _ActiveChar.isChampion())
-    		bonusAtk = Config.L2JMOD_CHAMPION_ATK;
+    		bonusAtk = Config.L2JMOD_CHAMPION_SPD_ATK;
 		return (int) (calcStat(Stats.POWER_ATTACK_SPEED, _ActiveChar.getTemplate().basePAtkSpd * bonusAtk, null, null) / _ActiveChar.getArmourExpertisePenalty());
 	}
 
