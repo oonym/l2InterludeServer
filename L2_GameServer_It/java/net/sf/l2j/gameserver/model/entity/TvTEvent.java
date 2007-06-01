@@ -310,10 +310,10 @@ public class TvTEvent
 	 */
 	public static void onActivity(L2Character character)
 	{
-		if (!(character instanceof L2PcInstance))
-			return;
-		
 		if (!isStarted())
+			return;
+
+		if (!(character instanceof L2PcInstance))
 			return;
 		
 		String playerName = character.getName();
