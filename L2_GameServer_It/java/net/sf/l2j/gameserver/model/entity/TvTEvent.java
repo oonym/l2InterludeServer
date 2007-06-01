@@ -313,6 +313,9 @@ public class TvTEvent
 		if (!(character instanceof L2PcInstance))
 			return;
 		
+		if (!isStarted())
+			return;
+		
 		String playerName = character.getName();
 
 		byte teamId = getParticipantTeamId(playerName);
