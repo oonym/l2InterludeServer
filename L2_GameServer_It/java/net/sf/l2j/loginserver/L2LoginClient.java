@@ -56,6 +56,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	
 	private String _account;
 	private int _accessLevel;
+	private int _lastServer;
 	private boolean _usesInternalIP;
 	private SessionKey _sessionKey;
 	private int _sessionId;
@@ -183,6 +184,16 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	public int getAccessLevel()
 	{
 		return _accessLevel;
+	}
+	
+	public void setLastServer(int lastServer)
+	{
+		_lastServer = lastServer;
+	}
+	
+	public int getLastServer()
+	{
+		return _lastServer;
 	}
 	
 	public int getSessionId()

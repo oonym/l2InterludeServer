@@ -57,6 +57,7 @@ import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
 public final class ServerList extends L2LoginServerPacket
 {
 	private List<ServerData> _servers;
+	private int _lastServer;
 
 	class ServerData
 	{
@@ -90,6 +91,7 @@ public final class ServerList extends L2LoginServerPacket
 	public ServerList(L2LoginClient client)
 	{
 		_servers = new FastList<ServerData>();
+		_lastServer = client.getLastServer();
 		for (GameServerInfo gsi : GameServerTable.getInstance().getRegisteredGameServers().values())
 		{
 			if (gsi.getStatus() == ServerStatus.STATUS_GM_ONLY && client.getAccessLevel() >= Config.GM_MIN)
@@ -121,7 +123,7 @@ public final class ServerList extends L2LoginServerPacket
 	{
 		writeC(0x04);
 		writeC(_servers.size());
-		writeC(_servers.size()-1);
+		writeC(_lastServer);
 		for (ServerData server : _servers)
 		{
 			writeC(server.server_id); // server id

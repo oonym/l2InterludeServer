@@ -378,12 +378,41 @@ public class LoginController
 	 * 
 	 * @return
 	 */
-	public boolean isLoginPossible(int access, int serverId)
+	public boolean isLoginPossible(L2LoginClient client, int serverId)
 	{
 		GameServerInfo gsi = GameServerTable.getInstance().getRegisteredGameServerById(serverId);
+		int access = client.getAccessLevel();
 		if (gsi != null && gsi.isAuthed())
 		{
-			return ((gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= Config.GM_MIN);
+			boolean loginOk = (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= Config.GM_MIN;
+			
+			if (loginOk && client.getLastServer() != serverId)
+			{
+				java.sql.Connection con = null;
+				PreparedStatement statement = null;
+				try
+				{
+					con = L2DatabaseFactory.getInstance().getConnection();
+				
+					String stmt = "UPDATE accounts SET lastServer = ? WHERE login = ?";
+					statement = con.prepareStatement(stmt);
+					statement.setInt(1, serverId);
+					statement.setString(2, client.getAccount());
+					statement.executeUpdate();
+					statement.close();
+				}
+				catch (Exception e)
+				{
+					_log.warning("Could not set lastServer: "+e);
+				}
+				finally
+				{
+					try { con.close(); } catch (Exception e) { }
+					try { statement.close(); }
+					catch (Exception e) { }
+				}
+			}
+			return loginOk;
 		}
 		return false;
 	}
@@ -511,15 +540,18 @@ public class LoginController
 
 			byte[] expected = null;
 			int access = 0;
+			int lastServer = 1;
 
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT password, access_level FROM accounts WHERE login=?");
+			PreparedStatement statement = con.prepareStatement("SELECT password, access_level, lastServer FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
 			{
 				expected = Base64.decode(rset.getString("password"));
 				access = rset.getInt("access_level");
+				lastServer = rset.getInt("lastServer");
+				if (lastServer <= 0) lastServer = 1; // minServerId is 1 in Interlude
 				if (Config.DEBUG) _log.fine("account exists");
 			}
 			rset.close();
@@ -574,6 +606,7 @@ public class LoginController
 			if (ok)
 			{
 				client.setAccessLevel(access);
+				client.setLastServer(lastServer);
 				statement = con.prepareStatement("UPDATE accounts SET lastactive=?, lastIP=? WHERE login=?");
 				statement.setLong(1, System.currentTimeMillis());
 				statement.setString(2, address.getHostAddress());
