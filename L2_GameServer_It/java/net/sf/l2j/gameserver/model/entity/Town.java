@@ -72,8 +72,11 @@ public class Town
             case 9: _RedirectToTownId = 11;break;      // Giran => HV (should be Giran Harbor, but its not a zone town "yet")
             case 10: _RedirectToTownId = 11;break;    // Oren => HV
             case 12: _RedirectToTownId = 10;break;    // Aden => Oren
+            case 13: _RedirectToTownId = 14;break;    // Goddard => Rune
+            case 14: _RedirectToTownId = 13;break;    // Rune => Goddard
             case 15: _RedirectToTownId = 16;break;      // Heine => Floran (should be Giran Harbor, but its not a zone town "yet")
-            default: _RedirectToTownId = getTownId();break;
+            case 17: _RedirectToTownId = 14;break;    // Shuttgart => Rune
+            default: _RedirectToTownId = 9;break; // Have to use another town here, else we cause a stack overflow :D 
        }
     }
 	
