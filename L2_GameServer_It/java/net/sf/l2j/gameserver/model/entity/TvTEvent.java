@@ -19,6 +19,11 @@ import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
+/**
+ * TvTEvent class
+ *
+ * @author FBIagent
+ */
 public class TvTEvent
 {
 	enum EventState
@@ -105,6 +110,40 @@ public class TvTEvent
         _npcSpawn.stopRespawn();
         _npcSpawn = null;
 		_lastNpcSpawn = null;
+		
+		for (byte i=0;i<2;i++)
+		{
+			for (String playerName : _teams[i].getParticipatedPlayerNames())
+			{
+				L2PcInstance playerInstance = _teams[i].getPlayerInstance(playerName);
+				
+				if (playerInstance == null || playerInstance.isOnline() == 0)
+					_teams[i].removePlayer(playerName);
+			}
+		}
+		
+		int teamOnePlayerCount = _teams[0].getParticipatedPlayerCount();
+		int teamTwoPlayerCount = _teams[1].getParticipatedPlayerCount();
+		int fullPlayerCount = teamOnePlayerCount + teamTwoPlayerCount;
+
+		if (teamOnePlayerCount != teamOnePlayerCount)
+		{
+			boolean haveRest = fullPlayerCount % 2 == 0;
+			int difference = Math.abs(teamOnePlayerCount - teamTwoPlayerCount);
+			byte teamWithMorePlayersId = (byte)(teamOnePlayerCount > teamTwoPlayerCount ? 0 : 1);
+			byte teamWithLesserPlayersId = (byte)(teamWithMorePlayersId == 0 ? 1 : 0);
+			
+			if (!haveRest || (haveRest && difference > 1))
+			{
+				for (int i=0;i<difference-1;i++)
+				{
+					L2PcInstance playerInstance = _teams[teamWithMorePlayersId].getRandomPlayerInstance();
+					
+					_teams[teamWithMorePlayersId].removePlayer(playerInstance.getName());
+					_teams[teamWithLesserPlayersId].addPlayer(playerInstance);
+				}
+			}
+		}
 
 		// not enought participants
 		if (_teams[0].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS || _teams[1].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS)
@@ -120,15 +159,18 @@ public class TvTEvent
 		{
 			for (String playerName : team.getParticipatedPlayerNames())
 			{
-				L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
+				L2PcInstance playerInstance = team.getPlayerInstance(playerName);
 
 				if (playerInstance == null)
 					continue;
 
 				// implements Runnable and starts itself in constructor
-				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false);
+				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false, false);
+				team.updatePlayerLastActivity(playerName);
 			}
 		}
+		
+		new TvTEventInactiveCheck();
 
 		return true;
 	}
@@ -160,7 +202,7 @@ public class TvTEvent
 
 		for (String playerName : team.getParticipatedPlayerNames())
 		{
-			L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
+			L2PcInstance playerInstance = team.getPlayerInstance(playerName);
 
 			if (playerInstance == null)
 				continue;
@@ -215,12 +257,12 @@ public class TvTEvent
 		{
 			for (String playerName : team.getParticipatedPlayerNames())
 			{
-				L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
+				L2PcInstance playerInstance = team.getPlayerInstance(playerName);
 
 				if (playerInstance == null)
 					continue;
 
-				new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, false);
+				new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, false, false);
 			}
 		}
 
@@ -263,6 +305,25 @@ public class TvTEvent
 	}
 
 	/**
+	 * Called when player cast or attack
+	 * Updates the activity of a TvTEvent participant
+	 */
+	public static void onActivity(L2Character character)
+	{
+		if (!(character instanceof L2PcInstance))
+			return;
+		
+		String playerName = character.getName();
+
+		byte teamId = getParticipantTeamId(playerName);
+		
+		if (teamId == -1)
+			return;
+		
+		_teams[teamId].updatePlayerLastActivity(playerName);
+	}
+	
+	/**
 	 * Called when a player logs in
 	 */
 	public static void onLogin(L2PcInstance playerInstance)
@@ -276,7 +337,7 @@ public class TvTEvent
 			return;
 
 		_teams[teamId].addPlayer(playerInstance);
-		new TvTEventTeleporter(playerInstance, _teams[teamId].getCoordinates(), true);
+		new TvTEventTeleporter(playerInstance, _teams[teamId].getCoordinates(), true, false);
 	}
 
 	/**
@@ -380,7 +441,7 @@ public class TvTEvent
 			_teams[killerTeamId].increasePoints();
 
 		if (killedTeamId != -1)
-			new TvTEventTeleporter(killedPlayerInstance, _teams[killedTeamId].getCoordinates(), false);
+			new TvTEventTeleporter(killedPlayerInstance, _teams[killedTeamId].getCoordinates(), false, false);
 	}
 
 	private static void setState(EventState state)
@@ -486,5 +547,10 @@ public class TvTEvent
 	public static int[] getTeamsPlayerCounts()
 	{
 		return new int[]{_teams[0].getParticipatedPlayerCount(), _teams[1].getParticipatedPlayerCount()};
+	}
+	
+	public static TvTEventTeam[] getTeams()
+	{
+		return _teams;
 	}
 }

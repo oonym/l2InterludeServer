@@ -62,6 +62,7 @@ import net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsyn
 import net.sf.l2j.gameserver.model.actor.stat.CharStat;
 import net.sf.l2j.gameserver.model.actor.status.CharStatus;
 import net.sf.l2j.gameserver.model.entity.Duel;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.entity.Zone;
 import net.sf.l2j.gameserver.model.entity.ZoneType;
 import net.sf.l2j.gameserver.model.quest.Quest;
@@ -499,6 +500,8 @@ public abstract class L2Character extends L2Object
 	{
 		if (Config.DEBUG)
             _log.fine(this.getName()+" doAttack: target="+target);
+		
+		TvTEvent.onActivity(this);
 
 		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead())
                 || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath())
@@ -1071,6 +1074,8 @@ public abstract class L2Character extends L2Object
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
+
+		TvTEvent.onActivity(this);
 
 		if (isSkillDisabled(skill.getId()))
 		{

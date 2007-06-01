@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javolution.util.FastMap;
 
+import net.sf.l2j.util.Rnd;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class TvTEventTeam
@@ -12,7 +13,8 @@ public class TvTEventTeam
 	private String _name;
 	private int[] _coordinates = new int[3];
 	private short _points;
-	private Map<String, L2PcInstance> _participatedPlayers = new FastMap<String, L2PcInstance>();
+	private Map<String, L2PcInstance> _participatedPlayersInstances = new FastMap<String, L2PcInstance>();
+	private Map<String, Long> _participatedPlayersLastActivities = new FastMap<String, Long>();
 	private Vector<String> _participatedPlayerNames = new Vector<String>();
 
 	public TvTEventTeam(String name, int[] coordinates)
@@ -27,11 +29,12 @@ public class TvTEventTeam
 		if (playerInstance == null)
 			return false;
 
-		synchronized (_participatedPlayers)
+		synchronized (_participatedPlayersInstances)
 		{
 			String playerName = playerInstance.getName();
 
-			_participatedPlayers.put(playerName, playerInstance);
+			_participatedPlayersInstances.put(playerName, playerInstance);
+			_participatedPlayersLastActivities.put(playerName, (long)0);
 			
 			if (!_participatedPlayerNames.contains(playerName))
 				_participatedPlayerNames.add(playerName);
@@ -42,9 +45,10 @@ public class TvTEventTeam
 
 	public void removePlayer(String playerName)
 	{
-		synchronized (_participatedPlayers)
+		synchronized (_participatedPlayersInstances)
 		{
-			_participatedPlayers.remove(playerName);
+			_participatedPlayersInstances.remove(playerName);
+			_participatedPlayersLastActivities.remove(playerName);
 			_participatedPlayerNames.remove(playerName);
 		}
 	}
@@ -56,9 +60,11 @@ public class TvTEventTeam
 	
 	public void cleanMe()
 	{
-		_participatedPlayers.clear();
+		_participatedPlayersInstances.clear();
+		_participatedPlayersLastActivities.clear();
 		_participatedPlayerNames.clear();
-		_participatedPlayers = new FastMap<String, L2PcInstance>();
+		_participatedPlayersInstances = new FastMap<String, L2PcInstance>();
+		_participatedPlayersLastActivities = new FastMap<String, Long>();
 		_participatedPlayerNames = new Vector<String>();
 		_points = 0;
 	}
@@ -67,12 +73,20 @@ public class TvTEventTeam
 	{
 		boolean containsPlayer;
 
-		synchronized (_participatedPlayers)
+		synchronized (_participatedPlayersInstances)
 		{
 			containsPlayer = _participatedPlayerNames.contains(playerName);
 		}
 
 		return containsPlayer;
+	}
+	
+	public void updatePlayerLastActivity(String playerName)
+	{
+		synchronized (_participatedPlayersLastActivities)
+		{
+			_participatedPlayersLastActivities.put(playerName, System.currentTimeMillis());
+		}
 	}
 
 	public String getName()
@@ -90,23 +104,35 @@ public class TvTEventTeam
 		return _points;
 	}
 
-	public Map<String, L2PcInstance> getParticipatedPlayers()
+	public Map<String, L2PcInstance> getParticipatedPlayerInstances()
 	{
 		Map<String, L2PcInstance> participatedPlayers = null;
 
-		synchronized (_participatedPlayers)
+		synchronized (_participatedPlayersInstances)
 		{
-			participatedPlayers = _participatedPlayers;
+			participatedPlayers = _participatedPlayersInstances;
 		}
 
 		return participatedPlayers;
 	}
 
+	public Map<String, Long> getParticipatedPlayersLastActivities()
+	{
+		Map<String, Long> participatedPlayersLastActivities = null;
+
+		synchronized (_participatedPlayersInstances)
+		{
+			participatedPlayersLastActivities = _participatedPlayersLastActivities;
+		}
+
+		return participatedPlayersLastActivities;
+	}
+	
 	public Vector<String> getParticipatedPlayerNames()
 	{
 		Vector<String> participatedPlayerNames = null;
 
-		synchronized (_participatedPlayers)
+		synchronized (_participatedPlayersInstances)
 		{
 			participatedPlayerNames = _participatedPlayerNames;
 		}
@@ -118,11 +144,47 @@ public class TvTEventTeam
 	{
 		int participatedPlayerCount;
 
-		synchronized (_participatedPlayers)
+		synchronized (_participatedPlayersInstances)
 		{
-			participatedPlayerCount = _participatedPlayers.size();
+			participatedPlayerCount = _participatedPlayersInstances.size();
 		}
 
 		return participatedPlayerCount;
+	}
+
+	public L2PcInstance getPlayerInstance(String playerName)
+	{
+		L2PcInstance playerInstance = null;
+		
+		synchronized (_participatedPlayersInstances)
+		{
+			playerInstance = _participatedPlayersInstances.get(playerName);
+		}
+		
+		return playerInstance;
+	}
+
+	public long getPlayerLastActivity(String playerName)
+	{
+		long lastActivity = 0;
+		
+		synchronized (_participatedPlayersInstances)
+		{
+			lastActivity = _participatedPlayersLastActivities.get(playerName);
+		}
+		
+		return lastActivity;
+	}
+
+	public L2PcInstance getRandomPlayerInstance()
+	{
+		String playerName = null;
+
+		synchronized (_participatedPlayersInstances)
+		{
+			 playerName = _participatedPlayerNames.get(Rnd.get(_participatedPlayerNames.size()));
+		}
+
+		return getPlayerInstance(playerName);
 	}
 }
