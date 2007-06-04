@@ -849,7 +849,7 @@ public final class Formulas
 				if (siegeModifier > 0) hpRegenMultiplier *= siegeModifier;
 			}
             
-            if (player.getIsInClanHall())
+            if (player.getIsInClanHall() == 2)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
             	if (clanHallIndex > 0) 
@@ -901,7 +901,7 @@ public final class Formulas
 			// Mother Tree effect is calculated at last
 			if (player.getInMotherTreeZone()) mpRegenBonus += 1;
             
-            if (player.getIsInClanHall())
+            if (player.getIsInClanHall() == 2)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
             	if (clanHallIndex > 0)

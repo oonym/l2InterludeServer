@@ -169,14 +169,7 @@ public class Mdam implements ISkillHandler
                     target.breakCast();
                 }
 
-                if (activeChar instanceof L2PcInstance)
-                {
-                    if (mcrit) activeChar.sendPacket(new SystemMessage(1280));
-    
-                    SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-                    sm.addNumber(damage);
-                    activeChar.sendPacket(sm);
-                }
+                activeChar.sendDamageMessage(target, damage, mcrit, false, false);
     
                 if (skill.hasEffects())
                 {

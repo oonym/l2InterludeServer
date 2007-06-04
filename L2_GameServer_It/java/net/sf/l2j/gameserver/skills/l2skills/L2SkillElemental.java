@@ -150,11 +150,8 @@ public class L2SkillElemental extends L2Skill {
 	                target.breakCast();
 	            }
 	
-				if (activeChar instanceof L2PcInstance) {
-					SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-					sm.addNumber(damage); 
-					activeChar.sendPacket(sm);
-				}
+            	activeChar.sendDamageMessage(target, damage, false, false, false);
+
 			}
 			
 			// activate attacked effects, if any

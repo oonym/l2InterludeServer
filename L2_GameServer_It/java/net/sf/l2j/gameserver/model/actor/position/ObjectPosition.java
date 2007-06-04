@@ -45,7 +45,7 @@ public class ObjectPosition
         if (Config.ASSERT) assert getWorldRegion() != null;
         
         setWorldPosition(x, y ,z);
-        
+               
         try
         {
             if (L2World.getInstance().getRegion(getWorldPosition()) != getWorldRegion())
@@ -142,8 +142,6 @@ public class ObjectPosition
     public final void setWorldPosition(int x, int y, int z)
     {
         getWorldPosition().setXYZ(x,y,z);
-        if (getActiveObject() != null && getActiveObject() instanceof L2PcInstance)
-            ((L2PcInstance)getActiveObject()).revalidateZone();
     }
     public final void setWorldPosition(Point3D newPosition) { setWorldPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ()); }
     

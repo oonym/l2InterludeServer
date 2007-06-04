@@ -112,14 +112,7 @@ public class Pdam implements ISkillHandler
             
             if (damage > 0)
             {
-                if (activeChar instanceof L2PcInstance)
-                {
-                    if (crit) activeChar.sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT));
-                    
-                    SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-                    sm.addNumber(damage);
-                    activeChar.sendPacket(sm);
-                }
+                activeChar.sendDamageMessage(target, damage, false, crit, false);
 
                 if (skill.hasEffects())
                 {

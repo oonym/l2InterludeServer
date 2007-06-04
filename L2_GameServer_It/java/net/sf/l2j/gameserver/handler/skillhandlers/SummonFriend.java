@@ -41,15 +41,22 @@ public class SummonFriend implements ISkillHandler
 
  	public void useSkill(@SuppressWarnings("unused") L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, L2Object[] targets)
 	{
- 		if (activeChar instanceof L2PcInstance)
-        {
-            if (((L2PcInstance)activeChar).isInOlympiadMode())
-            {
-                ((L2PcInstance)activeChar).sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
-                return;
-            }
+ 		if (!(activeChar instanceof L2PcInstance)) return; // currently not implemented for others
+ 		L2PcInstance activePlayer = (L2PcInstance)activeChar;
+ 		
+ 		if (activePlayer.isInOlympiadMode())
+ 		{
+ 			activePlayer.sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+ 			return;
         }
         
+ 		// Checks summoner not in arenas, siege zones, jail
+       	if (activePlayer.getInPvpZone())
+       	{
+       		activePlayer.sendPacket(new SystemMessage(SystemMessage.YOU_CANNOT_SUMMON_IN_COMBAT));
+        	return;
+        }
+       	
         // check for summoner not in raid areas
         L2Object[] objects = L2World.getInstance().getVisibleObjects(activeChar, 5000);
         
@@ -59,20 +66,12 @@ public class SummonFriend implements ISkillHandler
         	{
         		if (object instanceof L2RaidBossInstance) 
         		{
-        			((L2PcInstance)activeChar).sendPacket(new SystemMessage(SystemMessage.YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION));
+        			activePlayer.sendPacket(new SystemMessage(SystemMessage.YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION));
                     return;
         		}
         	}
         }
         
-        // Checks summoner not in arenas, siege zones, jail
-        if (ZoneManager.getInstance().checkIfInZonePvP(activeChar)) 
-        {
-        	if (activeChar instanceof L2PcInstance)
-        		((L2PcInstance)activeChar).sendPacket(new SystemMessage(SystemMessage.YOU_CANNOT_SUMMON_IN_COMBAT));
-        	return;
-        }
-
 		try 
         {
 			for (int index = 0; index < targets.length; index++)
@@ -140,7 +139,7 @@ public class SummonFriend implements ISkillHandler
                     }
                     
                     // Check for the target's jail status, arenas and siege zones
-                    if (ZoneManager.getInstance().checkIfInZonePvP(targetChar))
+                    if (targetChar.getInPvpZone())
                     {
                     	activeChar.sendPacket(new SystemMessage(SystemMessage.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
                         continue;

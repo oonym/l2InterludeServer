@@ -25,7 +25,6 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
-import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
@@ -116,11 +115,7 @@ public class L2SkillDrain extends L2Skill {
                     target.breakCast();
                 }
 
-                if (mcrit) activeChar.sendPacket(new SystemMessage(1280));
-                
-    			SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-    			sm.addNumber(damage); 
-    			activeChar.sendPacket(sm);
+            	activeChar.sendDamageMessage(target, damage, mcrit, false, false);
             }
             
             // Check to see if we should do the decay right after the cast

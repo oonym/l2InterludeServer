@@ -110,19 +110,14 @@ public class L2SkillChargeDmg extends L2Skill
                 finalDamage = finalDamage+(modifier*finalDamage);
 				target.reduceCurrentHp(finalDamage, caster);
 				
-				if (crit) caster.sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT));
-				
-				SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-				sm.addNumber((int)finalDamage);
-				caster.sendPacket(sm);
+				caster.sendDamageMessage(target, (int)finalDamage, false, crit, false);
 				
 				if (soul && weapon!= null)
 					weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 			}
             else
             {
-				SystemMessage sm = new SystemMessage(SystemMessage.MISSED_TARGET);
-				caster.sendPacket(sm);
+				caster.sendDamageMessage(target, 0, false, false, true);
 			}
 		}
         // effect self :]

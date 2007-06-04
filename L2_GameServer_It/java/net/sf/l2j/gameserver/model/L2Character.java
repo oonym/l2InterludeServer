@@ -471,6 +471,8 @@ public abstract class L2Character extends L2Object
 
 		if (!(this instanceof L2PcInstance))
             onTeleported();
+		else
+			((L2PcInstance)this).revalidateZone(true);
 	}
 
 	public void teleToLocation(int x, int y, int z) { teleToLocation(x, y, z, false); }
@@ -3493,14 +3495,13 @@ public abstract class L2Character extends L2Object
 		else
 		{
 			super.getPosition().setXYZ(m._xMoveFrom + (int)(elapsed * m._xSpeedTicks),m._yMoveFrom + (int)(elapsed * m._ySpeedTicks),super.getZ());
+			if (this instanceof L2PcInstance) ((L2PcInstance)this).revalidateZone(false);
 		}
-
 
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
 
 		return false;
-
 	}
 
 
@@ -3531,6 +3532,7 @@ public abstract class L2Character extends L2Object
 		{
 			getPosition().setXYZ(pos.x, pos.y, pos.z);
 			setHeading(pos.heading);
+			if (this instanceof L2PcInstance) ((L2PcInstance)this).revalidateZone(true);
 		}
 		sendPacket(new StopMove(this));
 		if (updateKnownObjects) ThreadPoolManager.getInstance().executeTask(new KnownListAsynchronousUpdateTask(this));
@@ -4216,51 +4218,8 @@ public abstract class L2Character extends L2Object
 		// If attack isn't aborted, send a message system (critical hit, missed...) to attacker/target if they are L2PcInstance
 		if (!isAttackAborted())
 		{
-			// If L2Character attacker is a L2PcInstance, send a system message
-			if (this instanceof L2PcInstance)
-			{
-				// Check if hit is critical
-				if (crit)
-					sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT));
-
-				// Check if hit is missed
-				if (miss)
-				{
-					sendPacket(new SystemMessage(SystemMessage.MISSED_TARGET));
-				}
-				else if (damage < 1)
-				{
-					//((L2PcInstance)this).sendMessage("You hit the target's armor.");
-				}
-				else
-				{
-					SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-					sm.addNumber(damage);
-					sendPacket(sm);
-				}
-			}
-            else if (this instanceof L2Summon)
-            {
-                L2Summon activeSummon = (L2Summon)this;
-
-                // Prevents the double spam of system messages, if the target is the owning player.
-                if (target.getObjectId() != activeSummon.getOwner().getObjectId())
-                {
-                    if (crit)
-                        activeSummon.getOwner().sendPacket(new SystemMessage(SystemMessage.PET_CRITICAL_HIT));
-
-                    if (miss)
-                    {
-                        activeSummon.getOwner().sendMessage("The pet missed the target.");
-                    }
-                    else
-                    {
-                        SystemMessage sm = new SystemMessage(SystemMessage.PET_DID_S1_DMG);
-                        sm.addNumber(damage);
-                        activeSummon.getOwner().sendPacket(sm);
-                    }
-                }
-            }
+			sendDamageMessage(target, damage, false, crit, miss);
+            
 
 			// If L2Character target is a L2PcInstance, send a system message
 			if (target instanceof L2PcInstance)
@@ -4277,7 +4236,7 @@ public abstract class L2Character extends L2Object
             {
                 L2Summon activeSummon = (L2Summon)target;
 
-                SystemMessage sm = new SystemMessage(SystemMessage.PET_RECEIVED_DAMAGE_OF_S2_BY_S1);
+                SystemMessage sm = new SystemMessage(SystemMessage.PET_RECEIVED_S2_DAMAGE_BY_S1);
                 sm.addString(getName());
                 sm.addNumber(damage);
                 activeSummon.getOwner().sendPacket(sm);
@@ -5582,6 +5541,20 @@ public abstract class L2Character extends L2Object
 
 		return false;
 	}
+	
+	/**
+	 * Send system message about damage.<BR><BR>
+	 *
+	 * <B><U> Overriden in </U> :</B><BR><BR>
+	 * <li> L2PcInstance
+	 * <li> L2SummonInstance
+	 * <li> L2PetInstance</li><BR><BR>
+	 *
+	 */
+	public void sendDamageMessage(@SuppressWarnings("unused") L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
+	{
+	}
+	
 }
 
 

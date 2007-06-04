@@ -92,12 +92,8 @@ public class StrSiegeAssault implements ISkillHandler
                 	if (soul && weapon!= null)
                 		weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);                
 
-                	if (activeChar instanceof L2PcInstance) 
-                	{
-                		SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_S1_DMG);
-                		sm.addNumber(damage); 
-                		activeChar.sendPacket(sm);
-                	}
+                	activeChar.sendDamageMessage(target, damage, false, false, false);
+
                 }
                 else activeChar.sendPacket(SystemMessage.sendString(skill.getName() + " failed."));
             }

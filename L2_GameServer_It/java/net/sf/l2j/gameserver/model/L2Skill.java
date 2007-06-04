@@ -1347,7 +1347,7 @@ public abstract class L2Skill
                                     if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0) 
                                         continue;
                                     
-                                    if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
+                                    if(trg.getInPeaceZone()) continue;
                                     
                                     if(src.getClan() != null && trg.getClan() != null)
                                     {
@@ -1731,7 +1731,7 @@ public abstract class L2Skill
                         		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0) 
                         			continue;
                         		
-                        		if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
+                        		if(trg.getInPeaceZone()) continue;
                         		
                         		if(src.getClan() != null && trg.getClan() != null)
                         		{

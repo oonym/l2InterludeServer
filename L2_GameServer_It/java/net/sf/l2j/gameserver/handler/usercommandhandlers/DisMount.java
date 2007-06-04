@@ -21,12 +21,8 @@ package net.sf.l2j.gameserver.handler.usercommandhandlers;
 
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
-import net.sf.l2j.gameserver.model.Inventory;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.Ride;
-import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Broadcast;
 
 /**

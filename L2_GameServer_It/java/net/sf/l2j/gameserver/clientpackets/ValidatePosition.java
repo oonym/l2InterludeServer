@@ -27,7 +27,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PartyMemberPosition;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocationInVehicle;
-import net.sf.l2j.util.Point3D;
 
 /**
  * This class ...

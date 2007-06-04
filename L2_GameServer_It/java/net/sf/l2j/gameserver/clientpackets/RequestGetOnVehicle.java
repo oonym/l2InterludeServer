@@ -54,7 +54,8 @@ public final class RequestGetOnVehicle extends L2GameClientPacket
         GetOnVehicle Gon = new GetOnVehicle(activeChar,boat,_x,_y,_z);
         activeChar.setInBoatPosition(new Point3D(_x,_y,_z));
         activeChar.getPosition().setXYZ(boat.getPosition().getX(),boat.getPosition().getY(),boat.getPosition().getZ());
-        activeChar.broadcastPacket(Gon);                
+        activeChar.broadcastPacket(Gon);
+        activeChar.revalidateZone(true);
      
     
     }

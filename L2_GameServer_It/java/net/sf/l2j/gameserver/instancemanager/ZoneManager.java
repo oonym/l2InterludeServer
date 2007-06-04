@@ -136,7 +136,7 @@ public class ZoneManager
     public boolean checkIfInZonePvP(int x, int y)
     {
         return  (
-                    SiegeManager.getInstance().checkIfInZone(x, y) ||               // object is inside a siege zone or
+                    // siege zone check is done separately...
                     checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.OlympiadStadia), x, y) || // object is inside an olympaid stadia
                     checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Arena), x, y) || // object is inside pvp zone or
                     (                                                               // (

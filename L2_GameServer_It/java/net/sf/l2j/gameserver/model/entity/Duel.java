@@ -26,7 +26,6 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -790,9 +789,8 @@ public class Duel
 			if (isDuelistInPvp(true)) return DuelResultEnum.Canceled;
 
 			// is one of the players in a Siege, Peace or PvP zone?
-			ZoneManager tmpZM = ZoneManager.getInstance();
 			SiegeManager tmpSM = SiegeManager.getInstance();
-			if (tmpZM.checkIfInZonePeace(_playerA) || tmpZM.checkIfInZonePeace(_playerB)
+			if (_playerA.getInPeaceZone() || _playerB.getInPeaceZone()
 					|| tmpSM.checkIfInZone(_playerA) || tmpSM.checkIfInZone(_playerB)
 					|| _playerA.getInPvpZone() || _playerB.getInPvpZone()) return DuelResultEnum.Canceled;
 		}

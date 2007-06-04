@@ -464,7 +464,7 @@ public final class L2PetInstance extends L2Summon
 		// called in combat
 		if (!isDead() && attacker != null)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_GAME_PET_S2_DMG);
+			SystemMessage sm = new SystemMessage(SystemMessage.PET_RECEIVED_S2_DAMAGE_BY_S1);
 			if (attacker instanceof L2NpcInstance)
 			{
 				sm.addNpcName( ((L2NpcInstance)attacker).getTemplate().npcId);
@@ -900,6 +900,22 @@ public final class L2PetInstance extends L2Summon
     	setOwner(owner);
     	L2World.getInstance().removePet(oldOwnerId);
     	L2World.getInstance().addPet(oldOwnerId, this);
+    }
+    
+    public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
+    {
+    	if (miss) return;
+        	
+    	// Prevents the double spam of system messages, if the target is the owning player.
+    	if (target.getObjectId() != getOwner().getObjectId())
+    	{
+    		if (pcrit || mcrit)
+    			getOwner().sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT_BY_PET));
+
+    		SystemMessage sm = new SystemMessage(SystemMessage.PET_HIT_FOR_S1_DAMAGE);
+    		sm.addNumber(damage);
+    		getOwner().sendPacket(sm);
+        }
     }
 }
 
