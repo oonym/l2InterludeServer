@@ -1,7 +1,6 @@
 package net.sf.l2j.gameserver.model.entity;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.util.Rnd;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.NpcTable;
@@ -18,6 +17,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 /**
  * TvTEvent class
@@ -124,17 +124,16 @@ public class TvTEvent
 		
 		int teamOnePlayerCount = _teams[0].getParticipatedPlayerCount();
 		int teamTwoPlayerCount = _teams[1].getParticipatedPlayerCount();
-		int fullPlayerCount = teamOnePlayerCount + teamTwoPlayerCount;
 
 		if (teamOnePlayerCount != teamOnePlayerCount)
 		{
-			boolean haveRest = fullPlayerCount % 2 == 0;
 			int difference = Math.abs(teamOnePlayerCount - teamTwoPlayerCount);
-			byte teamWithMorePlayersId = (byte)(teamOnePlayerCount > teamTwoPlayerCount ? 0 : 1);
-			byte teamWithLesserPlayersId = (byte)(teamWithMorePlayersId == 0 ? 1 : 0);
 			
-			if (!haveRest || (haveRest && difference > 1))
+			if (difference > 1)
 			{
+				byte teamWithMorePlayersId = (byte)(teamOnePlayerCount > teamTwoPlayerCount ? 0 : 1);
+				byte teamWithLesserPlayersId = (byte)(teamWithMorePlayersId == 0 ? 1 : 0);
+
 				for (int i=0;i<difference-1;i++)
 				{
 					L2PcInstance playerInstance = _teams[teamWithMorePlayersId].getRandomPlayerInstance();
@@ -166,12 +165,10 @@ public class TvTEvent
 
 				// implements Runnable and starts itself in constructor
 				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false, false);
-				team.updatePlayerLastActivity(playerName);
 			}
 		}
 		
 		new TvTEventInactiveCheck();
-
 		return true;
 	}
 

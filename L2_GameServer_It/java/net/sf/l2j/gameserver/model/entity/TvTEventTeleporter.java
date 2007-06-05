@@ -56,19 +56,22 @@ public class TvTEventTeleporter implements Runnable
 			if (effect != null)
 				effect.exit();
 		}
+		
+		if (TvTEvent.isStarted() && !_removeCauseInactivity)
+			_playerInstance.setTeam(TvTEvent.getParticipantTeamId(_playerInstance.getName())+1);
+		else
+			_playerInstance.setTeam(0);
 
 		_playerInstance.doRevive();
 		_playerInstance.setCurrentCp(_playerInstance.getMaxCp());
 		_playerInstance.setCurrentHp(_playerInstance.getMaxHp());
 		_playerInstance.setCurrentMp(_playerInstance.getMaxMp());
 		_playerInstance.teleToLocation(_coordinates[0], _coordinates[1], _coordinates[2], false);
-		
-		if (TvTEvent.isStarted() && !_removeCauseInactivity)
-			_playerInstance.setTeam(TvTEvent.getParticipantTeamId(_playerInstance.getName())+1);
-		else
-			_playerInstance.setTeam(0);
-		
 		_playerInstance.broadcastStatusUpdate();
 		_playerInstance.broadcastUserInfo();
+
+		String playerName = _playerInstance.getName();
+
+		TvTEvent.getTeams()[TvTEvent.getParticipantTeamId(playerName)].updatePlayerLastActivity(playerName);
 	}
 }
