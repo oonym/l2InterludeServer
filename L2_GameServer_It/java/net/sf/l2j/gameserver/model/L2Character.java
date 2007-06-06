@@ -5475,7 +5475,7 @@ public abstract class L2Character extends L2Object
 	}
 	public void reduceCurrentMp(double i) { getStatus().reduceMp(i); }
 	public void removeStatusListener(L2Character object) { getStatus().removeStatusListener(object); }
-	protected synchronized void stopHpMpRegeneration() { getStatus().stopHpMpRegeneration(); }
+	protected void stopHpMpRegeneration() { getStatus().stopHpMpRegeneration(); }
 
 	// Property - Public
 	public final double getCurrentCp() { return getStatus().getCurrentCp(); }
