@@ -30,6 +30,7 @@ import net.sf.l2j.loginserver.L2LoginClient;
 import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
 import net.sf.l2j.loginserver.L2LoginClient.LoginClientState;
+import net.sf.l2j.loginserver.LoginController.AuthLoginResult;
 import net.sf.l2j.loginserver.serverpackets.LoginOk;
 import net.sf.l2j.loginserver.serverpackets.ServerList;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
@@ -42,13 +43,13 @@ import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 public class RequestAuthLogin extends L2LoginClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestAuthLogin.class.getName());
-	
+
 	private byte[] _raw = new byte[128];
-	
+
 	private String _user;
 	private String _password;
 	private int _ncotp;
-	
+
 	/**
 	 * @return
 	 */
@@ -64,7 +65,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 	{
 		return _user;
 	}
-	
+
 	public int getOneTimePassword()
 	{
 		return _ncotp;
@@ -83,7 +84,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void run()
 	{
@@ -99,7 +100,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 			e.printStackTrace();
 			return;
 		}
-		
+
 		_user = new String(decrypted, 0x5E, 14 ).trim();
 		_user = _user.toLowerCase();
 		_password = new String(decrypted, 0x6C, 16).trim();
@@ -107,53 +108,55 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		_ncotp |= decrypted[0x7d] << 8;
 		_ncotp |= decrypted[0x7e] << 16;
 		_ncotp |= decrypted[0x7f] << 24;
-		
+
 		LoginController lc = LoginController.getInstance();
 		L2LoginClient client = this.getClient();
 		try
 		{
-			if (lc.tryAuthLogin(_user, _password, this.getClient()))
+			AuthLoginResult result = lc.tryAuthLogin(_user, _password, this.getClient());
+			
+			switch (result)
 			{
-				client.setAccount(_user);
-				client.setState(LoginClientState.AUTHED_LOGIN);
-				client.setSessionKey(lc.assignSessionKeyToClient(_user, client));
-				if (Config.SHOW_LICENCE)
-				{
-					client.sendPacket(new LoginOk(this.getClient().getSessionKey()));
-				}
-				else
-				{
-					this.getClient().sendPacket(new ServerList(this.getClient()));
-				}
-			}
-			else
-			{
-				L2LoginClient oldClient;
-				GameServerInfo gsi;
-				
-				if ((oldClient = lc.getAuthedClient(_user)) != null)
-				{
-					// kick the other client
-					oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
-				}
-				else if ((gsi = lc.getAccountOnGameServer(_user)) != null)
-				{
-					client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
-					
-					// kick from there
-					if (gsi.isAuthed())
+				case AUTH_SUCCESS:
+					client.setAccount(_user);
+					client.setState(LoginClientState.AUTHED_LOGIN);
+					client.setSessionKey(lc.assignSessionKeyToClient(_user, client));
+					if (Config.SHOW_LICENCE)
 					{
-						gsi.getGameServerThread().kickPlayer(_user);
+						client.sendPacket(new LoginOk(this.getClient().getSessionKey()));
 					}
-				}
-				else if (client.getAccessLevel() < 0)
-				{
-					client.close(LoginFailReason.REASON_ACCOUNT_BANNED);
-				}
-				else
-				{
+					else
+					{
+						this.getClient().sendPacket(new ServerList(this.getClient()));
+					}
+					break;
+				case INVALID_PASSWORD:
 					client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
-				}
+					break;
+				case ACCOUNT_BANNED:
+					client.close(LoginFailReason.REASON_ACCOUNT_BANNED);
+					break;
+				case ALREADY_ON_LS:
+					L2LoginClient oldClient;
+					if ((oldClient = lc.getAuthedClient(_user)) != null)
+					{
+						// kick the other client
+						oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+					}
+					break;
+				case ALREADY_ON_GS:
+					GameServerInfo gsi;
+					if ((gsi = lc.getAccountOnGameServer(_user)) != null)
+					{
+						client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+
+						// kick from there
+						if (gsi.isAuthed())
+						{
+							gsi.getGameServerThread().kickPlayer(_user);
+						}
+					}
+					break;
 			}
 		}
 		catch (HackingException e)

@@ -196,32 +196,40 @@ public class LoginController
 		return _loginServerClients.get(account);
 	}
 
-	public boolean tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException
+	public static enum AuthLoginResult { INVALID_PASSWORD, ACCOUNT_BANNED, ALREADY_ON_LS, ALREADY_ON_GS, AUTH_SUCCESS };
+	
+	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException
 	{
-		boolean ret = false;
-		if (!this.isAccountInAnyGameServer(account))
+		AuthLoginResult ret = AuthLoginResult.INVALID_PASSWORD;
+		// check auth
+		if (this.loginValid(account, password, client))
 		{
-			ret = this.loginValid(account, password, client);
-
-			// was auth ok?
-			if (ret)
+			// login was successful, verify presence on Gameservers
+			ret = AuthLoginResult.ALREADY_ON_GS;
+			if (!this.isAccountInAnyGameServer(account))
 			{
+				// account isnt on any GS verify LS itself
+				ret = AuthLoginResult.ALREADY_ON_LS;
+				
 				// dont allow 2 simultaneous login
 				synchronized (_loginServerClients)
 				{
 					if (!_loginServerClients.containsKey(account))
 					{
 						_loginServerClients.put(account, client);
-						ret = true;
+						ret = AuthLoginResult.AUTH_SUCCESS;
+						
+						// remove him from the non-authed list
+						this.removeLoginClient(client);
 					}
 				}
-
-				// was login successful?
-				if (ret)
-				{
-					// remove him from the non-authed list
-					this.removeLoginClient(client);
-				}
+			}
+		}
+		else
+		{
+			if (client.getAccessLevel() < 0)
+			{
+				ret = AuthLoginResult.ACCOUNT_BANNED;
 			}
 		}
 		return ret;
@@ -588,6 +596,7 @@ public class LoginController
 				// is this account banned?
 				if (access < 0)
 				{
+					client.setAccessLevel(access);
 					return false;
 				}
 				
