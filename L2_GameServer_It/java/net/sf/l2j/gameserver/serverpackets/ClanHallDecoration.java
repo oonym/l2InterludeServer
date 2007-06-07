@@ -18,12 +18,12 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.ClanHall.ClanHallFunction;;
+import net.sf.l2j.gameserver.model.entity.ClanHall.ClanHallFunction;
 /**
  *
  * @author  Steuf
  */
-public final class ClanHallDecoration extends L2GameServerPacket
+public class ClanHallDecoration extends L2GameServerPacket
 {
 	private static final String _S__F7_AGITDECOINFO = "[S] F7 AgitDecoInfo";
 	private ClanHall clanHall;
@@ -54,7 +54,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 		writeC(0xf7);
 		writeD(clanHall.getId()); // clanhall id
 		//FUNC_RESTORE_HP
-		Function = clanHall.getFunction(clanHall.FUNC_RESTORE_HP);
+		Function = clanHall.getFunction(ClanHall.FUNC_RESTORE_HP);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if((clanHall.getGrade() == 0 && Function.getLvl() < 220) || (clanHall.getGrade() == 1 && Function.getLvl() < 160) ||
@@ -63,7 +63,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 		else
 			writeC(2);
 		//FUNC_RESTORE_MP
-		Function = clanHall.getFunction(clanHall.FUNC_RESTORE_MP);
+		Function = clanHall.getFunction(ClanHall.FUNC_RESTORE_MP);
 		if(Function == null || Function.getLvl() == 0){
 			writeC(0);
 			writeC(0);
@@ -76,7 +76,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 			writeC(2);
 		}
 		//FUNC_RESTORE_EXP
-		Function = clanHall.getFunction(clanHall.FUNC_RESTORE_EXP);
+		Function = clanHall.getFunction(ClanHall.FUNC_RESTORE_EXP);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if((clanHall.getGrade() == 0 && Function.getLvl() < 25) || (clanHall.getGrade() == 1 && Function.getLvl() < 30) ||
@@ -85,7 +85,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 		else
 			writeC(2);
 		// FUNC_TELEPORT
-		Function = clanHall.getFunction(clanHall.FUNC_TELEPORT);
+		Function = clanHall.getFunction(ClanHall.FUNC_TELEPORT);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if(Function.getLvl() < 2)
@@ -94,7 +94,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 			writeC(2);
 		writeC(0); 
 		//CURTAINS
-		Function = clanHall.getFunction(clanHall.FUNC_DECO_CURTAINS);
+		Function = clanHall.getFunction(ClanHall.FUNC_DECO_CURTAINS);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if(Function.getLvl() <= 1)
@@ -102,7 +102,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 		else
 			writeC(2);
 		//FUNC_ITEM_CREATE
-		Function = clanHall.getFunction(clanHall.FUNC_ITEM_CREATE);
+		Function = clanHall.getFunction(ClanHall.FUNC_ITEM_CREATE);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if((clanHall.getGrade() == 0 && Function.getLvl() < 2) || Function.getLvl() < 3)
@@ -110,7 +110,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 		else
 			writeC(2);
 		// FUNC_SUPPORT 
-		Function = clanHall.getFunction(clanHall.FUNC_SUPPORT);
+		Function = clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 		if(Function == null || Function.getLvl() == 0){
 			writeC(0);
 			writeC(0);
@@ -123,7 +123,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 			writeC(2);
 		}
 		//Front Plateform
-		Function = clanHall.getFunction(clanHall.FUNC_DECO_FRONTPLATEFORM);
+		Function = clanHall.getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if(Function.getLvl() <= 1)
@@ -131,7 +131,7 @@ public final class ClanHallDecoration extends L2GameServerPacket
 		else
 			writeC(2);
 		//FUNC_ITEM_CREATE
-		Function = clanHall.getFunction(clanHall.FUNC_ITEM_CREATE);
+		Function = clanHall.getFunction(ClanHall.FUNC_ITEM_CREATE);
 		if(Function == null || Function.getLvl() == 0)
 			writeC(0);
 		else if((clanHall.getGrade() == 0 && Function.getLvl() < 2) || Function.getLvl() < 3)

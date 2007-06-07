@@ -614,18 +614,17 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("INSERT INTO clan_data (clan_id,clan_name,clan_level,hasCastle,hasHideout,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id) values (?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO clan_data (clan_id,clan_name,clan_level,hasCastle,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id) values (?,?,?,?,?,?,?,?,?,?)");
 			statement.setInt(1, getClanId());
 			statement.setString(2, getName());
 			statement.setInt(3, getLevel());
 			statement.setInt(4, getHasCastle());
-			statement.setInt(5, getHasHideout());
-			statement.setInt(6, getAllyId());
-			statement.setString(7, getAllyName());
-			statement.setInt(8, getLeaderId());
-            statement.setInt(9, getCrestId());
-            statement.setInt(10,getCrestLargeId());
-            statement.setInt(11,getAllyCrestId());
+			statement.setInt(5, getAllyId());
+			statement.setString(6, getAllyName());
+			statement.setInt(7, getLeaderId());
+            statement.setInt(8, getCrestId());
+            statement.setInt(9,getCrestLargeId());
+            statement.setInt(10,getAllyCrestId());
 			statement.execute();
 			statement.close();
 
@@ -740,7 +739,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
             L2ClanMember member;
             
             con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,hasHideout,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score,auction_bid_at,ally_penalty_expiry_time,ally_penalty_type,char_penalty_expiry_time,dissolving_expiry_time FROM clan_data where clan_id=?");
+            PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score,auction_bid_at,ally_penalty_expiry_time,ally_penalty_type,char_penalty_expiry_time,dissolving_expiry_time FROM clan_data where clan_id=?");
             statement.setInt(1, getClanId());
             ResultSet clanData = statement.executeQuery();
 
@@ -749,7 +748,6 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
             	setName(clanData.getString("clan_name"));
                 setLevel(clanData.getInt("clan_level"));
                 setHasCastle(clanData.getInt("hasCastle"));
-                setHasHideout(clanData.getInt("hasHideout"));
                 setAllyId(clanData.getInt("ally_id"));
                 setAllyName(clanData.getString("ally_name"));
                 setAllyPenaltyExpiryTime(clanData.getLong("ally_penalty_expiry_time"), clanData.getInt("ally_penalty_type"));

@@ -183,11 +183,22 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.PartyInfo;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Time;
 import net.sf.l2j.gameserver.handler.voicedcommandhandlers.stats;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
+import net.sf.l2j.gameserver.instancemanager.ArenaManager;
+import net.sf.l2j.gameserver.instancemanager.AuctionManager;
+import net.sf.l2j.gameserver.instancemanager.BoatManager;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DayNightSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
-import net.sf.l2j.gameserver.instancemanager.Manager;
+import net.sf.l2j.gameserver.instancemanager.MercTicketManager;
+import net.sf.l2j.gameserver.instancemanager.OlympiadStadiaManager;
+import net.sf.l2j.gameserver.instancemanager.PetitionManager;
+import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
+import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.instancemanager.TownManager;
+import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
 import net.sf.l2j.gameserver.model.L2PetDataTable;
@@ -217,7 +228,7 @@ public class GameServer
 	private final HennaTable _hennaTable;
 	private final IdFactory _idFactory;
 	public static GameServer gameServer;
-
+	private static ClanHallManager CHManager;
 	private final ItemHandler _itemHandler;
 	private final SkillHandler _skillHandler;
 	private final AdminCommandHandler _adminCommandHandler;
@@ -246,7 +257,9 @@ public class GameServer
     {
     	return _selectorThread;
     }
-
+	public ClanHallManager GetCHManager(){
+		return CHManager;
+	}
 	public GameServer() throws Exception
 	{
         gameServer = this;
@@ -311,7 +324,7 @@ public class GameServer
         //Call to load caches
         HtmCache.getInstance();
         CrestCache.getInstance();
-
+        ClanTable.getInstance();
 		_npcTable = NpcTable.getInstance();
         
 		if (!_npcTable.isInitialized())
@@ -354,8 +367,22 @@ public class GameServer
 		Announcements.getInstance();
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
-		AugmentationData.getInstance();
 		
+		/** Load Manager */
+		ArenaManager.getInstance();
+		AuctionManager.getInstance();
+		CHManager = ClanHallManager.getInstance();
+		BoatManager.getInstance();
+		CastleManager.getInstance();
+		MercTicketManager.getInstance();
+		//PartyCommandManager.getInstance();
+		PetitionManager.getInstance();
+		QuestManager.getInstance();
+		SiegeManager.getInstance();
+		TownManager.getInstance();
+		ZoneManager.getInstance();
+		OlympiadStadiaManager.getInstance();
+		AugmentationData.getInstance();
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance();  
         
@@ -528,8 +555,6 @@ public class GameServer
 
         Universe.getInstance();
 
-        Manager.loadAll();
-        
 		_shutdownHandler = Shutdown.getInstance();
 		Runtime.getRuntime().addShutdownHook(_shutdownHandler);
 
@@ -554,7 +579,6 @@ public class GameServer
             if (Config.DEBUG)
             	e.printStackTrace();
         }
-        ClanTable.getInstance();
         ForumsBBSManager.getInstance();
         _log.config("IdFactory: Free ObjectID's remaining: " + IdFactory.getInstance().size());
 
@@ -566,7 +590,6 @@ public class GameServer
         }
         
         TvTManager.getInstance();
-
 		System.gc();
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of the current allocation pool, freeMemory the unused memory in the allocation pool
 		long freeMem = (Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;

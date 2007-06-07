@@ -28,8 +28,6 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
-import net.sf.l2j.gameserver.instancemanager.AuctionManager;
-import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
@@ -213,17 +211,6 @@ public class ClanTable
 		}
 
 		clan.broadcastToOnlineMembers(new SystemMessage(SystemMessage.CLAN_HAS_DISPERSED));
-
-        if (AuctionManager.getInstance().getAuction(clan.getAuctionBiddedAt()) != null)
-        {
-            AuctionManager.getInstance().getAuction(clan.getAuctionBiddedAt()).cancelBid(clan.getClanId());
-        }
-
-	    if (clan.getHasHideout() != 0)
-	    {
-	    	ClanHallManager.getInstance().getClanHall(clan.getHasHideout()).setOwner(null);
-	    }
-
 	    int castleId = clan.getHasCastle();
 	    if (castleId == 0)
 	    {
