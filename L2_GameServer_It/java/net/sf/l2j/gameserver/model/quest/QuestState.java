@@ -65,9 +65,6 @@ public final class QuestState
 	/** List of drops needed for quest according to the mob */
 	private Map<Integer, List<L2DropData>> _drops;
 	
-    /** List of timer for quest */
-    private List<QuestTimer> _questTimers;
-    
     /** Boolean flag letting QuestStateManager know to exit quest when cleaning up */
     private boolean _isExitQuestOnCleanUp = false;
 
@@ -708,9 +705,7 @@ public final class QuestState
      */
     public void startQuestTimer(String name, long time)
     {
-        // Add quest timer if timer doesn't already exist
-        if (getQuestTimer(name) == null)
-            _questTimers.add(new QuestTimer(this, name, time));
+    	getQuest().startQuestTimer(name, time, null, getPlayer());
     }
     
     /**
@@ -719,23 +714,7 @@ public final class QuestState
      */
     public final QuestTimer getQuestTimer(String name)
     {
-        for (int i = 0; i < getQuestTimers().size(); i++)
-            if (getQuestTimers().get(i).getName() == name)
-                return  getQuestTimers().get(i);
-
-        return null;
-    }
-    
-    /**
-     * Return a list of QuestTimer
-     * @return FastList<QuestTimer>
-     */
-    public final List<QuestTimer> getQuestTimers()
-    {
-        if (_questTimers == null)
-            _questTimers = new FastList<QuestTimer>();
-        
-        return _questTimers;
+    	return getQuest().getQuestTimer(name, null, getPlayer());
     }
     
     /**
