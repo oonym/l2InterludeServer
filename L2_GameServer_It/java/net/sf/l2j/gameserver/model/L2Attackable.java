@@ -501,7 +501,8 @@ public class L2Attackable extends L2NpcInstance
                 // Prevent unwanted behavior
                 if (damage > 1)
                 {
-                	if (attacker instanceof L2SummonInstance)
+                	if ( (attacker instanceof L2SummonInstance) || 
+                		((attacker instanceof L2PetInstance) && ((L2PetInstance)attacker).getPetData().getOwnerExpTaken() > 0) )
                 		ddealer = ((L2SummonInstance)attacker).getOwner();
                 	else
                 		ddealer = info.attacker;

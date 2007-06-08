@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
@@ -77,11 +77,31 @@ public class PcStat extends PlayableStat
      */
     public boolean addExpAndSp(long addToExp, int addToSp)
     {
+    	float ratioTakenByPet = 0;
     	//Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp/Sp
-    	if (getActiveChar().isGM() && getActiveChar().getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && getActiveChar().isInParty())
+    	L2PcInstance activeChar = getActiveChar();
+    	if (activeChar.isGM() && activeChar.getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && activeChar.isInParty())
     	     return false;
     	
-    	if (!super.addExpAndSp(addToExp, addToSp)) return false;
+    	// if this player has a pet that takes from the owner's Exp, give the pet Exp now
+    	
+    	if (activeChar.getPet() instanceof L2PetInstance )
+    	{
+    		L2PetInstance pet = (L2PetInstance) activeChar.getPet();
+    		ratioTakenByPet = pet.getPetData().getOwnerExpTaken();
+
+    		// only give exp/sp to the pet by taking from the owner if the pet has a non-zero, positive ratio
+    		// allow possible customizations that would have the pet earning more than 100% of the owner's exp/sp
+    		if (ratioTakenByPet > 0)
+    			pet.addExpAndSp((long)(addToExp*ratioTakenByPet), (int)(addToSp*ratioTakenByPet));
+    		// now adjust the max ratio to avoid the owner earning negative exp/sp
+    		if (ratioTakenByPet > 1)
+    			ratioTakenByPet = 1;
+    		addToExp = (long)(addToExp*(1-ratioTakenByPet));
+    		addToSp = (int)(addToSp*(1-ratioTakenByPet));
+    	}
+    	    	
+    	if ( !super.addExpAndSp(addToExp, addToSp) ) return false;
 
         // Send a Server->Client System Message to the L2PcInstance
         SystemMessage sm = new SystemMessage(SystemMessage.YOU_EARNED_S1_EXP_AND_S2_SP);

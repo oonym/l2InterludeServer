@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.handler.itemhandlers;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Summon;
+import net.sf.l2j.gameserver.model.actor.instance.L2BabyPetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
@@ -79,7 +80,7 @@ public class BeastSpiritShot implements IItemHandler
         L2ItemInstance weaponInst = null;
         L2Weapon weaponItem = null;
         
-        if (activePet instanceof L2PetInstance)
+        if ((activePet instanceof L2PetInstance) && !(activePet instanceof L2BabyPetInstance))
         {
             weaponInst = ((L2PetInstance)activePet).getActiveWeaponInstance();
             weaponItem = ((L2PetInstance)activePet).getActiveWeaponItem();
@@ -97,7 +98,7 @@ public class BeastSpiritShot implements IItemHandler
             }
         
             int shotCount = item.getCount();
-            shotConsumption = weaponItem.getSpiritShotCount();
+           	shotConsumption = weaponItem.getSpiritShotCount();
             
             if (shotConsumption == 0)
             {

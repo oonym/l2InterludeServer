@@ -46,9 +46,11 @@ public class L2PetData
     public static final String PET_MAX_LOAD = "loadMax";
     public static final String PET_REGEN_HP = "hpregen";
     public static final String PET_REGEN_MP = "mpregen";
+    public static final String OWNER_EXP_TAKEN = "owner_exp_taken";
 
     private int petID;
     private int petLevel;
+    private float owner_exp_taken;
     //  private int petExp; 
     private long petMaxExp;
     //    private int petHP; 
@@ -165,6 +167,14 @@ public class L2PetData
             this.setPetMaxExp(value);
         }
     }
+    public void setStat(String stat, float value)
+    {
+        //      if (stat.equalsIgnoreCase(PET_EXP)) { this.setPetExp(value); } 
+        if (stat.equalsIgnoreCase(OWNER_EXP_TAKEN))
+        {
+            this.setOwnerExpTaken(value);
+        }
+    }
 
     //  ID   
     public int getPetID()
@@ -203,6 +213,16 @@ public class L2PetData
         this.petMaxExp = pPetMaxExp;
     }
 
+    public float getOwnerExpTaken()
+    {
+    	return owner_exp_taken;
+    }
+
+    public void setOwnerExpTaken(float pOwnerExpTaken)
+    {
+    	this.owner_exp_taken = pOwnerExpTaken;
+    }
+    
     //  HP     
     //    public int getPetHP() { return petHP; }     
     //    public void setPetHP(int petHP) { this.petHP = petHP; } 

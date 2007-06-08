@@ -64,7 +64,7 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
  * 
  * @version $Revision: 1.15.2.10.2.16 $ $Date: 2005/04/06 16:13:40 $
  */
-public final class L2PetInstance extends L2Summon
+public class L2PetInstance extends L2Summon
 {
 	protected static Logger _logPet = Logger.getLogger(L2PetInstance.class.getName());
 	
@@ -712,7 +712,12 @@ public final class L2PetInstance extends L2Summon
 		java.sql.Connection con = null;
 		try
 		{
-			L2PetInstance pet = new L2PetInstance(IdFactory.getInstance().getNextId(), template, owner, control);
+			L2PetInstance pet;
+			if (template.type.compareToIgnoreCase("L2BabyPet")==0)
+				pet = new L2BabyPetInstance(IdFactory.getInstance().getNextId(), template, owner, control);
+			else
+				pet = new L2PetInstance(IdFactory.getInstance().getNextId(), template, owner, control);
+			
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, name, level, curHp, curMp, exp, sp, karma, pkkills, fed FROM pets WHERE item_obj_id=?");
 			statement.setInt(1, control.getObjectId());
