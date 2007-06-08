@@ -360,6 +360,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.setInt(1, objid);
 			statement.execute();
 			statement.close();
+			
+			statement = con.prepareStatement("DELETE FROM augmentations WHERE item_id IN (SELECT object_id FROM items WHERE items.owner_id=?)");
+			statement.setInt(1, objid);
+			statement.execute();
+			statement.close();
 
 			statement = con.prepareStatement("DELETE FROM items WHERE owner_id=?");
 			statement.setInt(1, objid);

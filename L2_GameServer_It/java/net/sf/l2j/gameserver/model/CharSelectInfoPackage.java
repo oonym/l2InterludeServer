@@ -49,6 +49,7 @@ public class CharSelectInfoPackage
 	private double _currentMp=0;
 	private int[][] _paperdoll;
     private int _karma=0;
+    private int _augmentationId=0;
 	
     
     /**
@@ -244,5 +245,13 @@ public class CharSelectInfoPackage
     public int getKarma()
     {
         return _karma;
+    }
+    public void setAugmentationId(int augmentationId)
+    {
+    	_augmentationId = augmentationId;
+    }
+    public int getAugmentationId()
+    {
+    	return _augmentationId;
     }
 }

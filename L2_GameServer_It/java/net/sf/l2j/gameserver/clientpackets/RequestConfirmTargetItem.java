@@ -53,7 +53,6 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 		
 		if (item == null) return;
 		
-		//TODO: can a char < 46 augment anything?
 		if (activeChar.getLevel() < 46)
 		{
 			activeChar.sendMessage("You have to be level 46 in order to augment an item");

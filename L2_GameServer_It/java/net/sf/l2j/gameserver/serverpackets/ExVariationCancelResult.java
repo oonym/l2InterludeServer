@@ -25,11 +25,13 @@ public class ExVariationCancelResult extends L2GameServerPacket
 {
 	private static final String _S__FE_57_EXVARIATIONCANCELRESULT = "[S] FE:57 ExVariationCancelResult";
 	
+	private int _closeWindow;
 	private int _unk1;
 	
-	public ExVariationCancelResult()
+	public ExVariationCancelResult(int result)
 	{
-		_unk1 = 1;
+		_closeWindow = 1;
+		_unk1 = result;
 	}
 
 	/**
@@ -40,8 +42,8 @@ public class ExVariationCancelResult extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x57);
+		writeD(_closeWindow);
 		writeD(_unk1);
-		writeD(0x01);
 	}
 
 	/**

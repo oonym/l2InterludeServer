@@ -191,8 +191,7 @@ public class CharSelectInfo extends L2GameServerPacket
 
 					writeC(charInfoPackage.getEnchantEffect());
 
-					writeH(0x00); //c6
-					writeH(0x00); //c6
+					writeD(charInfoPackage.getAugmentationId());
 		}
 	}
 
@@ -318,6 +317,36 @@ public class CharSelectInfo extends L2GameServerPacket
 			loadCharacterSubclassInfo(charInfopackage, objectId, activeClassId);        
 
 		charInfopackage.setClassId(activeClassId);
+		
+		// Get the augmentation id for equipped weapon
+		int weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND);
+		if (weaponObjId < 1)
+			weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_RHAND);
+		
+		if (weaponObjId > 0)
+		{
+			java.sql.Connection con = null;
+			try
+			{
+				con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT attributes FROM augmentations WHERE item_id=?");
+				statement.setInt(1, weaponObjId);
+				ResultSet result = statement.executeQuery();
+
+				if (result.next())
+				{
+					charInfopackage.setAugmentationId(result.getInt("attributes"));
+				}
+
+				result.close();
+				statement.close();
+			}
+			catch (Exception e)
+			{
+				_log.warning("Could not restore augmentation info: " + e);
+			} 
+			finally { try { con.close(); } catch (Exception e) {} }
+		}
 
 		/*
 		 * Check if the base class is set to zero and alse doesn't match

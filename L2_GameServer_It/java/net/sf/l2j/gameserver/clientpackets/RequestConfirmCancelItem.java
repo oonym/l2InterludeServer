@@ -52,6 +52,7 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemId);
 		
+		if (activeChar == null || item == null) return;
 		if (!item.isAugmented())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessage.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM));
@@ -61,17 +62,27 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 		int price=0;
 		switch (item.getItem().getItemGrade())
 		{
-			//TODO: C: low:95k, med:150k, high:210k
 			case L2Item.CRYSTAL_C:
-				price = 150000;
+				if (item.getCrystalCount() < 1720)
+					price = 95000;
+				else if (item.getCrystalCount() < 2452)
+					price = 150000;
+				else
+					price = 210000;
 				break;
-			//TODO: B: low:240k, med:270k
 			case L2Item.CRYSTAL_B:
-				price = 240000;
+				if (item.getCrystalCount() < 1746)
+					price = 240000;
+				else
+					price = 270000;
 				break;
-			//TODO: A: low:330k, med:390k, high:420k
 			case L2Item.CRYSTAL_A:
-				price = 390000;
+				if (item.getCrystalCount() < 2160)
+					price = 330000;
+				else if (item.getCrystalCount() < 2824)
+					price = 390000;
+				else
+					price = 420000;
 				break;
 			case L2Item.CRYSTAL_S:
 				price = 480000;

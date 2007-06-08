@@ -47,11 +47,19 @@ public final class RequestRefineCancel extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
+		
+		if (activeChar == null) return;
+		if (targetItem == null)
+		{
+			activeChar.sendPacket(new ExVariationCancelResult(0));
+			return;
+		}
 
 		// cannot remove augmentation from a not augmented item
 		if (!targetItem.isAugmented())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessage.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM));
+			activeChar.sendPacket(new ExVariationCancelResult(0));
 			return;
 		}
 		
@@ -59,23 +67,34 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		int price=0;
 		switch (targetItem.getItem().getItemGrade())
 		{
-			//TODO: C: low:95k, med:150k, high:210k
 			case L2Item.CRYSTAL_C:
-				price = 150000;
+				if (targetItem.getCrystalCount() < 1720)
+					price = 95000;
+				else if (targetItem.getCrystalCount() < 2452)
+					price = 150000;
+				else
+					price = 210000;
 				break;
-			//TODO: B: low:240k, med:270k
 			case L2Item.CRYSTAL_B:
-				price = 240000;
+				if (targetItem.getCrystalCount() < 1746)
+					price = 240000;
+				else
+					price = 270000;
 				break;
-			//TODO: A: low:330k, med:390k, high:420k
 			case L2Item.CRYSTAL_A:
-				price = 390000;
+				if (targetItem.getCrystalCount() < 2160)
+					price = 330000;
+				else if (targetItem.getCrystalCount() < 2824)
+					price = 390000;
+				else
+					price = 420000;
 				break;
 			case L2Item.CRYSTAL_S:
 				price = 480000;
 				break;
 			// any other item type is not augmentable
 			default:
+				activeChar.sendPacket(new ExVariationCancelResult(0));
 				return;
 		}
 		
@@ -92,11 +111,11 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		targetItem.removeAugmentation();
 		
 		// send ExVariationCancelResult
-		activeChar.sendPacket(new ExVariationCancelResult());
+		activeChar.sendPacket(new ExVariationCancelResult(1));
 		
 		// send inventory update
 		InventoryUpdate iu = new InventoryUpdate();
-		iu.addItem(targetItem);
+		iu.addModifiedItem(targetItem);
 		activeChar.sendPacket(iu);
 		
 		// send system message

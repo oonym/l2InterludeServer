@@ -67,8 +67,10 @@ public class GMViewItemList extends L2GameServerPacket
 			writeD(temp.getItem().getBodyPart());
 			writeH(temp.getEnchantLevel());
 			writeH(temp.getCustomType2());
-			writeH(0x00); // C6
-			writeH(0x00); // C6
+			if (temp.isAugmented())
+				writeD(temp.getAugmentation().getAugmentationId());
+			else
+				writeD(0x00);
 			writeD(-1); // C6
 		}
 	}

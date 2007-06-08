@@ -186,6 +186,10 @@ public class AugmentationData
 	
 	@SuppressWarnings("unchecked") private final void load()
 	{
+		// Load the skillmap
+		// Note: the skillmap data is only used when generating new augmentations
+		// the client expects a different id in order to display the skill in the
+		// items description...
 		try
 		{
 			SkillTable st = SkillTable.getInstance();
@@ -322,9 +326,43 @@ public class AugmentationData
 	// =========================================================
 	// Properties - Public
 	
-	public L2Augmentation generateRandomAugmentation(L2ItemInstance item, int lifeStoneLevel)
+	/**
+	 * Generate a new random augmentation
+	 * @param item
+	 * @param lifeStoneLevel
+	 * @param lifeSoneGrade
+	 * @return L2Augmentation
+	 */
+	public L2Augmentation generateRandomAugmentation(L2ItemInstance item, int lifeStoneLevel, int lifeStoneGrade)
 	{
-		int stat12 = Rnd.get(STAT_START, STAT_END);
+		// Note that stat12 stands for stat 1 AND 2 (same for stat34 ;p )
+		// this is because a value can contain up to 2 stat modifications
+		// (there are two short values packed in one integer value, meaning 4 stat modifications at max)
+		// for more info take a look at getAugStatsById(...)
+		
+		// Note: lifeStoneGrade: (0 means low grade, 3 top grade)
+		// First: decide which grade the augmentation result is going to have:
+		// 0:yellow, 1:blue, 2:purple, 3:red 
+		int resultColor = 0;
+		// The chances used here are most likely custom,
+		// whats known is: u can also get a red result from a normal grade lifeStone
+		// however I will make it so that a higher grade lifeStone will more likely result in a
+		// higher grade augmentation... and the augmentation result will at least have the grade
+		// of the life stone
+		resultColor = Rnd.get(0, 100);
+		if (lifeStoneGrade == 3 || resultColor <= (15*lifeStoneGrade)+10) resultColor = 3;
+		else if (lifeStoneGrade == 2 || resultColor <= (15*lifeStoneGrade)+20) resultColor = 2;
+		else if (lifeStoneGrade == 1 || resultColor <= (15*lifeStoneGrade)+30) resultColor = 1;
+		else resultColor = 0;
+		
+		// Second: Calculate the subblock offset for the choosen color,
+		// and the level of the lifeStone
+		int colorOffset = (resultColor*(STAT_SUBBLOCKSIZE*10))
+							+((lifeStoneLevel-1)*STAT_SUBBLOCKSIZE);
+		
+		int offset = ((3-lifeStoneGrade)*STAT_BLOCKSIZE)+colorOffset;
+
+		int stat12 = Rnd.get(offset, offset+STAT_SUBBLOCKSIZE);
 		int stat34 = 0;
 		boolean generateSkill=false;
 		
@@ -334,7 +372,12 @@ public class AugmentationData
 		else if (Rnd.get(1, 100) <= CHANCE_BASESTAT) stat34 = Rnd.get(BASESTAT_STR, BASESTAT_MEN);
 		
 		// is neither a skill nor basestat used for stat34? then generate a normal stat
-		if (stat34 == 0 && !generateSkill) stat34 = Rnd.get(STAT_START, STAT_END);
+		if (stat34 == 0 && !generateSkill)
+		{
+			offset = (lifeStoneGrade*STAT_BLOCKSIZE)+colorOffset;
+
+			stat34 = Rnd.get(offset, offset+STAT_SUBBLOCKSIZE);
+		}
 
 		// generate a skill if neccessary
 		L2Skill skill = null;
@@ -375,15 +418,30 @@ public class AugmentationData
 		public Stats getStat() { return _stat; }
 		public float getValue() { return _value; }
 	}
+	/**
+	 * Returns the stat and basestat boni for a given augmentation id
+	 * @param augmentationId
+	 * @return
+	 */
 	public FastList<AugStat> getAugStatsById(int augmentationId)
 	{
 		FastList <AugStat> temp = new FastList<AugStat>();
+		// An augmentation id contains 2 short vaues so we gotta seperate them here
+		// both values contain a number from 1-16380, the first 14560 values are stats
+		// the 14560 stats are devided into 4 blocks each holding 3640 values
+		// each block contains 40 subblocks holding 91 stat values
+		// the first 13 values are so called Solo-stats and they have the highest stat increase possible
+		// after the 13 Solo-stats come 78 combined stats (thats every possible combination of the 13 solo stats)
+		// the first 12 combined stats (14-26) is the stat 1 combined with stat 2-13
+		// the next 11 combined stats then are stat 2 combined with stat 3-13 and so on...
+		// to get the idea have a look @ optiondata_client-e.dat - thats where the data came from :)
 		int stats[] = new int[2];
 		stats[0] = 0x0000FFFF&augmentationId;
 		stats[1] = (augmentationId>>16);
 		
 		for (int i=0; i<2; i++)
 		{
+			// its a stat
 			if (stats[i] >= STAT_START && stats[i] <= STAT_END)
 			{
 				int block=0;
@@ -432,6 +490,7 @@ public class AugmentationData
 						temp.add(new AugStat(as.getStat(), as.getCombinedStatValue(subblock*2)));
 				}
 			}
+			// its a base stat
 			else if (stats[i] >= BASESTAT_STR && stats[i] <= BASESTAT_MEN)
 			{
 				switch (stats[i])
