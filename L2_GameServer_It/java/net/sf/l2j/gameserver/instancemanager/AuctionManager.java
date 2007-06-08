@@ -150,6 +150,10 @@ public class AuctionManager
         for(i=0;i<ItemInitDataId.length;i++)
         	if(ItemInitDataId[i] == id)
         		break;
+        if(i>=ItemInitDataId.length){
+        	_log.warning("Clan Hall auction not found for Id :"+id);
+        	return;
+        }
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();

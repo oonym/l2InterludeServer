@@ -126,14 +126,14 @@ public class ClanHallManager
 		return false;
 	}
 	/** Free a ClanHall */
-	public final void setFree(int chId){
+	public final synchronized void setFree(int chId){
 		_freeClanHall.put(chId,_clanHall.get(chId));
 		ClanTable.getInstance().getClan(_freeClanHall.get(chId).getOwnerId()).setHasHideout(0);
 		_freeClanHall.get(chId).free();
 		_clanHall.remove(chId);
 	}
 	/** Set ClanHallOwner */
-	public final void setOwner(int chId, L2Clan clan){
+	public final synchronized void setOwner(int chId, L2Clan clan){
 		if(!_clanHall.containsKey(chId)){
 			_clanHall.put(chId,_freeClanHall.get(chId));
 			_freeClanHall.remove(chId);

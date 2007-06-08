@@ -376,15 +376,18 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                     String filename = "data/html/auction/AgitInfo.htm";
                     NpcHtmlMessage html = new NpcHtmlMessage(1);
                     html.setFile(filename);
-                    html.replace("%AGIT_NAME%", ClanHallManager.getInstance().getClanHall(ItemId).getName());
-                    html.replace("%AGIT_OWNER_PLEDGE_NAME%", player.getClan().getName());
-                    html.replace("%OWNER_PLEDGE_MASTER%", player.getClan().getLeaderName());
-                    html.replace("%AGIT_SIZE%", "30 ");
-                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHall(ItemId).getLease()));
-                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHall(ItemId).getLocation());
-                    html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_start");
-                    html.replace("%objectId%", String.valueOf(getObjectId()));
-                    player.sendPacket(html);
+                    if(ClanHallManager.getInstance().getClanHall(ItemId) != null){
+	                    html.replace("%AGIT_NAME%", ClanHallManager.getInstance().getClanHall(ItemId).getName());
+	                    html.replace("%AGIT_OWNER_PLEDGE_NAME%", player.getClan().getName());
+	                    html.replace("%OWNER_PLEDGE_MASTER%", player.getClan().getLeaderName());
+	                    html.replace("%AGIT_SIZE%", "30 ");
+	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHall(ItemId).getLease()));
+	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHall(ItemId).getLocation());
+	                    html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_start");
+	                    html.replace("%objectId%", String.valueOf(getObjectId()));
+                    }else
+                    	_log.warning("Clan Hall ID NULL : "+ItemId+" Can be caused by concurent write in ClanHallManager");
+	                player.sendPacket(html);
                     return;
                 }
             }

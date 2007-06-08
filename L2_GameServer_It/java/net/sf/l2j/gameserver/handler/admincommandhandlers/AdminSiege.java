@@ -155,9 +155,11 @@ public class AdminSiege implements IAdminCommandHandler
                 	activeChar.sendMessage("This ClanHall isn't free !");
                 }else if(player.getClan().getHasHideout() == 0){
                 	ClanHallManager.getInstance().setOwner(clanhall.getId(), player.getClan());
-                	AuctionManager.getInstance().getAuction(clanhall.getId()).deleteAuctionFromDB();
+                	if(AuctionManager.getInstance().getAuction(clanhall.getId()) != null)
+                		AuctionManager.getInstance().getAuction(clanhall.getId()).deleteAuctionFromDB();
                 }else
                 	activeChar.sendMessage("You have already a ClanHall !");
+
             }
             else if (command.equalsIgnoreCase("admin_clanhalldel"))
             {

@@ -56,6 +56,7 @@ public class Auction
 	private String _SellerName					= "";
 	private int _CurrentBid						= 0;
 	private int _StartingBid					= 0;
+
 	private Map<Integer, Bidder> _bidders        = new FastMap<Integer, Bidder>();
 	public static String[] ItemTypeName =
 	{
@@ -116,19 +117,8 @@ public class Auction
             } catch (Throwable t) { }
         }
     }
-	/** Waiting ClanHallManagerLoaded for endAuction */
-    public class endAuctionTask implements Runnable
-    {
-        public endAuctionTask(){}
-        public void run()
-        {
-            try
-            {
-            	endAuction();
-            } catch (Throwable t) { }
-        }
-    }
     /** Constructor */
+
 	public Auction(int auctionId)
 	{
 		_Id = auctionId;
@@ -435,7 +425,7 @@ public class Auction
 		    ClanHallManager.getInstance().setOwner(_ItemId, Clan);
     	}else{
     		/** Task waiting ClanHallManager is loaded every 3s */
-            ThreadPoolManager.getInstance().scheduleGeneral(new endAuctionTask(), 3000); 
+            ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), 3000); 
     	}
     }
     /** Cancel bid */
