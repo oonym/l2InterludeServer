@@ -89,6 +89,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 		{
 			if (LoginController.getInstance().isLoginPossible(this.getClient(), _serverId))
 			{
+				this.getClient().setJoinedGS(true);
 				this.getClient().sendPacket(new PlayOk(sk));
 			}
 			else

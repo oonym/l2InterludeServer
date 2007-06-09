@@ -60,6 +60,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	private boolean _usesInternalIP;
 	private SessionKey _sessionKey;
 	private int _sessionId;
+	private boolean _joinedGS;
 	
 	private long _connectionStartTime;
 	
@@ -201,6 +202,16 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		return _sessionId;
 	}
 	
+	public boolean hasJoinedGS()
+	{
+		return _joinedGS;
+	}
+	
+	public void setJoinedGS(boolean val)
+	{
+		_joinedGS = val;
+	}
+	
 	public void setSessionKey(SessionKey sessionKey)
 	{
 		_sessionKey = sessionKey;
@@ -247,6 +258,10 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		if (this.getState() != LoginClientState.AUTHED_LOGIN)
 		{
 			LoginController.getInstance().removeLoginClient(this);
+		}
+		else if (!this.hasJoinedGS())
+		{
+			LoginController.getInstance().removeAuthedLoginClient(this.getAccount());
 		}
 	}
 	

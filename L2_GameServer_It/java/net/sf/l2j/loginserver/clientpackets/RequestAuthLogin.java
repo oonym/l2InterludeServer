@@ -142,6 +142,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 					{
 						// kick the other client
 						oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+						lc.removeAuthedLoginClient(_user);
 					}
 					break;
 				case ALREADY_ON_GS:
