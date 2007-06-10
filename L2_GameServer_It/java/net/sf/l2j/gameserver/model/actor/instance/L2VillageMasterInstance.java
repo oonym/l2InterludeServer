@@ -43,6 +43,7 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 
@@ -642,7 +643,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 player.sendPacket(new SystemMessage(SystemMessage.CLAN_HAS_ALREADY_ESTABLISHED_A_CLAN_ACADEMY));
             }
             else
-            	player.sendMessage("You can't create any more sub-units of this type");
+            	player.sendMessage("You can't create any more sub-units of this type or leader is not correct");
             return;
         }
 
@@ -666,6 +667,12 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         	sm = new SystemMessage(SystemMessage.CLAN_CREATED);
         
         player.sendPacket(sm);
+        if(pledgeType != L2Clan.SUBUNIT_ACADEMY)
+        {
+        L2ClanMember leaderSubPledge = clan.getClanMember(leaderName);
+        leaderSubPledge.getPlayerInstance().setPledgeClass(leaderSubPledge.calculatePledgeClass(leaderSubPledge.getPlayerInstance()));
+        leaderSubPledge.getPlayerInstance().sendPacket(new UserInfo(leaderSubPledge.getPlayerInstance()));
+        }
     }
 
     public void assignSubPledgeLeader(L2PcInstance player, String clanName, String leaderName)
@@ -684,6 +691,12 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         {
             player.sendPacket(new SystemMessage(SystemMessage.NAMING_CHARNAME_UP_TO_16CHARS));
             return;
+        }
+        
+        if(player.getName().equals(leaderName))
+        {
+        	player.sendPacket(new SystemMessage(SystemMessage.CAPTAIN_OF_ROYAL_GUARD_CANNOT_BE_APPOINTED));
+        	return;
         }
         
         L2Clan clan = player.getClan();
@@ -715,7 +728,9 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         
         subPledge.setLeaderName(leaderName);
         clan.updateSubPledgeInDB(subPledge.getId());
-
+        L2ClanMember leaderSubPledge = clan.getClanMember(leaderName);
+        leaderSubPledge.getPlayerInstance().setPledgeClass(leaderSubPledge.calculatePledgeClass(leaderSubPledge.getPlayerInstance()));
+        leaderSubPledge.getPlayerInstance().sendPacket(new UserInfo(leaderSubPledge.getPlayerInstance()));
         clan.broadcastClanStatus();
     	SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_BEEN_SELECTED_AS_CAPTAIN_OF_S2);
     	sm.addString(leaderName);
