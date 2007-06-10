@@ -5036,13 +5036,10 @@ public abstract class L2Character extends L2Object
 	{
 		if (_disabledSkills == null) return;
 
-		synchronized (_disabledSkills)
-		{
-			_disabledSkills.remove(new Integer(skillId));
+		_disabledSkills.remove(new Integer(skillId));
 
-			if (this instanceof L2PcInstance)
-				removeTimeStamp(skillId);
-		}
+		if (this instanceof L2PcInstance)
+			removeTimeStamp(skillId);
 	}
 
 	/**
