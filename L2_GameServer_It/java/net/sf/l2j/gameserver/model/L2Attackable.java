@@ -503,7 +503,7 @@ public class L2Attackable extends L2NpcInstance
                 {
                 	if ( (attacker instanceof L2SummonInstance) || 
                 		((attacker instanceof L2PetInstance) && ((L2PetInstance)attacker).getPetData().getOwnerExpTaken() > 0) )
-                		ddealer = ((L2SummonInstance)attacker).getOwner();
+                		ddealer = ((L2Summon)attacker).getOwner();
                 	else
                 		ddealer = info.attacker;
                 	
