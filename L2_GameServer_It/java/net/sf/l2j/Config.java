@@ -56,6 +56,8 @@ public final class Config
     public static int PORT_GAME;
     /** Login Server port */
     public static int PORT_LOGIN;
+    /** Login Server bind ip */
+    public static String LOGIN_BIND_ADDRESS;
     /** Number of trys of login before ban */
     public static int LOGIN_TRY_BEFORE_BAN;
     /** Hostname of the Game Server */
@@ -1934,15 +1936,18 @@ public final class Config
 		else if(Server.SERVER_MODE == Server.MODE_LOGINSERVER)
 		{
 			_log.info("loading login config");
-			try {
+			try
+			{
 		        Properties serverSettings    = new Properties();
 				InputStream is               = new FileInputStream(new File(LOGIN_CONFIGURATION_FILE));  
 				serverSettings.load(is);
 				is.close();
 				
-				GAME_SERVER_LOGIN_HOST = serverSettings.getProperty("LoginserverHostname","127.0.0.1");
+				GAME_SERVER_LOGIN_HOST = serverSettings.getProperty("LoginHostname","*");
 				GAME_SERVER_LOGIN_PORT = Integer.parseInt(serverSettings.getProperty("LoginPort","9013"));
-				PORT_LOGIN              = Integer.parseInt(serverSettings.getProperty("LoginserverPort", "2106"));
+				
+				LOGIN_BIND_ADDRESS 	= serverSettings.getProperty("LoginserverHostname", "*");
+				PORT_LOGIN			= Integer.parseInt(serverSettings.getProperty("LoginserverPort", "2106"));
 				
 				DEBUG        = Boolean.parseBoolean(serverSettings.getProperty("Debug", "false"));
 				DEVELOPER    = Boolean.parseBoolean(serverSettings.getProperty("Developer", "false"));

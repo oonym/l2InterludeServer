@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
@@ -159,7 +160,24 @@ public class L2LoginServer
 		
 		this.loadBanFile();
 		
-		SelectorServerConfig ssc = new SelectorServerConfig(Config.PORT_LOGIN);
+		InetAddress bindAddress = null;
+		if (!Config.LOGIN_BIND_ADDRESS.equals("*"))
+		{
+			try
+			{
+				bindAddress = InetAddress.getByName(Config.LOGIN_BIND_ADDRESS);
+			}
+			catch (UnknownHostException e1)
+			{
+				_log.severe("WARNING: The LoginServer bind address is invalid, using all avaliable IPs. Reason: "+e1.getMessage());
+				if (Config.DEVELOPER)
+				{
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		SelectorServerConfig ssc = new SelectorServerConfig(bindAddress, Config.PORT_LOGIN);
 		L2LoginPacketHandler loginPacketHandler = new L2LoginPacketHandler();
 		SelectorHelper sh = new SelectorHelper();
 		try
@@ -228,7 +246,7 @@ public class L2LoginServer
 			System.exit(1);
 		}
 		_selectorThread.start();
-		_log.info("Login Server ready on port "+Config.PORT_LOGIN);
+		_log.info("Login Server ready on "+(bindAddress == null ? "*" : bindAddress.getHostAddress())+":"+Config.PORT_LOGIN);
 	}
 	
 	public Status getStatusServer()
