@@ -650,6 +650,8 @@ public abstract class L2Character extends L2Object
 
 		// Get the Attack Speed of the L2Character (delay (in milliseconds) before next attack)
 		int sAtk = calculateAttackSpeed(target, weaponInst);
+		// the hit is calculated to happen halfway to the animation - might need further tuning e.g. in bow case
+		int sAtkHitMoment = sAtk/2; 
 		_attackEndTime = GameTimeController.getGameTicks();
 		_attackEndTime += (sAtk / GameTimeController.MILLIS_IN_TICK);
 		_attackEndTime -= 1;
@@ -673,15 +675,15 @@ public abstract class L2Character extends L2Object
 		
 		// Select the type of attack to start
 		if (weaponItem == null)
-			hitted = doAttackHitSimple(attack, target, sAtk);
+			hitted = doAttackHitSimple(attack, target, sAtkHitMoment);
 		else if (weaponItem.getItemType() == L2WeaponType.BOW)
-			hitted = doAttackHitByBow(attack, target, sAtk, reuse);
+			hitted = doAttackHitByBow(attack, target, sAtkHitMoment, reuse);
 		else if (weaponItem.getItemType() == L2WeaponType.POLE)
-			hitted = doAttackHitByPole(attack, sAtk);
+			hitted = doAttackHitByPole(attack, sAtkHitMoment);
 		else if (isUsingDualWeapon())
-			hitted = doAttackHitByDual(attack, target, sAtk);
+			hitted = doAttackHitByDual(attack, target, sAtkHitMoment);
 		else
-			hitted = doAttackHitSimple(attack, target, sAtk);
+			hitted = doAttackHitSimple(attack, target, sAtkHitMoment);
 		
         // Flag the attacker if it's a L2PcInstance outside a PvP area
         L2PcInstance player = null;
