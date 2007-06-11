@@ -96,6 +96,12 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			
 			if (!Config.ALLOW_CLASS_MASTERS) 
 				jobLevel = 3;
+			
+			if(player.isGM())
+			{
+				showChatWindowChooseClass(player);
+				return;
+			}
 
             if (((level >= 20 && jobLevel == 1 ) ||
 				(level >= 40 && jobLevel == 2 )) && Config.ALLOW_CLASS_MASTERS)
@@ -111,11 +117,11 @@ public final class L2ClassMasterInstance extends L2FolkInstance
                         NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                         TextBuilder sb = new TextBuilder();
                         sb.append("<html><body<table width=200>");
-                        sb.append("<tr><td><center>"+CharTemplateTable.getClassNameById(classId.getId())+" Class Master:</center></td></tr>");
+                        sb.append("<tr><td><center>"+CharTemplateTable.getClassNameById(player.getClassId().getId())+" Class Master:</center></td></tr>");
                         sb.append("<tr><td><br></td></tr>");
                         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class "+(88+i)+"\">Advance to "+CharTemplateTable.getClassNameById(88+i)+"</a></td></tr>");
                         sb.append("<tr><td><br></td></tr>");
-                        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_upgrade_hatchling\">Upgrade Hatchling to Strider</a></td></tr>");
+                        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_upgrade_hatchling \">Upgrade Hatchling to Strider</a></td></tr>");
                         sb.append("</table></body></html>");
                         html.setHtml(sb.toString());
                         player.sendPacket(html);
@@ -160,7 +166,35 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
-		if(command.startsWith("change_class"))
+		if(command.startsWith("1stClass"))
+		{
+			if(player.isGM())
+			{
+				showChatWindow1st(player);
+			}
+		}
+		else if(command.startsWith("2ndClass"))
+		{
+			if(player.isGM())
+			{
+				showChatWindow2nd(player);
+			}
+		}
+		else if(command.startsWith("3rdClass"))
+		{
+			if(player.isGM())
+			{
+				showChatWindow3rd(player);
+			}
+		}
+		else if(command.startsWith("baseClass"))
+		{
+			if(player.isGM())
+			{
+				showChatWindowBase(player);
+			}
+		}
+		else if(command.startsWith("change_class"))
 		{
             int val = Integer.parseInt(command.substring(13));
             
@@ -171,6 +205,26 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             int newJobLevel = 0;
             
             ClassLevel lvlnow = PlayerClass.values()[classId.getId()].getLevel();  
+            
+            if(player.isGM())
+            {
+            	changeClass(player, val);
+                
+                if(val >= 88)
+                	player.sendPacket(new SystemMessage(1606)); // system sound 3rd occupation
+                else
+                	player.sendPacket(new SystemMessage(1308));    // system sound for 1st and 2nd occupation
+
+                NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+                TextBuilder sb = new TextBuilder();
+                sb.append("<html><head><body>");
+                sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateTable.getClassNameById(player.getClassId().getId()) + "</font>.");
+                sb.append("</body></html>");
+                            
+                html.setHtml(sb.toString());
+                player.sendPacket(html);
+            	return;
+            }
             switch (lvlnow)
             {
             	case First:
@@ -234,6 +288,185 @@ public final class L2ClassMasterInstance extends L2FolkInstance
            super.onBypassFeedback(player, command);
        }
  }
+	private void showChatWindowChooseClass(L2PcInstance player)
+	{
+  		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+        TextBuilder sb = new TextBuilder();
+        sb.append("<html>");
+        sb.append("<body>");
+        sb.append("<table width=200>");
+        sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
+        sb.append("<tr><td><br></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_baseClass\">Base Classes.</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_1stClass\">1st Classes.</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_2ndClass\">2nd Classes.</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_3rdClass\">3rd Classes.</a></td></tr>");
+        sb.append("<tr><td><br></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_upgrade_hatchling\">Upgrade Hatchling to Strider</a></td></tr>");
+        sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        html.setHtml(sb.toString());
+        player.sendPacket(html);
+        return;
+	}
+	
+	private void showChatWindow1st(L2PcInstance player)
+	{
+  		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+        TextBuilder sb = new TextBuilder();
+        sb.append("<html>");
+        sb.append("<body>");
+        sb.append("<table width=200>");
+        sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
+        sb.append("<tr><td><br></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 1\">Advance to "+CharTemplateTable.getClassNameById(1)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 4\">Advance to "+CharTemplateTable.getClassNameById(4)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 7\">Advance to "+CharTemplateTable.getClassNameById(7)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 10\">Advance to "+CharTemplateTable.getClassNameById(10)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 15\">Advance to "+CharTemplateTable.getClassNameById(15)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 19\">Advance to "+CharTemplateTable.getClassNameById(19)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 22\">Advance to "+CharTemplateTable.getClassNameById(22)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 26\">Advance to "+CharTemplateTable.getClassNameById(26)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 29\">Advance to "+CharTemplateTable.getClassNameById(29)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 32\">Advance to "+CharTemplateTable.getClassNameById(32)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 34\">Advance to "+CharTemplateTable.getClassNameById(34)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 35\">Advance to "+CharTemplateTable.getClassNameById(35)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 39\">Advance to "+CharTemplateTable.getClassNameById(39)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 42\">Advance to "+CharTemplateTable.getClassNameById(42)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 45\">Advance to "+CharTemplateTable.getClassNameById(45)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 47\">Advance to "+CharTemplateTable.getClassNameById(47)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 50\">Advance to "+CharTemplateTable.getClassNameById(50)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 54\">Advance to "+CharTemplateTable.getClassNameById(54)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 56\">Advance to "+CharTemplateTable.getClassNameById(56)+"</a></td></tr>");
+        sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        html.setHtml(sb.toString());
+        player.sendPacket(html);
+        return;
+	}
+	
+	private void showChatWindow2nd(L2PcInstance player)
+	{
+  		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+        TextBuilder sb = new TextBuilder();
+        sb.append("<html>");
+        sb.append("<body>");
+        sb.append("<table width=200>");
+        sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
+        sb.append("<tr><td><br></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 2\">Advance to "+CharTemplateTable.getClassNameById(2)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 3\">Advance to "+CharTemplateTable.getClassNameById(3)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 5\">Advance to "+CharTemplateTable.getClassNameById(5)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 6\">Advance to "+CharTemplateTable.getClassNameById(6)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 9\">Advance to "+CharTemplateTable.getClassNameById(9)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 12\">Advance to "+CharTemplateTable.getClassNameById(12)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 13\">Advance to "+CharTemplateTable.getClassNameById(13)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 14\">Advance to "+CharTemplateTable.getClassNameById(14)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 16\">Advance to "+CharTemplateTable.getClassNameById(16)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 17\">Advance to "+CharTemplateTable.getClassNameById(17)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 20\">Advance to "+CharTemplateTable.getClassNameById(20)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 21\">Advance to "+CharTemplateTable.getClassNameById(21)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 23\">Advance to "+CharTemplateTable.getClassNameById(23)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 24\">Advance to "+CharTemplateTable.getClassNameById(24)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 27\">Advance to "+CharTemplateTable.getClassNameById(27)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 28\">Advance to "+CharTemplateTable.getClassNameById(28)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 30\">Advance to "+CharTemplateTable.getClassNameById(30)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 33\">Advance to "+CharTemplateTable.getClassNameById(33)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 34\">Advance to "+CharTemplateTable.getClassNameById(34)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 36\">Advance to "+CharTemplateTable.getClassNameById(36)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 37\">Advance to "+CharTemplateTable.getClassNameById(37)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 40\">Advance to "+CharTemplateTable.getClassNameById(40)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 41\">Advance to "+CharTemplateTable.getClassNameById(41)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 43\">Advance to "+CharTemplateTable.getClassNameById(43)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 46\">Advance to "+CharTemplateTable.getClassNameById(46)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 48\">Advance to "+CharTemplateTable.getClassNameById(48)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 51\">Advance to "+CharTemplateTable.getClassNameById(51)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 52\">Advance to "+CharTemplateTable.getClassNameById(52)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 55\">Advance to "+CharTemplateTable.getClassNameById(55)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 57\">Advance to "+CharTemplateTable.getClassNameById(57)+"</a></td></tr>");
+        sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        html.setHtml(sb.toString());
+        player.sendPacket(html);
+        return;
+	}
+	
+	private void showChatWindow3rd(L2PcInstance player)
+	{
+  		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+        TextBuilder sb = new TextBuilder();
+        sb.append("<html>");
+        sb.append("<body>");
+        sb.append("<table width=200>");
+        sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
+        sb.append("<tr><td><br></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 88\">Advance to "+CharTemplateTable.getClassNameById(88)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 89\">Advance to "+CharTemplateTable.getClassNameById(89)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 90\">Advance to "+CharTemplateTable.getClassNameById(90)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 91\">Advance to "+CharTemplateTable.getClassNameById(91)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 92\">Advance to "+CharTemplateTable.getClassNameById(92)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 93\">Advance to "+CharTemplateTable.getClassNameById(93)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 94\">Advance to "+CharTemplateTable.getClassNameById(94)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 95\">Advance to "+CharTemplateTable.getClassNameById(95)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 96\">Advance to "+CharTemplateTable.getClassNameById(96)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 97\">Advance to "+CharTemplateTable.getClassNameById(97)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 98\">Advance to "+CharTemplateTable.getClassNameById(98)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 99\">Advance to "+CharTemplateTable.getClassNameById(99)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 100\">Advance to "+CharTemplateTable.getClassNameById(100)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 101\">Advance to "+CharTemplateTable.getClassNameById(101)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 102\">Advance to "+CharTemplateTable.getClassNameById(102)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 103\">Advance to "+CharTemplateTable.getClassNameById(103)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 104\">Advance to "+CharTemplateTable.getClassNameById(104)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 105\">Advance to "+CharTemplateTable.getClassNameById(105)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 106\">Advance to "+CharTemplateTable.getClassNameById(106)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 107\">Advance to "+CharTemplateTable.getClassNameById(107)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 108\">Advance to "+CharTemplateTable.getClassNameById(108)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 109\">Advance to "+CharTemplateTable.getClassNameById(109)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 110\">Advance to "+CharTemplateTable.getClassNameById(110)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 111\">Advance to "+CharTemplateTable.getClassNameById(111)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 112\">Advance to "+CharTemplateTable.getClassNameById(112)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 113\">Advance to "+CharTemplateTable.getClassNameById(113)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 114\">Advance to "+CharTemplateTable.getClassNameById(114)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 115\">Advance to "+CharTemplateTable.getClassNameById(115)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 116\">Advance to "+CharTemplateTable.getClassNameById(116)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 117\">Advance to "+CharTemplateTable.getClassNameById(117)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 118\">Advance to "+CharTemplateTable.getClassNameById(118)+"</a></td></tr>");
+        sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        html.setHtml(sb.toString());
+        player.sendPacket(html);
+        return;
+	}
+	
+	private void showChatWindowBase(L2PcInstance player)
+	{
+  		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+        TextBuilder sb = new TextBuilder();
+        sb.append("<html>");
+        sb.append("<body>");
+        sb.append("<table width=200>");
+        sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
+        sb.append("<tr><td><br></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 0\">Advance to "+CharTemplateTable.getClassNameById(0)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 11\">Advance to "+CharTemplateTable.getClassNameById(11)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 18\">Advance to "+CharTemplateTable.getClassNameById(18)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 25\">Advance to "+CharTemplateTable.getClassNameById(25)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 31\">Advance to "+CharTemplateTable.getClassNameById(31)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 38\">Advance to "+CharTemplateTable.getClassNameById(38)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 44\">Advance to "+CharTemplateTable.getClassNameById(44)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 49\">Advance to "+CharTemplateTable.getClassNameById(49)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 53\">Advance to "+CharTemplateTable.getClassNameById(53)+"</a></td></tr>");
+        sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+        html.setHtml(sb.toString());
+        player.sendPacket(html);
+        return;
+	}
 	
 	private void changeClass(L2PcInstance player, int val)
 	{
