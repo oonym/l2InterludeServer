@@ -18,9 +18,7 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-import java.util.List;
-
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import java.util.Map;
 
 /**
  * Format: (c) d[dS]
@@ -35,10 +33,10 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class PackageToList extends L2GameServerPacket
 {
 	private static final String _S__C2_PACKAGETOLIST = "[S] C2 PackageToList";
-	private List<L2PcInstance> _players;
+	private Map<Integer,String> _players;
 	
 	// Lecter : i put a char list here, but i'm unsure these really are Pc. I duno how freight work tho...
-	public PackageToList(List<L2PcInstance> players)
+	public PackageToList(Map<Integer,String> players)
 	{
 		_players = players;
 	}
@@ -51,11 +49,11 @@ public class PackageToList extends L2GameServerPacket
 	void writeImpl()
 	{
 		writeC(0xC2);
-		writeC(_players.size());
-		for(L2PcInstance pc : _players)
+		writeD(_players.size());
+		for(int objId : _players.keySet())
 		{
-			writeD(pc.getObjectId()); // you told me char id, i guess this was object id?
-			writeS(pc.getName());
+			writeD(objId); // you told me char id, i guess this was object id?
+			writeS(_players.get(objId));
 		}
 	}
 

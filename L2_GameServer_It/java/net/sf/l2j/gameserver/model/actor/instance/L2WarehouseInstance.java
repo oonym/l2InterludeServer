@@ -18,15 +18,13 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.util.Iterator;
 import java.util.Map;
 
-import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.PcFreight;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
-import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
+import net.sf.l2j.gameserver.serverpackets.PackageToList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.WareHouseDepositList;
 import net.sf.l2j.gameserver.serverpackets.WareHouseWithdrawalList;
@@ -75,6 +73,12 @@ public final class L2WarehouseInstance extends L2FolkInstance
         player.sendPacket(new ActionFailed());
         player.setActiveWarehouse(player.getWarehouse());
 
+        if (player.getActiveWarehouse().getSize() == 0)
+        {
+        	player.sendPacket(new SystemMessage(282));
+        	return;
+        }
+        
         if (Config.DEBUG) _log.fine("Showing stored items");
         player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Private));
     }
@@ -92,15 +96,17 @@ public final class L2WarehouseInstance extends L2FolkInstance
     private void showDepositWindowClan(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
-        if (player.getClan() != null)
-        {
+    	if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
+    	{
+    		player.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
+    		return;
+    	}
+    	else
+    	{
             if (player.getClan().getLevel() == 0)
                 player.sendPacket(new SystemMessage(SystemMessage.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
             else
             {
-                if (!player.isClanLeader())
-                    player.sendPacket(new SystemMessage(SystemMessage.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE));
-
                 player.setActiveWarehouse(player.getClan().getWarehouse());
                 player.tempInvetoryDisable();
                 if (Config.DEBUG) _log.fine("Showing items to deposit - clan");
@@ -108,33 +114,28 @@ public final class L2WarehouseInstance extends L2FolkInstance
                 WareHouseDepositList dl = new WareHouseDepositList(player, WareHouseDepositList.Clan);
                 player.sendPacket(dl);
             }
-        }
+    	}
     }
 
     private void showWithdrawWindowClan(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
-        if (player.getClan() != null) 
-        {
+    	if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
+    	{
+    		player.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
+    		return;
+    	}
+    	else
+    	{
             if (player.getClan().getLevel() == 0)
                 player.sendPacket(new SystemMessage(SystemMessage.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
             else
             {
-            	if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) 
-            			!= L2Clan.CP_CL_VIEW_WAREHOUSE)
-            	{
-            		player.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
-            		return;
-            	}
             	player.setActiveWarehouse(player.getClan().getWarehouse());
                 if (Config.DEBUG) _log.fine("Showing items to deposit - clan");
                 player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Clan));
             }
-        }
-        else
-        {
-            _log.warning("no items stored");
-        }
+    	}
     }
 
     private void showWithdrawWindowFreight(L2PcInstance player)
@@ -146,15 +147,22 @@ public final class L2WarehouseInstance extends L2FolkInstance
 
         if (freight != null && getZone() != null)
         {
-        	if (Config.ALT_GAME_FREIGHTS)
+        	if (freight.getSize() > 0)
         	{
-                freight.setActiveLocation(0);
-        	} else
-        	{
-        		freight.setActiveLocation(getZone().getId());
+	        	if (Config.ALT_GAME_FREIGHTS)
+	        	{
+	                freight.setActiveLocation(0);
+	        	} else
+	        	{
+	        		freight.setActiveLocation(getZone().getId());
+	        	}
+	            player.setActiveWarehouse(freight);
+	            player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Freight));
         	}
-            player.setActiveWarehouse(freight);
-            player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Freight));
+        	else
+        	{
+            	player.sendPacket(new SystemMessage(282));
+        	}
         }
         else
         {
@@ -167,14 +175,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         // No other chars in the account of this player
         if (player.getAccountChars().size() == 0)
         {
-            NpcHtmlMessage npcReply = new NpcHtmlMessage(getObjectId());
-
-            TextBuilder replyMSG = new TextBuilder("<html><body>");
-            replyMSG.append("You have no other characters to make a freight for.");
-            replyMSG.append("</body></html>");
-
-            npcReply.setHtml(replyMSG.toString());
-            player.sendPacket(npcReply);
+            player.sendPacket(new SystemMessage(873));
         }
         // One or more chars other than this player for this account
         else
@@ -187,30 +188,8 @@ public final class L2WarehouseInstance extends L2FolkInstance
                 player.sendPacket(new ActionFailed());
                 return;
             }
-
-            NpcHtmlMessage npcReply = new NpcHtmlMessage(getObjectId());
-            TextBuilder replyMSG = new TextBuilder("<html><body>");
-            replyMSG.append("Select the character for the freight:<br><br>");
-            //replyMSG.append("<select>");
-            for (Iterator<Integer> iter = chars.keySet().iterator(); iter.hasNext();)
-            {
-                Integer objId = iter.next();
-                String charName = chars.get(objId);
-
-                /*
-                 replyMSG.append("<option action=\"bypass -h npc_" + String.valueOf(getObjectId()) + "_FreightChar_" + String.valueOf(objId) + "\">");
-                 replyMSG.append(charName);
-                 replyMSG.append("</option>");
-                 */
-                replyMSG.append("<a action=\"bypass -h npc_" + String.valueOf(getObjectId())
-                    + "_FreightChar_" + String.valueOf(objId) + "\">");
-                replyMSG.append(charName);
-                replyMSG.append("</a><br><br>");
-            }
-            //replyMSG.append("</select>");
-            replyMSG.append("</body></html>");
-            npcReply.setHtml(replyMSG.toString());
-            player.sendPacket(npcReply);
+            
+            player.sendPacket(new PackageToList(chars));
 
             if (Config.DEBUG)
                 _log.fine("Showing destination chars to freight - char src: " + player.getName());

@@ -17,13 +17,7 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.util.List;
-
-import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.model.L2ItemInstance;
-import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PackageSendableList;
 
 /**
@@ -48,10 +42,12 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 	@Override
 	public void runImpl()
 	{
+		/*
 		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_objectID);
 		if(target == null)
 			return;
-		List<L2ItemInstance> items = new FastList<L2ItemInstance>();
+		*/
+		L2ItemInstance[] items = getClient().getActiveChar().getInventory().getAvailableItems(true);
 		// build list...
 		sendPacket(new PackageSendableList(items, _objectID));
 	}
