@@ -52,6 +52,9 @@ public class ItemInfo
     
     /** The action to do clientside (1=ADD, 2=MODIFY, 3=REMOVE) */
 	int _change;
+	
+	/** The mana of this item */
+	int _mana;
 
 
     /**
@@ -92,6 +95,9 @@ public class ItemInfo
             case (L2ItemInstance.MODIFIED): { _change = 2; break; }
             case (L2ItemInstance.REMOVED): { _change = 3; break;}
         }
+        
+		// Get shadow item mana
+		_mana = item.getMana();
 	}
 
 	public ItemInfo(L2ItemInstance item, int change)
@@ -123,6 +129,9 @@ public class ItemInfo
         
         // Get the action to do clientside
 		_change = change;
+		
+		// Get shadow item mana
+		_mana = item.getMana();
 	}
 	
     
@@ -136,4 +145,5 @@ public class ItemInfo
 	public int getCustomType2(){return _type2;}
 	public int getEquipped(){return _equipped;}
 	public int getChange(){return _change;}
+	public int getMana(){return _mana;}
 }

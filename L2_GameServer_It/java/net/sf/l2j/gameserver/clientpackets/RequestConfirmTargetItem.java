@@ -69,7 +69,8 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 			return;
 		}
 		//TODO: can do better? : currently: using isdestroyable() as a check for hero / cursed weapons
-		else if (itemGrade < L2Item.CRYSTAL_C || itemType != L2Item.TYPE2_WEAPON || !item.isDestroyable())
+		else if (itemGrade < L2Item.CRYSTAL_C || itemType != L2Item.TYPE2_WEAPON || !item.isDestroyable() ||
+				item.isShadowItem())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;

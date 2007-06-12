@@ -726,6 +726,12 @@ public class SystemMessage extends L2GameServerPacket
     
     public static final int PRESS_THE_AUGMENT_BUTTON_TO_BEGIN = 1984;
     public static final int AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS = 2001;
+    
+    // Shadow items
+    public static final int S1S_REMAINING_MANA_IS_NOW_10 = 1979;
+    public static final int S1S_REMAINING_MANA_IS_NOW_5 = 1980;
+    public static final int S1S_REMAINING_MANA_IS_NOW_1 = 1981;
+    public static final int S1S_REMAINING_MANA_IS_NOW_0 = 1982;
 
     
     // Unlock

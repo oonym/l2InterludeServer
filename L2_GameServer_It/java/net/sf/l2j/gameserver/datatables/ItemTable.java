@@ -158,15 +158,15 @@ public class ItemTable
 	/** Table of SQL request in order to obtain items from tables [etcitem], [armor], [weapon] */
     private static final String[] SQL_ITEM_SELECTS  =
     {
-        "SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, durability, price, crystal_count, sellable, dropable, destroyable, tradeable FROM etcitem",
+        "SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, duration, price, crystal_count, sellable, dropable, destroyable, tradeable FROM etcitem",
         
         "SELECT item_id, name, bodypart, crystallizable, armor_type, weight," +
-        	" material, crystal_type, avoid_modify, durability, p_def, m_def, mp_bonus," +
+        	" material, crystal_type, avoid_modify, duration, p_def, m_def, mp_bonus," +
         	" price, crystal_count, sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl FROM armor",
         
         "SELECT item_id, name, bodypart, crystallizable, weight, soulshots, spiritshots," +
         	" material, crystal_type, p_dam, rnd_dam, weaponType, critical, hit_modify, avoid_modify," +
-        	" shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, durability, price, crystal_count," +
+        	" shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, duration, price, crystal_count," +
         	" sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl,enchant4_skill_id,enchant4_skill_lvl, onCast_skill_id, onCast_skill_lvl," +
         	" onCast_skill_chance, onCrit_skill_id, onCrit_skill_lvl, onCrit_skill_chance FROM weapon"
      };
@@ -314,7 +314,7 @@ public class ItemTable
         item.set.set("atk_speed",      rset.getInt("atk_speed"));
         item.set.set("mp_consume",     rset.getInt("mp_consume"));
         item.set.set("m_dam",          rset.getInt("m_dam"));
-        item.set.set("durability",     rset.getInt("durability"));
+        item.set.set("duration",     rset.getInt("duration"));
         item.set.set("price",          rset.getInt("price"));
         item.set.set("crystal_count",  rset.getInt("crystal_count"));
         item.set.set("sellable",       Boolean.valueOf(rset.getString("sellable")));
@@ -401,7 +401,7 @@ public class ItemTable
         item.set.set("material", _materials.get(rset.getString("material")));
         item.set.set("crystal_type", _crystalTypes.get(rset.getString("crystal_type")));
         item.set.set("avoid_modify", rset.getInt("avoid_modify"));
-        item.set.set("durability", rset.getInt("durability"));
+        item.set.set("duration", rset.getInt("duration"));
         item.set.set("p_def", rset.getInt("p_def"));
         item.set.set("m_def", rset.getInt("m_def"));
         item.set.set("mp_bonus", rset.getInt("mp_bonus"));
@@ -507,7 +507,7 @@ public class ItemTable
         item.name = rset.getString("name");
         item.set.set("name", item.name);
 				
-        item.set.set("durability", rset.getInt("durability"));
+        item.set.set("duration", rset.getInt("duration"));
         item.set.set("price", rset.getInt("price"));
 
         return item;
