@@ -751,7 +751,7 @@ public abstract class Inventory extends ItemContainer
 	 * @param slot : int designating the slot of the paperdoll
 	 * @return L2ItemInstance[] : list of changes
 	 */
-    public L2ItemInstance[] unEquipItemInBodySlotAndRecord(int slot)
+    public synchronized L2ItemInstance[] unEquipItemInBodySlotAndRecord(int slot)
     {
 		Inventory.ChangeRecorder recorder = newRecorder(); 
 		try
@@ -768,7 +768,7 @@ public abstract class Inventory extends ItemContainer
      * @param pdollSlot : int designating the slot
      * @return L2ItemInstance designating the item in slot before change
      */
-	public L2ItemInstance unEquipItemInSlot(int pdollSlot) {
+	public synchronized L2ItemInstance unEquipItemInSlot(int pdollSlot) {
 		return setPaperdollItem(pdollSlot, null);
 	}
 	
@@ -777,7 +777,7 @@ public abstract class Inventory extends ItemContainer
 	 * @param slot : int designating the slot
 	 * @return L2ItemInstance[] : list of items altered
 	 */
-    public L2ItemInstance[] unEquipItemInSlotAndRecord(int slot)
+    public synchronized L2ItemInstance[] unEquipItemInSlotAndRecord(int slot)
     {
 		Inventory.ChangeRecorder recorder = newRecorder(); 
 		try

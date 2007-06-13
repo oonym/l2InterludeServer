@@ -92,7 +92,7 @@ public class PcStat extends PlayableStat
 
     		// only give exp/sp to the pet by taking from the owner if the pet has a non-zero, positive ratio
     		// allow possible customizations that would have the pet earning more than 100% of the owner's exp/sp
-    		if (ratioTakenByPet > 0)
+    		if (ratioTakenByPet > 0 && !pet.isDead())
     			pet.addExpAndSp((long)(addToExp*ratioTakenByPet), (int)(addToSp*ratioTakenByPet));
     		// now adjust the max ratio to avoid the owner earning negative exp/sp
     		if (ratioTakenByPet > 1)

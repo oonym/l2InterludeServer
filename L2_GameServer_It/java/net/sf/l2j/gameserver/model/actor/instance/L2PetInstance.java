@@ -165,14 +165,17 @@ public class L2PetInstance extends L2Summon
         }
     }
 
-    public static L2PetInstance spawnPet(L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)
+    public synchronized static L2PetInstance spawnPet(L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)
     {
-    	 L2PetInstance pet = restore(control, template, owner);
-    	 // add the pet instance to world
-    	 if (pet != null)
-    		 L2World.getInstance().addPet(owner.getObjectId(), pet);
+    	if (L2World.getInstance().getPet(owner.getObjectId()) != null) 
+    		return null; // owner has a pet listed in world 
+    	
+    	L2PetInstance pet = restore(control, template, owner);
+    	// add the pet instance to world
+    	if (pet != null)
+    		L2World.getInstance().addPet(owner.getObjectId(), pet);
     	 
-    	 return pet;
+    	return pet;
 	}
 	
 	public L2PetInstance(int objectId, L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)

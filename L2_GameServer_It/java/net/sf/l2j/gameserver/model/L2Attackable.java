@@ -607,7 +607,8 @@ public class L2Attackable extends L2NpcInstance
                         }
                         
                         // Distribute the Exp and SP between the L2PcInstance and its L2Summon
-                        attacker.addExpAndSp(Math.round(attacker.calcStat(Stats.EXPSP_RATE, exp, null, null)), 
+                        if (!attacker.isDead())
+                        	attacker.addExpAndSp(Math.round(attacker.calcStat(Stats.EXPSP_RATE, exp, null, null)), 
                                              (int)attacker.calcStat(Stats.EXPSP_RATE, sp, null, null));
                     }
                 }
