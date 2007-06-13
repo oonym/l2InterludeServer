@@ -244,29 +244,14 @@ final class DocumentSkill extends DocumentBase {
 		}
         for (int i=lastLvl; i < lastLvl+enchantLevels1; i++)
         {
-        	//[Nemesiss] Enchtanted skill will default take effects from maxLvL of norm skill
-        	currentSkill.currentLevel = lastLvl-1;
-            for (n=first; n != null; n = n.getNextSibling())
-            {
-                if ("cond".equalsIgnoreCase(n.getNodeName()))
-                {
-                    Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
-                    Node msg = n.getAttributes().getNamedItem("msg");
-                    if (condition != null && msg != null)
-                        condition.setMessage(msg.getNodeValue());
-                    currentSkill.currentSkills.get(i).attach(condition,false);
-                }
-                if ("for".equalsIgnoreCase(n.getNodeName()))
-                {
-                    parseTemplate(n, currentSkill.currentSkills.get(i));
-                }
-            }
             currentSkill.currentLevel = i-lastLvl;
+            boolean found = false;
             for (n=first; n != null; n = n.getNextSibling())
             {
                 if ("enchant1cond".equalsIgnoreCase(n.getNodeName()))
                 {
-                    Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
+                    found = true;
+                	Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
                     Node msg = n.getAttributes().getNamedItem("msg");
                     if (condition != null && msg != null)
                         condition.setMessage(msg.getNodeValue());
@@ -274,35 +259,41 @@ final class DocumentSkill extends DocumentBase {
                 }
                 if ("enchant1for".equalsIgnoreCase(n.getNodeName()))
                 {
-                    parseTemplate(n, currentSkill.currentSkills.get(i));
+                    found = true;
+                	parseTemplate(n, currentSkill.currentSkills.get(i));
                 }
             }
+           	// If none found, the enchanted skill will take effects from maxLvL of norm skill
+        	if (!found) 
+        	{
+        		currentSkill.currentLevel = lastLvl-1;
+        		for (n=first; n != null; n = n.getNextSibling())
+        		{
+        			if ("cond".equalsIgnoreCase(n.getNodeName()))
+        			{
+        				Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
+        				Node msg = n.getAttributes().getNamedItem("msg");
+        				if (condition != null && msg != null)
+        					condition.setMessage(msg.getNodeValue());
+        				currentSkill.currentSkills.get(i).attach(condition,false);
+        			}
+        			if ("for".equalsIgnoreCase(n.getNodeName()))
+        			{
+        				parseTemplate(n, currentSkill.currentSkills.get(i));
+        			}
+        		}
+        	}
         }
         for (int i=lastLvl+enchantLevels1; i < lastLvl+enchantLevels1+enchantLevels2; i++)
         {
-            //[Nemesiss] Enchtanted skill will default take effects from maxLvL of norm skill
-        	currentSkill.currentLevel = lastLvl-1;
-            for (n=first; n != null; n = n.getNextSibling())
-            {
-                if ("cond".equalsIgnoreCase(n.getNodeName()))
-                {
-                    Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
-                    Node msg = n.getAttributes().getNamedItem("msg");
-                    if (condition != null && msg != null)
-                        condition.setMessage(msg.getNodeValue());
-                    currentSkill.currentSkills.get(i).attach(condition,false);
-                }
-                if ("for".equalsIgnoreCase(n.getNodeName()))
-                {
-                    parseTemplate(n, currentSkill.currentSkills.get(i));
-                }
-            }
-            currentSkill.currentLevel = i-lastLvl-enchantLevels1;
+        	boolean found = false;
+        	currentSkill.currentLevel = i-lastLvl-enchantLevels1;
             for (n=first; n != null; n = n.getNextSibling())
             {
                 if ("enchant2cond".equalsIgnoreCase(n.getNodeName()))
                 {
-                    Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
+                    found = true;
+                	Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
                     Node msg = n.getAttributes().getNamedItem("msg");
                     if (condition != null && msg != null)
                         condition.setMessage(msg.getNodeValue());
@@ -310,8 +301,29 @@ final class DocumentSkill extends DocumentBase {
                 }
                 if ("enchant2for".equalsIgnoreCase(n.getNodeName()))
                 {
-                    parseTemplate(n, currentSkill.currentSkills.get(i));
+                    found = true;
+                	parseTemplate(n, currentSkill.currentSkills.get(i));
                 }
+            }
+            // If none found, the enchanted skill will take effects from maxLvL of norm skill
+            if(!found) 
+            {
+            	currentSkill.currentLevel = lastLvl-1;
+            	for (n=first; n != null; n = n.getNextSibling())
+            	{
+            		if ("cond".equalsIgnoreCase(n.getNodeName()))
+            		{
+            			Condition condition = parseCondition(n.getFirstChild(), currentSkill.currentSkills.get(i));
+            			Node msg = n.getAttributes().getNamedItem("msg");
+            			if (condition != null && msg != null)
+            				condition.setMessage(msg.getNodeValue());
+            			currentSkill.currentSkills.get(i).attach(condition,false);
+            		}
+            		if ("for".equalsIgnoreCase(n.getNodeName()))
+            		{
+            			parseTemplate(n, currentSkill.currentSkills.get(i));
+            		}
+            	}
             }
         }
         currentSkill.skills.addAll(currentSkill.currentSkills);

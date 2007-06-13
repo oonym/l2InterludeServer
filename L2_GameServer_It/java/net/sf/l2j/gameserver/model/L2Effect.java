@@ -337,7 +337,7 @@ public abstract class L2Effect
      * <li>Stop and remove L2Effect from L2Character and update client magic icone </li><BR><BR>
      * 
      */
-    private synchronized void stopEffectTask()
+    public synchronized void stopEffectTask()
     {
         if (_currentFuture != null)
         {
