@@ -1026,8 +1026,20 @@ public final class Formulas
 		if (ss) damage *= 2;
 		if (skill != null)
 		{
-			damage += skill.getPower();
-			//damage += skill.getPower() * 0.7 * attacker.getPAtk(target)/defence;
+			double skillpower = skill.getPower();
+			float ssboost = skill.getSSBoost();
+			if (ssboost <= 0)
+				damage += skillpower;
+			else if (ssboost > 0)
+			{
+				if (ss)
+				{
+					skillpower *= ssboost;
+					damage += skillpower;
+				}
+				else
+					damage += skillpower;
+			}
 		}
 		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;

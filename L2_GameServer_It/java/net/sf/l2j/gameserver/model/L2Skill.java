@@ -440,6 +440,7 @@ public abstract class L2Skill
     private final boolean _directHpDmg;  // If true then dmg is being make directly 
     private final boolean _isDance;      // If true then casting more dances will cost more MP
     private final int _nextDanceCost;
+    private final float _SSBoost;	//If true skill will have SoulShot boost (power*2)
     
     protected Condition _preCondition;
     protected Condition _itemPreCondition;
@@ -528,6 +529,7 @@ public abstract class L2Skill
         _directHpDmg  = set.getBool("dmgDirectlyToHp",false);
         _isDance = set.getBool("isDance",false);
         _nextDanceCost = set.getInteger("nextDanceCost", 0);
+        _SSBoost = set.getFloat("SSBoost", 0.f);
         
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
@@ -893,6 +895,11 @@ public abstract class L2Skill
     public final int getNextDanceMpCost()
     {
     	return _nextDanceCost;
+    }
+    
+    public final float getSSBoost()
+    {
+    	return _SSBoost;
     }
 
     public final boolean useSoulShot()
