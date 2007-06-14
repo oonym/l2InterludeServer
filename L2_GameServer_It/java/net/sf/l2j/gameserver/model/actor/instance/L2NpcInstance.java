@@ -1830,22 +1830,22 @@ public class L2NpcInstance extends L2Character
     {
     	if (player.getKarma() > 0)
         {	
-			if (this instanceof L2MerchantInstance && !Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP)
+			if (!Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP && this instanceof L2MerchantInstance)
 			{
 				if (showPkDenyChatWindow(player, "merchant"))
 					return;
 			}
-			else if (this instanceof L2TeleporterInstance && !Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK)
+			else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK && this instanceof L2TeleporterInstance)
 			{
 				if (showPkDenyChatWindow(player, "teleporter"))
 					return;
 			}
-			else if (this instanceof L2WarehouseInstance)
+			else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && this instanceof L2WarehouseInstance)
 			{
-				if (showPkDenyChatWindow(player, "warehouse") && !Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE)
+				if (showPkDenyChatWindow(player, "warehouse"))
 					return;
 			}
-			else if (this instanceof L2FishermanInstance && !Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP)
+			else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP && this instanceof L2FishermanInstance)
 			{
 				if (showPkDenyChatWindow(player, "fisherman"))
 					return;

@@ -24,6 +24,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.CursedWeapon;
+import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -34,7 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminCursedWeapons implements IAdminCommandHandler {
     //private static Logger _log = Logger.getLogger(AdminBan.class.getName());
-    private static String[] _adminCommands = {"admin_cw_infos", "admin_cw_remove", "admin_cw_goto", "admin_cw_reload"};
+    private static String[] _adminCommands = {"admin_cw_infos", "admin_cw_remove", "admin_cw_goto", "admin_cw_reload", "admin_cw_add"};
     private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
     public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -98,6 +99,26 @@ public class AdminCursedWeapons implements IAdminCommandHandler {
         } else if (command.startsWith("admin_cw_reload"))
         {
         	cwm.reload();
+        } else if (command.startsWith("admin_cw_add"))
+        {
+        	int id = Integer.parseInt(st.nextToken());
+        	CursedWeapon cw = cwm.getCursedWeapon(id);
+        	
+        	if (cw != null)
+        	{
+	        	if (cw.isActive()) activeChar.sendMessage("This cursed weapon is already active.");
+	        	else 
+        		{
+        			L2Object target = activeChar.getTarget();
+        			if (target != null && target instanceof L2PcInstance)
+        				((L2PcInstance)target).addItem("AdminCursedWeaponAdd", id, 1, target, true);
+        			else 
+        				activeChar.addItem("AdminCursedWeaponAdd", id, 1, activeChar, true);
+        		}
+	        		
+        	}
+        	else
+        		activeChar.sendMessage("Unknown cursed weapon ID.");
         } else
         {
     		activeChar.sendMessage("Unknown command.");
