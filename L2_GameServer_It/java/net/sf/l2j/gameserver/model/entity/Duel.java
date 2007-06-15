@@ -189,11 +189,16 @@ public class Duel
 			{
 				DuelResultEnum status =_duel.checkEndDuelCondition();
 
-				if (status != DuelResultEnum.Continue)
+				if (status == DuelResultEnum.Canceled)
+				{
+					// do not schedule duel end if it was interrupted
+					setFinished(true);
+					_duel.endDuel(status);
+				}
+				else if (status != DuelResultEnum.Continue)
 				{
 					setFinished(true);
 					playKneelAnimation();
-					//TODO: hide hp display of opponents (after adding it.. :p )
 					ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleEndDuelTask(_duel, status), 5000);
 				}
 				else ThreadPoolManager.getInstance().scheduleGeneral(this, 1000);
@@ -340,6 +345,15 @@ public class Duel
 	 */
 	public void startDuel()
 	{
+		if (_playerA.isInDuel() || _playerB.isInDuel())
+		{
+			// clean up
+			_playerConditions.clear();
+			_playerConditions = null;
+			DuelManager.getInstance().removeDuel(this);
+			return;
+		}
+		
 		if (_partyDuel)
 		{
 			// set isInDuel() state
@@ -554,7 +568,9 @@ public class Duel
 	 */
 	public void broadcastToTeam1(L2GameServerPacket packet)
 	{
-		if (_partyDuel)
+		if (_playerA == null) return;
+		
+		if (_partyDuel && _playerA.getParty() != null)
 		{
 			for (L2PcInstance temp : _playerA.getParty().getPartyMembers())
 				temp.sendPacket(packet);
@@ -568,7 +584,9 @@ public class Duel
 	 */
 	public void broadcastToTeam2(L2GameServerPacket packet)
 	{
-		if (_partyDuel)
+		if (_playerB == null) return;
+		
+		if (_partyDuel  && _playerB.getParty() != null)
 		{
 			for (L2PcInstance temp : _playerB.getParty().getPartyMembers())
 				temp.sendPacket(packet);
@@ -610,7 +628,7 @@ public class Duel
 		
 		if (looser == null) return;
 
-		if (_partyDuel)
+		if (_partyDuel && looser.getParty() != null)
 		{
 			for (L2PcInstance temp : looser.getParty().getPartyMembers())
 				temp.broadcastPacket(new SocialAction(temp.getObjectId(), 7));
@@ -806,6 +824,9 @@ public class Duel
 	{
 		// already recived a surrender request
 		if (_surrenderRequest != 0) return;
+		
+		// stop the fight
+		stopFighting();
 
 		// TODO: Can every party member cancel a party duel? or only the party leaders?
 		if (_partyDuel)
@@ -838,8 +859,6 @@ public class Duel
 		}
 		else
 		{
-			if (player != _playerA && player != _playerB) _log.warning("Error handling duel surrender request by "+player.getName());
-
 			if (player == _playerA)
 			{
 				_surrenderRequest = 1;

@@ -54,6 +54,19 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 		if (_response == 1)
 		{
 			SystemMessage msg1 = null, msg2 = null;
+			if (requestor.isInDuel())
+			{
+				msg1 = new SystemMessage(SystemMessage.S1_CANNOT_DUEL_BECAUSE_S1_IS_ALREADY_ENGAGED_IN_A_DUEL);
+				msg1.addString(requestor.getName());
+				player.sendPacket(msg1);
+				return;
+			}
+			else if (player.isInDuel())
+			{
+				player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME));
+				return;
+			}
+			
 			if (_partyDuel == 1)
 			{
 				msg1 = new SystemMessage(SystemMessage.YOU_HAVE_ACCEPTED_S1S_CHALLENGE_TO_A_PARTY_DUEL_THE_DUEL_WILL_BEGIN_IN_A_FEW_MOMENTS);

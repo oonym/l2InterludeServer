@@ -125,6 +125,10 @@ public class CharStatus
     	    if (getActiveChar().isDead() && !getActiveChar().isFakeDeath()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
     	} else {
     	    if (getActiveChar().isDead()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
+    	    if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).isInDuel()) // Duelling player attacks mob
+    	    {
+    	    	((L2PcInstance)attacker).setDuelState(Duel.DUELSTATE_INTERRUPTED);
+    	    }
     	}
         if (awake && getActiveChar().isSleeping()) getActiveChar().stopSleeping(null);
         if (getActiveChar().isStunned() && Rnd.get(10) == 0) getActiveChar().stopStunning(null);

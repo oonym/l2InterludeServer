@@ -181,16 +181,28 @@ public class DuelManager
 		if (player == null || !player.isInDuel()) return;
 		Duel duel = getDuel(player.getDuelId());
 		if (duel == null) return;
+		if (duel.getPlayerA() == null || duel.getPlayerB() == null) return;
 
-		if (duel.isPartyDuel())
+		if (duel.getPlayerA() == player)
 		{
-			if (duel.getPlayerA().getParty().getPartyMembers().contains(player)) duel.broadcastToTeam2(packet);
-			else if (duel.getPlayerB().getParty().getPartyMembers().contains(player)) duel.broadcastToTeam1(packet);
+			duel.broadcastToTeam2(packet);
 		}
-		else
+		else if (duel.getPlayerB() == player)
 		{
-			if (duel.getPlayerA() == player) duel.broadcastToTeam2(packet);
-			else if (duel.getPlayerB() == player) duel.broadcastToTeam1(packet);
+			duel.broadcastToTeam1(packet);
+		}
+		else if (duel.isPartyDuel())
+		{
+			if (duel.getPlayerA().getParty() != null &&
+					duel.getPlayerA().getParty().getPartyMembers().contains(player))
+			{
+				duel.broadcastToTeam2(packet);
+			}
+			else if (duel.getPlayerB().getParty() != null &&
+					duel.getPlayerB().getParty().getPartyMembers().contains(player))
+			{
+				duel.broadcastToTeam1(packet);
+			}
 		}
 	}
 }
