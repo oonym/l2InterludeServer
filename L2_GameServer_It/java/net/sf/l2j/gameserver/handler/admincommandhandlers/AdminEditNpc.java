@@ -441,6 +441,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
             
             L2ItemInstance newItem = ItemTable.getInstance().createDummyItem(itemID);
             newItem.setPriceToSell(price);
+            newItem.setCount(-1);
             tradeList.addItem(newItem);
             storeTradeList(itemID, price, tradeListID, order);
             

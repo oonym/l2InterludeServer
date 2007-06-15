@@ -51,7 +51,11 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
             sendPacket(new ActionFailed());
             return;
         }
-        
+		if(player.getPrivateStoreType() != 0){
+			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			player.broadcastUserInfo();
+			if (player.isSitting()) player.standUp();
+        }
         if (player.getCreateList() == null)
         {
             player.setCreateList(new L2ManufactureList());

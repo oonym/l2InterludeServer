@@ -50,6 +50,7 @@ public class TradeController
 
 	private int _nextListId;
 	private Map<Integer, L2TradeList> _lists;
+	private Map<Integer, L2TradeList> _listsTaskItem;
     /** Task launching the function for restore count of Item (Clan Hall) */
     public class RestoreCount implements Runnable
     {
@@ -79,6 +80,7 @@ public class TradeController
 	private TradeController()
 	{
 		_lists = new FastMap<Integer, L2TradeList>();
+		_listsTaskItem = new FastMap<Integer, L2TradeList>();
 		File buylistData = new File(Config.DATAPACK_ROOT, "data/buylists.csv");
 		if (buylistData.exists())
 		{
@@ -116,6 +118,7 @@ public class TradeController
 			 * Initialize Shop buylist
 			 */
 			int dummyItemCount = 0;
+			boolean LimitedItem = false;
 			try
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
@@ -132,6 +135,7 @@ public class TradeController
 					ResultSet rset = statement.executeQuery();
 					if (rset.next())
 					{
+						LimitedItem = false;
 						dummyItemCount++;
 						L2TradeList buy1 = new L2TradeList(rset1.getInt("shop_id"));
 						int itemId = rset.getInt("item_id");
@@ -141,8 +145,10 @@ public class TradeController
 						int time = rset.getInt("time");
 						L2ItemInstance item = ItemTable.getInstance().createDummyItem(itemId);
 						if (item == null) continue;
-						if(count > -1)
+						if(count > -1){
 							item.setCountDecrease(true);
+							LimitedItem = true;
+						}
 						item.setPriceToSell(price);
 						item.setTime(time);
 						item.setInitCount(count);
@@ -164,8 +170,10 @@ public class TradeController
 								currentCount = rset.getInt("currentCount");
 								L2ItemInstance item2 = ItemTable.getInstance().createDummyItem(itemId);
 								if (item2 == null) continue;
-								if(count > -1)
+								if(count > -1){
 									item2.setCountDecrease(true);
+									LimitedItem = true;
+								}
 								item2.setPriceToSell(price);
 								item2.setTime(time);
 								item2.setInitCount(count);
@@ -179,8 +187,10 @@ public class TradeController
 						{
 							_log.warning("TradeController: Problem with buylist " + buy1.getListId() + " item " + itemId);
 						}
-
-						_lists.put(new Integer(buy1.getListId()), buy1);
+						if(LimitedItem)
+							_listsTaskItem.put(new Integer(buy1.getListId()), buy1);
+						else
+							_lists.put(new Integer(buy1.getListId()), buy1);
 						_nextListId = Math.max(_nextListId, buy1.getListId() + 1);
 					}
 
@@ -193,7 +203,8 @@ public class TradeController
 				if (Config.DEBUG)
 					_log.fine("created " + dummyItemCount + " Dummy-Items for buylists");
 				_log.config("TradeController: Loaded " + _lists.size() + " Buylists.");
-				/*
+				_log.config("TradeController: Loaded " + _listsTaskItem.size() + " Limited Buylists.");
+	            /*
 				 *  Restore Task for reinitialyze count of buy item
 				 */
 				try
@@ -258,7 +269,9 @@ public class TradeController
 
 	public L2TradeList getBuyList(int listId)
 	{
-		return _lists.get(new Integer(listId));
+		if(_lists.get(new Integer(listId)) != null)
+				return _lists.get(new Integer(listId));
+		return _listsTaskItem.get(new Integer(listId));
 	}
 
 	public List<L2TradeList> getBuyListByNpcId(int npcId)
@@ -272,16 +285,20 @@ public class TradeController
 			if (npcId == Integer.parseInt(list.getNpcId()))
 				lists.add(list);
 		}
-
+		for (L2TradeList list : _listsTaskItem.values())
+		{
+			if (list.getNpcId().startsWith("gm"))
+				continue;
+			if (npcId == Integer.parseInt(list.getNpcId()))
+				lists.add(list);
+		}
 		return lists;
 	}
 	protected void restoreCount(int time)
 	{
-		if(_lists==null)return;
-		for (L2TradeList list : _lists.values())
-		{
+		if(_listsTaskItem==null)return;
+		for (L2TradeList list : _listsTaskItem.values())
 			list.restoreCount(time);
-		}
 	}
 	protected void dataTimerSave(int time){
 		java.sql.Connection con = null;
@@ -305,8 +322,8 @@ public class TradeController
 		int listId;
 		try
 		{
-			if(_lists==null)return;
-			for (L2TradeList list : _lists.values()){
+			if(_listsTaskItem==null)return;
+			for (L2TradeList list : _listsTaskItem.values()){
 				listId = list.getListId();
 				if(list==null)continue;
 				for(L2ItemInstance Item :list.getItems()){
