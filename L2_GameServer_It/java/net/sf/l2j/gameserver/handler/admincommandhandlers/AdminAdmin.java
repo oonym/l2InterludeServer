@@ -191,14 +191,13 @@ public class AdminAdmin implements IAdminCommandHandler {
         {
             try
             {
-                StringTokenizer st = new StringTokenizer(command);
-                st.nextToken();
-                if(st.nextToken().equalsIgnoreCase("on"))
+                String mode = command.substring(15);
+                if (mode.equalsIgnoreCase("on"))
                 {
                     activeChar.setTradeRefusal(true);
                     activeChar.sendMessage("tradeoff enabled");
                 }
-                else if(st.nextToken().equalsIgnoreCase("off"))
+                else if (mode.equalsIgnoreCase("off"))
                 {
                     activeChar.setTradeRefusal(false);
                     activeChar.sendMessage("tradeoff disabled");
