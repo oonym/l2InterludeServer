@@ -3667,6 +3667,10 @@ public abstract class L2Character extends L2Object
 	 */
 	protected void moveToLocation(int x, int y, int z, int offset)
 	{
+		// Get the Move Speed of the L2Charcater
+		float speed = getStat().getMoveSpeed();
+		if (speed <= 0) return;
+		
 		// Get current position of the L2Character
 		final int curX = super.getX();
 		final int curY = super.getY();
@@ -3781,9 +3785,6 @@ public abstract class L2Character extends L2Object
 			}
 		}
 		
-		// Get the Move Speed of the L2Charcater
-		float speed = getStat().getMoveSpeed();
-
 		// Caclulate the Nb of ticks between the current position and the destination
 		// One tick added for rounding reasons
 		m._ticksToMove = 1+(int)(GameTimeController.TICKS_PER_SECOND * distance / speed);
