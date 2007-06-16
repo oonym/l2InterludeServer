@@ -180,8 +180,15 @@ public class TvTEvent
 	public static String calculateRewards()
 	{
 		if (_teams[0].getPoints() == _teams[1].getPoints())
+		{
+			if (_teams[0].getParticipatedPlayerCount() == 0 || _teams[1].getParticipatedPlayerCount() == 0)
+			{
+				// the fight cannot be completed
+				setState(EventState.REWARDING);
+				return "Nobody";
+			}
 			Announcements.getInstance().announceToAll("TvT Event: Both teams are at a tie, next killing team win!");
-
+		}
 		while (_teams[0].getPoints() == _teams[1].getPoints())
 		{
 			try
