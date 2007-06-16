@@ -190,6 +190,7 @@ import net.sf.l2j.gameserver.templates.L2PcTemplate;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.gameserver.util.Broadcast;
+import net.sf.l2j.gameserver.util.FloodProtector;
 import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Point3D;
 import net.sf.l2j.util.Rnd;
@@ -378,9 +379,6 @@ public final class L2PcInstance extends L2PlayableInstance
     private int _duelState = Duel.DUELSTATE_NODUEL;
     private int _duelId = 0;
     private int _noDuelReason = 0;
-    
-    /** Dice */
-    private long _nextRollDiceTime=0;
     
 	/** Boat */
 	private boolean _inBoat;
@@ -7958,17 +7956,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		return true;
 	}
-	
-	public long getRollDiceTime()
-	{
-		return _nextRollDiceTime;
-	}
-	
-	public void setRollDiceTime(long nextTime)
-	{
-		_nextRollDiceTime = nextTime;
-	}
-	
+
     public boolean isNoble()
     {
     	return _noble;
@@ -9064,6 +9052,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			// Close the connection with the client
 			this.closeNetConnection();
+			
+			// remove from flood protector
+			FloodProtector.getInstance().removePlayer(getObjectId());
 			
 			if (getClanId() > 0)
 				getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);

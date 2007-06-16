@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.Dice;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Broadcast;
+import net.sf.l2j.gameserver.util.FloodProtector;
 import net.sf.l2j.util.Rnd;
 
 
@@ -37,9 +38,6 @@ import net.sf.l2j.util.Rnd;
 
 public class RollingDice implements IItemHandler
 {
-	// Roll dice rate (a bit about 4 seconds feels right)
-	private static final int ROLL_DICE_RATE = 4200;
-	
 	private static int[] _itemIds = { 4625, 4626, 4627, 4628 };
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -83,8 +81,7 @@ public class RollingDice implements IItemHandler
 	private int rollDice(L2PcInstance player)
 	{
 		// Check if the dice is ready
-		if ((player.getRollDiceTime() - System.currentTimeMillis()) > 0) return 0;
-		player.setRollDiceTime(System.currentTimeMillis()+ROLL_DICE_RATE);
+		if ( !FloodProtector.getInstance().tryPerformAction(player.getObjectId(), FloodProtector.PROTECTED_ROLLDICE) ) return 0;
 		return Rnd.get(1, 6);
 	}
 	

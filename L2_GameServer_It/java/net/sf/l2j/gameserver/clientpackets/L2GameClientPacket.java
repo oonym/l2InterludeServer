@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
-
+import net.sf.l2j.gameserver.GameTimeController;
 import com.l2jserver.mmocore.network.ReceivablePacket;
 
 /**
@@ -56,7 +56,19 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	{
 		try
 		{
-            this.runImpl();
+            // flood protection
+			if (GameTimeController.getGameTicks() - getClient().packetsSentStartTick > 10)
+			{
+				getClient().packetsSentStartTick = GameTimeController.getGameTicks();
+				getClient().packetsSentInSec = 0;
+			}
+			else
+			{
+				getClient().packetsSentInSec++;
+				if (getClient().packetsSentInSec > 12) return;
+			}
+			
+			this.runImpl();
             if (this instanceof MoveBackwardToLocation 
             	|| this instanceof AttackRequest 
             	|| this instanceof RequestMagicSkillUse)

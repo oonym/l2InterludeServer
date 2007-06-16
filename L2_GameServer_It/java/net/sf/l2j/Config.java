@@ -523,6 +523,9 @@ public final class Config
     /** Revision of L2Walker */
     public static int             L2WALKER_REVISION;
 
+    /** FloodProtector initial capacity */
+    public static int			  FLOODPROTECTOR_INITIALSIZE;
+    
     /** Allow Discard item ?*/
     public static boolean         ALLOW_DISCARDITEM;
     /** Allow freight ? */
@@ -1192,6 +1195,7 @@ public final class Config
                 ALLOW_RACE                      = Boolean.valueOf(optionsSettings.getProperty("AllowRace", "False"));
                 ALLOW_WATER                     = Boolean.valueOf(optionsSettings.getProperty("AllowWater", "False"));
                 ALLOW_RENTPET                   = Boolean.valueOf(optionsSettings.getProperty("AllowRentPet", "False"));
+                FLOODPROTECTOR_INITIALSIZE		= Integer.parseInt(optionsSettings.getProperty("FloodProtectorInitialSize", "50"));
                 ALLOW_DISCARDITEM               = Boolean.valueOf(optionsSettings.getProperty("AllowDiscardItem", "True"));
                 ALLOWFISHING                    = Boolean.valueOf(optionsSettings.getProperty("AllowFishing", "False"));
                 ALLOW_BOAT                      = Boolean.valueOf(optionsSettings.getProperty("AllowBoat", "False"));

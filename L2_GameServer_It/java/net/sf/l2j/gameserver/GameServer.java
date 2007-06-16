@@ -211,6 +211,7 @@ import net.sf.l2j.gameserver.pathfinding.geonodes.GeoPathFinding;
 import net.sf.l2j.gameserver.script.faenor.FaenorScriptEngine;
 import net.sf.l2j.gameserver.taskmanager.TaskManager;
 import net.sf.l2j.gameserver.util.DynamicExtension;
+import net.sf.l2j.gameserver.util.FloodProtector;
 import net.sf.l2j.status.Status;
 
 /**
@@ -589,6 +590,7 @@ public class GameServer
             _log.log(Level.WARNING, "DynamicExtension could not be loaded and initialized", ex);
         }
         
+        FloodProtector.getInstance();
         TvTManager.getInstance();
 		System.gc();
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of the current allocation pool, freeMemory the unused memory in the allocation pool

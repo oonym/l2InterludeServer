@@ -36,6 +36,8 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
+import net.sf.l2j.gameserver.util.FloodProtector;
+
 /**
  * This class ...
  * 
@@ -60,6 +62,10 @@ public final class UseItem extends L2GameClientPacket
         
 		if (activeChar == null) 
             return;
+		
+		// Flood protect UseItem
+		if (!FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_USEITEM))
+			return;
 
 		if (activeChar.getPrivateStoreType() != 0)
 		{
