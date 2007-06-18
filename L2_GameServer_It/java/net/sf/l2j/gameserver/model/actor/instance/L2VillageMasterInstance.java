@@ -163,7 +163,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             // Subclasses may not be changed while a skill is in use.
             if (player.isCastingNow() || player.isAllSkillsDisabled())
             {
-                player.sendPacket(new SystemMessage(1295));
+                player.sendPacket(new SystemMessage(SystemMessage.SUBCLASS_NO_CHANGE_OR_CREATE_WHILE_SKILL_IN_USE));
                 return;
             }
 
@@ -347,7 +347,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
                         content.append("Add Subclass:<br>The sub class of <font color=\"LEVEL\">"
                             + className + "</font> has been added.");
-                        player.sendPacket(new SystemMessage(1308)); // Transfer to new class.
+                        player.sendPacket(new SystemMessage(SystemMessage.CLASS_TRANSFER)); // Transfer to new class.
                     }
                     else
                     {
@@ -375,7 +375,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                     content.append("Change Subclass:<br>Your active sub class is now a <font color=\"LEVEL\">"
                         + CharTemplateTable.getClassNameById(player.getActiveClass()) + "</font>.");
 
-                    player.sendPacket(new SystemMessage(1270)); // Transfer completed.
+                    player.sendPacket(new SystemMessage(SystemMessage.SUBCLASS_TRANSFER_COMPLETED)); // Transfer completed.
                     break;
                 case 6: // Change/Cancel Subclass - Choice
                     content.append("Please choose a sub class to change to. If the one you are looking for is not here, "
@@ -409,7 +409,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                         content.append("Change Subclass:<br>Your sub class has been changed to <font color=\"LEVEL\">"
                             + CharTemplateTable.getClassNameById(paramTwo) + "</font>.");
 
-                        player.sendPacket(new SystemMessage(1269)); // Subclass added.
+                        player.sendPacket(new SystemMessage(SystemMessage.ADD_NEW_SUBCLASS)); // Subclass added.
                     }
                     else
                     {
@@ -834,7 +834,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             
             if (player.getClan().getLevel() < 8)
             {
-                SystemMessage sm = new SystemMessage(607);
+                SystemMessage sm = new SystemMessage(SystemMessage.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN);
                 sm.addNumber(player.getClan().getLevel()+1);
                 player.sendPacket(sm);
             }

@@ -34,7 +34,7 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
 
         if (_clan.getLevel() < 3 || _clan.getMembersCount() < Config.ALT_CLAN_MEMBERS_FOR_WAR)
         {
-            SystemMessage sm = new SystemMessage(1564);
+            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_WAR_DECLARED_IF_CLAN_LVL3_OR_15_MEMBER);
             player.sendPacket(sm);
             player.sendPacket(new ActionFailed());
             sm = null;
@@ -50,14 +50,14 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
         L2Clan clan = ClanTable.getInstance().getClanByName(_pledgeName);
         if (clan == null)
         {
-        	SystemMessage sm = new SystemMessage(1565);
+        	SystemMessage sm = new SystemMessage(SystemMessage.CLAN_WAR_CANNOT_DECLARED_CLAN_NOT_EXIST);
             player.sendPacket(sm);
             player.sendPacket(new ActionFailed());
             return;
         }
         else if (_clan.getAllyId() == clan.getAllyId() && _clan.getAllyId() != 0)
         {
-            SystemMessage sm = new SystemMessage(1569);
+            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_WAR_AGAINST_A_ALLIED_CLAN_NOT_WORK);
             player.sendPacket(sm);
             player.sendPacket(new ActionFailed());
             sm = null;
@@ -66,7 +66,7 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
         //else if(clan.getLevel() < 3)
         else if (clan.getLevel() < 3 || clan.getMembersCount() < Config.ALT_CLAN_MEMBERS_FOR_WAR)
         {
-            SystemMessage sm = new SystemMessage(1564);
+            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_WAR_DECLARED_IF_CLAN_LVL3_OR_15_MEMBER);
             player.sendPacket(sm);
             player.sendPacket(new ActionFailed());
             sm = null;
@@ -74,7 +74,7 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
         }
         else if (_clan.isAtWarWith(clan.getClanId()))
         {
-            SystemMessage sm = new SystemMessage(628);
+            SystemMessage sm = new SystemMessage(SystemMessage.ALREADY_AT_WAR_WITH_S1_WAIT_5_DAYS); //msg id 628
             sm.addString(clan.getName());
             player.sendPacket(sm);
             player.sendPacket(new ActionFailed());

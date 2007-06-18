@@ -67,7 +67,7 @@ public class AdminInvul implements IAdminCommandHandler {
 		{
         	activeChar.setIsInvul(false);
         	String text = activeChar.getName() + " is now mortal";
-        	SystemMessage sm = new SystemMessage(614);
+        	SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
         	sm.addString(text);
         	activeChar.sendPacket(sm);
         	if (Config.DEBUG)
@@ -76,7 +76,7 @@ public class AdminInvul implements IAdminCommandHandler {
 		{
 			activeChar.setIsInvul(true);
 			String text = activeChar.getName() + " is now invulnerable";
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString(text);
 			activeChar.sendPacket(sm);
 			if (Config.DEBUG) 

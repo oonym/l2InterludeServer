@@ -54,7 +54,7 @@ public final class RequestBlock extends L2GameClientPacket
                if (_target.isGM())
                {
                    // Cannot block a GM character.
-                   activeChar.sendPacket(new SystemMessage(827));
+                   activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_MAY_NOT_IMPOSE_A_BLOCK_AN_A_GM));
                    return;
                }
 

@@ -79,12 +79,12 @@ public class AdminCreateItem implements IAdminCommandHandler {
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
-				SystemMessage sm = new SystemMessage(614);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 				sm.addString("Error while creating item.");
 				activeChar.sendPacket(sm);
 			} catch (NumberFormatException nfe)
 			{
-				SystemMessage sm = new SystemMessage(614);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 				sm.addString("Wrong number entered.");
 				activeChar.sendPacket(sm);
 			}
@@ -109,7 +109,7 @@ public class AdminCreateItem implements IAdminCommandHandler {
 		ItemList il = new ItemList(activeChar, true);
 		activeChar.sendPacket(il);
 		
-		SystemMessage sm = new SystemMessage(614);
+		SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 		sm.addString("You have spawned " + num + " item(s) number " + id + " in your inventory.");
 		activeChar.sendPacket(sm);
 				

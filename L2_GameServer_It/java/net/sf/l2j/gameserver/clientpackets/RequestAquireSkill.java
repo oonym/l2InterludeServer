@@ -269,7 +269,7 @@ public class RequestAquireSkill extends L2GameClientPacket
             }
             else
             {
-                SystemMessage sm = new SystemMessage(1852);
+                SystemMessage sm = new SystemMessage(SystemMessage.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
                 player.sendPacket(sm);
                 //sm = null;
                 return;
@@ -281,10 +281,10 @@ public class RequestAquireSkill extends L2GameClientPacket
             
             player.getClan().setReputationScore(player.getClan().getReputationScore()-repCost, true);
             
-            SystemMessage cr = new SystemMessage(1787);
+            SystemMessage cr = new SystemMessage(SystemMessage.S1_DEDUCTED_FROM_CLAN_REP);
             cr.addNumber(repCost);
             player.sendPacket(cr);
-            SystemMessage sm = new SystemMessage(1788);
+            SystemMessage sm = new SystemMessage(SystemMessage.CLAN_SKILL_S1_ADDED);
             sm.addSkillName(_id);
             player.sendPacket(sm);
             sm = null;
@@ -313,7 +313,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 		su.addAttribute(StatusUpdate.SP, player.getSp());
 		player.sendPacket(su);
 
-        SystemMessage sp = new SystemMessage(538);
+        SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
         sp.addNumber(_requiredSp);
         sendPacket(sp);
 

@@ -85,13 +85,13 @@ public class AdminDelete implements IAdminCommandHandler
                 else SpawnTable.getInstance().deleteSpawn(spawn, true);
             }
 
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Deleted " + target.getName() + " from " + target.getObjectId() + ".");
             activeChar.sendPacket(sm);
         }
         else
         {
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Incorrect target.");
             activeChar.sendPacket(sm);
         }

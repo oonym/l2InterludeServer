@@ -72,7 +72,7 @@ final class EffectSilentMove extends L2Effect
 		
 		if(manaDam > getEffected().getCurrentMp())
 		{
-			SystemMessage sm = new SystemMessage(140);
+			SystemMessage sm = new SystemMessage(SystemMessage.SKILL_REMOVED_DUE_LACK_MP);
 			getEffected().sendPacket(sm);
 			return false;
 		}

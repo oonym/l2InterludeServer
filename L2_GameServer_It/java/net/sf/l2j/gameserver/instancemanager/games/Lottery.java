@@ -258,7 +258,7 @@ public class Lottery
             if (Config.DEBUG) _log.info("Lottery: Stopping ticket sell for lottery #" + getId() + ".");
             _isSellingTickets = false;
             
-            Announcements.getInstance().announceToAll(new SystemMessage(783));
+            Announcements.getInstance().announceToAll(new SystemMessage(SystemMessage.LOTTERY_TICKET_SALES_TEMP_SUSPENDED));
         }
     }
     
@@ -387,7 +387,7 @@ public class Lottery
             if (count1 > 0)
             {
                 // There are winners.
-                sm = new SystemMessage(1112);
+                sm = new SystemMessage(SystemMessage.AMOUNT_FOR_WINNER_S1_IS_S2_ADENA_WE_HAVE_S3_PRIZE_WINNER);
                 sm.addNumber(getId());
                 sm.addNumber(getPrize());
                 sm.addNumber(count1);
@@ -396,7 +396,7 @@ public class Lottery
             else
             {
                 // There are no winners.
-                sm = new SystemMessage(1113);
+                sm = new SystemMessage(SystemMessage.AMOUNT_FOR_LOTTERY_S1_IS_S2_ADENA_NO_WINNER);
                 sm.addNumber(getId());
                 sm.addNumber(getPrize());
                 Announcements.getInstance().announceToAll(sm);

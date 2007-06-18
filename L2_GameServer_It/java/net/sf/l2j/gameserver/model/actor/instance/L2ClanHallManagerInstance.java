@@ -728,7 +728,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
             //you cannot teleport to village that is in siege Not sure about this one though
             if (SiegeManager.getInstance().checkIfInZone(list.getLocX(), list.getLocY()))
             {
-                player.sendPacket(new SystemMessage(707));
+                player.sendPacket(new SystemMessage(SystemMessage.NO_PORT_THAT_IS_IN_SIGE));
                 return;
             }
             else if(player.reduceAdena("Teleport", list.getPrice(), this, true))

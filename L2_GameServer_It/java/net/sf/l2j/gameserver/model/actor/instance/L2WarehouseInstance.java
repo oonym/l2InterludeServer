@@ -75,7 +75,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 
         if (player.getActiveWarehouse().getSize() == 0)
         {
-        	player.sendPacket(new SystemMessage(282));
+        	player.sendPacket(new SystemMessage(SystemMessage.NO_ITEM_DEPOSITED_IN_WH));
         	return;
         }
         
@@ -156,7 +156,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         	}
         	else
         	{
-            	player.sendPacket(new SystemMessage(282));
+            	player.sendPacket(new SystemMessage(SystemMessage.NO_ITEM_DEPOSITED_IN_WH));
         	}
         }
         else
@@ -170,7 +170,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         // No other chars in the account of this player
         if (player.getAccountChars().size() == 0)
         {
-            player.sendPacket(new SystemMessage(873));
+            player.sendPacket(new SystemMessage(SystemMessage.CHARACTER_DOES_NOT_EXIST));
         }
         // One or more chars other than this player for this account
         else

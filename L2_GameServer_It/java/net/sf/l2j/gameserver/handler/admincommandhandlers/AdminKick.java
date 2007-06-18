@@ -63,7 +63,7 @@ public class AdminKick implements IAdminCommandHandler {
                 {
                     //System.out.println("Player2 "+plyr.getName());
                     plyr.logout();
-    				SystemMessage sm = new SystemMessage(614);
+    				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
     				sm.addString("You kicked " + plyr.getName() + " from the game.");
     				activeChar.sendPacket(sm);
     				RegionBBSManager.getInstance().changeCommunityBoard();

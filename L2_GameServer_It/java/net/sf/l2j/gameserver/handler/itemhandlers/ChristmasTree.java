@@ -75,13 +75,13 @@ public class ChristmasTree implements IItemHandler
 
             activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Created " + template1.name + " at x: " + spawn.getLocx() + " y: " + spawn.getLocy() + " z: " + spawn.getLocz());
             activeChar.sendPacket(sm);
         }
         catch (Exception e)
         {
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Target is not ingame.");
             activeChar.sendPacket(sm);
         }

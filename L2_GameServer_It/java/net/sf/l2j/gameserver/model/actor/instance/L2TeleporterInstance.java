@@ -178,17 +178,17 @@ public final class L2TeleporterInstance extends L2FolkInstance
             //you cannot teleport to village that is in siege
             if (SiegeManager.getInstance().checkIfInZone(list.getLocX(), list.getLocY()))
             {
-                player.sendPacket(new SystemMessage(707));
+                player.sendPacket(new SystemMessage(SystemMessage.NO_PORT_THAT_IS_IN_SIGE));
                 return;
             }
             else if (TownManager.getInstance().townHasCastleInSeige(list.getLocX(), list.getLocY()))
             {
-                player.sendPacket(new SystemMessage(707));
+                player.sendPacket(new SystemMessage(SystemMessage.NO_PORT_THAT_IS_IN_SIGE));
                 return;
             }
             else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK && player.getKarma() > 0) //karma
             {
-                SystemMessage sm = new SystemMessage(614);
+                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                 sm.addString("Go away, you're not welcome here.");
                 player.sendPacket(sm);
                 return;

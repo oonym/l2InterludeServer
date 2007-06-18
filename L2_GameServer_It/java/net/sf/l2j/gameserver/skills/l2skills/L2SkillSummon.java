@@ -62,7 +62,7 @@ public class L2SkillSummon extends L2Skill {
 					mastery = 0;
 				int count = player.getCubics().size(); 
 				if (count > mastery) {
-					SystemMessage sm = new SystemMessage(614);
+					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 					sm.addString("You already have "+count+" cubic(s).");
 					activeChar.sendPacket(sm);
 					return false;
@@ -70,7 +70,7 @@ public class L2SkillSummon extends L2Skill {
 			} else {
 				if(player.getPet() != null)
 				{
-					SystemMessage sm = new SystemMessage(614);
+					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 					sm.addString("You already have a pet.");
 					activeChar.sendPacket(sm);
 					return false;
@@ -87,7 +87,7 @@ public class L2SkillSummon extends L2Skill {
 		L2PcInstance activeChar = (L2PcInstance) caster;
 
 		if (npcId == 0) {
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Summon skill "+getId()+" not described yet");
 			activeChar.sendPacket(sm);
 			return;

@@ -72,13 +72,13 @@ public class AdminDisconnect implements IAdminCommandHandler {
 		
 		if (player.getObjectId() == activeChar.getObjectId())
 		{		
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("You cannot logout your character.");
 			activeChar.sendPacket(sm);
 		}
 		else
 		{				
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Character " + player.getName() + " disconnected from server.");
 			activeChar.sendPacket(sm);
 			

@@ -64,7 +64,7 @@ public class Mdam implements ISkillHandler
         {
             if (weaponInst == null)
             {
-                SystemMessage sm2 = new SystemMessage(614);
+                SystemMessage sm2 = new SystemMessage(SystemMessage.S1_S2);
                 sm2.addString("You must equip a weapon before casting a spell.");
                 activeChar.sendPacket(sm2);
                 return;

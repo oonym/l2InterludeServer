@@ -454,7 +454,7 @@ public class Shutdown extends Thread
 			//Logout Character
 			try {
 				L2GameClient.saveCharToDisk(player);
-			//SystemMessage sm = new SystemMessage(217);
+			//SystemMessage sm = new SystemMessage(SystemMessage.YOU_HAVE_WON_THE_WAR_OVER_THE_S1_CLAN);
 			//player.sendPacket(sm);
 			LeaveWorld ql = new LeaveWorld();
 			player.sendPacket(ql);

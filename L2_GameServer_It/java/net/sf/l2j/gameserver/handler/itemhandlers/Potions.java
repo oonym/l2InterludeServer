@@ -201,7 +201,7 @@ public class Potions implements IItemHandler
 					res = usePotion(activeChar, 2287, (activeChar.getExpertiseIndex()+1));
 				else
 				{
-					SystemMessage sm = new SystemMessage(1902); // INCOMPATIBLE_ITEM_GRADE
+					SystemMessage sm = new SystemMessage(SystemMessage.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 					return;
@@ -225,7 +225,7 @@ public class Potions implements IItemHandler
 					res = usePotion(activeChar, 2288, (activeChar.getExpertiseIndex()+1));
 				else
 				{
-					SystemMessage sm = new SystemMessage(1902); // INCOMPATIBLE_ITEM_GRADE
+					SystemMessage sm = new SystemMessage(SystemMessage.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 					return;
@@ -249,7 +249,7 @@ public class Potions implements IItemHandler
 					res = usePotion(activeChar, 2289, (activeChar.getExpertiseIndex()+1));
 				else
 				{
-					SystemMessage sm = new SystemMessage(1902); // INCOMPATIBLE_ITEM_GRADE
+					SystemMessage sm = new SystemMessage(SystemMessage.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 					return;
@@ -412,7 +412,7 @@ public class Potions implements IItemHandler
 				// One can reuse pots after 2/3 of their duration is over.
 				// It would be faster to check if its > 10 but that would screw custom pot durations...
 				if (e.getTaskTime() > (e.getSkill().getBuffDuration()*67)/100000) return true;
-				SystemMessage sm = new SystemMessage(48);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_PREPARED_FOR_REUSE);
 				sm.addItemName(itemId);
 				activeChar.sendPacket(sm);
 				return false;

@@ -345,14 +345,14 @@ public class ClanTable
         }
         //SystemMessage msg = new SystemMessage(SystemMessage.WAR_WITH_THE_S1_CLAN_HAS_BEGUN);
 	//
-        SystemMessage msg = new SystemMessage(1562);
+        SystemMessage msg = new SystemMessage(SystemMessage.CLAN_WAR_DECLARED_AGAINST_S1_IF_KILLED_LOSE_LOW_EXP);
         msg.addString(clan2.getName());
         clan1.broadcastToOnlineMembers(msg);
         //msg = new SystemMessage(SystemMessage.WAR_WITH_THE_S1_CLAN_HAS_BEGUN);
         //msg.addString(clan1.getName());
         //clan2.broadcastToOnlineMembers(msg);
 	// clan1 declared clan war.
-        msg = new SystemMessage(1561);
+        msg = new SystemMessage(SystemMessage.CLAN_S1_DECLARED_WAR);
         msg.addString(clan1.getName());
         clan2.broadcastToOnlineMembers(msg);
     }
@@ -398,10 +398,10 @@ public class ClanTable
             try { con.close(); } catch (Exception e) {}
         }
         //SystemMessage msg = new SystemMessage(SystemMessage.WAR_WITH_THE_S1_CLAN_HAS_ENDED);
-        SystemMessage msg = new SystemMessage(1567);
+        SystemMessage msg = new SystemMessage(SystemMessage.WAR_AGAINST_S1_HAS_STOPPED);
         msg.addString(clan2.getName());
         clan1.broadcastToOnlineMembers(msg);
-        msg = new SystemMessage(1566);
+        msg = new SystemMessage(SystemMessage.CLAN_S1_HAS_DECIDED_TO_STOP);
         msg.addString(clan1.getName());
         clan2.broadcastToOnlineMembers(msg);
         //msg = new SystemMessage(SystemMessage.WAR_WITH_THE_S1_CLAN_HAS_ENDED);

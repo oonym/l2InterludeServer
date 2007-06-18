@@ -105,7 +105,7 @@ public class BalanceLife implements ISkillHandler
 			su.addAttribute(StatusUpdate.CUR_HP, (int) target.getCurrentHp());
 			target.sendPacket(su);
 
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("HP of the party has been balanced.");
 			target.sendPacket(sm);
 

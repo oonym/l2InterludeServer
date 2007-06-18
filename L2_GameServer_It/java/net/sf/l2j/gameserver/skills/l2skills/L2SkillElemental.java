@@ -60,7 +60,7 @@ public class L2SkillElemental extends L2Skill {
         {
 			if (weaponInst == null) 
 			{ 
-				SystemMessage sm2 = new SystemMessage(614);  
+				SystemMessage sm2 = new SystemMessage(SystemMessage.S1_S2);  
 				sm2.addString("You must equip one weapon before cast spell.");  
 				activeChar.sendPacket(sm2); 
 				return; 
@@ -128,7 +128,7 @@ public class L2SkillElemental extends L2Skill {
 				}
 			}
 			if (!charged){
-				SystemMessage sm = new SystemMessage(614);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 				sm.addString("Target is not charged by elements."); 
 				activeChar.sendPacket(sm);
 				continue;

@@ -242,7 +242,7 @@ public class AdminEffects implements IAdminCommandHandler
            }
            catch (Exception e)
            {
-               SystemMessage sm = new SystemMessage(614);
+               SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                sm.addString("Use //gmspeed value = [0...4].");
               activeChar.sendPacket(sm);
            }
@@ -355,7 +355,7 @@ public class AdminEffects implements IAdminCommandHandler
                        player.setTeam(0);
                        if (teamVal != 0)
                        {
-                           SystemMessage sm = new SystemMessage(614);
+                           SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                            sm.addString("You have joined team " + teamVal);
                            player.sendPacket(sm);
                        }
@@ -380,7 +380,7 @@ public class AdminEffects implements IAdminCommandHandler
            player.setTeam(teamVal);
            if (teamVal != 0)
            {
-               SystemMessage sm = new SystemMessage(614);
+               SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                sm.addString("You have joined team " + teamVal);
                player.sendPacket(sm);
            }

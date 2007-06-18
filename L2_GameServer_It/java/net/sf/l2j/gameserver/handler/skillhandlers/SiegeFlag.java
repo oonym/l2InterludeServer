@@ -93,7 +93,7 @@ public class SiegeFlag implements ISkillHandler
         if (activeChar == null || !(activeChar instanceof L2PcInstance))
             return false;
         
-        SystemMessage sm = new SystemMessage(614);
+        SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
         L2PcInstance player = (L2PcInstance)activeChar;
 
         if (castle == null || castle.getCastleId() <= 0)

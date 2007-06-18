@@ -66,13 +66,13 @@ public class Recipes implements IItemHandler
 			    if (rp.getLevel()>activeChar.getDwarvenCraft())
 			    {
 				//can't add recipe, becouse create item level too low
-        			SystemMessage sm = new SystemMessage(404); 
+        			SystemMessage sm = new SystemMessage(SystemMessage.CREATE_LVL_TOO_LOW_TO_REGISTER); 
         			activeChar.sendPacket(sm); 
 			    }
 			    else if (activeChar.getDwarvenRecipeBook().length >= activeChar.GetDwarfRecipeLimit())
 				{
 					//Up to $s1 recipes can be registered.
-					SystemMessage sm = new SystemMessage(894);
+					SystemMessage sm = new SystemMessage(SystemMessage.UP_TO_S1_RECIPES_CAN_REGISTER);
 					sm.addNumber(activeChar.GetDwarfRecipeLimit());
         			activeChar.sendPacket(sm);
 				}
@@ -80,7 +80,7 @@ public class Recipes implements IItemHandler
 			    {
         			activeChar.registerDwarvenRecipeList(rp); 
         			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); 
-        			SystemMessage sm = new SystemMessage(614); 
+        			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2); 
         			sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Dwarven RecipeBook"); 
         			activeChar.sendPacket(sm); 
 			    }
@@ -98,13 +98,13 @@ public class Recipes implements IItemHandler
 			    if (rp.getLevel()>activeChar.getCommonCraft())
 			    {
 				//can't add recipe, becouse create item level too low
-        			SystemMessage sm = new SystemMessage(404); 
+        			SystemMessage sm = new SystemMessage(SystemMessage.CREATE_LVL_TOO_LOW_TO_REGISTER); 
         			activeChar.sendPacket(sm); 
 			    }
 			    else if (activeChar.getCommonRecipeBook().length >= activeChar.GetCommonRecipeLimit())
 				{
 					//Up to $s1 recipes can be registered.
-					SystemMessage sm = new SystemMessage(894);
+					SystemMessage sm = new SystemMessage(SystemMessage.UP_TO_S1_RECIPES_CAN_REGISTER);
 					sm.addNumber(activeChar.GetCommonRecipeLimit());
         			activeChar.sendPacket(sm);
 				}
@@ -112,7 +112,7 @@ public class Recipes implements IItemHandler
 			    {
         			activeChar.registerCommonRecipeList(rp); 
         			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); 
-        			SystemMessage sm = new SystemMessage(614); 
+        			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2); 
         			sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Common RecipeBook"); 
         			activeChar.sendPacket(sm); 
 			    }

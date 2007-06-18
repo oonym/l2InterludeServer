@@ -144,7 +144,7 @@ public class BeastSoulShot implements IItemHandler
         activeOwner.sendPacket(new PetInfo(activePet));
         
         // Pet uses the power of spirit.
-        activeOwner.sendPacket(new SystemMessage(1576));
+        activeOwner.sendPacket(new SystemMessage(SystemMessage.PET_USE_THE_POWER_OF_SPIRIT));
         
         Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, 2033, 1, 0, 0), 360000/*600*/);
     }

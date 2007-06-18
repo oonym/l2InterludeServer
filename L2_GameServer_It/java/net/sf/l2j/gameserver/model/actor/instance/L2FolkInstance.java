@@ -176,7 +176,7 @@ public class L2FolkInstance extends L2NpcInstance
             
             if (level < 74)
             {
-                SystemMessage sm = new SystemMessage(607);
+                SystemMessage sm = new SystemMessage(SystemMessage.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN);
                 sm.addNumber(level);
                 player.sendPacket(sm);
             }

@@ -190,7 +190,7 @@ public class EnterWorld extends L2GameClientPacket
         
         sendPacket(new ShortCutInit(activeChar));
 
-        SystemMessage sm = new SystemMessage(34);
+        SystemMessage sm = new SystemMessage(SystemMessage.WELCOME_TO_LINEAGE);
         sendPacket(sm);
 	    
         sm = new SystemMessage(SystemMessage.S1_S2);

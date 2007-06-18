@@ -175,7 +175,7 @@ public class Pdam implements ISkillHandler
             			}
                 	}
                     // Lethal Strike was succefful!
-                    activeChar.sendPacket(new SystemMessage(1668));
+                    activeChar.sendPacket(new SystemMessage(SystemMessage.LETHAL_STRIKE_SUCCESSFUL));
                 }
                 else
                 {

@@ -38,7 +38,7 @@ public class set implements IVoicedCommandHandler
     		if(pc!=null){
     			if(activeChar.getClan().getClanId()==pc.getClan().getClanId()&&(activeChar.getClanPrivileges()>n)||activeChar.isClanLeader()){
     				pc.setClanPrivileges(n);
-    				SystemMessage sm = new SystemMessage(614);
+    				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
     	            sm.addString("Your clan privileges have been set to " + n + " by " + activeChar.getName());
     	            activeChar.sendPacket(sm);
     			}

@@ -53,7 +53,7 @@ public class RequestUserCommand extends L2GameClientPacket
         
         if (handler == null)
         {
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("user commandID "+_command+" not implemented yet");
             player.sendPacket(sm);
             sm = null;

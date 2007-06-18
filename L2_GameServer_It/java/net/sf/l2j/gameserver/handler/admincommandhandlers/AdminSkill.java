@@ -114,7 +114,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{	//Case of empty character name
-				SystemMessage sm = new SystemMessage(614);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 				sm.addString("Error while adding skill.");
 				activeChar.sendPacket(sm);
 			}			
@@ -130,7 +130,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{	//Case of empty character name
-				SystemMessage sm = new SystemMessage(614);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 				sm.addString("Error while removing skill.");
 				activeChar.sendPacket(sm);
 			}			
@@ -176,7 +176,7 @@ public class AdminSkill implements IAdminCommandHandler {
         if (target instanceof L2PcInstance) {
             player = (L2PcInstance)target;
         } else {            
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Incorrect target.");
             activeChar.sendPacket(sm);
             return;
@@ -226,7 +226,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance) {
 			player = (L2PcInstance)target;
 		} else {
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 			return;
@@ -298,7 +298,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance) {
 			player = (L2PcInstance)target;
 		} else {
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 			return;
@@ -337,7 +337,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance) {
 			player = (L2PcInstance)target;
 		} else {			
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 			return;
@@ -345,7 +345,7 @@ public class AdminSkill implements IAdminCommandHandler {
 
 		if (player.getName().equals(activeChar.getName()))
 		{
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("There is no point in doing it on your character...");
 			player.sendPacket(sm);
 		}
@@ -361,7 +361,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			{
 				activeChar.addSkill(skills[i], true);
 			}
-			SystemMessage smA = new SystemMessage(614);
+			SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 			smA.addString("You now have all the skills of  "+player.getName()+".");
 			activeChar.sendPacket(smA);
 		}
@@ -375,7 +375,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance) {
 			player = (L2PcInstance)target;
 		} else {
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 			return;
@@ -383,7 +383,7 @@ public class AdminSkill implements IAdminCommandHandler {
 
 		if (adminSkills==null)
 		{
-			SystemMessage smA = new SystemMessage(614);
+			SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 			smA.addString("You must first get the skills of someone to do this.");
 			activeChar.sendPacket(smA);
 		}
@@ -406,10 +406,10 @@ public class AdminSkill implements IAdminCommandHandler {
 			{
 				activeChar.addSkill(adminSkills[i], true);
 			}
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("[GM]"+activeChar.getName()+" has updated your skills.");
 			player.sendPacket(sm);
-			SystemMessage smA = new SystemMessage(614);
+			SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 			smA.addString("You now have all your skills back.");
 			activeChar.sendPacket(smA);
 			adminSkills=null;
@@ -424,7 +424,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance) {
 			player = (L2PcInstance)target;
 		} else {
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 			return;
@@ -446,14 +446,14 @@ public class AdminSkill implements IAdminCommandHandler {
 		
 		if (skill != null)
 		{
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Admin gave you the skill "+skill.getName()+".");
 			player.sendPacket(sm);
 			
 			player.addSkill(skill, true);
 			
 			//Admin information	
-			SystemMessage smA = new SystemMessage(614);
+			SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 			smA.addString("You gave the skill "+skill.getName()+" to "+player.getName()+".");
 			
 			activeChar.sendPacket(smA);
@@ -463,7 +463,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		}
 		else
 		{
-			SystemMessage smA = new SystemMessage(614);
+			SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 			smA.addString("Error: there is no such skill.");
 		}		
 		showSkillsPage(activeChar); //Back to start
@@ -477,7 +477,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance) {
 			player = (L2PcInstance)target;
 		} else {
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 			return;
@@ -487,14 +487,14 @@ public class AdminSkill implements IAdminCommandHandler {
 				
 		if (skill != null)
 		{
-		SystemMessage sm = new SystemMessage(614);
+		SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 		sm.addString("Admin removed the skill "+skill.getName()+".");
 		player.sendPacket(sm);
 				
 		player.removeSkill(skill);
 		
 		//Admin information	
-		SystemMessage smA = new SystemMessage(614);
+		SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 		smA.addString("You removed the skill "+skill.getName()+" from "+player.getName()+".");
 		
 		activeChar.sendPacket(smA);
@@ -504,7 +504,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		}
 		else
 		{
-			SystemMessage smA = new SystemMessage(614);
+			SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
 			smA.addString("Error: there is no such skill.");
 		}
 		removeSkillsPage(activeChar, 0); //Back to start	

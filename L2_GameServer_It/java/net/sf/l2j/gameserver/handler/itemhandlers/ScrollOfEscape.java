@@ -152,7 +152,7 @@ public class ScrollOfEscape implements IItemHandler
                 }
                 else if(_itemId == 5858) // do nothing
                 {
-                	_activeChar.sendPacket(new SystemMessage(681));
+                	_activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_HAS_NO_CLAN_HALL));
                     return;
                 }
                 else if(_itemId == 5859) // do nothing

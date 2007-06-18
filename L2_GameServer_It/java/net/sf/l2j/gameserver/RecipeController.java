@@ -229,7 +229,7 @@ public class RecipeController
 		// check if already busy (possible in alt mode only)
 		if (Config.ALT_GAME_CREATION && ((maker = activeMakers.get(player)) != null)) 
 		{
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("You are busy creating ");
 			sm.addItemName(recipeList.getItemId());
 			player.sendPacket(sm);
@@ -611,7 +611,7 @@ public class RecipeController
 				
 				if (target == player)
 				{
-					SystemMessage sm = new SystemMessage(368); // you equipped ...
+					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED); // you equipped ...
 					sm.addNumber(count);
 					sm.addItemName(item.getItemId());
 					player.sendPacket(sm);

@@ -46,7 +46,7 @@ class EffectManaDamOverTime extends L2Effect
 		{
 			if(getSkill().isToggle())
 			{
-				SystemMessage sm = new SystemMessage(140);
+				SystemMessage sm = new SystemMessage(SystemMessage.SKILL_REMOVED_DUE_LACK_MP);
 				getEffected().sendPacket(sm);
 				return false;
 			}

@@ -50,34 +50,34 @@ public class PartyInfo implements IUserCommandHandler
     	int lootDistribution = playerParty.getLootDistribution();
     	String partyLeader = playerParty.getPartyMembers().get(0).getName();
     	
-        activeChar.sendPacket(new SystemMessage(1030));
+        activeChar.sendPacket(new SystemMessage(SystemMessage.PARTY_INFORMATION));
         
     		switch (lootDistribution) {
     		case L2Party.ITEM_LOOTER:
-    			activeChar.sendPacket(new SystemMessage(1031));
+    			activeChar.sendPacket(new SystemMessage(SystemMessage.LOOTING_FINDERS_KEEPERS));
     			break;
     		case L2Party.ITEM_ORDER:
-                activeChar.sendPacket(new SystemMessage(1034));
+                activeChar.sendPacket(new SystemMessage(SystemMessage.LOOTING_BY_TURN));
     			break;
     		case L2Party.ITEM_ORDER_SPOIL:
-                activeChar.sendPacket(new SystemMessage(1035));
+                activeChar.sendPacket(new SystemMessage(SystemMessage.LOOTING_BY_TURN_INCLUDE_SPOIL));
     			break;
     		case L2Party.ITEM_RANDOM:
-                activeChar.sendPacket(new SystemMessage(1032));
+                activeChar.sendPacket(new SystemMessage(SystemMessage.LOOTING_RANDOM));
     			break;
     		case L2Party.ITEM_RANDOM_SPOIL:
-                activeChar.sendPacket(new SystemMessage(1033));
+                activeChar.sendPacket(new SystemMessage(SystemMessage.LOOTING_RANDOM_INCLUDE_SPOIL));
     			break;
     		}
     	
-        SystemMessage sm = new SystemMessage(1611);                
+        SystemMessage sm = new SystemMessage(SystemMessage.PARTY_LEADER_S1);                
     	sm.addString(partyLeader);
     	activeChar.sendPacket(sm);
     	
     	sm = new SystemMessage(SystemMessage.S1_S2);                
     	sm.addString("Members: " + memberCount + "/9");
 
-    	activeChar.sendPacket(new SystemMessage(1612));
+    	activeChar.sendPacket(new SystemMessage(SystemMessage.WAR_LIST));
     	return true;
     }
 

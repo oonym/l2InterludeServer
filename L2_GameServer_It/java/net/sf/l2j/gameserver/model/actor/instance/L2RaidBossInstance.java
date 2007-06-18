@@ -69,7 +69,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
     {
         if(killer instanceof L2PlayableInstance)
         {
-        	SystemMessage msg = new SystemMessage(1209);
+        	SystemMessage msg = new SystemMessage(SystemMessage.RAID_WAS_SUCCESSFUL);
         	broadcastPacket(msg);
         }
         

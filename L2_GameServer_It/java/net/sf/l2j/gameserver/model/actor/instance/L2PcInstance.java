@@ -1426,9 +1426,9 @@ public final class L2PcInstance extends L2PlayableInstance
             
             if (warnPlayer)
     			if (_inPvpZone) 
-                    sendPacket(new SystemMessage(283));
+                    sendPacket(new SystemMessage(SystemMessage.ENTERES_COMBAT_ZONE));
     			else  
-                    sendPacket(new SystemMessage(284));
+                    sendPacket(new SystemMessage(SystemMessage.LEFT_COMBAT_ZONE));
 		}
 	}
 	
@@ -2985,7 +2985,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
                 
 				// Send an Unequipped Message in system window of the player for each Item
-				SystemMessage sm = new SystemMessage(0x1a1);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_DISARMED);
 				sm.addItemName(item.getItemId());
 				sendPacket(sm);
                 
@@ -7507,7 +7507,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (L2PcInstance.this.isOnline() == 1)
 			{
-				SystemMessage msg = new SystemMessage(764);
+				SystemMessage msg = new SystemMessage(SystemMessage.PLAYING_FOR_LONG_TIME);
 				L2PcInstance.this.sendPacket(msg);
 			}
 			else
@@ -7536,7 +7536,7 @@ public final class L2PcInstance extends L2PlayableInstance
             
 			reduceCurrentHp(reduceHp,L2PcInstance.this,false);
 			//reduced hp, becouse not rest
-			SystemMessage sm = new SystemMessage(297);
+			SystemMessage sm = new SystemMessage(SystemMessage.DROWN_DAMAGE_S1);
 			sm.addNumber((int)reduceHp);
 			sendPacket(sm);
 			
@@ -8576,14 +8576,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (_RevivePet == Pet)
 			{
-				Reviver.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
+				Reviver.sendPacket(new SystemMessage(SystemMessage.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
 			}
 			else
 			{
 				if (Pet)
-					Reviver.sendPacket(new SystemMessage(1515)); // A pet cannot be resurrected while it's owner is in the process of resurrecting.
+					Reviver.sendPacket(new SystemMessage(SystemMessage.PET_CANNOT_RES)); // A pet cannot be resurrected while it's owner is in the process of resurrecting.
 				else
-					Reviver.sendPacket(new SystemMessage(1511)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+					Reviver.sendPacket(new SystemMessage(SystemMessage.MASTER_CANNOT_RES)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
 			}
 			return;
 		}

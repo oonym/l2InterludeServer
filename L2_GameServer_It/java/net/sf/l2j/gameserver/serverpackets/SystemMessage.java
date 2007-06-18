@@ -45,6 +45,7 @@ public class SystemMessage extends L2GameServerPacket
 	public static final int TARGET_IN_PEACEZONE = 85;
 	public static final int CANT_ATK_PEACEZONE = 84;
 	
+	
 	// magic related
 	public static final int NOT_ENOUGH_HP = 23;
     public static final int NOT_ENOUGH_MP = 24;
@@ -85,29 +86,29 @@ public class SystemMessage extends L2GameServerPacket
 	public static final int S1_GAVE_YOU_S2_DMG = 36;
 	
 	public static final int EFFECT_S1_DISAPPEARED = 749;
-	public static final int YOU_EARNED_S1_EXP_AND_S2_SP = 0x5f;
-	public static final int YOU_INCREASED_YOUR_LEVEL = 0x60;
+	public static final int YOU_EARNED_S1_EXP_AND_S2_SP = 95;
+	public static final int YOU_INCREASED_YOUR_LEVEL = 96;
 	
 	public static final int NOTHING_HAPPENED = 61;
-	public static final int ITEM_MISSING_TO_LEARN_SKILL = 0x114;
-	public static final int LEARNED_SKILL_S1 = 0x115;
-	public static final int NOT_ENOUGH_SP_TO_LEARN_SKILL = 0x116;
+	public static final int ITEM_MISSING_TO_LEARN_SKILL = 276;
+	public static final int LEARNED_SKILL_S1 = 277;
+	public static final int NOT_ENOUGH_SP_TO_LEARN_SKILL = 278;
     public static final int DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN = 607;
 	
-	public static final int FALL_DAMAGE_S1 = 0x128;
-	public static final int DROWN_DAMAGE_S1 = 0x129;
+	public static final int FALL_DAMAGE_S1 = 296;
+	public static final int DROWN_DAMAGE_S1 = 297;
 
-	public static final int YOU_DROPPED_S1 = 0x12a;
-	public static final int TARGET_IS_NOT_FOUND_IN_THE_GAME = 0x91;
+	public static final int YOU_DROPPED_S1 = 298;
+	public static final int TARGET_IS_NOT_FOUND_IN_THE_GAME = 145;
 	public static final int TARGET_CANT_FOUND = 50;
 	public static final int TARGET_MUST_BE_IN_CLAN = 234;
 
 	public static final int CANNOT_BE_RESURRECTED_DURING_SIEGE = 1053;
 	
-	public static final int SOULSHOTS_GRADE_MISMATCH = 0x151;
-	public static final int NOT_ENOUGH_SOULSHOTS = 0x152;
+	public static final int SOULSHOTS_GRADE_MISMATCH = 337;
+	public static final int NOT_ENOUGH_SOULSHOTS = 338;
     public static final int ENABLED_SOULSHOT = 342;
-	public static final int CANNOT_USE_SOULSHOTS = 0x153;
+	public static final int CANNOT_USE_SOULSHOTS = 339;
 	public static final int SPIRITSHOTS_GRADE_MISMATCH = 530;
 	public static final int NOT_ENOUGH_SPIRITSHOTS = 531;
 	public static final int CANNOT_USE_SPIRITSHOTS = 532;
@@ -116,6 +117,7 @@ public class SystemMessage extends L2GameServerPacket
     public static final int USE_OF_S1_WILL_BE_AUTO = 1433;
 	public static final int AUTO_USE_OF_S1_CANCELLED = 1434;
 	public static final int CANNOT_CREATED_WHILE_ENGAGED_IN_TRADING = 1125;
+	public static final int SKILL_REMOVED_DUE_LACK_MP = 140; //Your skill was removed due to a lack of MP.
 	
 	public static final int S1_IS_NOT_ONLINE = 3;
 	
@@ -134,9 +136,9 @@ public class SystemMessage extends L2GameServerPacket
     public static final int SYMBOL_ADDED = 877;
     public static final int CANT_DRAW_SYMBOL = 899;
     
-    public static final int SKILL_NOT_AVAILABLE             = 0x30;
+    public static final int SKILL_NOT_AVAILABLE             = 48;
     
-    public static final int CANT_SEE_TARGET                 = 0xb5;
+    public static final int CANT_SEE_TARGET                 = 181;
     
     //  Spoil & Sweep
     public static final int SWEEPER_FAILED_TARGET_NOT_SPOILED  =  343;
@@ -176,11 +178,18 @@ public class SystemMessage extends L2GameServerPacket
 	public static final int PARTY_DISPERSED = 203;
 	
 	public static final int S1_HAS_BECOME_A_PARTY_LEADER = 1384;
-	public static final int ONLY_A_PARTY_LEADER_CAN_TRANSFER_ONES_RIGHTS_TO_ANOTHER_PLAYER = 0x577;
-	public static final int PLEASE_SELECT_THE_PERSON_TO_WHOM_YOU_WOULD_LIKE_TO_TRANSFER_THE_RIGHTS_OF_A_PARTY_LEADER = 0x0578;
-	public static final int YOU_CANNOT_TRANSFER_RIGHTS_TO_YOURSELF = 0x0579;
-	public static final int YOU_CAN_TRANSFER_RIGHTS_ONLY_TO_ANOTHER_PARTY_MEMBER = 0x057A;
-	public static final int YOU_HAVE_FAILED_TO_TRANSFER_THE_PARTY_LEADER_RIGHTS = 0x057B;
+	public static final int ONLY_A_PARTY_LEADER_CAN_TRANSFER_ONES_RIGHTS_TO_ANOTHER_PLAYER = 1399;
+	public static final int PLEASE_SELECT_THE_PERSON_TO_WHOM_YOU_WOULD_LIKE_TO_TRANSFER_THE_RIGHTS_OF_A_PARTY_LEADER = 1400;
+	public static final int YOU_CANNOT_TRANSFER_RIGHTS_TO_YOURSELF = 1401;
+	public static final int YOU_CAN_TRANSFER_RIGHTS_ONLY_TO_ANOTHER_PARTY_MEMBER = 1402;
+	public static final int YOU_HAVE_FAILED_TO_TRANSFER_THE_PARTY_LEADER_RIGHTS = 1403;
+	public static final int PARTY_INFORMATION = 1030; 				//<Party Information>
+	public static final int LOOTING_FINDERS_KEEPERS = 1031; 		//Looting method: Finders keepers
+	public static final int LOOTING_BY_TURN = 1034; 				//Looting method: By turn
+	public static final int LOOTING_BY_TURN_INCLUDE_SPOIL = 1035; 	// Looting method: By turn including spoil
+	public static final int LOOTING_RANDOM = 1032; 					//Looting method: Random
+	public static final int LOOTING_RANDOM_INCLUDE_SPOIL = 1033; 	//Looting method: Random including spoil
+	public static final int PARTY_LEADER_S1 = 1611; 				//Party Leader: $s1
 
 	//weight & inventory
 	public static final int WEIGHT_LIMIT_EXCEEDED = 422;
@@ -189,6 +198,7 @@ public class SystemMessage extends L2GameServerPacket
     public static final int CANNOT_DISCARD_EXCHANGE_ITEM = 603;
     public static final int CANNOT_DISCARD_DISTANCE_TOO_FAR = 151;
     public static final int CANNOT_DISCARD_THIS_ITEM = 98;
+    public static final int NO_ITEM_DEPOSITED_IN_WH = 282; //You have not deposited any items in your warehouse.
 
 	//Request
 	public static final int TARGET_IS_INCORRECT = 144;
@@ -310,6 +320,21 @@ public class SystemMessage extends L2GameServerPacket
     public static final int CLAN_INFO_LEVEL = 499;
     public static final int CLAN_INFO_SEPARATOR = 500;
     public static final int CLAN_INFO_FOOT = 501;
+    public static final int ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE = 1852; //The attempt to acquire the skill has failed because of an insufficient Clan Reputation Score.
+    public static final int S1_DEDUCTED_FROM_CLAN_REP = 1787; //$s1 points have been deducted from the clan's reputation score.
+    public static final int CLAN_SKILL_S1_ADDED = 1788; //The clan skill $s1 has been added.
+    public static final int CLAN_WAR_DECLARED_IF_CLAN_LVL3_OR_15_MEMBER = 1564; //	A Clan War can be declared only if the clan is level three or above, and the number of clan members is fifteen or greater.
+    public static final int CLAN_WAR_CANNOT_DECLARED_CLAN_NOT_EXIST = 1565; //A Clan War cannot be declared against a clan that does not exist!
+    public static final int CLAN_WAR_AGAINST_A_ALLIED_CLAN_NOT_WORK = 1569; //A declaration of Clan War against an allied clan can't be made.
+    public static final int ALREADY_AT_WAR_WITH_S1_WAIT_5_DAYS = 628; //You have already been at war with the $s1 clan: 5 days must pass before you can declare war again.
+    public static final int CLAN_WAR_DECLARED_AGAINST_S1_IF_KILLED_LOSE_LOW_EXP = 1562; //A Clan War has been declared against the clan, $s1. If you are killed during the Clan War by members of the opposing clan, you will only lose a quarter of the normal experience from death.
+    public static final int CLAN_S1_DECLARED_WAR = 1561; //The clan, $s1, has declared a Clan War.
+    public static final int WAR_AGAINST_S1_HAS_STOPPED = 1567; //The war against $s1 Clan has been stopped.
+    public static final int CLAN_S1_HAS_DECIDED_TO_STOP = 1566; //The clan, $s1, has decided to stop the war.
+    public static final int CLANS_YOU_DECLARED_WAR_ON = 1571; //======<Clans You've Declared War On>======
+    public static final int CLANS_THAT_HAVE_DECLARED_WAR_ON_YOU = 1572; //======<Clans That Have Declared War On You>======
+    public static final int WAR_LIST = 1612; //=====<War List>=====
+    
 	
 	//pickup items
 	public static final int YOU_PICKED_UP_S1_ADENA = 28;
@@ -403,6 +428,13 @@ public class SystemMessage extends L2GameServerPacket
     public static final int PETS_ARE_NOT_AVAILABLE_AT_THIS_TIME = 574;
     public static final int SOULSHOTS_AND_SPIRITSHOTS_ARE_NOT_AVAILABLE_FOR_A_DEAD_PET = 1598;
     public static final int NOT_ENOUGH_SOULSHOTS_FOR_PET = 1701;
+    public static final int MASTER_CANNOT_RES = 1511; //While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+    public static final int RES_HAS_ALREADY_BEEN_PROPOSED = 1513; //Resurrection has already been proposed.
+    public static final int PET_USE_THE_POWER_OF_SPIRIT = 1576; //Pet uses the power of spirit.
+    public static final int NOT_ENOUGH_SPIRITHOTS_FOR_PET = 1700; //You don't have enough spiritshots needed for a pet/servitor.
+    public static final int PET_CANNOT_RES = 1515; //	A pet cannot be resurrected while it's owner is in the process of resurrecting.
+    public static final int RAID_WAS_SUCCESSFUL = 1209; //Congratulations. Your raid was successful.
+    public static final int SUBCLASS_NO_CHANGE_OR_CREATE_WHILE_SKILL_IN_USE = 1295; //Sub classes may not be created or changed while a skill is in use.
     
     public static final int STRIDER_CANT_BE_RIDDEN_WHILE_DEAD = 1009;
     public static final int DEAD_STRIDER_CANT_BE_RIDDEN = 1010;
@@ -491,6 +523,7 @@ public class SystemMessage extends L2GameServerPacket
     
     //  only view castles during a siege 
     public static final int ONLY_VIEW_SIEGE = 780; 
+    public static final int NO_PORT_THAT_IS_IN_SIGE = 707; //You cannot teleport to a village that is in a siege.
         
     // Sponsor/Apprentice
     public static final int S2_HAS_BEEN_DESIGNATED_AS_APPRENTICE_OF_CLAN_MEMBER_S1 = 1755;
@@ -549,6 +582,8 @@ public class SystemMessage extends L2GameServerPacket
     public static final int CANNOT_DISSOLVE_ALLY_WHILE_IN_SIEGE = 722;
     public static final int OPPOSING_CLAN_IS_PARTICIPATING_IN_SIEGE = 723;
     public static final int S1_CANT_ENTER_ALLIANCE_WITHIN_1_DAY = 761;
+    public static final int S1_S2_ALLIANCE = 1200; //= $s1 ($s2 Alliance)
+    public static final int S1_NO_ALLI_EXISTS = 1202; //= $s1 (No alliance exists)
 
     public static final int ALLIANCE_INFO_HEAD = 491;
     public static final int ALLIANCE_NAME_S1 = 492;
@@ -592,8 +627,8 @@ public class SystemMessage extends L2GameServerPacket
     
     //
     public static final int S1_S2 = 614;
-    public static final int CANT_LOGOUT_WHILE_FIGHTING = 0x65;
-    public static final int CANT_RESTART_WHILE_FIGHTING = 0x66;
+    public static final int CANT_LOGOUT_WHILE_FIGHTING = 101;
+    public static final int CANT_RESTART_WHILE_FIGHTING = 102;
 	public static final int ENTER_FILE_NAME_CREST = 515;
     public static final int FILE_NOT_FOUND = 528;
     public static final int S1_ROLLED_S2 = 834;
@@ -603,8 +638,51 @@ public class SystemMessage extends L2GameServerPacket
     public static final int S1_DISAPPEARED = 302;
     public static final int INCORRECT_TARGET = 109;
     public static final int INCOMPATIBLE_ITEM_GRADE = 1902; 
-    
+    public static final int SP_DECREASED_S1 = 538; //Your SP has decreased by $s1.
+    public static final int EXP_DECREASED_BY_S1 = 539; //Your Experience has decreased by $s1.
+    public static final int S1_HAS_WORN_OFF = 92; //$s1 has worn off.
+    public static final int LETHAL_STRIKE = 1667;
+    public static final int LETHAL_STRIKE_SUCCESSFUL = 1668; //Your lethal strike was successful!
+    public static final int AMOUNT_FOR_WINNER_S1_IS_S2_ADENA_WE_HAVE_S3_PRIZE_WINNER = 1112; //	The prize amount for the winner of Lottery #$s1 is $s2 adena. We have $s3 first prize winners.
+    public static final int AMOUNT_FOR_LOTTERY_S1_IS_S2_ADENA_NO_WINNER = 1113; //	The prize amount for Lucky Lottery #$s1 is $s2 adena. There was no first prize winner in this drawing, therefore the jackpot will be added to the next drawing.
+    public static final int INVENTORY_LESS_THAN_80_PERCENT = 1118; //Progress in a quest is possible only when your inventory's weight and volume are less than 80 percent of capacity.
+    public static final int NO_LOTTERY_TICKETS_CURRENT_SOLD = 930; //Lottery tickets are not currently being sold.
+    public static final int NO_LOTTERY_TICKETS_AVAILABLE = 784; //Tickets for the current lottery are no longer available.
+    public static final int ENTERES_COMBAT_ZONE = 283; //You have entered a combat zone.
+    public static final int LEFT_COMBAT_ZONE = 284; //You have left a combat zone.
+    public static final int PLAYING_FOR_LONG_TIME = 764; //You have been playing for an extended period of time. Please consider taking a break.
+    public static final int CHARACTER_DOES_NOT_EXIST = 873; //That character does not exist.
+    public static final int WELCOME_TO_LINEAGE = 34; //Welcome to the World of Lineage II.
     public static final int S1_DIED_DROPPED_S3_S2 = 1208;//$s1 died and dropped $s3 $s2.
+    public static final int CREATE_LVL_TOO_LOW_TO_REGISTER = 404; //Your Create Item level is too low to register this recipe.
+    public static final int UP_TO_S1_RECIPES_CAN_REGISTER = 894; //Up to $s1 recipes can be registered.
+    public static final int CLAN_HAS_NO_CLAN_HALL = 681; //The clan does not own a clan hall.
+    public static final int INVALID_MACRO = 810; //Invalid macro. Refer to the Help file for instructions.
+    public static final int YOU_MAY_CREATE_UP_TO_24_MACROS = 797; //You may create up to 24 macros.
+    public static final int ENTER_THE_MACRO_NAME = 838; //Enter the name of the macro.
+    public static final int MACRO_DESCRIPTION_MAX_32_CHARS = 837; //	Macro descriptions may contain up to 32 characters.
+    public static final int LOTTERY_TICKET_SALES_TEMP_SUSPENDED = 783; //	Lottery ticket sales have been temporarily suspended.
+    public static final int YOU_MAY_NOT_IMPOSE_A_BLOCK_AN_A_GM = 827; //	You may not impose a block on a GM.
+    
+    // Petition
+    public static final int GAME_CLIENT_UNABLE_TO_CONNECT_TO_PETITION_SERVER = 381; //The game client encountered an error and was unable to connect to the petition server.
+    public static final int ONLY_ONE_ACTIVE_PETITION_AT_TIME = 390; //You may only submit one petition (active) at a time.
+    public static final int PETITION_SYSTEM_CURRENT_UNAVAILABLE = 602; // The petition system is currently unavailable. Please try again later.
+    public static final int WE_HAVE_RECEIVED_S1_PETITIONS_TODAY = 733; //We have received $s1 petitions from you today and that is the maximum that you can submit in one day. You cannot submit any more petitions.
+    public static final int PETITION_MAX_CHARS_255 = 971; //	Petitions cannot exceed 255 characters.
+    public static final int PETITION_ACCEPTED_RECENT_NO_S1 = 389; //our petition application has been accepted. - Receipt No. is $s1.
+    public static final int SUBMITTED_YOU_S1_TH_PETITION_S2_LEFT = 730; //	- You have submitted your $s1th petition. - You may submit $s2 more petition(s) today.
+    public static final int S1_PETITION_ON_WAITING_LIST = 601; //There are $S1 petitions currently on the waiting list.
+    public static final int PETITION_UNDER_PROCESS = 407; //Petition under process.
+    public static final int PETITION_CANCELED_SUBMIT_S1_MORE_TODAY = 736; //The petition was canceled. You may submit $s1 more petition(s) today.
+    public static final int FAILED_CANCEL_PETITION_TRY_LATER = 393; //Failed to cancel petition. Please try again later.
+    public static final int PETITION_NOT_SUBMITTED = 738; // You have not submitted a petition.
+    public static final int PETITION_ENDED_WITH_S1 = 395; //Ending petition consultation with $s1.
+    public static final int RECENT_NO_S1_CANCELED = 391; //Receipt No. $s1, petition cancelled.
+    public static final int THIS_END_THE_PETITION_PLEASE_PROVIDE_FEEDBACK = 387; //This ends the GM petition consultation. Please take a moment to provide feedback about this service.
+    public static final int PETITION_APP_ACCEPTED = 406; //Petition application accepted.
+    public static final int PETITION_WITH_S1_UNDER_WAY = 394; //Petition consultation with $s1, under way.
+    public static final int YOU_ARE_NOT_IN_PETITION_CHAT = 745; //You are currently not in a petition chat.
     
     //manor
     public static final int SEED_SUCCESSFULLY_SOWN = 889;
@@ -630,8 +708,8 @@ public class SystemMessage extends L2GameServerPacket
  	public static final int CANT_REGISTER_NO_ABILITY_TO_CRAFT = 1061; 
     
     // enter/exit mother tree 
- 	public static final int ENTER_SHADOW_MOTHER_TREE = 0x72; 
- 	public static final int EXIT_SHADOW_MOTHER_TREE = 0x73; 
+ 	public static final int ENTER_SHADOW_MOTHER_TREE = 114; 
+ 	public static final int EXIT_SHADOW_MOTHER_TREE = 115; 
 
     // Formal Wear
     public static final int CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR = 1604;
@@ -752,6 +830,7 @@ public class SystemMessage extends L2GameServerPacket
     //  Energy Stones
     public static final int FORCE_INCREASED_TO_S1 = 323;
     public static final int FORCE_MAXLEVEL_REACHED = 324;
+    public static final int FORCE_MAXIMUM = 1196; //Your force has reached maximum capacity.
     
     // Fishing related
     public static final int CANNOT_DO_WHILE_FISHING_1 = 1447;
@@ -802,6 +881,12 @@ public class SystemMessage extends L2GameServerPacket
     // Game Time messages
     public static final int TIME_S1_S2_IN_THE_DAY = 927;
     public static final int TIME_S1_S2_IN_THE_NIGHT = 928;
+    
+    //Class transfer
+    public static final int THIRD_CLASS_TRANSFER = 1606; //Congratulations - You've completed the third-class transfer quest!
+    public static final int CLASS_TRANSFER = 1308; //Congratulations - You've completed a class transfer! 
+    public static final int SUBCLASS_TRANSFER_COMPLETED = 1270; //The transfer of sub class has been completed.
+    public static final int ADD_NEW_SUBCLASS = 1269; //The new sub class has been added.
     
     /**
 	 * @param _characters

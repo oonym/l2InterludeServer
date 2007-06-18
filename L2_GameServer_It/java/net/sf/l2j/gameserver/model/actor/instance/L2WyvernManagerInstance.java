@@ -24,14 +24,14 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         	{   
         		if(player.isMounted())
         		{
-        			SystemMessage sm = new SystemMessage(614);
+        			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
         			sm.addString("Already Have a Pet or Mounted.");
         			player.sendPacket(sm);
         			return;
         		}
         		else
         		{
-        			SystemMessage sm = new SystemMessage(614);
+        			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
         			sm.addString("Summon your Strider.");
         			player.sendPacket(sm);
         			return;
@@ -43,7 +43,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         		{
         			if (player.getPet().getLevel() < 55)
         			{
-        				SystemMessage sm = new SystemMessage(614);
+        				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                 		sm.addString("Your Strider don't reach the required level.");
                 		player.sendPacket(sm);
                 		return;                
@@ -58,7 +58,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         				player.broadcastPacket(mount);
         				player.setMountType(mount.getMountType());
         				player.addSkill(SkillTable.getInstance().getInfo(4289, 1));
-        				SystemMessage sm = new SystemMessage(614);
+        				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                 		sm.addString("The Wyvern has been summoned successfully!");
                 		player.sendPacket(sm);
                 		return;
@@ -66,7 +66,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         		}
         		else
         		{
-        			SystemMessage sm = new SystemMessage(614);
+        			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             		sm.addString("You need 10 Crystals: B Grade.");
             		player.sendPacket(sm);
             		return;
@@ -74,7 +74,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
             }
         	else
         	{
-        		SystemMessage sm = new SystemMessage(614);
+        		SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
         		sm.addString("Unsummon your pet.");
         		player.sendPacket(sm);
         		return;

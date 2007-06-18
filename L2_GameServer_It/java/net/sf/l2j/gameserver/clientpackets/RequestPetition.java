@@ -61,19 +61,19 @@ public final class RequestPetition extends L2GameClientPacket
 
 		if (!PetitionManager.getInstance().isPetitioningAllowed())
 		{
-			activeChar.sendPacket(new SystemMessage(381));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.GAME_CLIENT_UNABLE_TO_CONNECT_TO_PETITION_SERVER));
 			return;
 		}
 
 		if (PetitionManager.getInstance().isPlayerPetitionPending(activeChar))
 		{
-			activeChar.sendPacket(new SystemMessage(390));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.ONLY_ONE_ACTIVE_PETITION_AT_TIME));
 			return;
 		}
 
 		if (PetitionManager.getInstance().getPendingPetitionCount() == Config.MAX_PETITIONS_PENDING)
 		{
-			activeChar.sendPacket(new SystemMessage(602));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.PETITION_SYSTEM_CURRENT_UNAVAILABLE));
 			return;
 		}
 
@@ -81,7 +81,7 @@ public final class RequestPetition extends L2GameClientPacket
 
 		if (totalPetitions > Config.MAX_PETITIONS_PER_PLAYER)
 		{
-			SystemMessage sm = new SystemMessage(733);
+			SystemMessage sm = new SystemMessage(SystemMessage.WE_HAVE_RECEIVED_S1_PETITIONS_TODAY);
 			sm.addNumber(totalPetitions);
 			activeChar.sendPacket(sm);
 			sm = null;
@@ -90,22 +90,22 @@ public final class RequestPetition extends L2GameClientPacket
 
 		if (_content.length() > 255)
 		{
-			activeChar.sendPacket(new SystemMessage(971));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.PETITION_MAX_CHARS_255));
 			return;
 		}
 
 		int petitionId = PetitionManager.getInstance().submitPetition(activeChar, _content, _type);
 
-		SystemMessage sm = new SystemMessage(389);
+		SystemMessage sm = new SystemMessage(SystemMessage.PETITION_ACCEPTED_RECENT_NO_S1);
 		sm.addNumber(petitionId);
 		activeChar.sendPacket(sm);
 
-		sm = new SystemMessage(730);
+		sm = new SystemMessage(SystemMessage.SUBMITTED_YOU_S1_TH_PETITION_S2_LEFT);
 		sm.addNumber(totalPetitions);
 		sm.addNumber(Config.MAX_PETITIONS_PER_PLAYER - totalPetitions);
 		activeChar.sendPacket(sm);
 
-		sm = new SystemMessage(601);
+		sm = new SystemMessage(SystemMessage.S1_PETITION_ON_WAITING_LIST);
 		sm.addNumber(PetitionManager.getInstance().getPendingPetitionCount());
 		activeChar.sendPacket(sm);
 		sm = null;

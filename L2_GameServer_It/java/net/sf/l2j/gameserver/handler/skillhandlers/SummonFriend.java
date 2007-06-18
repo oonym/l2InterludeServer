@@ -91,7 +91,7 @@ public class SummonFriend implements ISkillHandler
                 	
                     //This message naturally doesn't bring up a box...
                     //$s1 wishes to summon you from $s2. Do you accept?
-    				//SystemMessage sm2 = new SystemMessage(1842);
+    				//SystemMessage sm2 = new SystemMessage(SystemMessage.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT);
                 	//sm2.addString(activeChar.getName());
                 	//String nearestTown = MapRegionTable.getInstance().getClosestTownName(activeChar);
                 	//sm2.addString(nearestTown);

@@ -151,7 +151,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
         
         if (activeChar == null)
             return;
-            //SystemMessage sm2 = new SystemMessage(614);
+            //SystemMessage sm2 = new SystemMessage(SystemMessage.S1_S2);
 	    //sm2.addString("type:"+requestedPointType);
 	    //activeChar.sendPacket(sm2);
         
@@ -171,7 +171,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
         if (castle != null && castle.getSiege().getIsInProgress())
         {
             //DeathFinalizer df = new DeathFinalizer(10000);
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             if (activeChar.getClan() != null
                     && castle.getSiege().checkIsAttacker(activeChar.getClan()))
             {

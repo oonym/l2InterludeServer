@@ -59,12 +59,12 @@ public class AdminTarget implements IAdminCommandHandler {
 			if ((obj != null) && (obj instanceof L2PcInstance)) {
 				obj.onAction(activeChar);
 			} else {
-				SystemMessage sm = new SystemMessage(614);
+				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 				sm.addString("Player "+targetName+" not found");
 				activeChar.sendPacket(sm);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			SystemMessage sm = new SystemMessage(614);
+			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("Please specify correct name.");
 			activeChar.sendPacket(sm);
 		}

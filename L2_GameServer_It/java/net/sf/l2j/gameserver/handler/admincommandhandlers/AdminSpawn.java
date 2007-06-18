@@ -195,7 +195,7 @@ public class AdminSpawn implements IAdminCommandHandler
         if (target == null)
         {
             target = activeChar;/*
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Incorrect target.");
             activeChar.sendPacket(sm);
             return;*/
@@ -220,7 +220,7 @@ public class AdminSpawn implements IAdminCommandHandler
         
        if (template1 == null)
         {
-            //SystemMessage sm = new SystemMessage(614);
+            //SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             //sm.addString("Incorrect monster template.");
             //activeChar.sendPacket(sm);
             //return;
@@ -242,7 +242,7 @@ public class AdminSpawn implements IAdminCommandHandler
 
             if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcid()))
             {
-                SystemMessage sm = new SystemMessage(614);
+                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                 sm.addString("You cannot spawn another instance of " + template1.name + ".");
                 activeChar.sendPacket(sm);
             } 
@@ -255,14 +255,14 @@ public class AdminSpawn implements IAdminCommandHandler
 
                 spawn.init();
 
-                SystemMessage sm = new SystemMessage(614);
+                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
                 sm.addString("Created " + template1.name + " on " + target.getObjectId() + ".");
                 activeChar.sendPacket(sm);
             } 
         }
         catch (Exception e)
         {
-            SystemMessage sm = new SystemMessage(614);
+            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Target is not ingame.");
             activeChar.sendPacket(sm);
         }

@@ -1262,7 +1262,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         // Order of Knights 10000 points per each
         if(getReputationScore() <= 2500 && pledgeType != -1)
         {
-        	SystemMessage sp = new SystemMessage(1791);
+        	SystemMessage sp = new SystemMessage(SystemMessage.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_MILITARY_UNIT);
         	_leader.getPlayerInstance().sendPacket(sp);
         }
         else
@@ -1924,7 +1924,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                     if (player.reduceAdena("ClanLvl", 650000, player.getTarget(), true))
                     {
 	                    player.setSp(player.getSp() - 30000);
-	                    SystemMessage sp = new SystemMessage(538);
+	                    SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
 	                    sp.addNumber(30000);
 	                    player.sendPacket(sp);
                         sp = null;
@@ -1941,7 +1941,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                     if (player.reduceAdena("ClanLvl", 2500000, player.getTarget(), true))
                     {
 	                    player.setSp(player.getSp() - 150000);
-	                    SystemMessage sp = new SystemMessage(538);
+	                    SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
 	                    sp.addNumber(150000);
 	                    player.sendPacket(sp);
                         sp = null;
@@ -1959,7 +1959,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                     if (player.destroyItemByItemId("ClanLvl", 1419, 1, player.getTarget(), false))
                     {
 	                    player.setSp(player.getSp() - 500000);
-	                    SystemMessage sp = new SystemMessage(538);
+	                    SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
 	                    sp.addNumber(500000);
 	                    player.sendPacket(sp);
                         sp = null;
@@ -1982,7 +1982,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 	if (player.destroyItemByItemId("ClanLvl", 3874, 1, player.getTarget(), false))
                 	{
 	                    player.setSp(player.getSp() - 1400000);
-	                    SystemMessage sp = new SystemMessage(538);
+	                    SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
 	                    sp.addNumber(1400000);
 	                    player.sendPacket(sp);
                         sp = null;
@@ -2005,7 +2005,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 	if (player.destroyItemByItemId("ClanLvl", 3870, 1, player.getTarget(), false))
                 	{
                 		player.setSp(player.getSp() - 3500000);
-	                    SystemMessage sp = new SystemMessage(538);
+	                    SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
 	                    sp.addNumber(3500000);
 	                    player.sendPacket(sp);
                         sp = null;
@@ -2023,7 +2023,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 if(getReputationScore() >= 10000 && getMembersCount() >= 30)
                 {
                     setReputationScore(getReputationScore() - 10000, true);
-                    SystemMessage cr = new SystemMessage(1787);
+                    SystemMessage cr = new SystemMessage(SystemMessage.S1_DEDUCTED_FROM_CLAN_REP);
                     cr.addNumber(10000);
                     player.sendPacket(cr);
                     cr = null;
@@ -2035,7 +2035,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 if(getReputationScore() >= 20000 && getMembersCount() >= 80)
                 {
                     setReputationScore(getReputationScore() - 20000, true);
-                    SystemMessage cr = new SystemMessage(1787);
+                    SystemMessage cr = new SystemMessage(SystemMessage.S1_DEDUCTED_FROM_CLAN_REP);
                     cr.addNumber(20000);
                     player.sendPacket(cr);
                     cr = null;
@@ -2046,7 +2046,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 if(getReputationScore() >= 40000 && getMembersCount() >= 120)
                 {
                     setReputationScore(getReputationScore() - 40000, true);
-                    SystemMessage cr = new SystemMessage(1787);
+                    SystemMessage cr = new SystemMessage(SystemMessage.S1_DEDUCTED_FROM_CLAN_REP);
                     cr.addNumber(40000);
                     player.sendPacket(cr);
                     cr = null;

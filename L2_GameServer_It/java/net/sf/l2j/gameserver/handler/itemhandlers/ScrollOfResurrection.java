@@ -102,9 +102,9 @@ public class ScrollOfResurrection implements IItemHandler
                 		if (targetPet.getOwner().isReviveRequested())
                 		{
                 			if (targetPet.getOwner().isRevivingPet())
-                				activeChar.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
+                				activeChar.sendPacket(new SystemMessage(SystemMessage.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
                 			else
-                				activeChar.sendPacket(new SystemMessage(1515)); // A pet cannot be resurrected while it's owner is in the process of resurrecting.
+                				activeChar.sendPacket(new SystemMessage(SystemMessage.PET_CANNOT_RES)); // A pet cannot be resurrected while it's owner is in the process of resurrecting.
                             condGood = false;
                 		}
                     }
@@ -124,9 +124,9 @@ public class ScrollOfResurrection implements IItemHandler
                 	if (targetPlayer.isReviveRequested())
                 	{
                 		if (targetPlayer.isRevivingPet())
-                			activeChar.sendPacket(new SystemMessage(1511)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+                			activeChar.sendPacket(new SystemMessage(SystemMessage.MASTER_CANNOT_RES)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
                 		else
-                			activeChar.sendPacket(new SystemMessage(1513)); // Resurrection is already been proposed.
+                			activeChar.sendPacket(new SystemMessage(SystemMessage.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
                         condGood = false;
                 	}
                     else if (!humanScroll)

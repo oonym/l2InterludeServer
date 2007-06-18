@@ -405,7 +405,7 @@ public abstract class L2Effect
 
             if (_skill.isPvpSkill())
             {
-                SystemMessage smsg = new SystemMessage(110);
+                SystemMessage smsg = new SystemMessage(SystemMessage.YOU_FEEL_S1_EFFECT);
                 smsg.addString(_skill.getName());
                 getEffected().sendPacket(smsg);
             }
@@ -440,7 +440,7 @@ public abstract class L2Effect
             //If the time left is equal to zero, send the message
             if (_count == 0)
             {
-                SystemMessage smsg3 = new SystemMessage(92);
+                SystemMessage smsg3 = new SystemMessage(SystemMessage.S1_HAS_WORN_OFF);
                 smsg3.addString(_skill.getName());
                 getEffected().sendPacket(smsg3);
             }
