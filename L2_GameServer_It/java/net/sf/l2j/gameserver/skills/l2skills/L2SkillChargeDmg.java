@@ -77,7 +77,7 @@ public class L2SkillChargeDmg extends L2Skill
 			return;
 		}
         double modifier = 0;
-        modifier = effect.num_charges*0.33;		
+        modifier = (effect.num_charges-this.num_charges)*0.33;		
 		if (this.getTargetType() != SkillTargetType.TARGET_AREA && this.getTargetType() != SkillTargetType.TARGET_MULTIFACE)
 			effect.num_charges -= this.num_charges;
         //effect.num_charges = 0;
