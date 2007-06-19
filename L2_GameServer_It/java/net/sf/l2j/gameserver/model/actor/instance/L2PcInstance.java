@@ -2913,6 +2913,73 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 	
 	/**
+	 * Destroys shots from inventory without logging and only occasional saving to database. 
+	 * Sends a Server->Client InventoryUpdate packet to the L2PcInstance.
+	 * @param process : String Identifier of process triggering this action
+	 * @param objectId : int Item Instance identifier of the item to be destroyed
+	 * @param count : int Quantity of items to be destroyed
+	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+	 * @param sendMessage : boolean Specifies whether to send message to Client about this action
+	 * @return boolean informing if the action was successfull
+	 */
+	public boolean destroyItemWithoutTrace(String process, int objectId, int count, L2Object reference, boolean sendMessage)
+	{
+        L2ItemInstance item = _inventory.getItemByObjectId(objectId);
+        
+        if (item == null || item.getCount() < count)
+		{
+			if (sendMessage) 
+                sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
+			return false;
+		}
+
+        // Adjust item quantity
+        if (item.getCount() > count)
+        {
+        	synchronized(item)
+        	{
+        		item.changeCountWithoutTrace(process, -count, this, reference);
+        		item.setLastChange(L2ItemInstance.MODIFIED);
+
+        		// could do also without saving, but let's save approx 1 of 10
+        		if(GameTimeController.getGameTicks() % 10 == 0) 
+        			item.updateDatabase(); 
+        		_inventory.refreshWeight();
+        	}
+        }
+        else 
+        {
+        	// Destroy entire item and save to database
+        	_inventory.destroyItem(process, item, this, reference);
+        }
+        
+		// Send inventory update packet
+		if (!Config.FORCE_INVENTORY_UPDATE)
+		{
+			InventoryUpdate playerIU = new InventoryUpdate();
+			playerIU.addItem(item);
+			sendPacket(playerIU);
+		}
+        else sendPacket(new ItemList(this, false));
+		
+		// Update current load as well
+		StatusUpdate su = new StatusUpdate(getObjectId());
+		su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
+		sendPacket(su);
+		
+		// Sends message to client if requested
+		if (sendMessage)
+		{
+			SystemMessage sm = new SystemMessage(SystemMessage.DISSAPEARED_ITEM);
+			sm.addNumber(count);
+			sm.addItemName(item.getItemId());
+			sendPacket(sm);
+		}
+        
+		return true;
+	}
+	
+	/**
 	 * Destroy item from inventory by using its <B>itemId</B> and send a Server->Client InventoryUpdate packet to the L2PcInstance.
 	 * @param process : String Identifier of process triggering this action
 	 * @param itemId : int Item identifier of the item to be destroyed

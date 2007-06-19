@@ -79,7 +79,7 @@ public class BlessedSpiritShot implements IItemHandler
         } 
 
         // Consume Blessed Spiritshot if player has enough of them 
-        if (!activeChar.destroyItem("Consume", item.getObjectId(), weaponItem.getSpiritShotCount(), null, false))
+        if (!activeChar.destroyItemWithoutTrace("Consume", item.getObjectId(), weaponItem.getSpiritShotCount(), null, false))
         { 
             if(activeChar.getAutoSoulShot().containsKey(itemId))
             {

@@ -448,7 +448,7 @@ public class PcInventory extends Inventory
 	/**
 	 * Refresh the weight of equipment loaded
 	 */
-	protected void refreshWeight()
+	public void refreshWeight()
 	{
 		super.refreshWeight();
 		getOwner().refreshOverloaded();
