@@ -1999,7 +1999,13 @@ public final class L2PcInstance extends L2PlayableInstance
             getInventory().addItem("Gift",8181,1,this,null); // give academy circlet
             getInventory().updateDatabase(); // update database
         }
+		if (isSubClassActive())
+		{
+			getSubClasses().get(_classIndex).setClassId(Id);
+		}
+
 		_activeClass = Id;
+
 		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(Id);
 		
 		if (t == null)
