@@ -20,7 +20,6 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -149,7 +148,7 @@ public class SummonFriend implements ISkillHandler
                     if (targetChar.getInventory().getItemByItemId(8615) == null)
                     {
                     	((L2PcInstance)activeChar).sendMessage("Your target cannot be summoned while he hasn't got a Summoning Crystal");
-                    	targetChar.sendMessage("You cannot summoned while you haven't got a Summoning Crystal");
+                    	targetChar.sendMessage("You cannot be summoned while you haven't got a Summoning Crystal");
                     	continue;
                     }
                     
