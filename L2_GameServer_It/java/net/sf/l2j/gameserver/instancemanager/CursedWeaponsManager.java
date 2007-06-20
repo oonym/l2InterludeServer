@@ -238,6 +238,12 @@ public class CursedWeaponsManager
 			PreparedStatement statement = null;
 			ResultSet rset = null;
 
+			// TODO: See comments below...
+			// This entire for loop should NOT be necessary, since it is already handled by
+			// CursedWeapon.endOfLife().  However, if we indeed *need* to duplicate it for safety,
+			// then we'd better make sure that it FULLY cleans up inactive cursed weapons!
+			// Undesired effects result otherwise, such as player with no zariche but with karma
+			// or a lost-child entry in the cursedweapons table, without a corresponding one in items...
 			for (CursedWeapon cw : _cursedWeapons.values())
 			{
 				if (cw.isActivated()) continue;
@@ -275,9 +281,22 @@ public class CursedWeaponsManager
 							_log.warning("Error while deleting cursed weapon "+itemId+" skill from userId "+playerId);
 						}
 						*/
+						// Restore the player's old karma and pk count
+		    			statement = con.prepareStatement("UPDATE characters SET karma=?, pkkills=? WHERE obj_id=?");
+		    			statement.setInt(1, cw.getPlayerKarma());
+		    			statement.setInt(2, cw.getPlayerPkKills());
+		    			statement.setInt(3, playerId);
+		    			if (statement.executeUpdate() != 1)
+		    			{
+		    				_log.warning("Error while updating karma & pkkills for userId "+cw.getPlayerId());
+		    			}
+		    			// clean up the cursedweapons table.
+		    			removeFromDb(itemId);
 					}
 				} catch (SQLException sqlE)
 				{}
+				// close the statement to avoid multiply prepared statement errors in following iterations.
+    			try { con.close(); } catch (Exception e) {}
 			}
 		}
 		catch (Exception e)
