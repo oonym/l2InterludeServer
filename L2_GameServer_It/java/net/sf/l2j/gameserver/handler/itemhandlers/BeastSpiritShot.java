@@ -129,7 +129,7 @@ public class BeastSpiritShot implements IItemHandler
                 activePet.setChargedSpiritShot(L2ItemInstance.CHARGED_SPIRITSHOT);
         }
         
-        if (!activeOwner.destroyItem("Consume", item.getObjectId(), shotConsumption, null, false))
+        if (!activeOwner.destroyItemWithoutTrace("Consume", item.getObjectId(), shotConsumption, null, false))
         {
             if (activeOwner.getAutoSoulShot().containsKey(itemId))
             {

@@ -85,7 +85,7 @@ public class FishShots implements IItemHandler
 		} 
 
 		weaponInst.setChargedFishshot(true);
-		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
+		activeChar.destroyItemWithoutTrace("Consume", item.getObjectId(), 1, null, false);
         L2Object oldTarget = activeChar.getTarget();
         activeChar.setTarget(activeChar);
 

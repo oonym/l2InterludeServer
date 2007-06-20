@@ -89,7 +89,7 @@ public class EnergyStone implements IItemHandler
                 if (dummy != null) 
                 {
                 	dummy.getEffects(null, activeChar);
-                	activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
+                	activeChar.destroyItemWithoutTrace("Consume", item.getObjectId(), 1, null, false);
                 	return;
                 }
                 return;
