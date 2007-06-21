@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Rnd;
 
@@ -123,6 +124,17 @@ public final class L2BabyPetInstance extends L2PetInstance
 			_healingTask = null;
 		}
 	}
+	
+	public synchronized void unSummon (L2PcInstance owner)
+    {
+		super.unSummon(owner);
+		
+		if (_healingTask != null)
+		{
+			_healingTask.cancel(false);
+			_healingTask = null;
+		}
+    }
 	
     public void doRevive()
     {
