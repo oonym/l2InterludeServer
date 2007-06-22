@@ -338,8 +338,20 @@ public class CursedWeaponsManager
 		if (player.isCursedWeaponEquiped()) // cannot own 2 cursed swords
 		{
 			CursedWeapon cw2 = _cursedWeapons.get(player.getCursedWeaponEquipedId());
+			/* TODO: give the bonus level in a more appropriate manner.
+			 *  The following code adds "_stageKills" levels.  This will also show in the char status.
+			 * I do not have enough info to know if the bonus should be shown in the pk count, or if it
+			 * should be a full "_stageKills" bonus or just the remaining from the current count till the 
+			 * of the current stage...
+			 * This code is a TEMP fix, so that the cursed weapon's bonus level can be observed with as 
+			 * little change in the code as possible, until proper info arises.
+			 */
+			cw2.setNbKills(cw2.getStageKills()-1);
 			cw2.increaseKills();
-			cw.endOfLife();
+			
+			// erase the newly obtained cursed weapon
+			cw.setPlayer(player);  // NECESSARY in order to find which inventory the weapon is in!
+			cw.endOfLife();        // expire the weapon and clean up.
 		}
 		else cw.activate(player, item);
 	}

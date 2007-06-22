@@ -161,8 +161,26 @@ public class CursedWeapon
 	    	}
 		} else
 		{
+			// either this cursed weapon is in the inventory of someone who has another cursed weapon equipped, 
+			// OR this cursed weapon is on the ground.
+			if ((_player != null) && (_player.getInventory().getItemByItemId(_itemId) != null))
+			{
+	    		// Destroy 
+	    		L2ItemInstance removedItem = _player.getInventory().destroyItemByItemId("", _itemId, 1, _player, null);
+	    		if (!Config.FORCE_INVENTORY_UPDATE)
+	    		{
+	    			InventoryUpdate iu = new InventoryUpdate();
+	    			if (removedItem.getCount() == 0) iu.addRemovedItem(removedItem);
+	    			else iu.addModifiedItem(removedItem);
+	    	
+	    			_player.sendPacket(iu);
+	    		}
+	    		else _player.sendPacket(new ItemList(_player, true));
+	    		
+	    		_player.broadcastUserInfo();
+			}
 			//  is dropped on the ground
-			if (_item != null)
+			else if (_item != null)
 			{
 				_item.decayMe();
 				L2World.getInstance().removeObject(_item);
@@ -571,6 +589,10 @@ public class CursedWeapon
 	public int getNbKills()
 	{
 		return _nbKills;
+	}
+	public int getStageKills()
+	{
+		return _stageKills;
 	}
 
 	public boolean isActive()
