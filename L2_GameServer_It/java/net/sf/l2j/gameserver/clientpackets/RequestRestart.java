@@ -119,10 +119,11 @@ public final class RequestRestart extends L2GameClientPacket
         
         RegionBBSManager.getInstance().changeCommunityBoard();
         
+        // removing player from the world
         player.deleteMe();
         L2GameClient.saveCharToDisk(client.getActiveChar());
         
-        // removing player from the world
+        
         getClient().setActiveChar(null);
         
         // return the client to the authed status

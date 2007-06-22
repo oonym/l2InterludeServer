@@ -91,6 +91,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (activeChar == null)
 		{
 			_log.warning("EnterWorld failed! activeChar is null...");
+			this.getClient().closeNow();
 		    return;
 		}
 		
