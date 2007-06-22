@@ -1052,6 +1052,8 @@ public class Siege
             statement.setLong(1, getSiegeDate().getTimeInMillis());
             statement.setInt(2, getCastle().getCastleId());
             statement.execute();
+            
+            statement.close();
         }
         catch (Exception e)
         {

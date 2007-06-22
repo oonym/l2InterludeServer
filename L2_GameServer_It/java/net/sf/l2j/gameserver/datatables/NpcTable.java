@@ -327,8 +327,8 @@ public class NpcTable
 			npcDat.set("baseHpMax", NpcData.getInt("hp"));
 			npcDat.set("baseCpMax", 0);
 			npcDat.set("baseMpMax", NpcData.getInt("mp"));
-			npcDat.set("baseHpReg", NpcData.getFloat("hpreg")>0?NpcData.getFloat("hpreg"):1.5 + ((level-1)/10));
-			npcDat.set("baseMpReg", NpcData.getFloat("mpreg")>0?NpcData.getFloat("mpreg"):0.9 + 0.3*((level-1)/10));
+			npcDat.set("baseHpReg", NpcData.getFloat("hpreg")>0?NpcData.getFloat("hpreg"):1.5 + ((level-1)/10.0));
+			npcDat.set("baseMpReg", NpcData.getFloat("mpreg")>0?NpcData.getFloat("mpreg"):0.9 + 0.3*((level-1)/10.0));
 			npcDat.set("basePAtk", NpcData.getInt("patk"));
 			npcDat.set("basePDef", NpcData.getInt("pdef"));
 			npcDat.set("baseMAtk", NpcData.getInt("matk"));

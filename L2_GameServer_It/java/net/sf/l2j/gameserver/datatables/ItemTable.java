@@ -236,6 +236,9 @@ public class ItemTable
                         weaponData.put(newItem.id, newItem);
                     }
                 }
+                
+                rset.close();
+                statement.close();
             }
         }
         catch (Exception e)

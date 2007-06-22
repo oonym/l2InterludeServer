@@ -243,7 +243,7 @@ public class GameServer
 	private LoginServerThread _loginThread;
     private final HelperBuffTable _helperBuffTable;
     
-	public static Status statusServer;
+	private static Status statusServer;
 	@SuppressWarnings("unused")
 	private final ThreadPoolManager _threadpools;
 

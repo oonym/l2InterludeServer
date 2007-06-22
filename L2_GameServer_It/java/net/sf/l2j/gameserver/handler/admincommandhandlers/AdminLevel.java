@@ -42,7 +42,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class AdminLevel implements IAdminCommandHandler
 {
     private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
-    public static final String[] ADMIN_COMMANDS =
+    private static final String[] ADMIN_COMMANDS =
     {
         "admin_add_level",
         "admin_set_level"

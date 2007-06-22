@@ -98,7 +98,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 					L2Summon summon = (L2Summon) object;
 
 					// Check if the L2PcInstance is the owner of the Pet
-					if (equals(summon.getOwner()))
+					if (_activeChar.equals(summon.getOwner()))
 					{
 						_activeChar.sendPacket(new PetInfo(summon));
 

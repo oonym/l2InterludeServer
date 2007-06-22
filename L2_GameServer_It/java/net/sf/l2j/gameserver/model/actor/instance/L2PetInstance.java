@@ -66,7 +66,7 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
  */
 public class L2PetInstance extends L2Summon
 {
-	protected static Logger _logPet = Logger.getLogger(L2PetInstance.class.getName());
+	protected static final Logger _logPet = Logger.getLogger(L2PetInstance.class.getName());
 	
     //private byte _pvpFlag;
 	private int _curFed;
@@ -83,7 +83,7 @@ public class L2PetInstance extends L2Summon
 
 	/** The Experience before the last Death Penalty */
 	private long _expBeforeDeath = 0; 
-	private final int FOOD_ITEM_CONSUME_COUNT = 5;
+	private static final int FOOD_ITEM_CONSUME_COUNT = 5;
 	
     public final L2PetData getPetData()
     {
@@ -725,7 +725,12 @@ public class L2PetInstance extends L2Summon
 			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, name, level, curHp, curMp, exp, sp, karma, pkkills, fed FROM pets WHERE item_obj_id=?");
 			statement.setInt(1, control.getObjectId());
 			ResultSet rset = statement.executeQuery();
-			if (!rset.next()) return pet;
+			if (!rset.next())
+			{
+	            rset.close();
+				statement.close();
+				return pet;
+			}
 
             pet._respawned = true;
 			pet.setName(rset.getString("name"));

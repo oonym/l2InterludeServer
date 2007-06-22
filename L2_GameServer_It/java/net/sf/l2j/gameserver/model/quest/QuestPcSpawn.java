@@ -21,7 +21,7 @@ import net.sf.l2j.util.Rnd;
 
 public class QuestPcSpawn
 {
-    protected static Logger _log = Logger.getLogger(QuestPcSpawn.class.getName());
+    protected static final Logger _log = Logger.getLogger(QuestPcSpawn.class.getName());
 
     public class DeSpawnScheduleTimerTask implements Runnable
     {

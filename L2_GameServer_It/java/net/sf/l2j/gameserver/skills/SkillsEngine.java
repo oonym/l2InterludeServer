@@ -42,7 +42,7 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
  */
 public class SkillsEngine {
 
-    protected static Logger _log = Logger.getLogger(SkillsEngine.class.getName());
+    protected static final Logger _log = Logger.getLogger(SkillsEngine.class.getName());
 	
 	private static final SkillsEngine _instance = new SkillsEngine();
 	
@@ -88,7 +88,7 @@ public class SkillsEngine {
 	{
 		if (file == null)
 		{
-			_log.config("File not found: " + file.getName());
+			_log.config("Skill file not found.");
 			return null;
 		}
 		DocumentSkill doc = new DocumentSkill(file);

@@ -388,6 +388,8 @@ public class ClanTable
             //statement.setInt(1,clanId2);
             //statement.setInt(2,clanId1);
             //statement.execute();
+            
+            statement.close();
         }
         catch (Exception e)
         {

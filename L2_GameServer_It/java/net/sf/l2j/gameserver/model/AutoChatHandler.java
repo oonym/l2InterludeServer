@@ -47,7 +47,7 @@ import net.sf.l2j.gameserver.serverpackets.CreatureSay;
  */
 public class AutoChatHandler implements SpawnListener
 {
-    protected static Logger _log = Logger.getLogger(AutoChatHandler.class.getName());
+    protected static final Logger _log = Logger.getLogger(AutoChatHandler.class.getName());
     private static AutoChatHandler _instance;
 
     private static final long DEFAULT_CHAT_DELAY = 180000; // 3 mins by default

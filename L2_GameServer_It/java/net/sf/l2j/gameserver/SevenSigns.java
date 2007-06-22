@@ -48,7 +48,7 @@ import net.sf.l2j.gameserver.templates.StatsSet;
  */
 public class SevenSigns 
 {
-    protected static Logger _log = Logger.getLogger(SevenSigns.class.getName());
+    protected static final Logger _log = Logger.getLogger(SevenSigns.class.getName());
 	private static SevenSigns _instance;
 
 	// Basic Seven Signs Constants \\

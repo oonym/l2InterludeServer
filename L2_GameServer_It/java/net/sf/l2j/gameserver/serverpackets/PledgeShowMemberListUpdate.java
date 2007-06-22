@@ -56,6 +56,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 	
 	public PledgeShowMemberListUpdate(L2ClanMember player)
 	{
+		_player = player.getPlayerInstance();
 		_name=player.getName();
 		_level=player.getLevel();
 		_classId=player.getClassId();

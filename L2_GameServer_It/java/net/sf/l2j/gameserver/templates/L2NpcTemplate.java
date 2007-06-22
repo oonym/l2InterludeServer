@@ -51,7 +51,7 @@ import net.sf.l2j.gameserver.skills.Stats;
  */
 public final class L2NpcTemplate extends L2CharTemplate
 {
-	protected static Logger _log = Logger.getLogger(Quest.class.getName());
+	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 
 	public final int     npcId;
     public final int     idTemplate;

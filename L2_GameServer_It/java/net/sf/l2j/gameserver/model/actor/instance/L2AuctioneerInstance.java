@@ -86,7 +86,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                         int bid = 0;
                         if (st.countTokens() >= 1) bid = Integer.parseInt(st.nextToken());
 
-                        Auction a = new Auction(player.getClan().getHasHideout(), player.getClan(), days*86400000, bid, ClanHallManager.getInstance().getClanHallByOwner(player.getClan()).getName());
+                        Auction a = new Auction(player.getClan().getHasHideout(), player.getClan(), days*86400000L, bid, ClanHallManager.getInstance().getClanHallByOwner(player.getClan()).getName());
                         if (_pendingAuctions.get(a.getId()) != null)
                             _pendingAuctions.remove(a.getId());
                         

@@ -63,16 +63,9 @@ class EffectDamOverTime extends L2Effect
         					&& !(getSkill().getTargetType() == SkillTargetType.TARGET_SELF 
         							&& getSkill().isToggle());
         
-        if(getSkill().getSkillType() == SkillType.POISON &&
-                getEffected().getCurrentHp() > damage)
-        {
-            getEffected().reduceCurrentHp(damage, getEffector(),awake);
-        }
-        else
-        {
-            getEffected().reduceCurrentHp(damage, getEffector(),awake);
-        }
-		
+        
+        getEffected().reduceCurrentHp(damage, getEffector(),awake);
+
 		return true;
 	}
 }

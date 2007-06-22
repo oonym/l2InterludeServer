@@ -815,7 +815,7 @@ public class GameStatusThread extends Thread
        		statement.setInt(2, -249645);
        		statement.setInt(3, -2984);
        		statement.setInt(4, 1);
-       		statement.setLong(5, delay * 60000);
+       		statement.setLong(5, delay * 60000L);
        		statement.setString(6, name);
     
     		statement.execute();

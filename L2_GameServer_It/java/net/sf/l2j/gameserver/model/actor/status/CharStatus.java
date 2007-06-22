@@ -25,7 +25,7 @@ import net.sf.l2j.util.Rnd;
 
 public class CharStatus
 {
-    protected static Logger _log = Logger.getLogger(CharStatus.class.getName());
+    protected static final Logger _log = Logger.getLogger(CharStatus.class.getName());
 
     // =========================================================
     // Data Field

@@ -41,7 +41,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class Config 
 {
-	protected static Logger _log = Logger.getLogger(Config.class.getName());
+	protected static final Logger _log = Logger.getLogger(Config.class.getName());
 	/** Debug/release mode */
     public static boolean DEBUG;
     /** Enable/disable assertions */

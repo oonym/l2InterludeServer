@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.script.faenor.FaenorInterface;
 public class ScriptEngine
 {
     protected EngineInterface _utils = new FaenorInterface();
-    public static Hashtable<String, ParserFactory> parserFactories = new Hashtable<String, ParserFactory>();
+    public static final Hashtable<String, ParserFactory> parserFactories = new Hashtable<String, ParserFactory>();
 
     protected static Parser createParser(String name)
         throws ParserNotCreatedException

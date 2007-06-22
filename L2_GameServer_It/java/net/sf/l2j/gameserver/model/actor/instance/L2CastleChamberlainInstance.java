@@ -25,9 +25,9 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 {
     //private static Logger _log = Logger.getLogger(L2CastleChamberlainInstance.class.getName());
 
-	protected static int Cond_All_False = 0;
-	protected static int Cond_Busy_Because_Of_Siege = 1;
-	protected static int Cond_Owner = 2;
+	protected static final int Cond_All_False = 0;
+	protected static final int Cond_Busy_Because_Of_Siege = 1;
+	protected static final int Cond_Owner = 2;
 
     public L2CastleChamberlainInstance(int objectId, L2NpcTemplate template)
     {

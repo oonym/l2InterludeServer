@@ -156,6 +156,9 @@ public class GameServerTable
 			gsi = new GameServerInfo(id, this.stringToHex(rset.getString("hexid")));
 			_gameServerTable.put(id, gsi);
 		}
+		rset.close();
+		statement.close();
+		con.close();
 	}
 	
 	public Map<Integer, GameServerInfo> getRegisteredGameServers()

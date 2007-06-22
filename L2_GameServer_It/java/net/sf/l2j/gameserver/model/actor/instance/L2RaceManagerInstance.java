@@ -63,7 +63,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
     protected static final int[][] codes = { {-1, 0}, {0, 15322}, {13765, -1}};
     private static boolean notInitialized = true;
     protected static MonRaceInfo packet;
-    protected static int cost[] = {100, 500, 1000, 5000, 10000, 20000, 50000, 100000};
+    protected static final int cost[] = {100, 500, 1000, 5000, 10000, 20000, 50000, 100000};
 
     public L2RaceManagerInstance(int objectId, L2NpcTemplate template)
     {

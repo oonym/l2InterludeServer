@@ -126,6 +126,9 @@ public final class Logout extends L2GameClientPacket
 					friend.sendPacket(new FriendList(friend));
 				}
 			}
+			
+			rset.close();
+			statement.close();
 		} 
 		catch (Exception e) {
 			_log.warning("could not restore friend data:"+e);

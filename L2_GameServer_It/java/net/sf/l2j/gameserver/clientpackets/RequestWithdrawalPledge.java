@@ -64,7 +64,7 @@ public final class RequestWithdrawalPledge extends L2GameClientPacket
 
 		L2Clan clan = activeChar.getClan();
 
-		clan.removeClanMember(activeChar.getName(), System.currentTimeMillis() + Config.ALT_CLAN_JOIN_DAYS * 86400000); //24*60*60*1000 = 86400000
+		clan.removeClanMember(activeChar.getName(), System.currentTimeMillis() + Config.ALT_CLAN_JOIN_DAYS * 86400000L); //24*60*60*1000 = 86400000
 
 		SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_WITHDRAWN_FROM_THE_CLAN);
 		sm.addString(activeChar.getName());

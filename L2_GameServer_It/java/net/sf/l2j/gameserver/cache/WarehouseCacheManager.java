@@ -41,7 +41,7 @@ public class WarehouseCacheManager
 	
 	private WarehouseCacheManager()
 	{
-		_CacheTime = Config.WAREHOUSE_CACHE_TIME*60*1000;
+		_CacheTime = Config.WAREHOUSE_CACHE_TIME*60000L; // 60*1000 = 60000
 		_CachedWh = new FastMap<L2PcInstance, Long>().setShared(true);
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CacheScheduler(),120000,60000);
 	}

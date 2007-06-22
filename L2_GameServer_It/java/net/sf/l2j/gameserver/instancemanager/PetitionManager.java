@@ -45,7 +45,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public final class PetitionManager
 {
-	protected static Logger _log = Logger.getLogger(PetitionManager.class.getName());
+	protected static final Logger _log = Logger.getLogger(PetitionManager.class.getName());
 	private static PetitionManager _instance;
 	
 	private Map<Integer, Petition> _pendingPetitions;

@@ -622,7 +622,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     {
                         int castRange = sk.getCastRange();
                         
-                        if (((sk.getSkillType() == L2Skill.SkillType.BUFF || sk.getSkillType() == L2Skill.SkillType.HEAL) || (dist2 >= castRange * castRange / 9)
+                        if (((sk.getSkillType() == L2Skill.SkillType.BUFF || sk.getSkillType() == L2Skill.SkillType.HEAL) || (dist2 >= castRange * castRange / 9.0)
                             && (dist2 <= castRange * castRange) && (castRange > 70))
                             && !_actor.isSkillDisabled(sk.getId())
                             && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk)

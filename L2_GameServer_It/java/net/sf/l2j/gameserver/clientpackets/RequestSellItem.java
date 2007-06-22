@@ -107,7 +107,7 @@ public final class RequestSellItem extends L2GameClientPacket
 			        )) return;
 
         boolean ok = true;
-        String htmlFolder = new String();
+        String htmlFolder = "";
  
         if (target != null)
         {

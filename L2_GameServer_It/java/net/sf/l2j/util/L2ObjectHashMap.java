@@ -51,8 +51,8 @@ public final class L2ObjectHashMap<T extends L2Object>
 	extends L2ObjectMap<T>
 {
 	
-	private final boolean TRACE = false;
-	private final boolean DEBUG = false;
+	private static final boolean TRACE = false;
+	private static final boolean DEBUG = false;
 	
 	private final static int[] primes = {
 		5, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293,

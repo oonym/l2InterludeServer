@@ -1775,7 +1775,7 @@ public class L2Attackable extends L2NpcInstance
                 isSuccess = false;
             
             // Check if the soul crystal was used when HP of this L2Attackable wasn't higher than half of it
-            if (ai != null && ai.absorbedHP > (getMaxHp()/2))
+            if (ai != null && ai.absorbedHP > (getMaxHp()/2.0))
                 isSuccess = false;
             
             if (!isSuccess) {             

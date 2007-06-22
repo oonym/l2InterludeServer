@@ -484,6 +484,9 @@ public class PcInventory extends Inventory
             	paperdoll[slot][1] = invdata.getInt("item_id");
 				paperdoll[slot][2] = invdata.getInt("enchant_level");
             }
+            
+            invdata.close();
+            statement2.close();
         } 
         catch (Exception e) {
 			_log.log(Level.WARNING, "could not restore inventory:", e);

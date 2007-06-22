@@ -29,10 +29,10 @@ import net.sf.l2j.gameserver.model.entity.Auction;
 
 public class AuctionManager
 {
-    protected static Logger _log = Logger.getLogger(AuctionManager.class.getName());
+    protected static final Logger _log = Logger.getLogger(AuctionManager.class.getName());
     private static AuctionManager _Instance;
     private List<Auction> _Auctions;
-	public static final String[] ItemInitData =
+	private static final String[] ItemInitData =
 		{
 		    "(23, 0, 'NPC', 'NPC Clan', 'ClanHall', 23, 0, 'Onyx Hall', 1, 20000000, 0, 1164841200000)",
 		    "(24, 0, 'NPC', 'NPC Clan', 'ClanHall', 24, 0, 'Topaz Hall', 1, 20000000, 0, 1164841200000)",
@@ -72,7 +72,7 @@ public class AuctionManager
 		    "(60, 0, 'NPC', 'NPC Clan', 'ClanHall', 60, 0, 'Molten Ore Hall', 1, 50000000, 0, 1164841200000)",
 		    "(61, 0, 'NPC', 'NPC Clan', 'ClanHall', 61, 0, 'Titan Hall', 1, 50000000, 0, 1164841200000)"
 		 };
-		 public static final Integer[] ItemInitDataId =
+		 private static final Integer[] ItemInitDataId =
 		 {
 		     23,24,25,26,27,28,29,30,31,32,33,36,37,38,39,40,41,42,43,44,45,46,47,48
 		     ,49,50,51,52,53,54,55,56,57,58,59,60,61

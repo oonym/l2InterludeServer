@@ -945,6 +945,8 @@ public final class L2ItemInstance extends L2Object
 				L2Item item = ItemTable.getInstance().getTemplate(item_id);
 				if (item == null) {
 					_log.severe("Item item_id="+item_id+" not known, object_id="+objectId);
+					rs.close();
+					statement.close();
 					return null;
 				}
 				inst = new L2ItemInstance(objectId, item);
@@ -971,12 +973,16 @@ public final class L2ItemInstance extends L2Object
 				if (inst._mana == 0)
 				{
 					inst.removeFromDb();
+					rs.close();
+					statement.close();
 					return null;
 				}
 				else if (inst._mana > 0 && inst.getLocation() == ItemLocation.PAPERDOLL)
 					inst.scheduleConsumeManaTask();
 			} else {
 				_log.severe("Item object_id="+objectId+" not found");
+				rs.close();
+				statement.close();
 				return null;
 			}
 			rs.close();

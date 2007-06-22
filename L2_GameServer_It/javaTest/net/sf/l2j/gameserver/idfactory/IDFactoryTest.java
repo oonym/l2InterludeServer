@@ -54,12 +54,12 @@ public class IDFactoryTest extends TestCase
 	protected IdFactory idFactory;
 	protected AtomicInteger count = new AtomicInteger(0), adds = new AtomicInteger(0), removes = new AtomicInteger(0);
 
-	protected static int REQUESTER_THREADS              = 50;
-	protected static int REQUESTER_THREAD_REQUESTS      = 1000;
-	protected static int REQUESTER_THREAD_RANDOM_DELAY  = 30;
-	protected static int RELEASER_THREADS               = 50;
-	protected static int RELEASER_THREAD_RELEASES       = 1000;
-	protected static int RELEASER_THREAD_RANDOM_DELAY   = 35;
+	protected static final int REQUESTER_THREADS              = 50;
+	protected static final int REQUESTER_THREAD_REQUESTS      = 1000;
+	protected static final int REQUESTER_THREAD_RANDOM_DELAY  = 30;
+	protected static final int RELEASER_THREADS               = 50;
+	protected static final int RELEASER_THREAD_RELEASES       = 1000;
+	protected static final int RELEASER_THREAD_RANDOM_DELAY   = 35;
 
 	public static void main(String[] args)
 	{

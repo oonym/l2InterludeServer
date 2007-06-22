@@ -370,9 +370,9 @@ public class L2ControllableMobAI extends L2AttackableAI
 			L2Character hated;
             
 			if (_actor.isConfused())
-				hated = getAttackTarget();
-			else
 				hated = findNextRndTarget();
+			else
+				hated = getAttackTarget();
 			
 			if (hated == null) 
             {
@@ -409,7 +409,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 		L2Character hated;
         
 		if (_actor.isConfused())
-			hated = getAttackTarget();
+			hated = findNextRndTarget();
 		else
 			hated = getAttackTarget();
         

@@ -36,7 +36,7 @@ import net.sf.l2j.util.Rnd;
 
 public class L2CubicInstance
 {
-    protected static Logger _log = Logger.getLogger(L2CubicInstance.class.getName());
+    protected static final Logger _log = Logger.getLogger(L2CubicInstance.class.getName());
 
     public static final int STORM_CUBIC = 1;
     public static final int VAMPIRIC_CUBIC = 2;

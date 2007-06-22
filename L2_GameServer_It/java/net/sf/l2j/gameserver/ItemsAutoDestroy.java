@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.templates.L2EtcItemType;
 
 public class ItemsAutoDestroy
 {
-	protected static Logger _log = Logger.getLogger("ItemsAutoDestroy");
+	protected static final Logger _log = Logger.getLogger("ItemsAutoDestroy");
 	private static ItemsAutoDestroy _instance;
 	protected List<L2ItemInstance> _items = null;
 	protected static long _sleep;

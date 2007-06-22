@@ -65,7 +65,7 @@ public class AdminCommandHandler
 		for (int i = 0; i < ids.length; i++)
 		{
 			if (Config.DEBUG) _log.fine("Adding handler for command "+ids[i]);
-			_datatable.put(new String(ids[i]), handler);
+			_datatable.put(ids[i], handler);
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class AdminCommandHandler
 		}
 		if (Config.DEBUG)
 			_log.fine("getting handler for command: "+command+
-					" -> "+(_datatable.get(new String(command)) != null));
+					" -> "+(_datatable.get(command) != null));
 		return _datatable.get(command);
 	}
 

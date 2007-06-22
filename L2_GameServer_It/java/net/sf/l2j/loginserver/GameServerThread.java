@@ -61,7 +61,7 @@ import net.sf.l2j.util.Util;
 
 public class GameServerThread extends Thread
 {
-	protected static Logger _log = Logger.getLogger(GameServerThread.class.getName());
+	protected static final Logger _log = Logger.getLogger(GameServerThread.class.getName());
 	private Socket _connection;
 	private InputStream _in;
 	private OutputStream _out;

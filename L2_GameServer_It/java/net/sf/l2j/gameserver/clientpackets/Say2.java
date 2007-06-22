@@ -60,7 +60,7 @@ public final class Say2 extends L2GameClientPacket
 	public final static int PARTYROOM_COMMANDER = 16; //(blue)
 	public final static int HERO_VOICE = 17;
 	
-	public final static String[] chatNames = {
+	private final static String[] chatNames = {
 	                                          "ALL  ",
 	                                          "SHOUT",
 	                                          "TELL ",

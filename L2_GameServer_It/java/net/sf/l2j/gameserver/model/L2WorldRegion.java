@@ -179,7 +179,7 @@ public final class L2WorldRegion
      * this function turns this region's AI and geodata on or off
      * @param value
      */   
-    public void setActive(Boolean value)
+    public void setActive(boolean value)
     {
         if (_active == value)
             return;

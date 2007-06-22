@@ -112,10 +112,10 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 	
 	public String toString()
 	{
-		String str = new String("EventHandlerSet: size:"+_handlers.size()+" Priority:"+_comparatorPrio+(_insertionTime != 0 ? " TimePoints: "+(int)( (System.currentTimeMillis() - _insertionTime)/1000) : ""));
+		String str = "EventHandlerSet: size:"+_handlers.size()+" Priority:"+_comparatorPrio+(_insertionTime != 0 ? " TimePoints: "+(int)( (System.currentTimeMillis() - _insertionTime)/1000) : "");
 		for (EventHandler handler : _handlers)
 		{
-			str.concat(" - "+handler.toString());
+			str = str.concat(" - "+handler.toString());
 		}
 		return str;
 	}

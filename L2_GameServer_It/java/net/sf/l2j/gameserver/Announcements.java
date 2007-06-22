@@ -87,7 +87,7 @@ public class Announcements
 	{
 		for (int i = 0; i < _announcements.size(); i++)
 		{
-			CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, activeChar.getName(), _announcements.get(i).toString());
+			CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, activeChar.getName(), _announcements.get(i));
 			activeChar.sendPacket(cs);
 		}
 		
@@ -141,7 +141,7 @@ public class Announcements
 		replyMSG.append("<br>");
 		for (int i = 0; i < _announcements.size(); i++)
 		{
-			replyMSG.append("<table width=260><tr><td width=220>" + _announcements.get(i).toString() + "</td><td width=40>");
+			replyMSG.append("<table width=260><tr><td width=220>" + _announcements.get(i) + "</td><td width=40>");
 			replyMSG.append("<button value=\"Delete\" action=\"bypass -h admin_del_announcement " + i + "\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr></table>");
 		}
 		replyMSG.append("</body></html>");
@@ -211,7 +211,7 @@ public class Announcements
 			save = new FileWriter(file);
 			for (int i = 0; i < _announcements.size(); i++)
 			{
-				save.write(_announcements.get(i).toString());
+				save.write(_announcements.get(i));
 				save.write("\r\n");
 			}
 			save.flush();

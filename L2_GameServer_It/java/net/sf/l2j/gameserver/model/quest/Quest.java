@@ -51,7 +51,7 @@ import net.sf.l2j.util.Rnd;
  */
 public abstract class Quest
 {
-	protected static Logger _log = Logger.getLogger(Quest.class.getName());
+	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 
 	/** HashMap containing events from String value of the event */
 	private static Map<String, Quest> allEventsS = new FastMap<String, Quest>();
@@ -406,7 +406,7 @@ public abstract class Quest
 				// Create an object State containing the state of the quest
 				State state = q.states.get(stateId);
 				if (state == null) {
-					_log.finer("Unknown state "+state+" in quest "+questId+" for player "+player.getName());
+					_log.finer("Unknown state in quest "+questId+" for player "+player.getName());
 					if (Config.AUTODELETE_INVALID_QUEST_DATA){
 					    invalidQuestData.setInt(1, player.getObjectId());
                         invalidQuestData.setString(2, questId);

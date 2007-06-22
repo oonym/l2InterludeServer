@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.model.entity.ZoneType;
 
 public class TownManager
 {
-    protected static Logger _log = Logger.getLogger(TownManager.class.getName());
+    protected static final Logger _log = Logger.getLogger(TownManager.class.getName());
 
     // =========================================================
     private static TownManager _Instance;

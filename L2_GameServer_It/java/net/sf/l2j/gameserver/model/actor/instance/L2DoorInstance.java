@@ -57,7 +57,7 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
  */
 public class L2DoorInstance extends L2Character
 {
-    protected static Logger log = Logger.getLogger(L2DoorInstance.class.getName());
+    protected static final Logger log = Logger.getLogger(L2DoorInstance.class.getName());
 
     /** The castle index in the array of L2Castle this L2NpcInstance belongs to */
     private int _CastleIndex = -2;

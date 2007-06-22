@@ -37,7 +37,7 @@ public class MysteryPotion implements IItemHandler
     private static int[] _itemIds = { 5234 };
     private static final short BIGHEAD_EFFECT = 0x2000;
     private static final int MYSTERY_POTION_SKILL = 2103;
-    private final int _effectDuration = 1200000; // 20 mins
+    private static final int _effectDuration = 1200000; // 20 mins
 
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{

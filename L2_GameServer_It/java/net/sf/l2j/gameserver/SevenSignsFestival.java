@@ -62,7 +62,7 @@ import net.sf.l2j.gameserver.util.Util;
  */
 public class SevenSignsFestival implements SpawnListener 
 {
-    protected static Logger _log = Logger.getLogger(SevenSignsFestival.class.getName());
+    protected static final Logger _log = Logger.getLogger(SevenSignsFestival.class.getName());
     private static SevenSignsFestival _instance;
     
     public static final String FESTIVAL_DATA_FILE = "config/signs.properties";
@@ -567,7 +567,7 @@ public class SevenSignsFestival implements SpawnListener
      }
     };
     
-    protected static final int[][][] festivalDawnChestSpawns = 
+    private static final int[][][] festivalDawnChestSpawns = 
     {
      {
          /* Level 31 and Below */ 

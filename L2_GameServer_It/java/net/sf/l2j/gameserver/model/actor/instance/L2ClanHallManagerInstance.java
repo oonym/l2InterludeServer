@@ -45,10 +45,10 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2ClanHallManagerInstance extends L2FolkInstance
 {
-	protected static int Cond_Owner_False = 0;
-    protected static int Cond_All_False = 1;
-    protected static int Cond_Busy_Because_Of_Siege = 2;
-    protected static int Cond_Owner = 3;
+	protected static final int Cond_Owner_False = 0;
+    protected static final int Cond_All_False = 1;
+    protected static final int Cond_Busy_Because_Of_Siege = 2;
+    protected static final int Cond_Owner = 3;
     private int _clanHallId = -1;
 
 	/**

@@ -55,7 +55,7 @@ public class BlockList
     {
         if(character != null)
         {
-            blockSet.add(new String(character.getName()));
+            blockSet.add(character.getName());
         }
     }
    

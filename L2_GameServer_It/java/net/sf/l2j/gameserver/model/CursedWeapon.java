@@ -130,6 +130,7 @@ public class CursedWeapon
 	    			{
 	    				_log.warning("Error while deleting itemId "+ _itemId +" from userId "+ _playerId);
 	    			}
+	    			statement.close();
 	    			/* Yesod: Skill is not stored into database any more.
 	    			// Delete the skill
 	    			statement = con.prepareStatement("DELETE FROM character_skills WHERE char_obj_id=? AND skill_id=?");
@@ -149,6 +150,8 @@ public class CursedWeapon
 	    			{
 	    				_log.warning("Error while updating karma & pkkills for userId "+_playerId);
 	    			}
+	    			
+	    			statement.close();
 	    		}
 	    		catch (Exception e)
 	    		{
@@ -306,7 +309,7 @@ public class CursedWeapon
 		if (_endTime - System.currentTimeMillis() <= 0)
 			endOfLife();
 		else 
-			_removeTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RemoveTask(), _durationLost*12000, _durationLost*12000);
+			_removeTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RemoveTask(), _durationLost*12000L, _durationLost*12000L);
 
 	}
 	
@@ -319,8 +322,8 @@ public class CursedWeapon
 			dropIt(attackable, player);
 			
 			// Start the Life Task
-			_endTime = System.currentTimeMillis() + _duration * 60000;
-			_removeTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RemoveTask(), _durationLost*12000, _durationLost*12000);
+			_endTime = System.currentTimeMillis() + _duration * 60000L;
+			_removeTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RemoveTask(), _durationLost*12000L, _durationLost*12000L);
 			
 			return true;
 		}
@@ -476,7 +479,7 @@ public class CursedWeapon
 		}
 		
 		// Reduce time-to-live
-		_endTime -= _durationLost * 60000;
+		_endTime -= _durationLost * 60000L;
 		saveData();
 	}
 	

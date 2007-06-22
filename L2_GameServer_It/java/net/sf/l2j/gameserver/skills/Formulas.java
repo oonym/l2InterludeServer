@@ -61,7 +61,7 @@ public final class Formulas
 	protected static final Logger _log = Logger.getLogger(L2Character.class.getName());
 	private static final int HP_REGENERATE_PERIOD = 3000; // 3 secs
 
-	public static int MAX_STAT_VALUE = 100;
+	public static final int MAX_STAT_VALUE = 100;
 
     private static final double[] STRCompute = new double[]{1.036, 34.845}; //{1.016, 28.515}; for C1
     private static final double[] INTCompute = new double[]{1.020, 31.375}; //{1.020, 31.375}; for C1
@@ -114,7 +114,7 @@ public final class Formulas
 
 		public void calc(Env env)
 		{
-			env.value += env._player.getLevel() / 3;
+			env.value += env._player.getLevel() / 3.0;
 		}
 	}
 
@@ -838,7 +838,7 @@ public final class Formulas
             L2PcInstance player = (L2PcInstance) cha;
 
             // Calculate correct baseHpReg value for certain level of PC
-            init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10) : 0.5;
+            init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10.0) : 0.5;
             
             // SevenSigns Festival modifier
 			if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant()) 
@@ -892,7 +892,7 @@ public final class Formulas
 			L2PcInstance player = (L2PcInstance) cha;
 
             // Calculate correct baseMpReg value for certain level of PC
-            init += 0.3*((player.getLevel()-1)/10);
+            init += 0.3*((player.getLevel()-1)/10.0);
 			
             // SevenSigns Festival modifier
             if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
@@ -941,7 +941,7 @@ public final class Formulas
 	        L2PcInstance player = (L2PcInstance) cha;
 	
 	        // Calculate correct baseHpReg value for certain level of PC
-	        init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10) : 0.5;
+	        init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10.0) : 0.5;
 	        
 	        // Calculate Movement bonus
 	        if (player.isSitting()) cpRegenMultiplier *= 1.5;      // Sitting
@@ -1412,7 +1412,7 @@ public final class Formulas
 				pDef = target.calcStat(Stats.STUN_RES, pDef, target, null);
 				value = 4800 + (int) (50 * (player.getLevel() - target.getLevel()) + 5100 * ((float) skill.getLevel() / maxLevel));
 				if (pDef > 0) value /= pDef;
-				modifier = 10 * target.getCON() / 3;
+				modifier = 10.0 * target.getCON() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1432,7 +1432,7 @@ public final class Formulas
 				mDef = target.getMDef(player, skill);
 				value = 3000 + (int) (7000 * ((float) skill.getLevel() / maxLevel));
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 20 * target.getMEN() / 3;
+				modifier = 20.0 * target.getMEN() / 3;
 				//_log.fine(player.getName()+" matk:"+mAtk+",mdef="+mDef+",value="+value+",modifier="+modifier+",maxlevel="+maxLevel+",level="+skill.getLevel());
 				break;
 			case MUTE:
@@ -1440,7 +1440,7 @@ public final class Formulas
 				mDef = target.getMDef(player, skill);
 				value = 3000 + (int) (7000 * ((float) skill.getLevel() / maxLevel));
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 20 * target.getMEN() / 3;
+				modifier = 20.0 * target.getMEN() / 3;
 				//_log.fine(player.getName()+" matk:"+mAtk+",mdef="+mDef+",value="+value+",modifier="+modifier+",maxlevel="+maxLevel+",level="+skill.getLevel());
 				break;
 			case MDAM:
@@ -1449,7 +1449,7 @@ public final class Formulas
 				mDef = target.getMDef(player, skill);
 				value = 5000 + (int) (5000 * ((float) skill.getLevel() / maxLevel));
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 20 * target.getMEN() / 3;
+				modifier = 20.0 * target.getMEN() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1469,7 +1469,7 @@ public final class Formulas
 				value = 5000 + (int) (5000 * ((float) skill.getLevel() / maxLevel));
 				mDef = target.calcStat(Stats.SLEEP_RES, mDef, target, null);
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 20 * target.getWIT() / 3;
+				modifier = 20.0 * target.getWIT() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1489,7 +1489,7 @@ public final class Formulas
 				value = 5000 + (int) (5000 * ((float) skill.getLevel() / maxLevel));
 				mDef = target.calcStat(Stats.ROOT_RES, mDef, target, null);
 				if (mDef > 0 && mAtk > 0) value *= 0.6 * mAtk / mDef;
-				modifier = 10 * target.getDEX() / 3;
+				modifier = 10.0 * target.getDEX() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;
@@ -1509,7 +1509,7 @@ public final class Formulas
 				pDef = target.calcStat(Stats.STUN_RES, pDef, target, null);
 				value = 5000 + (int) (50 * (player.getLevel() - target.getLevel())+ 5000 * ((float) skill.getLevel() / maxLevel));
 				if (pDef > 0) value /= pDef;
-				modifier = 10 * target.getCON() / 3;
+				modifier = 10.0 * target.getCON() / 3;
 				if (modifier > 0) value /= modifier;
 				value *= ssmodifier;
 				value /= 100;

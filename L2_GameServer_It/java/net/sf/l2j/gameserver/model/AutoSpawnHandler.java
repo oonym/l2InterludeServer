@@ -50,7 +50,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class AutoSpawnHandler
 {
-	protected static Logger _log = Logger.getLogger(AutoSpawnHandler.class
+	protected static final Logger _log = Logger.getLogger(AutoSpawnHandler.class
 			.getName());
 
 	private static AutoSpawnHandler _instance;

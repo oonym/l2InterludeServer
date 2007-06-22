@@ -47,7 +47,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 
 public class ClanHall
 {
-    protected static Logger _log = Logger.getLogger(ClanHall.class.getName());
+    protected static final Logger _log = Logger.getLogger(ClanHall.class.getName());
     
 	private int _ClanHallId;
 	private List<L2DoorInstance> _Doors;

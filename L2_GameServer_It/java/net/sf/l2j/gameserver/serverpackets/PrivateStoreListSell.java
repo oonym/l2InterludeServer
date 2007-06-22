@@ -48,7 +48,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 	}
 	
 	// lease shop
-	public PrivateStoreListSell(L2PcInstance player, L2MerchantInstance storeMerchant)
+	@Deprecated public PrivateStoreListSell(L2PcInstance player, L2MerchantInstance storeMerchant)
 	{
 		_player = player;
 		_playerAdena = _player.getAdena();

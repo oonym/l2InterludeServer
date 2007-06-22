@@ -70,7 +70,7 @@ import net.sf.l2j.gameserver.util.Util;
  */
 public abstract class L2Skill
 {
-    protected static Logger _log = Logger.getLogger(L2Skill.class.getName());
+    protected static final Logger _log = Logger.getLogger(L2Skill.class.getName());
 
     public static final int SKILL_CUBIC_MASTERY = 143;
     public static final int SKILL_LUCKY = 194;

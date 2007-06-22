@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2SummonInstance extends L2Summon
 {
-    protected static Logger log = Logger.getLogger(L2SummonInstance.class.getName());
+    protected static final Logger log = Logger.getLogger(L2SummonInstance.class.getName());
 
     private float _expPenalty = 0; // exp decrease multiplier (i.e. 0.3 (= 30%) for shadow)
     private int _itemConsumeId;

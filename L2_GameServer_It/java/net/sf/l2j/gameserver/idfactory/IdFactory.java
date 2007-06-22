@@ -130,6 +130,8 @@ public abstract class IdFactory
             Statement s2 = con2.createStatement();
             s2.executeUpdate("update characters set online=0");
             _log.info("Updated characters online status.");
+            
+            s2.close();
         }
         catch (SQLException e)
         {

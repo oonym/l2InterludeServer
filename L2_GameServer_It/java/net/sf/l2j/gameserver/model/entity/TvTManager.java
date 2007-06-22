@@ -34,7 +34,7 @@ public class TvTManager implements Runnable
 
 		for (;;)
 		{
-			waiter(Config.TVT_EVENT_INTERVAL * 60 * 1000); // in config given as minutes
+			waiter(Config.TVT_EVENT_INTERVAL * 60000L); // in config given as minutes 60*1000 = 60000
 			
 			if (!TvTEvent.startParticipation())
 			{
@@ -45,7 +45,7 @@ public class TvTManager implements Runnable
 			else
 				Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
 
-			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60 * 1000); // in config given as minutes
+			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60000L); // in config given as minutes
 
 			if (!TvTEvent.startFight())
 			{
@@ -56,7 +56,7 @@ public class TvTManager implements Runnable
 			else
 				Announcements.getInstance().announceToAll("TvT Event: Teleport participants to team spot in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 
-			waiter(Config.TVT_EVENT_RUNNING_TIME * 60 * 1000); // in config given as minutes
+			waiter(Config.TVT_EVENT_RUNNING_TIME * 60000L); // in config given as minutes
 			Announcements.getInstance().announceToAll("TvT Event: Event finish. Team \"" + TvTEvent.calculateRewards() + "\" wins.");
 			Announcements.getInstance().announceToAll("TvT Event: Teleport back to registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 			TvTEvent.stopFight();

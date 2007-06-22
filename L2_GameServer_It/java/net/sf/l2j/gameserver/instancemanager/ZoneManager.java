@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.model.entity.ZoneType;
 
 public class ZoneManager
 {
-    protected static Logger _log = Logger.getLogger(ZoneManager.class.getName());
+    protected static final Logger _log = Logger.getLogger(ZoneManager.class.getName());
 
     // =========================================================
     private static ZoneManager _Instance;

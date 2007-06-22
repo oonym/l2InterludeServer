@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.model.quest.jython.QuestJython;
 
 public class QuestManager
 {
-    protected static Logger _log = Logger.getLogger(QuestManager.class.getName());
+    protected static final Logger _log = Logger.getLogger(QuestManager.class.getName());
 
     // =========================================================
     private static QuestManager _Instance;

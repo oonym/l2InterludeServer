@@ -122,6 +122,7 @@ public class L2Potion extends L2Object
 					nowHp = activeChar.getMaxHp();
 				}
 				activeChar.setCurrentHp(nowHp);
+				break;
 			case (728):	
 				double nowMp = activeChar.getMaxMp();
 				nowMp+=435;

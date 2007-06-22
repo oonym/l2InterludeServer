@@ -49,7 +49,7 @@ import net.sf.l2j.gameserver.util.Util;
 public final class RequestWearItem extends L2GameClientPacket
 {
     private static final String _C__C6_REQUESTWEARITEM = "[C] C6 RequestWearItem";
-    protected static Logger _log = Logger.getLogger(RequestWearItem.class.getName());
+    protected static final Logger _log = Logger.getLogger(RequestWearItem.class.getName());
     
     protected Future _removeWearItemsTask;
     

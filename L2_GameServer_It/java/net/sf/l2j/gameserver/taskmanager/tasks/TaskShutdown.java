@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.taskmanager.TaskManager.ExecutedTask;
  */
 public class TaskShutdown extends Task
 {
-    public static String NAME = "shutdown";
+    public static final String NAME = "shutdown";
     
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.taskmanager.Task#getName()

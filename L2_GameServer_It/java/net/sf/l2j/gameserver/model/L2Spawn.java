@@ -45,7 +45,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class L2Spawn
 {
-    protected static Logger _log = Logger.getLogger(L2Spawn.class.getName());
+    protected static final Logger _log = Logger.getLogger(L2Spawn.class.getName());
     
     /** The link on the L2NpcTemplate object containing generic and static properties of this spawn (ex : RewardExp, RewardSP, AggroRange...) */
 	private L2NpcTemplate _template;

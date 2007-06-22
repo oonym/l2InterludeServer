@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.taskmanager.TaskManager.ExecutedTask;
  */
 public final class TaskRestart extends Task
 {
-    public static String NAME = "restart";
+    public static final String NAME = "restart";
 
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.tasks.Task#getName()

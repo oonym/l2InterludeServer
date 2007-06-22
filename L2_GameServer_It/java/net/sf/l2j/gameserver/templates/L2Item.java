@@ -113,9 +113,9 @@ public abstract class L2Item
 	public static final int CRYSTAL_A = 0x04; // ??
 	public static final int CRYSTAL_S = 0x05; // ??
 	
-    public static final int[] crystalItemId = {0, 1458, 1459, 1460, 1461, 1462};
-    public static final int[] crystalEnchantBonusArmor = {0, 11, 6, 11, 19, 25};
-    public static final int[] crystalEnchantBonusWeapon = {0, 90, 45, 67, 144, 250};
+    private static final int[] crystalItemId = {0, 1458, 1459, 1460, 1461, 1462};
+    private static final int[] crystalEnchantBonusArmor = {0, 11, 6, 11, 19, 25};
+    private static final int[] crystalEnchantBonusWeapon = {0, 90, 45, 67, 144, 250};
 
 	private final int _itemId;
 	private final String _name;

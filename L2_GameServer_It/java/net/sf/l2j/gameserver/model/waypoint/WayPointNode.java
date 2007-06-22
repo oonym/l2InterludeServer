@@ -52,9 +52,9 @@ public class WayPointNode extends L2Object
 {
     private int _id;
     private String _title, _type;
-    private static String NORMAL = "Node", SELECTED = "Selected", LINKED = "Linked";
-    public static int LINE_ID = 5560;
-    private static String LINE_TYPE = "item";
+    private static final String NORMAL = "Node", SELECTED = "Selected", LINKED = "Linked";
+    private static int LINE_ID = 5560;
+    private static final String LINE_TYPE = "item";
     private Map<WayPointNode, List<WayPointNode>> linkLists;
 
     /**

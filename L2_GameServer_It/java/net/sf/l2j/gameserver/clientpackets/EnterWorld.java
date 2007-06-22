@@ -331,6 +331,9 @@ public class EnterWorld extends L2GameClientPacket
                 }
 		    }
             sm = null;
+            
+            rset.close();
+            statement.close();
         } 
 		catch (Exception e) {
             _log.warning("could not restore friend data:"+e);

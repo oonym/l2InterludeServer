@@ -53,7 +53,7 @@ import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
  */
 public class LoginController
 {
-	protected static Logger _log = Logger.getLogger(LoginController.class.getName());
+	protected static final Logger _log = Logger.getLogger(LoginController.class.getName());
 
 	private static LoginController _instance;
 

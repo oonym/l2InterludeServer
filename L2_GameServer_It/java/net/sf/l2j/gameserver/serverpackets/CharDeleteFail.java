@@ -28,9 +28,9 @@ public class CharDeleteFail extends L2GameServerPacket
 {
 	private static final String _S__34_CHARDELETEFAIL = "[S] 24 CharDeleteFail";
 
-	public static int REASON_DELETION_FAILED = 0x01;
-	public static int REASON_YOU_MAY_NOT_DELETE_CLAN_MEMBER = 0x02;
-	public static int REASON_CLAN_LEADERS_MAY_NOT_BE_DELETED = 0x03;
+	public static final int REASON_DELETION_FAILED = 0x01;
+	public static final int REASON_YOU_MAY_NOT_DELETE_CLAN_MEMBER = 0x02;
+	public static final int REASON_CLAN_LEADERS_MAY_NOT_BE_DELETED = 0x03;
 
 	private int _error;
 

@@ -45,7 +45,7 @@ import net.sf.l2j.util.Rnd;
  */
 public final class QuestState
 {
-	protected static Logger _log = Logger.getLogger(Quest.class.getName());
+	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 
 	/** Quest associated to the QuestState */
 	private final Quest _quest;

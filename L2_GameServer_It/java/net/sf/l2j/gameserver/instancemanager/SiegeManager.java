@@ -43,7 +43,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class SiegeManager
 {
-    protected static Logger _log = Logger.getLogger(SiegeManager.class.getName());
+    protected static final Logger _log = Logger.getLogger(SiegeManager.class.getName());
 
     // =========================================================
     private static SiegeManager _Instance;
@@ -145,6 +145,9 @@ public class SiegeManager
                 register = true;
                 break;
             }
+            
+            rs.close();
+            statement.close();
         }
         catch (Exception e)
         {

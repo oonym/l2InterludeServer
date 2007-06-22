@@ -125,7 +125,7 @@ public class TvTEvent
 		int teamOnePlayerCount = _teams[0].getParticipatedPlayerCount();
 		int teamTwoPlayerCount = _teams[1].getParticipatedPlayerCount();
 
-		if (teamOnePlayerCount != teamOnePlayerCount)
+		if (teamOnePlayerCount != teamTwoPlayerCount)
 		{
 			int difference = Math.abs(teamOnePlayerCount - teamTwoPlayerCount);
 			

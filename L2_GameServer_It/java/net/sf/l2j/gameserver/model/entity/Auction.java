@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class Auction
 {
-    protected static Logger _log = Logger.getLogger(Auction.class.getName());
+    protected static final Logger _log = Logger.getLogger(Auction.class.getName());
 	private int _Id								= 0;
 	private int _AdenaId						= 57;
 	private long _EndDate;
@@ -58,7 +58,7 @@ public class Auction
 	private int _StartingBid					= 0;
 
 	private Map<Integer, Bidder> _bidders        = new FastMap<Integer, Bidder>();
-	public static String[] ItemTypeName =
+	private static final String[] ItemTypeName =
 	{
 	             "ClanHall" 
 	};
@@ -237,6 +237,8 @@ public class Auction
             statement.setLong(1, _EndDate);
             statement.setInt(2, _Id);
             statement.execute();
+            
+            statement.close();
         }
         catch (Exception e)
         {
@@ -350,6 +352,8 @@ public class Auction
             statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=?");
             statement.setInt(1, getId());
             statement.execute();
+            
+            statement.close();
         }
         catch (Exception e)
         {
@@ -441,6 +445,8 @@ public class Auction
             statement.setInt(1, getId());
             statement.setInt(2, bidder);
             statement.execute();
+            
+            statement.close();
         }
         catch (Exception e)
         {

@@ -238,24 +238,24 @@ public final class L2PcInstance extends L2PlayableInstance
 	public static final int STORE_PRIVATE_MANUFACTURE = 5;
 	public static final int STORE_PRIVATE_PACKAGE_SELL = 8;
 
-	private final int RELATION_PVP_FLAG      = 0x00002; // pvp ???
-	private final int RELATION_HAS_KARMA     = 0x00004; // karma ???
-	private final int RELATION_UNKNOWN_1     = 0x00008; // ???
-	private final int RELATION_UNKNOWN_2     = 0x00010; // ???
-	private final int RELATION_UNKNOWN_3     = 0x00020; // siege flags ???
-	private final int RELATION_UNKNOWN_4     = 0x00040; // siege flags ???
-	private final int RELATION_UNKNOWN_5     = 0x00080; // siege flags ???
-	private final int RELATION_UNKNOWN_6     = 0x00100; // siege flags ???
-	private final int RELATION_UNKNOWN_7     = 0x00200; // siege flags ???
-	private final int RELATION_UNKNOWN_8     = 0x00400; // siege flags ???
-	private final int RELATION_UNKNOWN_9     = 0x00800; // siege flags ???
-	private final int RELATION_UNKNOWN_10    = 0x01000; // siege flags ???
-	private final int RELATION_UNKNOWN_11    = 0x02000; // ???
-	private final int RELATION_UNKNOWN_12    = 0x04000; // ???
-	private final int RELATION_MUTUAL_WAR    = 0x08000; // double fist
-	private final int RELATION_1SIDED_WAR    = 0x10000; // single fist
-	private final int RELATION_UNKNOWN_13    = 0x20000; // ???
-	private final int RELATION_UNKNOWN_14    = 0x40000; // ???
+	private static final int RELATION_PVP_FLAG      = 0x00002; // pvp ???
+	private static final int RELATION_HAS_KARMA     = 0x00004; // karma ???
+	private static final int RELATION_UNKNOWN_1     = 0x00008; // ???
+	private static final int RELATION_UNKNOWN_2     = 0x00010; // ???
+	private static final int RELATION_UNKNOWN_3     = 0x00020; // siege flags ???
+	private static final int RELATION_UNKNOWN_4     = 0x00040; // siege flags ???
+	private static final int RELATION_UNKNOWN_5     = 0x00080; // siege flags ???
+	private static final int RELATION_UNKNOWN_6     = 0x00100; // siege flags ???
+	private static final int RELATION_UNKNOWN_7     = 0x00200; // siege flags ???
+	private static final int RELATION_UNKNOWN_8     = 0x00400; // siege flags ???
+	private static final int RELATION_UNKNOWN_9     = 0x00800; // siege flags ???
+	private static final int RELATION_UNKNOWN_10    = 0x01000; // siege flags ???
+	private static final int RELATION_UNKNOWN_11    = 0x02000; // ???
+	private static final int RELATION_UNKNOWN_12    = 0x04000; // ???
+	private static final int RELATION_MUTUAL_WAR    = 0x08000; // double fist
+	private static final int RELATION_1SIDED_WAR    = 0x10000; // single fist
+	private static final int RELATION_UNKNOWN_13    = 0x20000; // ???
+	private static final int RELATION_UNKNOWN_14    = 0x40000; // ???
 
 	/** The table containing all minimum level needed for each Expertise (None, D, C, B, A, S)*/
 	private static final int[] EXPERTISE_LEVELS =
@@ -4239,7 +4239,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Calculate the new Karma of the attacker : newKarma = baseKarma*pkCountMulti*lvlDiffMulti
 			double karmaLost = Config.KARMA_LOST_BASE;
 			karmaLost *= getLevel(); // multiply by char lvl
-			karmaLost *= (getLevel() / 100); // divide by 0.charLVL
+			karmaLost *= (getLevel() / 100.0); // divide by 0.charLVL
 			karmaLost = Math.round(karmaLost);
 			if ( karmaLost < 0 ) karmaLost = 1;
 			
@@ -5597,6 +5597,8 @@ public final class L2PcInstance extends L2PlayableInstance
 					player._chars.put(charId, charName);
 				}
 				
+				chars.close();
+				stmt.close();
 				break;
 			}
 			
@@ -7602,7 +7604,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		public void run()
 		{
-			double reduceHp = getMaxHp()/100;
+			double reduceHp = getMaxHp()/100.0;
             
 			if (reduceHp < 1)
 				reduceHp = 1;
@@ -8445,7 +8447,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void startRentPet(int seconds)
 	{
 		if (_taskRentPet == null)
-			_taskRentPet = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RentPetTask(), seconds * 1000, seconds * 1000);
+			_taskRentPet = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RentPetTask(), seconds * 1000L, seconds * 1000L);
 	}
 	
 	public boolean isRentedPet()
@@ -9623,7 +9625,7 @@ public final class L2PcInstance extends L2PlayableInstance
         {
             if (delayInMinutes > 0)
             {
-                _jailTimer = delayInMinutes * 60000; // in millisec
+                _jailTimer = delayInMinutes * 60000L; // in millisec
 
                 // start the countdown
                 _jailTask = ThreadPoolManager.getInstance().scheduleGeneral(new JailTask(this), _jailTimer);

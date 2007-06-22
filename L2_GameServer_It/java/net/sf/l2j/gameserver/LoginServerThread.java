@@ -63,7 +63,7 @@ import net.sf.l2j.util.Util;
 
 public class LoginServerThread extends Thread
 {
-	protected static Logger	_log = Logger.getLogger(LoginServerThread.class.getName());
+	protected static final Logger _log = Logger.getLogger(LoginServerThread.class.getName());
 
 	/** The LoginServerThread singleton */
 	private static LoginServerThread	_instance;

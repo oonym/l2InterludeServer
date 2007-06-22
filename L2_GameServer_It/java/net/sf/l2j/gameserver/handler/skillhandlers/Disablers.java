@@ -57,7 +57,7 @@ public class Disablers implements ISkillHandler
                                        L2Skill.SkillType.CANCEL, L2Skill.SkillType.PARALYZE, L2Skill.SkillType.ERASE,
                                        L2Skill.SkillType.MAGE_BANE, L2Skill.SkillType.WARRIOR_BANE, L2Skill.SkillType.BETRAY};
 
-    protected static Logger _log = Logger.getLogger(L2Skill.class.getName());
+    protected static final Logger _log = Logger.getLogger(L2Skill.class.getName());
     private  String[] _negateStats=null;
     private  float _negatePower=0.f;
     private int _negateId=0;

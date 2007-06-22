@@ -56,11 +56,11 @@ import net.sf.l2j.util.Rnd;
 
 public class RecipeController
 {
-	protected static Logger _log = Logger.getLogger(RecipeController.class.getName());
+	protected static final Logger _log = Logger.getLogger(RecipeController.class.getName());
 	
 	private static RecipeController _instance;
 	private Map<Integer, L2RecipeList> _lists;
-	protected static Map<L2PcInstance, RecipeItemMaker> activeMakers = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, RecipeItemMaker>());
+	protected static final Map<L2PcInstance, RecipeItemMaker> activeMakers = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, RecipeItemMaker>());
 	
 	public static RecipeController getInstance()
 	{

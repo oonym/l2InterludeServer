@@ -144,7 +144,12 @@ public class TradeController
 						int currentCount = rset.getInt("currentCount");
 						int time = rset.getInt("time");
 						L2ItemInstance item = ItemTable.getInstance().createDummyItem(itemId);
-						if (item == null) continue;
+						if (item == null)
+						{
+							rset.close();
+							statement.close();
+							continue;
+						}
 						if(count > -1){
 							item.setCountDecrease(true);
 							LimitedItem = true;

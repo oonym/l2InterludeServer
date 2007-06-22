@@ -98,7 +98,7 @@ public class Base64
         byte[] __bytes;
         try
         {
-            __bytes = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/").getBytes(PREFERRED_ENCODING);
+            __bytes = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".getBytes(PREFERRED_ENCODING);
         } // end try
         catch (java.io.UnsupportedEncodingException use)
         {

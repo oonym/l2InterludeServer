@@ -41,11 +41,11 @@ import net.sf.l2j.gameserver.serverpackets.AutoAttackStop;
  */
 public class AttackStanceTaskManager
 {
-    protected static Logger _log = Logger.getLogger(AttackStanceTaskManager.class.getName());
+    protected static final Logger _log = Logger.getLogger(AttackStanceTaskManager.class.getName());
 
     protected Map<L2Character,Long> _attackStanceTasks = new FastMap<L2Character,Long>().setShared(true);
     
-    public static AttackStanceTaskManager _instance;
+    private static AttackStanceTaskManager _instance;
     
     public AttackStanceTaskManager()
     {

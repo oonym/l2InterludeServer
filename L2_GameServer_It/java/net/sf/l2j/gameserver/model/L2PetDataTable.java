@@ -97,6 +97,9 @@ public class L2PetDataTable
                 
                 petTable.get(petId).put(petLevel,petData);
             }
+    		
+    		rset.close();
+    		statement.close();
         }
         catch (Exception e)
         {

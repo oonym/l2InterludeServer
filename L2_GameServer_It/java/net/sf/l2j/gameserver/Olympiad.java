@@ -59,7 +59,7 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class Olympiad
 {
-	protected static Logger _log = Logger.getLogger(Olympiad.class.getName());
+	protected static final Logger _log = Logger.getLogger(Olympiad.class.getName());
 	
     private static Olympiad _instance;
     
@@ -1678,8 +1678,9 @@ public class Olympiad
                     if(pc == null || !pc.inObserverMode()) continue;
                     pc.leaveOlympiadObserverMode();
                 }
+                
+                _spectators.clear();
             }
-            _spectators.clear();
         }
         
         private void broadcastMessage(SystemMessage sm, boolean toAll)

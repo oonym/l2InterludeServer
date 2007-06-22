@@ -606,7 +606,11 @@ public class AdminEditNpc implements IAdminCommandHandler {
 	        PreparedStatement stmt = con.prepareStatement("SELECT * FROM merchant_buylists WHERE `shop_id`='"+tradeListID+"' AND `item_id` ='"+itemID+"' AND `price` = '"+price+"'");
     	    ResultSet rs = stmt.executeQuery();
     	    rs.first();
-    	    return rs.getInt("order");
+    	    
+    	    order = rs.getInt("order");
+    	    
+    	    stmt.close();
+    	    rs.close();
         }catch (SQLException esql) {esql.printStackTrace();}
         finally{ try {con.close();} catch (SQLException e) {e.printStackTrace();}}
         return order;

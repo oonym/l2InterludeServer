@@ -33,7 +33,7 @@ import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 public class BlowFishKey extends ClientBasePacket
 {
 	byte[] _key;
-	protected static Logger	_log = Logger.getLogger(BlowFishKey.class.getName());
+	protected static final Logger _log = Logger.getLogger(BlowFishKey.class.getName());
 	/**
 	 * @param decrypt
 	 */

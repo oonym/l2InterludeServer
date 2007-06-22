@@ -43,7 +43,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class PetSummon implements IItemHandler
 {
-    protected static Logger _log = Logger.getLogger(PetSummon.class.getName());
+    protected static final Logger _log = Logger.getLogger(PetSummon.class.getName());
 	
 	// all the items ids that this handler knowns
 	private static final int[] _itemIds = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650 };

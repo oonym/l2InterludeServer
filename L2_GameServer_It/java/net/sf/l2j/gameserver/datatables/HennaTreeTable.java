@@ -60,7 +60,7 @@ public class HennaTreeTable
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT class_name, id, parent_id FROM class_list ORDER BY id");
 			ResultSet classlist = statement.executeQuery();
-			List<L2HennaInstance> list = new FastList<L2HennaInstance>();
+			List<L2HennaInstance> list;
 			//int parentClassId;
 			//L2Henna henna;
 			while (classlist.next())
@@ -79,6 +79,10 @@ public class HennaTreeTable
 					L2Henna template = HennaTable.getInstance().getTemplate(id);
                     if(template == null)
                     {
+                    	hennatree.close();
+                    	statement2.close();
+                    	classlist.close();
+                    	statement.close();
                         return;
                     }
 			    	L2HennaInstance temp = new L2HennaInstance(template);

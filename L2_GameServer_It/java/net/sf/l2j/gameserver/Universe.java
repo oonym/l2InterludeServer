@@ -62,7 +62,7 @@ public class Universe implements java.io.Serializable
     public static final int MIN_Z_GRID = 60;
     public static final int MIN_GRID = 360;
     private static Universe _instance;
-    protected static Logger _log = Logger.getLogger(Universe.class.getName());
+    protected static final Logger _log = Logger.getLogger(Universe.class.getName());
 
     public static void main(String[] args)
     {

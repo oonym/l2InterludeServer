@@ -50,7 +50,7 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 public class AdminTest implements IAdminCommandHandler
 {
     private static final int REQUIRED_LEVEL = Config.GM_TEST;
-    public static final String[] ADMIN_TEST_COMMANDS =
+    private static final String[] ADMIN_TEST_COMMANDS =
     {
         "admin_test", "admin_stats", "admin_skill_test", 
         "admin_st", "admin_mp", "admin_known"
