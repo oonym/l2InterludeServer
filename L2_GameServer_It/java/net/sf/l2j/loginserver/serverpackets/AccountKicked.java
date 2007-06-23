@@ -1,5 +1,4 @@
-/*
- * This program is free software; you can redistribute it and/or modify
+/* This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
@@ -19,26 +18,21 @@
 package net.sf.l2j.loginserver.serverpackets;
 
 /**
- * Fromat: d
- * d: the failure reason
+ *
+ * @author  KenM
  */
-public final class LoginFail extends L2LoginServerPacket
+public final class AccountKicked extends L2LoginServerPacket
 {
-	public static enum LoginFailReason
+	public static enum AccountKickedReason
 	{
-		REASON_SYSTEM_ERROR			(0x01),
-		REASON_PASS_WRONG			(0x02),
-		REASON_USER_OR_PASS_WRONG	(0x03),
-		REASON_ACCESS_FAILED		(0x04),
-		REASON_ACCOUNT_IN_USE		(0x07),
-		REASON_SERVER_OVERLOADED	(0x0f),
-		REASON_SERVER_MAINTENANCE	(0x10),
-		REASON_TEMP_PASS_EXPIRED	(0x11),
-		REASON_DUAL_BOX				(0x23);
+		REASON_DATA_STEALER			(0x01),
+		REASON_GENERIC_VIOLATION	(0x08),
+		REASON_7_DAYS_SUSPENDED		(0x10),
+		REASON_PERMANENTLY_BANNED	(0x20);
 		
 		private final int _code;
 		
-		LoginFailReason(int code)
+		AccountKickedReason(int code)
 		{
 			_code = code;
 		}
@@ -49,21 +43,21 @@ public final class LoginFail extends L2LoginServerPacket
 		}
 	}
 	
-	private LoginFailReason _reason;
+	private AccountKickedReason _reason;
 	
-	
-	public LoginFail(LoginFailReason reason) 
+	public AccountKicked(AccountKickedReason reason)
 	{
 		_reason = reason;
 	}
-
+	
 	/**
 	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
 	 */
 	@Override
 	protected void write()
 	{
-		writeC(0x01);
+		writeC(0x02);
 		writeD(_reason.getCode());
 	}
+
 }

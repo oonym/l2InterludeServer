@@ -31,8 +31,10 @@ import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
 import net.sf.l2j.loginserver.L2LoginClient.LoginClientState;
 import net.sf.l2j.loginserver.LoginController.AuthLoginResult;
+import net.sf.l2j.loginserver.serverpackets.AccountKicked;
 import net.sf.l2j.loginserver.serverpackets.LoginOk;
 import net.sf.l2j.loginserver.serverpackets.ServerList;
+import net.sf.l2j.loginserver.serverpackets.AccountKicked.AccountKickedReason;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 
 /**
@@ -134,7 +136,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 					client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
 					break;
 				case ACCOUNT_BANNED:
-					client.close(LoginFailReason.REASON_ACCOUNT_BANNED);
+					client.close(new AccountKicked(AccountKickedReason.REASON_PERMANENTLY_BANNED));
 					break;
 				case ALREADY_ON_LS:
 					L2LoginClient oldClient;
