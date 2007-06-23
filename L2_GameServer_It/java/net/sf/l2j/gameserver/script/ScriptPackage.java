@@ -34,15 +34,15 @@ import javolution.util.FastList;
  */
 public class ScriptPackage
 {
-    private List<ScriptDocument> scriptFiles;
-    private List<String> otherFiles;
-    private String name;
+    private List<ScriptDocument> _scriptFiles;
+    private List<String> _otherFiles;
+    private String _name;
     
     public ScriptPackage(ZipFile pack)
     {
-        scriptFiles = new FastList<ScriptDocument>();
-        otherFiles = new FastList<String>();
-        name = pack.getName();
+        _scriptFiles = new FastList<ScriptDocument>();
+        _otherFiles = new FastList<String>();
+        _name = pack.getName();
         addFiles(pack);
     }
     
@@ -51,7 +51,7 @@ public class ScriptPackage
      */
     public List<String> getOtherFiles()
     {
-        return otherFiles;
+        return _otherFiles;
     }
 
     /**
@@ -59,7 +59,7 @@ public class ScriptPackage
      */
     public List<ScriptDocument> getScriptFiles()
     {
-        return scriptFiles;
+        return _scriptFiles;
     }
     
     /**
@@ -74,7 +74,7 @@ public class ScriptPackage
             {
                 try {
                     ScriptDocument newScript = new ScriptDocument(entry.getName(), pack.getInputStream(entry)); 
-                    scriptFiles.add(newScript);
+                    _scriptFiles.add(newScript);
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -82,7 +82,7 @@ public class ScriptPackage
             }
             else if (!entry.isDirectory())
             {   
-                otherFiles.add(entry.getName());
+                _otherFiles.add(entry.getName());
             }
         }
     }
@@ -91,7 +91,7 @@ public class ScriptPackage
      */
     public String getName()
     {
-        return name;
+        return _name;
     }
     
     public String toString()

@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
  */
 public abstract class FaenorParser extends Parser
 {
-    protected static FaenorInterface bridge = FaenorInterface.getInstance();
+    protected static FaenorInterface _bridge = FaenorInterface.getInstance();
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy", Locale.US);
     
     public final static boolean DEBUG = true;

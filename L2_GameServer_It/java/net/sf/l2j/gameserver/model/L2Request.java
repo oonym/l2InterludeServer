@@ -43,7 +43,7 @@ public class L2Request
 		_player = player;
 	}
 
-	protected void Clear()
+	protected void clear()
 	{
 		_partner = null;
 		_requestPacket = null;
@@ -124,7 +124,7 @@ public class L2Request
 		{
 			public void run()
 			{
-				Clear();
+				clear();
 			}
 		}, REQUEST_TIMEOUT * 1000);
 
@@ -137,9 +137,9 @@ public class L2Request
     {
 		if (_partner != null)
 		{
-			_partner.getRequest().Clear();
+			_partner.getRequest().clear();
 		}
-		Clear();
+		clear();
     }
 
 	/**

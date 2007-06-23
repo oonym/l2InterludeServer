@@ -25,9 +25,9 @@ public class OlympiadStadia
 {
     // =========================================================
     // Data Field
-    private int _olympiadStadiaId                       = 0;
-    private String _Name                       = "";
-    private Zone _Zone;
+    private int _olympiadStadiaId  = 0;
+    private String _name           = "";
+    private Zone _zone;
 
     // =========================================================
     // Constructor
@@ -50,18 +50,18 @@ public class OlympiadStadia
     private void loadData()
     {
         Zone zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.OlympiadStadia), getOlympiadStadiaId());
-        if (zone != null) _Name = zone.getName();
+        if (zone != null) _name = zone.getName();
     }
     
     // =========================================================
     // Proeprty
     public final int getOlympiadStadiaId() { return _olympiadStadiaId; }
 
-    public final String getName() { return _Name; }
+    public final String getName() { return _name; }
 
     public final Zone getZone()
     {
-        if (_Zone == null) _Zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.OlympiadStadia), getName());
-        return _Zone;
+        if (_zone == null) _zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.OlympiadStadia), getName());
+        return _zone;
     }
 }

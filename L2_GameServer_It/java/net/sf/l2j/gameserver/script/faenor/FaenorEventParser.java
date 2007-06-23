@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
 public class FaenorEventParser extends FaenorParser
 {
     static Logger _log = Logger.getLogger(FaenorEventParser.class.getName());
-    private DateRange eventDates = null;
+    private DateRange _eventDates = null;
     
     public void parseScript(Node eventNode, @SuppressWarnings("unused") BSFManager context)
     {
@@ -45,10 +45,10 @@ public class FaenorEventParser extends FaenorParser
         
         if (DEBUG) _log.fine("Parsing Event \""+ID+"\"");
         
-        eventDates = DateRange.parse(attribute(eventNode, "Active"), DATE_FORMAT);
+        _eventDates = DateRange.parse(attribute(eventNode, "Active"), DATE_FORMAT);
         
         Date currentDate = new Date();
-        if (eventDates.getEndDate().before(currentDate))
+        if (_eventDates.getEndDate().before(currentDate))
         {
             _log.warning("Event ID: (" + ID + ") has passed... Ignored.");
             return;
@@ -78,7 +78,7 @@ public class FaenorEventParser extends FaenorParser
             
             if (type.equalsIgnoreCase("OnJoin"))
             {
-                bridge.onPlayerLogin(message, eventDates);
+                _bridge.onPlayerLogin(message, _eventDates);
             }
         } 
         catch (Exception e)
@@ -110,7 +110,7 @@ public class FaenorEventParser extends FaenorParser
             int[] count         = IntList.parse(attribute(drop, "Count"));
             double chance       = getPercent(attribute(drop, "Chance"));
             
-            bridge.addEventDrop(items, count, chance, eventDates);
+            _bridge.addEventDrop(items, count, chance, _eventDates);
         }
         catch (Exception e)
         {

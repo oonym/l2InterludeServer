@@ -31,8 +31,8 @@ public class ConditionGameTime extends Condition {
 
 	public enum CheckGameTime { NIGHT }
 	
-	final CheckGameTime _check; 
-	final boolean _required;
+	private final CheckGameTime _check; 
+	private final boolean _required;
 	
 	public ConditionGameTime(CheckGameTime check, boolean required)
 	{

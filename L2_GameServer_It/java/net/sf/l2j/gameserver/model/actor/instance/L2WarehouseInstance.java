@@ -80,7 +80,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         }
         
         if (Config.DEBUG) _log.fine("Showing stored items");
-        player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Private));
+        player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.PRIVATE));
     }
 
     private void showDepositWindow(L2PcInstance player)
@@ -90,7 +90,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         player.tempInvetoryDisable();
         if (Config.DEBUG) _log.fine("Showing items to deposit");
 
-        player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.Private));
+        player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.PRIVATE));
     }
 
     private void showDepositWindowClan(L2PcInstance player)
@@ -106,7 +106,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
                 player.tempInvetoryDisable();
                 if (Config.DEBUG) _log.fine("Showing items to deposit - clan");
 
-                WareHouseDepositList dl = new WareHouseDepositList(player, WareHouseDepositList.Clan);
+                WareHouseDepositList dl = new WareHouseDepositList(player, WareHouseDepositList.CLAN);
                 player.sendPacket(dl);
             }
     	}
@@ -128,7 +128,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
             {
             	player.setActiveWarehouse(player.getClan().getWarehouse());
                 if (Config.DEBUG) _log.fine("Showing items to deposit - clan");
-                player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Clan));
+                player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN));
             }
     	}
     }
@@ -152,7 +152,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 	        		freight.setActiveLocation(getZone().getId());
 	        	}
 	            player.setActiveWarehouse(freight);
-	            player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.Freight));
+	            player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.FREIGHT));
         	}
         	else
         	{
@@ -224,7 +224,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         destChar.deleteMe();
 
         if (Config.DEBUG) _log.fine("Showing items to freight");
-        player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.Freight));
+        player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.FREIGHT));
     }
 
     public void onBypassFeedback(L2PcInstance player, String command)

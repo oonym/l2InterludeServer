@@ -26,16 +26,16 @@ import net.sf.l2j.gameserver.model.L2Skill;
 public class HeroSkillTable
 {
 	private static HeroSkillTable _instance;
-	private static L2Skill[] _HeroSkills;
+	private static L2Skill[] _heroSkills;
 	
 	private HeroSkillTable()
 	{
-		_HeroSkills = new L2Skill[5];
-		_HeroSkills[0] = SkillTable.getInstance().getInfo(395, 1);
-		_HeroSkills[1] = SkillTable.getInstance().getInfo(396, 1);
-		_HeroSkills[2] = SkillTable.getInstance().getInfo(1374, 1);
-		_HeroSkills[3] = SkillTable.getInstance().getInfo(1375, 1);
-		_HeroSkills[4] = SkillTable.getInstance().getInfo(1376, 1);
+		_heroSkills = new L2Skill[5];
+		_heroSkills[0] = SkillTable.getInstance().getInfo(395, 1);
+		_heroSkills[1] = SkillTable.getInstance().getInfo(396, 1);
+		_heroSkills[2] = SkillTable.getInstance().getInfo(1374, 1);
+		_heroSkills[3] = SkillTable.getInstance().getInfo(1375, 1);
+		_heroSkills[4] = SkillTable.getInstance().getInfo(1376, 1);
 	}
 	
 	public static HeroSkillTable getInstance()
@@ -47,7 +47,7 @@ public class HeroSkillTable
 	
 	public L2Skill[] GetHeroSkills()
 	{
-		return _HeroSkills;
+		return _heroSkills;
 	}
 	
 	public static boolean isHeroSkill(int skillid)

@@ -36,11 +36,11 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class GeoEditorThread extends Thread
 {
 	//How many times per second send packet
-	int ticks = 2;
+	private int _ticks = 2;
 	
-	boolean working = true;
+	private boolean _working = true;
 	
-	private int        _port;
+	private int    _port;
 	private String _hostname;
 	
 	private Socket _geSocket;
@@ -70,11 +70,11 @@ public class GeoEditorThread extends Thread
 			_in  = new BufferedInputStream(_geSocket.getInputStream());
 			_out = new BufferedOutputStream(_geSocket.getOutputStream());
 			
-			while(working)
+			while(_working)
 			{
 				try
 				{
-					TimeUnit.MILLISECONDS.sleep(1000 / ticks);
+					TimeUnit.MILLISECONDS.sleep(1000 / _ticks);
 				}catch(Exception e){}
 				for(L2PcInstance gm: _geCon.getGMs())
 					sendGmPosition(gm);
@@ -126,11 +126,11 @@ public class GeoEditorThread extends Thread
 	
 	public void stopRecording()
 	{
-		working = false;
+		_working = false;
 	}
 	public void setTicks(int t)
 	{
-		ticks = t;
+		_ticks = t;
 		if(t < 1)
 			t = 1;
 		else if( t > 5)

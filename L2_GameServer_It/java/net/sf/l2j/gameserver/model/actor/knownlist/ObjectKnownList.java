@@ -34,14 +34,14 @@ public class ObjectKnownList
 {
     // =========================================================
     // Data Field
-    private L2Object _ActiveObject;
-    private Map<Integer, L2Object> _KnownObjects;
+    private L2Object _activeObject;
+    private Map<Integer, L2Object> _knownObjects;
     
     // =========================================================
     // Constructor
     public ObjectKnownList(L2Object activeObject)
     {
-        _ActiveObject = activeObject;
+        _activeObject = activeObject;
     }
 
     // =========================================================
@@ -158,7 +158,7 @@ public class ObjectKnownList
     		)
     			if (object instanceof L2BoatInstance && getActiveObject() instanceof L2PcInstance) 
     			{
-    				if(((L2BoatInstance)(object)).GetVehicleDeparture() == null )
+    				if(((L2BoatInstance)(object)).getVehicleDeparture() == null )
     				{
     					//
     				}
@@ -189,7 +189,7 @@ public class ObjectKnownList
     // Property - Public
     public L2Object getActiveObject()
     {        
-        return _ActiveObject;
+        return _activeObject;
     }
 
     public int getDistanceToForgetObject(L2Object object) { return 0; }
@@ -199,8 +199,8 @@ public class ObjectKnownList
     /** Return the _knownObjects containing all L2Object known by the L2Character. */
     public final Map<Integer, L2Object> getKnownObjects()
     {
-        if (_KnownObjects == null) _KnownObjects = new FastMap<Integer, L2Object>().setShared(true);
-        return _KnownObjects;
+        if (_knownObjects == null) _knownObjects = new FastMap<Integer, L2Object>().setShared(true);
+        return _knownObjects;
     }
     
     public static class KnownListAsynchronousUpdateTask implements Runnable

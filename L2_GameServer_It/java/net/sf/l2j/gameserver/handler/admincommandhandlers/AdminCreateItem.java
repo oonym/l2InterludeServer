@@ -38,7 +38,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminCreateItem implements IAdminCommandHandler {
 
-	private static String[] _adminCommands = {
+	private static final String[] ADMIN_COMMANDS = {
 			"admin_itemcreate",
 			"admin_create_item"
 			};
@@ -95,7 +95,7 @@ public class AdminCreateItem implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

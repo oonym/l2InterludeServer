@@ -66,7 +66,7 @@ public final class RequestWearItem extends L2GameClientPacket
     private int[] _items;
     
     /** Player that request a Try on */
-    protected L2PcInstance _player;
+    protected L2PcInstance _activeChar;
     
     
     class RemoveWearItemsTask implements Runnable
@@ -75,7 +75,7 @@ public final class RequestWearItem extends L2GameClientPacket
         {
             try
             {
-            	_player.destroyWearedItems("Wear", null, true);
+            	_activeChar.destroyWearedItems("Wear", null, true);
                 
             } catch (Throwable e){
                 _log.log(Level.SEVERE, "", e);
@@ -91,7 +91,7 @@ public final class RequestWearItem extends L2GameClientPacket
     protected void readImpl()
     {
         // Read and Decrypt the RequestWearItem Client->Server Packet
-        _player = getClient().getActiveChar();
+    	_activeChar = getClient().getActiveChar();
         _unknow = readD();
         _listId = readD(); // List of ItemID to Wear
 		_count = readD();  // Number of Item to Wear

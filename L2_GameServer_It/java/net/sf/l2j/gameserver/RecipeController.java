@@ -60,7 +60,7 @@ public class RecipeController
 	
 	private static RecipeController _instance;
 	private Map<Integer, L2RecipeList> _lists;
-	protected static final Map<L2PcInstance, RecipeItemMaker> activeMakers = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, RecipeItemMaker>());
+	protected static final Map<L2PcInstance, RecipeItemMaker> _activeMakers = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, RecipeItemMaker>());
 	
 	public static RecipeController getInstance()
 	{
@@ -151,7 +151,7 @@ public class RecipeController
 	public synchronized void requestBookOpen(L2PcInstance player, boolean isDwarvenCraft)
 	{
 		RecipeItemMaker maker = null;
-		if (Config.ALT_GAME_CREATION) maker = activeMakers.get(player);
+		if (Config.ALT_GAME_CREATION) maker = _activeMakers.get(player);
 		
 		if (maker == null)
 		{
@@ -169,7 +169,7 @@ public class RecipeController
 	
 	public synchronized void requestMakeItemAbort(L2PcInstance player)
 	{
-		activeMakers.remove(player);  // TODO:  anything else here?
+		_activeMakers.remove(player);  // TODO:  anything else here?
 	}
 	
 	public synchronized void requestManufactureItem(L2PcInstance manufacturer, int recipeListId,
@@ -191,18 +191,18 @@ public class RecipeController
 		
 		RecipeItemMaker maker;
 		
-		if (Config.ALT_GAME_CREATION && (maker = activeMakers.get(manufacturer)) != null) // check if busy
+		if (Config.ALT_GAME_CREATION && (maker = _activeMakers.get(manufacturer)) != null) // check if busy
 		{
 			player.sendMessage("Manufacturer is busy, please try later.");
 			return;
 		}
 		
 		maker = new RecipeItemMaker(manufacturer, recipeList, player);
-		if (maker.isValid)
+		if (maker._isValid)
 		{
 			if (Config.ALT_GAME_CREATION)
 			{
-				activeMakers.put(manufacturer, maker);
+				_activeMakers.put(manufacturer, maker);
 				ThreadPoolManager.getInstance().scheduleGeneral(maker, 100);
 			}
 			else maker.run();
@@ -227,7 +227,7 @@ public class RecipeController
 		RecipeItemMaker maker;
 		
 		// check if already busy (possible in alt mode only)
-		if (Config.ALT_GAME_CREATION && ((maker = activeMakers.get(player)) != null)) 
+		if (Config.ALT_GAME_CREATION && ((maker = _activeMakers.get(player)) != null)) 
 		{
 			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
 			sm.addString("You are busy creating ");
@@ -237,11 +237,11 @@ public class RecipeController
 		}
 		
 		maker = new RecipeItemMaker(player, recipeList, player);
-		if (maker.isValid)
+		if (maker._isValid)
 		{
 			if (Config.ALT_GAME_CREATION)
 			{
-				activeMakers.put(player, maker);
+				_activeMakers.put(player, maker);
 				ThreadPoolManager.getInstance().scheduleGeneral(maker, 100);
 			}
 			else maker.run();
@@ -309,102 +309,102 @@ public class RecipeController
 		}
 	}
 	
-	public class RecipeItemMaker implements Runnable
+	private class RecipeItemMaker implements Runnable
 	{
-		public boolean isValid;
-		List<TempItem> items = null;
-		final L2RecipeList recipeList;
-		final L2PcInstance player; // "crafter"
-		final L2PcInstance target; // "customer"		
-		final L2Skill skill;
-		final int skillId;
-		final int skillLevel;
-		double creationPasses;
-		double manaRequired;
-		int price;
-		int totalItems;
-		int materialsRefPrice;
-		int delay;
+		protected boolean _isValid;
+		protected List<TempItem> _items = null;
+		protected final L2RecipeList _recipeList;
+		protected final L2PcInstance _player; // "crafter"
+		protected final L2PcInstance _target; // "customer"		
+		protected final L2Skill _skill;
+		protected final int _skillId;
+		protected final int _skillLevel;
+		protected double _creationPasses;
+		protected double _manaRequired;
+		protected int _price;
+		protected int _totalItems;
+		protected int _materialsRefPrice;
+		protected int _delay;
 		
 		public RecipeItemMaker(L2PcInstance pPlayer, L2RecipeList pRecipeList, L2PcInstance pTarget)
 		{
-			this.player = pPlayer;
-			this.target = pTarget;
-			this.recipeList = pRecipeList;
+			this._player = pPlayer;
+			this._target = pTarget;
+			this._recipeList = pRecipeList;
 			
-			isValid = false;
-			skillId = recipeList.isDwarvenRecipe()	? L2Skill.SKILL_CREATE_DWARVEN
+			_isValid = false;
+			_skillId = _recipeList.isDwarvenRecipe()	? L2Skill.SKILL_CREATE_DWARVEN
 			                                      	: L2Skill.SKILL_CREATE_COMMON;
-			skillLevel = player.getSkillLevel(skillId);
-			skill = player.getKnownSkill(skillId);
+			_skillLevel = _player.getSkillLevel(_skillId);
+			_skill = _player.getKnownSkill(_skillId);
 			
-			player.isInCraftMode(true);
+			_player.isInCraftMode(true);
 			
-			if (player.isAlikeDead())
+			if (_player.isAlikeDead())
 			{
-				player.sendMessage("Dead people don't craft.");
-				player.sendPacket(new ActionFailed());
+				_player.sendMessage("Dead people don't craft.");
+				_player.sendPacket(new ActionFailed());
 				abort();
 				return;
 			}
 			
-			if (target.isAlikeDead())
+			if (_target.isAlikeDead())
 			{
-				target.sendMessage("Dead customers can't use manufacture.");
-				target.sendPacket(new ActionFailed());
+				_target.sendMessage("Dead customers can't use manufacture.");
+				_target.sendPacket(new ActionFailed());
 				abort();
 				return;
 			}
 			
-			if(target.isProcessingTransaction())
+			if(_target.isProcessingTransaction())
 			{
-				target.sendMessage("You are busy.");
-				target.sendPacket(new ActionFailed());
+				_target.sendMessage("You are busy.");
+				_target.sendPacket(new ActionFailed());
 				abort();
 				return;
 			}
 
-			if(player.isProcessingTransaction())
+			if(_player.isProcessingTransaction())
 			{
-				if(player!=target)
+				if(_player!=_target)
 				{
-					target.sendMessage("Manufacturer "+player.getName() + " is busy.");	
+					_target.sendMessage("Manufacturer "+_player.getName() + " is busy.");	
 				}
-				player.sendPacket(new ActionFailed());
+				_player.sendPacket(new ActionFailed());
 				abort();
 				return;
 			}
 			
 			// validate recipe list
-			if ((recipeList == null) || (recipeList.getRecipes().length == 0))
+			if ((_recipeList == null) || (_recipeList.getRecipes().length == 0))
 			{
-				player.sendMessage("No such recipe");
-				player.sendPacket(new ActionFailed());
+				_player.sendMessage("No such recipe");
+				_player.sendPacket(new ActionFailed());
 				abort();
 				return;
 			}
 			
-			manaRequired = recipeList.getMpCost();
+			_manaRequired = _recipeList.getMpCost();
 			
 			// validate skill level
-			if (recipeList.getLevel() > skillLevel)
+			if (_recipeList.getLevel() > _skillLevel)
 			{
-				player.sendMessage("Need skill level " + recipeList.getLevel());
-				player.sendPacket(new ActionFailed());
+				_player.sendMessage("Need skill level " + _recipeList.getLevel());
+				_player.sendPacket(new ActionFailed());
 				abort();
 				return;
 			}
 			
 			// check that customer can afford to pay for creation services
-			if (player != target)
+			if (_player != _target)
 			{
-				for (L2ManufactureItem temp : player.getCreateList().getList())
-					if (temp.getRecipeId() == recipeList.getId()) // find recipe for item we want manufactured
+				for (L2ManufactureItem temp : _player.getCreateList().getList())
+					if (temp.getRecipeId() == _recipeList.getId()) // find recipe for item we want manufactured
 					{
-						price = temp.getCost();
-						if (target.getAdena() < price) // check price
+						_price = temp.getCost();
+						if (_target.getAdena() < _price) // check price
 						{
-							target.sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
+							_target.sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
 							abort();
 							return;
 						}
@@ -413,111 +413,111 @@ public class RecipeController
 			}
 			
 			// make temporary items
-			if ((items = listItems(false)) == null) 
+			if ((_items = listItems(false)) == null) 
 				{
 					abort();
 					return;
 				}
 			
 			// calculate reference price
-			for (TempItem i : items)
+			for (TempItem i : _items)
 			{
-				materialsRefPrice += i.getReferencePrice() * i.getQuantity();
-				totalItems += i.getQuantity();
+				_materialsRefPrice += i.getReferencePrice() * i.getQuantity();
+				_totalItems += i.getQuantity();
 			}
 			// initial mana check requires MP as written on recipe
-			if (player.getCurrentMp() < manaRequired)
+			if (_player.getCurrentMp() < _manaRequired)
 			{
-				target.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_MP));
+				_target.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_MP));
 				abort();
 				return;
 			}
 			
 			// determine number of creation passes needed
 			// can "equip"  skillLevel items each pass
-			creationPasses = (totalItems / skillLevel) + ((totalItems % skillLevel)!=0 ? 1 : 0);
+			_creationPasses = (_totalItems / _skillLevel) + ((_totalItems % _skillLevel)!=0 ? 1 : 0);
 			
-			if (Config.ALT_GAME_CREATION && creationPasses != 0) // update mana required to "per pass"
-				manaRequired /= creationPasses; // checks to validateMp() will only need portion of mp for one pass
+			if (Config.ALT_GAME_CREATION && _creationPasses != 0) // update mana required to "per pass"
+				_manaRequired /= _creationPasses; // checks to validateMp() will only need portion of mp for one pass
 	
 			updateMakeInfo(true); 
 			updateCurMp();
 			updateCurLoad();
 			
-			player.isInCraftMode(false);
-			isValid = true;
+			_player.isInCraftMode(false);
+			_isValid = true;
 		}
 		
 		public void run()
 		{	
 			if (!Config.IS_CRAFTING_ENABLED)
 			{
-				target.sendMessage("Item creation is currently disabled.");
+				_target.sendMessage("Item creation is currently disabled.");
 				abort();
 				return;
 			}
 
-			if (player == null || target == null)
+			if (_player == null || _target == null)
 			{
-				_log.warning("player or target == null (disconnected?), aborting"+target+player);
+				_log.warning("player or target == null (disconnected?), aborting"+_target+_player);
 				abort();
 				return;
 			}
 
-			if (player.isOnline()==0 || target.isOnline()==0)
+			if (_player.isOnline()==0 || _target.isOnline()==0)
 			{
-				_log.warning("player or target is not online, aborting "+target+player);
+				_log.warning("player or target is not online, aborting "+_target+_player);
 				abort();
 				return;
 			}
 
-			if (Config.ALT_GAME_CREATION && activeMakers.get(player) == null)
+			if (Config.ALT_GAME_CREATION && _activeMakers.get(_player) == null)
 			{			
-				if (target!=player) 
+				if (_target!=_player) 
 				{
-					target.sendMessage("Manufacture aborted");
-					player.sendMessage("Manufacture aborted");
+					_target.sendMessage("Manufacture aborted");
+					_player.sendMessage("Manufacture aborted");
 				} 
 				else
 				{
-					player.sendMessage("Item creation aborted");		
+					_player.sendMessage("Item creation aborted");		
 				}
 						
 				abort();
 				return;
 			}		
 					
-			if (Config.ALT_GAME_CREATION && !items.isEmpty())
+			if (Config.ALT_GAME_CREATION && !_items.isEmpty())
 			{
 				
 				if (!validateMp()) return;				// check mana				
-				player.reduceCurrentMp(manaRequired); 	// use some mp
+				_player.reduceCurrentMp(_manaRequired); 	// use some mp
 				updateCurMp();							// update craft window mp bar
 				
 				grabSomeItems(); // grab (equip) some more items with a nice msg to player
 				
 				// if still not empty, schedule another pass
-				if(!items.isEmpty())
+				if(!_items.isEmpty())
 				{
 					// divided by RATE_CONSUMABLES_COST to remove craft time increase on higher consumables rates 
-					delay = (int) (Config.ALT_GAME_CREATION_SPEED * player.getMReuseRate(skill)
+					_delay = (int) (Config.ALT_GAME_CREATION_SPEED * _player.getMReuseRate(_skill)
 							* GameTimeController.TICKS_PER_SECOND / Config.RATE_CONSUMABLE_COST)
 							* GameTimeController.MILLIS_IN_TICK;
 					
 					// FIXME: please fix this packet to show crafting animation (somebody)
-					MagicSkillUser msk = new MagicSkillUser(player, skillId, skillLevel, delay, 0);
-					player.broadcastPacket(msk);
+					MagicSkillUser msk = new MagicSkillUser(_player, _skillId, _skillLevel, _delay, 0);
+					_player.broadcastPacket(msk);
 					
-					player.sendPacket(new SetupGauge(0, delay));
-					ThreadPoolManager.getInstance().scheduleGeneral(this, 100 + delay);
+					_player.sendPacket(new SetupGauge(0, _delay));
+					ThreadPoolManager.getInstance().scheduleGeneral(this, 100 + _delay);
 				} 
 				else 
 				{
 					// for alt mode, sleep delay msec before finishing
-					player.sendPacket(new SetupGauge(0, delay));
+					_player.sendPacket(new SetupGauge(0, _delay));
 					
 					try { 
-						Thread.sleep(delay); 
+						Thread.sleep(_delay); 
 					} catch (InterruptedException e) {
 					} finally {
 						finishCrafting();
@@ -529,112 +529,112 @@ public class RecipeController
 	
 		private void finishCrafting()
 		{
-			if(!Config.ALT_GAME_CREATION) player.reduceCurrentMp(manaRequired);
+			if(!Config.ALT_GAME_CREATION) _player.reduceCurrentMp(_manaRequired);
 			
 			// first take adena for manufacture
-			if ((target != player) && price > 0) // customer must pay for services
+			if ((_target != _player) && _price > 0) // customer must pay for services
 			{
 				// attempt to pay for item
-				L2ItemInstance adenatransfer = target.transferItem("PayManufacture",
-										target.getInventory().getAdenaInstance().getObjectId(),
-										price, player.getInventory(), player);
+				L2ItemInstance adenatransfer = _target.transferItem("PayManufacture",
+										_target.getInventory().getAdenaInstance().getObjectId(),
+										_price, _player.getInventory(), _player);
 				
 				if(adenatransfer==null)
 				{
-					target.sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
+					_target.sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
 					abort();
 					return;	
 				}
 			}
 
-			if ((items = listItems(true)) == null) // this line actually takes materials from inventory
+			if ((_items = listItems(true)) == null) // this line actually takes materials from inventory
 			{ // handle possible cheaters here 
 			  // (they click craft then try to get rid of items in order to get free craft)
 			}
-			else if (Rnd.get(100) < recipeList.getSuccessRate())
+			else if (Rnd.get(100) < _recipeList.getSuccessRate())
 			{
-				RewardPlayer(); // and immediately puts created item in its place		
+				rewardPlayer(); // and immediately puts created item in its place		
 				updateMakeInfo(true);
 			}
 			else
 			{
-				player.sendMessage("Item(s) failed to create");
-				if (target != player)
-					target.sendMessage("Item(s) failed to create");
+				_player.sendMessage("Item(s) failed to create");
+				if (_target != _player)
+					_target.sendMessage("Item(s) failed to create");
 				
 				updateMakeInfo(false);
 			}
 			// update load and mana bar of craft window
 			updateCurMp();
 			updateCurLoad();				
-			activeMakers.remove(player);
-			player.isInCraftMode(false);
-			target.sendPacket(new ItemList(target, false));			
+			_activeMakers.remove(_player);
+			_player.isInCraftMode(false);
+			_target.sendPacket(new ItemList(_target, false));			
 		}
 		private void updateMakeInfo(boolean success)
 		{
-			if (target == player) target.sendPacket(new RecipeItemMakeInfo(recipeList.getId(), target,
+			if (_target == _player) _target.sendPacket(new RecipeItemMakeInfo(_recipeList.getId(), _target,
 			                                                               success));
-			else target.sendPacket(new RecipeShopItemInfo(player.getObjectId(), recipeList.getId()));
+			else _target.sendPacket(new RecipeShopItemInfo(_player.getObjectId(), _recipeList.getId()));
 		}
 		
 		private void updateCurLoad()
 		{
-			StatusUpdate su = new StatusUpdate(target.getObjectId());
-			su.addAttribute(StatusUpdate.CUR_LOAD, target.getCurrentLoad());
-			target.sendPacket(su);
+			StatusUpdate su = new StatusUpdate(_target.getObjectId());
+			su.addAttribute(StatusUpdate.CUR_LOAD, _target.getCurrentLoad());
+			_target.sendPacket(su);
 		}
 		
 		private void updateCurMp()
 		{
-			StatusUpdate su = new StatusUpdate(target.getObjectId());
-			su.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
-			target.sendPacket(su);
+			StatusUpdate su = new StatusUpdate(_target.getObjectId());
+			su.addAttribute(StatusUpdate.CUR_MP, (int) _target.getCurrentMp());
+			_target.sendPacket(su);
 		}
 		
 		private void grabSomeItems()
 		{
-			int numItems = skillLevel;
+			int numItems = _skillLevel;
 			
-			while (numItems > 0 && !items.isEmpty())
+			while (numItems > 0 && !_items.isEmpty())
 			{
-				TempItem item = items.get(0);
+				TempItem item = _items.get(0);
 				
 				int count = item.getQuantity();
 				if (count >= numItems) count = numItems;
 				
 				item.setQuantity(item.getQuantity() - count);
-				if (item.getQuantity() <= 0) items.remove(0);
-				else items.set(0, item);
+				if (item.getQuantity() <= 0) _items.remove(0);
+				else _items.set(0, item);
 				
 				numItems -= count;
 				
-				if (target == player)
+				if (_target == _player)
 				{
 					SystemMessage sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED); // you equipped ...
 					sm.addNumber(count);
 					sm.addItemName(item.getItemId());
-					player.sendPacket(sm);
+					_player.sendPacket(sm);
 				} 
-				else target.sendMessage("Manufacturer " + player.getName() + " used " + count + " "
+				else _target.sendMessage("Manufacturer " + _player.getName() + " used " + count + " "
 				                        + item.getItemName());
 			}
 		}
 		
 		private boolean validateMp()
 		{
-			if (player.getCurrentMp() < manaRequired)
+			if (_player.getCurrentMp() < _manaRequired)
 			{
 				// rest (wait for MP)
 				if (Config.ALT_GAME_CREATION)
 				{
-					player.sendPacket(new SetupGauge(0, delay));
-					ThreadPoolManager.getInstance().scheduleGeneral(this, 100 + delay);
+					_player.sendPacket(new SetupGauge(0, _delay));
+					ThreadPoolManager.getInstance().scheduleGeneral(this, 100 + _delay);
 				}
 				else
 					// no rest - report no mana
 				{
-					target.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_MP));
+					_target.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_MP));
 					abort(); 
 				}
 				return false;
@@ -644,13 +644,13 @@ public class RecipeController
 		
 		private List<TempItem> listItems(boolean remove)
 		{
-			L2RecipeInstance[] recipes = recipeList.getRecipes();
-			Inventory inv = target.getInventory();
+			L2RecipeInstance[] recipes = _recipeList.getRecipes();
+			Inventory inv = _target.getInventory();
 			List<TempItem> materials = new FastList<TempItem>();
 			
 			for (L2RecipeInstance recipe : recipes)
 			{
-				int quantity = recipeList.isConsumable() ? (int) (recipe.getQuantity() * Config.RATE_CONSUMABLE_COST)
+				int quantity = _recipeList.isConsumable() ? (int) (recipe.getQuantity() * Config.RATE_CONSUMABLE_COST)
 				                                         : (int) recipe.getQuantity();
 				
 				if (quantity > 0)
@@ -660,8 +660,8 @@ public class RecipeController
 					// check materials
 					if (item==null || item.getCount() < quantity)
 					{
-						target.sendMessage("You dont have the right elements for making this item"
-						                   + ((recipeList.isConsumable() && Config.RATE_CONSUMABLE_COST != 1)	? ".\nDue to server rates you need "
+						_target.sendMessage("You dont have the right elements for making this item"
+						                   + ((_recipeList.isConsumable() && Config.RATE_CONSUMABLE_COST != 1)	? ".\nDue to server rates you need "
 						                                                                                     	  + Config.RATE_CONSUMABLE_COST
 						                                                                                     	  + "x more material than listed in recipe"
 						                                                                                     	  : ""));
@@ -680,8 +680,7 @@ public class RecipeController
 			{
 				for(TempItem tmp : materials)
 					{
-					inv.destroyItemByItemId("Manufacture", tmp.getItemId(), tmp.getQuantity(), target,
-					                        player);
+					inv.destroyItemByItemId("Manufacture", tmp.getItemId(), tmp.getQuantity(), _target, _player);
 					}
 			}			
 			return materials;
@@ -690,8 +689,8 @@ public class RecipeController
 		private void abort()
 		{
 			updateMakeInfo(false);
-			player.isInCraftMode(false);
-			activeMakers.remove(player);
+			_player.isInCraftMode(false);
+			_activeMakers.remove(_player);
 		}
 		
 		/**
@@ -769,40 +768,40 @@ public class RecipeController
 			}
 		}
 		
-		private void RewardPlayer()
+		private void rewardPlayer()
 		{
-			int itemId = recipeList.getItemId();
-			int itemCount = recipeList.getCount();
+			int itemId = _recipeList.getItemId();
+			int itemCount = _recipeList.getCount();
 			
-			L2ItemInstance createdItem = target.getInventory().addItem("Manufacture", itemId, itemCount,
-			                                                           target, player);
+			L2ItemInstance createdItem = _target.getInventory().addItem("Manufacture", itemId, itemCount,
+			                                                           _target, _player);
 			
 			// inform customer of earned item
             SystemMessage sm = null;
             if (itemCount > 1)
             {
-    			sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+    			sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
     			sm.addItemName(itemId);
                 sm.addNumber(itemCount);
-    			target.sendPacket(sm);
+    			_target.sendPacket(sm);
             } else
             {
                 sm = new SystemMessage(SystemMessage.EARNED_ITEM);
                 sm.addItemName(itemId);
-                target.sendPacket(sm);
+                _target.sendPacket(sm);
             }
 			
-			if (target != player)
+			if (_target != _player)
 			{
 				// inform manufacturer of earned profit
 				sm = new SystemMessage(SystemMessage.EARNED_ADENA);
-				sm.addNumber(price);
-				player.sendPacket(sm);
+				sm.addNumber(_price);
+				_player.sendPacket(sm);
 			}
 			
 			if (Config.ALT_GAME_CREATION)
 			{
-				int recipeLevel = recipeList.getLevel();
+				int recipeLevel = _recipeList.getLevel();
 				int exp = createdItem.getReferencePrice() * itemCount;
 				// one variation
 				
@@ -812,7 +811,7 @@ public class RecipeController
 				
 				// another variation
 				exp /= recipeLevel;
-				for (int i = skillLevel; i > recipeLevel; i--)
+				for (int i = _skillLevel; i > recipeLevel; i--)
 					exp /= 4;
 				
 				int sp = exp / 10;
@@ -822,9 +821,9 @@ public class RecipeController
 				// you can use ALT_GAME_CREATION_XP_RATE/SP to
 				// modify XP/SP gained (default = 1)   
 				
-				player.addExpAndSp((int) player.calcStat(Stats.EXPSP_RATE, exp * Config.ALT_GAME_CREATION_XP_RATE  
+				_player.addExpAndSp((int) _player.calcStat(Stats.EXPSP_RATE, exp * Config.ALT_GAME_CREATION_XP_RATE  
 				                                         * Config.ALT_GAME_CREATION_SPEED, null, null)
-				                  ,(int) player.calcStat(Stats.EXPSP_RATE, sp * Config.ALT_GAME_CREATION_SP_RATE   
+				                  ,(int) _player.calcStat(Stats.EXPSP_RATE, sp * Config.ALT_GAME_CREATION_SP_RATE   
 				                                         * Config.ALT_GAME_CREATION_SPEED, null, null));
 			}
 			updateMakeInfo(true); // success

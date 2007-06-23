@@ -38,17 +38,17 @@ import net.sf.l2j.gameserver.skills.funcs.Func;
 public final class Calculator 
 {
     /** Empty Func table definition */
-	static final Func[] emptyFuncs = new Func[0]; 
+	private static final Func[] _emptyFuncs = new Func[0]; 
 	
 	/** Table of Func object */
-	Func[] _functions;
+	private Func[] _functions;
 	
 	/**
 	 * Constructor of Calculator (Init value : emptyFuncs).<BR><BR>
 	 */
 	public Calculator() 
 	{
-		_functions = emptyFuncs;
+		_functions = _emptyFuncs;
 	}
 	
 	/**
@@ -110,10 +110,10 @@ public final class Calculator
 		Func[] funcs = _functions;
 		Func[] tmp = new Func[funcs.length+1];
 		
-		final int order = f._order;
+		final int order = f.order;
 		int i;
 		
-		for (i=0; i < funcs.length && order >= funcs[i]._order; i++)
+		for (i=0; i < funcs.length && order >= funcs[i].order; i++)
 			tmp[i] = funcs[i];
 		
 		tmp[i] = f;
@@ -145,7 +145,7 @@ public final class Calculator
 			tmp[i-1] = funcs[i];
 		
 		if (tmp.length == 0)
-			_functions = emptyFuncs;
+			_functions = _emptyFuncs;
 		else
 			_functions = tmp;
 		
@@ -161,7 +161,7 @@ public final class Calculator
 		
 		for (int i=0; i < funcs.length; i++) 
 		{
-			if (funcs[i]._funcOwner == owner)
+			if (funcs[i].funcOwner == owner)
 				removeFunc(funcs[i]);
 		}
 

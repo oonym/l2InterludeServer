@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.util.Util;
 public class SummonFriend implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(SummonFriend.class.getName());
-	protected SkillType[] _skillIds = {SkillType.SUMMON_FRIEND};
+	private static final SkillType[] SKILL_IDS = {SkillType.SUMMON_FRIEND};
 
  	public void useSkill(@SuppressWarnings("unused") L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, L2Object[] targets)
 	{
@@ -172,6 +172,6 @@ public class SummonFriend implements ISkillHandler
 
 	public SkillType[] getSkillIds()
 	{
-		return _skillIds;
+		return SKILL_IDS;
 	}
 }

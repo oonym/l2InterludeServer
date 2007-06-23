@@ -29,13 +29,13 @@ public class HennaItemInfo extends L2GameServerPacket
 {
     private static final String _S__E3_HennaItemInfo = "[S] E3 HennaItemInfo";
     
-    private L2PcInstance _player;
+    private L2PcInstance _activeChar;
     private L2HennaInstance _henna;
     
     public HennaItemInfo(L2HennaInstance henna, L2PcInstance player)
     {
         _henna = henna;			
-        _player = player;
+        _activeChar = player;
     }
     
     protected final void writeImpl()
@@ -47,20 +47,20 @@ public class HennaItemInfo extends L2GameServerPacket
         writeD(_henna.getAmountDyeRequire());    // total amount of dye require
         writeD(_henna.getPrice());  //total amount of aden require to draw symbol
         writeD(1);      //able to draw or not 0 is false and 1 is true 
-        writeD(_player.getAdena());
+        writeD(_activeChar.getAdena());
         
-        writeD(_player.getINT());   //current INT
-        writeC(_player.getINT()+ _henna.getStatINT());    //equip INT
-        writeD(_player.getSTR());   //current STR
-        writeC(_player.getSTR()+ _henna.getStatSTR());   //equip STR
-        writeD(_player.getCON());   //current CON
-        writeC(_player.getCON()+ _henna.getStatCON());    //equip CON
-        writeD(_player.getMEN());    //current MEM
-        writeC(_player.getMEN()+ _henna.getStatMEM());		//equip MEM
-        writeD(_player.getDEX());     //current DEX
-        writeC(_player.getDEX()+ _henna.getStatDEX());		//equip DEX
-        writeD(_player.getWIT());     //current WIT
-        writeC(_player.getWIT()+ _henna.getStatWIT());		//equip WIT
+        writeD(_activeChar.getINT());   //current INT
+        writeC(_activeChar.getINT()+ _henna.getStatINT());    //equip INT
+        writeD(_activeChar.getSTR());   //current STR
+        writeC(_activeChar.getSTR()+ _henna.getStatSTR());   //equip STR
+        writeD(_activeChar.getCON());   //current CON
+        writeC(_activeChar.getCON()+ _henna.getStatCON());    //equip CON
+        writeD(_activeChar.getMEN());    //current MEM
+        writeC(_activeChar.getMEN()+ _henna.getStatMEM());		//equip MEM
+        writeD(_activeChar.getDEX());     //current DEX
+        writeC(_activeChar.getDEX()+ _henna.getStatDEX());		//equip DEX
+        writeD(_activeChar.getWIT());     //current WIT
+        writeC(_activeChar.getWIT()+ _henna.getStatWIT());		//equip WIT
     }
     
     /* (non-Javadoc)

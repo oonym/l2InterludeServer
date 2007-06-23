@@ -38,12 +38,12 @@ public final class RequestQuestAbort extends L2GameClientPacket
 	private static final String _C__64_REQUESTQUESTABORT = "[C] 64 RequestQuestAbort";
 	private static Logger _log = Logger.getLogger(RequestQuestAbort.class.getName());
 
-	private int _QuestID;
+	private int _questId;
 	
 	
 	protected void readImpl()
 	{
-		_QuestID = readD();
+		_questId = readD();
 	}
 
 	protected void runImpl()
@@ -52,7 +52,7 @@ public final class RequestQuestAbort extends L2GameClientPacket
 		if (activeChar == null)
 		    return;
         
-        Quest qe = QuestManager.getInstance().getQuest(_QuestID);
+        Quest qe = QuestManager.getInstance().getQuest(_questId);
         if (qe != null)
         {
     		QuestState qs = activeChar.getQuestState(qe.getName());
@@ -71,7 +71,7 @@ public final class RequestQuestAbort extends L2GameClientPacket
             }
         } else
         {
-            if (Config.DEBUG) _log.warning("Quest (id='"+_QuestID+"') not found.");
+            if (Config.DEBUG) _log.warning("Quest (id='"+_questId+"') not found.");
         }
 	}
 

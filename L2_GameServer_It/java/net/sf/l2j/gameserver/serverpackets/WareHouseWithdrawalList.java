@@ -31,30 +31,30 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class WareHouseWithdrawalList extends L2GameServerPacket
 {
-	public static final int Private = 1;
-	public static final int Clan = 2;
-	public static final int Castle = 3; //not sure
-	public static final int Freight = 4; //not sure
+	public static final int PRIVATE = 1;
+	public static final int CLAN = 2;
+	public static final int CASTLE = 3; //not sure
+	public static final int FREIGHT = 4; //not sure
 	private static Logger _log = Logger.getLogger(WareHouseWithdrawalList.class.getName());
 	private static final String _S__54_WAREHOUSEWITHDRAWALLIST = "[S] 42 WareHouseWithdrawalList";
-	private L2PcInstance _player;
+	private L2PcInstance _activeChar;
 	private int _playerAdena;
 	private L2ItemInstance[] _items;
-	private int _whtype;
+	private int _whType;
 
 	public WareHouseWithdrawalList(L2PcInstance player, int type)
 	{
-		_player = player;
-		_whtype = type;
+		_activeChar = player;
+		_whType = type;
 		
-		_playerAdena = _player.getAdena();
-		if (_player.getActiveWarehouse() == null)
+		_playerAdena = _activeChar.getAdena();
+		if (_activeChar.getActiveWarehouse() == null)
 		{
             // Something went wrong!
-            _log.warning("error while sending withdraw request to: " + _player.getName());
+            _log.warning("error while sending withdraw request to: " + _activeChar.getName());
             return;
 		}
-		else _items = _player.getActiveWarehouse().getItems();
+		else _items = _activeChar.getActiveWarehouse().getItems();
 		
 		if (Config.DEBUG)
 			for (L2ItemInstance item : _items)
@@ -69,7 +69,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 	    * 0x02-Clan Warehouse  
 	    * 0x03-Castle Warehouse  
 	    * 0x04-Warehouse */  
-	    writeH(_whtype);
+	    writeH(_whType);
 		writeD(_playerAdena);
 		writeH(_items.length);
 		

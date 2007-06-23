@@ -667,7 +667,7 @@ public class L2CharacterAI extends AbstractAI
         //((L2PcInstance)_actor).sendPacket(new CharMoveToLocation(_actor));
         if (_actor instanceof L2BoatInstance)
         {
-            ((L2BoatInstance) _actor).EvtArrived();
+            ((L2BoatInstance) _actor).evtArrived();
         }
 
     }

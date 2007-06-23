@@ -28,8 +28,8 @@ import net.sf.l2j.Config;
  */
 public final class GGAuth extends L2LoginServerPacket
 {
-    static Logger _log = Logger.getLogger(GGAuth.class.getName());
-    public static int SKIP_GG_AUTH_REQUEST = 0x0b;
+    static final Logger _log = Logger.getLogger(GGAuth.class.getName());
+    public static final int SKIP_GG_AUTH_REQUEST = 0x0b;
     
     private int _response;
     

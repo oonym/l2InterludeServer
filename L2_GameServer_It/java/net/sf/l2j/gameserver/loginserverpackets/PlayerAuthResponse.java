@@ -26,7 +26,7 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 {
 
 	private String _account;
-	private boolean _Authed;
+	private boolean _authed;
 
 	/**
 	 * @param decrypt
@@ -36,7 +36,7 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 		super(decrypt);
 		
 		_account = readS();
-		_Authed = (readC() == 0 ? false : true);
+		_authed = (readC() == 0 ? false : true);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 	 */
 	public boolean isAuthed()
 	{
-		return _Authed;
+		return _authed;
 	}
 	
 }

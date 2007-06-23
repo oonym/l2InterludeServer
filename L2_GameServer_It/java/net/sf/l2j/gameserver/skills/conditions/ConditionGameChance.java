@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionGameChance extends Condition
 {
-    final int _chance;
+    private final int _chance;
     
     public ConditionGameChance(int chance)
     {

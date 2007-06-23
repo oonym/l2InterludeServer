@@ -33,7 +33,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 {
 	private final Point3D _pos = new Point3D(0,0,0);
 	private final Point3D _origin_pos = new Point3D(0,0,0);
-	private int _BoatId;
+	private int _boatId;
 	
 	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
 
@@ -44,7 +44,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 	protected void readImpl()
 	{
 		int _x, _y, _z;
-		_BoatId  = readD();   //objectId of boat
+		_boatId  = readD();   //objectId of boat
 		_x = readD();
 		_y = readD();
 		_z = readD();
@@ -75,7 +75,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 			{
 				activeChar.setInBoat(true);						
 			}
-			L2BoatInstance boat = BoatManager.getInstance().GetBoat(_BoatId);
+			L2BoatInstance boat = BoatManager.getInstance().GetBoat(_boatId);
 			activeChar.setBoat(boat);
 			activeChar.setInBoatPosition(_pos);
 			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT, new L2CharPosition(_pos.getX(),_pos.getY(), _pos.getZ(), 0), new L2CharPosition(_origin_pos.getX(),_origin_pos.getY(),_origin_pos.getZ(), 0));	        

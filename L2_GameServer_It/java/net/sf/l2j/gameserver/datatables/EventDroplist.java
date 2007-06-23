@@ -39,7 +39,7 @@ public class EventDroplist
 	private static EventDroplist _instance;
 
 	/** The table containing all DataDrop object */
-	private List<DateDrop> allNpcDateDrops;
+	private List<DateDrop> _allNpcDateDrops;
 
 	public static EventDroplist getInstance()
 	{
@@ -54,13 +54,13 @@ public class EventDroplist
 	public class DateDrop
 	{
 		/** Start and end date of the Event */
-        DateRange dateRange;
+        public DateRange dateRange;
 		
 		/** The table containing Item identifier that can be dropped as extra Items during the Event */
 	    public int[] items;
 	    
 		/** The min number of Item dropped in one time during this Event */
-		public int min;
+	    public int min;
 		
 		/** The max number of Item dropped in one time during this Event */
 	    public int max;
@@ -77,7 +77,7 @@ public class EventDroplist
 	 */
 	private EventDroplist()
 	{
-	    allNpcDateDrops = new FastList<DateDrop>();
+		_allNpcDateDrops = new FastList<DateDrop>();
 	}
 	
 	
@@ -101,7 +101,7 @@ public class EventDroplist
 	    date.max = count[1];
 	    date.chance = chance;
 		
-	    allNpcDateDrops.add(date);
+	    _allNpcDateDrops.add(date);
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class EventDroplist
 	{
 	    List<DateDrop> list = new FastList<DateDrop>();
 	    
-	    for (DateDrop drop : allNpcDateDrops)
+	    for (DateDrop drop : _allNpcDateDrops)
 	    {
 	        Date currentDate = new Date();
 	        //System.out.println("From: "+drop.from+" To: "+drop.to+" Now: "+ currentDate);

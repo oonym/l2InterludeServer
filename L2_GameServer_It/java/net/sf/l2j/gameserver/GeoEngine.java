@@ -50,13 +50,13 @@ public class GeoEngine extends GeoData
 {
 	private static Logger _log = Logger.getLogger(GeoData.class.getName());
 	private static GeoEngine _instance;
-    private final static byte E = 1;
-    private final static byte W = 2;
-    private final static byte S = 4;
-    private final static byte N = 8;
-	private static Map<Short, MappedByteBuffer> Geodata = new FastMap<Short, MappedByteBuffer>();
-	private static Map<Short, IntBuffer> Geodata_index = new FastMap<Short, IntBuffer>();
-	private static BufferedOutputStream _geo_bugs_out;
+    private final static byte _e = 1;
+    private final static byte _w = 2;
+    private final static byte _s = 4;
+    private final static byte _n = 8;
+	private static Map<Short, MappedByteBuffer> _geodata = new FastMap<Short, MappedByteBuffer>();
+	private static Map<Short, IntBuffer> _geodataIndex = new FastMap<Short, IntBuffer>();
+	private static BufferedOutputStream _geoBugsOut;
 	
 	public static GeoEngine getInstance()
     {
@@ -66,7 +66,7 @@ public class GeoEngine extends GeoData
     }
     public GeoEngine()
     {
-        NinitGeodata();            
+        nInitGeodata();            
     }
 	
     //Public Methods
@@ -76,7 +76,7 @@ public class GeoEngine extends GeoData
     @Override
     public short getType(int x, int y)         
     {
-        return NgetType((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4);        
+        return nGetType((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4);        
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#getHeight(int, int, int)
@@ -84,7 +84,7 @@ public class GeoEngine extends GeoData
     @Override
     public short getHeight(int x, int y, int z)
     {
-        return NgetHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);        
+        return nGetHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);        
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#getSpawnHeight(int, int, int, int, int)
@@ -92,7 +92,7 @@ public class GeoEngine extends GeoData
     @Override
     public short getSpawnHeight(int x, int y, int zmin, int zmax, int spawnid)
     {
-    	return NgetSpawnHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,zmin,zmax,spawnid);        
+    	return nGetSpawnHeight((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,zmin,zmax,spawnid);        
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#geoPosition(int, int)
@@ -156,7 +156,7 @@ public class GeoEngine extends GeoData
     @Override
     public short getNSWE(int x, int y, int z)  
     {
-        return NgetNSWE((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);
+        return nGetNSWE((x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#moveCheck(int, int, int, int, int, int)
@@ -165,7 +165,7 @@ public class GeoEngine extends GeoData
     public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
     {
     	Location destiny = new Location(tx,ty,tz);
-        return MoveCheck(destiny,(x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
+        return moveCheck(destiny,(x - L2World.MAP_MIN_X) >> 4,(y - L2World.MAP_MIN_Y) >> 4,z,(tx - L2World.MAP_MIN_X) >> 4,(ty - L2World.MAP_MIN_Y) >> 4,tz);
     }    
     /**
      * @see net.sf.l2j.gameserver.GeoData#addGeoDataBug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, java.lang.String)
@@ -184,8 +184,8 @@ public class GeoEngine extends GeoData
     	String out = rx+";"+ry+";"+bx+";"+by+";"+cx+";"+cy+";"+gm.getZ()+";"+comment+"\n";
     	try
 		{
-    		_geo_bugs_out.write(out.getBytes());
-    		_geo_bugs_out.flush();
+    		_geoBugsOut.write(out.getBytes());
+    		_geoBugsOut.flush();
     		gm.sendMessage("GeoData bug saved!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -255,7 +255,7 @@ public class GeoEngine extends GeoData
             		next_y += inc_y;
             		z += inc_z_directiony;
             		//_log.warning("1: next_x:"+next_x+" next_y"+next_y);
-            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,false))
+            		if (!nLOS(x,y,(int)z,inc_x,inc_y,tz,false))
             			return false;
             	}
             	else
@@ -264,7 +264,7 @@ public class GeoEngine extends GeoData
             		next_x += inc_x;
             		//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
             		z += inc_z_directionx;
-            		if (!NLOS(x,y,(int)z,inc_x,0,tz,false))
+            		if (!nLOS(x,y,(int)z,inc_x,0,tz,false))
             			return false;
             	}
             }
@@ -286,7 +286,7 @@ public class GeoEngine extends GeoData
             		next_x += inc_x;
             		z += inc_z_directionx;
             		//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
-            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,false))
+            		if (!nLOS(x,y,(int)z,inc_x,inc_y,tz,false))
             			return false;
             	}
             	else
@@ -295,7 +295,7 @@ public class GeoEngine extends GeoData
             		next_y += inc_y;
             		//_log.warning("4: next_x:"+next_x+" next_y"+next_y);
             		z += inc_z_directiony;
-            		if (!NLOS(x,y,(int)z,0,inc_y,tz,false))
+            		if (!nLOS(x,y,(int)z,0,inc_y,tz,false))
             			return false;
             	}
             }
@@ -370,7 +370,7 @@ public class GeoEngine extends GeoData
             		next_y += inc_y;
             		z += inc_z_directiony;
             		//_log.warning("1: next_x:"+next_x+" next_y"+next_y);
-            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,true))
+            		if (!nLOS(x,y,(int)z,inc_x,inc_y,tz,true))
             			return false;
             	}
             	else
@@ -379,7 +379,7 @@ public class GeoEngine extends GeoData
             		next_x += inc_x;
             		//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
             		z += inc_z_directionx;
-            		if (!NLOS(x,y,(int)z,inc_x,0,tz,true))
+            		if (!nLOS(x,y,(int)z,inc_x,0,tz,true))
             			return false;
             	}
             }
@@ -401,7 +401,7 @@ public class GeoEngine extends GeoData
             		next_x += inc_x;
             		z += inc_z_directionx;
             		//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
-            		if (!NLOS(x,y,(int)z,inc_x,inc_y,tz,true))
+            		if (!nLOS(x,y,(int)z,inc_x,inc_y,tz,true))
             			return false;
             	}
             	else
@@ -410,7 +410,7 @@ public class GeoEngine extends GeoData
             		next_y += inc_y;
             		//_log.warning("4: next_x:"+next_x+" next_y"+next_y);
             		z += inc_z_directiony;
-            		if (!NLOS(x,y,(int)z,0,inc_y,tz,true))
+            		if (!nLOS(x,y,(int)z,0,inc_y,tz,true))
             			return false;
             	}
             }
@@ -420,7 +420,7 @@ public class GeoEngine extends GeoData
     /*
      *  MoveCheck
      */
-    private static Location MoveCheck(Location destiny, int x, int y, double z, int tx, int ty, int tz)
+    private static Location moveCheck(Location destiny, int x, int y, double z, int tx, int ty, int tz)
     {
     	int dx = (tx - x);
         int dy = (ty - y);
@@ -468,7 +468,7 @@ public class GeoEngine extends GeoData
             		next_x += inc_x;
             		next_y += inc_y;
             		//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
-            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             		else z = tempz;
@@ -478,7 +478,7 @@ public class GeoEngine extends GeoData
             		d += delta_A;
             		next_x += inc_x;
             		//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
-            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             		else z = tempz;
@@ -500,7 +500,7 @@ public class GeoEngine extends GeoData
             		next_y += inc_y;
             		next_x += inc_x;
             		//_log.warning("5: next_x:"+next_x+" next_y"+next_y);
-            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             		else z = tempz;
@@ -510,7 +510,7 @@ public class GeoEngine extends GeoData
             		d += delta_A;
             		next_y += inc_y;
             		//_log.warning("6: next_x:"+next_x+" next_y"+next_y);
-            		tempz = NcanMoveNext(x,y,(int)z,next_x,next_y,tz);
+            		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE) 
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
             		else z = tempz;
@@ -529,7 +529,7 @@ public class GeoEngine extends GeoData
     }
 	
 	//GeoEngine
-	private static void NinitGeodata()
+	private static void nInitGeodata()
 	{
 		LineNumberReader lnr = null;
 		try
@@ -553,7 +553,7 @@ public class GeoEngine extends GeoData
 				StringTokenizer st = new StringTokenizer(line, "_");
 				byte rx = Byte.parseByte(st.nextToken());
 				byte ry = Byte.parseByte(st.nextToken());
-				LoadGeodataFile(rx,ry);
+				loadGeodataFile(rx,ry);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -563,7 +563,7 @@ public class GeoEngine extends GeoData
 		{			
 			File geo_bugs = new File("./data/geodata/geo_bugs.txt");			
 			
-			_geo_bugs_out = new BufferedOutputStream(new FileOutputStream(geo_bugs,true));
+			_geoBugsOut = new BufferedOutputStream(new FileOutputStream(geo_bugs,true));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Error("Failed to Load geo_bugs.txt File.");	
@@ -572,10 +572,10 @@ public class GeoEngine extends GeoData
 	public static void unloadGeodata(byte rx, byte ry)
 	{
 		short regionoffset = (short)((rx << 5) + ry);
-		Geodata_index.remove(regionoffset);
-		Geodata.remove(regionoffset);
+		_geodataIndex.remove(regionoffset);
+		_geodata.remove(regionoffset);
 	}
-	public static boolean LoadGeodataFile(byte rx, byte ry)
+	public static boolean loadGeodataFile(byte rx, byte ry)
 	{
 		String fname = "./data/geodata/"+rx+"_"+ry+".l2j";
 		short regionoffset = (short)((rx << 5) + ry);
@@ -620,9 +620,9 @@ public class GeoEngine extends GeoData
 			            }
 			        }
 			    }
-				Geodata_index.put(regionoffset, indexs);
+				_geodataIndex.put(regionoffset, indexs);
 			}
-			Geodata.put(regionoffset,geo);
+			_geodata.put(regionoffset,geo);
 			
 			_log.info("Geo Engine: - Max Layers: "+flor+" Size: "+size+" Loaded: "+index);
 	    } catch (Exception e)
@@ -672,18 +672,18 @@ public class GeoEngine extends GeoData
 	 * @param y
 	 * @return Type of geo_block: 0-2
 	 */
-	private static short NgetType(int x, int y)
+	private static short nGetType(int x, int y)
 	{
 	    short region = getRegionOffset(x,y);
 		int blockX = getBlock(x);
 		int blockY = getBlock(y);
 		int index = 0;
 		//Geodata without index - it is just empty so index can be calculated on the fly
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;
+		if(_geodataIndex.get(region) == null) index = ((blockX << 8) + blockY)*3;
 		//Get Index for current block of current geodata region
-		else index = Geodata_index.get(region).get((blockX << 8) + blockY);
+		else index = _geodataIndex.get(region).get((blockX << 8) + blockY);
 		//Buffer that Contains current Region GeoData
-		ByteBuffer geo = Geodata.get(region);
+		ByteBuffer geo = _geodata.get(region);
 		if(geo == null)
 		{
 			if(Config.DEBUG)
@@ -698,18 +698,18 @@ public class GeoEngine extends GeoData
 	 * @param z
 	 * @return Nearlest Z
 	 */
-	private static short NgetHeight(int geox, int geoy, int z)
+	private static short nGetHeight(int geox, int geoy, int z)
 	{
 	    short region = getRegionOffset(geox,geoy);
 	    int blockX = getBlock(geox);
 		int blockY = getBlock(geoy);
 		int cellX, cellY, index;
 		//Geodata without index - it is just empty so index can be calculated on the fly
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		if(_geodataIndex.get(region) == null) index = ((blockX << 8) + blockY)*3;		
 		//Get Index for current block of current region geodata
-		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		else index = _geodataIndex.get(region).get(((blockX << 8))+(blockY));
 		//Buffer that Contains current Region GeoData
-		ByteBuffer geo = Geodata.get(region);
+		ByteBuffer geo = _geodata.get(region);
 		if(geo == null)
 		{
 			if(Config.DEBUG)
@@ -771,7 +771,7 @@ public class GeoEngine extends GeoData
 	 * @param zmax
 	 * @return Z betwen zmin and zmax
 	 */
-	private static short NgetSpawnHeight(int geox, int geoy, int zmin, int zmax, int spawnid)
+	private static short nGetSpawnHeight(int geox, int geoy, int zmin, int zmax, int spawnid)
 	{    
 	    short region = getRegionOffset(geox,geoy);
 	    int blockX = getBlock(geox);
@@ -779,11 +779,11 @@ public class GeoEngine extends GeoData
 		int cellX, cellY, index;
 		short temph = Short.MIN_VALUE;
 		//Geodata without index - it is just empty so index can be calculated on the fly
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		if(_geodataIndex.get(region) == null) index = ((blockX << 8) + blockY)*3;		
 		//Get Index for current block of current region geodata
-		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		else index = _geodataIndex.get(region).get(((blockX << 8))+(blockY));
 		//Buffer that Contains current Region GeoData
-		ByteBuffer geo = Geodata.get(region);
+		ByteBuffer geo = _geodata.get(region);
 		if(geo == null)
 		{
 			if(Config.DEBUG)
@@ -860,7 +860,7 @@ public class GeoEngine extends GeoData
 	 * @param tz
 	 * @return True if char can move to (tx,ty,tz)
 	 */
-	private static double NcanMoveNext(int x, int y, int z, int tx, int ty, int tz)
+	private static double nCanMoveNext(int x, int y, int z, int tx, int ty, int tz)
 	{
 	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
@@ -870,11 +870,11 @@ public class GeoEngine extends GeoData
 	    
 		int index = 0;
 		//Geodata without index - it is just empty so index can be calculated on the fly
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		if(_geodataIndex.get(region) == null) index = ((blockX << 8) + blockY)*3;		
 		//Get Index for current block of current region geodata
-		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		else index = _geodataIndex.get(region).get(((blockX << 8))+(blockY));
 		//Buffer that Contains current Region GeoData
-		ByteBuffer geo = Geodata.get(region);
+		ByteBuffer geo = _geodata.get(region);
 		if(geo == null)
 		{
 			if(Config.DEBUG)
@@ -895,7 +895,7 @@ public class GeoEngine extends GeoData
 			NSWE = (short)(height&0x0F);
 			height = (short)(height&0x0fff0);
 			height = (short)(height >> 1); //height / 2
-			if(CheckNSWE(NSWE,x,y,tx,ty)) return height;
+			if(checkNSWE(NSWE,x,y,tx,ty)) return height;
 			else return Double.MIN_VALUE;
 	    }
 	    else //multilevel, type == 2
@@ -936,7 +936,7 @@ public class GeoEngine extends GeoData
 	            layers--;
 	            index += 2;
 	        }
-	        if(CheckNSWE(NSWE,x,y,tx,ty)) return tempz;
+	        if(checkNSWE(NSWE,x,y,tx,ty)) return tempz;
 	        else return Double.MIN_VALUE;
 	    }
 	}
@@ -949,7 +949,7 @@ public class GeoEngine extends GeoData
 	 * @param tz
 	 * @return True if Char can see target
 	 */
-	private static boolean NLOS(int x, int y, int z, int inc_x, int inc_y, int tz, boolean debug)
+	private static boolean nLOS(int x, int y, int z, int inc_x, int inc_y, int tz, boolean debug)
 	{
 	    short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
@@ -959,11 +959,11 @@ public class GeoEngine extends GeoData
 	    
 		int index;
 		//Geodata without index - it is just empty so index can be calculated on the fly
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		if(_geodataIndex.get(region) == null) index = ((blockX << 8) + blockY)*3;		
 		//Get Index for current block of current region geodata
-		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		else index = _geodataIndex.get(region).get(((blockX << 8))+(blockY));
 		//Buffer that Contains current Region GeoData
-		ByteBuffer geo = Geodata.get(region);
+		ByteBuffer geo = _geodata.get(region);
 		if(geo == null)
 		{
 			if(Config.DEBUG)
@@ -989,7 +989,7 @@ public class GeoEngine extends GeoData
 			height = (short)(height >> 1); //height / 2
 			if(debug) {
 				_log.warning("height:"+height+" z"+z);
-				if(!CheckNSWE(NSWE,x,y,x+inc_x,y+inc_y)) _log.warning("would block");
+				if(!checkNSWE(NSWE,x,y,x+inc_x,y+inc_y)) _log.warning("would block");
 			}
 			if(z - height > 50) return true; // this value is just an approximate
 	    }
@@ -1052,16 +1052,16 @@ public class GeoEngine extends GeoData
 	        if(!highestlayer)
 	        {
 	        	//a probable wall, there's movement block and layers above you
-	        	if(!CheckNSWE(NSWE,x,y,x+inc_x,y+inc_y)) // cannot move
+	        	if(!checkNSWE(NSWE,x,y,x+inc_x,y+inc_y)) // cannot move
 	        	{
 	        		// the height after 2 inc_x,inc_y
-	        		short nextheight = NgetHeight(x+2*inc_x,y+2*inc_y,z-50);
+	        		short nextheight = nGetHeight(x+2*inc_x,y+2*inc_y,z-50);
 	        		if(debug) 
 	        		{
-	        			_log.warning("0: z:"+z+" tz"+NgetHeight(x,y,z-60));
-	        			_log.warning("1: z:"+z+" tz"+NgetHeight(x+inc_x,y+inc_y,z-60));
-	        			_log.warning("2: z:"+z+" tz"+NgetHeight(x+2*inc_x,y+2*inc_y,z-60));
-	        			_log.warning("3: z:"+z+" tz"+NgetHeight(x+3*inc_x,y+3*inc_y,z-60));
+	        			_log.warning("0: z:"+z+" tz"+nGetHeight(x,y,z-60));
+	        			_log.warning("1: z:"+z+" tz"+nGetHeight(x+inc_x,y+inc_y,z-60));
+	        			_log.warning("2: z:"+z+" tz"+nGetHeight(x+2*inc_x,y+2*inc_y,z-60));
+	        			_log.warning("3: z:"+z+" tz"+nGetHeight(x+3*inc_x,y+3*inc_y,z-60));
 	        		}
 	        		// Probably a very thin fence (e.g. castle fences above artefact),
 	        		// where height instantly drops after 1-2 cells and layer ends. 
@@ -1074,7 +1074,7 @@ public class GeoEngine extends GeoData
 	        }
 	        else return true;
 	    }
-	    return CheckNSWE(NSWE,x,y,x+inc_x,y+inc_y);
+	    return checkNSWE(NSWE,x,y,x+inc_x,y+inc_y);
 	}
 	/**
 	 * @param x
@@ -1082,7 +1082,7 @@ public class GeoEngine extends GeoData
 	 * @param z
 	 * @return NSWE: 0-15
 	 */
-	private short NgetNSWE(int x, int y, int z)
+	private short nGetNSWE(int x, int y, int z)
 	{
 		short region = getRegionOffset(x,y);
 	    int blockX = getBlock(x);
@@ -1092,11 +1092,11 @@ public class GeoEngine extends GeoData
 
 		int index = 0;
 		//Geodata without index - it is just empty so index can be calculated on the fly
-		if(Geodata_index.get(region) == null) index = ((blockX << 8) + blockY)*3;		
+		if(_geodataIndex.get(region) == null) index = ((blockX << 8) + blockY)*3;		
 		//Get Index for current block of current region geodata
-		else index = Geodata_index.get(region).get(((blockX << 8))+(blockY));
+		else index = _geodataIndex.get(region).get(((blockX << 8))+(blockY));
 		//Buffer that Contains current Region GeoData
-		ByteBuffer geo = Geodata.get(region);
+		ByteBuffer geo = _geodata.get(region);
 		if(geo == null)
 		{
 			if(Config.DEBUG)
@@ -1163,29 +1163,29 @@ public class GeoEngine extends GeoData
 	 * @param ty
 	 * @return True if NSWE dont block given direction
 	 */
-	private static boolean CheckNSWE(short NSWE, int x, int y, int tx, int ty)
+	private static boolean checkNSWE(short NSWE, int x, int y, int tx, int ty)
     {
         //Check NSWE
 	    if(NSWE == 15)
 	       return true;
 	    if(tx > x)//E
 	    {
-	    	if ((NSWE & E) == 0)
+	    	if ((NSWE & _e) == 0)
 	            return false;
 	    }
 	    else if (tx < x)//W
 	    {
-	    	if ((NSWE & W) == 0)
+	    	if ((NSWE & _w) == 0)
 	            return false;
 	    }
 	    if (ty > y)//S
 	    {
-	    	if ((NSWE & S) == 0)
+	    	if ((NSWE & _s) == 0)
 	            return false;
 	    }
 	    else if (ty < y)//N
 	    {
-	    	if ((NSWE & N) == 0)
+	    	if ((NSWE & _n) == 0)
 	            return false;
 	    }
 	    return true;

@@ -25,8 +25,8 @@ public class QuestPcSpawnManager
 
     // =========================================================
     // Data Field
-    private static QuestPcSpawnManager _Instance;
-    private List<QuestPcSpawn> _PcSpawns = new FastList<QuestPcSpawn>();
+    private static QuestPcSpawnManager _instance;
+    private List<QuestPcSpawn> _pcSpawns = new FastList<QuestPcSpawn>();
     
     // =========================================================
     // Constructor
@@ -163,8 +163,8 @@ public class QuestPcSpawnManager
     /** Return global instance of QuestPcSpawnManager */
     public static final QuestPcSpawnManager getInstance()
     {
-        if (_Instance == null) _Instance = new QuestPcSpawnManager();
-        return _Instance;
+        if (_instance == null) _instance = new QuestPcSpawnManager();
+        return _instance;
     }
     
     /** Return quest pc spawn for specified player instance */
@@ -182,7 +182,7 @@ public class QuestPcSpawnManager
     /** Return all quest pc spawn */
     public List<QuestPcSpawn> getPcSpawns()
     {
-        if (_PcSpawns == null) _PcSpawns = new FastList<QuestPcSpawn>();
-        return _PcSpawns;
+        if (_pcSpawns == null) _pcSpawns = new FastList<QuestPcSpawn>();
+        return _pcSpawns;
     }
 }

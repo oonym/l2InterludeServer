@@ -16,9 +16,9 @@ public final class L2MercManagerInstance extends L2FolkInstance
 {
     //private static Logger _log = Logger.getLogger(L2MercManagerInstance.class.getName());
 
-    private static int Cond_All_False = 0;
-    private static int Cond_Busy_Because_Of_Siege = 1;
-    private static int Cond_Owner = 2;
+    private static final int COND_ALL_FALSE = 0;
+    private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
+    private static final int COND_OWNER = 2;
 
     public L2MercManagerInstance(int objectId, L2NpcTemplate template)
     {
@@ -42,10 +42,10 @@ public final class L2MercManagerInstance extends L2FolkInstance
         player.sendPacket(new ActionFailed());
 
         int condition = validateCondition(player);
-        if (condition <= Cond_All_False) return;
+        if (condition <= COND_ALL_FALSE) return;
 
-        if (condition == Cond_Busy_Because_Of_Siege) return;
-        else if (condition == Cond_Owner)
+        if (condition == COND_BUSY_BECAUSE_OF_SIEGE) return;
+        else if (condition == COND_OWNER)
         {
             StringTokenizer st = new StringTokenizer(command, " ");
             String actualCommand = st.nextToken(); // Get actual command
@@ -91,8 +91,8 @@ public final class L2MercManagerInstance extends L2FolkInstance
         String filename = "data/html/mercmanager/mercmanager-no.htm";
 
         int condition = validateCondition(player);
-        if (condition == Cond_Busy_Because_Of_Siege) filename = "data/html/mercmanager/mercmanager-busy.htm"; // Busy because of siege
-        else if (condition == Cond_Owner) // Clan owns castle
+        if (condition == COND_BUSY_BECAUSE_OF_SIEGE) filename = "data/html/mercmanager/mercmanager-busy.htm"; // Busy because of siege
+        else if (condition == COND_OWNER) // Clan owns castle
             filename = "data/html/mercmanager/mercmanager.htm"; // Owner message window
 
         NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -109,14 +109,14 @@ public final class L2MercManagerInstance extends L2FolkInstance
         {
             if (player.getClan() != null)
             {
-                if (getCastle().getSiege().getIsInProgress()) return Cond_Busy_Because_Of_Siege; // Busy because of siege
+                if (getCastle().getSiege().getIsInProgress()) return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
                 else if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
                 {
-                    if ((player.getClanPrivileges() & L2Clan.CP_CS_MERCENARIES) == L2Clan.CP_CS_MERCENARIES) return Cond_Owner;
+                    if ((player.getClanPrivileges() & L2Clan.CP_CS_MERCENARIES) == L2Clan.CP_CS_MERCENARIES) return COND_OWNER;
                 }
             }
         }
 
-        return Cond_All_False;
+        return COND_ALL_FALSE;
     }
 }

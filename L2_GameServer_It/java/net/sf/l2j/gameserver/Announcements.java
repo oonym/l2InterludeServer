@@ -51,7 +51,7 @@ public class Announcements
 	
 	private static Announcements _instance;
 	private List<String> _announcements = new FastList<String>();
-	private List<List<Object>> eventAnnouncements = new FastList<List<Object>>();
+	private List<List<Object>> _eventAnnouncements = new FastList<List<Object>>();
 
 	public Announcements()
 	{
@@ -91,9 +91,9 @@ public class Announcements
 			activeChar.sendPacket(cs);
 		}
 		
-		for (int i = 0; i < eventAnnouncements.size(); i++)
+		for (int i = 0; i < _eventAnnouncements.size(); i++)
 		{
-		    List<Object> entry   = eventAnnouncements.get(i);
+		    List<Object> entry   = _eventAnnouncements.get(i);
             
             DateRange validDateRange  = (DateRange)entry.get(0);
             String[] msg              = (String[])entry.get(1);
@@ -117,7 +117,7 @@ public class Announcements
 	    List<Object> entry = new FastList<Object>();
 	    entry.add(validDateRange);
 	    entry.add(msg);
-	    eventAnnouncements.add(entry);
+	    _eventAnnouncements.add(entry);
 	}
 	
 	public void listAnnouncements(L2PcInstance activeChar)

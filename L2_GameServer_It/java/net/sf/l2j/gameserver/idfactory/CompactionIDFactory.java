@@ -69,7 +69,7 @@ public class CompactionIDFactory extends IdFactory
             }
             _curOID++;
             _log.config("IdFactory: Next usable Object ID is: " + _curOID);
-            initialized = true;
+            _initialized = true;
         }
         catch (Exception e1)
         {
@@ -94,7 +94,7 @@ public class CompactionIDFactory extends IdFactory
         // check these IDs not present in DB
         if (Config.BAD_ID_CHECKING)
         {
-        for (String check : id_checks)
+        for (String check : ID_CHECKS)
         {
             PreparedStatement ps = con.prepareStatement(check);
             ps.setInt(1, _curOID);
@@ -117,7 +117,7 @@ public class CompactionIDFactory extends IdFactory
         {
             id = tmp_obj_ids[N - i];
             System.out.println("Compacting DB object ID=" + id + " into " + (_curOID));
-            for (String update : id_updates)
+            for (String update : ID_UPDATES)
             {
                 PreparedStatement ps = con.prepareStatement(update);
                 ps.setInt(1, _curOID);

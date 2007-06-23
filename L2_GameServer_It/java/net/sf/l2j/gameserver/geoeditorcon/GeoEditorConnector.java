@@ -41,8 +41,8 @@ public class GeoEditorConnector
 	
 	private List<L2PcInstance> _gmList = new ArrayList<L2PcInstance>();
 	
-	int RegionX;
-	int RegionY;
+	private int _regionX;
+	private int _regionY;
 	
 	private GeoEditorConnector()
 	{
@@ -58,8 +58,8 @@ public class GeoEditorConnector
 
 			return;
 		}
-		RegionX = getRegionX(gm);
-		RegionY = getRegionY(gm);
+		_regionX = getRegionX(gm);
+		_regionY = getRegionY(gm);
 		
 		_gmList.add(gm);
 		
@@ -91,9 +91,9 @@ public class GeoEditorConnector
 			gm.sendMessage("You are already on the list.");
 			return;
 		}
-		if(getRegionX(gm) != RegionX || getRegionY(gm) != RegionY)
+		if(getRegionX(gm) != _regionX || getRegionY(gm) != _regionY)
 		{
-			gm.sendMessage("Only people from region: ["+RegionX+","+RegionY+"] can join.");
+			gm.sendMessage("Only people from region: ["+_regionX+","+_regionY+"] can join.");
 			return;
 		}
 		_gmList.add(gm);

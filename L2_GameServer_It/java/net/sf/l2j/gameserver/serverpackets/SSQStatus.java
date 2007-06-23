@@ -47,12 +47,12 @@ public class SSQStatus extends L2GameServerPacket
     private static Logger _log = Logger.getLogger(SSQStatus.class.getName());
 
     private static final String _S__F5_SSQStatus = "[S] F5 RecordUpdate";
-    private L2PcInstance _player;
+    private L2PcInstance _activevChar;
     private int _page;
 
     public SSQStatus(L2PcInstance player, int recordPage)
     {
-        _player = player;
+    	_activevChar = player;
         _page = recordPage;
     }
 
@@ -106,11 +106,11 @@ public class SSQStatus extends L2GameServerPacket
                         break;
                 }
 
-                writeC(SevenSigns.getInstance().getPlayerCabal(_player));
-                writeC(SevenSigns.getInstance().getPlayerSeal(_player));
+                writeC(SevenSigns.getInstance().getPlayerCabal(_activevChar));
+                writeC(SevenSigns.getInstance().getPlayerSeal(_activevChar));
 
-                writeD(SevenSigns.getInstance().getPlayerStoneContrib(_player)); // Seal Stones Turned-In
-                writeD(SevenSigns.getInstance().getPlayerAdenaCollect(_player)); // Ancient Adena to Collect
+                writeD(SevenSigns.getInstance().getPlayerStoneContrib(_activevChar)); // Seal Stones Turned-In
+                writeD(SevenSigns.getInstance().getPlayerAdenaCollect(_activevChar)); // Ancient Adena to Collect
 
                 double dawnStoneScore = SevenSigns.getInstance().getCurrentStoneScore(SevenSigns.CABAL_DAWN);
                 int dawnFestivalScore = SevenSigns.getInstance().getCurrentFestivalScore(SevenSigns.CABAL_DAWN);

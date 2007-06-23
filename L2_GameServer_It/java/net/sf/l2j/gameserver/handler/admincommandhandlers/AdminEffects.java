@@ -54,7 +54,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
 */
 public class AdminEffects implements IAdminCommandHandler
 {
-   private static String[] _adminCommands = { "admin_invis", "admin_invisible", "admin_vis",
+   private static final String[] ADMIN_COMMANDS = { "admin_invis", "admin_invisible", "admin_vis",
                                               "admin_visible", "admin_earthquake", "admin_bighead", "admin_shrinkhead", "admin_gmspeed", 
                                               "admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", "admin_polyself",
                                               "admin_unpolyself", "admin_changename", "admin_clearteams", "admin_setteam_close", "admin_setteam",
@@ -403,7 +403,7 @@ public class AdminEffects implements IAdminCommandHandler
                         L2PcInstance player = L2World.getInstance().getPlayer(target);
                         if (player != null)
                         {
-                            if (perform_social(social,player))
+                            if (performSocial(social,player))
                                 activeChar.sendMessage(player.getName()+" was affected by your request.");
                         }
                         else
@@ -413,7 +413,7 @@ public class AdminEffects implements IAdminCommandHandler
                                 int radius = Integer.parseInt(target);
                                 for (L2Object object : activeChar.getKnownList().getKnownObjects().values())
                                    if (activeChar.isInsideRadius(object, radius, false, false))
-                                       perform_social(social,object);
+                                       performSocial(social,object);
                                 activeChar.sendMessage(radius+ " units radius affected by your request.");
                             }
                             catch (NumberFormatException nbe)
@@ -429,7 +429,7 @@ public class AdminEffects implements IAdminCommandHandler
                         obj = activeChar;
                     if (obj != null) 
                     {
-                        if (perform_social(social,obj))
+                        if (performSocial(social,obj))
                              activeChar.sendMessage(obj.getName()+ " was affected by your request.");
                     }
                     else
@@ -478,7 +478,7 @@ public class AdminEffects implements IAdminCommandHandler
        return true;
    }
    
-   private boolean perform_social(int action, L2Object target)
+   private boolean performSocial(int action, L2Object target)
    {
        try
        {
@@ -498,7 +498,7 @@ public class AdminEffects implements IAdminCommandHandler
 
    public String[] getAdminCommandList()
    {
-       return _adminCommands;
+       return ADMIN_COMMANDS;
    }
 
    private boolean checkLevel(int level)

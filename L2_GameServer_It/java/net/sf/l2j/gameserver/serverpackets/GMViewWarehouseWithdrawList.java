@@ -36,18 +36,17 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 	private static Logger _log = Logger.getLogger(GMViewWarehouseWithdrawList.class.getName());
 	private static final String _S__95_GMViewWarehouseWithdrawList = "[S] 95 GMViewWarehouseWithdrawList";
 	private L2ItemInstance[] _items;
-	@SuppressWarnings("unused")
     private String _playerName;
-    private L2PcInstance _cha;
+    private L2PcInstance _activeChar;
     private int _money;
 
 	public GMViewWarehouseWithdrawList(L2PcInstance cha)
 	{
-        _cha  = cha;
+		_activeChar  = cha;
         
-		_items = _cha.getWarehouse().getItems();
-		_playerName = _cha.getName();
-        _money = _cha.getAdena();
+		_items = _activeChar.getWarehouse().getItems();
+		_playerName = _activeChar.getName();
+        _money = _activeChar.getAdena();
         
         if (Config.DEBUG)
         {

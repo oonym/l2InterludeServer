@@ -27,16 +27,16 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class StopMoveInVehicle  extends L2GameServerPacket
 {
 
-	private L2PcInstance _pci;
-	private int _boatid;
+	private L2PcInstance _activeChar;
+	private int _boatId;
 	/**
 	 * @param player
 	 * @param boatid 
 	 */
 	public StopMoveInVehicle(L2PcInstance player, int boatid)
 	{
-		_pci = player;
-		_boatid = boatid;
+		_activeChar = player;
+		_boatId = boatid;
 	}
 
 	/* (non-Javadoc)
@@ -46,12 +46,12 @@ public class StopMoveInVehicle  extends L2GameServerPacket
 	protected void writeImpl()
 	{		
 		writeC(0x72);
-		writeD(_pci.getObjectId());
-		writeD(_boatid);
-		writeD(_pci.getInBoatPosition().getX());
-		writeD(_pci.getInBoatPosition().getY());
-		writeD(_pci.getInBoatPosition().getZ());
-		writeD(_pci.getPosition().getHeading());
+		writeD(_activeChar.getObjectId());
+		writeD(_boatId);
+		writeD(_activeChar.getInBoatPosition().getX());
+		writeD(_activeChar.getInBoatPosition().getY());
+		writeD(_activeChar.getInBoatPosition().getZ());
+		writeD(_activeChar.getPosition().getHeading());
 	}
 
 	/* (non-Javadoc)

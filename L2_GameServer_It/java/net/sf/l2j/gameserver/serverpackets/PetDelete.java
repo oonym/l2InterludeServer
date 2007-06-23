@@ -24,19 +24,19 @@ public class PetDelete extends L2GameServerPacket
 {
 	private static final String _S__CF_PETDELETE = "[S] b6 PetDelete";
 	private int _petId;
-	private int _petnum;
+	private int _petObjId;
 	
-	public PetDelete(int petId, int petnum)
+	public PetDelete(int petId, int petObjId)
 	{
 		_petId = petId;		// summonType?
-		_petnum= petnum;	//objectId
+		_petObjId= petObjId;	//objectId
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0xb6);
 		writeD(_petId);// dont really know what these two are since i never needed them
-		writeD(_petnum);//objectId
+		writeD(_petObjId);//objectId
 	}
 	
 	public String getType()

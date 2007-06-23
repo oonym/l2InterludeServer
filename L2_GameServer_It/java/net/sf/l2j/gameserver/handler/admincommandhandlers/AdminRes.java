@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 public class AdminRes implements IAdminCommandHandler 
 {
 	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
-	private static String[] _adminCommands = {"admin_res", "admin_res_monster"};
+	private static final String[] ADMIN_COMMANDS = {"admin_res", "admin_res_monster"};
 	private static final int REQUIRED_LEVEL = Config.GM_RES;
 	
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
@@ -66,7 +66,7 @@ public class AdminRes implements IAdminCommandHandler
 	
 	public String[] getAdminCommandList() 
 	{
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) 

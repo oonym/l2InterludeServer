@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 public class AdminPForge implements IAdminCommandHandler
 {
     //private static Logger _log = Logger.getLogger(AdminKick.class.getName());
-    private static String[] _adminCommands = {"admin_forge","admin_forge2","admin_forge3" };
+    private static final String[] ADMIN_COMMANDS = {"admin_forge","admin_forge2","admin_forge3" };
     private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
 
@@ -230,7 +230,7 @@ public class AdminPForge implements IAdminCommandHandler
         activeChar.sendPacket(adminReply); 
 	}
     public String[] getAdminCommandList() {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
     
     private boolean checkLevel(int level) {

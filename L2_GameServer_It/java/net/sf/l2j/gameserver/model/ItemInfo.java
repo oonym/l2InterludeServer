@@ -26,35 +26,35 @@ import net.sf.l2j.gameserver.templates.L2Item;
 public class ItemInfo
 {
     /** Identifier of the L2ItemInstance */
-    int _objectId;
+    private int _objectId;
     
     /** The L2Item template of the L2ItemInstance */
-	L2Item _item;
+    private L2Item _item;
     
     /** The level of enchant on the L2ItemInstance */
-	int _enchant;
+    private int _enchant;
 	
 	/** The augmentation of the item */
-	int _augmentation;
+    private int _augmentation;
     
     /** The quantity of L2ItemInstance */
-	int _count;
+    private int _count;
     
     /** The price of the L2ItemInstance */
-	int _price;
+    private int _price;
     
     /** The custom L2ItemInstance types (used loto, race tickets) */
-	int _type1;
-	int _type2;
+    private int _type1;
+    private int _type2;
     
     /** If True the L2ItemInstance is equipped */
-	int _equipped;
+    private int _equipped;
     
     /** The action to do clientside (1=ADD, 2=MODIFY, 3=REMOVE) */
-	int _change;
+    private int _change;
 	
 	/** The mana of this item */
-	int _mana;
+    private int _mana;
 
 
     /**

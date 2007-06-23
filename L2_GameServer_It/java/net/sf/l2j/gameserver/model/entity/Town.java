@@ -29,19 +29,19 @@ public class Town
 {
 	// =========================================================
     // Data Field
-    private int _CastleIndex                    = 0;    // This is the index of the castle controling over this town
-    private String _Name                        = "";
-    private int _RedirectToTownId               = 0;    // This is the id of the town to redirect players to
+    private int _castleIndex                    = 0;    // This is the index of the castle controling over this town
+    private String _name                        = "";
+    private int _redirectToTownId               = 0;    // This is the id of the town to redirect players to
     //private double _TaxRate                     = 0;    // This is the town's local tax rate used by merchant
-    private int _TownId                         = 0;
-    private List<int[]> _Spawn;
-    private Zone _Zone;
+    private int _townId                         = 0;
+    private List<int[]> _spawn;
+    private Zone _zone;
 
 	// =========================================================
 	// Constructor
 	public Town(int townId)
 	{
-		_TownId = townId;
+		_townId = townId;
         loadData();
 	}
 
@@ -61,22 +61,22 @@ public class Town
         Zone zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Town), getTownId());
         if (zone != null)
         {
-            _CastleIndex    = CastleManager.getInstance().getCastleIndex(zone.getTaxById());
-            _Name           = zone.getName();
+            _castleIndex    = CastleManager.getInstance().getCastleIndex(zone.getTaxById());
+            _name           = zone.getName();
         }
         
         switch (getTownId())
         {
-            case 7: _RedirectToTownId = 5;break;      // Gludio => Gludin
-            case 8: _RedirectToTownId = 7;break;      // Dion => Gludio
-            case 9: _RedirectToTownId = 11;break;      // Giran => HV (should be Giran Harbor, but its not a zone town "yet")
-            case 10: _RedirectToTownId = 11;break;    // Oren => HV
-            case 12: _RedirectToTownId = 10;break;    // Aden => Oren
-            case 13: _RedirectToTownId = 14;break;    // Goddard => Rune
-            case 14: _RedirectToTownId = 13;break;    // Rune => Goddard
-            case 15: _RedirectToTownId = 16;break;      // Heine => Floran (should be Giran Harbor, but its not a zone town "yet")
-            case 17: _RedirectToTownId = 14;break;    // Shuttgart => Rune
-            default: _RedirectToTownId = 9;break; // Have to use another town here, else we cause a stack overflow :D 
+            case 7: _redirectToTownId = 5;break;      // Gludio => Gludin
+            case 8: _redirectToTownId = 7;break;      // Dion => Gludio
+            case 9: _redirectToTownId = 11;break;      // Giran => HV (should be Giran Harbor, but its not a zone town "yet")
+            case 10: _redirectToTownId = 11;break;    // Oren => HV
+            case 12: _redirectToTownId = 10;break;    // Aden => Oren
+            case 13: _redirectToTownId = 14;break;    // Goddard => Rune
+            case 14: _redirectToTownId = 13;break;    // Rune => Goddard
+            case 15: _redirectToTownId = 16;break;      // Heine => Floran (should be Giran Harbor, but its not a zone town "yet")
+            case 17: _redirectToTownId = 14;break;    // Shuttgart => Rune
+            default: _redirectToTownId = 9;break; // Have to use another town here, else we cause a stack overflow :D 
        }
     }
 	
@@ -84,31 +84,31 @@ public class Town
 	// Proeprty
     public final Castle getCastle()
     {
-        if (_CastleIndex >= 0) return CastleManager.getInstance().getCastles().get(_CastleIndex);
+        if (_castleIndex >= 0) return CastleManager.getInstance().getCastles().get(_castleIndex);
         return null;
     }
 
-    public final String getName() { return _Name; }
+    public final String getName() { return _name; }
 
     public final List<int[]> getSpawn()
     {
         // If a redirect to town id is avail, town belongs to a castle, and castle is under siege then redirect
-        //if (_RedirectToTownId != getTownId() && getCastle() != null && getCastle().getSiege().getIsInProgress()) return TownManager.getInstance().getTown(_RedirectToTownId).getSpawn();
-       // if (_RedirectToTownId != getTownId() && getCastle() != null && getCastle().getSiege().getIsInProgress())
+        //if (_redirectToTownId != getTownId() && getCastle() != null && getCastle().getSiege().getIsInProgress()) return TownManager.getInstance().getTown(_redirectToTownId).getSpawn();
+       // if (_redirectToTownId != getTownId() && getCastle() != null && getCastle().getSiege().getIsInProgress())
     	if(TownManager.getInstance().townHasCastleInSeige(getTownId()))
-        	return TownManager.getInstance().getTown(_RedirectToTownId).getSpawn();
+        	return TownManager.getInstance().getTown(_redirectToTownId).getSpawn();
 
-        if (_Spawn == null) _Spawn = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.TownSpawn), getName()).getCoords();
-        return _Spawn;
+        if (_spawn == null) _spawn = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.TownSpawn), getName()).getCoords();
+        return _spawn;
     }
 
-    public final int getRedirectToTownId() { return _RedirectToTownId; }
+    public final int getRedirectToTownId() { return _redirectToTownId; }
 
-    public final int getTownId() { return _TownId; }
+    public final int getTownId() { return _townId; }
 
     public final Zone getZone()
     {
-        if (_Zone == null) _Zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Town), getName());
-        return _Zone;
+        if (_zone == null) _zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Town), getName());
+        return _zone;
     }
 }

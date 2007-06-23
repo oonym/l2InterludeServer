@@ -37,9 +37,9 @@ public class FishTable
 	private static Logger _log = Logger.getLogger(SkillTreeTable.class.getName());
 	private static final FishTable _instance = new FishTable();
 
-	private static List<FishData> _Fishs_Normal;
-	private static List<FishData> _Fishs_Easy;
-	private static List<FishData> _Fishs_Hard;
+	private static List<FishData> _fishsNormal;
+	private static List<FishData> _fishsEasy;
+	private static List<FishData> _fishsHard;
 
 	public static FishTable getInstance()
 	{
@@ -53,9 +53,9 @@ public class FishTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			_Fishs_Easy = new FastList<FishData>();
-			_Fishs_Normal = new FastList<FishData>();
-			_Fishs_Hard = new FastList<FishData>();
+			_fishsEasy = new FastList<FishData>();
+			_fishsNormal = new FastList<FishData>();
+			_fishsHard = new FastList<FishData>();
 			FishData fish;
 			PreparedStatement statement = con.prepareStatement("SELECT id, level, name, hp, hpregen, fish_type, fish_group, fish_guts, guts_check_time, wait_time, combat_time FROM fish ORDER BY id");
 			ResultSet Fishes = statement.executeQuery();
@@ -76,18 +76,18 @@ public class FishTable
 					fish = new FishData(id, lvl, name, hp, hpreg, type, group, fish_guts, guts_check_time, wait_time, combat_time);
 					switch (fish.getGroup()) {
 						case 0:
-							_Fishs_Easy.add(fish);
+							_fishsEasy.add(fish);
 							break;
 						case 1:
-							_Fishs_Normal.add(fish);
+							_fishsNormal.add(fish);
 							break;
 						case 2:
-							_Fishs_Hard.add(fish);
+							_fishsHard.add(fish);
 					}
 				}
 				Fishes.close();
 				statement.close();
-                count = _Fishs_Easy.size() + _Fishs_Normal.size() + _Fishs_Hard.size();
+                count = _fishsEasy.size() + _fishsNormal.size() + _fishsHard.size();
 		}
 		catch (Exception e)
 		{
@@ -111,13 +111,13 @@ public class FishTable
 		List<FishData> _Fishs = null;
 		switch (group) {
 			case 0:
-				_Fishs = _Fishs_Easy;
+				_Fishs = _fishsEasy;
 				break;
 			case 1:
-				_Fishs = _Fishs_Normal;
+				_Fishs = _fishsNormal;
 				break;
 			case 2:
-				_Fishs = _Fishs_Hard;
+				_Fishs = _fishsHard;
 		}
 		if (_Fishs == null)
 		{

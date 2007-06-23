@@ -411,7 +411,7 @@ public class ClanTable
         //clan2.broadcastToOnlineMembers(msg);
     }
     
-    public void CheckSurrender(L2Clan clan1, L2Clan clan2)
+    public void checkSurrender(L2Clan clan1, L2Clan clan2)
     {
         int count = 0;
         for(L2ClanMember player: clan1.getMembers())

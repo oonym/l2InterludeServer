@@ -252,7 +252,7 @@ public class RegionBBSManager extends BaseBBSManager
 		}
 		
 	}
-	private static RegionBBSManager _Instance = null;
+	private static RegionBBSManager _instance = null;
 	private int _onlineCount = 0;
 	private int _onlineCountGm = 0; 
 	private static FastMap<Integer, FastList<L2PcInstance>> _onlinePlayers = new FastMap<Integer, FastList<L2PcInstance>>().setShared(true);
@@ -262,11 +262,11 @@ public class RegionBBSManager extends BaseBBSManager
 	 */
 	public static RegionBBSManager getInstance()
 	{
-		if(_Instance == null)
+		if(_instance == null)
 		{
-			_Instance = new RegionBBSManager();
+			_instance = new RegionBBSManager();
 		}
-		return _Instance;
+		return _instance;
 	}	
 	
 	public synchronized void changeCommunityBoard()
@@ -352,7 +352,7 @@ public class RegionBBSManager extends BaseBBSManager
 	        htmlCode.append("<table>");
 	
 	        htmlCode.append(trOpen);
-	        htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.DateTimeServerStarted.getTime() + tdClose);
+	        htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.dateTimeServerStarted.getTime() + tdClose);
 	        htmlCode.append(trClose);
 
 	        htmlCode.append("</table>");
@@ -465,7 +465,7 @@ public class RegionBBSManager extends BaseBBSManager
 	        htmlCode.append("<table>");
 	
 	        htmlCode.append(trOpen);
-	        htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.DateTimeServerStarted.getTime() + tdClose);
+	        htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.dateTimeServerStarted.getTime() + tdClose);
 	        htmlCode.append(trClose);
 
 	        htmlCode.append("</table>");

@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public final class ConditionUsingItemType extends Condition {
 
-	final int _mask;
+	private final int _mask;
 	
 	public ConditionUsingItemType(int mask)
 	{
@@ -39,9 +39,9 @@ public final class ConditionUsingItemType extends Condition {
 	
 	public boolean testImpl(Env env)
 	{
-		if (!(env._player instanceof L2PcInstance))
+		if (!(env.player instanceof L2PcInstance))
 			return false;
-		Inventory inv = ((L2PcInstance)env._player).getInventory();
+		Inventory inv = ((L2PcInstance)env.player).getInventory();
 		return (_mask & inv.getWearedMask()) != 0;
 	}
 }

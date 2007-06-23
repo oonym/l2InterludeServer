@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.util.logging.Logger;
 
 /**
  * @author zabbix
@@ -26,7 +25,7 @@ import java.util.logging.Logger;
  */
 public final class DummyPacket extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(DummyPacket.class.getName());
+	//private static Logger _log = Logger.getLogger(DummyPacket.class.getName());
 	
 	protected void readImpl()
 	{

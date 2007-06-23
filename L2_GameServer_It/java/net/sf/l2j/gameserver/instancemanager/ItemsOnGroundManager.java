@@ -44,7 +44,7 @@ import net.sf.l2j.gameserver.templates.L2EtcItemType;
 public class ItemsOnGroundManager
 {
     static final Logger _log = Logger.getLogger(ItemsOnGroundManager.class.getName());    
-    private static ItemsOnGroundManager _Instance;
+    private static ItemsOnGroundManager _instance;
     protected List<L2ItemInstance> _items = null;
 
     private ItemsOnGroundManager()
@@ -57,12 +57,12 @@ public class ItemsOnGroundManager
 
     public static final ItemsOnGroundManager getInstance()
     {
-        if (_Instance == null)
+        if (_instance == null)
         {
-            _Instance = new ItemsOnGroundManager();
-            _Instance.load();
+            _instance = new ItemsOnGroundManager();
+            _instance.load();
         }
-        return _Instance;
+        return _instance;
     }
 
     private void load()
@@ -160,7 +160,7 @@ public class ItemsOnGroundManager
         	emptyTable();
     }
 
-    public void Save(L2ItemInstance item)
+    public void save(L2ItemInstance item)
     {
         if(!Config.SAVE_DROPPED_ITEM) return;
         _items.add(item);

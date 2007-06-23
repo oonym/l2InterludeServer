@@ -55,27 +55,27 @@ public class Castle
 
 	// =========================================================
     // Data Field
-	private int _CastleId                      = 0;
-	private List<L2DoorInstance> _Doors        = new FastList<L2DoorInstance>();
-	private List<String> _DoorDefault          = new FastList<String>();
-	private String _Name                       = "";
-	private int _OwnerId                       = 0;
-	private Siege _Siege                       = null;
-	private Calendar _SiegeDate;
-	private int _SiegeDayOfWeek                = 7; // Default to saturday
-	private int _SiegeHourOfDay                = 20; // Default to 8 pm server time
-	private int _TaxPercent                    = 0;
-	private double _TaxRate                    = 0;
-	private int _Treasury                      = 0;
-    private Zone _Zone;
-    private List<Zone> _ZoneTown;
+	private int _castleId                      = 0;
+	private List<L2DoorInstance> _doors        = new FastList<L2DoorInstance>();
+	private List<String> _doorDefault          = new FastList<String>();
+	private String _name                       = "";
+	private int _ownerId                       = 0;
+	private Siege _siege                       = null;
+	private Calendar _siegeDate;
+	private int _siegeDayOfWeek                = 7; // Default to saturday
+	private int _siegeHourOfDay                = 20; // Default to 8 pm server time
+	private int _taxPercent                    = 0;
+	private double _taxRate                    = 0;
+	private int _treasury                      = 0;
+    private Zone _zone;
+    private List<Zone> _zoneTown;
     private L2Clan _formerOwner				   = null;
 
 	// =========================================================
 	// Constructor
 	public Castle(int castleId)
 	{
-		_CastleId = castleId;
+		_castleId = castleId;
         this.load();
 		this.loadDoor();
 	}
@@ -88,7 +88,7 @@ public class Castle
 	{
         if (getOwnerId() <= 0) return;
 
-        if (_Name.equalsIgnoreCase("Schuttgart") || _Name.equalsIgnoreCase("Goddard"))
+        if (_name.equalsIgnoreCase("Schuttgart") || _name.equalsIgnoreCase("Goddard"))
         {
         	Castle rune = CastleManager.getInstance().getCastle("rune");
         	if (rune != null )
@@ -98,7 +98,7 @@ public class Castle
         		amount -= runeTax;
         	}
         }
-        if (!_Name.equalsIgnoreCase("aden") && !_Name.equalsIgnoreCase("Rune") && !_Name.equalsIgnoreCase("Schuttgart") && !_Name.equalsIgnoreCase("Goddard"))    // If current castle instance is not Aden, Rune, Goddard or Schuttgart.
+        if (!_name.equalsIgnoreCase("aden") && !_name.equalsIgnoreCase("Rune") && !_name.equalsIgnoreCase("Schuttgart") && !_name.equalsIgnoreCase("Goddard"))    // If current castle instance is not Aden, Rune, Goddard or Schuttgart.
         {
             Castle aden = CastleManager.getInstance().getCastle("aden");
             if (aden != null)
@@ -110,7 +110,7 @@ public class Castle
             }
         }
 	    
-	    _Treasury += amount; // Add to the current treasury total.  Use "-" to substract from treasury
+	    _treasury += amount; // Add to the current treasury total.  Use "-" to substract from treasury
 	    
         java.sql.Connection con = null;
         try
@@ -242,8 +242,8 @@ public class Castle
 	        return;
 	    }
 	    
-        _TaxPercent = taxPercent;
-        _TaxRate = _TaxPercent / 100.0;
+        _taxPercent = taxPercent;
+        _taxRate = _taxPercent / 100.0;
 
         java.sql.Connection con = null;
         try
@@ -280,7 +280,7 @@ public class Castle
             if (door.getCurrentHp() <= 0)
             {
                 door.decayMe();	// Kill current if not killed already
-                door = DoorTable.parseList(_DoorDefault.get(i));
+                door = DoorTable.parseList(_doorDefault.get(i));
                 if (isDoorWeak)
                     door.setCurrentHp(door.getMaxHp() / 2);
     			door.spawnMe(door.getX(), door.getY(),door.getZ());
@@ -327,27 +327,27 @@ public class Castle
 
             while (rs.next())
             {
-        	    _Name = rs.getString("name");
+        	    _name = rs.getString("name");
         	    //_OwnerId = rs.getInt("ownerId");
 
-        	    _SiegeDate = Calendar.getInstance();
-        	    _SiegeDate.setTimeInMillis(rs.getLong("siegeDate"));
+        	    _siegeDate = Calendar.getInstance();
+        	    _siegeDate.setTimeInMillis(rs.getLong("siegeDate"));
         	    
-        	    _SiegeDayOfWeek = rs.getInt("siegeDayOfWeek");
-        	    if (_SiegeDayOfWeek < 1 || _SiegeDayOfWeek > 7)
-        	        _SiegeDayOfWeek = 7;
+        	    _siegeDayOfWeek = rs.getInt("siegeDayOfWeek");
+        	    if (_siegeDayOfWeek < 1 || _siegeDayOfWeek > 7)
+        	        _siegeDayOfWeek = 7;
 
-        	    _SiegeHourOfDay = rs.getInt("siegeHourOfDay");
-        	    if (_SiegeHourOfDay < 0 || _SiegeHourOfDay > 23)
-        	        _SiegeHourOfDay = 20;
+        	    _siegeHourOfDay = rs.getInt("siegeHourOfDay");
+        	    if (_siegeHourOfDay < 0 || _siegeHourOfDay > 23)
+        	        _siegeHourOfDay = 20;
 
-        	    _TaxPercent = rs.getInt("taxPercent");
-        	    _Treasury = rs.getInt("treasury");
+        	    _taxPercent = rs.getInt("taxPercent");
+        	    _treasury = rs.getInt("treasury");
             }
 
             statement.close();
 
-            _TaxRate = _TaxPercent / 100.0;
+            _taxRate = _taxPercent / 100.0;
 
             statement = con.prepareStatement("Select clan_id from clan_data where hasCastle = ?");
             statement.setInt(1, getCastleId());
@@ -355,7 +355,7 @@ public class Castle
 
             while (rs.next())
             {
-        	    _OwnerId = rs.getInt("clan_id");
+        	    _ownerId = rs.getInt("clan_id");
             }
 
             if (getOwnerId() > 0)
@@ -388,7 +388,7 @@ public class Castle
             while (rs.next())
             {
                 // Create list of the door default for use when respawning dead doors
-                _DoorDefault.add(rs.getString("name") 
+                _doorDefault.add(rs.getString("name") 
                         + ";" + rs.getInt("id") 
                         + ";" + rs.getInt("x") 
                         + ";" + rs.getInt("y") 
@@ -397,9 +397,9 @@ public class Castle
                         + ";" + rs.getInt("pDef") 
                         + ";" + rs.getInt("mDef"));
 
-                L2DoorInstance door = DoorTable.parseList(_DoorDefault.get(_DoorDefault.size() - 1));
+                L2DoorInstance door = DoorTable.parseList(_doorDefault.get(_doorDefault.size() - 1));
 				door.spawnMe(door.getX(), door.getY(),door.getZ());				
-                _Doors.add(door);
+                _doors.add(door);
             }
 
             statement.close();
@@ -485,9 +485,9 @@ public class Castle
 	private void updateOwnerInDB(L2Clan clan)
 	{
 		if (clan != null)
-		    _OwnerId = clan.getClanId();	// Update owner id property
+		    _ownerId = clan.getClanId();	// Update owner id property
 		else
-			_OwnerId = 0;					// Remove owner
+			_ownerId = 0;					// Remove owner
 
 	    java.sql.Connection con = null;
         try
@@ -535,7 +535,7 @@ public class Castle
 	// Proeprty
 	public final int getCastleId()
 	{
-		return _CastleId;
+		return _castleId;
 	}
 
 	public final L2DoorInstance getDoor(int doorId)
@@ -554,50 +554,50 @@ public class Castle
 
 	public final List<L2DoorInstance> getDoors()
 	{
-		return _Doors;
+		return _doors;
 	}
 
 	public final String getName()
 	{
-	    return _Name;
+	    return _name;
 	}
 
 	public final int getOwnerId()
 	{
-		return _OwnerId;
+		return _ownerId;
 	}
 
 	public final Siege getSiege()
 	{
-        if (_Siege == null) _Siege = new Siege(new Castle[] {this});
-		return _Siege;
+        if (_siege == null) _siege = new Siege(new Castle[] {this});
+		return _siege;
 	}
 
-	public final Calendar getSiegeDate() { return _SiegeDate; }
+	public final Calendar getSiegeDate() { return _siegeDate; }
 
-	public final int getSiegeDayOfWeek() { return _SiegeDayOfWeek; }
+	public final int getSiegeDayOfWeek() { return _siegeDayOfWeek; }
 
-	public final int getSiegeHourOfDay() { return _SiegeHourOfDay; }
+	public final int getSiegeHourOfDay() { return _siegeHourOfDay; }
 
 	public final int getTaxPercent()
 	{
-		return _TaxPercent;
+		return _taxPercent;
 	}
 
 	public final double getTaxRate()
 	{
-		return _TaxRate;
+		return _taxRate;
 	}
 
 	public final int getTreasury()
 	{
-		return _Treasury;
+		return _treasury;
 	}
 
     public final Zone getZone()
     {
-        if (_Zone == null) _Zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.CastleArea), getName());
-        return _Zone;
+        if (_zone == null) _zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.CastleArea), getName());
+        return _zone;
     }
 
     public final Zone getZoneTown(int id)
@@ -616,14 +616,14 @@ public class Castle
 
     public final List<Zone> getZoneTowns()
     {
-        if (_ZoneTown == null)
+        if (_zoneTown == null)
         {
-            _ZoneTown = new FastList<Zone>();
+            _zoneTown = new FastList<Zone>();
             // Add towns that belong to castle
             for (Zone zone: ZoneManager.getInstance().getZones(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Town)))
-                if (zone != null && zone.getTaxById() == getCastleId()) _ZoneTown.add(zone);
+                if (zone != null && zone.getTaxById() == getCastleId()) _zoneTown.add(zone);
         }
-        return _ZoneTown;
+        return _zoneTown;
     }
 
 

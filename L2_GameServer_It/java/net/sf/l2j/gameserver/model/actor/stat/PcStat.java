@@ -23,8 +23,8 @@ public class PcStat extends PlayableStat
     // =========================================================
     // Data Field
 
-    private int _OldMaxHp;      // stats watch
-    private int _OldMaxMp;      // stats watch
+    private int _oldMaxHp;      // stats watch
+    private int _oldMaxMp;      // stats watch
     
     // =========================================================
     // Constructor
@@ -272,9 +272,9 @@ public class PcStat extends PlayableStat
     {
         // Get the Max HP (base+modifier) of the L2PcInstance
         int val = super.getMaxHp();
-        if (val != _OldMaxHp)
+        if (val != _oldMaxHp)
         {
-            _OldMaxHp = val;
+            _oldMaxHp = val;
 
             // Launch a regen task if the new Max HP is higher than the old one
             if (getActiveChar().getStatus().getCurrentHp() != val) getActiveChar().getStatus().setCurrentHp(getActiveChar().getStatus().getCurrentHp()); // trigger start of regeneration
@@ -288,9 +288,9 @@ public class PcStat extends PlayableStat
         // Get the Max MP (base+modifier) of the L2PcInstance
         int val = super.getMaxMp();
         
-        if (val != _OldMaxMp)
+        if (val != _oldMaxMp)
         {
-            _OldMaxMp = val;
+            _oldMaxMp = val;
 
             // Launch a regen task if the new Max MP is higher than the old one
             if (getActiveChar().getStatus().getCurrentMp() != val) 

@@ -49,23 +49,23 @@ public class FaenorScriptEngine extends ScriptEngine
     public final static String PACKAGE_DIRECTORY = "data/script/";
     public final static boolean DEBUG = true;
 
-    private static FaenorScriptEngine instance;
+    private static FaenorScriptEngine _instance;
 
-    private LinkedList<ScriptDocument> scripts;
+    private LinkedList<ScriptDocument> _scripts;
 
     public static FaenorScriptEngine getInstance()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = new FaenorScriptEngine();
+            _instance = new FaenorScriptEngine();
         }
 
-        return instance;
+        return _instance;
     }
 
     private FaenorScriptEngine()
     {
-        scripts = new LinkedList<ScriptDocument>();
+        _scripts = new LinkedList<ScriptDocument>();
         loadPackages();
         parsePackages();
 
@@ -73,7 +73,7 @@ public class FaenorScriptEngine extends ScriptEngine
 
     public void reloadPackages()
     {
-        scripts = new LinkedList<ScriptDocument>();
+        _scripts = new LinkedList<ScriptDocument>();
         parsePackages();
     }
 
@@ -114,7 +114,7 @@ public class FaenorScriptEngine extends ScriptEngine
             List<ScriptDocument> scrpts = module.getScriptFiles();
             for (ScriptDocument script : scrpts)
             {
-                this.scripts.add(script);
+                this._scripts.add(script);
             }
 
         }
@@ -132,15 +132,15 @@ public class FaenorScriptEngine extends ScriptEngine
 
     public void orderScripts()
     {
-        if (scripts.size() > 1)
+        if (_scripts.size() > 1)
         {
             //ScriptDocument npcInfo = null;
 
-            for (int i = 0; i < scripts.size();)
+            for (int i = 0; i < _scripts.size();)
             {
-                if (scripts.get(i).getName().contains("NpcStatData"))
+                if (_scripts.get(i).getName().contains("NpcStatData"))
                 {
-                    scripts.addFirst(scripts.remove(i));
+                    _scripts.addFirst(_scripts.remove(i));
                     //scripts.set(i, scripts.get(0));
                     //scripts.set(0, npcInfo);
                 }
@@ -161,7 +161,7 @@ public class FaenorScriptEngine extends ScriptEngine
             context.eval("beanshell", "core", 0, 0,
                          "double pow(double d, double p) { return Math.pow(d,p); }");
 
-            for (ScriptDocument script : scripts)
+            for (ScriptDocument script : _scripts)
             {
                 parseScript(script, context);
                 //System.out.println(script.getName());
@@ -211,11 +211,11 @@ public class FaenorScriptEngine extends ScriptEngine
 
     public String toString()
     {
-        if (scripts.isEmpty()) return "No Packages Loaded.";
+        if (_scripts.isEmpty()) return "No Packages Loaded.";
 
         String out = "Script Packages currently loaded:\n";
 
-        for (ScriptDocument script : scripts)
+        for (ScriptDocument script : _scripts)
         {
             out += script;
         }

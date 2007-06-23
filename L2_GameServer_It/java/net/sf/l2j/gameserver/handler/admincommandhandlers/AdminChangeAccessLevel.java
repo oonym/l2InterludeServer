@@ -34,7 +34,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 {
     //private static Logger _log = Logger.getLogger(AdminChangeAccessLevel.class.getName());
 
-    private static String[] _adminCommands = { "admin_changelvl" };
+    private static final String[] ADMIN_COMMANDS = { "admin_changelvl" };
 
     private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
 
@@ -56,7 +56,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

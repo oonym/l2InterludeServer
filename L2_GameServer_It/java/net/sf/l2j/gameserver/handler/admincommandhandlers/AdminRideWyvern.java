@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminRideWyvern implements IAdminCommandHandler
 {
-    private static String[] _adminCommands = {
+    private static final String[] ADMIN_COMMANDS = {
         "admin_ride_wyvern",
         "admin_ride_strider",
         "admin_unride_wyvern",
@@ -39,7 +39,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
         "admin_unride",
     };
     private static final int REQUIRED_LEVEL = Config.GM_RIDER;
-    private int PetRideId;
+    private int _petRideId;
     
     public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         
@@ -55,10 +55,10 @@ public class AdminRideWyvern implements IAdminCommandHandler
                 return false;
             }
             if (command.startsWith("admin_ride_wyvern")) {
-            PetRideId = 12621;
+            	_petRideId = 12621;
             }
             else if (command.startsWith("admin_ride_strider")) {
-                PetRideId = 12526;
+            	_petRideId = 12526;
             }         
             else
             {
@@ -68,7 +68,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
                 return false;
             }
             if(!activeChar.disarmWeapons()) return false;
-            Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, PetRideId);
+            Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, _petRideId);
             activeChar.sendPacket(mount);
             activeChar.broadcastPacket(mount);
             activeChar.setMountType(mount.getMountType());
@@ -83,7 +83,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
     }
     
     public String[] getAdminCommandList() {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
     
     private boolean checkLevel(int level) {

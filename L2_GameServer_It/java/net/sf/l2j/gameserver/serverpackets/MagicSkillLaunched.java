@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class MagicSkillLaunched extends L2GameServerPacket
 {
 	private static final String _S__8E_MAGICSKILLLAUNCHED = "[S] 8E MagicSkillLaunched";
-	private int _chaId;
+	private int _charObjId;
 	private int _skillId;
 	private int _skillLevel;
 	private int _dat2;
@@ -43,7 +43,7 @@ public class MagicSkillLaunched extends L2GameServerPacket
 	
 	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel, L2Character target)
 	{
-		_chaId = cha.getObjectId();
+		_charObjId = cha.getObjectId();
 		_skillId = skillId;
 		_skillLevel = skillLevel;
 		_dat2 = 1;
@@ -52,7 +52,7 @@ public class MagicSkillLaunched extends L2GameServerPacket
 	
 	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel)
 	{
-		_chaId = cha.getObjectId();
+		_charObjId = cha.getObjectId();
 		_skillId = skillId;
 		_skillLevel = skillLevel;
 		_dat2 = 1;
@@ -62,7 +62,7 @@ public class MagicSkillLaunched extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x76);
-		writeD(_chaId);
+		writeD(_charObjId);
 		writeD(_skillId);
 		writeD(_skillLevel);
 		writeD(_dat2);  // failed or not

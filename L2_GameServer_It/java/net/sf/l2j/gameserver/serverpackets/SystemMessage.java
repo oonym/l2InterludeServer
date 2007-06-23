@@ -39,7 +39,7 @@ public class SystemMessage extends L2GameServerPacket
 	private int _messageId;
 	private Vector<Integer> _types = new Vector<Integer>();
 	private Vector<Object> _values = new Vector<Object>();
-	private int _SkillLvL = 1;
+	private int _skillLvL = 1;
 	
 	//PeaceZones
 	public static final int TARGET_IN_PEACEZONE = 85;
@@ -70,7 +70,7 @@ public class SystemMessage extends L2GameServerPacket
     public static final int S2_MP_HAS_BEEN_DRAINED_BY_S1 = 970;
     public static final int YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1 = 1867;
 
-    public static final int EARNED_S2_S1_s = 53;
+    public static final int EARNED_S2_S1_S = 53;
     public static final int EARNED_ITEM = 54;
 	public static final int EARNED_ADENA = 52;
 	public static final int DISSAPEARED_ITEM = 301;
@@ -122,7 +122,7 @@ public class SystemMessage extends L2GameServerPacket
 	public static final int S1_IS_NOT_ONLINE = 3;
 	
 	public static final int GETTING_READY_TO_SHOOT_AN_ARROW    =   41;
-	public static final int AVOIDED_S1s_ATTACK                 =   42;
+	public static final int AVOIDED_S1S_ATTACK                 =   42;
 	public static final int MISSED_TARGET                      =   43;
 	public static final int CRITICAL_HIT                       =   44;
 	public static final int CRITICAL_HIT_BY_PET                = 1017;
@@ -223,7 +223,7 @@ public class SystemMessage extends L2GameServerPacket
 	//private store & store
 	public static final int S1_PURCHASED_S2 = 378;
 	public static final int S1_PURCHASED_S2_S3 = 379;
-	public static final int S1_PURCHASED_S3_S2_s = 380;
+	public static final int S1_PURCHASED_S3_S2_S = 380;
 	public static final int PURCHASED_S2_FROM_S1 = 559;
 	public static final int PURCHASED_S2_S3_FROM_S1 =560;
 	public static final int	PURCHASED_S3_S2_s_FROM_S1 =561;
@@ -950,7 +950,7 @@ public class SystemMessage extends L2GameServerPacket
 	{
 		_types.add(new Integer(TYPE_SKILL_NAME));
 		_values.add(new Integer(id));
-		_SkillLvL = lvl;
+		_skillLvL = lvl;
         
         return this;
 	}
@@ -987,7 +987,7 @@ public class SystemMessage extends L2GameServerPacket
 				{
 					int t1 = ((Integer)_values.get(i)).intValue();
 					writeD(t1); // Skill Id
-					writeD(_SkillLvL); // Skill lvl
+					writeD(_skillLvL); // Skill lvl
 					break;
 				}
 				case TYPE_ZONE_NAME:

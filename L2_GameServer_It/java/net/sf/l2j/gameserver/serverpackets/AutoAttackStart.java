@@ -29,20 +29,20 @@ public class AutoAttackStart extends L2GameServerPacket
 	// dh
 	
 	private static final String _S__3B_AUTOATTACKSTART = "[S] 2B AutoAttackStart";
-	private int _targetId;
+	private int _targetObjId;
 
 	/**
 	 * @param _characters
 	 */
 	public AutoAttackStart(int targetId)
 	{
-		_targetId = targetId;
+		_targetObjId = targetId;
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x2b);
-		writeD(_targetId);
+		writeD(_targetObjId);
 	}
 
 	/* (non-Javadoc)

@@ -26,7 +26,7 @@ package net.sf.l2j.gameserver.serverpackets;
 public class SocialAction extends L2GameServerPacket
 {
 	private static final String _S__3D_SOCIALACTION = "[S] 2D SocialAction";
-	private int _playerId;
+	private int _charObjId;
 	private int _actionId;
 
 	/**
@@ -35,14 +35,14 @@ public class SocialAction extends L2GameServerPacket
 	 */
 	public SocialAction(int playerId, int actionId)
 	{
-		_playerId = playerId;
+		_charObjId = playerId;
 		_actionId = actionId;
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x2d);
-		writeD(_playerId);
+		writeD(_charObjId);
 		writeD(_actionId);
 	}
 

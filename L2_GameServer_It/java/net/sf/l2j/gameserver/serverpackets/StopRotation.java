@@ -28,19 +28,19 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class StopRotation extends L2GameServerPacket
 {
 	private static final String _S__78_STOPROTATION = "[S] 63 StopRotation";
-	private int _charId;
+	private int _charObjId;
 	private int _degree;
 	
 	public StopRotation(L2Character player, int degree)
 	{
-		_charId = player.getObjectId();
+		_charObjId = player.getObjectId();
 		_degree = degree;
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x63);
-		writeD(_charId);
+		writeD(_charObjId);
 		writeD(_degree);
 	}
 

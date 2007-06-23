@@ -30,7 +30,7 @@ public class GetOffVehicle extends L2GameServerPacket
 	private int _x;
 	private int _y;
 	private int _z;
-	private L2PcInstance _pci;
+	private L2PcInstance _activeChar;
 	private L2BoatInstance _boat;
 
 	/**
@@ -42,16 +42,16 @@ public class GetOffVehicle extends L2GameServerPacket
 	 */
 	public GetOffVehicle(L2PcInstance activeChar, L2BoatInstance boat, int x, int y, int z)
 	{
-		_pci = activeChar;
+		_activeChar = activeChar;
 		_boat = boat;
 		_x = x;
 		_y = y;
 		_z = z;
 		
-		if (_pci != null)
+		if (_activeChar != null)
 		{
-			_pci.setInBoat(false);
-			_pci.setBoat(null);
+			_activeChar.setInBoat(false);
+			_activeChar.setBoat(null);
 		}
 	}
 
@@ -61,10 +61,10 @@ public class GetOffVehicle extends L2GameServerPacket
 	@Override
 	protected void writeImpl()
 	{
-		if (_boat == null || _pci == null) return;
+		if (_boat == null || _activeChar == null) return;
 
 		writeC(0x5d);
-		writeD(_pci.getObjectId());
+		writeD(_activeChar.getObjectId());
 		writeD(_boat.getObjectId());
 		writeD(_x);
 		writeD(_y);

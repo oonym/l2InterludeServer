@@ -38,7 +38,7 @@ public class AdminRepairChar implements IAdminCommandHandler
 {
     private static Logger _log = Logger.getLogger(AdminRepairChar.class.getName());
 
-    private static String[] _adminCommands = { "admin_restore", "admin_repair" };
+    private static final String[] ADMIN_COMMANDS = { "admin_restore", "admin_repair" };
 
     private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
 
@@ -59,7 +59,7 @@ public class AdminRepairChar implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

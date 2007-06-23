@@ -30,19 +30,19 @@ import net.sf.l2j.gameserver.serverpackets.SiegeAttackerList;
 public final class RequestSiegeAttackerList extends L2GameClientPacket
 {
     
-    private static final String _C__a2_RequestSiegeAttackerList = "[C] a2 RequestSiegeAttackerList";
+    private static final String _C__A2_RequestSiegeAttackerList = "[C] a2 RequestSiegeAttackerList";
     //private static Logger _log = Logger.getLogger(RequestJoinParty.class.getName());
 
-    private int _CastleId;
+    private int _castleId;
     
     protected void readImpl()
     {
-        _CastleId = readD();
+        _castleId = readD();
     }
 
     protected void runImpl()
     {
-        Castle castle = CastleManager.getInstance().getCastle(_CastleId);
+        Castle castle = CastleManager.getInstance().getCastle(_castleId);
         if (castle == null) return;
         SiegeAttackerList sal = new SiegeAttackerList(castle);
         sendPacket(sal);
@@ -51,6 +51,6 @@ public final class RequestSiegeAttackerList extends L2GameClientPacket
     
     public String getType()
     {
-        return _C__a2_RequestSiegeAttackerList;
+        return _C__A2_RequestSiegeAttackerList;
     }
 }

@@ -30,18 +30,18 @@ public class FinishRotation extends L2GameServerPacket
 {
 	private static final String _S__78_FINISHROTATION = "[S] 63 FinishRotation";
 	private int _heading;
-	private int _objectId;
+	private int _charObjId;
 
 	public FinishRotation(L2Character cha)
 	{
-		_objectId = cha.getObjectId();
+		_charObjId = cha.getObjectId();
 		_heading = cha.getHeading();
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x63);
-		writeD(_objectId);
+		writeD(_charObjId);
 		writeD(_heading);
 	}
 

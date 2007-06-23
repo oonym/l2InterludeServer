@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.skills.conditions.Condition;
 public abstract class Func {
 	
 	/** Statistics, that is affected by this function (See L2Character.CALCULATOR_XXX constants) */
-	public final Stats _stat; 
+	public final Stats stat; 
 	
 	/**
 	 * Order of functions calculation.
@@ -48,35 +48,35 @@ public abstract class Func {
 	 * applied, then functions that do more complex calculations
 	 * (non-linear functions).
 	 */
-	public final int _order;
+	public final int order;
 	
 	/**
 	 *  Owner can be an armor, weapon, skill, system event, quest, etc
 	 *  Used to remove all functions added by this owner.
 	 */
-	public final Object _funcOwner;
+	public final Object funcOwner;
 	
 	/** Function may be disabled by attached condition. */
-	public Condition _cond;
+	public Condition cond;
 	
 	
 	/**
 	 * Constructor of Func.<BR><BR>
 	 */
-	public Func(Stats stat, int order, Object owner) 
+	public Func(Stats pStat, int pOrder, Object owner) 
 	{
-		_stat = stat;
-		_order = order;
-		_funcOwner = owner;
+		stat = pStat;
+		order = pOrder;
+		funcOwner = owner;
 	}
 	
 	
 	/**
 	 * Add a condition to the Func.<BR><BR>
 	 */
-	public void setCondition(Condition cond) 
+	public void setCondition(Condition pCond) 
 	{
-		_cond = cond;
+		cond = pCond;
 	}
 	
 	

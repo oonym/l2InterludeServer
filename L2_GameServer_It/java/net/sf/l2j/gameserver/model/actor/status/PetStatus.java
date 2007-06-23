@@ -10,7 +10,7 @@ public class PetStatus extends SummonStatus
 {
     // =========================================================
     // Data Field
-    private int _CurrentFed               = 0; //Current Fed of the L2PetInstance
+    private int _currentFed               = 0; //Current Fed of the L2PetInstance
     
     // =========================================================
     // Constructor
@@ -49,6 +49,6 @@ public class PetStatus extends SummonStatus
     // Property - Public
     public L2PetInstance getActiveChar() { return (L2PetInstance)super.getActiveChar(); }
 
-    public int getCurrentFed() { return _CurrentFed; }
-    public void setCurrentFed(int value) { _CurrentFed = value; }
+    public int getCurrentFed() { return _currentFed; }
+    public void setCurrentFed(int value) { _currentFed = value; }
 }

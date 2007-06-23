@@ -23,53 +23,53 @@ package net.sf.l2j.gameserver.pathfinding;
  */
 public class Node
 {	
-	private final AbstractNodeLoc _Loc;	
-	private final int _Neighbors_idx;
-	private Node[] _Neighbors;
-	private Node _Parent;
-	private short _Cost;
+	private final AbstractNodeLoc _loc;	
+	private final int _neighborsIdx;
+	private Node[] _neighbors;
+	private Node _parent;
+	private short _cost;
 	
 	
 	public Node(AbstractNodeLoc Loc, int Neighbors_idx)
 	{
-		_Loc = Loc;
-		_Neighbors_idx = Neighbors_idx;
+		_loc = Loc;
+		_neighborsIdx = Neighbors_idx;
 	}
 
 	public void setParent(Node p)
 	{
-		_Parent = p;
+		_parent = p;
 	}
 	
 	public void setCost(int cost)
 	{
-		_Cost = (short)cost;
+		_cost = (short)cost;
 	}
 	
 	public void attacheNeighbors()
 	{
-		if(_Loc == null) _Neighbors = null;
-		else _Neighbors = PathFinding.getInstance().ReadNeighbors(_Loc.getNodeX(),_Loc.getNodeY(), _Neighbors_idx);
+		if(_loc == null) _neighbors = null;
+		else _neighbors = PathFinding.getInstance().readNeighbors(_loc.getNodeX(),_loc.getNodeY(), _neighborsIdx);
 	}
 
 	public Node[] getNeighbors()
 	{
-		return _Neighbors;
+		return _neighbors;
 	}
 
 	public Node getParent()
 	{
-		return _Parent;
+		return _parent;
 	}
 
 	public AbstractNodeLoc getLoc()
 	{
-		return _Loc;
+		return _loc;
 	}
 	
 	public short getCost()
 	{
-		return _Cost;
+		return _cost;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class Node
 			return false;
 		Node n = (Node)arg0;
 		//Check if x,y,z are the same
-		return _Loc.getX() == n.getLoc().getX() && _Loc.getY() == n.getLoc().getY()
-		&& _Loc.getZ() == n.getLoc().getZ();
+		return _loc.getX() == n.getLoc().getX() && _loc.getY() == n.getLoc().getY()
+		&& _loc.getZ() == n.getLoc().getZ();
 	}
 }

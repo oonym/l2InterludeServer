@@ -39,7 +39,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
     private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
 
     private static final int REQUIRED_LEVEL = Config.GM_UNBLOCK;
-    private static String[] _adminCommands = {
+    private static final String[] ADMIN_COMMANDS = {
         "admin_unblockip"
     };
 
@@ -77,7 +77,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

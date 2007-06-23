@@ -24,7 +24,8 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 	{
 		return _ptk; //zawsze attakuje tylko 1 osobe chodzby nie wiem co xD
 	}
-	public void NotifyPlayerDead()
+	@Deprecated
+	public void notifyPlayerDead()
 	{
 		// Monster kill player and can by deleted
 		deleteMe();
@@ -37,7 +38,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 		}
 	}
 
-	public void SetPlayerToKill(L2PcInstance ptk)
+	public void setPlayerToKill(L2PcInstance ptk)
 	{
 		if (_rnd.nextInt(100) <= 80)
 		{

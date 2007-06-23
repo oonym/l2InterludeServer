@@ -48,7 +48,7 @@ public class LoginStatusThread extends Thread
 {
 	private static final Logger _log = Logger.getLogger(LoginStatusThread.class.getName());
 
-	private Socket                  _csocket;
+	private Socket                  _cSocket;
 
 	private PrintWriter             _print;
 	private BufferedReader          _read;
@@ -109,10 +109,10 @@ public class LoginStatusThread extends Thread
 
 	public LoginStatusThread(Socket client, int uptime) throws IOException
 	{
-		_csocket = client;
+		_cSocket = client;
 
-		_print = new PrintWriter(_csocket.getOutputStream());
-		_read  = new BufferedReader(new InputStreamReader(_csocket.getInputStream()));
+		_print = new PrintWriter(_cSocket.getOutputStream());
+		_read  = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
 
 		if ( isValidIP(client) ) {    
 			telnetOutput(1, client.getInetAddress().getHostAddress()+" accepted.");
@@ -125,7 +125,7 @@ public class LoginStatusThread extends Thread
 				_print.println("Error.");
 				_print.println("Disconnected...");
 				_print.flush();
-				_csocket.close();
+				_cSocket.close();
 				return;
 			}
 			else {
@@ -134,7 +134,7 @@ public class LoginStatusThread extends Thread
 					_print.println("Incorrect Login!");
 					_print.println("Disconnected...");
 					_print.flush();
-					_csocket.close();
+					_cSocket.close();
 					return;
 				}
 				else
@@ -151,7 +151,7 @@ public class LoginStatusThread extends Thread
 				_print.println("Error.");
 				_print.println("Disconnected...");
 				_print.flush();
-				_csocket.close();
+				_cSocket.close();
 			}
 			else {
 				if (!validPassword(tmpLine))
@@ -159,7 +159,7 @@ public class LoginStatusThread extends Thread
 					_print.println("Incorrect Password!");
 					_print.println("Disconnected...");
 					_print.flush();
-					_csocket.close();
+					_cSocket.close();
 				}
 				else
 				{
@@ -173,7 +173,7 @@ public class LoginStatusThread extends Thread
 		}
 		else {
 			telnetOutput(1, "Connection attempt from "+ client.getInetAddress().getHostAddress() +" rejected.");
-			_csocket.close();
+			_cSocket.close();
 		}
 	}
 
@@ -256,7 +256,7 @@ public class LoginStatusThread extends Thread
 				_usrCommand = _read.readLine();
 				if(_usrCommand == null)
 				{
-					_csocket.close();
+					_cSocket.close();
 					break;
 				}
 				if (_usrCommand.equals("help"))
@@ -283,7 +283,7 @@ public class LoginStatusThread extends Thread
 						_usrCommand = _usrCommand.substring(8);
 						if (LoginController.getInstance().removeBanForAddress(_usrCommand))
 						{
-							_log.warning("IP removed via TELNET by host: " + _csocket.getInetAddress().getHostAddress());
+							_log.warning("IP removed via TELNET by host: " + _cSocket.getInetAddress().getHostAddress());
 							_print.println("The IP " + _usrCommand + " has been removed from the hack protection list!");
 						}
 						else
@@ -301,14 +301,14 @@ public class LoginStatusThread extends Thread
 					L2LoginServer.getInstance().shutdown(false);
 					_print.println("Bye Bye!");
 					_print.flush();
-					_csocket.close();
+					_cSocket.close();
 				}
 				else if (_usrCommand.startsWith("restart"))
 				{
 					L2LoginServer.getInstance().shutdown(true);
 					_print.println("Bye Bye!");
 					_print.flush();
-					_csocket.close();
+					_cSocket.close();
 				}
 				else if (_usrCommand.equals("RedirectLogger")) {_redirectLogger = true;}
 				else if (_usrCommand.equals("quit")) { /* Do Nothing :p - Just here to save us from the "Command Not Understood" Text */ }
@@ -320,13 +320,13 @@ public class LoginStatusThread extends Thread
 				_print.print("");
 				_print.flush();
 			}
-			if(!_csocket.isClosed())
+			if(!_cSocket.isClosed())
 			{
 				_print.println("Bye Bye!");
 				_print.flush();
-				_csocket.close();
+				_cSocket.close();
 			}
-			telnetOutput(1, "Connection from "+_csocket.getInetAddress().getHostAddress()+" was closed by client.");
+			telnetOutput(1, "Connection from "+_cSocket.getInetAddress().getHostAddress()+" was closed by client.");
 		}
 		catch (IOException e)
 		{

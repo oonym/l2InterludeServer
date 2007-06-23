@@ -24,8 +24,8 @@ public class QuestStateManager
 
     // =========================================================
     // Data Field
-    private static QuestStateManager _Instance;
-    private List<QuestState> _QuestStates = new FastList<QuestState>();
+    private static QuestStateManager _instance;
+    private List<QuestState> _questStates = new FastList<QuestState>();
     
     // =========================================================
     // Constructor
@@ -75,9 +75,9 @@ public class QuestStateManager
     // Property - Public
     public static final QuestStateManager getInstance()
     {
-        if (_Instance == null)
-            _Instance = new QuestStateManager();
-        return _Instance;
+        if (_instance == null)
+            _instance = new QuestStateManager();
+        return _instance;
     }
     
     /**
@@ -100,8 +100,8 @@ public class QuestStateManager
      */
     public List<QuestState> getQuestStates()
     {
-        if (_QuestStates == null)
-            _QuestStates = new FastList<QuestState>();
-        return _QuestStates;
+        if (_questStates == null)
+            _questStates = new FastList<QuestState>();
+        return _questStates;
     }
 }

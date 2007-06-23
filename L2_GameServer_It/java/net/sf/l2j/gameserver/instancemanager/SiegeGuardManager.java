@@ -36,14 +36,14 @@ public class SiegeGuardManager {
 	
     // =========================================================
     // Data Field
-    private Castle _Castle;
-    private List<L2Spawn> _SiegeGuardSpawn  = new FastList<L2Spawn>();
+    private Castle _castle;
+    private List<L2Spawn> _siegeGuardSpawn  = new FastList<L2Spawn>();
 
     // =========================================================
     // Constructor
     public SiegeGuardManager(Castle castle)
     {
-        _Castle = castle;
+        _castle = castle;
     }
 
     // =========================================================
@@ -198,7 +198,7 @@ public class SiegeGuardManager {
                     spawn1.setRespawnDelay(rs.getInt("respawnDelay"));
                     spawn1.setLocation(0);
                     
-                    _SiegeGuardSpawn.add(spawn1);
+                    _siegeGuardSpawn.add(spawn1);
                 }
                 else
                 {
@@ -256,11 +256,11 @@ public class SiegeGuardManager {
 
     public final Castle getCastle()
     {
-        return _Castle;
+        return _castle;
     }
     
     public final List<L2Spawn> getSiegeGuardSpawn()
     {
-        return _SiegeGuardSpawn;
+        return _siegeGuardSpawn;
     }
 }

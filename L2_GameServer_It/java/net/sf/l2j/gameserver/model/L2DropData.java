@@ -33,8 +33,8 @@ public class L2DropData
 	public static final int MAX_CHANCE = 1000000;
 
 	private int _itemId;
-	private int _mindrop;
-	private int _maxdrop;
+	private int _minDrop;
+	private int _maxDrop;
 	private int _chance;
     private String _questID = null;
     private String[] _stateID = null;
@@ -63,7 +63,7 @@ public class L2DropData
 	 */
 	public int getMinDrop()
 	{
-		return _mindrop;
+		return _minDrop;
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class L2DropData
 	 */
 	public int getMaxDrop()
 	{
-		return _maxdrop;
+		return _maxDrop;
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class L2DropData
 	 */
 	public void setMinDrop(int mindrop)
 	{
-		_mindrop = mindrop;
+		_minDrop = mindrop;
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class L2DropData
 	 */
 	public void setMaxDrop(int maxdrop)
 	{
-		_maxdrop = maxdrop;
+		_maxDrop = maxdrop;
 	}
 	
 	/**

@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.TaskPriority;
  */
 public abstract class GameServerBasePacket
 {
-	ByteArrayOutputStream _bao;
+	private ByteArrayOutputStream _bao;
 
 	protected GameServerBasePacket()
 	{

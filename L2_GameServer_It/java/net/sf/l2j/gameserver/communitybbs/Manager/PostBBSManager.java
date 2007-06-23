@@ -36,28 +36,28 @@ import net.sf.l2j.gameserver.serverpackets.ShowBoard;
 public class PostBBSManager extends BaseBBSManager
 {
 
-	private Map<Topic,Post> _PostByTopic;
-	private static PostBBSManager _Instance;
+	private Map<Topic,Post> _postByTopic;
+	private static PostBBSManager _instance;
 	public static PostBBSManager getInstance()
 	{
-		if (_Instance == null)
+		if (_instance == null)
 		{
-			_Instance = new PostBBSManager();
+			_instance = new PostBBSManager();
 		}
-		return _Instance;
+		return _instance;
 	}
 	public PostBBSManager()
 	{
-		_PostByTopic = new FastMap<Topic,Post>();
+		_postByTopic = new FastMap<Topic,Post>();
 	}
 	public Post getGPosttByTopic(Topic t)
 	{		
 		Post post = null;
-		post = _PostByTopic.get(t);
+		post = _postByTopic.get(t);
 		if(post == null)
 		{
 			post = load(t);
-			_PostByTopic.put(t,post);
+			_postByTopic.put(t,post);
 		}
 		return post;
 	}
@@ -66,13 +66,13 @@ public class PostBBSManager extends BaseBBSManager
 	 */
 	public void delPostByTopic(Topic t)
 	{
-		_PostByTopic.remove(t);		
+		_postByTopic.remove(t);		
 	}
 	public void addPostByTopic(Post p,Topic t)
 	{
-		if(_PostByTopic.get(t) == null)
+		if(_postByTopic.get(t) == null)
 		{		
-			_PostByTopic.put(t,p);
+			_postByTopic.put(t,p);
 		}
 	}
 	/**
@@ -151,7 +151,7 @@ public class PostBBSManager extends BaseBBSManager
 		}	
 		else
 		{
-			ShowHtmlEditPost(topic,activeChar,forum,p);
+			showHtmlEditPost(topic,activeChar,forum,p);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class PostBBSManager extends BaseBBSManager
 		}
 		else if(forum.getType() == Forum.MEMO)
 		{
-			ShowMemoPost(topic,activeChar,forum);
+			showMemoPost(topic,activeChar,forum);
 		}
 		else
 		{
@@ -189,7 +189,7 @@ public class PostBBSManager extends BaseBBSManager
 	 * @param forum
 	 * @param p
 	 */
-	private void ShowHtmlEditPost(Topic topic, L2PcInstance activeChar, Forum forum, Post p)
+	private void showHtmlEditPost(Topic topic, L2PcInstance activeChar, Forum forum, Post p)
 	{		
         TextBuilder html = new TextBuilder("<html>");
 		html.append("<body><br><br>");
@@ -234,7 +234,7 @@ public class PostBBSManager extends BaseBBSManager
 		html.append("</body>");
 		html.append("</html>");
 		send1001(html.toString(),activeChar);    	  	    
-    	send1002(activeChar,p.getCPost(0)._PostTxt,topic.getName(),DateFormat.getInstance().format(new Date(topic.getDate())));
+    	send1002(activeChar,p.getCPost(0).postTxt,topic.getName(),DateFormat.getInstance().format(new Date(topic.getDate())));
 	}
 	
 	/**
@@ -242,7 +242,7 @@ public class PostBBSManager extends BaseBBSManager
 	 * @param activeChar
 	 * @param forum 
 	 */
-	private void ShowMemoPost(Topic topic, L2PcInstance activeChar, Forum forum)
+	private void showMemoPost(Topic topic, L2PcInstance activeChar, Forum forum)
 	{
 		//		
 		Post p = getGPosttByTopic(topic);
@@ -270,7 +270,7 @@ public class PostBBSManager extends BaseBBSManager
 		html.append("<td><font color=\"AAAAAA\">"+topic.getOwnerName()+"</font></td>");
 		html.append("<td></td>");
 		html.append("<td><font color=\"AAAAAA\">&$418; :</font></td>");
-		html.append("<td><font color=\"AAAAAA\">"+dateFormat.format(p.getCPost(0)._PostDate)+"</font></td>");
+		html.append("<td><font color=\"AAAAAA\">"+dateFormat.format(p.getCPost(0).postDate)+"</font></td>");
 		html.append("</tr>");
 		html.append("<tr><td height=10></td></tr>");
 		html.append("</table>");
@@ -278,7 +278,7 @@ public class PostBBSManager extends BaseBBSManager
 		html.append("<table border=0 cellspacing=0 cellpadding=0>");
 		html.append("<tr>");
 		html.append("<td fixwidth=5></td>");
-		String Mes = p.getCPost(0)._PostTxt.replace(">","&gt;");
+		String Mes = p.getCPost(0).postTxt.replace(">","&gt;");
 		Mes = Mes.replace("<","&lt;");
 		Mes = Mes.replace("\n","<br1>");
 		html.append("<td FIXWIDTH=600 align=left>"+ Mes +"</td>");
@@ -315,63 +315,53 @@ public class PostBBSManager extends BaseBBSManager
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
-		
-		
+
 		StringTokenizer st = new StringTokenizer(ar1, ";");
 		int idf = Integer.parseInt(st.nextToken());
 		int idt = Integer.parseInt(st.nextToken());
 		int idp = Integer.parseInt(st.nextToken());
 		
-			Forum f = ForumsBBSManager.getInstance().getForumByID(idf);
-			if(f == null)
+		Forum f = ForumsBBSManager.getInstance().getForumByID(idf);
+		if(f == null)
+		{
+			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the forum: "+idf+" does not exist !</center><br><br></body></html>","101");
+			activeChar.sendPacket(sb);
+			activeChar.sendPacket(new ShowBoard(null,"102"));
+			activeChar.sendPacket(new ShowBoard(null,"103"));				
+		}
+		else
+		{
+			Topic t = f.gettopic(idt);
+			if(t == null)
 			{
-				ShowBoard sb = new ShowBoard("<html><body><br><br><center>the forum: "+idf+" does not exist !</center><br><br></body></html>","101");
+				ShowBoard sb = new ShowBoard("<html><body><br><br><center>the topic: "+idt+" does not exist !</center><br><br></body></html>","101");
 				activeChar.sendPacket(sb);
 				activeChar.sendPacket(new ShowBoard(null,"102"));
 				activeChar.sendPacket(new ShowBoard(null,"103"));				
 			}
 			else
 			{
-				
-				Topic t = f.gettopic(idt);
-				if(t == null)
+				CPost cp = null;
+				Post p = getGPosttByTopic(t);
+				if(p != null)
 				{
-					ShowBoard sb = new ShowBoard("<html><body><br><br><center>the topic: "+idt+" does not exist !</center><br><br></body></html>","101");
+					cp = p.getCPost(idp);
+				}
+				if(cp == null)
+				{
+					ShowBoard sb = new ShowBoard("<html><body><br><br><center>the post: "+idp+" does not exist !</center><br><br></body></html>","101");
 					activeChar.sendPacket(sb);
 					activeChar.sendPacket(new ShowBoard(null,"102"));
-					activeChar.sendPacket(new ShowBoard(null,"103"));				
+					activeChar.sendPacket(new ShowBoard(null,"103"));
 				}
 				else
 				{
-					
-					CPost cp = null;
-					Post p = getGPosttByTopic(t);
-					if(p != null)
-					{
-					
-						cp = p.getCPost(idp);
-					}
-					if(cp == null)
-					{
-						
-						ShowBoard sb = new ShowBoard("<html><body><br><br><center>the post: "+idp+" does not exist !</center><br><br></body></html>","101");
-						activeChar.sendPacket(sb);
-						activeChar.sendPacket(new ShowBoard(null,"102"));
-						activeChar.sendPacket(new ShowBoard(null,"103"));
-					}
-					else
-					{
-						
-						p.getCPost(idp)._PostTxt = ar4;
-						p.updatetxt(idp);						
-						parsecmd("_bbsposts;read;"+ f.getID() +";"+ t.getID(),activeChar);
-					}
+					p.getCPost(idp).postTxt = ar4;
+					p.updatetxt(idp);						
+					parsecmd("_bbsposts;read;"+ f.getID() +";"+ t.getID(),activeChar);
 				}
 			}
-				
-		
-		
+		}
 	}
-	
 }
 	

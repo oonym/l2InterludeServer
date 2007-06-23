@@ -47,15 +47,15 @@ public class AugmentationData
 	private static final Logger _log = Logger.getLogger(AugmentationData.class.getName());
 	
 	// =========================================================
-	private static AugmentationData _Instance;
+	private static AugmentationData _instance;
 	
 	public static final AugmentationData getInstance()
 	{
-		if (_Instance == null)
+		if (_instance == null)
 		{
-			_Instance = new AugmentationData();
+			_instance = new AugmentationData();
 		}
-		return _Instance;
+		return _instance;
 	}
 	
 	// =========================================================

@@ -36,14 +36,14 @@ public class NpcInfo extends L2GameServerPacket
 	     
 	     
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
-	private L2Character _cha;
+	private L2Character _activeChar;
 	private int _x, _y, _z, _heading;
 	private int _idTemplate;
 	private boolean _isAttackable, _isSummoned;
 	private int _mAtkSpd, _pAtkSpd;
 	private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
 	private int _rhand, _lhand;
-    private int collisionHeight, collisionRadius;
+    private int _collisionHeight, _collisionRadius;
     private String _name = "";
     private String _title = "";
 
@@ -52,14 +52,14 @@ public class NpcInfo extends L2GameServerPacket
 	 */
 	public NpcInfo(L2NpcInstance cha, L2Character attacker)
 	{
-		_cha = cha;
+		_activeChar = cha;
 		_idTemplate = cha.getTemplate().idTemplate;
 		_isAttackable = cha.isAutoAttackable(attacker);
 		_rhand = cha.getTemplate().rhand;
 		_lhand = cha.getTemplate().lhand;
 		_isSummoned = false;
-        collisionHeight = _cha.getTemplate().collisionHeight;
-        collisionRadius = _cha.getTemplate().collisionRadius;
+        _collisionHeight = _activeChar.getTemplate().collisionHeight;
+        _collisionRadius = _activeChar.getTemplate().collisionRadius;
         if (cha.getTemplate().serverSideName)
         	_name = cha.getTemplate().name;
 
@@ -70,7 +70,7 @@ public class NpcInfo extends L2GameServerPacket
     	else
     		_title = cha.getTitle();
     	
-        if (Config.SHOW_NPC_LVL && _cha instanceof L2MonsterInstance)
+        if (Config.SHOW_NPC_LVL && _activeChar instanceof L2MonsterInstance)
 	    {
 			String t = "Lv " + cha.getLevel() + (cha.getAggroRange() > 0 ? "*" : "");
 			if (_title != null)
@@ -79,54 +79,54 @@ public class NpcInfo extends L2GameServerPacket
 			_title = t;
 	    }
         
-        _x = _cha.getX();
-		_y = _cha.getY();
-		_z = _cha.getZ();
-		_heading = _cha.getHeading();
-		_mAtkSpd = _cha.getMAtkSpd();
-		_pAtkSpd = _cha.getPAtkSpd();
-		_runSpd = _cha.getRunSpeed();
-		_walkSpd = _cha.getWalkSpeed();
+        _x = _activeChar.getX();
+		_y = _activeChar.getY();
+		_z = _activeChar.getZ();
+		_heading = _activeChar.getHeading();
+		_mAtkSpd = _activeChar.getMAtkSpd();
+		_pAtkSpd = _activeChar.getPAtkSpd();
+		_runSpd = _activeChar.getRunSpeed();
+		_walkSpd = _activeChar.getWalkSpeed();
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
 	
 	public NpcInfo(L2Summon cha, L2Character attacker)
 	{
-		_cha = cha;
+		_activeChar = cha;
 		_idTemplate = cha.getTemplate().idTemplate;
 		_isAttackable = cha.isAutoAttackable(attacker); //(cha.getKarma() > 0);
 		_rhand = 0;
 		_lhand = 0;
 		_isSummoned = cha.isShowSummonAnimation();
-        collisionHeight = _cha.getTemplate().collisionHeight;
-        collisionRadius = _cha.getTemplate().collisionRadius;
+        _collisionHeight = _activeChar.getTemplate().collisionHeight;
+        _collisionRadius = _activeChar.getTemplate().collisionRadius;
         if (cha.getTemplate().serverSideName || cha instanceof L2PetInstance)
     	{
-            _name = _cha.getName();
+            _name = _activeChar.getName();
     		_title = cha.getTitle();
     	}
         
-        _x = _cha.getX();
-		_y = _cha.getY();
-		_z = _cha.getZ();
-		_heading = _cha.getHeading();
-		_mAtkSpd = _cha.getMAtkSpd();
-		_pAtkSpd = _cha.getPAtkSpd();
-		_runSpd = _cha.getRunSpeed();
-		_walkSpd = _cha.getWalkSpeed();
+        _x = _activeChar.getX();
+		_y = _activeChar.getY();
+		_z = _activeChar.getZ();
+		_heading = _activeChar.getHeading();
+		_mAtkSpd = _activeChar.getMAtkSpd();
+		_pAtkSpd = _activeChar.getPAtkSpd();
+		_runSpd = _activeChar.getRunSpeed();
+		_walkSpd = _activeChar.getWalkSpeed();
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
 	
 	protected final void writeImpl()
 	{
-        if (_cha instanceof L2Summon)
-            if (((L2Summon)_cha).getOwner() != null 
-                    && ((L2Summon)_cha).getOwner().getAppearance().getInvisible())
+        if (_activeChar instanceof L2Summon)
+            if (((L2Summon)_activeChar).getOwner() != null 
+                    && ((L2Summon)_activeChar).getOwner().getAppearance().getInvisible())
                 return;
 		writeC(0x16);
-		writeD(_cha.getObjectId());
+		writeD(_activeChar.getObjectId());
 		writeD(_idTemplate+1000000);  // npctype id
 		writeD(_isAttackable ? 1 : 0); 
 		writeD(_x);
@@ -144,18 +144,18 @@ public class NpcInfo extends L2GameServerPacket
 		writeD(_flWalkSpd);
 		writeD(_flyRunSpd);
 		writeD(_flyWalkSpd);
-		writeF(1.1/*_cha.getProperMultiplier()*/);
-		//writeF(1/*_cha.getAttackSpeedMultiplier()*/);
+		writeF(1.1/*_activeChar.getProperMultiplier()*/);
+		//writeF(1/*_activeChar.getAttackSpeedMultiplier()*/);
 		writeF(_pAtkSpd/277.478340719);
-		writeF(collisionRadius);
-		writeF(collisionHeight);
+		writeF(_collisionRadius);
+		writeF(_collisionHeight);
 		writeD(_rhand); // right hand weapon
 		writeD(0);
 		writeD(_lhand); // left hand weapon
 		writeC(1);	// name above char 1=true ... ??
-		writeC(_cha.isRunning() ? 1 : 0);
-		writeC(_cha.isInCombat() ? 1 : 0);
-		writeC(_cha.isAlikeDead() ? 1 : 0);
+		writeC(_activeChar.isRunning() ? 1 : 0);
+		writeC(_activeChar.isInCombat() ? 1 : 0);
+		writeC(_activeChar.isAlikeDead() ? 1 : 0);
 		writeC(_isSummoned ? 2 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
 		writeS(_name);
 		writeS(_title);
@@ -163,7 +163,7 @@ public class NpcInfo extends L2GameServerPacket
 		writeD(0);
 		writeD(0000);  // hmm karma ??
 
-		writeD(_cha.getAbnormalEffect());  // C2
+		writeD(_activeChar.getAbnormalEffect());  // C2
 		writeD(0000);  // C2
 		writeD(0000);  // C2
 		writeD(0000);  // C2

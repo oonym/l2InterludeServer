@@ -20,61 +20,61 @@ public class L2Territory
 
 	protected class Point
 	{
-		protected int x, y, zmin, zmax, proc;
-		Point (int _x, int _y, int _zmin, int _zmax, int _proc) {x=_x; y=_y; zmin=_zmin; zmax=_zmax; proc=_proc;}
+		protected int _x, _y, _zmin, _zmax, _proc;
+		Point (int x, int y, int zmin, int zmax, int proc) {_x=x; _y=y; _zmin=zmin; _zmax=zmax; _proc=proc;}
 	}
 
 	private List<Point> _points;
 	private int _terr;
-	private int _x_min;
-	private int _x_max;
-	private int _y_min;
-	private int _y_max;
-	private int _z_min;
-	private int _z_max;
-	private int _proc_max;
+	private int _xMin;
+	private int _xMax;
+	private int _yMin;
+	private int _yMax;
+	private int _zMin;
+	private int _zMax;
+	private int _procMax;
 
 	public L2Territory(int terr)
 	{
 		_points = new FastList<Point>();
 		_terr = terr;
-		_x_min = 999999;
-		_x_max =-999999;
-		_y_min = 999999;
-		_y_max =-999999;
-		_z_min = 999999;
-		_z_max =-999999;
-		_proc_max = 0;
+		_xMin = 999999;
+		_xMax =-999999;
+		_yMin = 999999;
+		_yMax =-999999;
+		_zMin = 999999;
+		_zMax =-999999;
+		_procMax = 0;
 	}
 
 	public void add(int x, int y, int zmin, int zmax, int proc)
 	{
 		_points.add(new Point(x,y,zmin,zmax,proc));
-		if(x<_x_min) _x_min = x;
-		if(y<_y_min) _y_min = y;
-		if(x>_x_max) _x_max = x;
-		if(y>_y_max) _y_max = y;
-		if(zmin<_z_min) _z_min = zmin;
-		if(zmax>_z_max) _z_max = zmax;
-		_proc_max += proc;
+		if(x<_xMin) _xMin = x;
+		if(y<_yMin) _yMin = y;
+		if(x>_xMax) _xMax = x;
+		if(y>_yMax) _yMax = y;
+		if(zmin<_zMin) _zMin = zmin;
+		if(zmax>_zMax) _zMax = zmax;
+		_procMax += proc;
 	}
 
 	public void print()
 	{
 		for(Point p : _points)
-			System.out.println("("+p.x+","+p.y+")");
+			System.out.println("("+p._x+","+p._y+")");
 	}
 
 	public boolean isIntersect(int x, int y, Point p1, Point p2)
 	{
-		double dy1 = p1.y - y;
-		double dy2 = p2.y - y;
+		double dy1 = p1._y - y;
+		double dy2 = p2._y - y;
 
 		if(Math.signum(dy1) == Math.signum(dy2))
 			return false;
 		
-		double dx1 = p1.x - x;
-		double dx2 = p2.x - x;
+		double dx1 = p1._x - x;
+		double dx2 = p2._x - x;
 
 		if(dx1 >= 0 && dx2 >= 0)
 			return true;
@@ -82,7 +82,7 @@ public class L2Territory
 		if(dx1 < 0 && dx2 < 0)
 			return false;
 
-		double dx0 = (dy1 * (p1.x-p2.x))/(p1.y-p2.y);
+		double dx0 = (dy1 * (p1._x-p2._x))/(p1._y-p2._y);
 
 		return dx0 <= dx1;
 	}
@@ -106,15 +106,15 @@ public class L2Territory
 	{
 		int i;
 		int[] p = new int[4];
-		if ( _proc_max>0) {
+		if ( _procMax>0) {
 		    int pos = 0;
-		    int rnd = Rnd.nextInt(_proc_max);
+		    int rnd = Rnd.nextInt(_procMax);
 		    for( i=0; i<_points.size(); i++){
 			Point p1 = _points.get(i);
-			pos += p1.proc;
+			pos += p1._proc;
 			if ( rnd <= pos ){
-			    p[0] = p1.x; p[1] = p1.y;
-			    p[2] = p1.zmin; p[3] = p1.zmax;
+			    p[0] = p1._x; p[1] = p1._y;
+			    p[2] = p1._zmin; p[3] = p1._zmax;
 			    return p;
 			}
 		    }		    
@@ -122,19 +122,19 @@ public class L2Territory
 		}
 		for( i=0; i<100; i++)
 		{
-			p[0] = Rnd.get(_x_min, _x_max);
-			p[1] = Rnd.get(_y_min, _y_max);
+			p[0] = Rnd.get(_xMin, _xMax);
+			p[1] = Rnd.get(_yMin, _yMax);
 			if(isInside(p[0],p[1])){
 			    double curdistance = 0;
-			    p[2] = _z_min+100;p[3] = _z_max;
+			    p[2] = _zMin+100;p[3] = _zMax;
 			    for( i=0; i<_points.size(); i++){
 				Point p1 = _points.get(i);
-				double dx = p1.x-p[0];
-				double dy = p1.y-p[1];
+				double dx = p1._x-p[0];
+				double dy = p1._y-p[1];
 				double distance = Math.sqrt(dx*dx+dy*dy);
 				if (curdistance == 0 || distance<curdistance){
 				    curdistance = distance;
-				    p[2] = p1.zmin+100;
+				    p[2] = p1._zmin+100;
 				}
 			    }
 			    return p;
@@ -145,7 +145,7 @@ public class L2Territory
 	}
     	public int getProcMax()
 	{
-	    return _proc_max;
+	    return _procMax;
 	}
 
 }

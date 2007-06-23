@@ -54,15 +54,15 @@ public class CursedWeaponsManager
 	private static final Logger _log = Logger.getLogger(CursedWeaponsManager.class.getName());
 
 	// =========================================================
-	private static CursedWeaponsManager _Instance;
+	private static CursedWeaponsManager _instance;
 
 	public static final CursedWeaponsManager getInstance()
 	{
-		if (_Instance == null)
+		if (_instance == null)
 		{
-			_Instance = new CursedWeaponsManager();
+			_instance = new CursedWeaponsManager();
 		}
-		return _Instance;
+		return _instance;
 	}
 
 	// =========================================================
@@ -88,7 +88,7 @@ public class CursedWeaponsManager
 	// Method - Private
 	public final void reload()
 	{
-		_Instance = new CursedWeaponsManager();
+		_instance = new CursedWeaponsManager();
 	}
 	private final void load()
 	{

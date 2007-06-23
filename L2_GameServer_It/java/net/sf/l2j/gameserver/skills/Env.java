@@ -30,9 +30,9 @@ import net.sf.l2j.gameserver.model.L2Skill;
 
 public final class Env {
 
-	public L2Character    _player;
-	public L2Character    _target;
-	public L2ItemInstance _item;
-	public L2Skill        _skill;
+	public L2Character    player;
+	public L2Character    target;
+	public L2ItemInstance item;
+	public L2Skill        skill;
 	public double value;
 }

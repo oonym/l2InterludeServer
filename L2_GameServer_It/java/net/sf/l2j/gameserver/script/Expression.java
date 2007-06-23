@@ -22,11 +22,11 @@ import org.apache.bsf.BSFManager;
 
 public class Expression
 {
-    private final BSFManager context;
+    private final BSFManager _context;
     @SuppressWarnings("unused")
-    private final String lang;
+    private final String _lang;
     @SuppressWarnings("unused")
-    private final String code;
+    private final String _code;
 
     public static Object eval(String lang, String code)
     {
@@ -69,16 +69,16 @@ public class Expression
 
     private Expression(BSFManager pContext, String pLang, String pCode)
     {
-        this.context = pContext;
-        this.lang = pLang;
-        this.code = pCode;
+        this._context = pContext;
+        this._lang = pLang;
+        this._code = pCode;
     }
 
     public <T> void addDynamicVariable(String name, T value, Class<T> type)
     {
         try
         {
-            context.declareBean(name, value, type);
+            _context.declareBean(name, value, type);
         }
         catch (Exception e)
         {
@@ -90,7 +90,7 @@ public class Expression
     {
         try
         {
-            context.undeclareBean(name);
+            _context.undeclareBean(name);
         }
         catch (Exception e)
         {

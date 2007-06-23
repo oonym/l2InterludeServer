@@ -57,6 +57,7 @@ public class Log
 			add(text, null);
 	}
 
+	@Deprecated
     public static final void addEvent(L2PcInstance pc, String text)
     {
         String date = (new SimpleDateFormat("yy.MM.dd H:mm:ss")).format(new Date());
@@ -83,7 +84,7 @@ public class Log
         }    
     }
 
-    
+    @Deprecated
 	public static final void Assert(boolean exp)
 	{
 		Assert(exp,"");

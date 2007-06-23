@@ -32,8 +32,8 @@ public class L2PetDataTable
 	private static Logger _log = Logger.getLogger(L2PetInstance.class.getName()); 
     private static L2PetDataTable _instance;
     
-    public static final int[] petList = { 12077, 12312, 12313, 12311, 12527, 12528, 12526 };
-    private static Map<Integer, Map<Integer, L2PetData>> petTable;
+    //private static final int[] PET_LIST = { 12077, 12312, 12313, 12311, 12527, 12528, 12526 };
+    private static Map<Integer, Map<Integer, L2PetData>> _petTable;
     
     public static L2PetDataTable getInstance()
     {
@@ -45,7 +45,7 @@ public class L2PetDataTable
     
     private L2PetDataTable()
     {
-        petTable = new FastMap<Integer, Map<Integer, L2PetData>>();
+        _petTable = new FastMap<Integer, Map<Integer, L2PetData>>();
     }
     
     public void loadPetsData() 
@@ -92,10 +92,10 @@ public class L2PetDataTable
                 petData.setOwnerExpTaken( rset.getFloat("owner_exp_taken") );
                 
                 // if its the first data for this petid, we initialize its level FastMap
-                if (!petTable.containsKey(petId))
-                    petTable.put(petId, new FastMap<Integer, L2PetData>());
+                if (!_petTable.containsKey(petId))
+                    _petTable.put(petId, new FastMap<Integer, L2PetData>());
                 
-                petTable.get(petId).put(petLevel,petData);
+                _petTable.get(petId).put(petLevel,petData);
             }
     		
     		rset.close();
@@ -113,13 +113,13 @@ public class L2PetDataTable
     
     public void addPetData(L2PetData petData)
     {
-        Map<Integer, L2PetData> h = petTable.get(petData.getPetID());
+        Map<Integer, L2PetData> h = _petTable.get(petData.getPetID());
         
         if (h == null)
         {
             Map<Integer, L2PetData> statTable = new FastMap<Integer, L2PetData>();
             statTable.put(petData.getPetLevel(), petData);
-            petTable.put(petData.getPetID(), statTable);
+            _petTable.put(petData.getPetID(), statTable);
             return;
         }
 
@@ -135,7 +135,7 @@ public class L2PetDataTable
     public L2PetData getPetData(int petID, int petLevel)
     {
         //System.out.println("Getting id "+petID+" level "+ petLevel);
-        return petTable.get(petID).get(petLevel);
+        return _petTable.get(petID).get(petLevel);
     }
     
 	

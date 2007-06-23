@@ -44,7 +44,7 @@ public class Continuous implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(Continuous.class.getName());
 	
-	private static SkillType[] _skillIds = {
+	private static final SkillType[] SKILL_IDS = {
 		L2Skill.SkillType.BUFF,
 		L2Skill.SkillType.DEBUFF,
 		L2Skill.SkillType.DOT,
@@ -170,6 +170,6 @@ public class Continuous implements ISkillHandler
 	
 	public SkillType[] getSkillIds()
 	{
-		return _skillIds;
+		return SKILL_IDS;
 	}
 }

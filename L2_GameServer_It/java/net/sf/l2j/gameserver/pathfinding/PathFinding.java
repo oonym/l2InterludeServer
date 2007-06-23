@@ -50,9 +50,9 @@ public abstract class PathFinding
 		return _instance;
 	}
 		
-	public abstract boolean PathNodesExist(short regionoffset);	
-	public abstract List<AbstractNodeLoc> FindPath(int gx, int gy, short z, int gtx, int gtz, short tz);
-	public abstract Node[] ReadNeighbors(short node_x,short node_y, int idx);
+	public abstract boolean pathNodesExist(short regionoffset);	
+	public abstract List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gtz, short tz);
+	public abstract Node[] readNeighbors(short node_x,short node_y, int idx);
 	
 	public List<AbstractNodeLoc> search(Node start, Node end)
 	{
@@ -191,7 +191,7 @@ public abstract class PathFinding
 	 * @param node_y
 	 * @return
 	 */
-	public int CalculateWorldY(short node_y)
+	public int calculateWorldY(short node_y)
 	{
 		return  L2World.MAP_MIN_Y + node_y * 128 + 48 ;
 	}

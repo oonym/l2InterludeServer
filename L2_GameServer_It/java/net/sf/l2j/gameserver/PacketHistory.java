@@ -36,6 +36,9 @@ import javolution.xml.stream.XMLStreamException;
 
 class PacketHistory
 {
+    protected Map<Class, Long> _info;
+    protected long _timeStamp;
+    
     protected static final XMLFormat<PacketHistory> PACKET_HISTORY_XML = new XMLFormat<PacketHistory>(PacketHistory.class)
     {
         /**
@@ -45,8 +48,8 @@ class PacketHistory
 		public void read(InputElement xml, PacketHistory packetHistory) throws XMLStreamException
 		{
 			// TODO Auto-generated method stub
-			packetHistory.timeStamp = xml.getAttribute("time-stamp", 0);
-			packetHistory.info = xml.<Map<Class, Long>> get("info");
+			packetHistory._timeStamp = xml.getAttribute("time-stamp", 0);
+			packetHistory._info = xml.<Map<Class, Long>> get("info");
 		}
 
 		/**
@@ -56,10 +59,10 @@ class PacketHistory
 		public void write(PacketHistory packetHistory, OutputElement xml) throws XMLStreamException
 		{
 			// TODO Auto-generated method stub
-			xml.setAttribute("time-stamp", new Date(packetHistory.timeStamp).toString());
+			xml.setAttribute("time-stamp", new Date(packetHistory._timeStamp).toString());
 			
-			for (Class cls : packetHistory.info.keySet())
-				xml.setAttribute(cls.getSimpleName(), packetHistory.info.get(cls));
+			for (Class cls : packetHistory._info.keySet())
+				xml.setAttribute(cls.getSimpleName(), packetHistory._info.get(cls));
 		}
 
 //		public void format(PacketHistory packetHistory, XmlElement xml)
@@ -85,7 +88,4 @@ class PacketHistory
 //            return "packet-history";
 //        }
     };
-    
-    public Map<Class, Long> info;
-    public long timeStamp;
 }

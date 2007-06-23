@@ -35,11 +35,11 @@ import net.sf.l2j.loginserver.GameServerTable;
 public class GameServerRegister
 {
 	private static String _choice;
-	private static boolean _choiseOk;
+	private static boolean _choiceOk;
 
 	public static void main(String[] args) throws IOException
 	{
-		Server.SERVER_MODE = Server.MODE_LOGINSERVER;
+		Server.serverMode = Server.MODE_LOGINSERVER;
 		
 		Config.load();
 		
@@ -59,7 +59,7 @@ public class GameServerRegister
 		System.out.println("Enter The id of the server you want to register");
 		System.out.println("Type 'help' to get a list of ids.");
 		System.out.println("Type 'clean' to unregister all currently registered gameservers on this LoginServer.");
-		while (!_choiseOk)
+		while (!_choiceOk)
 		{
 			System.out.println("Your choice:");
 			_choice = _in.readLine();

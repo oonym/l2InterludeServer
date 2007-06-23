@@ -30,24 +30,24 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class PrivateStoreManageListBuy extends L2GameServerPacket
 {
 	private static final String _S__D0_PRIVATESELLLISTBUY = "[S] b7 PrivateSellListBuy";
-	private L2PcInstance _player;
+	private L2PcInstance _activeChar;
 	private int _playerAdena;
 	private L2ItemInstance[] _itemList;
 	private TradeList.TradeItem[] _buyList;
 	
 	public PrivateStoreManageListBuy(L2PcInstance player)
 	{
-		_player = player;
-		_playerAdena = _player.getAdena();
-		_itemList = _player.getInventory().getUniqueItems(false,true);
-		_buyList = _player.getBuyList().getItems(); 
+		_activeChar = player;
+		_playerAdena = _activeChar.getAdena();
+		_itemList = _activeChar.getInventory().getUniqueItems(false,true);
+		_buyList = _activeChar.getBuyList().getItems(); 
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0xb7);
 		//section 1 
-		writeD(_player.getObjectId());
+		writeD(_activeChar.getObjectId());
 		writeD(_playerAdena);
 				
 		//section2 

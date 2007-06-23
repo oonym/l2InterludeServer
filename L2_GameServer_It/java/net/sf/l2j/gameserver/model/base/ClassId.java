@@ -123,26 +123,26 @@ public enum ClassId {
     fortuneSeeker(0x75, false, Race.dwarf, bountyHunter), maestro(0x76, false, Race.dwarf, warsmith);
 
     /** The Identifier of the Class */
-    private final int id;
+    private final int _id;
 
     /** True if the class is a mage class */
-    private final boolean isMage;
+    private final boolean _isMage;
 
     /** The Race object of the class */
-    private final Race race;
+    private final Race _race;
 
     /** The parent ClassId or null if this class is a root */
-    private final ClassId parent;
+    private final ClassId _parent;
 
     /**
      * Constructor of ClassId.<BR><BR>
      */
     private ClassId(int pId, boolean pIsMage, Race pRace, ClassId pParent)
     {
-        this.id = pId;
-        this.isMage = pIsMage;
-        this.race = pRace;
-        this.parent = pParent;
+        this._id = pId;
+        this._isMage = pIsMage;
+        this._race = pRace;
+        this._parent = pParent;
     }
 
     /**
@@ -150,7 +150,7 @@ public enum ClassId {
      */
     public final int getId()
     {
-        return id;
+        return _id;
     }
 
     /**
@@ -158,7 +158,7 @@ public enum ClassId {
      */
     public final boolean isMage()
     {
-        return isMage;
+        return _isMage;
     }
 
     /**
@@ -166,7 +166,7 @@ public enum ClassId {
      */
     public final Race getRace()
     {
-        return race;
+        return _race;
     }
 
     /**
@@ -177,11 +177,11 @@ public enum ClassId {
      */
     public final boolean childOf(ClassId cid)
     {
-        if (parent == null) return false;
+        if (_parent == null) return false;
 
-        if (parent == cid) return true;
+        if (_parent == cid) return true;
 
-        return parent.childOf(cid);
+        return _parent.childOf(cid);
 
     }
 
@@ -204,9 +204,9 @@ public enum ClassId {
      */
     public final int level()
     {
-        if (parent == null) return 0;
+        if (_parent == null) return 0;
 
-        return 1 + parent.level();
+        return 1 + _parent.level();
     }
 
     /**
@@ -215,7 +215,7 @@ public enum ClassId {
      */
     public final ClassId getParent()
     {
-        return parent;
+        return _parent;
     }
 
 }

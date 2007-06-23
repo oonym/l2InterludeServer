@@ -32,16 +32,16 @@ public final class RequestSiegeDefenderList extends L2GameClientPacket
     private static final String _C__a3_RequestSiegeDefenderList = "[C] a3 RequestSiegeDefenderList";
     //private static Logger _log = Logger.getLogger(RequestJoinParty.class.getName());
 
-    private int _CastleId;
+    private int _castleId;
     
     protected void readImpl()
     {
-        _CastleId = readD();
+        _castleId = readD();
     }
 
     protected void runImpl()
     {
-        Castle castle = CastleManager.getInstance().getCastle(_CastleId);
+        Castle castle = CastleManager.getInstance().getCastle(_castleId);
         if (castle == null) return;
         SiegeDefenderList sdl = new SiegeDefenderList(castle);
         sendPacket(sdl);

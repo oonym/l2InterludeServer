@@ -36,7 +36,7 @@ public class AdminLogin implements IAdminCommandHandler
 {
 	//private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
 
-    private static String[] _adminCommands = { "admin_server_gm_only",
+    private static final String[] ADMIN_COMMANDS = { "admin_server_gm_only",
                                                "admin_server_all",
                                                "admin_server_max_player",
                                                "admin_server_list_clock",
@@ -63,7 +63,7 @@ public class AdminLogin implements IAdminCommandHandler
 		}
 		else if(command.equals("admin_server_all"))
 		{
-			AllowToAll();
+			allowToAll();
 			activeChar.sendMessage("Server is not GM only anymore");
 			showWindow(activeChar);
 		}
@@ -147,7 +147,7 @@ public class AdminLogin implements IAdminCommandHandler
 	/**
 	 * 
 	 */
-	private void AllowToAll()
+	private void allowToAll()
 	{
 		LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_AUTO);
 		Config.SERVER_GMONLY = false;
@@ -167,7 +167,7 @@ public class AdminLogin implements IAdminCommandHandler
 	 */
 	public String[] getAdminCommandList()
 	{
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 }

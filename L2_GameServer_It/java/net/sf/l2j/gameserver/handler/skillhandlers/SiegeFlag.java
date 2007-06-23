@@ -41,7 +41,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class SiegeFlag implements ISkillHandler 
 { 
     //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName()); 
-    protected SkillType[] _skillIds = {SkillType.SIEGEFLAG}; 
+	private static final SkillType[] SKILL_IDS = {SkillType.SIEGEFLAG}; 
     
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
@@ -73,7 +73,7 @@ public class SiegeFlag implements ISkillHandler
     
     public SkillType[] getSkillIds() 
     { 
-        return _skillIds; 
+        return SKILL_IDS; 
     }
 
     /**

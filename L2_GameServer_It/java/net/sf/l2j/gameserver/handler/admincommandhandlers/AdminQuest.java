@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class AdminQuest implements IAdminCommandHandler
 {
     private static final int REQUIRED_LEVEL = Config.GM_TEST;
-    private static final String[] ADMIN_QUEST_COMMANDS =
+    private static final String[] ADMIN_COMMANDS =
     {
         "admin_quest_reload"
     };
@@ -94,7 +94,7 @@ public class AdminQuest implements IAdminCommandHandler
      */
     public String[] getAdminCommandList()
     {
-        return ADMIN_QUEST_COMMANDS;
+        return ADMIN_COMMANDS;
     }
 
 }

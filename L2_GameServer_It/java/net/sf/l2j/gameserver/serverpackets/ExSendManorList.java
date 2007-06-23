@@ -34,7 +34,7 @@ import java.util.List;
 public class ExSendManorList extends L2GameServerPacket
 {
     private static final String _S__FE_1B_EXSENDMANORLIST = "[S] FE:1B ExSendManorList";
-    List<String> _manors;
+    private List<String> _manors;
     
     public ExSendManorList(List<String> manors)
     {

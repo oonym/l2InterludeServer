@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 
 public class MercTicket implements IItemHandler
 {
-    private static String[] _Messages = {
+    private static final String[] MESSAGES = {
                                          "To arms!.",
                                          "I am ready to serve you my lord when the time comes.",
                                          "You summon me."
@@ -96,7 +96,7 @@ public class MercTicket implements IItemHandler
             return;
         }
  
-        int npcId = MercTicketManager.getInstance().addTicket(item.getItemId(), activeChar, _Messages);
+        int npcId = MercTicketManager.getInstance().addTicket(item.getItemId(), activeChar, MESSAGES);
         activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); // Remove item from char's inventory
         activeChar.sendMessage("Hired mercenary ("+itemId+","+npcId+") at coords:" + activeChar.getX() + "," + activeChar.getY() + "," + activeChar.getZ() + " heading:" + activeChar.getHeading());
     }

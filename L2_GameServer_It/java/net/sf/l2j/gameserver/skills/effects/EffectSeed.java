@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.skills.Env;
 
 public final class EffectSeed extends L2Effect {
 
-	int _power = 1;
+	private int _power = 1;
     
     public EffectSeed(Env env, EffectTemplate template)
 	{

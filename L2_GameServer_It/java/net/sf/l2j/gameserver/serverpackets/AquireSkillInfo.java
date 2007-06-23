@@ -44,17 +44,17 @@ public class AquireSkillInfo extends L2GameServerPacket
 	
 	private class Req
 	{
-		public int _itemId;
-		public int _count;
-		public int _type;
-		public int _unk;
+		public int itemId;
+		public int count;
+		public int type;
+		public int unk;
 		
-		public Req(int type, int itemId, int count, int unk)
+		public Req(int pType, int pItemId, int pCount, int pUnk)
 		{
-			_itemId = itemId;
-			_type = type;
-			_count = count;
-			_unk = unk;
+			itemId = pItemId;
+			type = pType;
+			count = pCount;
+			unk = pUnk;
 		}
 	}
 
@@ -84,10 +84,10 @@ public class AquireSkillInfo extends L2GameServerPacket
 
 		for (Req temp : _reqs)
 		{
-			writeD(temp._type);
-			writeD(temp._itemId);
-			writeD(temp._count);
-			writeD(temp._unk);
+			writeD(temp.type);
+			writeD(temp.itemId);
+			writeD(temp.count);
+			writeD(temp.unk);
 		}
 	}
 	

@@ -28,20 +28,20 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class PrivateStoreMsgSell extends L2GameServerPacket
 {
 	private static final String _S__B5_PRIVATESTOREMSGSELL = "[S] 9c PrivateStoreMsgSell";
-	private L2PcInstance _player;
+	private L2PcInstance _activeChar;
 	private String _storeMsg;
 	
 	public PrivateStoreMsgSell(L2PcInstance player)
 	{
-		_player = player;
-		if (_player.getSellList() != null)
-			_storeMsg = _player.getSellList().getTitle();
+		_activeChar = player;
+		if (_activeChar.getSellList() != null)
+			_storeMsg = _activeChar.getSellList().getTitle();
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x9c);
-		writeD(_player.getObjectId());
+		writeD(_activeChar.getObjectId());
 		writeS(_storeMsg);
 	}
 

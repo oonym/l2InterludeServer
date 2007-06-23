@@ -29,17 +29,17 @@ public final class RequestRecipeItemMakeInfo extends L2GameClientPacket
 	//private static Logger _log = Logger.getLogger(RequestSellItem.class.getName());
 
 	private int _id;
-	private L2PcInstance _cha;
+	private L2PcInstance _activeChar;
 	
 	protected void readImpl()
 	{
 		_id = readD();
-		_cha = this.getClient().getActiveChar();
+		_activeChar = this.getClient().getActiveChar();
 	}
 
 	protected void runImpl()
 	{
-		RecipeItemMakeInfo response = new RecipeItemMakeInfo(_id, _cha);
+		RecipeItemMakeInfo response = new RecipeItemMakeInfo(_id, _activeChar);
 		sendPacket(response);
 	}
 	

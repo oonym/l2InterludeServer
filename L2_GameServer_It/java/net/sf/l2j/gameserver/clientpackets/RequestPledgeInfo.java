@@ -35,8 +35,7 @@ public final class RequestPledgeInfo extends L2GameClientPacket
 {
 	private static final String _C__66_REQUESTPLEDGEINFO = "[C] 66 RequestPledgeInfo";
 
-	private static Logger _log = Logger.getLogger(RequestPledgeInfo.class
-			.getName());
+	private static Logger _log = Logger.getLogger(RequestPledgeInfo.class.getName());
 
 	private int _clanId;
 	

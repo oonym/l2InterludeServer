@@ -38,8 +38,8 @@ import net.sf.l2j.gameserver.util.Broadcast;
 public class SpiritShot implements IItemHandler 
 { 
 	// All the item IDs that this handler knows.
-	private static int[] _itemIds = { 5790, 2509, 2510, 2511, 2512, 2513, 2514 }; 
-	private static int[] _skillIds = { 2061, 2155, 2156, 2157, 2158, 2159 };
+	private static final int[] ITEM_IDS = { 5790, 2509, 2510, 2511, 2512, 2513, 2514 }; 
+	private static final int[] SKILL_IDS = { 2061, 2155, 2156, 2157, 2158, 2159 };
 
 	/* (non-Javadoc) 
  	* @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance) 
@@ -99,11 +99,11 @@ public class SpiritShot implements IItemHandler
 
         // Send message to client
 		activeChar.sendPacket(new SystemMessage(SystemMessage.ENABLED_SPIRITSHOT));
-        Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUser(activeChar, activeChar, _skillIds[weaponGrade], 1, 0, 0), 360000/*600*/);
+        Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUser(activeChar, activeChar, SKILL_IDS[weaponGrade], 1, 0, 0), 360000/*600*/);
 	} 
 
 	public int[] getItemIds() 
 	{ 
-		return _itemIds; 
+		return ITEM_IDS; 
 	} 
 }

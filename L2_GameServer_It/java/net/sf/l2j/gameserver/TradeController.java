@@ -54,16 +54,16 @@ public class TradeController
     /** Task launching the function for restore count of Item (Clan Hall) */
     public class RestoreCount implements Runnable
     {
-    	private int timer;
+    	private int _timer;
     	public RestoreCount(int time){
-    		timer = time;
+    		_timer = time;
     	}
         public void run()
         {
         	try {
-            	restoreCount(timer);
-            	dataTimerSave(timer);
-            	ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(timer), (long)timer*60*60*1000);
+            	restoreCount(_timer);
+            	dataTimerSave(_timer);
+            	ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(_timer), (long)_timer*60*60*1000);
         	}
         	catch (Throwable t) {}
         }

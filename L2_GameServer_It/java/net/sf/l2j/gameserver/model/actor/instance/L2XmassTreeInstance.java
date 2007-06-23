@@ -17,11 +17,11 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class L2XmassTreeInstance extends L2NpcInstance
 {
-    ScheduledFuture aiTask;
+    private ScheduledFuture _aiTask;
 
     class XmassAI implements Runnable
     {
-        L2XmassTreeInstance _caster;
+        private L2XmassTreeInstance _caster;
 
         protected XmassAI(L2XmassTreeInstance caster)
         {
@@ -61,12 +61,12 @@ public class L2XmassTreeInstance extends L2NpcInstance
     public L2XmassTreeInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 3000);
+        _aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 3000);
     }
 
     public void deleteMe()
     {
-        if (aiTask != null) aiTask.cancel(true);
+        if (_aiTask != null) _aiTask.cancel(true);
 
         super.deleteMe();
     }

@@ -34,15 +34,15 @@ public class State
 {
 	// TODO - Begins
 	/** Prototype of empty String list */
-	private static final String[] emptyStrList = new String[0];
+	private static final String[] _emptyStrList = new String[0];
 	// TODO - End
 	
 	/** Name of the quest */
     /** Quest object associated to the state */
 	private final Quest _quest;
-	private Map<Integer, List<L2DropData>> _Drops;
-	private String[] _Events = emptyStrList;
-    private String _Name;
+	private Map<Integer, List<L2DropData>> _drops;
+	private String[] _events = _emptyStrList;
+    private String _name;
 
 
 	/**
@@ -52,7 +52,7 @@ public class State
 	 */
     public State(String name, Quest quest)
     {
-        _Name = name;
+        _name = name;
 		this._quest = quest;
 		quest.addState(this);
     }
@@ -67,20 +67,20 @@ public class State
      */
     public void addQuestDrop(int npcId, int itemId, int chance) {
         try {
-            if (_Drops == null)
-                _Drops = new FastMap<Integer, List<L2DropData>>();
+            if (_drops == null)
+                _drops = new FastMap<Integer, List<L2DropData>>();
             L2DropData d = new L2DropData();
             d.setItemId(itemId);
             d.setChance(chance);
             d.setQuestID(_quest.getName());
-            d.addStates(new String[]{_Name});
-            List<L2DropData> lst = _Drops.get(npcId);
+            d.addStates(new String[]{_name});
+            List<L2DropData> lst = _drops.get(npcId);
             if (lst != null) {
                 lst.add(d);
             } else {
                 lst = new FastList<L2DropData>();
                 lst.add(d);
-                _Drops.put(npcId, lst);
+                _drops.put(npcId, lst);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class State
      * @return HashMap
      */
     Map<Integer, List<L2DropData>> getDrops() {
-        return _Drops;
+        return _drops;
     }
     
     /**
@@ -103,7 +103,7 @@ public class State
      * @return String[]
      */
     String[] getEvents() {
-        return _Events;
+        return _events;
     }
 
     /**
@@ -112,7 +112,7 @@ public class State
      */
     public String getName()
     {
-        return _Name;
+        return _name;
     }
 	
     /**
@@ -120,7 +120,7 @@ public class State
      * @return String
      */
     public String toString() {
-        return _Name;
+        return _name;
     }
 
     public Quest getQuest()

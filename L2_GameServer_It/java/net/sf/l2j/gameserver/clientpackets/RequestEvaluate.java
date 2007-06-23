@@ -29,11 +29,11 @@ public final class RequestEvaluate extends L2GameClientPacket
 	//private static Logger _log = Logger.getLogger(RequestEvaluate.class.getName());
 
 	@SuppressWarnings("unused")
-    private int _targetid;
+    private int _targetId;
 
 	protected void readImpl()
 	{
-		_targetid = readD();
+		_targetId = readD();
 	}
 
 	protected void runImpl()

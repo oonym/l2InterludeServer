@@ -42,7 +42,7 @@ public class L2TradeList
 	private List<L2ItemInstance> _items;
 	private int _listId;
 	private boolean _confirmed;
-	private String _Buystorename,_Sellstorename;
+	private String _buystorename, _sellstorename;
     
     private String _npcId;
 	
@@ -122,19 +122,19 @@ public class L2TradeList
 	}
 	public void setSellStoreName(String name)
 	{
-		_Sellstorename = name;
+		_sellstorename = name;
 	}
 	public String getSellStoreName()
 	{
-		return _Sellstorename;
+		return _sellstorename;
 	}
 	public void setBuyStoreName(String name)
 	{
-		_Buystorename = name;
+		_buystorename = name;
 	}
 	public String getBuyStoreName()
 	{
-		return _Buystorename;
+		return _buystorename;
 	}
 	
 	/**
@@ -494,12 +494,12 @@ public class L2TradeList
 		        }
 		        else
 		        {
-		            msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_s);
+		            msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_S);
 		            msg.addString(buyer.getName());
 		            msg.addItemName(sellerItem.getItemId());
 		            msg.addNumber(amount);
 		            sysmsgs.add(msg);
-		            msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_s);
+		            msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_S);
 		            msg.addString("You");
 		            msg.addItemName(sellerItem.getItemId());
 		            msg.addNumber(amount);

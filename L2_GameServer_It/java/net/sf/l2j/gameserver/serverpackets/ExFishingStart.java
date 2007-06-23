@@ -28,13 +28,14 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class ExFishingStart extends L2GameServerPacket
 {
 	private static final String _S__FE_13_EXFISHINGSTART = "[S] FE:13 ExFishingStart";
-	private L2Character _character;
+	private L2Character _activeChar;
 	private int _x,_y,_z, _fishType;
+	@SuppressWarnings("unused")
 	private boolean _isNightLure;
 	
 	public ExFishingStart(L2Character character, int fishType, int x, int y,int z, boolean isNightLure)
 	{
-		_character = character;
+		_activeChar = character;
 		_fishType = fishType;
 		_x = x;
 		_y = y;
@@ -50,7 +51,7 @@ public class ExFishingStart extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x13);
-		writeD(_character.getObjectId());
+		writeD(_activeChar.getObjectId());
 		writeD(_fishType); // fish type
 		writeD(_x); // x poisson
 		writeD(_y); // y poisson

@@ -47,21 +47,21 @@ public final class LambdaStats extends Lambda {
 		switch (_stat)
 		{
 		case PLAYER_LEVEL:
-			if (env._player == null)
+			if (env.player == null)
 				return 1;
-			return env._player.getLevel();
+			return env.player.getLevel();
 		case TARGET_LEVEL:
-			if (env._target == null)
+			if (env.target == null)
 				return 1;
-			return env._target.getLevel();
+			return env.target.getLevel();
 		case PLAYER_MAX_HP:
-			if (env._player == null)
+			if (env.player == null)
 				return 1;
-			return env._player.getMaxHp();
+			return env.player.getMaxHp();
 		case PLAYER_MAX_MP:
-			if (env._player == null)
+			if (env.player == null)
 				return 1;
-			return env._player.getMaxMp();
+			return env.player.getMaxMp();
 		}
 		return 0;
 	}

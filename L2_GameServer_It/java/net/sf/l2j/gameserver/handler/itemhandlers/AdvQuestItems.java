@@ -37,15 +37,15 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class AdvQuestItems implements IItemHandler
 {
-    private static int[] _itemIds = { 5944, 5955, 5966, 5967, 5968, 5969, 6007, 6008, 6009, 6010 };
+    private static final int[] ITEM_IDS = { 5944, 5955, 5966, 5967, 5968, 5969, 6007, 6008, 6009, 6010 };
     
-    private static int[] award_parch = { 5922, 5923, 5924, 5925, 5926, 5927, 5928, 5929, 5930, 5931, 5932, 5933, 5934, 5935, 5936, 5937, 5938, 5939, 5940, 5941, 5942, 5943};
-    private static int[] award_gbook = { 5942, 5943, 5945, 5946, 5947, 5948, 5949, 5950, 5951, 5952, 5953, 5954};
-    private static int[] award_papy1 = { 5970, 5971, 5977, 5978, 5979, 5986, 5993, 5994, 5995, 5997, 5983, 6001};
-    private static int[] award_papy2 = { 5970, 5971, 5975, 5976, 5980, 5985, 5993, 5994, 5995, 5997, 5983, 6001};
-    private static int[] award_papy3 = { 5973, 5974, 5981, 5984, 5989, 5990, 5991, 5992, 5996, 5998, 5999, 6000, 5988, 5983, 6001};
-    private static int[] award_papy4 = { 5970, 5971, 5982, 5987, 5989, 5990, 5991, 5992, 5996, 5998, 5999, 6000, 5972, 6001};
-    private static int[] award_pouch = { 6011, 6012, 6013, 6014, 6015, 6016, 6018, 6019, 6020};
+    private static final int[] AWARD_PARCH = { 5922, 5923, 5924, 5925, 5926, 5927, 5928, 5929, 5930, 5931, 5932, 5933, 5934, 5935, 5936, 5937, 5938, 5939, 5940, 5941, 5942, 5943};
+    private static final int[] AWARD_GBOOK = { 5942, 5943, 5945, 5946, 5947, 5948, 5949, 5950, 5951, 5952, 5953, 5954};
+    private static final int[] AWARD_PAPY1 = { 5970, 5971, 5977, 5978, 5979, 5986, 5993, 5994, 5995, 5997, 5983, 6001};
+    private static final int[] AWARD_PAPY2 = { 5970, 5971, 5975, 5976, 5980, 5985, 5993, 5994, 5995, 5997, 5983, 6001};
+    private static final int[] AWARD_PAPY3 = { 5973, 5974, 5981, 5984, 5989, 5990, 5991, 5992, 5996, 5998, 5999, 6000, 5988, 5983, 6001};
+    private static final int[] AWARD_PAPY4 = { 5970, 5971, 5982, 5987, 5989, 5990, 5991, 5992, 5996, 5998, 5999, 6000, 5972, 6001};
+    private static final int[] AWARD_POUCH = { 6011, 6012, 6013, 6014, 6015, 6016, 6018, 6019, 6020};
     
     private final static Random _rnd = new Random();
     
@@ -59,35 +59,35 @@ public class AdvQuestItems implements IItemHandler
         switch (itemId)
         {
         case 5944:
-            itemToCreateId = award_parch[ _rnd.nextInt( award_parch.length)];
+            itemToCreateId = AWARD_PARCH[ _rnd.nextInt( AWARD_PARCH.length)];
             break;
         case 5955:
-            itemToCreateId = award_gbook[ _rnd.nextInt( award_gbook.length)];
+            itemToCreateId = AWARD_GBOOK[ _rnd.nextInt( AWARD_GBOOK.length)];
             break;
         case 5966:
-            itemToCreateId = award_papy1[ _rnd.nextInt( award_papy1.length)];
+            itemToCreateId = AWARD_PAPY1[ _rnd.nextInt( AWARD_PAPY1.length)];
             break;
         case 5967:
-            itemToCreateId = award_papy2[ _rnd.nextInt( award_papy2.length)];
+            itemToCreateId = AWARD_PAPY2[ _rnd.nextInt( AWARD_PAPY2.length)];
             break;
         case 5968:
-            itemToCreateId = award_papy3[ _rnd.nextInt( award_papy3.length)];
+            itemToCreateId = AWARD_PAPY3[ _rnd.nextInt( AWARD_PAPY3.length)];
             break;
         case 5969:
-            itemToCreateId = award_papy4[ _rnd.nextInt( award_papy4.length)];
+            itemToCreateId = AWARD_PAPY4[ _rnd.nextInt( AWARD_PAPY4.length)];
             break;
         case 6007:
         case 6008:
         case 6009:
         case 6010:
-            itemToCreateId = award_pouch[ _rnd.nextInt( award_pouch.length)];
+            itemToCreateId = AWARD_POUCH[ _rnd.nextInt( AWARD_POUCH.length)];
             break;
         }
 
         activeChar.getInventory().destroyItemByItemId("Extract", item.getItemId(), 1, activeChar, null);
 	    activeChar.getInventory().addItem("Extract", itemToCreateId, 1, activeChar, item);
 
-        SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s); 
+        SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S); 
         sm.addItemName(itemToCreateId);
         sm.addNumber(1);
         activeChar.sendPacket(sm);
@@ -97,6 +97,6 @@ public class AdvQuestItems implements IItemHandler
     }
     public int[] getItemIds()
     {
-        return _itemIds;
+        return ITEM_IDS;
     }
 }

@@ -56,7 +56,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
     private static Logger _log = Logger.getLogger(AdminEditChar.class.getName());
     private final static int PAGE_LIMIT = 7;
     
-    private static String[] _adminCommands = {
+    private static final String[] ADMIN_COMMANDS = {
             "admin_edit_npc",
             "admin_save_npc",
             "admin_show_droplist",
@@ -657,7 +657,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}	
 	
 	private void Show_Npc_Property(L2PcInstance adminPlayer, L2NpcTemplate npc)
@@ -707,7 +707,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 	        adminReply.replace("%factionId%", npc.factionId == null ? "" : npc.factionId);
 	        adminReply.replace("%factionRange%", String.valueOf(npc.factionRange));
 	        adminReply.replace("%isUndead%", npc.isUndead ? "1" : "0");
-	        adminReply.replace("%absorbLevel%", String.valueOf(npc.absorb_level));
+	        adminReply.replace("%absorbLevel%", String.valueOf(npc.absorbLevel));
 	    }
         else
 	        adminReply.setHtml("<html><head><body>File not found: data/html/admin/editnpc.htm</body></html>");

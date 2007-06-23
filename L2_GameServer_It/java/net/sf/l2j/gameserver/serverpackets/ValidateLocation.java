@@ -34,12 +34,12 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class ValidateLocation extends L2GameServerPacket
 {
 	private static final String _S__76_SETTOLOCATION = "[S] 61 ValidateLocation";
-	private int _chaId;
+	private int _charObjId;
 	private int _x, _y, _z, _heading;
 	
 	public ValidateLocation(L2Character cha)
 	{
-		_chaId = cha.getObjectId();
+		_charObjId = cha.getObjectId();
 		_x = cha.getX();
 		_y = cha.getY();
 		_z = cha.getZ();
@@ -50,7 +50,7 @@ public class ValidateLocation extends L2GameServerPacket
 	{
 		writeC(0x61);
 		
-		writeD(_chaId);
+		writeD(_charObjId);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);

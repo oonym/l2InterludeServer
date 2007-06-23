@@ -44,8 +44,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 {
 	private static final String _C__72_REQUESTDCRYSTALLIZEITEM = "[C] 72 RequestCrystallizeItem";
 
-	private static Logger _log = Logger.getLogger(RequestCrystallizeItem.class
-			.getName());
+	private static Logger _log = Logger.getLogger(RequestCrystallizeItem.class.getName());
 
 	private int _objectId;
 	private int _count;
@@ -218,7 +217,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				"Crystalize", crystalId, crystalAmount, activeChar,
 				itemToRemove);
 
-		SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+		SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
 		sm.addItemName(crystalId);
 		sm.addNumber(crystalAmount);
 		activeChar.sendPacket(sm);

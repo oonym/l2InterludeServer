@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.util.Broadcast;
 public class BeastSpiritShot implements IItemHandler
 {
     // All the item IDs that this handler knows.
-    private static int[] _itemIds = {6646, 6647};
+    private static final int[] ITEM_IDS = {6646, 6647};
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
@@ -158,6 +158,6 @@ public class BeastSpiritShot implements IItemHandler
     
     public int[] getItemIds()
     {
-        return _itemIds;
+        return ITEM_IDS;
     }
 }

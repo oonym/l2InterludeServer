@@ -31,7 +31,7 @@ public class TargetSelected extends L2GameServerPacket
 {
 	private static final String _S__39_TARGETSELECTED = "[S] 29 TargetSelected";
 	private int _objectId;
-	private int _targetId;
+	private int _targetObjId;
 	private int _x;
 	private int _y;
 	private int _z;
@@ -43,7 +43,7 @@ public class TargetSelected extends L2GameServerPacket
 	public TargetSelected(int objectId, int targetId, int x, int y, int z)
 	{
 		_objectId = objectId;
-		_targetId = targetId;
+		_targetObjId = targetId;
 		_x = x;
 		_y = y;
 		_z = z;
@@ -53,7 +53,7 @@ public class TargetSelected extends L2GameServerPacket
 	{
 		writeC(0x29);
 		writeD(_objectId);
-		writeD(_targetId);
+		writeD(_targetObjId);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);

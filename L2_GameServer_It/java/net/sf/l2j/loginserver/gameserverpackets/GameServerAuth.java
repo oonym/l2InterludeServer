@@ -38,10 +38,10 @@ import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 public class GameServerAuth extends ClientBasePacket
 {
 	protected static Logger _log = Logger.getLogger(GameServerAuth.class.getName());
-	private byte[] _hexID;
-	private int _desiredID;
+	private byte[] _hexId;
+	private int _desiredId;
 	private boolean _hostReserved;
-	private boolean _acceptAlternativeID;
+	private boolean _acceptAlternativeId;
 	private int _maxPlayers;
 	private int _port;
 	private String _externalHost;
@@ -53,15 +53,15 @@ public class GameServerAuth extends ClientBasePacket
 	public GameServerAuth(byte[] decrypt)
 	{
 		super(decrypt);
-		_desiredID = readC();
-		_acceptAlternativeID = (readC() == 0 ? false : true); 
+		_desiredId = readC();
+		_acceptAlternativeId = (readC() == 0 ? false : true); 
 		_hostReserved = (readC() == 0 ? false : true);
 		_externalHost = readS();
 		_internalHost = readS();
 		_port = readH();
 		_maxPlayers = readD();
 		int size = readD();
-		_hexID = readB(size);
+		_hexId = readB(size);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class GameServerAuth extends ClientBasePacket
 	 */
 	public byte[] getHexID()
 	{
-		return _hexID;
+		return _hexId;
 	}
 	
 	public boolean getHostReserved()
@@ -79,12 +79,12 @@ public class GameServerAuth extends ClientBasePacket
 	
 	public int getDesiredID()
 	{
-		return _desiredID;
+		return _desiredId;
 	}
 	
 	public boolean acceptAlternateID()
 	{
-		return _acceptAlternativeID;
+		return _acceptAlternativeId;
 	}
 
 	/**

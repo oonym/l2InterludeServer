@@ -53,7 +53,7 @@ public class L2RecipeList
 	private int _count;
 
 	/** If this a common or a dwarven recipe */ 
-	private boolean _IsDwarvenRecipe; 
+	private boolean _isDwarvenRecipe; 
 
 	/**
 	 * Constructor of L2RecipeList (create a new Recipe).<BR><BR>
@@ -69,7 +69,7 @@ public class L2RecipeList
 		_mpCost = mpCost;
 		_itemId = itemId;
 		_count = count;
-		_IsDwarvenRecipe = isDwarvenRecipe;
+		_isDwarvenRecipe = isDwarvenRecipe;
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class L2RecipeList
 	 */ 
 	public boolean isDwarvenRecipe() 
 	{ 
-		return _IsDwarvenRecipe; 
+		return _isDwarvenRecipe; 
 	} 
 
 	/**

@@ -45,9 +45,9 @@ public class BitSetIDFactory extends IdFactory
 {
     private static Logger _log = Logger.getLogger(BitSetIDFactory.class.getName());
     
-    private BitSet          freeIds;
-    private AtomicInteger   freeIdCount;
-    private AtomicInteger   nextFreeId;
+    private BitSet          _freeIds;
+    private AtomicInteger   _freeIdCount;
+    private AtomicInteger   _nextFreeId;
     
     public class BitSetCapacityCheck implements Runnable
     {
@@ -70,16 +70,16 @@ public class BitSetIDFactory extends IdFactory
         super();
         ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new BitSetCapacityCheck(), 30000, 30000);
         initialize();
-        _log.info("IDFactory: "+ freeIds.size() + " id's available.");
+        _log.info("IDFactory: "+ _freeIds.size() + " id's available.");
     }
     
     public synchronized void initialize()
     {
         try
         {
-            freeIds     = new BitSet(PrimeFinder.nextPrime(100000));
-            freeIds.clear();
-            freeIdCount = new AtomicInteger(FREE_OBJECT_ID_SIZE);
+            _freeIds     = new BitSet(PrimeFinder.nextPrime(100000));
+            _freeIds.clear();
+            _freeIdCount = new AtomicInteger(FREE_OBJECT_ID_SIZE);
             
             for (int usedObjectId : extractUsedObjectIDTable())
             {
@@ -89,16 +89,16 @@ public class BitSetIDFactory extends IdFactory
                     _log.warning("Object ID " + usedObjectId + " in DB is less than minimum ID of " + FIRST_OID);
                     continue;
                 }
-                freeIds.set(usedObjectId - FIRST_OID);
-                freeIdCount.decrementAndGet();
+                _freeIds.set(usedObjectId - FIRST_OID);
+                _freeIdCount.decrementAndGet();
             }
             
-            nextFreeId  = new AtomicInteger(freeIds.nextClearBit(0));
-            initialized = true;
+            _nextFreeId  = new AtomicInteger(_freeIds.nextClearBit(0));
+            _initialized = true;
         }
         catch (Exception e)
         {
-            initialized = false;
+            _initialized = false;
             _log.severe("BitSet ID Factory could not be initialized correctly");
             e.printStackTrace();
         }
@@ -108,27 +108,27 @@ public class BitSetIDFactory extends IdFactory
     {
         if ((objectID - FIRST_OID) > -1)
         {
-            freeIds.clear(objectID - FIRST_OID);
-            freeIdCount.incrementAndGet();
+            _freeIds.clear(objectID - FIRST_OID);
+            _freeIdCount.incrementAndGet();
         } else
             _log.warning("BitSet ID Factory: release objectID "+objectID+" failed (< "+FIRST_OID+")");
     }
     
     public synchronized int getNextId()
     {
-        int newID = nextFreeId.get();
-        freeIds.set(newID);
-        freeIdCount.decrementAndGet();
+        int newID = _nextFreeId.get();
+        _freeIds.set(newID);
+        _freeIdCount.decrementAndGet();
         
-        int nextFree = freeIds.nextClearBit(newID);
+        int nextFree = _freeIds.nextClearBit(newID);
         
         if (nextFree < 0)
         {
-            nextFree = freeIds.nextClearBit(0);
+            nextFree = _freeIds.nextClearBit(0);
         }
         if (nextFree < 0)
         {
-            if (freeIds.size() < FREE_OBJECT_ID_SIZE)
+            if (_freeIds.size() < FREE_OBJECT_ID_SIZE)
             {
                 increaseBitSetCapacity();
             }
@@ -138,14 +138,14 @@ public class BitSetIDFactory extends IdFactory
             }
         }
 
-        nextFreeId.set(nextFree);
+        _nextFreeId.set(nextFree);
 
         return newID + FIRST_OID;
     }
     
     public synchronized int size()
     {
-        return freeIdCount.get();
+        return _freeIdCount.get();
     }
     
     protected synchronized int usedIdCount()
@@ -155,13 +155,13 @@ public class BitSetIDFactory extends IdFactory
     
     protected synchronized boolean reachingBitSetCapacity()
     {
-        return PrimeFinder.nextPrime(usedIdCount() * 11 / 10) > freeIds.size();
+        return PrimeFinder.nextPrime(usedIdCount() * 11 / 10) > _freeIds.size();
     }
     
     protected synchronized void increaseBitSetCapacity()
     {
-        BitSet newBitSet    = new BitSet(PrimeFinder.nextPrime(usedIdCount() * 11 / 10));
-        newBitSet.or(freeIds);
-        freeIds             = newBitSet;
+        BitSet newBitSet = new BitSet(PrimeFinder.nextPrime(usedIdCount() * 11 / 10));
+        newBitSet.or(_freeIds);
+        _freeIds = newBitSet;
     }
 }

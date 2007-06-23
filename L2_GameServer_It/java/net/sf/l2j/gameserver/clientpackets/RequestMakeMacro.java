@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public final class RequestMakeMacro extends L2GameClientPacket
 {
 	private L2Macro _macro;
-	private int _commands_lenght = 0;
+	private int _commandsLenght = 0;
     
 	private static final String _C__C1_REQUESTMAKEMACRO = "[C] C1 RequestMakeMacro";
 	
@@ -69,7 +69,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
             int d1         = readD(); // skill or page number for shortcuts
             int d2         = readC();
             String command = readS();
-            _commands_lenght += command.length();
+            _commandsLenght += command.length();
 			commands[i] = new L2MacroCmd(entry, type, d1, d2, command);
             if (Config.DEBUG) System.out.println("entry:"+entry+"\ttype:"+type+"\td1:"+d1+"\td2:"+d2+"\tcommand:"+command);
         }
@@ -81,7 +81,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		L2PcInstance  player = getClient().getActiveChar(); 
 		if (player == null)
 		    return;
-		if (_commands_lenght > 255)
+		if (_commandsLenght > 255)
 		{
 			//Invalid macro. Refer to the Help file for instructions.
 			player.sendPacket(new SystemMessage(SystemMessage.INVALID_MACRO));

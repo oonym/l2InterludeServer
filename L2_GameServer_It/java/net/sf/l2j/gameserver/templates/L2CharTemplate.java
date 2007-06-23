@@ -68,8 +68,8 @@ public class L2CharTemplate
 	public final int baseWind;
 	public final int baseWater;
 	public final int baseEarth;
- public final int baseHoly;
- public final int baseDark;
+	public final int baseHoly;
+	public final int baseDark;
 	public final int baseAggressionRes;
 	public final int baseBleedRes;
 	public final int basePoisonRes;

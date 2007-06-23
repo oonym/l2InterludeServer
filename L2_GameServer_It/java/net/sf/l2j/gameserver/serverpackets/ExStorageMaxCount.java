@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class ExStorageMaxCount extends L2GameServerPacket
 {
 	private static final String _S__FE_2E_EXSTORAGEMAXCOUNT = "[S] FE:2E ExStorageMaxCount";
-	private L2PcInstance _character;
+	private L2PcInstance _activeChar;
 	private int _inventory;
 	private int _warehouse;
 	private int _freight;
@@ -46,14 +46,14 @@ public class ExStorageMaxCount extends L2GameServerPacket
 	
 	public ExStorageMaxCount(L2PcInstance character)
 	{
-		_character = character;		
-		_inventory = _character.GetInventoryLimit();
-        _warehouse = _character.GetWareHouseLimit();
-		_privateSell = _character.GetPrivateSellStoreLimit();
-		_privateBuy = _character.GetPrivateBuyStoreLimit();
-		_freight = _character.GetFreightLimit();  
-		_receipeD = _character.GetDwarfRecipeLimit();  
-		_recipe = _character.GetCommonRecipeLimit();
+		_activeChar = character;		
+		_inventory = _activeChar.GetInventoryLimit();
+        _warehouse = _activeChar.GetWareHouseLimit();
+		_privateSell = _activeChar.GetPrivateSellStoreLimit();
+		_privateBuy = _activeChar.GetPrivateBuyStoreLimit();
+		_freight = _activeChar.GetFreightLimit();  
+		_receipeD = _activeChar.GetDwarfRecipeLimit();  
+		_recipe = _activeChar.GetCommonRecipeLimit();
 	}
 
 	/* (non-Javadoc)

@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
  */
 public class stats implements IVoicedCommandHandler
 {
-    private static String[] _voicedCommands = { "stats" }; 
+    private static final String[] VOICED_COMMANDS = { "stats" }; 
 
     public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
@@ -66,7 +66,7 @@ public class stats implements IVoicedCommandHandler
  
     public String[] getVoicedCommandList()
     {
-        return _voicedCommands;
+        return VOICED_COMMANDS;
     }
 
 }

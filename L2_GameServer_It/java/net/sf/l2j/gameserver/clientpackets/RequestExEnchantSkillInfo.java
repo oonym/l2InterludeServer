@@ -42,13 +42,13 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 	//private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
 	private static final String _C__D0_06_REQUESTEXENCHANTSKILLINFO = "[C] D0:06 RequestExEnchantSkillInfo";
 	@SuppressWarnings("unused")
-	private int _skillID;
+	private int _skillId;
 	@SuppressWarnings("unused")
 	private int _skillLvl;
 	
 	protected void readImpl()
 	{
-		_skillID = readD();
+		_skillId = readD();
 		_skillLvl = readD();
 	}
 
@@ -71,11 +71,11 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
         if ((trainer == null || !activeChar.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !activeChar.isGM()) 
             return;
 
-        L2Skill skill = SkillTable.getInstance().getInfo(_skillID, _skillLvl);
+        L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLvl);
         
         boolean canteach = false;
         
-        if (skill == null || skill.getId() != _skillID)
+        if (skill == null || skill.getId() != _skillId)
         {
             //_log.warning("enchant skill id " + _skillID + " level " + _skillLvl
             //    + " is undefined. aquireEnchantSkillInfo failed.");
@@ -90,7 +90,7 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 
         for (L2EnchantSkillLearn s : skills)
         {
-        	if (s.getId() == _skillID && s.getLevel() == _skillLvl)
+        	if (s.getId() == _skillId && s.getLevel() == _skillLvl)
         	{
         		canteach = true;
         		break;

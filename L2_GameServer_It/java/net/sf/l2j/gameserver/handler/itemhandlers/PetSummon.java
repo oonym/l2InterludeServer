@@ -46,7 +46,7 @@ public class PetSummon implements IItemHandler
     protected static final Logger _log = Logger.getLogger(PetSummon.class.getName());
 	
 	// all the items ids that this handler knowns
-	private static final int[] _itemIds = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650 };
+	private static final int[] ITEM_IDS = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650 };
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -161,12 +161,12 @@ public class PetSummon implements IItemHandler
 	static class FeedWait implements Runnable
 	{
 		private L2PcInstance _activeChar;
-		private L2PetInstance _newpet;
+		private L2PetInstance _newPet;
 		
 		FeedWait(L2PcInstance activeChar, L2PetInstance newpet)
 		{
 			_activeChar = activeChar;
-			_newpet = newpet;
+			_newPet = newpet;
 		}
 		
 		public void run()
@@ -174,14 +174,14 @@ public class PetSummon implements IItemHandler
 			try
 			{
 				// owner didn't feed on time
-				if ( _newpet.getCurrentFed() <= 0 )
+				if ( _newPet.getCurrentFed() <= 0 )
 				{
-					_newpet.unSummon(_activeChar);
+					_newPet.unSummon(_activeChar);
 				}
 				else
 				{
 					// normal feeding
-					_newpet.startFeed( false );
+					_newPet.startFeed( false );
 				}
 			}
 			catch (Throwable e)
@@ -194,12 +194,12 @@ public class PetSummon implements IItemHandler
 	static class SummonFinalizer implements Runnable
 	{
 		private L2PcInstance _activeChar;
-		private L2PetInstance _newpet;
+		private L2PetInstance _newPet;
 		
 		SummonFinalizer(L2PcInstance activeChar, L2PetInstance newpet)
 		{
 			_activeChar = activeChar;
-			_newpet = newpet;
+			_newPet = newpet;
 		}
 		
 		public void run()
@@ -208,10 +208,10 @@ public class PetSummon implements IItemHandler
 			{
 				_activeChar.sendPacket(new MagicSkillLaunched(_activeChar,2046,1));
 				
-				_newpet.setFollowStatus(true);
+				_newPet.setFollowStatus(true);
 				// addVisibleObject created the info packets with summon animation
 				// if someone comes into range now, the animation shouldnt show any more
-		        _newpet.setShowSummonAnimation(false);
+		        _newPet.setShowSummonAnimation(false);
 			}
 			catch (Throwable e)
 			{
@@ -222,6 +222,6 @@ public class PetSummon implements IItemHandler
 	
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

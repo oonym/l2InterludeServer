@@ -77,7 +77,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
         }
         
         TradeList tradeList = player.getBuyList();
-        tradeList.Clear();
+        tradeList.clear();
 
         int cost = 0;
         for (int i = 0; i < _count; i++)

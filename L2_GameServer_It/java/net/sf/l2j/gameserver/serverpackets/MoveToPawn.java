@@ -34,14 +34,14 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class MoveToPawn extends L2GameServerPacket
 {
 	private static final String _S__75_MOVETOPAWN = "[S] 60 MoveToPawn";
-	private int _chaId;
+	private int _charObjId;
 	private int _targetId;
 	private int _distance;
 	private int _x, _y, _z;
 	
 	public MoveToPawn(L2Character cha, L2Character target, int distance)
 	{
-		_chaId = cha.getObjectId();
+		_charObjId = cha.getObjectId();
 		_targetId = target.getObjectId();
 		_distance = distance;
 		_x = cha.getX();
@@ -53,7 +53,7 @@ public class MoveToPawn extends L2GameServerPacket
 	{
 		writeC(0x60);
 		
-		writeD(_chaId);
+		writeD(_charObjId);
 		writeD(_targetId);
 		writeD(_distance);
 		

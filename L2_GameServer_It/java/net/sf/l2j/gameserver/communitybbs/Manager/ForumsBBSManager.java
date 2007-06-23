@@ -35,20 +35,20 @@ public class ForumsBBSManager extends BaseBBSManager
 	private static Logger _log = Logger.getLogger(ForumsBBSManager.class.getName());
 	private Map<Integer, Forum> _root;
 	private List<Forum> _table;
-	private static ForumsBBSManager _Instance;
-	private int lastid = 1;
+	private static ForumsBBSManager _instance;
+	private int _lastid = 1;
 
 	/**
 	 * @return
 	 */
 	public static ForumsBBSManager getInstance()
 	{
-		if (_Instance == null)
+		if (_instance == null)
 		{
-			_Instance = new ForumsBBSManager();
-			_Instance.load();
+			_instance = new ForumsBBSManager();
+			_instance.load();
 		}
-		return _Instance;
+		return _instance;
 	}
 
 	public ForumsBBSManager()
@@ -61,9 +61,9 @@ public class ForumsBBSManager extends BaseBBSManager
 	{
 		_table.add(ff);
 	
-		if (ff.getID() > lastid)
+		if (ff.getID() > _lastid)
 		{
-			lastid = ff.getID();
+			_lastid = ff.getID();
 		}		
 	}
 
@@ -136,7 +136,7 @@ public class ForumsBBSManager extends BaseBBSManager
 	 * @param forumByName
 	 * @return
 	 */
-	public Forum CreateNewForum(String name, Forum parent, int type, int perm, int oid)
+	public Forum createNewForum(String name, Forum parent, int type, int perm, int oid)
 	{
 		Forum forum;
 		forum = new Forum(name, parent, type, perm, oid);		
@@ -147,10 +147,10 @@ public class ForumsBBSManager extends BaseBBSManager
 	/**
 	 * @return
 	 */
-	public int GetANewID()
+	public int getANewID()
 	{
-		lastid++;
-		return lastid;
+		_lastid++;
+		return _lastid;
 	}
 
 	/**

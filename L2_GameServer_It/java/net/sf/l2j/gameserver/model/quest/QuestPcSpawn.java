@@ -25,32 +25,32 @@ public class QuestPcSpawn
 
     public class DeSpawnScheduleTimerTask implements Runnable
     {
-        int _ObjectId = 0;
+        int _objectId = 0;
         public DeSpawnScheduleTimerTask(int objectId)
         {
-            _ObjectId = objectId;
+            _objectId = objectId;
         }
         
         public void run()
         {
             try
             {
-                removeSpawn(_ObjectId);
+                removeSpawn(_objectId);
             } catch (Throwable t){}
         }
     }
 
     // =========================================================
     // Data Field
-    private L2PcInstance _Player;
+    private L2PcInstance _player;
     private List<AutoSpawnInstance> _autoSpawns = new FastList<AutoSpawnInstance>();
-    private List<L2Spawn> _Spawns = new FastList<L2Spawn>();
+    private List<L2Spawn> _spawns = new FastList<L2Spawn>();
     
     // =========================================================
     // Constructor
     public QuestPcSpawn(L2PcInstance player)
     {
-        _Player = player;
+        _player = player;
     }
 
     // =========================================================
@@ -165,7 +165,7 @@ public class QuestPcSpawn
                 spawn.setLocz(z + 20);
                 spawn.stopRespawn();
                 spawn.doSpawn();
-                _Spawns.add(spawn);
+                _spawns.add(spawn);
                 int objectId = spawn.getLastSpawn().getObjectId();
                 if (despawnDelay > 0)
                 	addDeSpawnTask(objectId, despawnDelay);
@@ -285,7 +285,7 @@ public class QuestPcSpawn
     /** Return current player instance */
     public L2PcInstance getPlayer()
     {
-        return _Player;
+        return _player;
     }
 
     /**
@@ -352,8 +352,8 @@ public class QuestPcSpawn
      */
     public List<L2Spawn> getSpawns()
     {
-        if (_Spawns == null)
-            _Spawns = new FastList<L2Spawn>();
-        return _Spawns;
+        if (_spawns == null)
+            _spawns = new FastList<L2Spawn>();
+        return _spawns;
     }
 }

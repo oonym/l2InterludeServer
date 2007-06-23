@@ -12,8 +12,8 @@ public class ZoneType
 
     // =========================================================
     // Data Field
-    private String _TypeName;
-    private List<Zone> _Zones;
+    private String _typeName;
+    private List<Zone> _zones;
 
     public static enum ZoneTypeEnum
     {
@@ -56,7 +56,7 @@ public class ZoneType
     // Constructor
     public ZoneType(String typeName)
     {
-        _TypeName = typeName.trim();
+        _typeName = typeName.trim();
     }
 
     // =========================================================
@@ -93,7 +93,7 @@ public class ZoneType
     // Property - Public
     public final String getTypeName()
     {
-        return _TypeName;
+        return _typeName;
     }
     
     public final Zone getZone(int zoneId)
@@ -121,7 +121,7 @@ public class ZoneType
     
     public final List<Zone> getZones()
     {
-        if (_Zones == null) _Zones = new FastList<Zone>();
-        return _Zones;
+        if (_zones == null) _zones = new FastList<Zone>();
+        return _zones;
     }
 }

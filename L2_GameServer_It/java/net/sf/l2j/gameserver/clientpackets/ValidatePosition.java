@@ -183,7 +183,8 @@ public class ValidatePosition extends L2GameClientPacket
         return _C__48_VALIDATEPOSITION;
     }
     
-    public boolean Equal(ValidatePosition pos)
+    @Deprecated
+    public boolean equal(ValidatePosition pos)
     {
         return _x == pos._x && _y == pos._y && _z == pos._z && _heading == pos._heading;
     }

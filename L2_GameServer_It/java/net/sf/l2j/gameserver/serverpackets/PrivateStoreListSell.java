@@ -32,7 +32,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 //	private static final String _S__B4_PRIVATEBUYLISTSELL = "[S] 9b PrivateBuyListSell";
 	private static final String _S__B4_PRIVATESTORELISTSELL = "[S] 9b PrivateStoreListSell";
 	private L2PcInstance _storePlayer;
-	private L2PcInstance _player;
+	private L2PcInstance _activeChar;
 	private int _playerAdena;
 	private boolean _packageSale;
 	private TradeList.TradeItem[] _items;
@@ -40,9 +40,9 @@ public class PrivateStoreListSell extends L2GameServerPacket
 	// player's private shop
 	public PrivateStoreListSell(L2PcInstance player, L2PcInstance storePlayer)
 	{
-		_player = player;
+		_activeChar = player;
 		_storePlayer = storePlayer;
-		_playerAdena = _player.getAdena();
+		_playerAdena = _activeChar.getAdena();
 		_items = _storePlayer.getSellList().getItems();
 		_packageSale = _storePlayer.getSellList().isPackaged();
 	}
@@ -50,8 +50,8 @@ public class PrivateStoreListSell extends L2GameServerPacket
 	// lease shop
 	@Deprecated public PrivateStoreListSell(L2PcInstance player, L2MerchantInstance storeMerchant)
 	{
-		_player = player;
-		_playerAdena = _player.getAdena();
+		_activeChar = player;
+		_playerAdena = _activeChar.getAdena();
 		_items = _storePlayer.getSellList().getItems();
 		_packageSale = _storePlayer.getSellList().isPackaged();
 	}

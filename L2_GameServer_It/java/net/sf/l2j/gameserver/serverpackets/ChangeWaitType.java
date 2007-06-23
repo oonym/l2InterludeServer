@@ -34,8 +34,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class ChangeWaitType extends L2GameServerPacket
 {
 	private static final String _S__3F_CHANGEWAITTYPE = "[S] 2F ChangeWaitType";
-	private L2Character _cha;
-	private int _objectId;
+	private int _charObjId;
 	private int _moveType;
 	private int _x, _y, _z;
     
@@ -44,22 +43,20 @@ public class ChangeWaitType extends L2GameServerPacket
     public static final int WT_START_FAKEDEATH = 2;
     public static final int WT_STOP_FAKEDEATH = 3;
 	
-	public ChangeWaitType(L2Character cha, int newMoveType)
+	public ChangeWaitType(L2Character character, int newMoveType)
 	{
-		_cha = cha;
-		_objectId = cha.getObjectId();
+		_charObjId = character.getObjectId();
 		_moveType = newMoveType;
 		
-		_x = _cha.getX();
-		_y = _cha.getY();
-		_z = _cha.getZ();
-		_cha = null;
+		_x = character.getX();
+		_y = character.getY();
+		_z = character.getZ();
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x2f);
-		writeD(_objectId);
+		writeD(_charObjId);
 		writeD(_moveType);
 		writeD(_x);
 		writeD(_y);

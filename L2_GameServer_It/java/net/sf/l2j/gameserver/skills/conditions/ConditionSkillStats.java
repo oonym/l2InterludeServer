@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.skills.Stats;
  */
 public class ConditionSkillStats extends Condition {
 
-	final Stats _stat;
+	private final Stats _stat;
 	
 	public ConditionSkillStats(Stats stat)
 	{
@@ -40,9 +40,9 @@ public class ConditionSkillStats extends Condition {
 	}
 	
 	public boolean testImpl(Env env) {
-		if (env._skill == null)
+		if (env.skill == null)
 			return false;
-		return env._skill.getStat() == _stat;
+		return env.skill.getStat() == _stat;
 	}
 }
 

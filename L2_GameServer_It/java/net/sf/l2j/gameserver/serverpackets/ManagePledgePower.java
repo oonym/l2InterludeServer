@@ -28,7 +28,7 @@ public class ManagePledgePower extends L2GameServerPacket
     private int _action;
     private L2Clan _clan;
     private int _rank;
-    private int privs;
+    private int _privs;
     
     public ManagePledgePower(L2Clan clan, int action, int rank)
     {
@@ -41,7 +41,7 @@ public class ManagePledgePower extends L2GameServerPacket
     {
         if(_action == 1)
         {
-        	privs = _clan.getRankPrivs(_rank);
+        	_privs = _clan.getRankPrivs(_rank);
         }
         else
         {
@@ -56,7 +56,7 @@ public class ManagePledgePower extends L2GameServerPacket
         writeC(0x30);
         writeD(0);
         writeD(0);
-        writeD(privs);
+        writeD(_privs);
    }
     
     /* (non-Javadoc)

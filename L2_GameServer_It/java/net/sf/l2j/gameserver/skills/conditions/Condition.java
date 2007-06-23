@@ -18,7 +18,7 @@
  */
 package net.sf.l2j.gameserver.skills.conditions;
 
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public abstract class Condition implements ConditionListener {
 
-	static final Logger _log = Logger.getLogger(Condition.class.getName());
+	//private static final Logger _log = Logger.getLogger(Condition.class.getName());
 	
 	private ConditionListener _listener;
 	private String _msg;

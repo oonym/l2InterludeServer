@@ -46,18 +46,18 @@ public abstract class L2Object
 {
     // =========================================================
     // Data Field
-    private boolean _IsVisible;                 // Object visibility
-    private ObjectKnownList _KnownList;
-    private String _Name;
-    private int _ObjectId;                      // Object identifier
-    private ObjectPoly _Poly;
-    private ObjectPosition _Position;
+    private boolean _isVisible;                 // Object visibility
+    private ObjectKnownList _knownList;
+    private String _name;
+    private int _objectId;                      // Object identifier
+    private ObjectPoly _poly;
+    private ObjectPosition _position;
     
     // =========================================================
     // Constructor
     public L2Object(int objectId)
     {
-        _ObjectId = objectId;
+        _objectId = objectId;
     }
     
     // =========================================================
@@ -103,19 +103,19 @@ public abstract class L2Object
 
     public final int getX()
     {
-        if (Config.ASSERT) assert getPosition().getWorldRegion() != null || _IsVisible;
+        if (Config.ASSERT) assert getPosition().getWorldRegion() != null || _isVisible;
         return getPosition().getX();
     }
 
     public final int getY()
     {
-        if (Config.ASSERT) assert getPosition().getWorldRegion() != null || _IsVisible;
+        if (Config.ASSERT) assert getPosition().getWorldRegion() != null || _isVisible;
         return getPosition().getY();
     }
 
     public final int getZ()
     {
-        if (Config.ASSERT) assert getPosition().getWorldRegion() != null || _IsVisible;
+        if (Config.ASSERT) assert getPosition().getWorldRegion() != null || _isVisible;
         return getPosition().getZ();
     }
     
@@ -145,7 +145,7 @@ public abstract class L2Object
         
         synchronized (this) 
         {
-            _IsVisible = false;
+            _isVisible = false;
             getPosition().setWorldRegion(null);
         }
         
@@ -191,7 +191,7 @@ public abstract class L2Object
         
         synchronized (this) 
         {
-            _IsVisible = false;
+            _isVisible = false;
             getPosition().setWorldRegion(null);
         }
         
@@ -217,7 +217,7 @@ public abstract class L2Object
     {
         L2World.getInstance().removeObject(this);
         IdFactory.getInstance().releaseId(getObjectId());
-        _ObjectId = IdFactory.getInstance().getNextId();
+        _objectId = IdFactory.getInstance().getNextId();
     }
 
     /**
@@ -244,7 +244,7 @@ public abstract class L2Object
         synchronized (this) 
         {
             // Set the x,y,z position of the L2Object spawn and update its _worldregion
-            _IsVisible = true;
+            _isVisible = true;
             getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
             
             // Add the L2Object spawn in the _allobjects of L2World
@@ -269,7 +269,7 @@ public abstract class L2Object
         synchronized (this) 
         {
             // Set the x,y,z position of the L2Object spawn and update its _worldregion
-            _IsVisible = true;
+            _isVisible = true;
 
             if (x > L2World.MAP_MAX_X) x = L2World.MAP_MAX_X - 5000;
             if (x < L2World.MAP_MIN_X) x = L2World.MAP_MIN_X + 5000;
@@ -332,41 +332,41 @@ public abstract class L2Object
     }
     public final void setIsVisible(boolean value)
     {
-        _IsVisible = value;
-        if (!_IsVisible) getPosition().setWorldRegion(null);
+        _isVisible = value;
+        if (!_isVisible) getPosition().setWorldRegion(null);
     }
 
     public ObjectKnownList getKnownList()
     {
-        if (_KnownList == null) _KnownList = new ObjectKnownList(this);
-        return _KnownList;
+        if (_knownList == null) _knownList = new ObjectKnownList(this);
+        return _knownList;
     }
-    public final void setKnownList(ObjectKnownList value) { _KnownList = value; }
+    public final void setKnownList(ObjectKnownList value) { _knownList = value; }
 
     public final String getName()
     {
-        return _Name;
+        return _name;
     }
     public final void setName(String value)
     {
-        _Name = value;
+        _name = value;
     }
 
     public final int getObjectId()
     {
-        return _ObjectId;
+        return _objectId;
     }
     
     public final ObjectPoly getPoly()
     {
-        if (_Poly == null) _Poly = new ObjectPoly(this);
-        return _Poly;
+        if (_poly == null) _poly = new ObjectPoly(this);
+        return _poly;
     }
     
     public final ObjectPosition getPosition()
     {
-        if (_Position == null) _Position = new ObjectPosition(this);
-        return _Position;
+        if (_position == null) _position = new ObjectPosition(this);
+        return _position;
     }
 
     /**

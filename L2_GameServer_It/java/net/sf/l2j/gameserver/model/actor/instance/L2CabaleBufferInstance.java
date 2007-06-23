@@ -18,11 +18,11 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class L2CabaleBufferInstance extends L2NpcInstance
 {
-    ScheduledFuture aiTask;
+    private ScheduledFuture _aiTask;
     
     private class CabalaAI implements Runnable
     {
-        L2CabaleBufferInstance _caster;
+        private L2CabaleBufferInstance _caster;
         
         protected CabalaAI(L2CabaleBufferInstance caster) 
         {
@@ -137,18 +137,18 @@ public class L2CabaleBufferInstance extends L2NpcInstance
     {
         super(objectId, template);
         
-        if (aiTask != null) 
-        	aiTask.cancel(true);
+        if (_aiTask != null) 
+        	_aiTask.cancel(true);
         
-        aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CabalaAI(this), 3000, 3000);
+        _aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CabalaAI(this), 3000, 3000);
     }
     
     public void deleteMe()
     {
-        if (aiTask != null)
+        if (_aiTask != null)
         {
-            aiTask.cancel(true);
-            aiTask = null;
+        	_aiTask.cancel(true);
+        	_aiTask = null;
         }
         
         super.deleteMe();

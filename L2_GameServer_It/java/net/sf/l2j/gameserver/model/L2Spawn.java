@@ -68,13 +68,13 @@ public class L2Spawn
     protected int _scheduledCount;
 	
 	/** The X position of the spwan point */
-	private int _locx;
+	private int _locX;
 	
 	/** The Y position of the spwan point */
-	private int _locy;
+	private int _locY;
 	
 	/** The Z position of the spwan point */
-	private int _locz;
+	private int _locZ;
 	
 	/** The heading of L2NpcInstance when they are spawned */
 	private int _heading;
@@ -102,12 +102,12 @@ public class L2Spawn
 	{
 		//L2NpcInstance _instance;
 		//int _objId;
-        L2NpcInstance oldNpc;
+        private L2NpcInstance _oldNpc;
 		
 		public SpawnTask(/*int objid*/L2NpcInstance pOldNpc)
 		{
 			//_objId= objid;
-            this.oldNpc = pOldNpc;
+            this._oldNpc = pOldNpc;
 		}
 		
 		public void run()
@@ -115,7 +115,7 @@ public class L2Spawn
 			try
 			{
 				//doSpawn();
-                respawnNpc(oldNpc);
+                respawnNpc(_oldNpc);
 			}
 			catch (Exception e)
 			{
@@ -201,7 +201,7 @@ public class L2Spawn
 	 */
 	public int getLocx()
 	{
-		return _locx;
+		return _locX;
 	}
 	
 	/**
@@ -209,7 +209,7 @@ public class L2Spawn
 	 */
 	public int getLocy()
 	{
-		return _locy;
+		return _locY;
 	}
 	
 	/**
@@ -217,7 +217,7 @@ public class L2Spawn
 	 */
 	public int getLocz()
 	{
-		return _locz;
+		return _locZ;
 	}
 	
 	/**
@@ -300,7 +300,7 @@ public class L2Spawn
 	 */
 	public void setLocx(int locx)
 	{
-		_locx = locx;
+		_locX = locx;
 	}
 	
 	/**
@@ -308,7 +308,7 @@ public class L2Spawn
 	 */
 	public void setLocy(int locy)
 	{
-		_locy = locy;
+		_locY = locy;
 	}
 	
 	/**
@@ -316,7 +316,7 @@ public class L2Spawn
 	 */
 	public void setLocz(int locz)
 	{
-		_locz = locz;
+		_locZ = locz;
 	}
 	
 	/**

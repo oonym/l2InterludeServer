@@ -37,13 +37,13 @@ public class Post
 	private static Logger _log = Logger.getLogger(Post.class.getName());
 	public class CPost
 	{
-	public int _PostID;
-	public String _PostOwner;
-	public int _PostOwnerID;
-	public long _PostDate;
-	public int _PostTopicID;
-	public int _PostForumID;
-	public String _PostTxt;
+		public int postId;
+		public String postOwner;
+		public int postOwnerId;
+		public long postDate;
+		public int postTopicId;
+		public int postForumId;
+		public String postTxt;
 	}
 	private List<CPost> _post;
 	/**
@@ -55,13 +55,13 @@ public class Post
 	{				
 			_post = new FastList<CPost>();
 			CPost cp = new CPost();
-			cp._PostID = 0;
-			cp._PostOwner = _PostOwner;
-			cp._PostOwnerID = _PostOwnerID;
-			cp._PostDate = date;
-			cp._PostTopicID = tid;
-			cp._PostForumID = _PostForumID;
-			cp._PostTxt = txt;
+			cp.postId = 0;
+			cp.postOwner = _PostOwner;
+			cp.postOwnerId = _PostOwnerID;
+			cp.postDate = date;
+			cp.postTopicId = tid;
+			cp.postForumId = _PostForumID;
+			cp.postTxt = txt;
 			_post.add(cp);
 			insertindb(cp);
 			
@@ -73,13 +73,13 @@ public class Post
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("INSERT INTO posts (post_id,post_owner_name,post_ownerid,post_date,post_topic_id,post_forum_id,post_txt) values (?,?,?,?,?,?,?)");
-			statement.setInt(1, cp._PostID);
-			statement.setString(2, cp._PostOwner);
-			statement.setInt(3, cp._PostOwnerID);
-			statement.setLong(4, cp._PostDate);
-			statement.setInt(5, cp._PostTopicID);
-			statement.setInt(6, cp._PostForumID);
-			statement.setString(7, cp._PostTxt);			
+			statement.setInt(1, cp.postId);
+			statement.setString(2, cp.postOwner);
+			statement.setInt(3, cp.postOwnerId);
+			statement.setLong(4, cp.postDate);
+			statement.setInt(5, cp.postTopicId);
+			statement.setInt(6, cp.postForumId);
+			statement.setString(7, cp.postTxt);			
 			statement.execute();
 			statement.close();		
 		}
@@ -162,13 +162,13 @@ public class Post
 			while(result.next())
 			{
 				CPost cp = new CPost();
-				cp._PostID = Integer.parseInt(result.getString("post_id"));
-				cp._PostOwner = result.getString("post_owner_name");
-				cp._PostOwnerID = Integer.parseInt(result.getString("post_ownerid"));
-				cp._PostDate = Long.parseLong(result.getString("post_date"));
-				cp._PostTopicID = Integer.parseInt(result.getString("post_topic_id"));
-				cp._PostForumID = Integer.parseInt(result.getString("post_forum_id"));
-				cp._PostTxt = result.getString("post_txt");
+				cp.postId = Integer.parseInt(result.getString("post_id"));
+				cp.postOwner = result.getString("post_owner_name");
+				cp.postOwnerId = Integer.parseInt(result.getString("post_ownerid"));
+				cp.postDate = Long.parseLong(result.getString("post_date"));
+				cp.postTopicId = Integer.parseInt(result.getString("post_topic_id"));
+				cp.postForumId = Integer.parseInt(result.getString("post_forum_id"));
+				cp.postTxt = result.getString("post_txt");
 				_post.add(cp);
 			}
 			result.close();
@@ -201,10 +201,10 @@ public class Post
 			CPost cp = getCPost(i);
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE posts SET post_txt=? WHERE post_id=? AND post_topic_id=? AND post_forum_id=?");
-			statement.setString(1, cp._PostTxt);
-			statement.setInt(2, cp._PostID);
-			statement.setInt(3, cp._PostTopicID);
-			statement.setInt(4, cp._PostForumID);				
+			statement.setString(1, cp.postTxt);
+			statement.setInt(2, cp.postId);
+			statement.setInt(3, cp.postTopicId);
+			statement.setInt(4, cp.postForumId);				
 			statement.execute();
 			statement.close();			
 		}

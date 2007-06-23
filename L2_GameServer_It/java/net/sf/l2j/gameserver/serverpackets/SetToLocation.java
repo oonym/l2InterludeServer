@@ -34,23 +34,23 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class SetToLocation extends L2GameServerPacket
 {
 	private static final String _S__76_SETTOLOCATION = "[S] 76 SetToLocation";
-	private int _chaId;
+	private int _charObjId;
 	private int _x, _y, _z, _heading;
 	
-	public SetToLocation(L2Character cha)
+	public SetToLocation(L2Character character)
 	{
-		_chaId =cha.getObjectId();
-		_x = cha.getX();
-		_y = cha.getY();
-		_z = cha.getZ();
-		_heading = cha.getHeading();
+		_charObjId = character.getObjectId();
+		_x = character.getX();
+		_y = character.getY();
+		_z = character.getZ();
+		_heading = character.getHeading();
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x76);
 		
-		writeD(_chaId);
+		writeD(_charObjId);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);

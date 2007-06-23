@@ -125,13 +125,13 @@ public abstract class L2Effect
     
     public final class EffectTask implements Runnable
     {
-        protected final int delay;
-        protected final int rate;
+        protected final int _delay;
+        protected final int _rate;
 
         EffectTask(int pDelay, int pRate)
         {
-            this.delay = pDelay;
-            this.rate = pRate;
+            this._delay = pDelay;
+            this._rate = pRate;
         }
 
         public void run()
@@ -163,18 +163,18 @@ public abstract class L2Effect
     protected L2Effect(Env env, EffectTemplate template)
     {
         _state = EffectState.CREATED;
-        _skill = env._skill;
+        _skill = env.skill;
         //_item = env._item == null ? null : env._item.getItem();
-        _effected = env._target;
-        _effector = env._player;
-        _lambda = template._lambda;
-        _funcTemplates = template._funcTemplates;
-        _count = template._counter;
+        _effected = env.target;
+        _effector = env.player;
+        _lambda = template.lambda;
+        _funcTemplates = template.funcTemplates;
+        _count = template.counter;
         _totalCount = _count;
-        _period = template._period;
-        _abnormalEffect = template._abnormalEffect;
-        _stackType = template._stackType;
-        _stackOrder = template._stackOrder;
+        _period = template.period;
+        _abnormalEffect = template.abnormalEffect;
+        _stackType = template.stackType;
+        _stackOrder = template.stackOrder;
         _periodStartTicks = GameTimeController.getGameTicks();
         _periodfirsttime = 0;
         scheduleEffect();
@@ -284,9 +284,9 @@ public abstract class L2Effect
     public final double calc()
     {
         Env env = new Env();
-        env._player = _effector;
-        env._target = _effected;
-        env._skill = _skill;
+        env.player = _effector;
+        env.target = _effected;
+        env.skill = _skill;
         return _lambda.calc(env);
     }
 
@@ -462,9 +462,9 @@ public abstract class L2Effect
         for (FuncTemplate t : _funcTemplates)
         {
             Env env = new Env();
-            env._player = getEffector();
-            env._target = getEffected();
-            env._skill = getSkill();
+            env.player = getEffector();
+            env.target = getEffected();
+            env.skill = getSkill();
             Func f = t.getFunc(env, this); // effect is owner
             if (f != null) funcs.add(f);
         }
@@ -479,7 +479,7 @@ public abstract class L2Effect
         if (task == null || future == null) return;
         if (_state == EffectState.FINISHING || _state == EffectState.CREATED) return;
         L2Skill sk = getSkill();
-        if (task.rate > 0)
+        if (task._rate > 0)
         {
         	if (sk.isPotion()) mi.addEffect(sk.getId(), getLevel(), sk.getBuffDuration()-(getTaskTime()*1000));
         	else mi.addEffect(sk.getId(), getLevel(), -1);

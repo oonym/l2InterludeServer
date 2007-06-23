@@ -41,7 +41,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classHpAdd.
      */
-    public float get_classHpAdd()
+    @Deprecated
+    public float getClassHpAdd()
     {
         return _classHpAdd;
     }
@@ -49,7 +50,7 @@ public class L2LvlupData
     /**
      * @param hpAdd The _classHpAdd to set.
      */
-    public void set_classHpAdd(float hpAdd)
+    public void setClassHpAdd(float hpAdd)
     {
         _classHpAdd = hpAdd;
     }
@@ -57,7 +58,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classHpBase.
      */
-    public float get_classHpBase()
+    @Deprecated
+    public float getClassHpBase()
     {
         return _classHpBase;
     }
@@ -65,7 +67,7 @@ public class L2LvlupData
     /**
      * @param hpBase The _classHpBase to set.
      */
-    public void set_classHpBase(float hpBase)
+    public void setClassHpBase(float hpBase)
     {
         _classHpBase = hpBase;
     }
@@ -73,7 +75,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classHpModifier.
      */
-    public float get_classHpModifier()
+    @Deprecated
+    public float getClassHpModifier()
     {
         return _classHpModifier;
     }
@@ -81,7 +84,7 @@ public class L2LvlupData
     /**
      * @param hpModifier The _classHpModifier to set.
      */
-    public void set_classHpModifier(float hpModifier)
+    public void setClassHpModifier(float hpModifier)
     {
         _classHpModifier = hpModifier;
     }
@@ -89,7 +92,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classCpAdd.
      */
-    public float get_classCpAdd()
+    @Deprecated
+    public float getClassCpAdd()
     {
         return _classCpAdd;
     }
@@ -97,7 +101,7 @@ public class L2LvlupData
     /**
      * @param hpAdd The _classCpAdd to set.
      */
-    public void set_classCpAdd(float cpAdd)
+    public void setClassCpAdd(float cpAdd)
     {
         _classCpAdd = cpAdd;
     }
@@ -105,7 +109,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classCpBase.
      */
-    public float get_classCpBase()
+    @Deprecated
+    public float getClassCpBase()
     {
         return _classCpBase;
     }
@@ -113,7 +118,7 @@ public class L2LvlupData
     /**
      * @param hpBase The _classCpBase to set.
      */
-    public void set_classCpBase(float cpBase)
+    public void setClassCpBase(float cpBase)
     {
         _classCpBase = cpBase;
     }
@@ -121,7 +126,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classCpModifier.
      */
-    public float get_classCpModifier()
+    @Deprecated
+    public float getClassCpModifier()
     {
         return _classCpModifier;
     }
@@ -129,7 +135,7 @@ public class L2LvlupData
     /**
      * @param cpModifier The _classCpModifier to set.
      */
-    public void set_classCpModifier(float cpModifier)
+    public void setClassCpModifier(float cpModifier)
     {
         _classCpModifier = cpModifier;
     }
@@ -137,7 +143,7 @@ public class L2LvlupData
     /**
      * @return Returns the _classid.
      */
-    public int get_classid()
+    public int getClassid()
     {
         return _classid;
     }
@@ -145,7 +151,7 @@ public class L2LvlupData
     /**
      * @param _classid The _classid to set.
      */
-    public void set_classid(int pClassid)
+    public void setClassid(int pClassid)
     {
         this._classid = pClassid;
     }
@@ -153,7 +159,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classLvl.
      */
-    public int get_classLvl()
+    @Deprecated
+    public int getClassLvl()
     {
         return _classLvl;
     }
@@ -161,7 +168,7 @@ public class L2LvlupData
     /**
      * @param lvl The _classLvl to set.
      */
-    public void set_classLvl(int lvl)
+    public void setClassLvl(int lvl)
     {
         _classLvl = lvl;
     }
@@ -169,7 +176,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classMpAdd.
      */
-    public float get_classMpAdd()
+    @Deprecated
+    public float getClassMpAdd()
     {
         return _classMpAdd;
     }
@@ -177,7 +185,7 @@ public class L2LvlupData
     /**
      * @param mpAdd The _classMpAdd to set.
      */
-    public void set_classMpAdd(float mpAdd)
+    public void setClassMpAdd(float mpAdd)
     {
         _classMpAdd = mpAdd;
     }
@@ -185,7 +193,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classMpBase.
      */
-    public float get_classMpBase()
+    @Deprecated
+    public float getClassMpBase()
     {
         return _classMpBase;
     }
@@ -193,7 +202,7 @@ public class L2LvlupData
     /**
      * @param mpBase The _classMpBase to set.
      */
-    public void set_classMpBase(float mpBase)
+    public void setClassMpBase(float mpBase)
     {
         _classMpBase = mpBase;
     }
@@ -201,7 +210,8 @@ public class L2LvlupData
     /**
      * @return Returns the _classMpModifier.
      */
-    public float get_classMpModifier()
+    @Deprecated
+    public float getClassMpModifier()
     {
         return _classMpModifier;
     }
@@ -209,7 +219,7 @@ public class L2LvlupData
     /**
      * @param mpModifier The _classMpModifier to set.
      */
-    public void set_classMpModifier(float mpModifier)
+    public void setClassMpModifier(float mpModifier)
     {
         _classMpModifier = mpModifier;
     }

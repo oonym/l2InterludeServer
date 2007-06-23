@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
 public class AdminEnchant implements IAdminCommandHandler
 {
    //private static Logger _log = Logger.getLogger(AdminEnchant.class.getName());
-    private static String[] _adminCommands = {"admin_seteh",//6
+    private static final String[] ADMIN_COMMANDS = {"admin_seteh",//6
                                               "admin_setec",//10
                                               "admin_seteg",//9
                                               "admin_setel",//11
@@ -230,7 +230,7 @@ public class AdminEnchant implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

@@ -30,28 +30,28 @@ public class DuelManager
 	private static final Logger _log = Logger.getLogger(DuelManager.class.getName());
 
 	// =========================================================
-	private static DuelManager _Instance;
+	private static DuelManager _instance;
 
 	public static final DuelManager getInstance()
 	{
-		if (_Instance == null)
+		if (_instance == null)
 		{
-			_Instance = new DuelManager();
+			_instance = new DuelManager();
 		}
-		return _Instance;
+		return _instance;
 	}
 
 	// =========================================================
 	// Data Field
-	private FastList<Duel> _Duels;
+	private FastList<Duel> _duels;
 	private int _currentDuelId = 0x90;
 
 	// =========================================================
 	// Constructor
-	public DuelManager()
+	private DuelManager()
 	{
 		_log.info("Initializing DuelManager");
-		_Duels = new FastList<Duel>();
+		_duels = new FastList<Duel>();
 	}
 
 	// =========================================================
@@ -67,7 +67,7 @@ public class DuelManager
 
 	private Duel getDuel(int duelId)
 	{
-		for (FastList.Node<Duel> e = _Duels.head(), end = _Duels.tail(); (e = e.getNext()) != end;)
+		for (FastList.Node<Duel> e = _duels.head(), end = _duels.tail(); (e = e.getNext()) != end;)
 		{
 			if (e.getValue().getId() == duelId) return e.getValue();
 		}
@@ -122,12 +122,12 @@ public class DuelManager
 		}
 
 		Duel duel = new Duel(playerA, playerB, partyDuel, getNextDuelId());
-		_Duels.add(duel);
+		_duels.add(duel);
 	}
 	
 	public void removeDuel(Duel duel)
 	{
-		_Duels.remove(duel);
+		_duels.remove(duel);
 	}
 	
 	public void doSurrender(L2PcInstance player)

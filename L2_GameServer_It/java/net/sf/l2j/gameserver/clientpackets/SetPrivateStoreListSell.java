@@ -80,7 +80,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
         }
         
         TradeList tradeList = player.getSellList();
-        tradeList.Clear();
+        tradeList.clear();
         tradeList.setPackaged(_packageSale);
 
         for (int i = 0; i < _count; i++)

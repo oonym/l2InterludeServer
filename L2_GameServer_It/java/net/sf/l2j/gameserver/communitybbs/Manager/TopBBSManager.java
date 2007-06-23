@@ -82,14 +82,14 @@ public class TopBBSManager extends BaseBBSManager
 		
 	}
 
-	private static TopBBSManager _Instance = new TopBBSManager();
+	private static TopBBSManager _instance = new TopBBSManager();
 
 	/**
 	 * @return
 	 */
 	public static TopBBSManager getInstance()
 	{
-		return _Instance;
+		return _instance;
 	}
 
 }

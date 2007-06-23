@@ -34,7 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Seed implements IItemHandler
 {
-    private static int[] _itemIds = { // generic seeds (lo-grade)
+    private static int[] ITEM_IDS = { // generic seeds (lo-grade)
                                       5016,5017,5018,5019,5020,5021,5022,5023,5024,
                                       5025,5026,5027,5028,5029,5030,5031,5032,5033,
                                       5034,5035,5036,5037,5038,5039,5040,5041,5042,
@@ -52,60 +52,60 @@ public class Seed implements IItemHandler
                                       };
     
     private int _seedId;
-    L2MonsterInstance _target;
-    L2PcInstance _char;
+    private L2MonsterInstance _target;
+    private L2PcInstance _activeChar;
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
         if (!(playable instanceof L2PcInstance))
             return;
 
-        _char = (L2PcInstance)playable;
+        _activeChar = (L2PcInstance)playable;
         
-        if(!(_char.getTarget() instanceof L2MonsterInstance))
+        if(!(_activeChar.getTarget() instanceof L2MonsterInstance))
         {
-            _char.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+        	_activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
             return;
         }
 
-         _target = (L2MonsterInstance)_char.getTarget();
+         _target = (L2MonsterInstance)_activeChar.getTarget();
         
         if(_target != null && !_target.isDead() && !_target.isSeeded())
         {
             _seedId = item.getItemId();
                         
-            if(areaValid(MapRegionTable.getInstance().getClosestTownNumber(_char)))
+            if(areaValid(MapRegionTable.getInstance().getClosestTownNumber(_activeChar)))
             {
                 //TODO: valid action animId for seed planting
-                MagicSkillUser MSU = new MagicSkillUser(_char,_target,2023,1,2,2);
-                _char.sendPacket(MSU);
-                _char.broadcastPacket(MSU);
+                MagicSkillUser MSU = new MagicSkillUser(_activeChar,_target,2023,1,2,2);
+                _activeChar.sendPacket(MSU);
+                _activeChar.broadcastPacket(MSU);
 
                 if(calcSuccess())
                 {
-                    _target.setSeeded(item.getItemId(),_char.getLevel());
-                    _char.sendPacket(new SystemMessage(SystemMessage.SEED_SUCCESSFULLY_SOWN));
+                    _target.setSeeded(item.getItemId(),_activeChar.getLevel());
+                    _activeChar.sendPacket(new SystemMessage(SystemMessage.SEED_SUCCESSFULLY_SOWN));
                 }
                 else
                 {
-                    _char.sendPacket(new SystemMessage(SystemMessage.SEED_NOT_SOWN));
+                    _activeChar.sendPacket(new SystemMessage(SystemMessage.SEED_NOT_SOWN));
                 }
 
                 // remove seed from inv & attack target
-                _char.destroyItem("Consume", item.getObjectId(), 1, null, false);
-                _target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, _char);
-                _char.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _target);
+                _activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
+                _target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, _activeChar);
+                _activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _target);
             }
             else
             {
-                _char.sendPacket(new SystemMessage(SystemMessage.SEED_CANNOT_BE_SOWN_HERE));
+                _activeChar.sendPacket(new SystemMessage(SystemMessage.SEED_CANNOT_BE_SOWN_HERE));
             }
         }
     }
     
     public int[] getItemIds()
     {
-        return _itemIds;
+        return ITEM_IDS;
     }
 
     private boolean areaValid(int area)
@@ -136,7 +136,7 @@ public class Seed implements IItemHandler
         int basicSuccess = 90;//Config.MANOR_BASIC_SUCCESS;
         int levelSeed = 0;
 	    levelSeed = L2Manor.getInstance().getSeedLevel(_seedId);
-        int levelPlayer = _char.getLevel();
+        int levelPlayer = _activeChar.getLevel();
         int levelTarget = _target.getLevel();
 
         int diffPlayerTarget = (levelPlayer - levelTarget);

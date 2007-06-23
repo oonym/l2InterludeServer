@@ -28,13 +28,13 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class ExFishingStartCombat extends L2GameServerPacket
 {
 	private static final String _S__FE_15_EXFISHINGSTARTCOMBAT = "[S] FE:15 ExFishingStartCombat";
-	L2Character _character;
-	int _time,_hp;
-	int _lureType, _deceptiveMode, _mode;
+	private L2Character _activeChar;
+	private int _time,_hp;
+	private int _lureType, _deceptiveMode, _mode;
 	
 	public ExFishingStartCombat(L2Character character, int time, int hp, int mode, int lureType, int deceptiveMode)
 	{
-		_character = character;
+		_activeChar = character;
 		_time = time;
 		_hp = hp;
 		_mode = mode;
@@ -52,7 +52,7 @@ public class ExFishingStartCombat extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x15);
 		
-		writeD(_character.getObjectId());
+		writeD(_activeChar.getObjectId());
 		writeD(_time);
 		writeD(_hp); 
 		writeC(_mode); // mode: 0 = resting, 1 = fighting 

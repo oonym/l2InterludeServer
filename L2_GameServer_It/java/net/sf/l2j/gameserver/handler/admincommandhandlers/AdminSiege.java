@@ -47,7 +47,7 @@ public class AdminSiege implements IAdminCommandHandler
 {
     //private static Logger _log = Logger.getLogger(AdminSiege.class.getName());
 
-    private static String[] _adminCommands = {"admin_siege",
+    private static final String[] ADMIN_COMMANDS = {"admin_siege",
             "admin_add_attacker", "admin_add_defender", "admin_add_guard",
             "admin_list_siege_clans", "admin_clear_siege_list",
             "admin_move_defenders", "admin_spawn_doors",
@@ -366,7 +366,7 @@ public class AdminSiege implements IAdminCommandHandler
     }
 
     public String[] getAdminCommandList() {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
     
 }

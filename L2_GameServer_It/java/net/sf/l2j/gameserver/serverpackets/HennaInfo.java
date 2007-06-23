@@ -29,18 +29,18 @@ public final class HennaInfo extends L2GameServerPacket
 {
 	private static final String _S__E4_HennaInfo = "[S] E4 HennaInfo";
 
-	private final L2PcInstance _player;
+	private final L2PcInstance _activeChar;
 	private final L2HennaInstance[] _hennas = new L2HennaInstance[3];
 	private int _count;
 
 	public HennaInfo(L2PcInstance player)
 	{
-		_player = player;
+		_activeChar = player;
 		
 		int j = 0;
 		for (int i = 0; i < 3; i++)
 		{
-			L2HennaInstance h = _player.getHenna(i+1);
+			L2HennaInstance h = _activeChar.getHenna(i+1);
 			if (h != null)
 			{
 				_hennas[j++] = h;
@@ -55,12 +55,12 @@ public final class HennaInfo extends L2GameServerPacket
 
 		writeC(0xe4);
 
-		writeC(_player.getHennaStatINT());	//equip INT
-		writeC(_player.getHennaStatSTR());	//equip STR
-		writeC(_player.getHennaStatCON());	//equip CON
-		writeC(_player.getHennaStatMEN());	//equip MEM
-		writeC(_player.getHennaStatDEX());	//equip DEX
-		writeC(_player.getHennaStatWIT());	//equip WIT
+		writeC(_activeChar.getHennaStatINT());	//equip INT
+		writeC(_activeChar.getHennaStatSTR());	//equip STR
+		writeC(_activeChar.getHennaStatCON());	//equip CON
+		writeC(_activeChar.getHennaStatMEN());	//equip MEM
+		writeC(_activeChar.getHennaStatDEX());	//equip DEX
+		writeC(_activeChar.getHennaStatWIT());	//equip WIT
 		
 		writeD(3); // slots?
 		

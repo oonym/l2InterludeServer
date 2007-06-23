@@ -1093,7 +1093,7 @@ public final class Config
      */
 	public static void load()
 	{
-		if(Server.SERVER_MODE == Server.MODE_GAMESERVER)
+		if(Server.serverMode == Server.MODE_GAMESERVER)
 		{
 			_log.info("loading gameserver config");
 		    try {
@@ -1937,7 +1937,7 @@ public final class Config
 	        	_log.warning("Could not load HexID file ("+HEXID_FILE+"). Hopefully login will give us one.");
 	        }     
 		}
-		else if(Server.SERVER_MODE == Server.MODE_LOGINSERVER)
+		else if(Server.serverMode == Server.MODE_LOGINSERVER)
 		{
 			_log.info("loading login config");
 			try

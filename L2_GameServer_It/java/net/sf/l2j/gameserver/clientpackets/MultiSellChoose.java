@@ -238,7 +238,7 @@ public class MultiSellChoose extends L2GameClientPacket
 
 	        if (e.getItemCount() * _amount > 1)
 	        {
-	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
 	            sm.addItemName(e.getItemId());
 	            sm.addNumber(e.getItemCount() * _amount);
 	            player.sendPacket(sm);

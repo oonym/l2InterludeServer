@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminHeal implements IAdminCommandHandler {
     private static Logger _log = Logger.getLogger(AdminRes.class.getName());
-    private static String[] _adminCommands = {"admin_heal"};
+    private static final String[] ADMIN_COMMANDS = { "admin_heal" };
     private static final int REQUIRED_LEVEL = Config.GM_HEAL;
     
     public boolean useAdminCommand(String command, L2PcInstance activeChar) {
@@ -62,7 +62,7 @@ public class AdminHeal implements IAdminCommandHandler {
     }
     
     public String[] getAdminCommandList() {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
     
     private boolean checkLevel(int level) {

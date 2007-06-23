@@ -15,7 +15,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2ControlTowerInstance extends L2NpcInstance {
 
-    private List<L2Spawn> _Guards; 
+    private List<L2Spawn> _guards; 
 	
 	public L2ControlTowerInstance(int objectId, L2NpcTemplate template)
 	{
@@ -103,7 +103,7 @@ public class L2ControlTowerInstance extends L2NpcInstance {
     
     public final List<L2Spawn> getGuards()
     {
-        if (_Guards == null) _Guards = new FastList<L2Spawn>();
-        return _Guards;
+        if (_guards == null) _guards = new FastList<L2Spawn>();
+        return _guards;
     }
 }

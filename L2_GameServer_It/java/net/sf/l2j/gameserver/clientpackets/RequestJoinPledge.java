@@ -18,8 +18,6 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.util.logging.Logger;
-
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -34,15 +32,14 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public final class RequestJoinPledge extends L2GameClientPacket
 {
 	private static final String _C__24_REQUESTJOINPLEDGE = "[C] 24 RequestJoinPledge";
-	private static Logger _log = Logger.getLogger(RequestJoinPledge.class.getName());
 
 	private int _target;
-	private int _pledgetype;
+	private int _pledgeType;
 	
 	protected void readImpl()
 	{
 		_target  = readD();
-		_pledgetype = readD();
+		_pledgeType = readD();
 	}
 
 	protected void runImpl()
@@ -60,7 +57,7 @@ public final class RequestJoinPledge extends L2GameClientPacket
 
 		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_target);
         L2Clan clan = activeChar.getClan();
-        if (!clan.CheckClanJoinCondition(activeChar, target, _pledgetype))
+        if (!clan.checkClanJoinCondition(activeChar, target, _pledgeType))
         {
         	return;
         } 
@@ -78,11 +75,11 @@ public final class RequestJoinPledge extends L2GameClientPacket
     	target.sendPacket(ap);
 	}
 
-	public int getPledgeType()
-	{
-		return _pledgetype;
-	}
-
+ 	public int getPledgeType()
+ 	{
+ 		return _pledgeType;
+ 	}
+		
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

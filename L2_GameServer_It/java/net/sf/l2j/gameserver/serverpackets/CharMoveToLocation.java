@@ -32,11 +32,11 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class CharMoveToLocation extends L2GameServerPacket
 {
 	private static final String _S__01_CHARMOVETOLOCATION = "[S] 01 CharMoveToLocation";
-	private int _objectId, _x, _y, _z, _xDst, _yDst, _zDst;
+	private int _charObjId, _x, _y, _z, _xDst, _yDst, _zDst;
 	
 	public CharMoveToLocation(L2Character cha)
 	{
-		_objectId = cha.getObjectId();
+		_charObjId = cha.getObjectId();
 		_x = cha.getX();
 		_y = cha.getY();
 		_z = cha.getZ();
@@ -49,7 +49,7 @@ public class CharMoveToLocation extends L2GameServerPacket
 	{
 		writeC(0x01);
 		
-		writeD(_objectId);
+		writeD(_charObjId);
 		
 		writeD(_xDst);
 		writeD(_yDst);

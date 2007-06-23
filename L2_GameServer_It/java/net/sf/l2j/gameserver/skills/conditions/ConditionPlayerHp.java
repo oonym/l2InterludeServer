@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionPlayerHp extends Condition {
 
-	final int _hp;
+	private final int _hp;
 	
 	public ConditionPlayerHp(int hp)
 	{
@@ -38,6 +38,6 @@ public class ConditionPlayerHp extends Condition {
 	}
 	
 	public boolean testImpl(Env env) {
-		return env._player.getCurrentHp()*100/env._player.getMaxHp() <= _hp;
+		return env.player.getCurrentHp()*100/env.player.getMaxHp() <= _hp;
 	}
 }

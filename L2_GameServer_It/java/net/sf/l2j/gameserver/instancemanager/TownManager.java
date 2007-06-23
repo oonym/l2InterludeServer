@@ -33,23 +33,23 @@ public class TownManager
     protected static final Logger _log = Logger.getLogger(TownManager.class.getName());
 
     // =========================================================
-    private static TownManager _Instance;
+    private static TownManager _instance;
     public static final TownManager getInstance()
     {
-        if (_Instance == null)
+        if (_instance == null)
         {
     		_log.info("Initializing TownManager");
-        	_Instance = new TownManager();
-        	_Instance.load();
+        	_instance = new TownManager();
+        	_instance.load();
         }
-        return _Instance;
+        return _instance;
     }
     // =========================================================
 
     
     // =========================================================
     // Data Field
-    private List<Town> _Towns;
+    private List<Town> _towns;
     
     // =========================================================
     // Constructor
@@ -216,7 +216,7 @@ public class TownManager
 
     public final List<Town> getTowns()
     {
-        if (_Towns == null) _Towns = new FastList<Town>();
-        return _Towns;
+        if (_towns == null) _towns = new FastList<Town>();
+        return _towns;
     }
 }

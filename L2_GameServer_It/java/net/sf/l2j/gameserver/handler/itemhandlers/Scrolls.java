@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Scrolls implements IItemHandler
 {
-   private static int[] _itemIds = { 3926, 3927, 3928, 3929, 3930, 3931, 3932, 
+   private static final int[] ITEM_IDS = { 3926, 3927, 3928, 3929, 3930, 3931, 3932, 
                                      3933, 3934, 3935, 4218, 5593, 5594, 5595,
                                      6037, 8954, 8955, 8956
                                    };
@@ -223,7 +223,7 @@ public class Scrolls implements IItemHandler
    }
    public int[] getItemIds()
    {
-       return _itemIds;
+       return ITEM_IDS;
    }
 }
 

@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class ScriptDocument
 {
-    private Document document; 
+    private Document _document; 
     private String _name;
     
     public ScriptDocument(String name, InputStream input)
@@ -45,7 +45,7 @@ public class ScriptDocument
             DocumentBuilderFactory.newInstance();
         try {
            DocumentBuilder builder = factory.newDocumentBuilder();
-           document = builder.parse( input );
+           _document = builder.parse( input );
  
         } catch (SAXException sxe) {
            // Error generated during parsing)
@@ -66,7 +66,7 @@ public class ScriptDocument
     
     public Document getDocument()
     {
-        return document;
+        return _document;
     }
     
     /**

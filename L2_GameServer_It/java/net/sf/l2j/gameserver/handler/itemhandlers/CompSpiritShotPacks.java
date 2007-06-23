@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class CompSpiritShotPacks implements IItemHandler
 {
-	private static int[] _itemIds = { 5140, 5141, 5142, 5143, 5144, 5145, 5256, 5257, 5258, 5259, 5260, 5261 };
+	private static final int[] ITEM_IDS = { 5140, 5141, 5142, 5143, 5144, 5145, 5256, 5257, 5258, 5259, 5260, 5261 };
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
@@ -56,7 +56,7 @@ public class CompSpiritShotPacks implements IItemHandler
 		activeChar.getInventory().destroyItem("Extract", item, activeChar, null);
 	    activeChar.getInventory().addItem("Extract", itemToCreateId, amount, activeChar, item);
 
-	    SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s); 
+	    SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S); 
 	    sm.addItemName(itemToCreateId);
         sm.addNumber(amount);
 	    activeChar.sendPacket(sm);
@@ -66,6 +66,6 @@ public class CompSpiritShotPacks implements IItemHandler
 	}
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

@@ -42,14 +42,14 @@ import net.sf.l2j.gameserver.model.L2Object;
 
 public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
 {
-    Map<Integer, T> objectMap    = new FastMap<Integer, T>().setShared(true);
+    Map<Integer, T> _objectMap = new FastMap<Integer, T>().setShared(true);
     
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#size()
      */
     public int size()
     {
-        return objectMap.size();
+        return _objectMap.size();
     }
 
     /* (non-Javadoc)
@@ -57,7 +57,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
      */
     public boolean isEmpty()
     {
-        return objectMap.isEmpty();
+        return _objectMap.isEmpty();
     }
 
     /* (non-Javadoc)
@@ -65,7 +65,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
      */
     public void clear()
     {
-        objectMap.clear();
+        _objectMap.clear();
     }
 
     /* (non-Javadoc)
@@ -74,7 +74,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     public void put(T obj)
     {
         if (obj != null)
-            objectMap.put(obj.getObjectId(), obj);
+            _objectMap.put(obj.getObjectId(), obj);
     }
 
     /* (non-Javadoc)
@@ -83,7 +83,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     public void remove(T obj)
     {
         if (obj != null)
-            objectMap.remove(obj.getObjectId());
+            _objectMap.remove(obj.getObjectId());
     }
 
     /* (non-Javadoc)
@@ -91,7 +91,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
      */
     public T get(int id)
     {
-        return objectMap.get(id);
+        return _objectMap.get(id);
     }
 
     /* (non-Javadoc)
@@ -101,7 +101,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     {
         if (obj == null)
             return false;
-        return objectMap.get(obj.getObjectId()) != null;
+        return _objectMap.get(obj.getObjectId()) != null;
     }
 
     /* (non-Javadoc)
@@ -109,7 +109,7 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
      */
     public Iterator<T> iterator()
     {
-        return objectMap.values().iterator();
+        return _objectMap.values().iterator();
     }
 
 }

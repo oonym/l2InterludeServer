@@ -16,8 +16,8 @@ public class CharKnownList extends ObjectKnownList
 {
     // =========================================================
     // Data Field
-    private Map<Integer, L2PcInstance> _KnownPlayers;
-    private Map<Integer, Integer> _KnownRelations;
+    private Map<Integer, L2PcInstance> _knownPlayers;
+    private Map<Integer, Integer> _knownRelations;
     
     // =========================================================
     // Constructor
@@ -124,14 +124,14 @@ public class CharKnownList extends ObjectKnownList
 
     public final Map<Integer, L2PcInstance> getKnownPlayers()
     {
-        if (_KnownPlayers == null) _KnownPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
-        return _KnownPlayers;
+        if (_knownPlayers == null) _knownPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
+        return _knownPlayers;
     }
     
     public final Map<Integer, Integer> getKnownRelations()
     {
-        if (_KnownRelations == null) _KnownRelations = new FastMap<Integer, Integer>().setShared(true);
-        return _KnownRelations;
+        if (_knownRelations == null) _knownRelations = new FastMap<Integer, Integer>().setShared(true);
+        return _knownRelations;
     }
     
     public final Collection<L2PcInstance> getKnownPlayersInRadius(long radius)

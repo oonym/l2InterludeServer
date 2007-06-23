@@ -34,17 +34,17 @@ public class MagicEffectIcons extends L2GameServerPacket
 	private static final String _S__97_MAGICEFFECTICONS = "[S] 7f MagicEffectIcons";
 	private List<Effect> _effects;
 	
-	class Effect
+	private class Effect
 	{
-		int _skillId;
-		int _level;
-		int _duration;
+		protected int _skillId;
+		protected int _level;
+		protected int _duration;
 		
-		public Effect(int skillId, int level, int duration)
+		public Effect(int pSkillId, int pLevel, int pDuration)
 		{
-			_skillId = skillId;
-			_level = level;
-			_duration = duration;	
+			_skillId = pSkillId;
+			_level = pLevel;
+			_duration = pDuration;	
 		}
 	}
 	
@@ -55,14 +55,12 @@ public class MagicEffectIcons extends L2GameServerPacket
 	
 	public void addEffect(int skillId, int level, int duration)
 	{
-//		System.out.println("Adding effect icon id="+skillId+", level="+dat+", duration="+duration);
 		_effects.add(new Effect(skillId, level, duration));		
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x7f);
-//		System.out.println("Sending "+_effects.size()+" icons");
 		
 		writeH(_effects.size());
 	

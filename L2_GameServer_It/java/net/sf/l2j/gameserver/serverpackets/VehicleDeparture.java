@@ -12,12 +12,12 @@ import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
 public class VehicleDeparture extends L2GameServerPacket
 {
 
-	L2BoatInstance _boat;
-	public int _speed1;
-	public int _speed2;//rotation
-	public int _x;
-	public int _y;
-	public int _z;
+	private L2BoatInstance _boat;
+	private int _speed1;
+	private int _speed2;//rotation
+	private int _x;
+	private int _y;
+	private int _z;
 	/**
 	 * @param _boat
 	 * @param speed1

@@ -23,9 +23,9 @@ package net.sf.l2j.gameserver.model;
  */
 public class L2ExtractableProductItem
 {
-	private final int       _id;
-	private final int  _ammount;
-	private final int   _chance;
+	private final int _id;
+	private final int _ammount;
+	private final int _chance;
 	
 	public L2ExtractableProductItem(int id, int ammount, int chance)
 	{

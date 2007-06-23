@@ -28,14 +28,14 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class ClanBBSManager extends BaseBBSManager
 {
-	private static ClanBBSManager _Instance = new ClanBBSManager();
+	private static ClanBBSManager _instance = new ClanBBSManager();
 
 	/**
 	 * @return
 	 */
 	public static ClanBBSManager getInstance()
 	{
-		return _Instance;
+		return _instance;
 	}
 
 	/**

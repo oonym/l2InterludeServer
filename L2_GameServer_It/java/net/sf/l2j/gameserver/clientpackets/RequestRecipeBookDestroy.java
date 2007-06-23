@@ -10,7 +10,7 @@ public final class RequestRecipeBookDestroy extends L2GameClientPacket
     private static final String _C__AC_REQUESTRECIPEBOOKDESTROY = "[C] AD RequestRecipeBookDestroy";
     //private static Logger _log = Logger.getLogger(RequestSellItem.class.getName());
 
-    private int _RecipeID;
+    private int _recipeID;
 
     /**
     * Unknown Packet:ad
@@ -18,7 +18,7 @@ public final class RequestRecipeBookDestroy extends L2GameClientPacket
     */
     protected void readImpl()
     {
-        _RecipeID = readD();
+        _recipeID = readD();
     }
             
     protected void runImpl()
@@ -26,10 +26,10 @@ public final class RequestRecipeBookDestroy extends L2GameClientPacket
         L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar != null)
         {
-        	L2RecipeList rp = RecipeController.getInstance().getRecipeList(_RecipeID-1); 
+        	L2RecipeList rp = RecipeController.getInstance().getRecipeList(_recipeID-1); 
          	if (rp == null) 
          		return;
-            activeChar.unregisterRecipeList(_RecipeID);
+            activeChar.unregisterRecipeList(_recipeID);
             
             RecipeBookItemList response = new RecipeBookItemList(rp.isDwarvenRecipe(),activeChar.getMaxMp()); 
          	if (rp.isDwarvenRecipe()) 

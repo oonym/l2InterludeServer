@@ -39,8 +39,8 @@ public class Status extends Thread
     private ServerSocket    statusServerSocket;
     
     private int             		_uptime;
-    private int             		_StatusPort;
-    private String          		_StatusPW;
+    private int             		_statusPort;
+    private String          		_statusPw;
     private int						_mode;
     private List<LoginStatusThread> _loginStatus;
     
@@ -54,7 +54,7 @@ public class Status extends Thread
                 
                 if(_mode == Server.MODE_GAMESERVER)
                 {
-                	new GameStatusThread(connection, _uptime, _StatusPW);
+                	new GameStatusThread(connection, _uptime, _statusPw);
                 }
                 else if(_mode == Server.MODE_LOGINSERVER)
                 {
@@ -98,33 +98,33 @@ public class Status extends Thread
         telnetSettings.load(is);
         is.close();
         
-        _StatusPort       = Integer.parseInt(telnetSettings.getProperty("StatusPort", "12345"));
-        _StatusPW         = telnetSettings.getProperty("StatusPW");
+        _statusPort       = Integer.parseInt(telnetSettings.getProperty("StatusPort", "12345"));
+        _statusPw         = telnetSettings.getProperty("StatusPW");
         if(_mode == Server.MODE_GAMESERVER)
         {
-	        if (_StatusPW == null)
+	        if (_statusPw == null)
 	        {
 	            System.out.println("Server's Telnet Function Has No Password Defined!");
 	            System.out.println("A Password Has Been Automaticly Created!");
-	            _StatusPW = RndPW(10);
-	            System.out.println("Password Has Been Set To: " + _StatusPW);
+	            _statusPw = rndPW(10);
+	            System.out.println("Password Has Been Set To: " + _statusPw);
 	        }
-	        System.out.println("StatusServer Started! - Listening on Port: " + _StatusPort);
-	        System.out.println("Password Has Been Set To: " + _StatusPW);
+	        System.out.println("StatusServer Started! - Listening on Port: " + _statusPort);
+	        System.out.println("Password Has Been Set To: " + _statusPw);
         }
         else
         {
-        	System.out.println("StatusServer Started! - Listening on Port: " + _StatusPort);
-        	System.out.println("Password Has Been Set To: " + _StatusPW);
+        	System.out.println("StatusServer Started! - Listening on Port: " + _statusPort);
+        	System.out.println("Password Has Been Set To: " + _statusPw);
         }
-        statusServerSocket = new ServerSocket(_StatusPort);
+        statusServerSocket = new ServerSocket(_statusPort);
         _uptime = (int) System.currentTimeMillis();
         _loginStatus = new FastList<LoginStatusThread>();
     }
     
     
     
-    private String RndPW(int length)
+    private String rndPW(int length)
     {
         TextBuilder password = new TextBuilder();
         String lowerChar= "qwertyuiopasdfghjklzxcvbnm";
@@ -150,7 +150,7 @@ public class Status extends Thread
         return password.toString();
     }
     
-    public void SendMessageToTelnets(String msg)
+    public void sendMessageToTelnets(String msg)
     {
     	List<LoginStatusThread> lsToRemove = new FastList<LoginStatusThread>();
     	for(LoginStatusThread ls :_loginStatus)

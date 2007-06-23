@@ -10,7 +10,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class ValidateLocationInVehicle extends L2GameServerPacket
 {
     private static final String _S__73_ValidateLocationInVehicle = "[S] 73 ValidateLocationInVehicle";
-    private L2Character _player;
+    private L2Character _activeChar;
 
 
     /**
@@ -19,18 +19,18 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
      */
     public ValidateLocationInVehicle(L2Character player)
     {
-        _player = player;
+    	_activeChar = player;
     }
     
     protected final void writeImpl()
     {
         writeC(0x73);
-        writeD(_player.getObjectId());
+        writeD(_activeChar.getObjectId());
         writeD(1343225858); //TODO verify vehicle object id ??
-        writeD(_player.getX());
-        writeD(_player.getY());
-        writeD(_player.getZ());
-        writeD(_player.getHeading());
+        writeD(_activeChar.getX());
+        writeD(_activeChar.getY());
+        writeD(_activeChar.getZ());
+        writeD(_activeChar.getHeading());
     }
 
     /* (non-Javadoc)

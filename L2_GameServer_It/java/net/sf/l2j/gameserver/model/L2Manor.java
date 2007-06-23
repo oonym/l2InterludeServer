@@ -25,7 +25,7 @@ public class L2Manor
     private static final L2Manor _instance = new L2Manor();
 
     private static Map<Integer, SeedData> _seeds;
-    private static boolean initialized = false;
+    private static boolean _initialized = false;
     
     private L2Manor()
     {
@@ -67,7 +67,7 @@ public class L2Manor
         SeedData seed = _seeds.get(seedId);
         
         if(seed != null)
-            return seed.level;
+            return seed._level;
         return -1;
     }
     
@@ -76,7 +76,7 @@ public class L2Manor
         SeedData seed = _seeds.get(seedId);
 
         if(seed != null)
-            return seed.crop;
+            return seed._crop;
         return -1;
     }
     
@@ -84,15 +84,15 @@ public class L2Manor
     {
         for(SeedData seed : _seeds.values())
         {
-            if(seed.crop == cropId)
+            if(seed._crop == cropId)
             {
                 if(type == 1)
                 {
-                    return seed.type1;
+                    return seed._type1;
                 }
                 else if(type == 2)
                 {
-                    return seed.type2;
+                    return seed._type2;
                 }
                 else if(type == 0)
                 {
@@ -109,15 +109,15 @@ public class L2Manor
     {
         for(SeedData seed : _seeds.values())
         {
-            if(seed.crop == cropId)
+            if(seed._crop == cropId)
             {
                 if(type == 1)
                 {
-                    return seed.type1amount;
+                    return seed._type1amount;
                 }
                 else if(type == 2)
                 {
-                    return seed.type2amount;
+                    return seed._type2amount;
                 }
             }
         }
@@ -139,24 +139,24 @@ public class L2Manor
             switch(castleId)
             {
                 case 1:     // Gludio Castle
-                    if(seed.GL == 1)
-                        crops.add(seed.crop);
+                    if(seed._gl == 1)
+                        crops.add(seed._crop);
                     break;
                 case 2:     // Dion castle
-                    if(seed.DI == 1)
-                        crops.add(seed.crop);
+                    if(seed._di == 1)
+                        crops.add(seed._crop);
                     break;
                 case 3:     // Giran
-                    if(seed.GI == 1)
-                        crops.add(seed.crop);
+                    if(seed._gi == 1)
+                        crops.add(seed._crop);
                     break;
                 case 4:     // Oren
-                    if(seed.OR == 1)
-                        crops.add(seed.crop);
+                    if(seed._or == 1)
+                        crops.add(seed._crop);
                     break;
                 case 5:     // Aden Castle
-                    if(seed.AD == 1)
-                        crops.add(seed.crop);
+                    if(seed._ad == 1)
+                        crops.add(seed._crop);
                     break;
                 default:
                     _log.warning("[L2Manor::getCropForCastle] invalid castle index? "+castleId);
@@ -168,40 +168,40 @@ public class L2Manor
     
     private class SeedData
     {
+        protected int _id;
+        protected int _level;          // seed level
+        protected int _crop;           // crop type
+        protected int _type1;
+        protected int _type2;
+        protected int _type1amount;
+        protected int _type2amount;
+        protected int _gl;             // Gludio Castle
+        protected int _di;             // Dion Castle
+        protected int _gi;             // Giran Castle
+        protected int _or;             // Oren Castle
+        protected int _ad;             // Aden Castle
+        protected int _in;             // Innadril Castle
+        
         public SeedData(int pLevel,int pCrop)
         {
-            this.level = pLevel;
-            this.crop = pCrop;
+            this._level = pLevel;
+            this._crop = pCrop;
         }
         
         public void setData(int pId, int t1, int t2, int t1a, int t2a, int gl, int di, int gi, int or, int ad, int in)
         {
-            this.id = pId;
-            type1 = t1;
-            type2 = t2;
-            type1amount = t1a;
-            type2amount = t2a;
-            GL = gl;
-            DI = di;
-            GI = gi;
-            OR = or;
-            AD = ad;
-            IN = in;
+            this._id = pId;
+            _type1 = t1;
+            _type2 = t2;
+            _type1amount = t1a;
+            _type2amount = t2a;
+            _gl = gl;
+            _di = di;
+            _gi = gi;
+            _or = or;
+            _ad = ad;
+            _in = in;
         }
-        
-        public int id;
-        public int level;          // seed level
-        public int crop;           // crop type
-        public int type1;
-        public int type2;
-        public int type1amount;
-        public int type2amount;
-        public int GL;             // Gludio Castle
-        public int DI;             // Dion Castle
-        public int GI;             // Giran Castle
-        public int OR;             // Oren Castle
-        public int AD;             // Aden Castle
-        public int IN;             // Innadril Castle
     }
     
     
@@ -220,20 +220,20 @@ public class L2Manor
                     continue;
                 }
                 SeedData seed = parseList(line);
-                _seeds.put(seed.id, seed);             
+                _seeds.put(seed._id, seed);             
             }
 
-            initialized = true;
+            _initialized = true;
             _log.config("L2Manor: Loaded " + _seeds.size() + " seeds");
         }
         catch (FileNotFoundException e)
         {
-            initialized = false;
+            _initialized = false;
             _log.warning("seeds.csv is missing in data folder");
         }
         catch (Exception e)
         {
-            initialized = false;
+            _initialized = false;
             _log.warning("error while loading seeds: " + e);
         }
         finally
@@ -275,6 +275,6 @@ public class L2Manor
     
     public boolean isInitialized()
     {
-        return initialized;
+        return _initialized;
     }
 }

@@ -54,14 +54,14 @@ public class HennaTable
 	private HennaTable()
 	{
 		_henna = new FastMap<Integer, L2Henna>();
-		RestoreHennaData();
+		restoreHennaData();
 
 	}
 
 	/**
 	 * 
 	 */
-	private void RestoreHennaData()
+	private void restoreHennaData()
 	{
 		java.sql.Connection con = null;
 		try

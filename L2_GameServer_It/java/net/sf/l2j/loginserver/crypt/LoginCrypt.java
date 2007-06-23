@@ -27,7 +27,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class LoginCrypt
 {
-	private static byte[] STATIC_BLOWFISH_KEY = 
+	private static final byte[] STATIC_BLOWFISH_KEY = 
 	{ 
 		(byte) 0x6b, (byte) 0x60, (byte) 0xcb, (byte) 0x5b,
 		(byte) 0x82, (byte) 0xce, (byte) 0x90, (byte) 0xb1,

@@ -24,17 +24,17 @@ import net.sf.l2j.gameserver.serverpackets.ShowBoard;
 
 public class AdminBBSManager extends BaseBBSManager
 {
-	private static AdminBBSManager _Instance = null;
+	private static AdminBBSManager _instance = null;
 	/**
 	 * @return
 	 */
 	public static AdminBBSManager getInstance()
 	{
-		if(_Instance == null)
+		if(_instance == null)
 		{
-			_Instance = new AdminBBSManager();
+			_instance = new AdminBBSManager();
 		}
-		return _Instance;
+		return _instance;
 	}
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.communitybbs.Manager.BaseBBSManager#parsecmd(java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)

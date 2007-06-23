@@ -34,23 +34,23 @@ public class CastleManager
     protected static Logger _log = Logger.getLogger(CastleManager.class.getName());
 
     // =========================================================
-    private static CastleManager _Instance;
+    private static CastleManager _instance;
     public static final CastleManager getInstance()
     {
-        if (_Instance == null)
+        if (_instance == null)
         {
     		System.out.println("Initializing CastleManager");
-            _Instance = new CastleManager();
-            _Instance.load();
+            _instance = new CastleManager();
+            _instance.load();
         }
-        return _Instance;
+        return _instance;
     }
     // =========================================================
 
     
     // =========================================================
     // Data Field
-    private List<Castle> _Castles;
+    private List<Castle> _castles;
     
     // =========================================================
     // Constructor
@@ -268,7 +268,7 @@ public class CastleManager
 
     public final List<Castle> getCastles()
     {
-        if (_Castles == null) _Castles = new FastList<Castle>();
-        return _Castles;
+        if (_castles == null) _castles = new FastList<Castle>();
+        return _castles;
     }
 }

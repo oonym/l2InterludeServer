@@ -28,17 +28,17 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public final class LambdaCalc extends Lambda {
 
-	public Func[] _funcs;
+	public Func[] funcs;
 	public LambdaCalc()
 	{
-		_funcs = new Func[0];
+		funcs = new Func[0];
 	}
 	public double calc(Env env) {
 		double saveValue = env.value;
 		try
 		{
 			env.value = 0;
-			for (Func f : _funcs)
+			for (Func f : funcs)
 				f.calc(env);
 			return env.value;
 		} finally {
@@ -47,12 +47,12 @@ public final class LambdaCalc extends Lambda {
 	}
 	public void addFunc(Func f)
 	{
-		int len = _funcs.length;
+		int len = funcs.length;
 		Func[] tmp = new Func[len+1];
 		for (int i=0; i < len; i++)
-			tmp[i] = _funcs[i];
+			tmp[i] = funcs[i];
 		tmp[len] = f;
-		_funcs = tmp;
+		funcs = tmp;
 	}
 
 }

@@ -26,9 +26,9 @@ public class MotherTree
 {
 	// =========================================================
     // Data Field
-	private int _motherTreeId                       = 0;
-    private String _Name                       = "";
-    private Zone _Zone;
+	private int _motherTreeId  = 0;
+    private String _name       = "";
+    private Zone _zone;
 
 	// =========================================================
 	// Constructor
@@ -51,18 +51,18 @@ public class MotherTree
     private void loadData()
     {
         Zone zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.MotherTree), getMotherTreeId());
-        if (zone != null) _Name = zone.getName();
+        if (zone != null) _name = zone.getName();
     }
 	
 	// =========================================================
 	// Property
 	public final int getMotherTreeId() { return _motherTreeId; }
 
-    public final String getName() { return _Name; }
+    public final String getName() { return _name; }
 
     public final Zone getZone()
     {
-        if (_Zone == null) _Zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.MotherTree), getName());
-        return _Zone;
+        if (_zone == null) _zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.MotherTree), getName());
+        return _zone;
     }
 }

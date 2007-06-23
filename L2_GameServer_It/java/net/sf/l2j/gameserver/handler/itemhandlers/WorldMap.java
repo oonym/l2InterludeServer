@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.ShowMiniMap;
 public class WorldMap implements IItemHandler
 {
 	// all the items ids that this handler knowns
-	private static int[] _itemIds = { 1665, 1863 };
+	private static final int[] ITEM_IDS = { 1665, 1863 };
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -49,6 +49,6 @@ public class WorldMap implements IItemHandler
 	
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

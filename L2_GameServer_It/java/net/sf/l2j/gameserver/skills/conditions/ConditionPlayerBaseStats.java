@@ -30,8 +30,8 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionPlayerBaseStats extends Condition {
 
-	final BaseStat _stat;
-	final int _value;
+	private final BaseStat _stat;
+	private final int _value;
 	
 	public ConditionPlayerBaseStats(@SuppressWarnings("unused") L2Character player, BaseStat stat, int value)
 	{
@@ -41,9 +41,9 @@ public class ConditionPlayerBaseStats extends Condition {
 	}
 	
 	public boolean testImpl(Env env) {
-		if (!(env._player instanceof L2PcInstance))
+		if (!(env.player instanceof L2PcInstance))
 			return false;
-		L2PcInstance player = (L2PcInstance)env._player;
+		L2PcInstance player = (L2PcInstance)env.player;
 		switch (_stat)
 		{
 		case Int: return player.getINT() >= _value;

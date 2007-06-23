@@ -50,8 +50,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 {
 	private static final String _C__6C_REQUESTAQUIRESKILL = "[C] 6C RequestAquireSkill";
 
-	private static Logger _log = Logger.getLogger(RequestAquireSkill.class
-			.getName());
+	private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
 
 	private int _id;
 

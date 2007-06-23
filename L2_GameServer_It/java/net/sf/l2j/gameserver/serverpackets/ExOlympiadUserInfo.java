@@ -33,7 +33,7 @@ public class ExOlympiadUserInfo extends L2GameServerPacket
 	// chcdSddddd
 	private static final String _S__FE_29_OLYMPIADUSERINFO = "[S] FE:29 OlympiadUserInfo";
 	private static int _side;
-	private static L2PcInstance _player;
+	private static L2PcInstance _activeChar;
 	
 
 	/**
@@ -42,7 +42,7 @@ public class ExOlympiadUserInfo extends L2GameServerPacket
 	 */
 	public ExOlympiadUserInfo(L2PcInstance player, int side)
 	{
-		_player = player;
+		_activeChar = player;
 		_side = side;
 	}
 	
@@ -52,13 +52,13 @@ public class ExOlympiadUserInfo extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x29);
 		writeC(_side);
-		writeD(_player.getObjectId());
-		writeS(_player.getName());
-		writeD(_player.getClassId().getId());
-		writeD((int)_player.getCurrentHp());
-		writeD(_player.getMaxHp());
-		writeD((int)_player.getCurrentCp());
-		writeD(_player.getMaxCp());
+		writeD(_activeChar.getObjectId());
+		writeS(_activeChar.getName());
+		writeD(_activeChar.getClassId().getId());
+		writeD((int)_activeChar.getCurrentHp());
+		writeD(_activeChar.getMaxHp());
+		writeD((int)_activeChar.getCurrentCp());
+		writeD(_activeChar.getMaxCp());
 	}
 	
 	/* (non-Javadoc)

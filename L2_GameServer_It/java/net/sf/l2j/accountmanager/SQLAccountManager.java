@@ -47,7 +47,7 @@ public class SQLAccountManager
 
 	public static void main(String[] args) throws SQLException, IOException, NoSuchAlgorithmException
 	{
-		Server.SERVER_MODE = Server.MODE_LOGINSERVER;
+		Server.serverMode = Server.MODE_LOGINSERVER;
 		Config.load();
 		System.out.println("Please choose an option:");
         System.out.println("");
@@ -91,10 +91,10 @@ public class SQLAccountManager
 
 		if (_mode.equals("1")) {
 			// Add or Update
-			AddOrUpdateAccount(_uname,_pass,_level);		
+			addOrUpdateAccount(_uname,_pass,_level);		
 		} else if(_mode.equals("2")) {
 			// Change Level
-			ChangeAccountLevel(_uname,_level);			
+			changeAccountLevel(_uname,_level);			
 		} else if(_mode.equals("3")) {			
 			// Delete
 			System.out.print("Do you really want to delete this account ? Y/N : ");
@@ -102,7 +102,7 @@ public class SQLAccountManager
 			if (yesno.equals("Y"))
 			{
 				// Yes		
-				DeleteAccount(_uname);
+				deleteAccount(_uname);
 			}
 			
 		} else if(_mode.equals("4")) {
@@ -130,7 +130,7 @@ public class SQLAccountManager
 		System.out.println("Number of accounts: " + count + ".");
 	}		
 	
-	private static void AddOrUpdateAccount(String account,String password, String level) throws IOException, SQLException, NoSuchAlgorithmException		
+	private static void addOrUpdateAccount(String account,String password, String level) throws IOException, SQLException, NoSuchAlgorithmException		
 	{
 		// Encode Password		
 		MessageDigest md = MessageDigest.getInstance("SHA");
@@ -149,7 +149,7 @@ public class SQLAccountManager
 		statement.close();
 	}
 
-	private static void ChangeAccountLevel(String account, String level) throws SQLException		
+	private static void changeAccountLevel(String account, String level) throws SQLException		
 	{		
 		java.sql.Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();		
@@ -183,7 +183,7 @@ public class SQLAccountManager
 		statement.close();		
 	}	
 
-	private static void DeleteAccount(String account) throws SQLException		
+	private static void deleteAccount(String account) throws SQLException		
 	{		
 		java.sql.Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();		

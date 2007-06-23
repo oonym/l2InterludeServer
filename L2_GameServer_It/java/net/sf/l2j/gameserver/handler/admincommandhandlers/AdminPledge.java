@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminPledge implements IAdminCommandHandler
 {
-    private static String[] _adminCommands = {"admin_pledge"};
+    private static final String[] ADMIN_COMMANDS = {"admin_pledge"};
 
     public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
@@ -87,7 +87,7 @@ public class AdminPledge implements IAdminCommandHandler
     
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
 }

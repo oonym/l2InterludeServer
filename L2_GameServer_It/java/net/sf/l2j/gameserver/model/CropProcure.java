@@ -9,18 +9,18 @@ package net.sf.l2j.gameserver.model;
  */
 public class CropProcure
 {
-    int cropId;
-    int canBuy;
-    int rewardType;
+    private int _cropId;
+    private int _canBuy;
+    private int _rewardType;
     
     public CropProcure(int id, int amount, int type)
     {
-        cropId = id;
-        canBuy = amount;
-        rewardType = type;
+        _cropId = id;
+        _canBuy = amount;
+        _rewardType = type;
     }
     
-    public int getReward(){return rewardType;}
-    public int getId(){return cropId;}
-    public int getAmount(){return canBuy;}
+    public int getReward(){return _rewardType;}
+    public int getId(){return _cropId;}
+    public int getAmount(){return _canBuy;}
 }

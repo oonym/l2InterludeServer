@@ -51,7 +51,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 public class AdminSpawn implements IAdminCommandHandler
 {
 
-    private static String[] _adminCommands = { "admin_show_spawns", "admin_spawn", "admin_spawn_monster", "admin_spawn_index",
+    private static final String[] ADMIN_COMMANDS = { "admin_show_spawns", "admin_spawn", "admin_spawn_monster", "admin_spawn_index",
     											"admin_unspawnall","admin_respawnall","admin_spawn_reload","admin_npc_index",
     											"admin_show_npcs","admin_teleport_reload", "admin_spawnnight", "admin_spawnday" };
     public static Logger _log = Logger.getLogger(AdminSpawn.class.getName());
@@ -181,7 +181,7 @@ public class AdminSpawn implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

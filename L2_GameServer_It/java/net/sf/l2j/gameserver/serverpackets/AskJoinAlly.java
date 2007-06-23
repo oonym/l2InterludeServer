@@ -36,25 +36,25 @@ package net.sf.l2j.gameserver.serverpackets;
  */
 public class AskJoinAlly extends L2GameServerPacket
 {
-	private static final String _S__a8_ASKJOINALLY_0Xa8 = "[S] a8 AskJoinAlly 0xa8";
+	private static final String _S__A8_ASKJOINALLY_0XA8 = "[S] a8 AskJoinAlly 0xa8";
 	//private static Logger _log = Logger.getLogger(AskJoinAlly.class.getName());
 
 	private String _requestorName;
-    private int _requestorId;
+    private int _requestorObjId;
 
 	/**
 	 *
 	 */
-	public AskJoinAlly(int requestorId, String requestorName)
+	public AskJoinAlly(int requestorObjId, String requestorName)
 	{
 		_requestorName = requestorName;
-    		_requestorId = requestorId;
+		_requestorObjId = requestorObjId;
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0xa8);
-    		writeD(_requestorId);
+    		writeD(_requestorObjId);
 		writeS(_requestorName);
 	}
 	
@@ -63,7 +63,7 @@ public class AskJoinAlly extends L2GameServerPacket
 	 */
 	public String getType()
 	{
-		return _S__a8_ASKJOINALLY_0Xa8;
+		return _S__A8_ASKJOINALLY_0XA8;
 	}
 
 }

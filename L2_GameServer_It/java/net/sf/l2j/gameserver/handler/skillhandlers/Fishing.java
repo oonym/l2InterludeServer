@@ -38,7 +38,7 @@ public class Fishing implements ISkillHandler
 { 
     //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName()); 
 	//protected SkillType[] _skillIds = {SkillType.FISHING};
-	protected SkillType[] _skillIds = {SkillType.FISHING}; 
+	private static final SkillType[] SKILL_IDS = {SkillType.FISHING}; 
     
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
@@ -48,7 +48,7 @@ public class Fishing implements ISkillHandler
 		
 		if (player.isFishing())
 		{
-			if (player.GetFishCombat() != null) player.GetFishCombat().DoDie(false);
+			if (player.GetFishCombat() != null) player.GetFishCombat().doDie(false);
 			else player.EndFishing(false);
 			//Cancels fishing			
 			player.sendPacket(new SystemMessage(SystemMessage.FISHING_ATTEMPT_CANCELLED));
@@ -113,7 +113,7 @@ public class Fishing implements ISkillHandler
 			iu.addModifiedItem(lure2);
 			player.sendPacket(iu);
 		}
-		player.StartFishing();		
+		player.startFishing();		
 		
 		
         
@@ -122,7 +122,7 @@ public class Fishing implements ISkillHandler
     
     public SkillType[] getSkillIds() 
     { 
-        return _skillIds; 
+        return SKILL_IDS; 
     } 
     
 }

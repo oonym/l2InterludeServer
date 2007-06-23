@@ -74,14 +74,14 @@ public class HelperBuffTable
     private HelperBuffTable()
     {
         _helperBuff = new FastList<L2HelperBuff>();
-        RestoreHelperBuffData();
+        restoreHelperBuffData();
 
     }
     
     /**
      * Read and Load the Newbie Helper Buff list from SQL Table helper_buff_list
      */
-    private void RestoreHelperBuffData()
+    private void restoreHelperBuffData()
     {
         java.sql.Connection con = null;
         try

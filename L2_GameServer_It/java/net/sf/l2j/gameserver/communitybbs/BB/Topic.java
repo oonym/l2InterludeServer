@@ -31,14 +31,14 @@ public class Topic
 	public static final int MORMAL = 0;
 	public static final int MEMO = 1;
 	
-	private int _ID;
-	private int _ForumID;
-	private String _TopicName;
+	private int _id;
+	private int _forumId;
+	private String _topicName;
 	private long _date;
-	private String _OwnerName;
-	private int _OwnerID;
+	private String _ownerName;
+	private int _ownerId;
 	private int _type;
-	private int _Creply;
+	private int _cReply;
 
 	/**
 	 * @param restaure
@@ -53,14 +53,14 @@ public class Topic
 	 */
 	public Topic(ConstructorType ct, int id, int fid, String name, long date, String oname, int oid, int type, int Creply)
 	{
-			_ID = id;
-			_ForumID = fid;
-			_TopicName = name;
+			_id = id;
+			_forumId = fid;
+			_topicName = name;
 			_date = date;
-			_OwnerName = oname;
-			_OwnerID = oid;
+			_ownerName = oname;
+			_ownerId = oid;
 			_type =  type;
-			_Creply = Creply;
+			_cReply = Creply;
 			TopicBBSManager.getInstance().addTopic(this);
 			
 	
@@ -81,14 +81,14 @@ public class Topic
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("INSERT INTO topic (topic_id,topic_forum_id,topic_name,topic_date,topic_ownername,topic_ownerid,topic_type,topic_reply) values (?,?,?,?,?,?,?,?)");
-			statement.setInt(1, _ID);
-			statement.setInt(2, _ForumID);
-			statement.setString(3, _TopicName);
+			statement.setInt(1, _id);
+			statement.setInt(2, _forumId);
+			statement.setString(3, _topicName);
 			statement.setLong(4, _date);
-			statement.setString(5, _OwnerName);
-			statement.setInt(6, _OwnerID);
+			statement.setString(5, _ownerName);
+			statement.setInt(6, _ownerId);
 			statement.setInt(7, _type);
-			statement.setInt(8, _Creply);
+			statement.setInt(8, _cReply);
 			statement.execute();
 			statement.close();
 			
@@ -117,11 +117,11 @@ public class Topic
 	 */
 	public int getID()
 	{		
-		return _ID;
+		return _id;
 	}
 	public int getForumID()
 	{		
-		return _ForumID;
+		return _forumId;
 	}
 	/**
 	 * @return
@@ -129,12 +129,12 @@ public class Topic
 	public String getName()
 	{
 		// TODO Auto-generated method stub
-		return _TopicName;
+		return _topicName;
 	}
 	public String getOwnerName()
 	{
 		// TODO Auto-generated method stub
-		return _OwnerName;
+		return _ownerName;
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class Topic
 	public void deleteme(Forum f)
 	{
 		TopicBBSManager.getInstance().delTopic(this);
-		f.RmTopicByID(getID());
+		f.rmTopicByID(getID());
 		java.sql.Connection con = null;
 		try
 		{

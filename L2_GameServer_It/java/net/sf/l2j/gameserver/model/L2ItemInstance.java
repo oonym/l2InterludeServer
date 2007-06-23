@@ -68,7 +68,7 @@ public final class L2ItemInstance extends L2Object
 	}
 	
 	/** ID of the owner */
-	private int _owner_id;
+	private int _ownerId;
 	
 	/** Quantity of the item */
 	private int _count;
@@ -89,16 +89,16 @@ public final class L2ItemInstance extends L2Object
 	private ItemLocation _loc;
 	
 	/** Slot where item is stored */
-	private int _loc_data;
+	private int _locData;
 	
 	/** Level of enchantment of the item */
 	private int _enchantLevel;
 	
 	/** Price of the item for selling */
-	private int _price_sell;
+	private int _priceSell;
 	
 	/** Price of the item for buying */
-	private int _price_buy;
+	private int _priceBuy;
 	
 	/** Wear Item */
 	private boolean _wear;
@@ -207,9 +207,9 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public void setOwnerId(int owner_id)
 	{
-		if (owner_id == _owner_id) return;
+		if (owner_id == _ownerId) return;
 
-		_owner_id = owner_id;
+		_ownerId = owner_id;
 		_storedInDb = false;
 	}
 
@@ -219,7 +219,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public int getOwnerId()
 	{
-		return _owner_id;
+		return _ownerId;
 	}
 
 	/**
@@ -239,10 +239,10 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public void setLocation(ItemLocation loc, int loc_data)
 	{
-		if (loc == _loc && loc_data == _loc_data)
+		if (loc == _loc && loc_data == _locData)
 			return;
 		_loc = loc;
-		_loc_data = loc_data;
+		_locData = loc_data;
 		_storedInDb = false;
 	}
 
@@ -333,7 +333,7 @@ public final class L2ItemInstance extends L2Object
 	public int getEquipSlot()
 	{
 		if (Config.ASSERT) assert _loc == ItemLocation.PAPERDOLL || _loc == ItemLocation.PET_EQUIP || _loc == ItemLocation.FREIGHT;
-		return _loc_data;
+		return _locData;
 	}
 	
 	/**
@@ -430,7 +430,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public int getPriceToSell()
 	{
-        return (isConsumable() ? (int)(_price_sell * Config.RATE_CONSUMABLE_COST) : _price_sell);
+        return (isConsumable() ? (int)(_priceSell * Config.RATE_CONSUMABLE_COST) : _priceSell);
 	}
 	
 	/**
@@ -440,7 +440,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public void setPriceToSell(int price)
 	{
-		_price_sell = price;
+		_priceSell = price;
 		_storedInDb = false;
 	}
 	
@@ -450,7 +450,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public int getPriceToBuy()
 	{
-        return (isConsumable() ? (int)(_price_buy * Config.RATE_CONSUMABLE_COST) : _price_buy);
+        return (isConsumable() ? (int)(_priceBuy * Config.RATE_CONSUMABLE_COST) : _priceBuy);
 	}
 	
 	/**
@@ -460,7 +460,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public void setPriceToBuy(int price)
 	{
-		_price_buy = price;
+		_priceBuy = price;
 		_storedInDb = false;
 	}
 
@@ -903,14 +903,14 @@ public final class L2ItemInstance extends L2Object
 			return;
 		}
 		if (_existsInDb) {
-			if (_owner_id == 0 || _loc==ItemLocation.VOID || (_count == 0 && _loc!=ItemLocation.LEASE))
+			if (_ownerId == 0 || _loc==ItemLocation.VOID || (_count == 0 && _loc!=ItemLocation.LEASE))
 				removeFromDb();
 			else
 				updateInDb();
 		} else {
 			if (_count == 0 && _loc!=ItemLocation.LEASE)
 				return;
-			if(_loc==ItemLocation.VOID || _owner_id == 0)
+			if(_loc==ItemLocation.VOID || _ownerId == 0)
 				return;
 			insertIntoDb();
 		}
@@ -952,15 +952,15 @@ public final class L2ItemInstance extends L2Object
 				inst = new L2ItemInstance(objectId, item);
 				inst._existsInDb = true;
 				inst._storedInDb = true;
-				inst._owner_id = owner_id;
+				inst._ownerId = owner_id;
 				inst._count = count;
 				inst._enchantLevel = enchant_level;
 				inst._type1 = custom_type1;
 				inst._type2 = custom_type2;
 				inst._loc = loc;
-				inst._loc_data = loc_data;
-				inst._price_sell = price_sell;
-				inst._price_buy  = price_buy;
+				inst._locData = loc_data;
+				inst._priceSell = price_sell;
+				inst._priceBuy  = price_buy;
 
 				// Setup life time for shadow weapons
 				inst._mana = manaLeft;
@@ -1047,7 +1047,7 @@ public final class L2ItemInstance extends L2Object
         // Add the L2ItemInstance dropped in the world as a visible object
         L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion(), dropper);
         if (Config.SAVE_DROPPED_ITEM)		
-        	ItemsOnGroundManager.getInstance().Save(this);
+        	ItemsOnGroundManager.getInstance().save(this);
     }
 
 	/**
@@ -1068,13 +1068,13 @@ public final class L2ItemInstance extends L2Object
 			PreparedStatement statement = con.prepareStatement(
 					"UPDATE items SET owner_id=?,count=?,loc=?,loc_data=?,enchant_level=?,price_sell=?,price_buy=?,custom_type1=?,custom_type2=?,mana_left=? " +
 					"WHERE object_id = ?");
-			statement.setInt(1, _owner_id);
+			statement.setInt(1, _ownerId);
 			statement.setInt(2, getCount());
 			statement.setString(3, _loc.name());
-			statement.setInt(4, _loc_data);
+			statement.setInt(4, _locData);
 			statement.setInt(5, getEnchantLevel());
-			statement.setInt(6, _price_sell);
-			statement.setInt(7, _price_buy);
+			statement.setInt(6, _priceSell);
+			statement.setInt(7, _priceBuy);
 			statement.setInt(8, getCustomType1());
 			statement.setInt(9, getCustomType2());
 			statement.setInt(10, getMana());
@@ -1105,14 +1105,14 @@ public final class L2ItemInstance extends L2Object
 			PreparedStatement statement = con.prepareStatement(
 					"INSERT INTO items (owner_id,item_id,count,loc,loc_data,enchant_level,price_sell,price_buy,object_id,custom_type1,custom_type2,mana_left) " +
 					"VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
-			statement.setInt(1, _owner_id);
+			statement.setInt(1, _ownerId);
 			statement.setInt(2, _itemId);
 			statement.setInt(3, getCount());
 			statement.setString(4, _loc.name());
-			statement.setInt(5, _loc_data);
+			statement.setInt(5, _locData);
 			statement.setInt(6, getEnchantLevel());
-			statement.setInt(7, _price_sell);
-			statement.setInt(8, _price_buy);
+			statement.setInt(7, _priceSell);
+			statement.setInt(8, _priceBuy);
 			statement.setInt(9, getObjectId());
 			statement.setInt(10, _type1);
 			statement.setInt(11, _type2);

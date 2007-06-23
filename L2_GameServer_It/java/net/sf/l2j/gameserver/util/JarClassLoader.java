@@ -35,11 +35,11 @@ import java.util.zip.ZipFile;
  * @author  galun
  */
 public class JarClassLoader extends ClassLoader {
-    private static Logger log = Logger.getLogger(JarClassLoader.class.getCanonicalName());
-    HashSet<String> jars = new HashSet<String>();
+    private static Logger _log = Logger.getLogger(JarClassLoader.class.getCanonicalName());
+    HashSet<String> _jars = new HashSet<String>();
 
     public void addJarFile(String filename) {
-    	jars.add(filename);
+    	_jars.add(filename);
     }
 
     public Class<?> findClass(String name) throws ClassNotFoundException {
@@ -53,7 +53,7 @@ public class JarClassLoader extends ClassLoader {
 
     private byte[] loadClassData(String name) throws IOException {
     	byte[] classData = null;
-    	for (String jarFile : jars) {
+    	for (String jarFile : _jars) {
     		try {
     			File file = new File(jarFile);
     			ZipFile zipFile = new ZipFile(file);
@@ -66,12 +66,12 @@ public class JarClassLoader extends ClassLoader {
     			zipStream.readFully(classData, 0, (int) entry.getSize());
     			break;
     		} catch (IOException e) {
-    			log.log(Level.WARNING, jarFile + ":" + e.toString(), e);
+    			_log.log(Level.WARNING, jarFile + ":" + e.toString(), e);
     			continue;
     		}
     	}
     	if (classData == null)
-    		throw new IOException("class not found in " + jars);
+    		throw new IOException("class not found in " + _jars);
     	return classData;
     }
 }

@@ -11,12 +11,12 @@ public class PackageSendableList extends L2GameServerPacket
 {
 	private static final String _S__C3_PACKAGESENDABLELIST = "[S] C3 PackageSendableList";
 	private L2ItemInstance[] _items;
-	private int _playerOID;
+	private int _playerObjId;
 
-	public PackageSendableList(L2ItemInstance[] items, int playerOID)
+	public PackageSendableList(L2ItemInstance[] items, int playerObjId)
 	{
 		_items = items;
-		_playerOID = playerOID;
+		_playerObjId = playerObjId;
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class PackageSendableList extends L2GameServerPacket
 	{
 		writeC(0xC3);
 		
-		writeD(_playerOID);
+		writeD(_playerObjId);
 		writeD(getClient().getActiveChar().getAdena());
 		writeD(_items.length);
 		for(L2ItemInstance item : _items) // format inside the for taken from SellList part use should be about the same

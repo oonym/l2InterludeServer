@@ -40,23 +40,23 @@ public class DropItem extends L2GameServerPacket
 {
 	private static final String _S__16_DROPITEM = "[S] 0c DropItem";
 	private L2ItemInstance _item;
-	private int _playerId;
+	private int _charObjId;
 
 	/**
 	 * Constructor of the DropItem server packet
 	 * @param item : L2ItemInstance designating the item
-	 * @param playerId : int designating the player ID who dropped the item
+	 * @param playerObjId : int designating the player ID who dropped the item
 	 */
-	public DropItem(L2ItemInstance item, int playerId)
+	public DropItem(L2ItemInstance item, int playerObjId)
 	{
 		_item=item;
-		_playerId = playerId;
+		_charObjId = playerObjId;
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x0c);
-		writeD(_playerId);
+		writeD(_charObjId);
 		writeD(_item.getObjectId());
 		writeD(_item.getItemId());
 		

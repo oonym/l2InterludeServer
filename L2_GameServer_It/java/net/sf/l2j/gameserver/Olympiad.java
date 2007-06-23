@@ -131,7 +131,7 @@ public class Olympiad
     protected ScheduledFuture _scheduledWeeklyTask;
     protected ScheduledFuture _scheduledValdationTask;
     
-    protected static final int[][] _stadiums = 
+    protected static final int[][] STADIUMS = 
     {
      {-20814, -21189, -3030},
      {-120324, -225077, -3331},
@@ -804,7 +804,7 @@ public class Olympiad
         
         if (players == null) return;
         
-    	spectator.enterOlympiadObserverMode(_stadiums[id][0], _stadiums[id][1], _stadiums[id][2], id);
+    	spectator.enterOlympiadObserverMode(STADIUMS[id][0], STADIUMS[id][1], STADIUMS[id][2], id);
         
         _manager.getOlympiadInstance(id).addSpectator(spectator);
         
@@ -1143,13 +1143,13 @@ public class Olympiad
             {
                 if (_classBasedParticipants.get(classIndex) != null)
                 {
-                    _olympiadInstances.put(index, new L2OlympiadGame(index, COMP_TYPE.CLASSED, _classBasedParticipants.get(classIndex), _stadiums[index]));
+                    _olympiadInstances.put(index, new L2OlympiadGame(index, COMP_TYPE.CLASSED, _classBasedParticipants.get(classIndex), STADIUMS[index]));
                     index++;
                     classIndex++;
                 }
                 if (_nonClassBasedParticipants.get(nonClassIndex) != null)
                 {
-                    _olympiadInstances.put(index, new L2OlympiadGame(index, COMP_TYPE.NON_CLASSED, _nonClassBasedParticipants.get(nonClassIndex), _stadiums[index]));
+                    _olympiadInstances.put(index, new L2OlympiadGame(index, COMP_TYPE.NON_CLASSED, _nonClassBasedParticipants.get(nonClassIndex), STADIUMS[index]));
                     nonClassIndex++;
                     index++;
                 }

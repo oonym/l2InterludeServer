@@ -54,7 +54,7 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 	private static final boolean TRACE = false;
 	private static final boolean DEBUG = false;
 	
-	private final static int[] primes = {
+	private final static int[] PRIMES = {
 		5, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293,
 		353, 431, 521, 631, 761, 919, 1103, 1327, 1597, 1931, 2333, 2801,
 		3371, 4049, 4861, 5839, 7013, 8419, 10103, 12143, 14591, 17519,
@@ -64,16 +64,16 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		2009191, 2411033, 2893249, 3471899, 4166287, 4999559, 5999471, 7199369
 		};
 	
-	private T[] table;
-	private int[] collisions;
-	private int count;
+	private T[] _table;
+	private int[] _collisions;
+	private int _count;
 	
 	private static int getPrime(int min)
 	{
-		for (int i=0; i < primes.length; i++)
+		for (int i=0; i < PRIMES.length; i++)
 		{
-			if (primes[i] >= min)
-				return primes[i];
+			if (PRIMES[i] >= min)
+				return PRIMES[i];
 		}
 		throw new OutOfMemoryError();
 	}
@@ -81,9 +81,9 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 	@SuppressWarnings("unchecked")
 	public L2ObjectHashSet()
 	{
-		int size = primes[0];
-		table = (T[])new L2Object[size];
-		collisions = new int[(size+31)>>5];
+		int size = PRIMES[0];
+		_table = (T[])new L2Object[size];
+		_collisions = new int[(size+31)>>5];
 		if (DEBUG) check();
 	}
 	
@@ -92,7 +92,7 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
      */
 	public int size()
 	{
-		return count;
+		return _count;
 	}
 	
 	/* (non-Javadoc)
@@ -100,7 +100,7 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
      */
 	public boolean isEmpty()
 	{
-		return count == 0;
+		return _count == 0;
 	}
 	
 	/* (non-Javadoc)
@@ -109,10 +109,10 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 	@SuppressWarnings("unchecked")
 	public synchronized void clear()
 	{
-		int size = primes[0];
-		table = (T[])new L2Object[size];
-		collisions = new int[(size+31)>>5];
-		count = 0;
+		int size = PRIMES[0];
+		_table = (T[])new L2Object[size];
+		_collisions = new int[(size+31)>>5];
+		_count = 0;
 		if (DEBUG) check();
 	}
 	
@@ -121,14 +121,14 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		if (DEBUG)
 		{
 			int cnt = 0;
-			assert collisions.length == ((table.length+31)>>5); 
-			for (int i=0; i < table.length; i++)
+			assert _collisions.length == ((_table.length+31)>>5); 
+			for (int i=0; i < _table.length; i++)
 			{
-				L2Object obj = table[i]; 
+				L2Object obj = _table[i]; 
 				if (obj != null)
 					cnt++;
 			}
-			assert cnt == count;
+			assert cnt == _count;
 		}
 	}
 	
@@ -141,27 +141,27 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		    return;
 		if (contains(obj))
 		    return;
-		if (count >= table.length/2)
+		if (_count >= _table.length/2)
 			expand();
 		final int hashcode = obj.getObjectId();
 		if (Config.ASSERT) assert hashcode > 0;
 		int seed = hashcode;
-		int incr = 1 + (((seed >> 5) + 1) % (table.length - 1));
+		int incr = 1 + (((seed >> 5) + 1) % (_table.length - 1));
 		int ntry = 0;
 		int slot = -1; // keep last found slot
 		do
 		{
-			int pos = (seed % table.length) & 0x7FFFFFFF;
-			if (table[pos] == null)
+			int pos = (seed % _table.length) & 0x7FFFFFFF;
+			if (_table[pos] == null)
 			{
 				if (slot < 0)
 					slot = pos;
-				if ((collisions[pos>>5] & (1<<(pos&31))) == 0)
+				if ((_collisions[pos>>5] & (1<<(pos&31))) == 0)
 				{
 					// found an empty slot without previous collisions,
 					// but use previously found slot
-					table[slot] = obj;
-					count++;
+					_table[slot] = obj;
+					_count++;
 					if (TRACE) System.err.println("ht: put obj id="+hashcode+" at slot="+slot);
 					if (DEBUG) check();
 					return;
@@ -170,16 +170,16 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 			else
 			{
 				// check if we are adding the same object
-				if (table[pos] == obj)
+				if (_table[pos] == obj)
 					return;
 				// this should never happen
-				if (Config.ASSERT) assert obj.getObjectId() != table[pos].getObjectId();
+				if (Config.ASSERT) assert obj.getObjectId() != _table[pos].getObjectId();
 				// if there was no collisions at this slot, and we found a free
 				// slot previously - use found slot
-				if (slot >= 0 && (collisions[pos>>5] & (1<<(pos&31))) == 0)
+				if (slot >= 0 && (_collisions[pos>>5] & (1<<(pos&31))) == 0)
 				{
-					table[slot] = obj;
-					count++;
+					_table[slot] = obj;
+					_count++;
 					if (TRACE) System.err.println("ht: put obj id="+hashcode+" at slot="+slot);
 					if (DEBUG) check();
 					return;
@@ -187,10 +187,10 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 			}
 			
 			// set collision bit
-			collisions[pos>>5] |= 1<<(pos&31);
+			_collisions[pos>>5] |= 1<<(pos&31);
 			// calculate next slot
 			seed += incr;
-		} while (++ntry < table.length);
+		} while (++ntry < _table.length);
 		if (DEBUG) check();
 		throw new IllegalStateException();
 	}
@@ -207,28 +207,28 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		int hashcode = obj.getObjectId();
 		if (Config.ASSERT) assert hashcode > 0;
 		int seed = hashcode;
-		int incr = 1 + (((seed >> 5) + 1) % (table.length - 1));
+		int incr = 1 + (((seed >> 5) + 1) % (_table.length - 1));
 		int ntry = 0;
 		do
 		{
-			int pos = (seed % table.length) & 0x7FFFFFFF;
-			if (table[pos] == obj)
+			int pos = (seed % _table.length) & 0x7FFFFFFF;
+			if (_table[pos] == obj)
 			{
 				// found the object
-				table[pos] = null;
-				count--;
+				_table[pos] = null;
+				_count--;
 				if (TRACE) System.err.println("ht: remove obj id="+hashcode+" from slot="+pos);
 				if (DEBUG) check();
 				return;
 			}
 			// check for collision (if we previously deleted element)
-			if (table[pos] == null && (collisions[pos>>5] & (1<<(pos&31))) == 0) {
+			if (_table[pos] == null && (_collisions[pos>>5] & (1<<(pos&31))) == 0) {
 				if (DEBUG) check();
 				return; //throw new IllegalArgumentException();
 			}
 			// calculate next slot
 			seed += incr;
-		} while (++ntry < table.length);
+		} while (++ntry < _table.length);
 		if (DEBUG) check();
 		throw new IllegalStateException();
 	}
@@ -238,13 +238,13 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
      */
 	public boolean contains(T obj)
 	{
-		final int size = table.length; 
+		final int size = _table.length; 
 		if (size <= 11)
 		{
 			// for small tables linear check is fast 
 			for (int i=0; i < size; i++)
 			{
-				if (table[i] == obj)
+				if (_table[i] == obj)
 					return true;
 			}
 			return false;
@@ -257,10 +257,10 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 		do
 		{
 			int pos = (seed % size) & 0x7FFFFFFF;
-			if (table[pos] == obj)
+			if (_table[pos] == obj)
 				return true;
 			// check for collision (if we previously deleted element)
-			if (table[pos] == null && (collisions[pos>>5] & (1<<(pos&31))) == 0) {
+			if (_table[pos] == null && (_collisions[pos>>5] & (1<<(pos&31))) == 0) {
 				return false;
 			}
 			// calculate next slot
@@ -272,15 +272,15 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 	@SuppressWarnings("unchecked")
 	private /*already synchronized in put()*/ void expand()
 	{
-		int newSize = getPrime(table.length+1);
+		int newSize = getPrime(_table.length+1);
 		L2Object[] newTable = new L2Object[newSize];
 		int[] newCollisions = new int[(newSize+31)>>5];
 		
 		// over all old entries
 	next_entry:
-		for (int i=0; i < table.length; i++)
+		for (int i=0; i < _table.length; i++)
 		{
-			L2Object obj = table[i]; 
+			L2Object obj = _table[i]; 
 			if (obj == null)
 				continue;
 			final int hashcode = obj.getObjectId();
@@ -305,8 +305,8 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
 			} while (++ntry < newSize);
 			throw new IllegalStateException();
 		}
-		table = (T[])newTable;
-		collisions = newCollisions;
+		_table = (T[])newTable;
+		_collisions = newCollisions;
 		if (DEBUG) check();
 	}
 	
@@ -315,49 +315,49 @@ public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
      */
 	public Iterator<T> iterator()
 	{
-		return new Itr(table);
+		return new Itr(_table);
 	}
 	
 	class Itr implements Iterator<T>
 	{
-		private final T[] array;
-		private int nextIdx;
-		private T nextObj;
-		private T lastRet;
+		private final T[] _array;
+		private int _nextIdx;
+		private T _nextObj;
+		private T _lastRet;
 		Itr(T[] pArray)
 		{
-			this.array = pArray;
-			for (; nextIdx < array.length; nextIdx++)
+			this._array = pArray;
+			for (; _nextIdx < _array.length; _nextIdx++)
 			{
-				nextObj = array[nextIdx]; 
-				if (nextObj != null)
+				_nextObj = _array[_nextIdx]; 
+				if (_nextObj != null)
 					return;
 			}
 		}
 		public boolean hasNext()
 		{
-			return nextObj != null;
+			return _nextObj != null;
 		}
 		public T next()
 		{
-			if (nextObj == null)
+			if (_nextObj == null)
 				throw new NoSuchElementException();
-			lastRet = nextObj;
-			for (nextIdx++; nextIdx < array.length; nextIdx++)
+			_lastRet = _nextObj;
+			for (_nextIdx++; _nextIdx < _array.length; _nextIdx++)
 			{
-				nextObj = array[nextIdx]; 
-				if (nextObj != null)
+				_nextObj = _array[_nextIdx]; 
+				if (_nextObj != null)
 					break;
 			}
-			if (nextIdx >= array.length)
-				nextObj = null;
-			return lastRet;
+			if (_nextIdx >= _array.length)
+				_nextObj = null;
+			return _lastRet;
 		}
 		public void remove()
 		{
-			if (lastRet == null)
+			if (_lastRet == null)
 				throw new IllegalStateException();
-			L2ObjectHashSet.this.remove(lastRet);
+			L2ObjectHashSet.this.remove(_lastRet);
 		}
 	}
 }

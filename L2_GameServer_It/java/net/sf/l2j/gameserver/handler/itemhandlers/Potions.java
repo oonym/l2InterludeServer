@@ -44,12 +44,13 @@ public class Potions implements IItemHandler
 {
 	protected static final Logger _log = Logger.getLogger(Potions.class.getName());
 	private int _herbstask = 0;
+	
 	/** Task for Herbs */
-	public class HerbTask implements Runnable
+	private class HerbTask implements Runnable
 	{
-		L2PcInstance _activeChar;
-		int _magicId;
-		int _level;
+		private L2PcInstance _activeChar;
+		private int _magicId;
+		private int _level;
 		HerbTask(L2PcInstance activeChar, int magicId, int level)
 		{
 			_activeChar = activeChar;
@@ -68,7 +69,7 @@ public class Potions implements IItemHandler
 			}
 		}
 	}
-	private static int[] _itemIds =
+	private static final int[] ITEM_IDS =
 		{ 65, 725, 726, 727, 728, 734, 735, 1060, 1061, 1062, 1073, 1374, 1375,
 				1539, 1540, 5591, 5592, 6035, 6036, 6652, 6553, 6554, 6555,
 				8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202,
@@ -81,8 +82,7 @@ public class Potions implements IItemHandler
 				//elixir of cp 
 				8634, 8635, 8636, 8637, 8638, 8639};
 
-	public synchronized void useItem(L2PlayableInstance playable,
-			L2ItemInstance item)
+	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
 		boolean res = false;
@@ -101,9 +101,7 @@ public class Potions implements IItemHandler
 
 		if (activeChar.isInOlympiadMode())
 		{
-			activeChar
-					.sendPacket(new SystemMessage(
-							SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+			activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
 			return;
 		}
 
@@ -444,6 +442,6 @@ public class Potions implements IItemHandler
 
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

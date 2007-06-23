@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class set implements IVoicedCommandHandler
 {
-    private static String[] _voicedCommands = { "set name", "set home", "set group" }; 
+    private static final String[] VOICED_COMMANDS = { "set name", "set home", "set group" }; 
 
     public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
@@ -53,6 +53,6 @@ public class set implements IVoicedCommandHandler
  
     public String[] getVoicedCommandList()
     {
-        return _voicedCommands;
+        return VOICED_COMMANDS;
     }
 }

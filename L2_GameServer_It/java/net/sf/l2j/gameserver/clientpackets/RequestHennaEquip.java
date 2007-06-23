@@ -35,7 +35,7 @@ public final class RequestHennaEquip extends L2GameClientPacket
 {
 	private static final String _C__BC_RequestHennaEquip = "[C] bc RequestHennaEquip";
 	//private static Logger _log = Logger.getLogger(RequestHennaEquip.class.getName());
-	private int SymbolId;
+	private int _symbolId;
 	// format  cd
 	
 	/**
@@ -45,7 +45,7 @@ public final class RequestHennaEquip extends L2GameClientPacket
 	 */
 	protected void readImpl()
 	{
-		SymbolId  = readD();
+		_symbolId  = readD();
 	}
 
 	protected void runImpl()
@@ -55,7 +55,7 @@ public final class RequestHennaEquip extends L2GameClientPacket
 		if (activeChar == null)
 		    return;
         
-		L2Henna template = HennaTable.getInstance().getTemplate(SymbolId);
+		L2Henna template = HennaTable.getInstance().getTemplate(_symbolId);
         
         if (template == null)
             return;

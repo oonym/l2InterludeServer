@@ -32,7 +32,7 @@ public class ServerStatus extends ClientBasePacket
 {
 	protected static Logger _log = Logger.getLogger(ServerStatus.class.getName());
 
-	public static final String [] statusString = {"Auto", "Good", "Normal", "Full", "Down", "Gm Only"};
+	public static final String [] STATUS_STRING = {"Auto", "Good", "Normal", "Full", "Down", "Gm Only"};
 
 	public static final int SERVER_LIST_STATUS = 0x01;
 	public static final int SERVER_LIST_CLOCK = 0x02;

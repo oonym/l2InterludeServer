@@ -47,7 +47,7 @@ public final class DlgAnswer extends L2GameClientPacket
 		if (Config.DEBUG)
 			_log.fine(getType()+": Answer acepted. Message ID "+_messageId+", asnwer "+_answer+", unknown field "+_unk);
 		if (_messageId == SystemMessage.RESSURECTION_REQUEST)
-			getClient().getActiveChar().ReviveAnswer(_answer);
+			getClient().getActiveChar().reviveAnswer(_answer);
 	}
 
 	public String getType()

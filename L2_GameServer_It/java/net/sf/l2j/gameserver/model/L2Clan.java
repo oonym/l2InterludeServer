@@ -91,9 +91,9 @@ public class L2Clan
 
 	private boolean _hasCrestLarge;
 
-	private Forum _Forum;
+	private Forum _forum;
 
-	private List<L2Skill> _skills = new FastList<L2Skill>();
+	private List<L2Skill> _skillList = new FastList<L2Skill>();
 
 	//  Clan Privileges
     /** No privilege to manage any clan activity */
@@ -146,9 +146,9 @@ public class L2Clan
     public static final int SUBUNIT_KNIGHT4 = 2002;
 
     /** FastMap(Integer, L2Skill) containing all skills of the L2Clan */
-    protected final Map<Integer, L2Skill> _Skills = new FastMap<Integer, L2Skill>();
-    protected final Map<Integer, RankPrivs> _Privs = new FastMap<Integer, RankPrivs>();
-    protected final Map<Integer, SubPledge> _SubPledges = new FastMap<Integer, SubPledge>();
+    protected final Map<Integer, L2Skill> _skills = new FastMap<Integer, L2Skill>();
+    protected final Map<Integer, RankPrivs> _privs = new FastMap<Integer, RankPrivs>();
+    protected final Map<Integer, SubPledge> _subPledges = new FastMap<Integer, SubPledge>();
     
     private int _reputationScore = 0;
     private int _rank = 0;
@@ -162,7 +162,7 @@ public class L2Clan
     public L2Clan(int clanId)
     {
         _clanId = clanId;
-        InitializePrivs();
+        initializePrivs();
         restore();
         getWarehouse().restore();
     }
@@ -177,7 +177,7 @@ public class L2Clan
     {
         _clanId = clanId;
         _name = clanName;
-        InitializePrivs();
+        initializePrivs();
     }
     
 	/**
@@ -321,7 +321,7 @@ public class L2Clan
         return null;
     }
     
-public void removeClanMember(String name, long clanJoinExpiryTime)
+    public void removeClanMember(String name, long clanJoinExpiryTime)
 	{
 		L2ClanMember exMember = _members.remove(name);
 		if(exMember == null)
@@ -559,14 +559,14 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
 	public void setLevel(int level)
 	{
 	    _level = level;
-	    if(_Forum == null)
+	    if(_forum == null)
 	    {
 	    	if(_level >= 2)
 	    	{
-	    		_Forum = ForumsBBSManager.getInstance().getForumByName("ClanRoot").GetChildByName(_name);
-            	if(_Forum == null)
+	    		_forum = ForumsBBSManager.getInstance().getForumByName("ClanRoot").getChildByName(_name);
+            	if(_forum == null)
             	{
-            		_Forum = ForumsBBSManager.getInstance().CreateNewForum(_name,ForumsBBSManager.getInstance().getForumByName("ClanRoot"),Forum.CLAN,Forum.CLANMEMBERONLY,getClanId());
+            		_forum = ForumsBBSManager.getInstance().createNewForum(_name,ForumsBBSManager.getInstance().getForumByName("ClanRoot"),Forum.CLAN,Forum.CLANMEMBERONLY,getClanId());
             	}
 	    	}
 	    }
@@ -679,7 +679,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     }
 
     @SuppressWarnings("unused")
-    private void UpdateWarsInDB()
+    private void updateWarsInDB()
     {
         java.sql.Connection con = null;
         try
@@ -845,7 +845,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 // Create a L2Skill object for each record
                 L2Skill skill = SkillTable.getInstance().getInfo(id, level);
                 // Add the L2Skill object to the L2Clan _skills
-                _Skills.put(skill.getId(), skill);
+                _skills.put(skill.getId(), skill);
             }
             
             rset.close();
@@ -864,10 +864,10 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     /** used to retrieve all skills */
     public final L2Skill[] getAllSkills()
     {
-        if (_Skills == null)
+        if (_skills == null)
             return new L2Skill[0];
         
-        return _Skills.values().toArray(new L2Skill[_Skills.values().size()]);
+        return _skills.values().toArray(new L2Skill[_skills.values().size()]);
     }
     
     
@@ -879,7 +879,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         if (newSkill != null)
         {
             // Replace oldSkill by newSkill or Add the newSkill
-            oldSkill = _Skills.put(newSkill.getId(), newSkill);
+            oldSkill = _skills.put(newSkill.getId(), newSkill);
         }
         
         return oldSkill;
@@ -895,7 +895,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         {
             
             // Replace oldSkill by newSkill or Add the newSkill
-            oldSkill = _Skills.put(newSkill.getId(), newSkill);
+            oldSkill = _skills.put(newSkill.getId(), newSkill);
             
             
             try
@@ -952,7 +952,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     
     public void addSkillEffects()
     {
-        for(L2Skill skill : _Skills.values())
+        for(L2Skill skill : _skills.values())
         {
             for (L2ClanMember temp : _members.values())
             {
@@ -970,7 +970,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         if (cm == null)
             return;
         
-        for(L2Skill skill : _Skills.values())
+        for(L2Skill skill : _skills.values())
         {
             //TODO add skills according to members class( in ex. don't add Clan Agillity skill's effect to lower class then Baron)
             if (skill.getMinPledgeClass() <= cm.getPledgeClass())
@@ -1094,7 +1094,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     public void removeSkill(int id)
     {
     	L2Skill deleteSkill = null;
-    	for(L2Skill sk : _skills)
+    	for(L2Skill sk : _skillList)
     	{
     		if(sk.getId() == id)
     		{
@@ -1102,12 +1102,12 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     			return;
     		}
     	}
-    	_skills.remove(deleteSkill);
+    	_skillList.remove(deleteSkill);
     }
     
     public void removeSkill(L2Skill deleteSkill)
     {
-    	_skills.remove(deleteSkill);
+    	_skillList.remove(deleteSkill);
     }
 
 	/**
@@ -1115,58 +1115,57 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
 	 */
 	public List<L2Skill> getSkills()
 	{
-		return _skills;
+		return _skillList;
 	}
 	
 	public class SubPledge
     {
-       private int _Id;
-       private String _Name;
-       private String _LeaderName;
+       private int _id;
+       private String _subPledgeName;
+       private String _leaderName;
        
        public SubPledge(int id, String name, String leaderName)
        {
-           _Id = id;
-           _Name = name;
-           _LeaderName = leaderName;
+           _id = id;
+           _subPledgeName = name;
+           _leaderName = leaderName;
        }
        
        public int getId()
        {
-           return _Id;
+           return _id;
        }
        public String getName()
        {
-           return _Name;
+           return _subPledgeName;
        }
        public String getLeaderName()
        {
-           return _LeaderName;
+           return _leaderName;
        }
        
        public void setLeaderName(String leaderName)
        {
-           _LeaderName = leaderName;
+           _leaderName = leaderName;
        }
     }
 	
     public class RankPrivs
     {
-       @SuppressWarnings("hiding")
-       private int _rank;
+       private int _rankId;
        private int _party;// TODO find out what this stuff means and implement it
-       private int _privs;
+       private int _rankPrivs;
        
        public RankPrivs(int rank, int party, int privs)
        {
-           _rank = rank;
+    	   _rankId = rank;
            _party = party;
-           _privs = privs;
+           _rankPrivs = privs;
        }
        
        public int getRank()
        {
-           return _rank;
+           return _rankId;
        }
        public int getParty()
        {
@@ -1174,11 +1173,11 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
        }
        public int getPrivs()
        {
-           return _privs;
+           return _rankPrivs;
        }
        public void setPrivs(int privs)
        {
-           _privs = privs;
+    	   _rankPrivs = privs;
        }
     }
     
@@ -1201,7 +1200,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 String leaderName = rset.getString("leader_name");
                 // Create a SubPledge object for each record
                 SubPledge pledge = new SubPledge(id, name, leaderName);
-                _SubPledges.put(id, pledge);
+                _subPledges.put(id, pledge);
             }
             
             rset.close();
@@ -1220,19 +1219,19 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     /** used to retrieve subPledge by type */
     public final SubPledge getSubPledge(int pledgeType)
     {
-        if (_SubPledges == null)
+        if (_subPledges == null)
             return null;
         
-        return _SubPledges.get(pledgeType);
+        return _subPledges.get(pledgeType);
     }
     
     /** used to retrieve subPledge by type */
     public final SubPledge getSubPledge(String pledgeName)
     {
-        if (_SubPledges == null)
+        if (_subPledges == null)
             return null;
         
-        for (SubPledge sp : _SubPledges.values())
+        for (SubPledge sp : _subPledges.values())
     	{
     		if (sp.getName().equalsIgnoreCase(pledgeName))
     		{
@@ -1245,10 +1244,10 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     /** used to retrieve all subPledges */
     public final SubPledge[] getAllSubPledges()
     {
-        if (_SubPledges == null)
+        if (_subPledges == null)
             return new SubPledge[0];
         
-        return _SubPledges.values().toArray(new SubPledge[_SubPledges.values().size()]);
+        return _subPledges.values().toArray(new SubPledge[_subPledges.values().size()]);
     }
     
     public SubPledge createSubPledge(int pledgeType, String leaderName, String subPledgeName)
@@ -1287,7 +1286,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
 	            statement.close();
 	            
 	            subPledge = new SubPledge(pledgeType, subPledgeName, leaderName);
-	            _SubPledges.put(pledgeType, subPledge);
+	            _subPledges.put(pledgeType, subPledge);
 
 	            if(pledgeType != -1)
 	            {
@@ -1312,7 +1311,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     
     public int getAvailablePledgeTypes(int pledgeType)
     {
-    	if (_SubPledges.get(pledgeType) != null)
+    	if (_subPledges.get(pledgeType) != null)
     	{
     		//_log.warning("found sub-unit with id: "+pledgeType);
     		switch(pledgeType)
@@ -1387,7 +1386,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
                 // Create a SubPledge object for each record
                 //RankPrivs privs = new RankPrivs(rank, party, privileges);
                 //_Privs.put(rank, privs);
-                _Privs.get(rank).setPrivs(privileges);
+                _privs.get(rank).setPrivs(privileges);
             }
             
             rset.close();
@@ -1403,29 +1402,29 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         }
     }
     
-    public void InitializePrivs()
+    public void initializePrivs()
     {
     	RankPrivs privs;
     	for (int i=1; i < 10; i++) 
     	{
     		privs = new RankPrivs(i, 0, CP_NOTHING);
-    		_Privs.put(i, privs);
+    		_privs.put(i, privs);
     	}
     		
     }
     
     public int getRankPrivs(int rank)
     {
-        if (_Privs.get(rank) != null)
-            return _Privs.get(rank).getPrivs();
+        if (_privs.get(rank) != null)
+            return _privs.get(rank).getPrivs();
         else
             return CP_NOTHING;
     }
     public void setRankPrivs(int rank, int privs)
     {
-        if (_Privs.get(rank)!= null)
+        if (_privs.get(rank)!= null)
         {
-            _Privs.get(rank).setPrivs(privs);
+            _privs.get(rank).setPrivs(privs);
             
             
             java.sql.Connection con = null;
@@ -1467,7 +1466,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
         }
         else
         {
-            _Privs.put(rank, new RankPrivs(rank, 0, privs));
+            _privs.put(rank, new RankPrivs(rank, 0, privs));
             
             java.sql.Connection con = null;
             
@@ -1498,16 +1497,16 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
     /** used to retrieve all RankPrivs */
     public final RankPrivs[] getAllRankPrivs()
     {
-        if (_Privs == null)
+        if (_privs == null)
             return new RankPrivs[0];
         
-        return _Privs.values().toArray(new RankPrivs[_Privs.values().size()]);
+        return _privs.values().toArray(new RankPrivs[_privs.values().size()]);
     }
     
     public int getLeaderSubPledge(String name)
     {
         int id = 0;
-        for (SubPledge sp : _SubPledges.values())
+        for (SubPledge sp : _subPledges.values())
         {
             if (sp.getLeaderName().equals(name))
                 id = sp.getId();
@@ -1577,7 +1576,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
      * @param pledgeType
      * @return
      */
-    public boolean CheckClanJoinCondition(L2PcInstance activeChar, L2PcInstance target, int pledgeType)
+    public boolean checkClanJoinCondition(L2PcInstance activeChar, L2PcInstance target, int pledgeType)
     {
 		if (activeChar == null)
 		{
@@ -1664,7 +1663,7 @@ public void removeClanMember(String name, long clanJoinExpiryTime)
      * @param target
      * @return
      */
-    public boolean CheckAllyJoinCondition(L2PcInstance activeChar, L2PcInstance target)
+    public boolean checkAllyJoinCondition(L2PcInstance activeChar, L2PcInstance target)
     {
 		if (activeChar == null)
 		{

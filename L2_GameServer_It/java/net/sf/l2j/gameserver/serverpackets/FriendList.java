@@ -47,16 +47,16 @@ public class FriendList extends L2GameServerPacket
 	private static Logger _log = Logger.getLogger(FriendList.class.getName());
 	private static final String _S__FA_FRIENDLIST = "[S] FA FriendList";
 	
-    private L2PcInstance _cha;
+    private L2PcInstance _activeChar;
     
-    public FriendList(L2PcInstance cha)
+    public FriendList(L2PcInstance character)
     {
-        _cha = cha;
+    	_activeChar = character;
     }
 	
 	protected final void writeImpl()
 	{
-		if (_cha == null)  
+		if (_activeChar == null)  
 			return;  
 		
         Connection con = null;
@@ -64,7 +64,7 @@ public class FriendList extends L2GameServerPacket
 		try
 		{
 			String sqlQuery = "SELECT friend_id, friend_name FROM character_friends WHERE " +
-                    "char_id=" + _cha.getObjectId() + " ORDER BY friend_name ASC";
+                    "char_id=" + _activeChar.getObjectId() + " ORDER BY friend_name ASC";
 
 			con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement = con.prepareStatement(sqlQuery);
@@ -86,7 +86,7 @@ public class FriendList extends L2GameServerPacket
                     int friendId = rset.getInt("friend_id");
     				String friendName = rset.getString("friend_name");
 
-    				if (friendId == _cha.getObjectId())
+    				if (friendId == _activeChar.getObjectId())
                         continue;
     				
     				L2PcInstance friend = L2World.getInstance().getPlayer(friendName);
@@ -108,7 +108,7 @@ public class FriendList extends L2GameServerPacket
 			statement.close();
 		}
 		catch (Exception e)	{
-			_log.warning("Error found in " + _cha.getName() + "'s FriendList: " + e);
+			_log.warning("Error found in " + _activeChar.getName() + "'s FriendList: " + e);
 		}
 		finally	{
 			try {con.close();} catch (Exception e) {}

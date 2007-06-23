@@ -25,13 +25,13 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class GMViewSkillInfo extends L2GameServerPacket
 {
 	private static final String _S__91_GMViewSkillInfo = "[S] 91 GMViewSkillInfo";
-	private L2PcInstance _cha;
+	private L2PcInstance _activeChar;
 	private L2Skill[] _skills;
 	
 	public GMViewSkillInfo (L2PcInstance cha)
 	{
-		_cha = cha;
-		_skills = _cha.getAllSkills();
+		_activeChar = cha;
+		_skills = _activeChar.getAllSkills();
 		if (_skills.length == 0)
 			_skills = new L2Skill[0];
 	}
@@ -39,7 +39,7 @@ public class GMViewSkillInfo extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x91);
-		writeS(_cha.getName());
+		writeS(_activeChar.getName());
 		writeD(_skills.length);
 		
 		for (int i = 0; i < _skills.length; i++)

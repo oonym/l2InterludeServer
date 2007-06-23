@@ -31,23 +31,23 @@ public class ArenaManager
     protected static Logger _log = Logger.getLogger(ArenaManager.class.getName());
 
     // =========================================================
-    private static ArenaManager _Instance;
+    private static ArenaManager _instance;
     public static final ArenaManager getInstance()
     {
-        if (_Instance == null)
+        if (_instance == null)
         {
     		System.out.println("Initializing ArenaManager");
-        	_Instance = new ArenaManager();
-            _Instance.load();
+        	_instance = new ArenaManager();
+            _instance.load();
         }
-        return _Instance;
+        return _instance;
     }
     // =========================================================
 
     
     // =========================================================
     // Data Field
-    private List<Arena> _Arenas;
+    private List<Arena> _arenas;
     
     // =========================================================
     // Constructor
@@ -140,7 +140,7 @@ public class ArenaManager
 
     public final List<Arena> getArenas()
     {
-        if (_Arenas == null) _Arenas = new FastList<Arena>();
-        return _Arenas;
+        if (_arenas == null) _arenas = new FastList<Arena>();
+        return _arenas;
     }
 }

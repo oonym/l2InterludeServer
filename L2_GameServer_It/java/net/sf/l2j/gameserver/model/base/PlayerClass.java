@@ -113,9 +113,9 @@ public enum PlayerClass {
 
     fortuneSeeker(Dwarf, Fighter, Fourth), maestro(Dwarf, Fighter, Fourth);
 
-    private PlayerRace race;
-    private ClassLevel level;
-    private ClassType type;
+    private PlayerRace _race;
+    private ClassLevel _level;
+    private ClassType _type;
 
     private static final Set<PlayerClass> mainSubclassSet;
     private static final Set<PlayerClass> neverSubclassed = EnumSet.of(Overlord, Warsmith);
@@ -164,23 +164,23 @@ public enum PlayerClass {
 
     PlayerClass(PlayerRace pRace, ClassType pType, ClassLevel pLevel)
     {
-        this.race = pRace;
-        this.level = pLevel;
-        this.type = pType;
+        this._race = pRace;
+        this._level = pLevel;
+        this._type = pType;
     }
 
     public final Set<PlayerClass> getAvailableSubclasses()
     {
         Set<PlayerClass> subclasses = null;
 
-        if (this.level == Third)
+        if (this._level == Third)
         {
             subclasses = EnumSet.copyOf(mainSubclassSet);
 
             subclasses.removeAll(neverSubclassed);
             subclasses.remove(this);
 
-            switch (this.race)
+            switch (this._race)
             {
                 case LightElf:
                     subclasses.removeAll(getSet(DarkElf, Third));
@@ -221,20 +221,20 @@ public enum PlayerClass {
 
     public final boolean isOfRace(PlayerRace pRace)
     {
-        return this.race == pRace;
+        return this._race == pRace;
     }
 
     public final boolean isOfType(ClassType pType)
     {
-        return this.type == pType;
+        return this._type == pType;
     }
 
     public final boolean isOfLevel(ClassLevel pLevel)
     {
-        return this.level == pLevel;
+        return this._level == pLevel;
     }
     public final ClassLevel getLevel()
     {
-        return level;
+        return _level;
     }
 }

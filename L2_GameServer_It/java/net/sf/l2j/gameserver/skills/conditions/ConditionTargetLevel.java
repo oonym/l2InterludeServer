@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionTargetLevel extends Condition {
 
-	final int _level;
+	private final int _level;
 	
 	public ConditionTargetLevel(int level)
 	{
@@ -37,8 +37,8 @@ public class ConditionTargetLevel extends Condition {
 	}
 	
 	public boolean testImpl(Env env) {
-		if (env._target == null)
+		if (env.target == null)
 			return false;
-		return env._target.getLevel() >= _level;
+		return env.target.getLevel() >= _level;
 	}
 }

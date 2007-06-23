@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class BeastFeed implements ISkillHandler 
 { 
     private static Logger _log = Logger.getLogger(BeastFeed.class.getName()); 
-    protected SkillType[] _skillIds = {SkillType.BEAST_FEED};
+    private static final SkillType[] SKILL_IDS = {SkillType.BEAST_FEED};
     
     public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     { 
@@ -59,6 +59,6 @@ public class BeastFeed implements ISkillHandler
     
     public SkillType[] getSkillIds() 
     { 
-        return _skillIds; 
+        return SKILL_IDS; 
     } 
 }

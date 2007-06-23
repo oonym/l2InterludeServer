@@ -15,17 +15,17 @@ public class Zone
 
     // =========================================================
     // Data Field
-    private List<int[]> _Coords;
-    private int _Id;
-    private String _Name;
-    private int _TaxById;
+    private List<int[]> _coords;
+    private int _id;
+    private String _name;
+    private int _taxById;
 
     // =========================================================
     // Constructor
     public Zone(int id, String zoneName, int taxById)
     {
-        _Name = zoneName.trim();
-        _TaxById = taxById;
+        _name = zoneName.trim();
+        _taxById = taxById;
     }
 
     // =========================================================
@@ -88,12 +88,12 @@ public class Zone
 
     public final void setId(int id)
     {
-        _Id = id;
+        _id = id;
     }
 
     public final void setTaxById(int taxById)
     {
-        _TaxById = taxById;
+        _taxById = taxById;
     }
 
     // =========================================================
@@ -119,22 +119,22 @@ public class Zone
 
     public final List<int[]> getCoords()
     {
-        if (_Coords == null) _Coords = new FastList<int[]>();
-        return _Coords;
+        if (_coords == null) _coords = new FastList<int[]>();
+        return _coords;
     }
 
     public final int getId()
     {
-        return _Id;
+        return _id;
     }
 
     public final String getName()
     {
-        return _Name;
+        return _name;
     }
 
     public final int getTaxById()
     {
-        return _TaxById;
+        return _taxById;
     }
 }

@@ -21,7 +21,7 @@ import net.sf.l2j.gameserver.templates.L2CharTemplate;
 public abstract class L2PlayableInstance extends L2Character 
 {
 
-	private boolean _IsNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
+	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
 	 *  
@@ -132,8 +132,8 @@ public abstract class L2PlayableInstance extends L2Character
     
     // Support for Noblesse Blessing skill, where buffs are retained
     // after resurrect
-    public final boolean isNoblesseBlessed() { return _IsNoblesseBlessed; }
-    public final void setIsNoblesseBlessed(boolean value) { _IsNoblesseBlessed = value; }
+    public final boolean isNoblesseBlessed() { return _isNoblesseBlessed; }
+    public final void setIsNoblesseBlessed(boolean value) { _isNoblesseBlessed = value; }
      
     public final void startNoblesseBlessing()
     {

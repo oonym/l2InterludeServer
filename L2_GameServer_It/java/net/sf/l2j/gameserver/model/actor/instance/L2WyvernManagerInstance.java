@@ -95,9 +95,9 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         String filename = "data/html/wyvernmanager/wyvernmanager-no.htm";
         
         int condition = validateCondition(player);
-        if (condition > Cond_All_False)
+        if (condition > COND_ALL_FALSE)
         {
-            if (condition == Cond_Owner)                                     // Clan owns castle
+            if (condition == COND_OWNER)                                     // Clan owns castle
                 filename = "data/html/wyvernmanager/wyvernmanager.htm";      // Owner message window
         }
         NpcHtmlMessage html = new NpcHtmlMessage(1);

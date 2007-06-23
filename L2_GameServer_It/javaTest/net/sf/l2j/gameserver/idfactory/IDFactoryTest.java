@@ -46,13 +46,13 @@ import net.sf.l2j.Config.IdFactoryType;
 
 public class IDFactoryTest extends TestCase
 {
-	public static final boolean debug = false;
+	private static final boolean _debug = false;
 
 	// Compaction, BitSet, Stack, (null to use config)
 	private static final IdFactoryType FORCED_TYPE = IdFactoryType.Stack;
 
-	protected IdFactory idFactory;
-	protected AtomicInteger count = new AtomicInteger(0), adds = new AtomicInteger(0), removes = new AtomicInteger(0);
+	protected IdFactory _idFactory;
+	protected AtomicInteger _count = new AtomicInteger(0), _adds = new AtomicInteger(0), _removes = new AtomicInteger(0);
 
 	protected static final int REQUESTER_THREADS              = 50;
 	protected static final int REQUESTER_THREAD_REQUESTS      = 1000;
@@ -60,6 +60,12 @@ public class IDFactoryTest extends TestCase
 	protected static final int RELEASER_THREADS               = 50;
 	protected static final int RELEASER_THREAD_RELEASES       = 1000;
 	protected static final int RELEASER_THREAD_RANDOM_DELAY   = 35;
+	
+	protected Random _random = new Random();
+	private static final long F_SLEEP_INTERVAL = 100;
+	
+	CountDownLatch _latch = new CountDownLatch(REQUESTER_THREADS + RELEASER_THREADS);
+	protected static Vector<Integer> _map = new Vector<Integer>();
 
 	public static void main(String[] args)
 	{
@@ -72,11 +78,11 @@ public class IDFactoryTest extends TestCase
 	public IDFactoryTest(String arg0)
 	{
 		super(arg0);
-		Server.SERVER_MODE = Server.MODE_GAMESERVER;
+		Server.serverMode = Server.MODE_GAMESERVER;
 		Config.load();
 		if(FORCED_TYPE != null)
 			Config.IDFACTORY_TYPE = FORCED_TYPE;
-		idFactory   = IdFactory.getInstance();
+		_idFactory = IdFactory.getInstance();
 	}
 
 	/*
@@ -102,7 +108,7 @@ public class IDFactoryTest extends TestCase
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
-		idFactory = null;
+		_idFactory = null;
 	}
 
 	/*
@@ -110,9 +116,9 @@ public class IDFactoryTest extends TestCase
 	 */
 	public final void testFactory()
 	{
-		System.out.println("Free ID's: "+idFactory.size());
-		System.out.println("Used ID's: "+(IdFactory.FREE_OBJECT_ID_SIZE - idFactory.size()));
-		map.add(idFactory.getNextId());
+		System.out.println("Free ID's: "+_idFactory.size());
+		System.out.println("Used ID's: "+(IdFactory.FREE_OBJECT_ID_SIZE - _idFactory.size()));
+		_map.add(_idFactory.getNextId());
 		for (int i=0; i<REQUESTER_THREADS; i++)
 		{
 			new Thread(new RequestID(), "Request-Thread-"+i).start();
@@ -123,114 +129,106 @@ public class IDFactoryTest extends TestCase
 		}
 		try
 		{
-			latch.await();
+			_latch.await();
 		}
 		catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Free ID's: "+idFactory.size());
-		System.out.println("Used ID's: "+(IdFactory.FREE_OBJECT_ID_SIZE - idFactory.size()));
-		System.out.println("Count: "+count.get());
+		System.out.println("Free ID's: "+_idFactory.size());
+		System.out.println("Used ID's: "+(IdFactory.FREE_OBJECT_ID_SIZE - _idFactory.size()));
+		System.out.println("Count: "+_count.get());
 	}
-
-	CountDownLatch latch = new CountDownLatch(REQUESTER_THREADS + RELEASER_THREADS);
-
-	protected static Vector<Integer> map = new Vector<Integer>();
 
 	public class RequestID implements Runnable
 	{
-		long time1;
-		long time2;
-		AtomicInteger myCount   = new AtomicInteger(0);
+		long _time1;
+		long _time2;
+		AtomicInteger _myCount   = new AtomicInteger(0);
 		public void run()
 		{
 			for (int i=0; i<REQUESTER_THREAD_REQUESTS; i++)
 			{
-				synchronized (map)
+				synchronized (_map)
 				{
-					time1 = System.nanoTime();
-					int newId = idFactory.getNextId();
-					time2 = System.nanoTime() - time1;
-					count.incrementAndGet();
-					adds.incrementAndGet();
-					myCount.incrementAndGet();
-					map.add(newId);
-					if (debug) System.out.println("Got new ID "+newId);
-					if (random.nextInt(10) == 0)
+					_time1 = System.nanoTime();
+					int newId = _idFactory.getNextId();
+					_time2 = System.nanoTime() - _time1;
+					_count.incrementAndGet();
+					_adds.incrementAndGet();
+					_myCount.incrementAndGet();
+					_map.add(newId);
+					if (_debug) System.out.println("Got new ID "+newId);
+					if (_random.nextInt(10) == 0)
 					{
-						System.out.println("					Total ID requests: "+adds.get()+". "+time2+"ns");
+						System.out.println("					Total ID requests: "+_adds.get()+". "+_time2+"ns");
 					}
 				}
 				try
 				{
-					Thread.sleep(random.nextInt(REQUESTER_THREAD_RANDOM_DELAY));
+					Thread.sleep(_random.nextInt(REQUESTER_THREAD_RANDOM_DELAY));
 				}
 				catch (InterruptedException e)
 				{
 					System.out.println(Thread.currentThread().getName()+" was Interupted.");
 				}
 			}
-			if (debug) System.out.println(getName()+ " myCount is "+myCount.get()+"/100.");
-			latch.countDown();
+			if (_debug) System.out.println(getName()+ " myCount is "+_myCount.get()+"/100.");
+			_latch.countDown();
 		}
 	}
 
 
 	public class ReleaseID implements Runnable
 	{
-		AtomicInteger myCount   = new AtomicInteger(100);
-		long time1;
-		long time2;
+		AtomicInteger _myCount = new AtomicInteger(100);
+		long _time1;
+		long _time2;
 		public void run()
 		{
 			for (int i=0; i<RELEASER_THREAD_RELEASES; i++)
 			{
-				synchronized (map)
+				synchronized (_map)
 				{
-					int size    = map.size();
-					if (map.size() <= 0)
+					int size    = _map.size();
+					if (_map.size() <= 0)
 					{
 						i--;
 						continue;
 					}
 					//if (size > 0)
 						//{
-						int pos     = random.nextInt(size);
-						int id      = map.get(pos);
-						time1 = System.nanoTime();
-						idFactory.releaseId(id);
-						time2 = System.nanoTime() - time1;
-						map.remove(pos);
-						count.decrementAndGet();
-						myCount.decrementAndGet();
-						removes.incrementAndGet();
-						if (debug) System.out.println("Released ID "+id);
-						if (random.nextInt(10) == 0)
+						int pos     = _random.nextInt(size);
+						int id      = _map.get(pos);
+						_time1 = System.nanoTime();
+						_idFactory.releaseId(id);
+						_time2 = System.nanoTime() - _time1;
+						_map.remove(pos);
+						_count.decrementAndGet();
+						_myCount.decrementAndGet();
+						_removes.incrementAndGet();
+						if (_debug) System.out.println("Released ID "+id);
+						if (_random.nextInt(10) == 0)
 						{
-							System.out.println("Total ID releases: "+removes.get()+". "+time2+"ns");
+							System.out.println("Total ID releases: "+_removes.get()+". "+_time2+"ns");
 						}
 						//}
 				}
 				try
 				{
-					Thread.sleep(random.nextInt(RELEASER_THREAD_RANDOM_DELAY));
+					Thread.sleep(_random.nextInt(RELEASER_THREAD_RANDOM_DELAY));
 				}
 				catch (InterruptedException e)
 				{
 
 				}
 			}
-			if (debug) System.out.println(getName()+ " count is "+myCount.get()+"/100.");
+			if (_debug) System.out.println(getName()+ " count is "+_myCount.get()+"/100.");
 
-			latch.countDown();
+			_latch.countDown();
 		}
 	}
-
-	protected Random random = new Random();
-
-	private static long fSLEEP_INTERVAL = 100;
 
 	@SuppressWarnings("unused")
 	private static long getMemoryUse(){
@@ -251,9 +249,9 @@ public class IDFactoryTest extends TestCase
 	private static void collectGarbage() {
 		try {
 			System.gc();
-			Thread.sleep(fSLEEP_INTERVAL);
+			Thread.sleep(F_SLEEP_INTERVAL);
 			System.runFinalization();
-			Thread.sleep(fSLEEP_INTERVAL);
+			Thread.sleep(F_SLEEP_INTERVAL);
 		}
 		catch (InterruptedException ex){
 			ex.printStackTrace();

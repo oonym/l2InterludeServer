@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminAnnouncements implements IAdminCommandHandler {
 
-	private static String[] _adminCommands = {
+	private static final String[] ADMIN_COMMANDS = {
 			"admin_list_announcements",
 			"admin_reload_announcements",
 			"admin_announce_announcements",
@@ -111,7 +111,7 @@ public class AdminAnnouncements implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

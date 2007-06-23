@@ -38,7 +38,7 @@ import net.sf.l2j.util.Rnd;
 
 public class RollingDice implements IItemHandler
 {
-	private static int[] _itemIds = { 4625, 4626, 4627, 4628 };
+	private static final int[] ITEM_IDS = { 4625, 4626, 4627, 4628 };
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
@@ -87,6 +87,6 @@ public class RollingDice implements IItemHandler
 	
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

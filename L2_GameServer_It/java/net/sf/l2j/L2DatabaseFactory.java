@@ -38,7 +38,7 @@ public class L2DatabaseFactory
     // =========================================================
     // Data Field
     private static L2DatabaseFactory _instance;
-    private ProviderType _Provider_Type;
+    private ProviderType _providerType;
 	private ComboPooledDataSource _source;
 	
     // =========================================================
@@ -102,9 +102,9 @@ public class L2DatabaseFactory
 			if (Config.DEBUG) _log.fine("Database Connection Working");
 
 			if (Config.DATABASE_DRIVER.toLowerCase().contains("microsoft"))
-                _Provider_Type = ProviderType.MsSql;
+                _providerType = ProviderType.MsSql;
             else
-                _Provider_Type = ProviderType.MySql;
+                _providerType = ProviderType.MySql;
 		}
 		catch (SQLException x)
 		{
@@ -202,5 +202,5 @@ public class L2DatabaseFactory
 	    return _source.getNumIdleConnectionsDefaultUser();
 	}
 
-    public final ProviderType getProviderType() { return _Provider_Type; }
+    public final ProviderType getProviderType() { return _providerType; }
 }

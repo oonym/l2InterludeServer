@@ -22,7 +22,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 {
     protected static final Logger _log = Logger.getLogger(Inventory.class.getName());
     private static final String _C__58_REQUESTENCHANTITEM = "[C] 58 RequestEnchantItem";
-    private static final int[] crystalscrolls = {731, 732, 949, 950, 953, 954, 957, 958, 961, 962 };
+    private static final int[] CRYSTAL_SCROLLS = { 731, 732, 949, 950, 953, 954, 957, 958, 961, 962 };
 
     private int _objectId;
     
@@ -144,7 +144,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
         if (scroll.getItemId() >= 6569 && scroll.getItemId() <= 6578)
             blessedScroll = true;
         else
-            for (int crystalscroll : crystalscrolls)
+            for (int crystalscroll : CRYSTAL_SCROLLS)
                 if(scroll.getItemId() == crystalscroll)
                 {
                     blessedScroll = true; break;
@@ -271,7 +271,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
                 
                 L2ItemInstance crystals = activeChar.getInventory().addItem("Enchant", crystalId, count, activeChar, destroyItem);
             
-                sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+                sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
                 sm.addItemName(crystals.getItemId());
                 sm.addNumber(count);
                 activeChar.sendPacket(sm);

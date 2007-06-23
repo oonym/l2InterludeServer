@@ -45,9 +45,9 @@ import org.w3c.dom.Node;
  */
 final class DocumentItem extends DocumentBase
 {
-    private Item currentItem = null;
-    private List<L2Item> itemsInFile = new FastList<L2Item>();
-    private Map<Integer, Item> itemData = new FastMap<Integer, Item>();
+    private Item _currentItem = null;
+    private List<L2Item> _itemsInFile = new FastList<L2Item>();
+    private Map<Integer, Item> _itemData = new FastMap<Integer, Item>();
 
     /**
      * @param armorData
@@ -56,7 +56,7 @@ final class DocumentItem extends DocumentBase
     public DocumentItem(Map<Integer, Item> pItemData, File file)
     {
         super(file);
-        this.itemData = pItemData;
+        this._itemData = pItemData;
     }
 
     /**
@@ -64,22 +64,22 @@ final class DocumentItem extends DocumentBase
      */
     private void setCurrentItem(Item item)
     {
-        currentItem = item;
+        _currentItem = item;
     }
 
     protected StatsSet getStatsSet()
     {
-        return currentItem.set;
+        return _currentItem.set;
     }
 
     protected String getTableValue(String name)
     {
-        return tables.get(name)[currentItem.currentLevel];
+        return _tables.get(name)[_currentItem.currentLevel];
     }
 
     protected String getTableValue(String name, int idx)
     {
-        return tables.get(name)[idx - 1];
+        return _tables.get(name)[idx - 1];
     }
 
     protected void parseDocument(Document doc)
@@ -95,7 +95,7 @@ final class DocumentItem extends DocumentBase
                     {
                         setCurrentItem(new Item());
                         parseItem(d);
-                        itemsInFile.add(currentItem.item);
+                        _itemsInFile.add(_currentItem.item);
                         resetTable();
                     }
                 }
@@ -104,7 +104,7 @@ final class DocumentItem extends DocumentBase
             {
                 setCurrentItem(new Item());
                 parseItem(n);
-                itemsInFile.add(currentItem.item);
+                _itemsInFile.add(_currentItem.item);
             }
         }
     }
@@ -114,16 +114,16 @@ final class DocumentItem extends DocumentBase
         int itemId = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
         String itemName = n.getAttributes().getNamedItem("name").getNodeValue();
 
-        currentItem.id = itemId;
-        currentItem.name = itemName;
+        _currentItem.id = itemId;
+        _currentItem.name = itemName;
         
         Item item;
-        if ((item = itemData.get(currentItem.id)) == null)
+        if ((item = _itemData.get(_currentItem.id)) == null)
         {
         	throw new IllegalStateException("No SQL data for Item ID: "+itemId+" - name: "+itemName);
         }
-        currentItem.set = item.set;
-        currentItem.type = item.type;
+        _currentItem.set = item.set;
+        _currentItem.type = item.type;
 
         Node first = n.getFirstChild();
         for (n = first; n != null; n = n.getNextSibling())
@@ -133,31 +133,28 @@ final class DocumentItem extends DocumentBase
         for (n = first; n != null; n = n.getNextSibling())
         {
             if ("set".equalsIgnoreCase(n.getNodeName()))
-                parseBeanSet(n, itemData.get(currentItem.id).set, 1);
+                parseBeanSet(n, _itemData.get(_currentItem.id).set, 1);
         }
         for (n = first; n != null; n = n.getNextSibling())
         {
             if ("for".equalsIgnoreCase(n.getNodeName()))
             {
                 makeItem();
-                parseTemplate(n, currentItem.item);
+                parseTemplate(n, _currentItem.item);
             }
         }
     }
 
     private void makeItem()
     {
-        if (currentItem.item != null) return;
-        if (currentItem.type instanceof L2ArmorType) currentItem.item = new L2Armor(
-                                                                                    (L2ArmorType) currentItem.type,
-                                                                                    currentItem.set);
-        else if (currentItem.type instanceof L2WeaponType) currentItem.item = new L2Weapon(
-                                                                                           (L2WeaponType) currentItem.type,
-                                                                                           currentItem.set);
-        else if (currentItem.type instanceof L2EtcItemType) currentItem.item = new L2EtcItem(
-                                                                                             (L2EtcItemType) currentItem.type,
-                                                                                             currentItem.set);
-        else throw new Error("Unknown item type " + currentItem.type);
+        if (_currentItem.item != null) return;
+        if (_currentItem.type instanceof L2ArmorType) _currentItem.item = new L2Armor(
+        		(L2ArmorType) _currentItem.type, _currentItem.set);
+        else if (_currentItem.type instanceof L2WeaponType) _currentItem.item = new L2Weapon(
+        		(L2WeaponType) _currentItem.type, _currentItem.set);
+        else if (_currentItem.type instanceof L2EtcItemType) _currentItem.item = new L2EtcItem(
+        		(L2EtcItemType) _currentItem.type, _currentItem.set);
+        else throw new Error("Unknown item type " + _currentItem.type);
     }
 
     /**
@@ -165,6 +162,6 @@ final class DocumentItem extends DocumentBase
      */
     public List<L2Item> getItemList()
     {
-        return itemsInFile;
+        return _itemsInFile;
     }
 }

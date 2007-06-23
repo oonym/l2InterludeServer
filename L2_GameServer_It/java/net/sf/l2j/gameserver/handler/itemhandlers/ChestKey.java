@@ -38,9 +38,10 @@ public class ChestKey implements IItemHandler
 {
 	public static final int INTERACTION_DISTANCE = 100;
 
-	private static int[] _itemIds = {5197, 5198, 5199, 5200, 5201, 5202, 5203, 5204, //chest key
-										6665, 6666, 6667, 6668, 6669, 6670, 6671, 6672 //deluxe key
-	};
+	private static final int[] ITEM_IDS = {
+											5197, 5198, 5199, 5200, 5201, 5202, 5203, 5204, //chest key
+											6665, 6666, 6667, 6668, 6669, 6670, 6671, 6672  //deluxe key
+										  };
 
 	public boolean useSkill(L2PcInstance activeChar, int magicId, int level)
 	{
@@ -479,6 +480,6 @@ public class ChestKey implements IItemHandler
 
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

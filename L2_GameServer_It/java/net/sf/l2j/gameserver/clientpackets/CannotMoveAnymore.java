@@ -36,15 +36,11 @@ public final class CannotMoveAnymore extends L2GameClientPacket
 {
 	private static final String _C__36_STOPMOVE = "[C] 36 CannotMoveAnymore";
 
-	private static Logger _log = Logger.getLogger(CannotMoveAnymore.class
-			.getName());
+	private static Logger _log = Logger.getLogger(CannotMoveAnymore.class.getName());
 
 	private int _x;
-
 	private int _y;
-
 	private int _z;
-
 	private int _heading;
 
 	protected void readImpl()

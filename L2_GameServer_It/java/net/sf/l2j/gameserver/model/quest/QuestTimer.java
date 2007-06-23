@@ -29,12 +29,12 @@ public class QuestTimer
 
     // =========================================================
     // Data Field
-    private boolean _IsActive = true;
+    private boolean _isActive = true;
     private String _name;
     private Quest _quest;
     private L2NpcInstance _npc;
     private L2PcInstance _player;
-    private ScheduledFuture _Schedular;
+    private ScheduledFuture _schedular;
 
     // =========================================================
     // Constructor
@@ -44,7 +44,7 @@ public class QuestTimer
         _quest = quest;
         _player = player;
         _npc = npc;
-        _Schedular = ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTimerTask(), time); // Prepare auto end task
+        _schedular = ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTimerTask(), time); // Prepare auto end task
     }
 
     public QuestTimer(QuestState qs, String name, long time)
@@ -53,16 +53,16 @@ public class QuestTimer
         _quest = qs.getQuest();
         _player = qs.getPlayer();
         _npc = null;
-        _Schedular = ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTimerTask(), time); // Prepare auto end task
+        _schedular = ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTimerTask(), time); // Prepare auto end task
     }
 
     // =========================================================
     // Method - Public
     public void cancel()
     {
-        _IsActive = false;
+        _isActive = false;
 
-        if (_Schedular != null) _Schedular.cancel(true);
+        if (_schedular != null) _schedular.cancel(true);
 
         getQuest().removeQuestTimer(this);
     }
@@ -83,7 +83,7 @@ public class QuestTimer
     // Property - Public
     public final boolean getIsActive()
     {
-        return _IsActive;
+        return _isActive;
     }
 
     public final Quest getQuest()

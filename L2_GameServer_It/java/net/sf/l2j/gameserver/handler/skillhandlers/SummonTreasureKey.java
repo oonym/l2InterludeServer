@@ -35,11 +35,10 @@ import net.sf.l2j.util.Rnd;
 public class SummonTreasureKey implements ISkillHandler
 {
     static Logger _log = Logger.getLogger(SummonTreasureKey.class.getName());
-    protected SkillType[] _skillIds = {SkillType.SUMMON_TREASURE_KEY};
+    private static final SkillType[] SKILL_IDS = {SkillType.SUMMON_TREASURE_KEY};
 
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused")
-    L2Skill skill, @SuppressWarnings("unused")
-    L2Object[] targets)
+    		L2Skill skill, @SuppressWarnings("unused")L2Object[] targets)
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance)) return;
 
@@ -83,7 +82,7 @@ public class SummonTreasureKey implements ISkillHandler
 
     public SkillType[] getSkillIds()
     {
-        return _skillIds;
+        return SKILL_IDS;
     }
 
 }

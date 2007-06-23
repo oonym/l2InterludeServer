@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class DrainSoul implements ISkillHandler 
 { 
     private static Logger _log = Logger.getLogger(DrainSoul.class.getName()); 
-    protected SkillType[] _skillIds = {SkillType.DRAIN_SOUL};
+    private static final SkillType[] SKILL_IDS = {SkillType.DRAIN_SOUL};
     
     public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     { 
@@ -59,6 +59,6 @@ public class DrainSoul implements ISkillHandler
     
     public SkillType[] getSkillIds() 
     { 
-        return _skillIds; 
+        return SKILL_IDS; 
     } 
 }

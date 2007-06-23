@@ -29,18 +29,18 @@ import net.sf.l2j.util.Rnd;
 
 public class MonsterRace
 {
-    private L2NpcInstance[] monsters;
+    private L2NpcInstance[] _monsters;
     private static MonsterRace _instance;
     private Constructor _constructor;
-    private int[][] speeds;
-    private int[] first, second; 
+    private int[][] _speeds;
+    private int[] _first, _second; 
     
     private MonsterRace()
     {
-        monsters    = new L2NpcInstance[8];
-        speeds      = new int[8][20];
-        first       = new int[2];
-        second      = new int[2];
+        _monsters    = new L2NpcInstance[8];
+        _speeds      = new int[8][20];
+        _first       = new int[2];
+        _second      = new int[2];
     }
     
     public static MonsterRace getInstance()
@@ -65,7 +65,7 @@ public class MonsterRace
             {
                 for (int j=i-1; j>=0; j--)
                 {
-                    if (monsters[j].getTemplate().npcId == (id + random))
+                    if (_monsters[j].getTemplate().npcId == (id + random))
                     {
                         random = Rnd.get(25);
                         continue;
@@ -78,7 +78,7 @@ public class MonsterRace
                 L2NpcTemplate template = NpcTable.getInstance().getTemplate(id+random);
                 _constructor = Class.forName("net.sf.l2j.gameserver.model.actor.instance." + template.type + "Instance").getConstructors()[0];
                 int objectId = IdFactory.getInstance().getNextId();
-                monsters[i] = (L2NpcInstance)_constructor.newInstance(objectId, template);
+                _monsters[i] = (L2NpcInstance)_constructor.newInstance(objectId, template);
             } 
             catch (Exception e)
             {
@@ -91,31 +91,31 @@ public class MonsterRace
     
     public void newSpeeds()
     {
-        speeds = new int[8][20];
+        _speeds = new int[8][20];
         int total = 0;
-	first[1]=0;second[1]=0;
+        _first[1]=0;_second[1]=0;
         for (int i=0; i<8; i++)
         {
             total = 0;
             for (int j=0; j<20 ;j++)
             {
                 if (j == 19)
-                    speeds[i][j] = 100;
+                    _speeds[i][j] = 100;
                 else
-                    speeds[i][j] = Rnd.get(60) + 65;
-                total += speeds[i][j];
+                    _speeds[i][j] = Rnd.get(60) + 65;
+                total += _speeds[i][j];
             }
-            if (total >= first[1])
+            if (total >= _first[1])
             {
-                second[0] = first[0];
-                second[1] = first[1];
-                first[0] = 8 - i;
-                first[1] = total;
+                _second[0] = _first[0];
+                _second[1] = _first[1];
+                _first[0] = 8 - i;
+                _first[1] = total;
             } 
-            else if (total >= second[1])
+            else if (total >= _second[1])
             {
-                second[0] = 8 - i;
-                second[1] = total;
+                _second[0] = 8 - i;
+                _second[1] = total;
             }
         }
     }
@@ -125,7 +125,7 @@ public class MonsterRace
      */
     public L2NpcInstance[] getMonsters()
     {
-        return monsters;
+        return _monsters;
     }
 
     /**
@@ -133,17 +133,17 @@ public class MonsterRace
      */
     public int[][] getSpeeds()
     {
-        return speeds;
+        return _speeds;
     }
 
     public int getFirstPlace()
     {
-        return first[0];
+        return _first[0];
     }
 
     public int getSecondPlace()
     {
-        return second[0];
+        return _second[0];
     }
     
     

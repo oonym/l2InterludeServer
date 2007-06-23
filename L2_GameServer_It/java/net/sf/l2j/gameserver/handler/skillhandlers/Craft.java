@@ -37,7 +37,7 @@ public class Craft implements ISkillHandler
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
-	private static SkillType[] _skillIds = {SkillType.COMMON_CRAFT, SkillType.DWARVEN_CRAFT};
+	private static final SkillType[] SKILL_IDS = {SkillType.COMMON_CRAFT, SkillType.DWARVEN_CRAFT};
 	
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -59,6 +59,6 @@ public class Craft implements ISkillHandler
 	
 	public SkillType[] getSkillIds()
 	{
-		return _skillIds;
+		return SKILL_IDS;
 	}
 }

@@ -97,15 +97,15 @@ public class StaticObjects
         int y = Integer.parseInt(st.nextToken());
         int z = Integer.parseInt(st.nextToken());
         int type = Integer.parseInt(st.nextToken());
-	String texture = st.nextToken();
-	int map_x = Integer.parseInt(st.nextToken());
-	int map_y = Integer.parseInt(st.nextToken());
+        String texture = st.nextToken();
+        int map_x = Integer.parseInt(st.nextToken());
+        int map_y = Integer.parseInt(st.nextToken());
 
         L2StaticObjectInstance obj = new L2StaticObjectInstance(IdFactory.getInstance().getNextId());
         obj.setType(type);
         obj.setStaticObjectId(id);
         obj.setXYZ(x, y, z);
-	obj.setMap(texture, map_x, map_y);
+        obj.setMap(texture, map_x, map_y);
         obj.spawnMe();
 
         return obj;

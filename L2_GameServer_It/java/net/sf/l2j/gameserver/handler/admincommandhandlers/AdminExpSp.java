@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class AdminExpSp implements IAdminCommandHandler {
 	private static Logger _log = Logger.getLogger(AdminExpSp.class.getName());
 
-	private static String[] _adminCommands = {
+	private static final String[] ADMIN_COMMANDS = {
 			"admin_add_exp_sp_to_character",
 			"admin_add_exp_sp",
             "admin_remove_exp_sp"};
@@ -93,7 +93,7 @@ public class AdminExpSp implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

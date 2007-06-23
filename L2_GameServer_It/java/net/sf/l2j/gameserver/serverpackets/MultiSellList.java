@@ -50,18 +50,18 @@ public class MultiSellList extends L2GameServerPacket
 {
     private static final String _S__D0_MULTISELLLIST = "[S] D0 MultiSellList";
 
-    protected L2PcInstance _player;
-    protected L2NpcInstance _merchant;
-    protected int _listId;
-    protected boolean _inventoryOnly;
-    protected MultiSellListContainer _list;
+    private L2PcInstance _activeChar;
+    private L2NpcInstance _merchant;
+    private int _listId;
+    private boolean _inventoryOnly;
+    private MultiSellListContainer _list;
 
     public MultiSellList(int listId, L2NpcInstance merchant)
     {
         _listId = listId;
         _merchant = merchant;
         _inventoryOnly = false;
-        _player = null;
+        _activeChar = null;
         
         this.generateMultiSell();
     }   
@@ -70,7 +70,7 @@ public class MultiSellList extends L2GameServerPacket
     {
         _listId = listId;
         _inventoryOnly = inventoryOnly;
-        _player = player;
+        _activeChar = player;
         _merchant = merchant;
         
         this.generateMultiSell();
@@ -112,14 +112,14 @@ public class MultiSellList extends L2GameServerPacket
 
         if (_inventoryOnly)
         {
-        	if (_player == null)
+        	if (_activeChar == null)
         		return;
         	
         	L2ItemInstance[] items;
         	if (listTemplate.getMaintainEnchantment()) 
-        		items = _player.getInventory().getUniqueItemsByEnchantLevel(false,false);
+        		items = _activeChar.getInventory().getUniqueItemsByEnchantLevel(false,false);
         	else 
-        		items = _player.getInventory().getUniqueItems(false,false);
+        		items = _activeChar.getInventory().getUniqueItems(false,false);
         		
         	int enchantLevel;
             for (L2ItemInstance item : items)

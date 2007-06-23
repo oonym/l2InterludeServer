@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionPlayerRace extends Condition {
 
-	final Race _race;
+	private final Race _race;
 	
 	public ConditionPlayerRace(Race race)
 	{
@@ -39,8 +39,8 @@ public class ConditionPlayerRace extends Condition {
 	}
 	
 	public boolean testImpl(Env env) {
-		if (!(env._player instanceof L2PcInstance))
+		if (!(env.player instanceof L2PcInstance))
 			return false;
-		return ((L2PcInstance)env._player).getRace() == _race;
+		return ((L2PcInstance)env.player).getRace() == _race;
 	}
 }

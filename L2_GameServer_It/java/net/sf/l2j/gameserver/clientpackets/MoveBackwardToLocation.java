@@ -50,9 +50,10 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 	private       int _moveMovement;
 	
     //For geodata
-    private       int _CurX;
-    private       int _CurY;
-    private       int _CurZ;
+    private       int _curX;
+    private       int _curY;
+    @SuppressWarnings("unused")
+    private       int _curZ;
 	
 	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
 
@@ -84,9 +85,9 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		if (activeChar == null)
 			return;
         
-		_CurX = activeChar.getX();
-        _CurY = activeChar.getY();
-        _CurZ = activeChar.getZ();
+		_curX = activeChar.getX();
+        _curY = activeChar.getY();
+        _curZ = activeChar.getZ();
         
 		if(activeChar.isInBoat())
 		{
@@ -111,8 +112,8 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		}
 		else 
 		{
-			double dx = _targetX-_CurX;
-			double dy = _targetY-_CurY;
+			double dx = _targetX-_curX;
+			double dy = _targetY-_curY;
 			// Can't move if character is confused, or trying to move a huge distance
 			if (activeChar.isOutOfControl()||((dx*dx+dy*dy) > 98010000)) { // 9900*9900
 				activeChar.sendPacket(new ActionFailed());

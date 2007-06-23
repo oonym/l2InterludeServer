@@ -75,7 +75,7 @@ public class GameStatusThread extends Thread
 {
     //private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
     
-    private Socket                  _csocket;
+    private Socket                  _cSocket;
     
     private PrintWriter             _print;
     private BufferedReader          _read;
@@ -142,11 +142,11 @@ public class GameStatusThread extends Thread
     
     public GameStatusThread(Socket client, int uptime, String StatusPW) throws IOException
     {
-        _csocket = client;
+        _cSocket = client;
         this._uptime = uptime;
         
-        _print = new PrintWriter(_csocket.getOutputStream());
-        _read  = new BufferedReader(new InputStreamReader(_csocket.getInputStream()));
+        _print = new PrintWriter(_cSocket.getOutputStream());
+        _read  = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
         
         if ( isValidIP(client) ) {    
             telnetOutput(1, client.getInetAddress().getHostAddress()+" accepted.");
@@ -159,7 +159,7 @@ public class GameStatusThread extends Thread
                 _print.println("Error.");
                 _print.println("Disconnected...");
                 _print.flush();
-                _csocket.close();
+                _cSocket.close();
             }
             else {
                 if (tmpLine.compareTo(StatusPW) != 0)
@@ -167,7 +167,7 @@ public class GameStatusThread extends Thread
                     _print.println("Incorrect Password!");
                     _print.println("Disconnected...");
                     _print.flush();
-                    _csocket.close();
+                    _cSocket.close();
                 }
                 else
                 {
@@ -181,7 +181,7 @@ public class GameStatusThread extends Thread
         }
         else {
             telnetOutput(5, "Connection attempt from "+ client.getInetAddress().getHostAddress() +" rejected.");
-            _csocket.close();
+            _cSocket.close();
         }
     }
     
@@ -196,7 +196,7 @@ public class GameStatusThread extends Thread
                 _usrCommand = _read.readLine();
                 if(_usrCommand == null)
                 {
-                	_csocket.close();
+                	_cSocket.close();
                 	break;
                 }
                 if (_usrCommand.equals("help")) {
@@ -295,9 +295,9 @@ public class GameStatusThread extends Thread
                     _print.println("  +........ L2Summon: " + summonCount);
                     _print.println("  +.......... L2Door: " + doorCount);
                     _print.println("  +.......... L2Char: " + charCount);
-                    _print.println("  --->   Ingame Time: " + GameTime());
-                    _print.println("  ---> Server Uptime: " + GetUptime(_uptime));
-                    _print.println("  --->      GM Count: " + GetOnlineGMS());
+                    _print.println("  --->   Ingame Time: " + gameTime());
+                    _print.println("  ---> Server Uptime: " + getUptime(_uptime));
+                    _print.println("  --->      GM Count: " + getOnlineGMS());
                     _print.println("  --->       Threads: " + Thread.activeCount());
                     _print.println("  RAM Used: "+((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1048576)); // 1024 * 1024 = 1048576
                     _print.flush();
@@ -365,9 +365,9 @@ public class GameStatusThread extends Thread
                     try
                     {
                         _usrCommand = _usrCommand.substring(7);
-                        CreatureSay cs = new CreatureSay(0, 9, "Telnet GM Broadcast from " + _csocket.getInetAddress().getHostAddress(), _usrCommand);
+                        CreatureSay cs = new CreatureSay(0, 9, "Telnet GM Broadcast from " + _cSocket.getInetAddress().getHostAddress(), _usrCommand);
                         GmListTable.broadcastToGMs(cs);
-                        _print.println("Your Message Has Been Sent To " + GetOnlineGMS() + " GM(s).");
+                        _print.println("Your Message Has Been Sent To " + getOnlineGMS() + " GM(s).");
                     }
                     catch (StringIndexOutOfBoundsException e)
                     {
@@ -431,7 +431,7 @@ public class GameStatusThread extends Thread
                     try
                     {
                         int val = Integer.parseInt(_usrCommand.substring(9)); 
-                        Shutdown.getInstance().startTelnetShutdown(_csocket.getInetAddress().getHostAddress(), val, false);
+                        Shutdown.getInstance().startTelnetShutdown(_cSocket.getInetAddress().getHostAddress(), val, false);
                         _print.println("Server Will Shutdown In " + val + " Seconds!");
                         _print.println("Type \"abort\" To Abort Shutdown!");
                     }
@@ -448,7 +448,7 @@ public class GameStatusThread extends Thread
                     try
                     {
                         int val = Integer.parseInt(_usrCommand.substring(8)); 
-                        Shutdown.getInstance().startTelnetShutdown(_csocket.getInetAddress().getHostAddress(), val, true);
+                        Shutdown.getInstance().startTelnetShutdown(_cSocket.getInetAddress().getHostAddress(), val, true);
                         _print.println("Server Will Restart In " + val + " Seconds!");
                         _print.println("Type \"abort\" To Abort Restart!");
                     }
@@ -462,7 +462,7 @@ public class GameStatusThread extends Thread
                 }
                 else if (_usrCommand.startsWith("abort"))
                 {
-                    Shutdown.getInstance().Telnetabort(_csocket.getInetAddress().getHostAddress());
+                    Shutdown.getInstance().telnetAbort(_cSocket.getInetAddress().getHostAddress());
                     _print.println("OK! - Shutdown/Restart Aborted.");
                 }
                 else if (_usrCommand.equals("quit")) { /* Do Nothing :p - Just here to save us from the "Command Not Understood" Text */ }
@@ -789,13 +789,13 @@ public class GameStatusThread extends Thread
                 _print.print("");
                 _print.flush();
             }
-            if(!_csocket.isClosed())
+            if(!_cSocket.isClosed())
             {
 	            _print.println("Bye Bye!");
 	            _print.flush();
-	            _csocket.close();
+	            _cSocket.close();
             }
-            telnetOutput(1, "Connection from "+_csocket.getInetAddress().getHostAddress()+" was closed by client.");
+            telnetOutput(1, "Connection from "+_cSocket.getInetAddress().getHostAddress()+" was closed by client.");
         }
         catch (IOException e)
         {
@@ -869,12 +869,12 @@ public class GameStatusThread extends Thread
        	}
     }
     
-    private int GetOnlineGMS()
+    private int getOnlineGMS()
     {
         return GmListTable.getInstance().getAllGms().length;
     }
     
-    private String GetUptime(int time)
+    private String getUptime(int time)
     {
         int uptime = (int)System.currentTimeMillis() - time;
         uptime = uptime / 1000;
@@ -884,7 +884,7 @@ public class GameStatusThread extends Thread
         return h + "hrs " + m + "mins " + s + "secs";
     }
     
-    private String GameTime()
+    private String gameTime()
     {
         int t = GameTimeController.getInstance().getGameTime();
         int h = t/60;

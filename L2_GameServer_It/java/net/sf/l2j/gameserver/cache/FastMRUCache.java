@@ -35,29 +35,29 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
 	 * Comment for <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final int DEFAULT_CAPACITY = 50;
-    public static final int DEFAULT_FORGET_TIME = 300000; //5 Minutes
+	private static final int DEFAULT_CAPACITY = 50;
+    private static final int DEFAULT_FORGET_TIME = 300000; //5 Minutes
     
-    FastMap<K,CacheNode> _cache = new FastMap<K,CacheNode>().setKeyComparator(FastComparator.DIRECT);
-    FastMap<K,V> _map;
-    FastList<K> _mruList = new FastList<K>();
-    int _cacheSize;
-    int _forgetTime;
+    private FastMap<K,CacheNode> _cache = new FastMap<K,CacheNode>().setKeyComparator(FastComparator.DIRECT);
+    private FastMap<K,V> _map;
+    private FastList<K> _mruList = new FastList<K>();
+    private int _cacheSize;
+    private int _forgetTime;
     
     class CacheNode
     {
-        long lastModified;
-        V node;
+        long _lastModified;
+        V _node;
         
         public CacheNode(V object)
         {
-            lastModified = System.currentTimeMillis();
-            node = object;
+            _lastModified = System.currentTimeMillis();
+            _node = object;
         }
         
         public boolean equals(Object object)
         {
-        	return node == object;
+        	return _node == object;
         }
         
     }
@@ -140,17 +140,17 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         {
             CacheNode current = _cache.get(key);
             
-            if ((current.lastModified + _forgetTime) <= System.currentTimeMillis())
+            if ((current._lastModified + _forgetTime) <= System.currentTimeMillis())
             {
-                    current.lastModified = System.currentTimeMillis();
-                    current.node = _map.get(key);
+                    current._lastModified = System.currentTimeMillis();
+                    current._node = _map.get(key);
                     _cache.put(key,current);
             }
             
                 _mruList.remove(key);
                 _mruList.addFirst(key);
             
-            result = current.node;
+            result = current._node;
         }
         
         return result;

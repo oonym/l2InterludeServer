@@ -229,7 +229,7 @@ public class GameServer
 	private final HennaTable _hennaTable;
 	private final IdFactory _idFactory;
 	public static GameServer gameServer;
-	private static ClanHallManager CHManager;
+	private static ClanHallManager _cHManager;
 	private final ItemHandler _itemHandler;
 	private final SkillHandler _skillHandler;
 	private final AdminCommandHandler _adminCommandHandler;
@@ -243,11 +243,11 @@ public class GameServer
 	private LoginServerThread _loginThread;
     private final HelperBuffTable _helperBuffTable;
     
-	private static Status statusServer;
+	private static Status _statusServer;
 	@SuppressWarnings("unused")
 	private final ThreadPoolManager _threadpools;
 
-    public static final Calendar DateTimeServerStarted = Calendar.getInstance();
+    public static final Calendar dateTimeServerStarted = Calendar.getInstance();
     
     public long getUsedMemoryMB()
 	{
@@ -258,8 +258,9 @@ public class GameServer
     {
     	return _selectorThread;
     }
-	public ClanHallManager GetCHManager(){
-		return CHManager;
+
+	public ClanHallManager getCHManager(){
+		return _cHManager;
 	}
 	public GameServer() throws Exception
 	{
@@ -372,7 +373,7 @@ public class GameServer
 		/** Load Manager */
 		ArenaManager.getInstance();
 		AuctionManager.getInstance();
-		CHManager = ClanHallManager.getInstance();
+		_cHManager = ClanHallManager.getInstance();
 		BoatManager.getInstance();
 		CastleManager.getInstance();
 		MercTicketManager.getInstance();
@@ -611,7 +612,7 @@ public class GameServer
 	
 	public static void main(String[] args) throws Exception
     {
-		Server.SERVER_MODE = Server.MODE_GAMESERVER;
+		Server.serverMode = Server.MODE_GAMESERVER;
 //      Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME   = "./log.cfg"; // Name of log file
@@ -632,8 +633,8 @@ public class GameServer
 		gameServer = new GameServer();
 		
 		if ( Config.IS_TELNET_ENABLED ) {
-		    statusServer = new Status(Server.SERVER_MODE);
-		    statusServer.start();
+		    _statusServer = new Status(Server.serverMode);
+		    _statusServer.start();
 		}
 		else {
 		    System.out.println("Telnet server is currently disabled.");

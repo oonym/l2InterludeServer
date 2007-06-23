@@ -32,7 +32,7 @@ public class QuestDropInfo
 		}
 	}
 	
-	public List<DropInfo>	 dropList;
+	public List<DropInfo> dropList;
 	
 	/**
 	 * Add informations for dropped items in the inventory of the player.

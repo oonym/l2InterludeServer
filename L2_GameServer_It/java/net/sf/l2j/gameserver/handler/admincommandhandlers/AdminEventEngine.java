@@ -54,7 +54,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
  */
 public class AdminEventEngine implements IAdminCommandHandler {
 
- private static String[] _adminCommands = {"admin_event","admin_event_new","admin_event_choose",
+ private static final String[] ADMIN_COMMANDS = {"admin_event","admin_event_new","admin_event_choose",
                                            "admin_event_store","admin_event_set","admin_event_change_teams_number",
                                            "admin_event_announce","admin_event_panel","admin_event_control_begin",
                                            "admin_event_control_teleport",
@@ -351,7 +351,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
 
 	public String[] getAdminCommandList()
 	{
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 
 	private boolean checkLevel(int level) 

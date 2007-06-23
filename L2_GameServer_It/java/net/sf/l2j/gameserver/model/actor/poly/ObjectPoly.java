@@ -6,15 +6,15 @@ public class ObjectPoly
 {
     // =========================================================
     // Data Field
-    private L2Object _ActiveObject;          
-    private int _PolyId;
-    private String _PolyType;
+    private L2Object _activeObject;          
+    private int _polyId;
+    private String _polyType;
     
     // =========================================================
     // Constructor
     public ObjectPoly(L2Object activeObject)
     {
-        _ActiveObject = activeObject;
+        _activeObject = activeObject;
     }
     
     // =========================================================
@@ -32,14 +32,14 @@ public class ObjectPoly
     // Property - Public
     public final L2Object getActiveObject()
     {
-        return _ActiveObject;
+        return _activeObject;
     }
     
     public final boolean isMorphed() { return getPolyType() != null; }
     
-    public final int getPolyId() { return _PolyId; }
-    public final void setPolyId(int value) { _PolyId = value; }
+    public final int getPolyId() { return _polyId; }
+    public final void setPolyId(int value) { _polyId = value; }
     
-    public final String getPolyType() { return _PolyType; }
-    public final void setPolyType(String value) { _PolyType = value; }
+    public final String getPolyType() { return _polyType; }
+    public final void setPolyType(String value) { _polyType = value; }
 }

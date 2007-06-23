@@ -40,22 +40,22 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class Auction
 {
     protected static final Logger _log = Logger.getLogger(Auction.class.getName());
-	private int _Id								= 0;
-	private int _AdenaId						= 57;
-	private long _EndDate;
-	private int _HighestBidderId				= 0;
-	private String _HighestBidderName			= "";
-	private int _HighestBidderMaxBid			= 0;
-	private int _ItemId							= 0;
-	private String _ItemName					= "";
-	private int _ItemObjectId					= 0;
-	private int _ItemQuantity					= 0;
-	private String _ItemType					= "";
-	private int _SellerId						= 0;
-	private String _SellerClanName              = "";
-	private String _SellerName					= "";
-	private int _CurrentBid						= 0;
-	private int _StartingBid					= 0;
+	private int _id								= 0;
+	private int _adenaId						= 57;
+	private long _endDate;
+	private int _highestBidderId				= 0;
+	private String _highestBidderName			= "";
+	private int _highestBidderMaxBid			= 0;
+	private int _itemId							= 0;
+	private String _itemName					= "";
+	private int _itemObjectId					= 0;
+	private int _itemQuantity					= 0;
+	private String _itemType					= "";
+	private int _sellerId						= 0;
+	private String _sellerClanName              = "";
+	private String _sellerName					= "";
+	private int _currentBid						= 0;
+	private int _startingBid					= 0;
 
 	private Map<Integer, Bidder> _bidders        = new FastMap<Integer, Bidder>();
 	private static final String[] ItemTypeName =
@@ -68,29 +68,29 @@ public class Auction
 	}
 	 public class Bidder
 	 {
-	     private String _Name;
-	     private String _ClanName;
-	     private int _Bid;
+	     private String _name;
+	     private String _clanName;
+	     private int _bid;
 	     private Calendar _timeBid;
 	     public Bidder(String name, String clanName, int bid, long timeBid)
 	     {
-	         _Name = name;
-	         _ClanName = clanName;
-	         _Bid = bid;
+	         _name = name;
+	         _clanName = clanName;
+	         _bid = bid;
 	         _timeBid = Calendar.getInstance();
 	         _timeBid.setTimeInMillis(timeBid);
 	     }
 	     public String getName()
 	     {
-	         return _Name;
+	         return _name;
 	     }
 	     public String getClanName()
 	     {
-	         return _ClanName;
+	         return _clanName;
 	     }
 	     public int getBid()
 	     {
-	         return _Bid;
+	         return _bid;
 	     }
 	     public Calendar getTimeBid()
 	     {
@@ -102,7 +102,7 @@ public class Auction
 	     }
 	     public void setBid(int bid)
 	     {
-	         _Bid = bid;
+	         _bid = bid;
 	     }
 	 }
 	/** Task Sheduler for endAuction */
@@ -121,21 +121,21 @@ public class Auction
 
 	public Auction(int auctionId)
 	{
-		_Id = auctionId;
+		_id = auctionId;
 		load();
-        StartAutoTask();
+        startAutoTask();
 	}
     public Auction(int itemId, L2Clan Clan, long delay, int bid, String name)
     {
-        _Id = itemId;
-        _EndDate = System.currentTimeMillis() + delay;
-        _ItemId = itemId;
-        _ItemName = name;
-        _ItemType = "ClanHall";
-        _SellerId = Clan.getLeaderId();
-        _SellerName = Clan.getLeaderName();
-        _SellerClanName = Clan.getName();
-        _StartingBid = bid;
+        _id = itemId;
+        _endDate = System.currentTimeMillis() + delay;
+        _itemId = itemId;
+        _itemName = name;
+        _itemType = "ClanHall";
+        _sellerId = Clan.getLeaderId();
+        _sellerName = Clan.getLeaderName();
+        _sellerClanName = Clan.getName();
+        _startingBid = bid;
     }
     /** Load auctions */
 	private void load()
@@ -154,16 +154,16 @@ public class Auction
 
             while (rs.next())
             {
-        	    _CurrentBid = rs.getInt("currentBid");
-        	    _EndDate= rs.getLong("endDate");        	    
-        	    _ItemId = rs.getInt("itemId");
-        	    _ItemName = rs.getString("itemName");
-        	    _ItemObjectId = rs.getInt("itemObjectId");
-        	    _ItemType = rs.getString("itemType");
-        	    _SellerId = rs.getInt("sellerId");
-                _SellerClanName = rs.getString("sellerClanName");
-        	    _SellerName = rs.getString("sellerName");
-        	    _StartingBid = rs.getInt("startingBid");
+        	    _currentBid = rs.getInt("currentBid");
+        	    _endDate= rs.getLong("endDate");        	    
+        	    _itemId = rs.getInt("itemId");
+        	    _itemName = rs.getString("itemName");
+        	    _itemObjectId = rs.getInt("itemObjectId");
+        	    _itemType = rs.getString("itemType");
+        	    _sellerId = rs.getInt("sellerId");
+                _sellerClanName = rs.getString("sellerClanName");
+        	    _sellerName = rs.getString("sellerName");
+        	    _startingBid = rs.getInt("startingBid");
             }
             statement.close();            
             loadBid();
@@ -194,9 +194,9 @@ public class Auction
             {
                 if (rs.isFirst())
                 {
-                    _HighestBidderId = rs.getInt("bidderId");
-                    _HighestBidderName = rs.getString("bidderName");
-                    _HighestBidderMaxBid = rs.getInt("maxBid");
+                    _highestBidderId = rs.getInt("bidderId");
+                    _highestBidderName = rs.getString("bidderName");
+                    _highestBidderMaxBid = rs.getInt("maxBid");
                 }
                 _bidders.put(rs.getInt("bidderId"), new Bidder(rs.getString("bidderName"), rs.getString("clan_name"), rs.getInt("maxBid"), rs.getLong("time_bid")));
             }
@@ -211,15 +211,15 @@ public class Auction
         finally {try { con.close(); } catch (Exception e) {}}
 	}
     /** Task Manage */
-    private void StartAutoTask()
+    private void startAutoTask()
     {
     	long currentTime = System.currentTimeMillis();
     	long taskDelay = 0;
-        if (_EndDate <= currentTime){
-        	_EndDate = currentTime + 7*24*60*60*1000;
+        if (_endDate <= currentTime){
+        	_endDate = currentTime + 7*24*60*60*1000;
         	saveAuctionDate();
         }else
-        	taskDelay = _EndDate - currentTime;
+        	taskDelay = _endDate - currentTime;
         ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), taskDelay);
     }
 	public static String getItemTypeName(ItemTypeEnum value)
@@ -234,8 +234,8 @@ public class Auction
         {
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement = con.prepareStatement("Update auction set endDate = ? where id = ?");
-            statement.setLong(1, _EndDate);
-            statement.setInt(2, _Id);
+            statement.setLong(1, _endDate);
+            statement.setInt(2, _id);
             statement.execute();
             
             statement.close();
@@ -258,7 +258,7 @@ public class Auction
 			if(takeItem(bidder, 57, requiredAdena))
 			{
 				this.updateInDB(bidder, bid);
-            	bidder.getClan().setAuctionBiddedAt(_Id, true);
+            	bidder.getClan().setAuctionBiddedAt(_id, true);
             	return;
 			}
 	    }
@@ -269,14 +269,14 @@ public class Auction
 	{
         if (penalty)
             quantity *= 0.9; //take 10% tax fee if needed
-        ClanTable.getInstance().getClanByName(Clan).getWarehouse().addItem("Outbidded", _AdenaId, quantity, null, null);
+        ClanTable.getInstance().getClanByName(Clan).getWarehouse().addItem("Outbidded", _adenaId, quantity, null, null);
 	}
 	/** Take Item in WHC */
 	private boolean takeItem(L2PcInstance bidder, int itemId, int quantity)
 	{
     	if (bidder.getClan() != null && bidder.getClan().getWarehouse().getAdena() >= quantity)
     	{
-    		bidder.getClan().getWarehouse().destroyItemByItemId("Buy", _AdenaId, quantity, bidder, bidder);
+    		bidder.getClan().getWarehouse().destroyItemByItemId("Buy", _adenaId, quantity, bidder, bidder);
         	return true;
     	}
 		bidder.sendMessage("You do not have enough adena");
@@ -315,18 +315,18 @@ public class Auction
                 statement.setLong(7, System.currentTimeMillis());
                 statement.execute();
                 statement.close();
-                if (L2World.getInstance().getPlayer(_HighestBidderName) != null)
-                    L2World.getInstance().getPlayer(_HighestBidderName).sendMessage("You have been out bidded");   
+                if (L2World.getInstance().getPlayer(_highestBidderName) != null)
+                    L2World.getInstance().getPlayer(_highestBidderName).sendMessage("You have been out bidded");   
             }
-            _HighestBidderId = bidder.getClanId();
-            _HighestBidderMaxBid = bid;
-            _HighestBidderName = bidder.getClan().getLeaderName();
-            if (_bidders.get(_HighestBidderId) == null)
-                _bidders.put(_HighestBidderId, new Bidder(_HighestBidderName, bidder.getClan().getName(), bid, Calendar.getInstance().getTimeInMillis()));
+            _highestBidderId = bidder.getClanId();
+            _highestBidderMaxBid = bid;
+            _highestBidderName = bidder.getClan().getLeaderName();
+            if (_bidders.get(_highestBidderId) == null)
+                _bidders.put(_highestBidderId, new Bidder(_highestBidderName, bidder.getClan().getName(), bid, Calendar.getInstance().getTimeInMillis()));
             else
             {
-                _bidders.get(_HighestBidderId).setBid(bid);
-                _bidders.get(_HighestBidderId).setTimeBid(Calendar.getInstance().getTimeInMillis());
+                _bidders.get(_highestBidderId).setBid(bid);
+                _bidders.get(_highestBidderId).setTimeBid(Calendar.getInstance().getTimeInMillis());
             }
             bidder.sendMessage("You have bidded successfully");
         }
@@ -386,7 +386,7 @@ public class Auction
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement;
             statement = con.prepareStatement("DELETE FROM auction WHERE itemId=?");
-            statement.setInt(1, _ItemId);
+            statement.setInt(1, _itemId);
             statement.execute();
             statement.close();
         }
@@ -402,31 +402,31 @@ public class Auction
     /** End of auction */
     public void endAuction()
     {
-    	if(GameServer.gameServer.GetCHManager() != null && GameServer.gameServer.GetCHManager().loaded()){
-	        if (_HighestBidderId == 0 && _SellerId == 0)
+    	if(GameServer.gameServer.getCHManager() != null && GameServer.gameServer.getCHManager().loaded()){
+	        if (_highestBidderId == 0 && _sellerId == 0)
 	        {
-	            StartAutoTask();
+	            startAutoTask();
 	            return;
 	        }
-	        if (_HighestBidderId == 0 && _SellerId > 0)
+	        if (_highestBidderId == 0 && _sellerId > 0)
 	        {
 	            /** If seller haven't sell ClanHall, auction removed,
 	             *  THIS MUST BE CONFIRMED */
-	        	int aucId = AuctionManager.getInstance().getAuctionIndex(_Id);
+	        	int aucId = AuctionManager.getInstance().getAuctionIndex(_id);
 	        	AuctionManager.getInstance().getAuctions().remove(aucId);
 	            return;
 	        }
-	        if (_SellerId > 0)
+	        if (_sellerId > 0)
 	        {
-	            returnItem(_SellerClanName, 57, _HighestBidderMaxBid, true);
-	            returnItem(_SellerClanName, 57, ClanHallManager.getInstance().getClanHall(_ItemId).getLease(), false);
+	            returnItem(_sellerClanName, 57, _highestBidderMaxBid, true);
+	            returnItem(_sellerClanName, 57, ClanHallManager.getInstance().getClanHall(_itemId).getLease(), false);
 	        }
 		    deleteAuctionFromDB();
-		    L2Clan Clan = ClanTable.getInstance().getClanByName(_bidders.get(_HighestBidderId).getClanName());
-		    _bidders.remove(_HighestBidderId);
+		    L2Clan Clan = ClanTable.getInstance().getClanByName(_bidders.get(_highestBidderId).getClanName());
+		    _bidders.remove(_highestBidderId);
 		    Clan.setAuctionBiddedAt(0, true);
 		    removeBids();
-		    ClanHallManager.getInstance().setOwner(_ItemId, Clan);
+		    ClanHallManager.getInstance().setOwner(_itemId, Clan);
     	}else{
     		/** Task waiting ClanHallManager is loaded every 3s */
             ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), 3000); 
@@ -479,17 +479,17 @@ public class Auction
 
             statement = con.prepareStatement("INSERT INTO auction (id, sellerId, sellerName, sellerClanName, itemType, itemId, itemObjectId, itemName, itemQuantity, startingBid, currentBid, endDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"); 
             statement.setInt(1, getId());
-            statement.setInt(2, _SellerId);
-            statement.setString(3, _SellerName);
-            statement.setString(4, _SellerClanName);
-            statement.setString(5, _ItemType);
-            statement.setInt(6, _ItemId);
-            statement.setInt(7, _ItemObjectId);
-            statement.setString(8, _ItemName);
-            statement.setInt(9, _ItemQuantity);
-            statement.setInt(10, _StartingBid);
-            statement.setInt(11, _CurrentBid);
-            statement.setLong(12, _EndDate); 
+            statement.setInt(2, _sellerId);
+            statement.setString(3, _sellerName);
+            statement.setString(4, _sellerClanName);
+            statement.setString(5, _itemType);
+            statement.setInt(6, _itemId);
+            statement.setInt(7, _itemObjectId);
+            statement.setString(8, _itemName);
+            statement.setInt(9, _itemQuantity);
+            statement.setInt(10, _startingBid);
+            statement.setInt(11, _currentBid);
+            statement.setLong(12, _endDate); 
             statement.execute();
             statement.close();            
             this.loadBid();
@@ -501,20 +501,20 @@ public class Auction
         finally {try { con.close(); } catch (Exception e) {}}
     }
     /** Get var auction */
-	public final int getId() { return _Id; }
-	public final int getCurrentBid() { return _CurrentBid; }
-	public final long getEndDate() { return _EndDate; }
-	public final int getHighestBidderId() { return _HighestBidderId; }
-	public final String getHighestBidderName() { return _HighestBidderName; }
-	public final int getHighestBidderMaxBid() { return _HighestBidderMaxBid; }
-	public final int getItemId() { return _ItemId; }
-	public final String getItemName() { return _ItemName; }
-	public final int getItemObjectId() { return _ItemObjectId; }
-	public final int getItemQuantity() { return _ItemQuantity; }
-	public final String getItemType() { return _ItemType; }
-	public final int getSellerId() { return _SellerId; }
-	public final String getSellerName() { return _SellerName; }
-    public final String getSellerClanName() { return _SellerClanName; }
-	public final int getStartingBid() { return _StartingBid; }
+	public final int getId() { return _id; }
+	public final int getCurrentBid() { return _currentBid; }
+	public final long getEndDate() { return _endDate; }
+	public final int getHighestBidderId() { return _highestBidderId; }
+	public final String getHighestBidderName() { return _highestBidderName; }
+	public final int getHighestBidderMaxBid() { return _highestBidderMaxBid; }
+	public final int getItemId() { return _itemId; }
+	public final String getItemName() { return _itemName; }
+	public final int getItemObjectId() { return _itemObjectId; }
+	public final int getItemQuantity() { return _itemQuantity; }
+	public final String getItemType() { return _itemType; }
+	public final int getSellerId() { return _sellerId; }
+	public final String getSellerName() { return _sellerName; }
+    public final String getSellerClanName() { return _sellerClanName; }
+	public final int getStartingBid() { return _startingBid; }
     public final Map<Integer, Bidder> getBidders(){ return _bidders; };
 }

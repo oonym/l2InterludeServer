@@ -51,7 +51,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminAdmin implements IAdminCommandHandler {
 
- private static String[] _adminCommands = {"admin_admin","admin_play_sounds","admin_play_sound",
+ private static final String[] ADMIN_COMMANDS = {"admin_admin","admin_play_sounds","admin_play_sound",
                                            "admin_gmliston","admin_gmlistoff","admin_silence",
                                            "admin_atmosphere","admin_diet","admin_tradeoff",
                                            "admin_reload", "admin_set", "admin_saveolymp",
@@ -289,7 +289,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 
 	public String[] getAdminCommandList()
 	{
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 
 	private boolean checkLevel(int level) 

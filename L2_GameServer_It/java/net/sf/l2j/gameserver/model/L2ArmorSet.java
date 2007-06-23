@@ -29,31 +29,31 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class L2ArmorSet
 {
-	private final int chest;
-	private final int legs;
-	private final int head;
-	private final int gloves;
-	private final int feet;
-	private final int skill_id;
+	private final int _chest;
+	private final int _legs;
+	private final int _head;
+	private final int _gloves;
+	private final int _feet;
+	private final int _skillId;
 	
-	private final int shield;
-	private final int shield_skill_id;
+	private final int _shield;
+	private final int _shieldSkillId;
 	
-	private final int enchant6skill;
+	private final int _enchant6Skill;
 	
 	public L2ArmorSet(int chest, int legs, int head, int gloves, int feet, int skill_id, int shield, int shield_skill_id, int enchant6skill)
 	{
-		this.chest = chest;
-		this.legs  = legs;
-		this.head  = head;
-		this.gloves = gloves;
-		this.feet  = feet;
-		this.skill_id = skill_id;
+		_chest = chest;
+		_legs  = legs;
+		_head  = head;
+		_gloves = gloves;
+		_feet  = feet;
+		_skillId = skill_id;
 		
-		this.shield = shield;
-		this.shield_skill_id = shield_skill_id;
+		_shield = shield;
+		_shieldSkillId = shield_skill_id;
 		
-		this.enchant6skill = enchant6skill;
+		_enchant6Skill = enchant6skill;
 	}
 	/**
 	 * Checks if player have equiped all items from set (not checking shield)
@@ -79,20 +79,20 @@ public final class L2ArmorSet
 		if(glovesItem != null) gloves = glovesItem.getItemId();
 		if(feetItem != null)   feet = feetItem.getItemId();
 		
-		return containAll(this.chest,legs,head,gloves,feet);
+		return containAll(_chest,legs,head,gloves,feet);
 		
 	}
 	public boolean containAll(int chest, int legs, int head, int gloves, int feet)
 	{
-		if(this.chest != 0 && this.chest != chest)
+		if(_chest != 0 && _chest != chest)
 			return false;
-		if(this.legs != 0 && this.legs != legs)
+		if(_legs != 0 && _legs != legs)
 			return false;
-		if(this.head != 0 && this.head != head)
+		if(_head != 0 && _head != head)
 			return false;
-		if(this.gloves != 0 && this.gloves != gloves)
+		if(_gloves != 0 && _gloves != gloves)
 			return false;
-		if(this.feet != 0 && this.feet != feet)
+		if(_feet != 0 && _feet != feet)
 			return false;
 	
 		return true;
@@ -102,47 +102,47 @@ public final class L2ArmorSet
 		switch(slot)
 		{
 		case Inventory.PAPERDOLL_CHEST:
-			return chest == itemId;
+			return _chest == itemId;
 		case Inventory.PAPERDOLL_LEGS:
-			return legs == itemId;
+			return _legs == itemId;
 		case Inventory.PAPERDOLL_HEAD:
-			return head == itemId;
+			return _head == itemId;
 		case Inventory.PAPERDOLL_GLOVES:
-			return gloves == itemId;
+			return _gloves == itemId;
 		case Inventory.PAPERDOLL_FEET:
-			return feet == itemId;
+			return _feet == itemId;
 		default:
 			return false;
 		}
 	}
 	public int getSkillId()
 	{
-		return skill_id;
+		return _skillId;
 	}
 	public boolean containShield(L2PcInstance player)
 	{
 		Inventory inv = player.getInventory();
 		
 		L2ItemInstance shieldItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_LHAND);
-		if(shieldItem!= null && shieldItem.getItemId() == shield)
+		if(shieldItem!= null && shieldItem.getItemId() == _shield)
 			return true;
 	
 		return false;
 	}
 	public boolean containShield(int shield_id)
 	{
-		if(shield == 0)
+		if(_shield == 0)
 			return false;
 		
-		return shield == shield_id;
+		return _shield == shield_id;
 	}
 	public int getShieldSkillId()
 	{
-		return shield_skill_id;
+		return _shieldSkillId;
 	}
 	public int getEnchant6skillId()
 	{
-		return enchant6skill;
+		return _enchant6Skill;
 	}
 	/**
 	 * Checks if all parts of set are enchanted to +6 or more
@@ -165,13 +165,13 @@ public final class L2ArmorSet
 		
 		if(chestItem.getEnchantLevel() < 6)
 			return false;
-		if(this.legs != 0 && legsItem.getEnchantLevel() < 6)
+		if(_legs != 0 && legsItem.getEnchantLevel() < 6)
 			return false;
-		if(this.gloves != 0 && glovesItem.getEnchantLevel() < 6)
+		if(_gloves != 0 && glovesItem.getEnchantLevel() < 6)
 			return false;
-		if(this.head != 0 && headItem.getEnchantLevel() < 6)
+		if(_head != 0 && headItem.getEnchantLevel() < 6)
 			return false;
-		if(this.feet != 0 && feetItem.getEnchantLevel() < 6)
+		if(_feet != 0 && feetItem.getEnchantLevel() < 6)
 			return false;
 		
 		return true;

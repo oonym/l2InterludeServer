@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.Ride;
  */
 public class castle implements IVoicedCommandHandler
 {
-    private static String[] _voicedCommands = { "open doors", "close doors", "ride wyvern" }; 
+    private static final String[] VOICED_COMMANDS = { "open doors", "close doors", "ride wyvern" }; 
 
     public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
@@ -71,6 +71,6 @@ public class castle implements IVoicedCommandHandler
  
     public String[] getVoicedCommandList()
     {
-        return _voicedCommands;
+        return VOICED_COMMANDS;
     }
 }

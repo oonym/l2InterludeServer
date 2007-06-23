@@ -46,8 +46,8 @@ public class GeoPathFinding extends PathFinding
 {
 	private static Logger _log = Logger.getLogger(GeoPathFinding.class.getName());
 	private static GeoPathFinding _instance;
-	private static Map<Short, ByteBuffer> PathNodes = new FastMap<Short, ByteBuffer>();
-	private static Map<Short, IntBuffer> PathNodes_index = new FastMap<Short, IntBuffer>();
+	private static Map<Short, ByteBuffer> _pathNodes = new FastMap<Short, ByteBuffer>();
+	private static Map<Short, IntBuffer> _pathNodesIndex = new FastMap<Short, IntBuffer>();
 	
 	public static GeoPathFinding getInstance()
 	{
@@ -60,16 +60,16 @@ public class GeoPathFinding extends PathFinding
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#PathNodesExist(short)
 	 */
 	@Override
-	public boolean PathNodesExist(short regionoffset)
+	public boolean pathNodesExist(short regionoffset)
 	{
-		return PathNodes_index.containsKey(regionoffset);
+		return _pathNodesIndex.containsKey(regionoffset);
 	}
 	
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
 	 */
 	@Override
-	public List<AbstractNodeLoc> FindPath(int gx, int gy, short z, int gtx, int gty, short tz)
+	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gty, short tz)
 	{
 		Node start = readNode(gx,gy,z);
 		//_log.warning("startx"+start.getLoc().getNodeX());
@@ -87,10 +87,10 @@ public class GeoPathFinding extends PathFinding
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
 	 */
 	@Override
-	public Node[] ReadNeighbors(short node_x,short node_y, int idx)
+	public Node[] readNeighbors(short node_x,short node_y, int idx)
 	{
 		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
-		ByteBuffer pn = PathNodes.get(regoffset);
+		ByteBuffer pn = _pathNodes.get(regoffset);
 		
 		List<Node> Neighbors = new FastList<Node>(8);
 		
@@ -180,8 +180,8 @@ public class GeoPathFinding extends PathFinding
 		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
 		short nbx = getNodeBlock(node_x);
 		short nby = getNodeBlock(node_y);
-		int idx = PathNodes_index.get(regoffset).get((nby << 8)+nbx);
-		ByteBuffer pn = PathNodes.get(regoffset);
+		int idx = _pathNodesIndex.get(regoffset).get((nby << 8)+nbx);
+		ByteBuffer pn = _pathNodes.get(regoffset);
 		//reading
 		byte nodes = pn.get(idx);
 		idx += layer*10+1;//byte + layer*10byte
@@ -201,8 +201,8 @@ public class GeoPathFinding extends PathFinding
 		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
 		short nbx = getNodeBlock(node_x);
 		short nby = getNodeBlock(node_y);
-		int idx = PathNodes_index.get(regoffset).get((nby << 8)+nbx);
-		ByteBuffer pn = PathNodes.get(regoffset);
+		int idx = _pathNodesIndex.get(regoffset).get((nby << 8)+nbx);
+		ByteBuffer pn = _pathNodes.get(regoffset);
 		//reading
 		byte nodes = pn.get(idx);
 		idx++;//byte
@@ -282,8 +282,8 @@ public class GeoPathFinding extends PathFinding
 				node++;
 				index += layer*10+1;
 			}
-			PathNodes_index.put(regionoffset, indexs);
-			PathNodes.put(regionoffset, nodes);
+			_pathNodesIndex.put(regionoffset, indexs);
+			_pathNodes.put(regionoffset, nodes);
 		} catch (Exception e)
 		{
 			e.printStackTrace();

@@ -34,6 +34,6 @@ public class ConditionTargetNone extends Condition {
 	}
 	
 	public boolean testImpl(Env env) {
-		return (env._target == null);
+		return (env.target == null);
 	}
 }

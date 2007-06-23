@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class Recall implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(Recall.class.getName());
-	protected SkillType[] _skillIds = {SkillType.RECALL};
+	private static final SkillType[] SKILL_IDS = {SkillType.RECALL};
 
  	public void useSkill(@SuppressWarnings("unused") L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, L2Object[] targets)
 	{
@@ -87,6 +87,6 @@ public class Recall implements ISkillHandler
 
 	public SkillType[] getSkillIds()
 	{
-		return _skillIds;
+		return SKILL_IDS;
 	}
 }

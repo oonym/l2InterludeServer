@@ -153,8 +153,8 @@ public final class L2Armor extends L2Item
     	{
     		for (FuncTemplate t : _funcTemplates) {
 		    	Env env = new Env();
-		    	env._player = player;
-		    	env._item = instance;
+		    	env.player = player;
+		    	env.item = instance;
 		    	Func f = t.getFunc(env, instance);
 		    	if (f != null)
 			    	funcs.add(f);

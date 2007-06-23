@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class AdminShop implements IAdminCommandHandler {
 	private static Logger _log = Logger.getLogger(AdminShop.class.getName());
 	
-	private static String[] _adminCommands = {
+	private static final String[] ADMIN_COMMANDS = {
 			"admin_buy",
 			"admin_gmshop"
 			};
@@ -71,7 +71,7 @@ public class AdminShop implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

@@ -61,7 +61,7 @@ public final class RequestJoinAlly extends L2GameClientPacket
         }
 		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_id);
         L2Clan clan = activeChar.getClan();
-        if (!clan.CheckAllyJoinCondition(activeChar, target))
+        if (!clan.checkAllyJoinCondition(activeChar, target))
         {
         	return;
         } 

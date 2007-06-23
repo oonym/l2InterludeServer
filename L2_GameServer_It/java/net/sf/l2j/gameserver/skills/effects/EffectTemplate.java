@@ -41,29 +41,29 @@ public final class EffectTemplate
 	private final Class<?> _func;
 	private final Constructor _constructor;
 
-	public final Condition _attachCond;
-	public final Condition _applayCond;
-	public final Lambda _lambda;
-	public final int _counter;
-	public final int _period; // in seconds
-	public final short _abnormalEffect;
-	public FuncTemplate[] _funcTemplates;
+	public final Condition attachCond;
+	public final Condition applayCond;
+	public final Lambda lambda;
+	public final int counter;
+	public final int period; // in seconds
+	public final short abnormalEffect;
+	public FuncTemplate[] funcTemplates;
 	
-	public final String _stackType;
-	public final float _stackOrder;
+	public final String stackType;
+	public final float stackOrder;
 	
-	public EffectTemplate(Condition attachCond, Condition applayCond,
-			String func, Lambda lambda, int counter, int period, 
-			short abnormalEffect, String stackType, float stackOrder)
+	public EffectTemplate(Condition pAttachCond, Condition pApplayCond,
+			String func, Lambda pLambda, int pCounter, int pPeriod, 
+			short pAbnormalEffect, String pStackType, float pStackOrder)
 	{
-		_attachCond = attachCond;
-		_applayCond = applayCond;
-		_lambda = lambda;
-		_counter = counter;
-		_period = period;
-		_abnormalEffect = abnormalEffect;
-		_stackType = stackType;
-		_stackOrder = stackOrder;
+		attachCond = pAttachCond;
+		applayCond = pApplayCond;
+		lambda = pLambda;
+		counter = pCounter;
+		period = pPeriod;
+		abnormalEffect = pAbnormalEffect;
+		stackType = pStackType;
+		stackOrder = pStackOrder;
 		try {
 			_func = Class.forName("net.sf.l2j.gameserver.skills.effects.Effect"+func);
 		} catch (ClassNotFoundException e) {
@@ -78,7 +78,7 @@ public final class EffectTemplate
 	
 	public L2Effect getEffect(Env env)
 	{
-		if (_attachCond != null && !_attachCond.test(env))
+		if (attachCond != null && !attachCond.test(env))
 			return null;
 		try {
 			L2Effect effect = (L2Effect)_constructor.newInstance(env, this);
@@ -101,17 +101,17 @@ public final class EffectTemplate
 
     public void attach(FuncTemplate f)
     {
-    	if (_funcTemplates == null)
+    	if (funcTemplates == null)
     	{
-    		_funcTemplates = new FuncTemplate[]{f};
+    		funcTemplates = new FuncTemplate[]{f};
     	}
     	else
     	{
-    		int len = _funcTemplates.length;
+    		int len = funcTemplates.length;
     		FuncTemplate[] tmp = new FuncTemplate[len+1];
-    		System.arraycopy(_funcTemplates, 0, tmp, 0, len);
+    		System.arraycopy(funcTemplates, 0, tmp, 0, len);
     		tmp[len] = f;
-    		_funcTemplates = tmp;
+    		funcTemplates = tmp;
     	}
     }
 

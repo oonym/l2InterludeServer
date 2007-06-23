@@ -225,7 +225,7 @@ public class TvTEvent
 
         	if (Config.TVT_EVENT_REWARD[1] > 1)
         	{
-        		systemMessage = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+        		systemMessage = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
         		systemMessage.addItemName(Config.TVT_EVENT_REWARD[0]);
         		systemMessage.addNumber(Config.TVT_EVENT_REWARD[1]);
         	}

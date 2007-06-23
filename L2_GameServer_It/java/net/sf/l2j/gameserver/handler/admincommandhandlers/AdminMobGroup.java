@@ -20,7 +20,7 @@ import net.sf.l2j.gameserver.util.Broadcast;
  */
 public class AdminMobGroup implements IAdminCommandHandler 
 {
-	private static String[] _adminCommands = { "admin_mobmenu", "admin_mobgroup_list",
+	private static final String[] ADMIN_COMMANDS = { "admin_mobmenu", "admin_mobgroup_list",
 	                                           "admin_mobgroup_create", "admin_mobgroup_remove", "admin_mobgroup_delete",
 	                                           "admin_mobgroup_spawn", "admin_mobgroup_unspawn",
 	                                           "admin_mobgroup_kill", "admin_mobgroup_idle",
@@ -202,7 +202,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 
 	public String[] getAdminCommandList() 
     {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 
 	private boolean checkLevel(int level) 

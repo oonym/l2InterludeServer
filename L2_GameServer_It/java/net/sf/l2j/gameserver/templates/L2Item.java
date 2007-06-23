@@ -447,9 +447,9 @@ public abstract class L2Item
     	List<Func> funcs = new FastList<Func>();
 		for (FuncTemplate t : _funcTemplates) {
 	    	Env env = new Env();
-	    	env._player = player;
-	    	env._target = player;
-	    	env._item = instance;
+	    	env.player = player;
+	    	env.target = player;
+	    	env.item = instance;
 	    	Func f = t.getFunc(env, this); // skill is owner
 	    	if (f != null)
 	    		funcs.add(f);
@@ -472,9 +472,9 @@ public abstract class L2Item
     	List<L2Effect> effects = new FastList<L2Effect>();
 		for (EffectTemplate et : _effectTemplates) {
 	    	Env env = new Env();
-	    	env._player = player;
-	    	env._target = player;
-	    	env._item = instance;
+	    	env.player = player;
+	    	env.target = player;
+	    	env.item = instance;
 	    	L2Effect e = et.getEffect(env);
 	    	if (e != null)
 	    		effects.add(e);

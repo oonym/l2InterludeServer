@@ -34,7 +34,7 @@ public class NpcInfoPoly extends L2GameServerPacket
 	     
 	     
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
-	private L2Character _cha;
+	private L2Character _activeChar;
 	private L2Object _obj;
 	private int _x, _y, _z, _heading;
 	private int _npcId;
@@ -45,26 +45,26 @@ public class NpcInfoPoly extends L2GameServerPacket
 	private String _name, _title;
 	private short _abnormalEffect;
 	L2NpcTemplate _template;
-    private int collisionRadius;
-    private int collisionHeight;
+    private int _collisionRadius;
+    private int _collisionHeight;
 
 	/**
 	 * @param _characters
 	 */
-	public NpcInfoPoly(L2Object cha, L2Character attacker)
+	public NpcInfoPoly(L2Object obj, L2Character attacker)
 	{
-		_obj = cha;
-		_npcId = cha.getPoly().getPolyId();
+		_obj = obj;
+		_npcId = obj.getPoly().getPolyId();
 		_template = NpcTable.getInstance().getTemplate(_npcId);
 		_isAttackable = true;
 		_rhand = 0;
 		_lhand = 0;
 		_isSummoned = false;
-        collisionRadius = _template.collisionRadius;
-        collisionHeight = _template.collisionHeight;
+        _collisionRadius = _template.collisionRadius;
+        _collisionHeight = _template.collisionHeight;
 		if(_obj instanceof L2Character){
-			_cha = (L2Character) cha;
-			_isAttackable = cha.isAutoAttackable(attacker);
+			_activeChar = (L2Character) obj;
+			_isAttackable = obj.isAutoAttackable(attacker);
 			_rhand = _template.rhand;
 			_lhand = _template.lhand;
 			
@@ -89,22 +89,22 @@ public class NpcInfoPoly extends L2GameServerPacket
 		}        
 		else
 		{
-			_x = _cha.getX();
-			_y = _cha.getY();
-			_z = _cha.getZ();
-			_heading = _cha.getHeading();
-			_mAtkSpd = _cha.getMAtkSpd();
-			_pAtkSpd = _cha.getPAtkSpd();
-			_runSpd = _cha.getRunSpeed();
-			_walkSpd = _cha.getWalkSpeed();
+			_x = _activeChar.getX();
+			_y = _activeChar.getY();
+			_z = _activeChar.getZ();
+			_heading = _activeChar.getHeading();
+			_mAtkSpd = _activeChar.getMAtkSpd();
+			_pAtkSpd = _activeChar.getPAtkSpd();
+			_runSpd = _activeChar.getRunSpeed();
+			_walkSpd = _activeChar.getWalkSpeed();
 			_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 			_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
-			_isRunning=_cha.isRunning();
-			_isInCombat = _cha.isInCombat();
-			_isAlikeDead = _cha.isAlikeDead();
-			_name = _cha.getName();
-			_title = _cha.getTitle();
-			_abnormalEffect = _cha.getAbnormalEffect();
+			_isRunning=_activeChar.isRunning();
+			_isInCombat = _activeChar.isInCombat();
+			_isAlikeDead = _activeChar.isAlikeDead();
+			_name = _activeChar.getName();
+			_title = _activeChar.getTitle();
+			_abnormalEffect = _activeChar.getAbnormalEffect();
 			
 		}
 	}
@@ -130,10 +130,10 @@ public class NpcInfoPoly extends L2GameServerPacket
 		writeD(_flWalkSpd);
 		writeD(_flyRunSpd);
 		writeD(_flyWalkSpd);
-		writeF(1/*_cha.getProperMultiplier()*/);
-		writeF(1/*_cha.getAttackSpeedMultiplier()*/);
-		writeF(collisionRadius);
-		writeF(collisionHeight);
+		writeF(1/*_activeChar.getProperMultiplier()*/);
+		writeF(1/*_activeChar.getAttackSpeedMultiplier()*/);
+		writeF(_collisionRadius);
+		writeF(_collisionHeight);
 		writeD(_rhand); // right hand weapon
 		writeD(0);
 		writeD(_lhand); // left hand weapon

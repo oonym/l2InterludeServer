@@ -34,12 +34,12 @@ public class CastleUpdater implements Runnable {
 
 
 		private L2Clan _clan;
-        private int _RunCount = 0;
+        private int _runCount = 0;
 		
 		public CastleUpdater(L2Clan clan, int runCount)
 		{
 			_clan = clan;
-            _RunCount = runCount;
+            _runCount = runCount;
 		}
 		
 		public void run()
@@ -49,7 +49,7 @@ public class CastleUpdater implements Runnable {
 		    	ItemContainer warehouse = _clan.getWarehouse();
 		        if ((warehouse != null)&&(_clan.getHasCastle() > 0))
 		        {
-                    if (_RunCount % 2 == 0)
+                    if (_runCount % 2 == 0)
                     {
                         Castle castle = CastleManager.getInstance().getCastle(_clan.getHasCastle());
 
@@ -64,17 +64,17 @@ public class CastleUpdater implements Runnable {
 
                     // Give clan 1 Dualsword Craft Stamp every 3 hour (8 per day)
                     // Give clan ~1 Secret Book of Giants daily (it's been confirmed that castle owners get these, but method is unknown)
-                    if (_RunCount % 3 == 0)
+                    if (_runCount % 3 == 0)
                     {
                     	warehouse.addItem("Castle", 5126, 1, null, null);
                     	if (Rnd.get(100) < 25) warehouse.addItem("Castle", 6622, 1, null, null);
                     }
                     
-                    _RunCount++;
-                    if (_RunCount == 7) _RunCount = 1;
+                    _runCount++;
+                    if (_runCount == 7) _runCount = 1;
 
                     // re-run again in 1 hours
-                    CastleUpdater cu = new CastleUpdater(_clan, _RunCount);
+                    CastleUpdater cu = new CastleUpdater(_clan, _runCount);
                     ThreadPoolManager.getInstance().scheduleGeneral(cu, 3600000);
 		        }
 		    } catch (Throwable e) {

@@ -44,28 +44,28 @@ import net.sf.l2j.gameserver.model.L2World;
 public interface EngineInterface
 {
     //*  keep the references of Singletons to prevent garbage collection
-    public CharNameTable _charNametable = CharNameTable.getInstance();
+    public CharNameTable charNametable = CharNameTable.getInstance();
 
-    public IdFactory _idFactory = IdFactory.getInstance();
-    public ItemTable _itemTable = ItemTable.getInstance();
+    public IdFactory idFactory = IdFactory.getInstance();
+    public ItemTable itemTable = ItemTable.getInstance();
     
-    public SkillTable _skillTable = SkillTable.getInstance();
+    public SkillTable skillTable = SkillTable.getInstance();
     
-    public RecipeController _recipeController = RecipeController.getInstance();
+    public RecipeController recipeController = RecipeController.getInstance();
     
-    public SkillTreeTable _skillTreeTable = SkillTreeTable.getInstance();
-    public CharTemplateTable _charTemplates = CharTemplateTable.getInstance();
-    public ClanTable _clanTable = ClanTable.getInstance();
+    public SkillTreeTable skillTreeTable = SkillTreeTable.getInstance();
+    public CharTemplateTable charTemplates = CharTemplateTable.getInstance();
+    public ClanTable clanTable = ClanTable.getInstance();
 
-    public NpcTable _npcTable = NpcTable.getInstance();
+    public NpcTable npcTable = NpcTable.getInstance();
     
-    public TeleportLocationTable _teleTable = TeleportLocationTable.getInstance();
-    public LevelUpData _levelUpData = LevelUpData.getInstance();
-    public L2World _world = L2World.getInstance();   
-    public SpawnTable _spawnTable = SpawnTable.getInstance();
-    public GameTimeController _gameTimeController = GameTimeController.getInstance();
-    public Announcements _announcements = Announcements.getInstance();
-    public MapRegionTable _mapRegions = MapRegionTable.getInstance();
+    public TeleportLocationTable teleTable = TeleportLocationTable.getInstance();
+    public LevelUpData levelUpData = LevelUpData.getInstance();
+    public L2World world = L2World.getInstance();   
+    public SpawnTable spawnTable = SpawnTable.getInstance();
+    public GameTimeController gameTimeController = GameTimeController.getInstance();
+    public Announcements announcements = Announcements.getInstance();
+    public MapRegionTable mapRegions = MapRegionTable.getInstance();
     
     
     

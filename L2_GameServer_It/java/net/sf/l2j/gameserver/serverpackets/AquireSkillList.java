@@ -57,30 +57,30 @@ public class AquireSkillList extends L2GameServerPacket
 	private static final String _S__A3_AQUIRESKILLLIST = "[S] 8a AquireSkillList";
 	
 	private List<Skill> _skills;
-	private skillType _fishingskills;
+	private skillType _fishingSkills;
 	
 	private class Skill
 	{
-		public int _id;
-		public int _nextLevel;
-		public int _maxLevel;
-		public int _spCost;
-		public int _requirements;
+		public int id;
+		public int nextLevel;
+		public int maxLevel;
+		public int spCost;
+		public int requirements;
 		
-		public Skill(int id, int nextLevel, int maxLevel, int spCost, int requirements)
+		public Skill(int pId, int pNextLevel, int pMaxLevel, int pSpCost, int pRequirements)
 		{
-			_id = id;
-			_nextLevel = nextLevel;
-			_maxLevel = maxLevel;
-			_spCost = spCost;
-			_requirements = requirements;
+			id = pId;
+			nextLevel = pNextLevel;
+			maxLevel = pMaxLevel;
+			spCost = pSpCost;
+			requirements = pRequirements;
 		}
 	}
 
 	public AquireSkillList(skillType type)
 	{
 		_skills = new FastList<Skill>();
-		_fishingskills = type;
+		_fishingSkills = type;
 	}	
 	
 	public void addSkill(int id, int nextLevel, int maxLevel, int spCost, int requirements)
@@ -91,16 +91,16 @@ public class AquireSkillList extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x8a);
-        writeD(_fishingskills.ordinal());   //c4 : C5 : 0: usuall  1: fishing 2: clans
+        writeD(_fishingSkills.ordinal());   //c4 : C5 : 0: usuall  1: fishing 2: clans
 		writeD(_skills.size());
 
 		for (Skill temp : _skills)
 		{
-			writeD(temp._id);
-			writeD(temp._nextLevel);
-			writeD(temp._maxLevel);
-			writeD(temp._spCost);
-			writeD(temp._requirements);
+			writeD(temp.id);
+			writeD(temp.nextLevel);
+			writeD(temp.maxLevel);
+			writeD(temp.spCost);
+			writeD(temp.requirements);
 		}
 	}
 

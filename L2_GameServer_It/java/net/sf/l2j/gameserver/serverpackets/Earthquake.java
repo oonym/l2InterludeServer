@@ -29,7 +29,7 @@ public class Earthquake extends L2GameServerPacket
 	private int _y;
 	private int _z;
 	private int _intensity;
-        private int _duration;
+    private int _duration;
 	
 	/**
 	 * @param

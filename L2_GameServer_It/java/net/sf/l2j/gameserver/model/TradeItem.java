@@ -25,9 +25,9 @@ package net.sf.l2j.gameserver.model;
  */
 public final class TradeItem
 {
-    private int _ObjectId;
-    private int _ItemId;
-    private int _Price;
+    private int _objectId;
+    private int _itemId;
+    private int _price;
     private int _storePrice;
     private int _count;
 	private int _enchantLevel;
@@ -36,32 +36,32 @@ public final class TradeItem
 	
     public void setObjectId(int id)
     {
-        _ObjectId = id;
+        _objectId = id;
     }
 
     public int getObjectId()
     {
-        return _ObjectId;
+        return _objectId;
     }
 
     public void setItemId(int id)
     {
-        _ItemId = id;
+        _itemId = id;
     }
 
     public int getItemId()
     {
-        return _ItemId;
+        return _itemId;
     }
 
     public void setOwnersPrice(int price)
     {
-        _Price = price;
+        _price = price;
     }
 
     public int getOwnersPrice()
     {
-        return _Price;
+        return _price;
     }
 
     public void setstorePrice(int price)

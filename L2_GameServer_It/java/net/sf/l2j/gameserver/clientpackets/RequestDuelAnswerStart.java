@@ -29,6 +29,7 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 {
 	private static final String _C__D0_28_REQUESTDUELANSWERSTART = "[C] D0:28 RequestDuelAnswerStart";
 	private int _partyDuel;
+	@SuppressWarnings("unused")
 	private int _unk1;
 	private int _response;
 	

@@ -334,7 +334,7 @@ public class BlowfishEngine
     //==================================
     // Private Implementation
     //==================================
-    private int F(int x)
+    private int func(int x)
     {
         return (((S0[(x >>> 24)] + S1[(x >>> 16) & 0xff]) ^ S2[(x >>> 8) & 0xff]) + S3[x & 0xff]);
     }
@@ -350,8 +350,8 @@ public class BlowfishEngine
             xl ^= P[0];
             for (int i = 1; i < ROUNDS; i += 2)
             {
-                xr ^= F(xl) ^ P[i];
-                xl ^= F(xr) ^ P[i + 1];
+                xr ^= func(xl) ^ P[i];
+                xl ^= func(xr) ^ P[i + 1];
             }
             xr ^= P[ROUNDS + 1];
             table[s] = xr;
@@ -430,17 +430,17 @@ public class BlowfishEngine
      */
     private void encryptBlock(byte[] src, int srcIndex, byte[] dst, int dstIndex)
     {
-        int xl = BytesTo32bits(src, srcIndex);
-        int xr = BytesTo32bits(src, srcIndex + 4);
+        int xl = bytesTo32bits(src, srcIndex);
+        int xr = bytesTo32bits(src, srcIndex + 4);
         xl ^= P[0];
         for (int i = 1; i < ROUNDS; i += 2)
         {
-            xr ^= F(xl) ^ P[i];
-            xl ^= F(xr) ^ P[i + 1];
+            xr ^= func(xl) ^ P[i];
+            xl ^= func(xr) ^ P[i + 1];
         }
         xr ^= P[ROUNDS + 1];
-        Bits32ToBytes(xr, dst, dstIndex);
-        Bits32ToBytes(xl, dst, dstIndex + 4);
+        bits32ToBytes(xr, dst, dstIndex);
+        bits32ToBytes(xl, dst, dstIndex + 4);
     }
 
     /**
@@ -450,26 +450,26 @@ public class BlowfishEngine
      */
     private void decryptBlock(byte[] src, int srcIndex, byte[] dst, int dstIndex)
     {
-        int xl = BytesTo32bits(src, srcIndex);
-        int xr = BytesTo32bits(src, srcIndex + 4);
+        int xl = bytesTo32bits(src, srcIndex);
+        int xr = bytesTo32bits(src, srcIndex + 4);
         xl ^= P[ROUNDS + 1];
         for (int i = ROUNDS; i > 0; i -= 2)
         {
-            xr ^= F(xl) ^ P[i];
-            xl ^= F(xr) ^ P[i - 1];
+            xr ^= func(xl) ^ P[i];
+            xl ^= func(xr) ^ P[i - 1];
         }
         xr ^= P[0];
-        Bits32ToBytes(xr, dst, dstIndex);
-        Bits32ToBytes(xl, dst, dstIndex + 4);
+        bits32ToBytes(xr, dst, dstIndex);
+        bits32ToBytes(xl, dst, dstIndex + 4);
     }
 
-    private int BytesTo32bits(byte[] b, int i)
+    private int bytesTo32bits(byte[] b, int i)
     {
         return ((b[i + 3] & 0xff) << 24) | ((b[i + 2] & 0xff) << 16) | ((b[i + 1] & 0xff) << 8)
             | ((b[i] & 0xff));
     }
 
-    private void Bits32ToBytes(int in, byte[] b, int offset)
+    private void bits32ToBytes(int in, byte[] b, int offset)
     {
         b[offset] = (byte) in;
         b[offset + 1] = (byte) (in >> 8);

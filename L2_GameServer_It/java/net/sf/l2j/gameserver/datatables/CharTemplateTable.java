@@ -41,7 +41,7 @@ public class CharTemplateTable
 			
 	private static CharTemplateTable _instance;
 	
-    private static final String[] charClasses = {
+    private static final String[] CHAR_CLASSES = {
                                                 "Human Fighter", "Warrior", "Gladiator", "Warlord", "Human Knight", "Paladin", "Dark Avenger", "Rogue", "Treasure Hunter", "Hawkeye", "Human Mystic", "Human Wizard", "Sorceror", "Necromancer", "Warlock", "Cleric", "Bishop", "Prophet",
                                                 "Elven Fighter", "Elven Knight", "Temple Knight", "Swordsinger", "Elven Scout", "Plainswalker", "Silver Ranger", "Elven Mystic", "Elven Wizard", "Spellsinger", "Elemental Summoner", "Elven Oracle", "Elven Elder",
                                                 "Dark Fighter", "Palus Knight", "Shillien Knight", "Bladedancer", "Assassin", "Abyss Walker", "Phantom Ranger", "Dark Elven Mystic", "Dark Elven Wizard", "Spellhowler", "Phantom Summoner", "Shillien Oracle", "Shillien Elder",
@@ -168,14 +168,14 @@ public class CharTemplateTable
     
     public static final String getClassNameById(int classId)
     {
-        return charClasses[classId];
+        return CHAR_CLASSES[classId];
     }
     
     public static final int getClassIdByName(String className)
     {
         int currId = 1;
         
-        for (String name : charClasses)
+        for (String name : CHAR_CLASSES)
         {
             if (name.equalsIgnoreCase(className))
                 break;

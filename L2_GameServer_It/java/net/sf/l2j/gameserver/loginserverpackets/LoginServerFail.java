@@ -22,7 +22,7 @@ package net.sf.l2j.gameserver.loginserverpackets;
 public class LoginServerFail extends LoginServerBasePacket
 {
 
-	private static final String[] reasons = {"None" ,
+	private static final String[] REASONS = {"None" ,
 	                                        "Reason: ip banned",
 	                                        "Reason: ip reserved",
 	                                        "Reason: wrong hexid",
@@ -42,7 +42,7 @@ public class LoginServerFail extends LoginServerBasePacket
 	
 	public String getReasonString()
 	{
-		return reasons[_reason];
+		return REASONS[_reason];
 	}
 	
 	public int getReason()

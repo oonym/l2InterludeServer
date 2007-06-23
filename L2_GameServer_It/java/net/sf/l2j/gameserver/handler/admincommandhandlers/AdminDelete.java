@@ -38,7 +38,7 @@ public class AdminDelete implements IAdminCommandHandler
 {
     //private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
 
-    private static String[] _adminCommands = {"admin_delete"};
+    private static final String[] ADMIN_COMMANDS = {"admin_delete"};
 
     private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
@@ -57,7 +57,7 @@ public class AdminDelete implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

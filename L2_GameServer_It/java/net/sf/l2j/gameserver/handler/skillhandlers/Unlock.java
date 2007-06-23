@@ -16,7 +16,7 @@ import net.sf.l2j.util.Rnd;
 public class Unlock implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(Unlock.class.getName()); 
-	protected SkillType[] _skillIds = {SkillType.UNLOCK};
+	private static final SkillType[] SKILL_IDS = {SkillType.UNLOCK};
 
 	public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused")
 	L2Object[] targets)
@@ -158,6 +158,6 @@ public class Unlock implements ISkillHandler
 
 	public SkillType[] getSkillIds()
 	{
-		return _skillIds;
+		return SKILL_IDS;
 	}
 }

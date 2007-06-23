@@ -30,24 +30,24 @@ public class QuestManager
     protected static final Logger _log = Logger.getLogger(QuestManager.class.getName());
 
     // =========================================================
-    private static QuestManager _Instance;
+    private static QuestManager _instance;
     public static final QuestManager getInstance()
     {
-        if (_Instance == null)
+        if (_instance == null)
         {
     		System.out.println("Initializing QuestManager");
-            _Instance = new QuestManager();
+            _instance = new QuestManager();
             if (!Config.ALT_DEV_NO_QUESTS)
-            	_Instance.load();
+            	_instance.load();
         }
-        return _Instance;
+        return _instance;
     }
     // =========================================================
 
     
     // =========================================================
     // Data Field
-    private List<Quest> _Quests = new FastList<Quest>();
+    private List<Quest> _quests = new FastList<Quest>();
     
     // =========================================================
     // Constructor
@@ -142,7 +142,7 @@ public class QuestManager
     
     public final List<Quest> getQuests()
     {
-        if (_Quests == null) _Quests = new FastList<Quest>();
-        return _Quests;
+        if (_quests == null) _quests = new FastList<Quest>();
+        return _quests;
     }
 }

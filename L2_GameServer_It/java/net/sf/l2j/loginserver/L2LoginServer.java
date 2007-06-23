@@ -65,7 +65,7 @@ public class L2LoginServer
 	
 	public L2LoginServer()
 	{
-		Server.SERVER_MODE = Server.MODE_LOGINSERVER;
+		Server.serverMode = Server.MODE_LOGINSERVER;
 //      Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME   = "./log.cfg"; // Name of log file
@@ -215,7 +215,7 @@ public class L2LoginServer
 		{
 			try
 			{
-				_statusServer = new Status(Server.SERVER_MODE);
+				_statusServer = new Status(Server.serverMode);
 				_statusServer.start();
 			}
 			catch (IOException e)

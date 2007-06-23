@@ -36,7 +36,7 @@ public class L2Potion extends L2Object
     protected static final Logger _log = Logger.getLogger(L2Character.class.getName());
 
 
-	L2Character _target;
+	private L2Character _target;
 	
 	private Future _potionhpRegTask;
 	private Future _potionmpRegTask;

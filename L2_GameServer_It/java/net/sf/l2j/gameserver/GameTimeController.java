@@ -47,7 +47,7 @@ public class GameTimeController
 	protected static long _gameStartTime;
 	protected static boolean _isNight = false;
 
-	private static List<L2Character> movingObjects = new FastList<L2Character>();
+	private static List<L2Character> _movingObjects = new FastList<L2Character>();
 
 	protected static TimerThread _timer;
 	private ScheduledFuture _timerWatcher;
@@ -100,7 +100,7 @@ public class GameTimeController
 	public synchronized void registerMovingObject(L2Character cha)
 	{
 		if(cha == null) return;
-		if (!movingObjects.contains(cha)) movingObjects.add(cha);
+		if (!_movingObjects.contains(cha)) _movingObjects.add(cha);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class GameTimeController
 	protected synchronized void moveObjects()
 	{
 		// Get all L2Character from the ArrayList movingObjects and put them into a table
-		L2Character[] chars = movingObjects.toArray(new L2Character[movingObjects.size()]);
+		L2Character[] chars = _movingObjects.toArray(new L2Character[_movingObjects.size()]);
 
 		// Create an ArrayList to contain all L2Character that are arrived to destination
 		List<L2Character> ended = null;
@@ -135,7 +135,7 @@ public class GameTimeController
 			// If movement is finished, the L2Character is removed from movingObjects and added to the ArrayList ended
 			if (end)
 			{
-				movingObjects.remove(cha);
+				_movingObjects.remove(cha);
 				if (ended == null) ended = new FastList<L2Character>();
 
 				ended.add(cha);

@@ -48,9 +48,9 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 public class AdminDoorControl implements IAdminCommandHandler
 {
     //private static Logger      _log            = Logger.getLogger(AdminDoorControl.class.getName());
-    private static final int   REQUIRED_LEVEL  = Config.GM_DOOR;
+    private static final int   REQUIRED_LEVEL = Config.GM_DOOR;
     private static DoorTable   _doorTable;
-    private static String[]    _adminCommands  = 
+    private static final String[] ADMIN_COMMANDS  = 
     {
         "admin_open",
         "admin_close",
@@ -144,7 +144,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

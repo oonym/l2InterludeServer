@@ -53,7 +53,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class AdminSkill implements IAdminCommandHandler {
 	private static Logger _log = Logger.getLogger(AdminSkill.class.getName());
 	
-	private static String[] _adminCommands = {
+	private static final String[] ADMIN_COMMANDS = {
 			"admin_show_skills",
 			"admin_remove_skills",
 			"admin_skill_list",
@@ -211,7 +211,7 @@ public class AdminSkill implements IAdminCommandHandler {
     }
 
     public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class AdminMammon implements IAdminCommandHandler
 {
 
-    private static String[] _adminCommands = {"admin_mammon_find", "admin_mammon_respawn",
+    private static final String[] ADMIN_COMMANDS = {"admin_mammon_find", "admin_mammon_respawn",
                                               "admin_list_spawns", "admin_msg"};
     private static final int REQUIRED_LEVEL = Config.GM_MENU;
 
@@ -157,7 +157,7 @@ public class AdminMammon implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

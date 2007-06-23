@@ -22,9 +22,9 @@ public final class L2AuctioneerInstance extends L2FolkInstance
 {
     //private static Logger _log = Logger.getLogger(L2AuctioneerInstance.class.getName());
 
-    private static int Cond_All_False = 0;
-    private static int Cond_Busy_Because_Of_Siege = 1;
-    private static int Cond_Regular = 3;
+    private static final int COND_ALL_FALSE = 0;
+    private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
+    private static final int COND_REGULAR = 3;
     
     private Map<Integer, Auction> _pendingAuctions = new FastMap<Integer, Auction>();
 
@@ -50,19 +50,19 @@ public final class L2AuctioneerInstance extends L2FolkInstance
         player.sendPacket(new ActionFailed());
 
         int condition = validateCondition(player);
-        if (condition == Cond_All_False)
+        if (condition == COND_ALL_FALSE)
         {
         	//TODO: html
         	player.sendMessage("Wrong conditions.");
         	return;
         }
-        if (condition == Cond_Busy_Because_Of_Siege)
+        if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
         {
         	//TODO: html
         	player.sendMessage("Busy because of siege.");
         	return;
         }
-        else if (condition == Cond_Regular)
+        else if (condition == COND_REGULAR)
         {
             StringTokenizer st = new StringTokenizer(command, " ");
             String actualCommand = st.nextToken(); // Get actual command
@@ -521,7 +521,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
         String filename = "data/html/auction/auction-no.htm";
 
         int condition = validateCondition(player);
-        if (condition == Cond_Busy_Because_Of_Siege) filename = "data/html/auction/auction-busy.htm"; // Busy because of siege
+        if (condition == COND_BUSY_BECAUSE_OF_SIEGE) filename = "data/html/auction/auction-busy.htm"; // Busy because of siege
         else filename = "data/html/auction/auction.htm";
 
         NpcHtmlMessage html = new NpcHtmlMessage(1);
@@ -536,11 +536,11 @@ public final class L2AuctioneerInstance extends L2FolkInstance
     {
         if (getCastle() != null && getCastle().getCastleId() > 0)
         {
-            if (getCastle().getSiege().getIsInProgress()) return Cond_Busy_Because_Of_Siege; // Busy because of siege
-            else return Cond_Regular;
+            if (getCastle().getSiege().getIsInProgress()) return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
+            else return COND_REGULAR;
         }
 
-        return Cond_All_False;
+        return COND_ALL_FALSE;
     }
     private String getPictureName(L2PcInstance plyr)
     {

@@ -16,16 +16,16 @@ public class ObjectPosition
 
     // =========================================================
     // Data Field
-    private L2Object _ActiveObject;
-    private int _Heading    = 0;
-    private Point3D _WorldPosition;
-    private L2WorldRegion _WorldRegion;         // Object localization : Used for items/chars that are seen in the world
+    private L2Object _activeObject;
+    private int _heading    = 0;
+    private Point3D _worldPosition;
+    private L2WorldRegion _worldRegion;         // Object localization : Used for items/chars that are seen in the world
     
     // =========================================================
     // Constructor
     public ObjectPosition(L2Object activeObject)
     {
-        _ActiveObject = activeObject;
+        _activeObject = activeObject;
         setWorldRegion(L2World.getInstance().getRegion(getWorldPosition()));
     }
     
@@ -116,11 +116,11 @@ public class ObjectPosition
     // Property - Public
     public final L2Object getActiveObject()
     {
-        return _ActiveObject;
+        return _activeObject;
     }
     
-    public final int getHeading() { return _Heading; }
-    public final void setHeading(int value) { _Heading = value; }
+    public final int getHeading() { return _heading; }
+    public final void setHeading(int value) { _heading = value; }
 
     /** Return the x position of the L2Object. */
     public final int getX() { return getWorldPosition().getX(); }
@@ -136,8 +136,8 @@ public class ObjectPosition
 
     public final Point3D getWorldPosition()
     {
-        if (_WorldPosition == null) _WorldPosition = new Point3D(0, 0, 0);
-        return _WorldPosition;
+        if (_worldPosition == null) _worldPosition = new Point3D(0, 0, 0);
+        return _worldPosition;
     }
     public final void setWorldPosition(int x, int y, int z)
     {
@@ -145,6 +145,6 @@ public class ObjectPosition
     }
     public final void setWorldPosition(Point3D newPosition) { setWorldPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ()); }
     
-    public final L2WorldRegion getWorldRegion() { return _WorldRegion; }
-    public final void setWorldRegion(L2WorldRegion value) { _WorldRegion = value; }
+    public final L2WorldRegion getWorldRegion() { return _worldRegion; }
+    public final void setWorldRegion(L2WorldRegion value) { _worldRegion = value; }
 }

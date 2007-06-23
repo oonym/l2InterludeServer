@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public abstract class ConditionInventory extends Condition implements ConditionListener {
 
-	final int _slot;
+	protected final int _slot;
 	
 	public ConditionInventory(int slot)
 	{

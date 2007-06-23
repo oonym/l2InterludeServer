@@ -145,7 +145,8 @@ public class GeoData
 	{
     	
 	}
-    public static boolean LoadGeodataFile(byte rx, byte ry)
+    @Deprecated //TODO: cleanup?
+    public static boolean loadGeodataFile(byte rx, byte ry)
     {
     	return false;
     }

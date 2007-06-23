@@ -39,27 +39,27 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 public class Die extends L2GameServerPacket
 {
     private static final String _S__0B_DIE = "[S] 06 Die";
-    private int _chaId;
+    private int _charObjId;
     private boolean _fake;
     private boolean _sweepable;
     private int _access;
     private net.sf.l2j.gameserver.model.L2Clan _clan;
     private static final int REQUIRED_LEVEL = net.sf.l2j.Config.GM_FIXED;
-    L2Character _cha;
+    L2Character _activeChar;
 
     /**
      * @param _characters
      */
     public Die(L2Character cha)
     {
-        _cha = cha;
+    	_activeChar = cha;
         if (cha instanceof L2PcInstance) {
             L2PcInstance player = (L2PcInstance)cha;
             _access = player.getAccessLevel();
             _clan=player.getClan();
             
         }
-        _chaId = cha.getObjectId();
+        _charObjId = cha.getObjectId();
         _fake = !cha.isDead();
         if (cha instanceof L2Attackable)
             _sweepable = ((L2Attackable)cha).isSweepActive();
@@ -73,7 +73,7 @@ public class Die extends L2GameServerPacket
 
         writeC(0x06);
         
-        writeD(_chaId); 
+        writeD(_charObjId); 
         // NOTE:
         // 6d 00 00 00 00 - to nearest village
         // 6d 01 00 00 00 - to hide away
@@ -87,7 +87,7 @@ public class Die extends L2GameServerPacket
         {
             L2SiegeClan siegeClan = null;
             Boolean isInDefense = false;
-            Castle castle = CastleManager.getInstance().getCastle(_cha);
+            Castle castle = CastleManager.getInstance().getCastle(_activeChar);
             if (castle != null && castle.getSiege().getIsInProgress())
             {
             	//siege in progress            	

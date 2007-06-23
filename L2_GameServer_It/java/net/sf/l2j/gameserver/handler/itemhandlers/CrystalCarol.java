@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 
 public class CrystalCarol implements IItemHandler
 {
-	private static int[] _itemIds = { 5562, 5563, 5564, 5565, 5566, 5583, 5584, 5585, 5586, 5587,
+	private static final int[] ITEM_IDS = { 5562, 5563, 5564, 5565, 5566, 5583, 5584, 5585, 5586, 5587,
 									 4411, 4412, 4413, 4414, 4415, 4416, 4417, 5010, 6903, 7061, 7062, 8555};
 	
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -156,6 +156,6 @@ public class CrystalCarol implements IItemHandler
 	
 	public int[] getItemIds()
 	{
-		return _itemIds;
+		return ITEM_IDS;
 	}
 }

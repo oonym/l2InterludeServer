@@ -84,13 +84,13 @@ public class L2Attackable extends L2NpcInstance
     public final class AggroInfo
     {
         /** The attaker L2Character concerned by this AggroInfo of this L2Attackable */
-        L2Character attacker;
+    	protected L2Character _attacker;
         
         /** Hate level of this L2Attackable against the attaker L2Character (hate = damage) */
-        int hate;
+        protected int _hate;
         
         /** Number of damages that the attaker L2Character gave to this L2Attackable */
-        int damage;
+        protected int _damage;
         
         
         /**
@@ -98,7 +98,7 @@ public class L2Attackable extends L2NpcInstance
          */
         AggroInfo(L2Character pAttacker) 
         {
-            this.attacker = pAttacker;
+            this._attacker = pAttacker;
         }
         
         /**
@@ -106,7 +106,7 @@ public class L2Attackable extends L2NpcInstance
          */
         public boolean equals(Object obj) 
         {
-            return this == obj || this.attacker == attacker;
+            return this == obj || this._attacker == _attacker;
         }
         
         /**
@@ -114,7 +114,7 @@ public class L2Attackable extends L2NpcInstance
          */
         public int hashCode() 
         {
-            return this.attacker.getObjectId();
+            return this._attacker.getObjectId();
         }
         
     }
@@ -130,28 +130,28 @@ public class L2Attackable extends L2NpcInstance
      */
     protected final class RewardInfo
     {
-        protected L2Character attacker;
-        protected int dmg = 0;
+        protected L2Character _attacker;
+        protected int _dmg = 0;
         
         public RewardInfo(L2Character pAttacker, int pDmg)
         {
-            this.attacker = pAttacker;
-            this.dmg = pDmg;
+            this._attacker = pAttacker;
+            this._dmg = pDmg;
         }
         
         public void addDamage(int pDmg)
         {
-            this.dmg += pDmg;
+            this._dmg += pDmg;
         }
         
         public boolean equals(Object obj) 
         {
-            return this == obj || this.attacker == attacker;
+            return this == obj || this._attacker == _attacker;
         }
         
         public int hashCode() 
         {
-            return this.attacker.getObjectId();
+            return this._attacker.getObjectId();
         }
     }
     
@@ -165,18 +165,18 @@ public class L2Attackable extends L2NpcInstance
     public final class AbsorberInfo
     {
         /** The attaker L2Character concerned by this AbsorberInfo of this L2Attackable */
-        L2PcInstance absorber;
-        int crystalId;
-        double absorbedHP;
+    	protected L2PcInstance _absorber;
+    	protected int _crystalId;
+    	protected double _absorbedHP;
         
         /**
          * Constructor of AbsorberInfo.<BR><BR>
          */
         AbsorberInfo(L2PcInstance attacker, int pCrystalId, double pAbsorbedHP) 
         {
-            this.absorber = attacker;
-            this.crystalId = pCrystalId;
-            this.absorbedHP = pAbsorbedHP;
+            this._absorber = attacker;
+            this._crystalId = pCrystalId;
+            this._absorbedHP = pAbsorbedHP;
         }
         
         /**
@@ -184,7 +184,7 @@ public class L2Attackable extends L2NpcInstance
          */
         public boolean equals(Object obj) 
         {
-            return this == obj || this.absorber == absorber;
+            return this == obj || this._absorber == _absorber;
         }
         
         /**
@@ -192,7 +192,7 @@ public class L2Attackable extends L2NpcInstance
          */
         public int hashCode() 
         {
-            return this.absorber.getObjectId();
+            return this._absorber.getObjectId();
         }
     }
     
@@ -493,10 +493,10 @@ public class L2Attackable extends L2NpcInstance
             	if (info == null) continue;
 
                 // Get the L2Character corresponding to this attacker 
-                attacker = info.attacker;
+                attacker = info._attacker;
                     
                 // Get damages done by this attacker
-                damage = info.damage;
+                damage = info._damage;
                 
                 // Prevent unwanted behavior
                 if (damage > 1)
@@ -505,7 +505,7 @@ public class L2Attackable extends L2NpcInstance
                 		((attacker instanceof L2PetInstance) && ((L2PetInstance)attacker).getPetData().getOwnerExpTaken() > 0) )
                 		ddealer = ((L2Summon)attacker).getOwner();
                 	else
-                		ddealer = info.attacker;
+                		ddealer = info._attacker;
                 	
                 	// Check if ddealer isn't too far from this (killed monster)
                 	if (!Util.checkIfInRange(1600, this, ddealer, true)) continue;
@@ -550,10 +550,10 @@ public class L2Attackable extends L2NpcInstance
                 penalty = 0;
                 
                 // Attacker to be rewarded
-                attacker = reward.attacker;
+                attacker = reward._attacker;
                 
                 // Total amount of damage done
-                damage = reward.dmg;
+                damage = reward._dmg;
                 
                 // If the attacker is a Pet, get the party of the owner
                 if (attacker instanceof L2PetInstance)
@@ -635,7 +635,7 @@ public class L2Attackable extends L2NpcInstance
                         {
                         	if (Util.checkIfInRange(1600, this, pl, true))
                         	{
-                        		partyDmg += reward2.dmg; // Add L2PcInstance damages to party damages
+                        		partyDmg += reward2._dmg; // Add L2PcInstance damages to party damages
                         		rewardedMembers.add(pl);
                         		if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
                         	}
@@ -821,15 +821,15 @@ public class L2Attackable extends L2NpcInstance
         if (ai != null) 
         {
             // Add new damage and aggro (=damage) to the AggroInfo object
-            ai.damage += damage;
-            ai.hate += aggro;
+            ai._damage += damage;
+            ai._hate += aggro;
         } 
         else 
         {
             // Create a AggroInfo object and Init it
             ai = new AggroInfo(attacker);
-            ai.damage = damage;
-            ai.hate = aggro;
+            ai._damage = damage;
+            ai._hate = aggro;
             
             // Add the attaker L2Character and the AggroInfo object in the _aggroList of the L2Attackable
             getAggroListRP().put(attacker, ai);
@@ -874,12 +874,12 @@ public class L2Attackable extends L2NpcInstance
             for (AggroInfo ai : getAggroListRP().values())            
             {
             	if (ai == null) continue;
-            	if (ai.attacker.isAlikeDead() || !getKnownList().knowsObject(ai.attacker) ||!ai.attacker.isVisible())
-            		ai.hate = 0;
-            	if (ai.hate > maxHate)
+            	if (ai._attacker.isAlikeDead() || !getKnownList().knowsObject(ai._attacker) ||!ai._attacker.isVisible())
+            		ai._hate = 0;
+            	if (ai._hate > maxHate)
             	{
-            		mostHated = ai.attacker;
-            		maxHate = ai.hate;
+            		mostHated = ai._attacker;
+            		maxHate = ai._hate;
             	}        	
             }
         }                
@@ -898,23 +898,23 @@ public class L2Attackable extends L2NpcInstance
         
     	AggroInfo ai = getAggroListRP().get(target);
         if (ai == null) return 0;
-    	if (ai.attacker instanceof L2PcInstance && (((L2PcInstance)ai.attacker).getAppearance().getInvisible() || ai.attacker.isInvul()))
+    	if (ai._attacker instanceof L2PcInstance && (((L2PcInstance)ai._attacker).getAppearance().getInvisible() || ai._attacker.isInvul()))
     	{
     		//Remove Object Should Use This Method and Can be Blocked While Interating
     		getAggroList().remove(target);            	
     		return 0;            
     	}            
-    	if (!ai.attacker.isVisible())             
+    	if (!ai._attacker.isVisible())             
     	{            	
     		getAggroList().remove(target);                
     		return 0;           
     	}    	
-    	if (ai.attacker.isAlikeDead()) 
+    	if (ai._attacker.isAlikeDead()) 
         {
-            ai.hate = 0;
+            ai._hate = 0;
             return 0;
         }        
-    	return ai.hate;
+    	return ai._hate;
     }
 
     /**
@@ -1564,7 +1564,7 @@ public class L2Attackable extends L2NpcInstance
     	if (getAggroListRP().isEmpty()) return;
     	AggroInfo ai = getAggroListRP().get(target);
     	if (ai == null) return;
-    	ai.hate = 0;
+    	ai._hate = 0;
     }
     
     /**
@@ -1717,9 +1717,9 @@ public class L2Attackable extends L2NpcInstance
         }
         else
         {
-            ai.absorber = attacker;
-            ai.crystalId = crystalId;
-            ai.absorbedHP = getCurrentHp();
+            ai._absorber = attacker;
+            ai._crystalId = crystalId;
+            ai._absorbedHP = getCurrentHp();
         }
         
         // Set this L2Attackable as absorbed
@@ -1771,11 +1771,11 @@ public class L2Attackable extends L2NpcInstance
             
             // Fail if the killer isn't in the _absorbersList of this L2Attackable and mob is not boss
             AbsorberInfo ai = _absorbersList.get(killer);
-            if (ai == null || ai.absorber.getObjectId() != killer.getObjectId())
+            if (ai == null || ai._absorber.getObjectId() != killer.getObjectId())
                 isSuccess = false;
             
             // Check if the soul crystal was used when HP of this L2Attackable wasn't higher than half of it
-            if (ai != null && ai.absorbedHP > (getMaxHp()/2.0))
+            if (ai != null && ai._absorbedHP > (getMaxHp()/2.0))
                 isSuccess = false;
             
             if (!isSuccess) {             
@@ -2112,6 +2112,6 @@ public class L2Attackable extends L2NpcInstance
     
     private int getAbsorbLevel()
     {
-        return getTemplate().absorb_level;
+        return getTemplate().absorbLevel;
     }
 }

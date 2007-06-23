@@ -32,8 +32,8 @@ public class ConditionPlayerState extends Condition {
 
 	public enum CheckPlayerState { RESTING, MOVING, RUNNING, FLYING, BEHIND }
 	
-	final CheckPlayerState _check; 
-	final boolean _required;
+	private final CheckPlayerState _check; 
+	private final boolean _required;
 	
 	public ConditionPlayerState(CheckPlayerState check, boolean required)
 	{
@@ -45,18 +45,18 @@ public class ConditionPlayerState extends Condition {
 		switch (_check)
 		{
 		case RESTING:
-			if (env._player instanceof L2PcInstance) {
-				return ((L2PcInstance)env._player).isSitting() == _required;
+			if (env.player instanceof L2PcInstance) {
+				return ((L2PcInstance)env.player).isSitting() == _required;
 			}
 			return !_required;
 		case MOVING:
-			return env._player.isMoving() == _required;
+			return env.player.isMoving() == _required;
 		case RUNNING:
-			return env._player.isMoving() == _required && env._player.isRunning() == _required;
+			return env.player.isMoving() == _required && env.player.isRunning() == _required;
 		case FLYING:
-			return env._player.isFlying() == _required;
+			return env.player.isFlying() == _required;
         case BEHIND:
-            return env._player.isBehindTarget() == _required;
+            return env.player.isBehindTarget() == _required;
 		}
 		return !_required;
 	}

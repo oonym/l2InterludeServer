@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionLogicNot extends Condition {
 
-	Condition _condition;
+	private Condition _condition;
 	
 	public ConditionLogicNot(Condition condition)
 	{

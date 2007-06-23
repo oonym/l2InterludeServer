@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class PledgeShowMemberListUpdate extends L2GameServerPacket
 {
 	private static final String _S__54_PLEDGESHOWMEMBERLISTUPDATE = "[S] 54 PledgeShowMemberListUpdate";
-	private L2PcInstance _player;
+	private L2PcInstance _activeChar;
 	private int _pledgeType;
 	private int _hasSponsor;
 	private String _name;
@@ -41,22 +41,22 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 	
 	public PledgeShowMemberListUpdate(L2PcInstance player)
 	{
-		_player = player;
+		_activeChar = player;
 		_pledgeType = player.getPledgeType();
 		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY) 
-			_hasSponsor = _player.getSponsor() != 0 ? 1 : 0;
+			_hasSponsor = _activeChar.getSponsor() != 0 ? 1 : 0;
 		else 
 			_hasSponsor = 0;
-		_name = _player.getName();
-		_level = _player.getLevel();
-		_classId = _player.getClassId().getId();
-		_objectId = _player.getObjectId();
-		_isOnline = _player.isOnline();
+		_name = _activeChar.getName();
+		_level = _activeChar.getLevel();
+		_classId = _activeChar.getClassId().getId();
+		_objectId = _activeChar.getObjectId();
+		_isOnline = _activeChar.isOnline();
 	}
 	
 	public PledgeShowMemberListUpdate(L2ClanMember player)
 	{
-		_player = player.getPlayerInstance();
+		_activeChar = player.getPlayerInstance();
 		_name=player.getName();
 		_level=player.getLevel();
 		_classId=player.getClassId();
@@ -67,7 +67,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 			_isOnline=0;
 		_pledgeType = player.getPledgeType();
 		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY) 
-			_hasSponsor = _player.getSponsor() != 0 ? 1 : 0;
+			_hasSponsor = _activeChar.getSponsor() != 0 ? 1 : 0;
 		else 
 			_hasSponsor = 0;
 	 	}	

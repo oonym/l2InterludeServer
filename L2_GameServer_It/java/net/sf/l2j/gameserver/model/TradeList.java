@@ -40,11 +40,11 @@ public class TradeList
 {
     public class TradeItem
     {
-        int _objectId;
-        L2Item _item;
-        int _enchant;
-        int _count;
-        int _price;
+        private int _objectId;
+        private L2Item _item;
+        private int _enchant;
+        private int _count;
+        private int _price;
 
         public TradeItem(L2ItemInstance item, int count, int price)
         {
@@ -312,7 +312,7 @@ public class TradeList
         _items.add(titem);
 
         // If Player has already confirmed this trade, invalidate the confirmation
-        InvalidateConfirmation();
+        invalidateConfirmation();
         return titem;
     }
 
@@ -350,7 +350,7 @@ public class TradeList
         _items.add(titem);
 
         // If Player has already confirmed this trade, invalidate the confirmation
-        InvalidateConfirmation();
+        invalidateConfirmation();
         return titem;
     }
 
@@ -380,7 +380,7 @@ public class TradeList
                         _log.warning(_partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
                         return null;
                     }
-                    partnerList.InvalidateConfirmation();
+                    partnerList.invalidateConfirmation();
                 }
 
                 // Reduce item count or complete item
@@ -408,7 +408,7 @@ public class TradeList
     /**
      * Lockes TradeList, no further changes are allowed
      */
-    public void Lock()
+    public void lock()
     {
         _locked = true;
     }
@@ -416,7 +416,7 @@ public class TradeList
     /**
      * Clears item list
      */
-    public void Clear()
+    public void clear()
     {
         _items.clear();
         _locked = false;
@@ -426,7 +426,7 @@ public class TradeList
      * Confirms TradeList
      * @return : boolean
      */
-    public boolean Confirm()
+    public boolean confirm()
     {
         if (_confirmed) return true; // Already confirmed
 
@@ -453,10 +453,10 @@ public class TradeList
                     _confirmed = true;
                     if (partnerList.isConfirmed())
                     {
-                        partnerList.Lock();
-                        this.Lock();
-                        if (!partnerList.Validate()) return false;
-                        if (!this.Validate()) return false;
+                        partnerList.lock();
+                        this.lock();
+                        if (!partnerList.validate()) return false;
+                        if (!this.validate()) return false;
 
                         doExchange(partnerList);
                     }
@@ -472,7 +472,7 @@ public class TradeList
     /**
      * Cancels TradeList confirmation
      */
-    public void InvalidateConfirmation()
+    public void invalidateConfirmation()
     {
         _confirmed = false;
     }
@@ -480,7 +480,7 @@ public class TradeList
     /**
      * Validates TradeList with owner inventory
      */
-    private boolean Validate()
+    private boolean validate()
     {
         // Check for Owner validity
         if (_owner == null || L2World.getInstance().findObject(_owner.getObjectId()) == null)
@@ -630,9 +630,9 @@ public class TradeList
     public synchronized boolean PrivateStoreBuy(L2PcInstance player, ItemRequest[] items, int price)
     {
         if (_locked) return false;
-        if (!Validate())
+        if (!validate())
         {
-            Lock();
+            lock();
             return false;
         }
 
@@ -671,7 +671,7 @@ public class TradeList
         // Transfer adena
         if (price > playerInventory.getAdena())
         {
-            Lock();
+            lock();
             return false;
         }
         ;
@@ -692,7 +692,7 @@ public class TradeList
             L2ItemInstance oldItem = _owner.checkItemManipulation(item.getObjectId(), item.getCount(), "sell");
             if (oldItem == null)
             {
-                Lock();
+                lock();
                 return false;
             }
 
@@ -710,7 +710,7 @@ public class TradeList
             // Send messages about the transaction to both players 
             if (newItem.isStackable())
             {
-                SystemMessage msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_s);
+                SystemMessage msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_S);
                 msg.addString(player.getName());
                 msg.addItemName(newItem.getItemId());
                 msg.addNumber(item.getCount());
@@ -797,7 +797,7 @@ public class TradeList
                 msg.addNumber(item.getCount());
                 _owner.sendPacket(msg);
 
-                msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_s);
+                msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_S);
                 msg.addString(_owner.getName());
                 msg.addItemName(newItem.getItemId());
                 msg.addNumber(item.getCount());

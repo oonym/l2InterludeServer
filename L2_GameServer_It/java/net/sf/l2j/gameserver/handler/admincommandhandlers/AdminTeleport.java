@@ -54,7 +54,7 @@ public class AdminTeleport implements IAdminCommandHandler
 {
     private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
     
-    private static String[] _adminCommands = {
+    private static final String[] ADMIN_COMMANDS = {
         "admin_show_moves",
         "admin_show_moves_other",
         "admin_show_teleport",
@@ -353,7 +353,7 @@ public class AdminTeleport implements IAdminCommandHandler
     
     public String[] getAdminCommandList() 
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
     
     private boolean checkLevel(int level) 

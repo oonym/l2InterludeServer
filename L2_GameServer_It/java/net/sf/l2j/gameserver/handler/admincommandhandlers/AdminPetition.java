@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminPetition implements IAdminCommandHandler
 {
-	private static String[] _adminCommands = {"admin_view_petitions", "admin_view_petition",
+	private static final String[] ADMIN_COMMANDS = {"admin_view_petitions", "admin_view_petition",
 	                                          "admin_accept_petition", "admin_reject_petition",
                                               "admin_reset_petitions"};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
@@ -94,7 +94,7 @@ public class AdminPetition implements IAdminCommandHandler
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

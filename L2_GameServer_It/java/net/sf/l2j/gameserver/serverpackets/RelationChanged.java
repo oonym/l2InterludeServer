@@ -28,15 +28,15 @@ public class RelationChanged extends L2GameServerPacket
 
 	private static final String _S__CE_RELATIONCHANGED = "[S] CE RelationChanged";
 
-	int _objId, _relation, _autoattackable, _karma, _pvpflag;
+	private int _objId, _relation, _autoAttackable, _karma, _pvpFlag;
 	
 	public RelationChanged(L2PcInstance cha, int relation, boolean autoattackable)
 	{
 		_objId = cha.getObjectId();
 		_relation = relation;
-		_autoattackable = autoattackable ? 1 : 0;
+		_autoAttackable = autoattackable ? 1 : 0;
 		_karma = cha.getKarma();
-		_pvpflag = cha.getPvpFlag();
+		_pvpFlag = cha.getPvpFlag();
 	}
 
 	/**
@@ -49,9 +49,9 @@ public class RelationChanged extends L2GameServerPacket
 		writeC(0xce);
 		writeD(_objId);
 		writeD(_relation);
-		writeD(_autoattackable);
+		writeD(_autoAttackable);
 		writeD(_karma);
-		writeD(_pvpflag);
+		writeD(_pvpFlag);
 	}
 
 	/**

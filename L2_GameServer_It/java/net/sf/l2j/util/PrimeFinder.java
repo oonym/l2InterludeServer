@@ -39,7 +39,7 @@ public final class PrimeFinder {
      * The largest prime this class can generate; currently equal to
      * <tt>Integer.MAX_VALUE</tt>.
      */
-    public static final int largestPrime = Integer.MAX_VALUE; //yes, it is prime.
+    public static final int LARGEST_PRIME = Integer.MAX_VALUE; //yes, it is prime.
 
     /**
      * The prime number list consists of 11 chunks.
@@ -78,9 +78,9 @@ public final class PrimeFinder {
      * If you are stingy, then delete every second or fourth chunk.
      */
     
-    private static final int[] primeCapacities = {
+    private static final int[] PRIME_CAPACITIES = {
         //chunk #0
-        largestPrime,
+    	LARGEST_PRIME,
         
         //chunk #1
         5,11,23,47,97,197,397,797,1597,3203,6421,12853,25717,51437,102877,205759,
@@ -135,7 +135,7 @@ public final class PrimeFinder {
         // The above prime numbers are formatted for human readability.
         // To find numbers fast, we sort them once and for all.
         
-        Arrays.sort(primeCapacities);
+        Arrays.sort(PRIME_CAPACITIES);
     }
     
     /**
@@ -147,12 +147,12 @@ public final class PrimeFinder {
      * @return the capacity which should be used for a hashtable.
      */
     public static final int nextPrime(int desiredCapacity) {
-        int i = Arrays.binarySearch(primeCapacities, desiredCapacity);
+        int i = Arrays.binarySearch(PRIME_CAPACITIES, desiredCapacity);
         if (i<0) {
             // desired capacity not found, choose next prime greater
             // than desired capacity
             i = -i -1; // remember the semantics of binarySearch...
         }
-        return primeCapacities[i];
+        return PRIME_CAPACITIES[i];
     }
 }

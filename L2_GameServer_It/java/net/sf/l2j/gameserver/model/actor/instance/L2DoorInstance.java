@@ -60,14 +60,14 @@ public class L2DoorInstance extends L2Character
     protected static final Logger log = Logger.getLogger(L2DoorInstance.class.getName());
 
     /** The castle index in the array of L2Castle this L2NpcInstance belongs to */
-    private int _CastleIndex = -2;
+    private int _castleIndex = -2;
 
     protected final int _doorId;
     protected final String _name;
     private int _open;
     private boolean _unlockable;
     
-    private ClanHall _clanhall;
+    private ClanHall _clanHall;
     
     protected int _autoActionDelay = -1;
     private ScheduledFuture _autoActionTask;
@@ -253,17 +253,17 @@ public class L2DoorInstance extends L2Character
 
     public final Castle getCastle()
     {
-        if (_CastleIndex < 0) _CastleIndex = CastleManager.getInstance().getCastleIndex(this);
-        if (_CastleIndex < 0) return null;
-        return CastleManager.getInstance().getCastles().get(_CastleIndex);
+        if (_castleIndex < 0) _castleIndex = CastleManager.getInstance().getCastleIndex(this);
+        if (_castleIndex < 0) return null;
+        return CastleManager.getInstance().getCastles().get(_castleIndex);
     }
     public void setClanHall(ClanHall clanhall)
     {
-	_clanhall = clanhall;
+	_clanHall = clanhall;
     }
     public ClanHall getClanHall()
     {
-	return _clanhall;
+	return _clanHall;
     }
 
     public boolean isEnemyOf(@SuppressWarnings("unused") L2Character cha) 

@@ -52,7 +52,7 @@ public class DesireTable
 
     class DesireValue
     {
-        private float value;
+        private float _value;
 
         DesireValue()
         {
@@ -61,37 +61,37 @@ public class DesireTable
 
         DesireValue(Float pValue)
         {
-            this.value = pValue;
+            this._value = pValue;
         }
 
         public void addValue(float pValue)
         {
-            this.value += pValue;
+            this._value += pValue;
         }
 
         public float getValue()
         {
-            return value;
+            return _value;
         }
     }
 
     class Desires
     {
-        private Map<DesireType, DesireValue> desireTable;
+        private Map<DesireType, DesireValue> _desireTable;
 
         public Desires(DesireType... desireList)
         {
-            desireTable = new FastMap<DesireType, DesireValue>();
+            _desireTable = new FastMap<DesireType, DesireValue>();
 
             for (DesireType desire : desireList)
             {
-                desireTable.put(desire, new DesireValue());
+                _desireTable.put(desire, new DesireValue());
             }
         }
 
         public DesireValue getDesireValue(DesireType type)
         {
-            return desireTable.get(type);
+            return _desireTable.get(type);
         }
 
         public void addValue(DesireType type, float value)
@@ -105,68 +105,68 @@ public class DesireTable
 
         public void createDesire(DesireType type)
         {
-            desireTable.put(type, new DesireValue());
+            _desireTable.put(type, new DesireValue());
         }
 
         public void deleteDesire(DesireType type)
         {
-            desireTable.remove(type);
+            _desireTable.remove(type);
         }
     }
 
-    private Map<L2Object, Desires> objectDesireTable;
-    private Desires generalDesires;
-    private DesireType[] desireTypes;
+    private Map<L2Object, Desires> _objectDesireTable;
+    private Desires _generalDesires;
+    private DesireType[] _desireTypes;
 
     public DesireTable(DesireType... desireList)
     {
-        desireTypes = desireList;
-        objectDesireTable = new FastMap<L2Object, Desires>();
-        generalDesires = new Desires(desireTypes);
+        _desireTypes = desireList;
+        _objectDesireTable = new FastMap<L2Object, Desires>();
+        _generalDesires = new Desires(_desireTypes);
     }
 
     public float getDesireValue(DesireType type)
     {
-        return generalDesires.getDesireValue(type).getValue();
+        return _generalDesires.getDesireValue(type).getValue();
     }
 
     public float getDesireValue(L2Object object, DesireType type)
     {
-        Desires desireList = objectDesireTable.get(object);
+        Desires desireList = _objectDesireTable.get(object);
         if (desireList == null) return 0f;
         return desireList.getDesireValue(type).getValue();
     }
 
     public void addDesireValue(DesireType type, float value)
     {
-        generalDesires.addValue(type, value);
+        _generalDesires.addValue(type, value);
     }
 
     public void addDesireValue(L2Object object, DesireType type, float value)
     {
-        Desires desireList = objectDesireTable.get(object);
+        Desires desireList = _objectDesireTable.get(object);
         if (desireList != null) desireList.addValue(type, value);
     }
 
     public void createDesire(DesireType type)
     {
-        generalDesires.createDesire(type);
+        _generalDesires.createDesire(type);
     }
 
     public void deleteDesire(DesireType type)
     {
-        generalDesires.deleteDesire(type);
+        _generalDesires.deleteDesire(type);
     }
 
     public void createDesire(L2Object object, DesireType type)
     {
-        Desires desireList = objectDesireTable.get(object);
+        Desires desireList = _objectDesireTable.get(object);
         if (desireList != null) desireList.createDesire(type);
     }
 
     public void deleteDesire(L2Object object, DesireType type)
     {
-        Desires desireList = objectDesireTable.get(object);
+        Desires desireList = _objectDesireTable.get(object);
         if (desireList != null) desireList.deleteDesire(type);
     }
 
@@ -181,6 +181,6 @@ public class DesireTable
 
     public void addKnownObject(L2Object object, DesireType... desireList)
     {
-        if (object != null) objectDesireTable.put(object, new Desires(desireList));
+        if (object != null) _objectDesireTable.put(object, new Desires(desireList));
     }
 }

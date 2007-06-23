@@ -15,40 +15,40 @@ public class PartySpelled extends L2GameServerPacket
 {
     private static final String _S__EE_PartySpelled = "[S] EE PartySpelled";
     private List<Effect> _effects;
-    private L2Character _char;
+    private L2Character _activeChar;
 
-    class Effect
+    private class Effect
     {
-        int skillId;
-        int dat;
-        int duration;
+    	protected int _skillId;
+    	protected int _dat;
+    	protected int _duration;
 
         public Effect(int pSkillId, int pDat, int pDuration)
         {
-            this.skillId = pSkillId;
-            this.dat = pDat;
-            this.duration = pDuration;
+            this._skillId = pSkillId;
+            this._dat = pDat;
+            this._duration = pDuration;
         }
     }
 
     public PartySpelled(L2Character cha)
     {
         _effects = new FastList<Effect>();
-        _char = cha;
+        _activeChar = cha;
     }
 
     protected final void writeImpl()
     {
-        if (_char == null) return;
+        if (_activeChar == null) return;
         writeC(0xee);
-        writeD(_char instanceof L2Summon ? 2 : 0);
-        writeD(_char.getObjectId());
+        writeD(_activeChar instanceof L2Summon ? 2 : 0);
+        writeD(_activeChar.getObjectId());
         writeD(_effects.size());
         for (Effect temp : _effects)
         {
-            writeD(temp.skillId);
-            writeH(temp.dat);
-            writeD(temp.duration / 1000);
+            writeD(temp._skillId);
+            writeH(temp._dat);
+            writeD(temp._duration / 1000);
         }
 
     }

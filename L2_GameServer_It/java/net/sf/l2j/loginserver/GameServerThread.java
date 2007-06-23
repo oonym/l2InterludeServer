@@ -626,7 +626,7 @@ public class GameServerThread extends Thread
 	{
 		if (L2LoginServer.getInstance().getStatusServer() != null)
 		{
-			L2LoginServer.getInstance().getStatusServer().SendMessageToTelnets(msg);
+			L2LoginServer.getInstance().getStatusServer().sendMessageToTelnets(msg);
 		}
 	}
 	

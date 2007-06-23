@@ -36,9 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminPolymorph implements IAdminCommandHandler
 {
-    //private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
-
-    private static String[] _adminCommands = { "admin_polymorph" };
+    private static final String[] ADMIN_COMMANDS = { "admin_polymorph" };
 
     private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
@@ -67,7 +65,7 @@ public class AdminPolymorph implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)

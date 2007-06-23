@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class TargetUnselected extends L2GameServerPacket
 {
 	private static final String _S__3A_TARGETUNSELECTED = "[S] 2A TargetUnselected";
-	private int _targetId;
+	private int _targetObjId;
 	private int _x;
 	private int _y;
 	private int _z;
@@ -40,18 +40,18 @@ public class TargetUnselected extends L2GameServerPacket
 	/**
 	 * @param _characters
 	 */
-	public TargetUnselected(L2Character cha)
+	public TargetUnselected(L2Character character)
 	{
-		_targetId = cha.getObjectId();
-		_x = cha.getX();
-		_y = cha.getY();
-		_z = cha.getZ();
+		_targetObjId = character.getObjectId();
+		_x = character.getX();
+		_y = character.getY();
+		_z = character.getZ();
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x2a);
-		writeD(_targetId);
+		writeD(_targetObjId);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);

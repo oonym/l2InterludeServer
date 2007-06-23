@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminInvul implements IAdminCommandHandler {
 	private static Logger _log = Logger.getLogger(AdminInvul.class.getName());
-	private static String[] _adminCommands = {"admin_invul", "admin_setinvul"};
+	private static final String[] ADMIN_COMMANDS = {"admin_invul", "admin_setinvul"};
 	private static final int REQUIRED_LEVEL = Config.GM_GODMODE;
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
@@ -55,7 +55,7 @@ public class AdminInvul implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

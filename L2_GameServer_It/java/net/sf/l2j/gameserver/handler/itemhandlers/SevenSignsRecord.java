@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SSQStatus;
  * @author Tempy
  */
 public class SevenSignsRecord implements IItemHandler {
-private static int[] _itemIds = {5707};
+private static final int[] ITEM_IDS = {5707};
 	
 	public void useItem(L2PlayableInstance playable, @SuppressWarnings("unused") L2ItemInstance item)
 	{
@@ -50,6 +50,6 @@ private static int[] _itemIds = {5707};
 		
 	public int[] getItemIds()
 	{
-       return _itemIds;
+       return ITEM_IDS;
 	}
 }

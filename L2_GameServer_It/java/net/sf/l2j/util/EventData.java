@@ -32,9 +32,9 @@ public class EventData
     public int eventX;
     public int eventY;
     public int eventZ;
-    public int eventkarma;
-    public int eventpvpkills;
-    public int eventpkkills;
+    public int eventKarma;
+    public int eventPvpKills;
+    public int eventPkKills;
     public String eventTitle;
     public LinkedList<String> kills = new LinkedList<String>();
     public boolean eventSitForced = false;
@@ -43,14 +43,14 @@ public class EventData
                      int pEventpkkills, String pEventTitle, LinkedList<String> pKills,
                      boolean pEventSitForced)
     {
-        this.eventX = pEventX;
-        this.eventY = pEventY;
-        this.eventZ = pEventZ;
-        this.eventkarma = pEventkarma;
-        this.eventpvpkills = pEventpvpkills;
-        this.eventpkkills = pEventpkkills;
-        this.eventTitle = pEventTitle;
-        this.kills = pKills;
-        this.eventSitForced = pEventSitForced;
+        eventX = pEventX;
+        eventY = pEventY;
+        eventZ = pEventZ;
+        eventKarma = pEventkarma;
+        eventPvpKills = pEventpvpkills;
+        eventPkKills = pEventpkkills;
+        eventTitle = pEventTitle;
+        kills = pKills;
+        eventSitForced = pEventSitForced;
     }
 }

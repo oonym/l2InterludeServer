@@ -5,28 +5,28 @@ public class FishData
 		private int _id;
 		private int _level;
 		private String _name;
-		private int _HP;
-		private int _HpRegen;
+		private int _hp;
+		private int _hpRegen;
 		private int _type;
 		private int _group;
-		private int _fish_guts;
-		private int _guts_check_time;
-		private int _wait_time;
-		private int _combat_time;
+		private int _fishGuts;
+		private int _gutsCheckTime;
+		private int _waitTime;
+		private int _combatTime;
 
 		public FishData(int id, int lvl, String name, int HP, int HpRegen, int type, int group, int fish_guts, int guts_check_time, int wait_time, int combat_time)
 		{
 			_id = id;
 			_level = lvl;
 			_name = name.intern();
-			_HP = HP;
-			_HpRegen = HpRegen;
+			_hp = HP;
+			_hpRegen = HpRegen;
 			_type = type;
 			_group = group;
-			_fish_guts = fish_guts;
-			_guts_check_time = guts_check_time;
-			_wait_time = wait_time;
-			_combat_time = combat_time;
+			_fishGuts = fish_guts;
+			_gutsCheckTime = guts_check_time;
+			_waitTime = wait_time;
+			_combatTime = combat_time;
 		}
 
 		/**
@@ -55,11 +55,11 @@ public class FishData
 
 		public int getHP()
 		{
-			return _HP;
+			return _hp;
 		}
 		public int getHpRegen()
 		{
-			return _HpRegen;
+			return _hpRegen;
 		}
 		public int getType()
 		{
@@ -71,19 +71,19 @@ public class FishData
 		}
 		public int getFishGuts()
 		{
-			return _fish_guts;
+			return _fishGuts;
 		}
 		public int getGutsCheckTime()
 		{
-			return _guts_check_time;
+			return _gutsCheckTime;
 		}
 		public int getWaitTime()
 		{
-			return _wait_time;
+			return _waitTime;
 		}
 		public int getCombatTime()
 		{
-			return _combat_time;
+			return _combatTime;
 		}
 		public void setType(int type) 
 		{

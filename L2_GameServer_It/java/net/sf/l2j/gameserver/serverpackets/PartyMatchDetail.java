@@ -37,22 +37,22 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class PartyMatchDetail extends L2GameServerPacket
 {
 	private static final String _S__B0_PARTYMATCHDETAIL = "[S] 97 PartyMatchDetail";
-	private L2PcInstance _player;
+	private L2PcInstance _activeChar;
 	
 	/**
 	 * @param allPlayers
 	 */
 	public PartyMatchDetail(L2PcInstance player)
 	{
-		_player = player;
+		_activeChar = player;
 	}
 	
 	protected final void writeImpl()
 	{
 		writeC(0x97);
 		
-		writeD(_player.getObjectId());
-		if (_player.isPartyMatchingShowLevel())
+		writeD(_activeChar.getObjectId());
+		if (_activeChar.isPartyMatchingShowLevel())
 		{
 			writeD(1); // show level
 		}
@@ -61,7 +61,7 @@ public class PartyMatchDetail extends L2GameServerPacket
 			writeD(0); // hide level 
 		}
 		
-		if (_player.isPartyMatchingShowClass())
+		if (_activeChar.isPartyMatchingShowClass())
 		{
 			writeD(1); // show class
 		}
@@ -72,7 +72,7 @@ public class PartyMatchDetail extends L2GameServerPacket
 		
 		writeD(0); //c2
 		
-		writeS("  " + _player.getPartyMatchingMemo()); // seems to be bugged.. first 2 chars get stripped away
+		writeS("  " + _activeChar.getPartyMatchingMemo()); // seems to be bugged.. first 2 chars get stripped away
 	}
 
 	/* (non-Javadoc)

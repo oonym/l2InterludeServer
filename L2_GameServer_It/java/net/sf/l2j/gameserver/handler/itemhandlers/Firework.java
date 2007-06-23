@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 public class Firework implements IItemHandler 
 {
     //Modified by Baghak (Prograsso): Added Firework support
-    private static int[] _itemIds = { 6403, 6406, 6407 };
+    private static final int[] ITEM_IDS = { 6403, 6406, 6407 };
     
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
@@ -85,6 +85,6 @@ public class Firework implements IItemHandler
     }
     public int[] getItemIds()
     {
-        return _itemIds;
+        return ITEM_IDS;
     }
 }

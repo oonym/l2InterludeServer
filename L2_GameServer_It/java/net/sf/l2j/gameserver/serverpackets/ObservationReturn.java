@@ -30,7 +30,7 @@ public class ObservationReturn extends L2GameServerPacket
 {
 	// ddSS
 	private static final String _S__E0_OBSERVRETURN = "[S] E0 ObservationReturn";
-	private L2PcInstance _char;
+	private L2PcInstance _activeChar;
 	
 
 	/**
@@ -38,16 +38,16 @@ public class ObservationReturn extends L2GameServerPacket
 	 */
 	public ObservationReturn(L2PcInstance observer)
 	{
-		_char = observer;
+		_activeChar = observer;
 	}
 	
 
 	protected final void writeImpl()
 	{
 		writeC( 0xe0 ); 
-		writeD( _char.getObsX() ); 
-		writeD( _char.getObsY() ); 
-		writeD( _char.getObsZ() ); 
+		writeD( _activeChar.getObsX() ); 
+		writeD( _activeChar.getObsY() ); 
+		writeD( _activeChar.getObsZ() ); 
 	}
 	
 	/* (non-Javadoc)

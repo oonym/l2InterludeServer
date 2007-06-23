@@ -70,9 +70,9 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final int     armor;
 	public final String  factionId;
 	public final int     factionRange;
-    public final int     absorb_level;
+    public final int     absorbLevel;
 	
-	private final StatsSet npcStatsSet;
+	private final StatsSet _npcStatsSet;
 
 	/** fixed skills*/
 	public int     race;
@@ -120,14 +120,14 @@ public final class L2NpcTemplate extends L2CharTemplate
 		else
 			factionId = f.intern();
 		factionRange  = set.getInteger("factionRange");
-        absorb_level  = set.getInteger("absorb_level", 0);
+        absorbLevel  = set.getInteger("absorb_level", 0);
 		//String r = set.getString("race", null);
 		//if (r == null)
 		//	race = null;
 		//else
 		//	race = r.intern();
 		race = 0;
-		npcStatsSet = set;
+		_npcStatsSet = set;
 		_teachInfo = null;
 	}
 	
@@ -309,7 +309,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	
 	public StatsSet getStatsSet()
 	{
-		return npcStatsSet;
+		return _npcStatsSet;
 	}
 	public void setRace(int newrace)
 	{

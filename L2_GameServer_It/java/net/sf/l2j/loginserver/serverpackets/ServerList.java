@@ -61,31 +61,31 @@ public final class ServerList extends L2LoginServerPacket
 
 	class ServerData
 	{
-		String ip;
-		int port;
-		boolean pvp;
-		int currentPlayers;
-		int maxPlayers;
-		boolean testServer;
-		boolean brackets;
-		boolean clock;
-		int status;
-		public int server_id;
+		protected String _ip;
+		protected int _port;
+		protected boolean _pvp;
+		protected int _currentPlayers;
+		protected int _maxPlayers;
+		protected boolean _testServer;
+		protected boolean _brackets;
+		protected boolean _clock;
+		protected int _status;
+		protected int _serverId;
 
 		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers,
 				int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
-				{
-			this.ip = pIp;
-			this.port = pPort;
-			this.pvp = pPvp;
-			this.testServer = pTestServer;
-			this.currentPlayers = pCurrentPlayers;
-			this.maxPlayers = pMaxPlayers;
-			this.brackets = pBrackets;
-			this.clock = pClock;
-			this.status = pStatus;
-			this.server_id = pServer_id;
-				}
+		{
+			this._ip = pIp;
+			this._port = pPort;
+			this._pvp = pPvp;
+			this._testServer = pTestServer;
+			this._currentPlayers = pCurrentPlayers;
+			this._maxPlayers = pMaxPlayers;
+			this._brackets = pBrackets;
+			this._clock = pClock;
+			this._status = pStatus;
+			this._serverId = pServer_id;
+		}
 	}
 
 	public ServerList(L2LoginClient client)
@@ -126,11 +126,11 @@ public final class ServerList extends L2LoginServerPacket
 		writeC(_lastServer);
 		for (ServerData server : _servers)
 		{
-			writeC(server.server_id); // server id
+			writeC(server._serverId); // server id
 
 			try
 			{
-				InetAddress i4 = InetAddress.getByName(server.ip);
+				InetAddress i4 = InetAddress.getByName(server._ip);
 				byte[] raw = i4.getAddress();
 				writeC(raw[0] & 0xff);
 				writeC(raw[1] & 0xff);
@@ -146,23 +146,23 @@ public final class ServerList extends L2LoginServerPacket
 				writeC(1);
 			}
 
-			writeD(server.port);
+			writeD(server._port);
 			writeC(0x00); // age limit
-			writeC(server.pvp ? 0x01 : 0x00);
-			writeH(server.currentPlayers);
-			writeH(server.maxPlayers);
-			writeC(server.status == ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
+			writeC(server._pvp ? 0x01 : 0x00);
+			writeH(server._currentPlayers);
+			writeH(server._maxPlayers);
+			writeC(server._status == ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
 			int bits = 0;
-			if (server.testServer)
+			if (server._testServer)
 			{
 				bits |= 0x04;
 			}
-			if (server.clock)
+			if (server._clock)
 			{
 				bits |= 0x02;
 			}
 			writeD(bits);
-			writeC(server.brackets ? 0x01 : 0x00);
+			writeC(server._brackets ? 0x01 : 0x00);
 		}
 	}
 }

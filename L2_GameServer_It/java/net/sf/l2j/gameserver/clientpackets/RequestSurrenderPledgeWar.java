@@ -15,7 +15,7 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket
 
     private String _pledgeName;
     private L2Clan _clan;
-    private L2PcInstance player;
+    private L2PcInstance _activeChar;
     
     protected void readImpl()
     {
@@ -24,18 +24,18 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket
 
     protected void runImpl()
     {
-        player = getClient().getActiveChar();
-	if (player == null)
-	    return;
-        _clan = player.getClan();
-	if (_clan == null)
-	    return;
+    	_activeChar = getClient().getActiveChar();
+		if (_activeChar == null)
+		    return;
+        _clan = _activeChar.getClan();
+		if (_clan == null)
+		    return;
         L2Clan clan = ClanTable.getInstance().getClanByName(_pledgeName);
 
         if(clan == null)
         {
-            player.sendMessage("No such clan.");
-            player.sendPacket(new ActionFailed());
+        	_activeChar.sendMessage("No such clan.");
+        	_activeChar.sendPacket(new ActionFailed());
             return;                        
         }
 
@@ -43,17 +43,17 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket
         
         if(!_clan.isAtWarWith(clan.getClanId()))
         {
-            player.sendMessage("You aren't at war with this clan.");
-            player.sendPacket(new ActionFailed());
+        	_activeChar.sendMessage("You aren't at war with this clan.");
+        	_activeChar.sendPacket(new ActionFailed());
             return;            
         }
         
         
         SystemMessage msg = new SystemMessage(SystemMessage.YOU_HAVE_SURRENDERED_TO_THE_S1_CLAN);
         msg.addString(_pledgeName);
-        player.sendPacket(msg);
+        _activeChar.sendPacket(msg);
         msg = null;
-        player.deathPenalty(false);
+        _activeChar.deathPenalty(false);
         ClanTable.getInstance().deleteclanswars(_clan.getClanId(), clan.getClanId());
         /*L2PcInstance leader = L2World.getInstance().getPlayer(clan.getLeaderName());
         if(leader != null && leader.isOnline() == 0)

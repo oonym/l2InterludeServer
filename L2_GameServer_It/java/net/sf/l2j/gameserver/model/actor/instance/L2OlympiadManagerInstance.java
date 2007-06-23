@@ -41,7 +41,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
 {
     private static Logger _logOlymp = Logger.getLogger(L2OlympiadManagerInstance.class.getName());
     
-    private static final int _gatePass = 6651;
+    private static final int GATE_PASS = 6651;
     
     public L2OlympiadManagerInstance (int objectId, L2NpcTemplate template)
     {
@@ -132,7 +132,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
                     int passes = Olympiad.getInstance().getNoblessePasses(player.getObjectId());
                     if (passes > 0)
                     {
-                        L2ItemInstance item = player.getInventory().addItem("Olympiad", _gatePass, passes, player, this);
+                        L2ItemInstance item = player.getInventory().addItem("Olympiad", GATE_PASS, passes, player, this);
                         
                         InventoryUpdate iu = new InventoryUpdate();
                         iu.addModifiedItem(item);

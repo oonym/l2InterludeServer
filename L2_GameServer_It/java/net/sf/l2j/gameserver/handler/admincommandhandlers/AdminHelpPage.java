@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
  */
 public class AdminHelpPage implements IAdminCommandHandler {
 
-	private static String[] _adminCommands = {"admin_help"};
+	private static final String[] ADMIN_COMMANDS = {"admin_help"};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
@@ -56,7 +56,7 @@ public class AdminHelpPage implements IAdminCommandHandler {
 	}
 	
 	public String[] getAdminCommandList() {
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) {

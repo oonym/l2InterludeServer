@@ -42,20 +42,20 @@ public class Point3D implements Serializable
 	 */
 	private static final long serialVersionUID = 4638345252031872576L;
 
-	private volatile int x, y, z;
+	private volatile int _x, _y, _z;
 
 	public Point3D(int pX, int pY, int pZ)
 	{
-		this.x = pX;
-		this.y = pY;
-		this.z = pZ;
+		this._x = pX;
+		this._y = pY;
+		this._z = pZ;
 	}
 
 	public Point3D(int pX, int pY)
 	{
-		this.x = pX;
-		this.y = pY;
-		this.z = 0;
+		this._x = pX;
+		this._y = pY;
+		this._z = 0;
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class Point3D implements Serializable
 	{
 		synchronized (worldPosition)
 		{
-			this.x = worldPosition.x;
-			this.y = worldPosition.y;
-			this.z = worldPosition.z;
+			this._x = worldPosition._x;
+			this._y = worldPosition._y;
+			this._z = worldPosition._z;
 		}
 	}
 
@@ -75,20 +75,20 @@ public class Point3D implements Serializable
 	{
 		synchronized (point)
 		{
-			this.x = point.x;
-			this.y = point.y;
-			this.z = point.z;
+			this._x = point._x;
+			this._y = point._y;
+			this._z = point._z;
 		}
 	}
 
 	public String toString()
 	{
-		return "(" + x + ", " + y + ", " + z + ")";
+		return "(" + _x + ", " + _y + ", " + _z + ")";
 	}
 
 	public int hashCode()
 	{
-		return x ^ y ^ z;
+		return _x ^ _y ^ _z;
 	}
 
 	public synchronized boolean equals(Object o)
@@ -99,7 +99,7 @@ public class Point3D implements Serializable
 			boolean ret;
 			synchronized (point3D)
 			{
-				ret = point3D.x == x && point3D.y == y && point3D.z == z;
+				ret = point3D._x == _x && point3D._y == _y && point3D._z == _z;
 			}
 			return ret;
 		}
@@ -108,7 +108,7 @@ public class Point3D implements Serializable
 
 	public synchronized boolean equals(int pX, int pY, int pZ)
 	{
-		return x == pX && y == pY && z == pZ;
+		return _x == pX && _y == pY && _z == pZ;
 	}
 
 	public synchronized long distanceSquaredTo(Point3D point)
@@ -116,8 +116,8 @@ public class Point3D implements Serializable
 		long dx, dy;
 		synchronized (point)
 		{
-			dx = x - point.x;
-			dy = y - point.y;
+			dx = _x - point._x;
+			dy = _y - point._y;
 		}
 		return (dx * dx) + (dy * dy);
 	}
@@ -129,8 +129,8 @@ public class Point3D implements Serializable
 		{
 			synchronized (point2)
 			{
-				dx = point1.x - point2.x;
-				dy = point1.y - point2.y;
+				dx = point1._x - point2._x;
+				dy = point1._y - point2._y;
 			}
 		}
 		return (dx * dx) + (dy * dy);
@@ -144,38 +144,38 @@ public class Point3D implements Serializable
 
 	public int getX()
 	{
-		return x;
+		return _x;
 	}
 
 	public synchronized void setX(int pX)
 	{
-		x = pX;
+		_x = pX;
 	}
 
 	public int getY()
 	{
-		return y;
+		return _y;
 	}
 
 	public synchronized void setY(int pY)
 	{
-		y = pY;
+		_y = pY;
 	}
 
 	public int getZ()
 	{
-		return z;
+		return _z;
 	}
 
 	public synchronized void setZ(int pZ)
 	{
-		z = pZ;
+		_z = pZ;
 	}
 
 	public synchronized void setXYZ(int pX, int pY, int pZ)
 	{
-		x = pX;
-		y = pY;
-		z = pZ;
+		_x = pX;
+		_y = pY;
+		_z = pZ;
 	}
 }

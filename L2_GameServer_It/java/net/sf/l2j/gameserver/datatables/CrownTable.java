@@ -30,24 +30,24 @@ import javolution.util.FastList;
  */
 public class CrownTable
 {
-    private static List<Integer> _CrownList = new FastList<Integer>();
+    private static List<Integer> _crownList = new FastList<Integer>();
     
     public static List<Integer> getCrownList()
     {
-    	if(_CrownList.isEmpty())
+    	if(_crownList.isEmpty())
     	{
-    		_CrownList.add(6841); // Crown of the lord
-    		_CrownList.add(6834); // Innadril
-    		_CrownList.add(6835); // Dion
-    		_CrownList.add(6836); // Goddard
-    		_CrownList.add(6837); // Oren
-    		_CrownList.add(6838); // Gludio
-    		_CrownList.add(6839); // Giran
-    		_CrownList.add(6840); // Aden
-    		_CrownList.add(8182); // Rune
-    		_CrownList.add(8183); // Schuttgart
+    		_crownList.add(6841); // Crown of the lord
+    		_crownList.add(6834); // Innadril
+    		_crownList.add(6835); // Dion
+    		_crownList.add(6836); // Goddard
+    		_crownList.add(6837); // Oren
+    		_crownList.add(6838); // Gludio
+    		_crownList.add(6839); // Giran
+    		_crownList.add(6840); // Aden
+    		_crownList.add(8182); // Rune
+    		_crownList.add(8183); // Schuttgart
     	}
-        return _CrownList;
+        return _crownList;
      
     }
     

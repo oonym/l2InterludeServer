@@ -76,7 +76,7 @@ public class FaenorInterface implements EngineInterface
      */
     public void addQuestDrop(int npcID, int itemID, int min, int max, int chance, String questID, String[] states)
     {
-        L2NpcTemplate npc = _npcTable.getTemplate(npcID);
+        L2NpcTemplate npc = npcTable.getTemplate(npcID);
         if (npc == null)
         {
             throw new NullPointerException();
@@ -99,7 +99,7 @@ public class FaenorInterface implements EngineInterface
      */
     public void addDrop(int npcID, int itemID, int min, int max, boolean sweep, int chance) throws NullPointerException
     {
-        L2NpcTemplate npc = _npcTable.getTemplate(npcID);
+        L2NpcTemplate npc = npcTable.getTemplate(npcID);
         if (npc == null)
         {
             if (Config.DEBUG) System.out.print("Npc doesnt Exist");
@@ -160,7 +160,7 @@ public class FaenorInterface implements EngineInterface
      */
     public List getQuestDrops(int npcID)
     {
-        L2NpcTemplate npc = _npcTable.getTemplate(npcID);
+        L2NpcTemplate npc = npcTable.getTemplate(npcID);
         if (npc == null)
         {
             return null;

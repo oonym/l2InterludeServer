@@ -116,6 +116,10 @@ public abstract class FloodProtectedListener extends Thread
 	
 	protected static class ForeignConnection
 	{
+		public int connectionNumber;
+		public long lastConnection;
+		public boolean isFlooding = false;
+		
 		/**
 		 * @param time
 		 */
@@ -124,9 +128,6 @@ public abstract class FloodProtectedListener extends Thread
 			lastConnection = time;
 			connectionNumber = 1;
 		}
-		public int connectionNumber;
-		public long lastConnection;
-		public boolean isFlooding = false;
 	}
 	
 	public abstract void addClient(Socket s);

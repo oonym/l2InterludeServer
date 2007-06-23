@@ -23,14 +23,14 @@ import org.w3c.dom.Node;
 public class L2Multisell
 {
     private static Logger _log = Logger.getLogger(L2Multisell.class.getName());
-    private List<MultiSellListContainer> entries = new FastList<MultiSellListContainer>();
+    private List<MultiSellListContainer> _entries = new FastList<MultiSellListContainer>();
     private static L2Multisell _instance = new L2Multisell();
 
     public MultiSellListContainer getList(int id)
     {
-        synchronized (entries)
+        synchronized (_entries)
         {
-            for (MultiSellListContainer list : entries)
+            for (MultiSellListContainer list : _entries)
             {
                 if (list.getListId() == id) return list;
             }
@@ -57,7 +57,7 @@ public class L2Multisell
 
     private void parseData()
     {
-        entries.clear();
+        _entries.clear();
         parse();
     }
 
@@ -65,7 +65,7 @@ public class L2Multisell
     {
         private int _entryId;
 
-        private List<MultiSellIngredient>    _products = new FastList<MultiSellIngredient>();
+        private List<MultiSellIngredient> _products = new FastList<MultiSellIngredient>();
         private List<MultiSellIngredient> _ingredients = new FastList<MultiSellIngredient>();
 
         /**
@@ -195,11 +195,11 @@ public class L2Multisell
         private boolean _applyTaxes = false;
         private boolean _maintainEnchantment = false;
         
-        List<MultiSellEntry> entriesC;
+        List<MultiSellEntry> _entriesC;
         
         public MultiSellListContainer()
         {
-            entriesC = new FastList<MultiSellEntry>();
+            _entriesC = new FastList<MultiSellEntry>();
         }
 
         /**
@@ -240,12 +240,12 @@ public class L2Multisell
 
         public void addEntry(MultiSellEntry e)
         {
-            entriesC.add(e);
+            _entriesC.add(e);
         }
 
         public List<MultiSellEntry> getEntries()
         {
-            return entriesC;
+            return _entriesC;
         }
     }
 
@@ -290,7 +290,7 @@ public class L2Multisell
             {
                 MultiSellListContainer list = parseDocument(doc);
                 list.setListId(id);
-                entries.add(list);
+                _entries.add(list);
             }
             catch (Exception e)
             {

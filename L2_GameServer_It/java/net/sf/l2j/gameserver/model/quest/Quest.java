@@ -54,22 +54,22 @@ public abstract class Quest
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 
 	/** HashMap containing events from String value of the event */
-	private static Map<String, Quest> allEventsS = new FastMap<String, Quest>();
+	private static Map<String, Quest> _allEventsS = new FastMap<String, Quest>();
 	/** HashMap containing lists of timers from the name of the timer */
-	private static Map<String, FastList<QuestTimer>> allEventTimers = new FastMap<String, FastList<QuestTimer>>();
+	private static Map<String, FastList<QuestTimer>> _allEventTimers = new FastMap<String, FastList<QuestTimer>>();
 
 	private final int _questId;
 	private final String _name;
 	private final String _descr;
-    private State initialState;
-    private Map<String, State> states;
+    private State _initialState;
+    private Map<String, State> _states;
 	
 	/**
 	 * Return collection view of the values contains in the allEventS
 	 * @return Collection<Quest>
 	 */
 	public static Collection<Quest> findAllEvents() {
-		return allEventsS.values();
+		return _allEventsS.values();
 	}
 	
     /**
@@ -83,14 +83,14 @@ public abstract class Quest
 		_questId = questId;
 		_name = name;
 		_descr = descr;
-        states = new FastMap<String, State>();
+        _states = new FastMap<String, State>();
 		if (questId != 0)
 		{
 			QuestManager.getInstance().addQuest(Quest.this);
 		}
 		else
 		{
-			allEventsS.put(name, this);
+			_allEventsS.put(name, this);
 		}
 	}
 	
@@ -131,7 +131,7 @@ public abstract class Quest
 	 * @param state
 	 */
 	public void setInitialState(State state) {
-		this.initialState = state;
+		this._initialState = state;
 	}
 	
 	/**
@@ -150,7 +150,7 @@ public abstract class Quest
 	 * @return State
 	 */
 	public State getInitialState() {
-		return initialState;
+		return _initialState;
 	}
     
 	/**
@@ -176,7 +176,7 @@ public abstract class Quest
 	 */
     public State addState(State state)
     {
-        states.put(state.getName(), state);
+        _states.put(state.getName(), state);
 		return state;
     }
     
@@ -196,7 +196,7 @@ public abstract class Quest
         {
         	timers = new FastList<QuestTimer>();
             timers.add(new QuestTimer(this, name, time, npc, player));
-        	allEventTimers.put(name, timers);
+        	_allEventTimers.put(name, timers);
         }
         // a timer with this name exists, but may not be for the same set of npc and player
         else
@@ -211,9 +211,9 @@ public abstract class Quest
     
     public QuestTimer getQuestTimer(String name, L2NpcInstance npc, L2PcInstance player)
     {
-    	if (allEventTimers.get(name)==null)
+    	if (_allEventTimers.get(name)==null)
     		return null;
-    	for(QuestTimer timer: allEventTimers.get(name))
+    	for(QuestTimer timer: _allEventTimers.get(name))
     		if (timer.isMatch(this, name, npc, player))
     			return timer;
     	return null;
@@ -221,7 +221,7 @@ public abstract class Quest
 
     public FastList<QuestTimer> getQuestTimers(String name)
     {
-    	return allEventTimers.get(name);
+    	return _allEventTimers.get(name);
     }
     
     public void cancelQuestTimer(String name, L2NpcInstance npc, L2PcInstance player)
@@ -404,7 +404,7 @@ public abstract class Quest
 				if(stateId.equals("Completed")) completed = true;
 				
 				// Create an object State containing the state of the quest
-				State state = q.states.get(stateId);
+				State state = q._states.get(stateId);
 				if (state == null) {
 					_log.finer("Unknown state in quest "+questId+" for player "+player.getName());
 					if (Config.AUTODELETE_INVALID_QUEST_DATA){
@@ -455,7 +455,7 @@ public abstract class Quest
         }
 		
 		// events
-		for (String name : allEventsS.keySet()) {
+		for (String name : _allEventsS.keySet()) {
 			player.processQuestEvent(name, "enter");
 		}
 	}

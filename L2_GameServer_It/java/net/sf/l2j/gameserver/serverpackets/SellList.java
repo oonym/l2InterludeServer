@@ -36,24 +36,24 @@ public class SellList extends L2GameServerPacket
 {
 	private static final String _S__10_SELLLIST = "[S] 10 SellList";
 	private static Logger _log = Logger.getLogger(SellList.class.getName());
-	private final L2PcInstance _char;
+	private final L2PcInstance _activeChar;
 	private final L2MerchantInstance _lease;
 	private int _money;
 	private List<L2ItemInstance> _selllist = new FastList<L2ItemInstance>();
 	
 	public SellList(L2PcInstance player)
 	{
-		_char = player;
+		_activeChar = player;
 		_lease = null;
-		_money = _char.getAdena();
+		_money = _activeChar.getAdena();
 		this.doLease();
 	}
 	
 	public SellList(L2PcInstance player, L2MerchantInstance lease)
 	{
-		_char = player;
+		_activeChar = player;
 		_lease = lease;
-		_money = _char.getAdena();
+		_money = _activeChar.getAdena();
 		this.doLease();
 	}
 	
@@ -61,12 +61,12 @@ public class SellList extends L2GameServerPacket
 	{
 		if (_lease == null)
 		{
-			for (L2ItemInstance item : _char.getInventory().getItems())
+			for (L2ItemInstance item : _activeChar.getInventory().getItems())
 			{
 				if (!item.isEquipped() &&                                                      // Not equipped 
                         item.getItem().isSellable() &&                                         // Item is sellable
-                        (_char.getPet() == null ||                                             // Pet not summoned or
-                                item.getObjectId() != _char.getPet().getControlItemId()))      // Pet is summoned and not the item that summoned the pet
+                        (_activeChar.getPet() == null ||                                             // Pet not summoned or
+                                item.getObjectId() != _activeChar.getPet().getControlItemId()))      // Pet is summoned and not the item that summoned the pet
 				{
 					_selllist.add(item);
 					if (Config.DEBUG) 

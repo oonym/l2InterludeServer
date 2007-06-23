@@ -65,7 +65,7 @@ public final class BuyList extends L2GameServerPacket
 	private int _listId;
 	private L2ItemInstance[] _list;
 	private int _money;
-	private double _TaxRate = 0;
+	private double _taxRate = 0;
 
 	public BuyList(L2TradeList list, int currentMoney)
 	{
@@ -81,7 +81,7 @@ public final class BuyList extends L2GameServerPacket
 		List<L2ItemInstance> lst = list.getItems();
 		_list = lst.toArray(new L2ItemInstance[lst.size()]);
 		_money = currentMoney;
-		_TaxRate = taxRate;
+		_taxRate = taxRate;
 	}	
 	
 	public BuyList(List<L2ItemInstance> lst, int listId, int currentMoney)
@@ -128,9 +128,9 @@ public final class BuyList extends L2GameServerPacket
 				}
 				
 	            if (item.getItemId() >= 3960 && item.getItemId() <= 4026)//Config.RATE_SIEGE_GUARDS_PRICE-//'
-	                writeD((int)(item.getPriceToSell() * Config.RATE_SIEGE_GUARDS_PRICE * (1 + _TaxRate)));
+	                writeD((int)(item.getPriceToSell() * Config.RATE_SIEGE_GUARDS_PRICE * (1 + _taxRate)));
 	            else
-	                writeD((int)(item.getPriceToSell() * (1 + _TaxRate)));
+	                writeD((int)(item.getPriceToSell() * (1 + _taxRate)));
 			}
 		}
 	}

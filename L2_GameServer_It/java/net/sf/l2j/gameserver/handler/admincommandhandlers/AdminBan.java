@@ -42,7 +42,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminBan implements IAdminCommandHandler {
     //private static Logger _log = Logger.getLogger(AdminBan.class.getName());
-    private static String[] _adminCommands = {"admin_ban", "admin_unban","admin_jail","admin_unjail"};
+    private static final String[] ADMIN_COMMANDS = {"admin_ban", "admin_unban","admin_jail","admin_unjail"};
     private static final int REQUIRED_LEVEL = Config.GM_BAN;
 
     public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -217,7 +217,7 @@ public class AdminBan implements IAdminCommandHandler {
     }
     
     public String[] getAdminCommandList() {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
     
     private boolean checkLevel(int level) {

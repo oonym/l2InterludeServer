@@ -13,22 +13,22 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2SiegeFlagInstance extends L2NpcInstance
 {
-    private L2PcInstance _Player;
-    private Siege _Siege;
+    private L2PcInstance _player;
+    private Siege _siege;
     
 	public L2SiegeFlagInstance(L2PcInstance player, int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 
-        _Player = player;
-        _Siege = SiegeManager.getInstance().getSiege(_Player.getX(), _Player.getY());
-        if (_Player.getClan() == null || _Siege == null)
+        _player = player;
+        _siege = SiegeManager.getInstance().getSiege(_player.getX(), _player.getY());
+        if (_player.getClan() == null || _siege == null)
         {
             this.deleteMe();
         }
         else
         {
-            L2SiegeClan sc = _Siege.getAttackerClan(_Player.getClan());
+            L2SiegeClan sc = _siege.getAttackerClan(_player.getClan());
             if (sc == null)
                 this.deleteMe();
             else
@@ -56,7 +56,7 @@ public class L2SiegeFlagInstance extends L2NpcInstance
 	
     public void doDie(L2Character killer)
     {
-        L2SiegeClan sc = _Siege.getAttackerClan(_Player.getClan());
+        L2SiegeClan sc = _siege.getAttackerClan(_player.getClan());
         if (sc != null)
         	sc.removeFlag(this);
         

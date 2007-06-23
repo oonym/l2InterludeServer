@@ -26,11 +26,11 @@ package net.sf.l2j.gameserver.clientpackets;
 public class RequestGetBossRecord extends L2GameClientPacket
 {
     private static final String _C__D0_18_REQUESTGETBOSSRECORD = "[C] D0:18 RequestGetBossRecord";
-    private int _bossID;
+    private int _bossId;
     
     protected void readImpl()
     {
-        _bossID = readD();
+        _bossId = readD();
     }
 
     /**
@@ -40,7 +40,7 @@ public class RequestGetBossRecord extends L2GameClientPacket
 	protected void runImpl()
     {
         // TODO
-        System.out.println("C5: RequestGetBossRecord: d: "+_bossID);
+        System.out.println("C5: RequestGetBossRecord: d: "+_bossId);
     }
 
     /**

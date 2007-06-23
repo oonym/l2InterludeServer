@@ -42,16 +42,16 @@ public class BoatManager
 	private static final Logger _log = Logger.getLogger(BoatManager.class.getName());
 
     // =========================================================
-	private static BoatManager _Instance;
+	private static BoatManager _instance;
 	public static final BoatManager getInstance()
 	{
-		if (_Instance == null)
+		if (_instance == null)
 		{
     		System.out.println("Initializing BoatManager");
-			_Instance = new BoatManager();
-			_Instance.load();
+			_instance = new BoatManager();
+			_instance.load();
 		}
-		return _Instance;
+		return _instance;
 	}
     // =========================================================
 
@@ -192,7 +192,7 @@ public class BoatManager
 		String mess1_1 = st.nextToken();
 		String mess0_1 = st.nextToken();
 		String messb_1 = st.nextToken();						                   
-		boat.SetTrajet1(IdWaypoint1,IdWTicket1,ntx1,nty1,ntz1,npc1,mess10_1,mess5_1,mess1_1,mess0_1,messb_1);
+		boat.setTrajet1(IdWaypoint1,IdWTicket1,ntx1,nty1,ntz1,npc1,mess10_1,mess5_1,mess1_1,mess0_1,messb_1);
 		IdWaypoint1 = Integer.parseInt(st.nextToken());
 		IdWTicket1 = Integer.parseInt(st.nextToken());
 		ntx1 = Integer.parseInt(st.nextToken());
@@ -204,7 +204,7 @@ public class BoatManager
 		mess1_1 = st.nextToken();
 		mess0_1 = st.nextToken();
 		messb_1 = st.nextToken();
-		boat.SetTrajet2(IdWaypoint1,IdWTicket1,ntx1,nty1,ntz1,npc1,mess10_1,mess5_1,mess1_1,mess0_1,messb_1);
+		boat.setTrajet2(IdWaypoint1,IdWTicket1,ntx1,nty1,ntz1,npc1,mess10_1,mess5_1,mess1_1,mess0_1,messb_1);
 		return boat;
 	}
 

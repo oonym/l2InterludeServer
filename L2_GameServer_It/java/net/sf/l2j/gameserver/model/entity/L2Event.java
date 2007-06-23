@@ -266,9 +266,9 @@ public class L2Event
             player.eventX = connectionLossData.get(player.getName()).eventX;
             player.eventY = connectionLossData.get(player.getName()).eventY;
             player.eventZ = connectionLossData.get(player.getName()).eventZ;
-            player.eventkarma = connectionLossData.get(player.getName()).eventkarma;
-            player.eventpvpkills = connectionLossData.get(player.getName()).eventpvpkills;
-            player.eventpkkills = connectionLossData.get(player.getName()).eventpkkills;
+            player.eventkarma = connectionLossData.get(player.getName()).eventKarma;
+            player.eventpvpkills = connectionLossData.get(player.getName()).eventPvpKills;
+            player.eventpkkills = connectionLossData.get(player.getName()).eventPkKills;
             player.eventTitle = connectionLossData.get(player.getName()).eventTitle;
             player.kills = connectionLossData.get(player.getName()).kills;
             player.eventSitForced = connectionLossData.get(player.getName()).eventSitForced;

@@ -41,8 +41,8 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 public final class L2ClassMasterInstance extends L2FolkInstance
 {
 	//private static Logger _log = Logger.getLogger(L2ClassMasterInstance.class.getName());
-	private static int[] _secondClassIds = {2,3,5,6,9,8,12,13,14,16,17,20,21,23,24,27,
-	                                        28,30,33,34,36,37,40,41,43,46,48,51,52,55,57};
+	private static final int[] SECONDN_CLASS_IDS = {2,3,5,6,9,8,12,13,14,16,17,20,21,23,24,27,
+													28,30,33,34,36,37,40,41,43,46,48,51,52,55,57};
 	
 	/**
 	 * @param template
@@ -110,9 +110,9 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			}
 			else if (level >= 76 && Config.ALLOW_CLASS_MASTERS && classId.getId() < 88)
 			{			
-				for (int i = 0; i < _secondClassIds.length; i++)
+				for (int i = 0; i < SECONDN_CLASS_IDS.length; i++)
 				{
-					if (classId.getId() == _secondClassIds[i])
+					if (classId.getId() == SECONDN_CLASS_IDS[i])
 					{
                         NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                         TextBuilder sb = new TextBuilder();

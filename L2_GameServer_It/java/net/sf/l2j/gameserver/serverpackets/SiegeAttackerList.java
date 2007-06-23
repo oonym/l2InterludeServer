@@ -55,28 +55,28 @@ public class SiegeAttackerList extends L2GameServerPacket
 {
     private static final String _S__CA_SiegeAttackerList = "[S] ca SiegeAttackerList";
     //private static Logger _log = Logger.getLogger(SiegeAttackerList.class.getName());
-    private Castle _Castle;
+    private Castle _castle;
     
     public SiegeAttackerList(Castle castle)
     {
-        _Castle = castle;   
+        _castle = castle;   
     }
 
     protected final void writeImpl()
     {
         writeC(0xca);
-        writeD(_Castle.getCastleId());
+        writeD(_castle.getCastleId());
         writeD(0x00); //0 
         writeD(0x01); //1
         writeD(0x00); //0
-        int size = _Castle.getSiege().getAttackerClans().size();
+        int size = _castle.getSiege().getAttackerClans().size();
         if (size > 0)
         {
             L2Clan clan;
 
             writeD(size);
             writeD(size);
-            for(L2SiegeClan siegeclan : _Castle.getSiege().getAttackerClans())
+            for(L2SiegeClan siegeclan : _castle.getSiege().getAttackerClans())
             {
                 clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
                 if (clan == null) continue;

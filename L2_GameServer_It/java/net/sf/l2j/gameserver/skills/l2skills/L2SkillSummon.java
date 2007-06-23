@@ -35,16 +35,16 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillSummon extends L2Skill {
 
-	private int     npcId;
-	private float   expPenalty;
-	private boolean isCubic;
+	private int     _npcId;
+	private float   _expPenalty;
+	private boolean _isCubic;
 	
 	public L2SkillSummon(StatsSet set) {
 		super(set);
 		
-		npcId      = set.getInteger("npcId", 0); // default for undescribed skills
-		expPenalty = set.getFloat ("expPenalty", 0.f);
-		isCubic    = set.getBool  ("isCubic", false);
+		_npcId      = set.getInteger("npcId", 0); // default for undescribed skills
+		_expPenalty = set.getFloat ("expPenalty", 0.f);
+		_isCubic    = set.getBool  ("isCubic", false);
 	}
 
 	public boolean checkCondition(L2Character activeChar)
@@ -52,7 +52,7 @@ public class L2SkillSummon extends L2Skill {
 		if (activeChar instanceof L2PcInstance)
 		{
 			L2PcInstance player = (L2PcInstance)activeChar;
-			if (isCubic) {
+			if (_isCubic) {
 				if (getTargetType() != L2Skill.SkillTargetType.TARGET_SELF)
 				{
 					return true; //Player is always able to cast mass cubic skill
@@ -86,14 +86,14 @@ public class L2SkillSummon extends L2Skill {
 
 		L2PcInstance activeChar = (L2PcInstance) caster;
 
-		if (npcId == 0) {
+		if (_npcId == 0) {
             SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
             sm.addString("Summon skill "+getId()+" not described yet");
 			activeChar.sendPacket(sm);
 			return;
 		}
 		
-		if (isCubic) {
+		if (_isCubic) {
 			if (targets.length > 1) //Mass cubic skill
 			{
 				for (L2Object obj: targets)
@@ -114,14 +114,14 @@ public class L2SkillSummon extends L2Skill {
 						player.getCubics().clear();
 					}				
 					if (player.getCubics().size() > mastery) continue;		
-                    if (player.getCubics().containsKey(npcId))
+                    if (player.getCubics().containsKey(_npcId))
                     {
                         player.sendMessage("You already have such cubic");
                     }
                     else
                     {
 
-						player.addCubic(npcId, getLevel());
+						player.addCubic(_npcId, getLevel());
 						player.broadcastUserInfo();		
                     }
 				}
@@ -138,12 +138,12 @@ public class L2SkillSummon extends L2Skill {
 					activeChar.sendPacket(new SystemMessage(SystemMessage.CUBIC_SUMMONING_FAILED));
 					return;
 				}
-                if (activeChar.getCubics().containsKey(npcId))
+                if (activeChar.getCubics().containsKey(_npcId))
                 {
                     activeChar.sendMessage("You already have such cubic");
                     return;
                 }
-				activeChar.addCubic(npcId, getLevel());
+				activeChar.addCubic(_npcId, getLevel());
 				activeChar.broadcastUserInfo();
 				return;
 			}			
@@ -155,12 +155,12 @@ public class L2SkillSummon extends L2Skill {
 			return;
 		}
 		
-		L2NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(npcId);
+		L2NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(_npcId);
         L2SummonInstance summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
 		
         summon.setName(summonTemplate.name);
         summon.setTitle(activeChar.getName());
-        summon.setExpPenalty(expPenalty);
+        summon.setExpPenalty(_expPenalty);
         if (summon.getLevel() >= Experience.LEVEL.length)
         {
             summon.getStat().setExp(Experience.LEVEL[Experience.LEVEL.length - 1]);

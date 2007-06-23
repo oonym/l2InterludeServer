@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminGeoEditor implements IAdminCommandHandler
 {
-	private static String[] _adminCommands = 
+	private static final String[] ADMIN_COMMANDS = 
 		{
 			"admin_geoeditor_connect",
 			"admin_geoeditor_join",
@@ -70,7 +70,7 @@ public class AdminGeoEditor implements IAdminCommandHandler
 	}
 	public String[] getAdminCommandList() 
 	{
-		return _adminCommands;
+		return ADMIN_COMMANDS;
 	}
 	
 	private boolean checkLevel(int level) 

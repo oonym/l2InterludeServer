@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.templates.L2WeaponType;
 public class StrSiegeAssault implements ISkillHandler 
 { 
     //private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName()); 
-    protected SkillType[] _skillIds = {SkillType.STRSIEGEASSAULT}; 
+	private static final SkillType[] SKILL_IDS = {SkillType.STRSIEGEASSAULT}; 
     
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
@@ -106,7 +106,7 @@ public class StrSiegeAssault implements ISkillHandler
     
     public SkillType[] getSkillIds() 
     { 
-        return _skillIds; 
+        return SKILL_IDS; 
     }
 
     /**

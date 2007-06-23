@@ -64,16 +64,16 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     private static final int MAX_ATTACK_TIMEOUT = 300; // int ticks, i.e. 30 seconds 
 
     /** The L2Attackable AI task executed every 1s (call onEvtThink method)*/
-    private Future aiTask;
+    private Future _aiTask;
 
     /** The delay after wich the attacked is stopped */
-    private int _attack_timeout;
+    private int _attackTimeout;
 
     /** The L2Attackable aggro counter */
     private int _globalAggro;
 
     /** The flag used to indicate that a thinking action is in progress */
-    private boolean thinking; // to prevent recursive thinking
+    private boolean _thinking; // to prevent recursive thinking
 
     /**
      * Constructor of L2AttackableAI.<BR><BR>
@@ -85,7 +85,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     {
         super(accessor);
 
-        _attack_timeout = Integer.MAX_VALUE;
+        _attackTimeout = Integer.MAX_VALUE;
         _globalAggro = -10; // 10 seconds timeout of ATTACK after respawn
     }
 
@@ -210,18 +210,18 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     public void startAITask()
     {
         // If not idle - create an AI task (schedule onEvtThink repeatedly)
-        if (aiTask == null)
+        if (_aiTask == null)
         {
-            aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
+            _aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
         }
     }
 
     public void stopAITask()
     {
-        if (aiTask != null)
+        if (_aiTask != null)
         {
-            aiTask.cancel(false);
-            aiTask = null;
+            _aiTask.cancel(false);
+            _aiTask = null;
         }
     }
 
@@ -260,10 +260,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 super.changeIntention(AI_INTENTION_IDLE, null, null);
 
                 // Stop AI task and detach AI from NPC
-                if (aiTask != null)
+                if (_aiTask != null)
                 {
-                    aiTask.cancel(true);
-                    aiTask = null;
+                    _aiTask.cancel(true);
+                    _aiTask = null;
                 }
 
                 // Cancel the AI
@@ -289,7 +289,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     protected void onIntentionAttack(L2Character target)
     {
         // Calculate the attack timeout
-        _attack_timeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+        _attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
 
         // Manage the Attack Intention : Stop current Attack (if necessary), Start a new Attack and Launch Think Event
         super.onIntentionAttack(target);
@@ -474,7 +474,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
      */
     private void thinkAttack()
     {
-        if (_attack_timeout < GameTimeController.getGameTicks())
+        if (_attackTimeout < GameTimeController.getGameTicks())
         {
             // Check if the actor is running
             if (_actor.isRunning())
@@ -483,13 +483,13 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 _actor.setWalking();
 
                 // Calculate a new attack timeout
-                _attack_timeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+                _attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
             }
         }
 
         // Check if target is dead or if timeout is expired to stop this attack
         if (getAttackTarget() == null || getAttackTarget().isAlikeDead()
-            || _attack_timeout < GameTimeController.getGameTicks())
+            || _attackTimeout < GameTimeController.getGameTicks())
         {
             // Stop hating this target after the attack timeout or if target is dead
             if (getAttackTarget() != null)
@@ -504,7 +504,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             }
 
             // Cancel target and timeout
-            _attack_timeout = Integer.MAX_VALUE;
+            _attackTimeout = Integer.MAX_VALUE;
            
             // Set the AI Intention to AI_INTENTION_ACTIVE
             setIntention(AI_INTENTION_ACTIVE);
@@ -671,7 +671,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             // Else, if this is close enough to attack
             else 
             {
-                _attack_timeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+                _attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
 
                 // check for close combat skills && heal/buff skills
                 if (!_actor.isMuted() /*&& _rnd.nextInt(100) <= 5*/)
@@ -734,10 +734,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     protected void onEvtThink()
     {
         // Check if the actor can't use skills and if a thinking action isn't already in progress
-        if (thinking || _actor.isAllSkillsDisabled()) return;
+        if (_thinking || _actor.isAllSkillsDisabled()) return;
 
         // Start thinking action
-        thinking = true;
+        _thinking = true;
 
         try
         {
@@ -748,7 +748,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         finally
         {
             // Stop thinking action
-            thinking = false;
+            _thinking = false;
         }
     }
 
@@ -766,7 +766,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     protected void onEvtAttacked(L2Character attacker)
     {
         // Calculate the attack timeout
-        _attack_timeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+        _attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
 
         // Set the _globalAggro to 0 to permit attack even just after spawn
         if (_globalAggro < 0) _globalAggro = 0;

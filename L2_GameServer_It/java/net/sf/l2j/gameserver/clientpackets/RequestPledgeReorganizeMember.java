@@ -31,9 +31,11 @@ public final class RequestPledgeReorganizeMember extends L2GameClientPacket
 {
 	private static final String _C__D0_24_REQUESTPLEDGEREORGANIZEMEMBER = "[C] D0:24 RequestPledgeReorganizeMember";
 	
+	@SuppressWarnings("unused")
 	private int _unk1;
 	private String _memberName;
 	private int _newPledgeType;
+	@SuppressWarnings("unused")
 	private String _unk2;
 
 	protected void readImpl()

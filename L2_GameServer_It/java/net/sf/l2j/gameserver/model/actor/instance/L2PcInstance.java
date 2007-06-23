@@ -416,8 +416,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private boolean _observerMode = false;
 	
 	/** Stored from last ValidatePosition **/
-	public Point3D _lastClientPosition = new Point3D(0, 0, 0);
-	public Point3D _lastServerPosition = new Point3D(0, 0, 0);
+	private Point3D _lastClientPosition = new Point3D(0, 0, 0);
+	private Point3D _lastServerPosition = new Point3D(0, 0, 0);
 
 	/** The number of recommandation obtained by the L2PcInstance */
 	private int _recomHave; // how much I was recommended by others
@@ -467,8 +467,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** The list containing all macroses of this L2PcInstance */
 	private MacroList _macroses = new MacroList(this);
 
-	private List<L2PcInstance> _SnoopListener = new FastList<L2PcInstance>();
-	private List<L2PcInstance> _SnoopedPlayer = new FastList<L2PcInstance>();
+	private List<L2PcInstance> _snoopListener = new FastList<L2PcInstance>();
+	private List<L2PcInstance> _snoopedPlayer = new FastList<L2PcInstance>();
 	
 	private ClassId _skillLearningClassId;
 	
@@ -553,7 +553,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private final Map<Integer, String> _chars = new FastMap<Integer, String>();
 	
-	public byte _updateKnownCounter = 0;
+	//private byte _updateKnownCounter = 0;
 	
 	/** The current higher Expertise of the L2PcInstance (None=0, D=1, C=2, B=3, A=4, S=5)*/
 	private int _expertiseIndex; // index in EXPERTISE_LEVELS
@@ -568,7 +568,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** Active shots. A FastSet variable would actually suffice but this was changed to fix threading stability... */
 	protected Map<Integer, Integer> _activeSoulShots = new FastMap<Integer, Integer>().setShared(true);
 	
-	public final ReentrantLock _soulShotLock = new ReentrantLock();
+	public final ReentrantLock soulShotLock = new ReentrantLock();
 	
 	/** Event parameters */
 	public int eventX;
@@ -583,10 +583,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean atEvent = false;
 	
 	/** new loto ticket **/
-	public int _loto[] = new int[5];
+	private int _loto[] = new int[5];
 	//public static int _loto_nums[] = {0,1,2,3,4,5,6,7,8,9,};
 	/** new race ticket **/
-	public int _race[] = new int[2];
+	private int _race[] = new int[2];
 	
 	private final BlockList _blockList = new BlockList();
 
@@ -624,9 +624,9 @@ public final class L2PcInstance extends L2PlayableInstance
     
 	private int _cursedWeaponEquipedId = 0;
 
-	private int _ReviveRequested = 0;
-	private double _RevivePower = 0;
-	private boolean _RevivePet = false;
+	private int _reviveRequested = 0;
+	private double _revivePower = 0;
+	private boolean _revivePet = false;
 	
 	private double _cpUpdateIncCheck = .0;
 	private double _cpUpdateDecCheck = .0;
@@ -640,11 +640,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** Task for Herbs */
 	public class HerbTask implements Runnable
 	{
-		String _process;
-		int _itemId;
-		int _count;
-		L2Object _reference;
-		boolean _sendMessage;
+		private String _process;
+		private int _itemId;
+		private int _count;
+		private L2Object _reference;
+		private boolean _sendMessage;
 		HerbTask(String process, int itemId, int count, L2Object reference, boolean sendMessage)
 		{
 			_process = process;
@@ -725,7 +725,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// Create a new L2PcInstance with an account name
 		PcAppearance app = new PcAppearance(face, hairColor, hairStyle, sex);
-;		L2PcInstance player = new L2PcInstance(objectId, template, accountName, app);
+		L2PcInstance player = new L2PcInstance(objectId, template, accountName, app);
 		
 		// Set the name of the L2PcInstance
 		player.setName(name);
@@ -1889,7 +1889,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 	}
     
-    public void CheckIfWeaponIsAllowed()
+    public void checkIfWeaponIsAllowed()
     {
         // Override for Gamemasters
         if (isGM())
@@ -2588,7 +2588,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 	    if (sendMessage)
 	    {
-	        SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+	        SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
 	        sm.addItemName(PcInventory.ANCIENT_ADENA_ID);
             sm.addNumber(count);
 	        sendPacket(sm);
@@ -2743,7 +2743,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
-						SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+						SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
 						sm.addItemName(itemId);
 						sm.addNumber(count);
 						sendPacket(sm);
@@ -4729,7 +4729,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (_activeTradeList == null) 
             return;
         
-		_activeTradeList.Lock();
+		_activeTradeList.lock();
 		_activeTradeList = null;
         
 		sendPacket(new SendTradeDone(0));
@@ -5076,7 +5076,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public boolean isInvul()
 	{
-		return _isInvul  || _IsTeleporting ||  _protectEndTime > GameTimeController.getGameTicks();
+		return _isInvul  || _isTeleporting ||  _protectEndTime > GameTimeController.getGameTicks();
 	}
 	
 	/**
@@ -5638,12 +5638,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	{		
 		if (_forumMail == null)
 		{
-			setMail(ForumsBBSManager.getInstance().getForumByName("MailRoot").GetChildByName(getName()));
+			setMail(ForumsBBSManager.getInstance().getForumByName("MailRoot").getChildByName(getName()));
             
 			if (_forumMail == null)
 			{
-				ForumsBBSManager.getInstance().CreateNewForum(getName(),ForumsBBSManager.getInstance().getForumByName("MailRoot"),Forum.MAIL,Forum.OWNERONLY,getObjectId());
-				setMail(ForumsBBSManager.getInstance().getForumByName("MailRoot").GetChildByName(getName()));
+				ForumsBBSManager.getInstance().createNewForum(getName(),ForumsBBSManager.getInstance().getForumByName("MailRoot"),Forum.MAIL,Forum.OWNERONLY,getObjectId());
+				setMail(ForumsBBSManager.getInstance().getForumByName("MailRoot").getChildByName(getName()));
 			}
 		}
         
@@ -5665,12 +5665,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	{		
 		if (_forumMemo == null)
 		{
-			setMemo(ForumsBBSManager.getInstance().getForumByName("MemoRoot").GetChildByName(_accountName));
+			setMemo(ForumsBBSManager.getInstance().getForumByName("MemoRoot").getChildByName(_accountName));
             
         	if (_forumMemo == null)
         	{            		
-        		ForumsBBSManager.getInstance().CreateNewForum(_accountName,ForumsBBSManager.getInstance().getForumByName("MemoRoot"),Forum.MEMO,Forum.OWNERONLY,getObjectId());
-        		setMemo(ForumsBBSManager.getInstance().getForumByName("MemoRoot").GetChildByName(_accountName));
+        		ForumsBBSManager.getInstance().createNewForum(_accountName,ForumsBBSManager.getInstance().getForumByName("MemoRoot"),Forum.MEMO,Forum.OWNERONLY,getObjectId());
+        		setMemo(ForumsBBSManager.getInstance().getForumByName("MemoRoot").getChildByName(_accountName));
         	}
 		}
         
@@ -6515,7 +6515,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Add the recovered dyes to the player's inventory and notify them.
 		getInventory().addItem("Henna", henna.getItemIdDye(), henna.getAmountDyeRequire() / 2, this, null);
         
-		SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_s);
+		SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
         sm.addItemName(henna.getItemIdDye());
         sm.addNumber(henna.getAmountDyeRequire() / 2);
 		sendPacket(sm);
@@ -7640,7 +7640,7 @@ public final class L2PcInstance extends L2PlayableInstance
             int check = Rnd.get(1000);
             if(_fishGutsCheck > check)            
             {
-                StopLookingForFishTask();
+                stopLookingForFishTask();
                 StartFishCombat(_isNoob, _isUpperGrade);              
             }
         }
@@ -8629,8 +8629,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		super.doRevive();
 		updateEffectIcons();
-		_ReviveRequested = 0;
-		_RevivePower = 0;
+		_reviveRequested = 0;
+		_revivePower = 0;
 	}
 	
 	public void doRevive(double revivePower)
@@ -8641,11 +8641,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		doRevive();
 	}
 
-	public void ReviveRequest(L2PcInstance Reviver, L2Skill skill, boolean Pet)
+	public void reviveRequest(L2PcInstance Reviver, L2Skill skill, boolean Pet)
 	{
-		if (_ReviveRequested == 1)
+		if (_reviveRequested == 1)
 		{
-			if (_RevivePet == Pet)
+			if (_revivePet == Pet)
 			{
 				Reviver.sendPacket(new SystemMessage(SystemMessage.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
 			}
@@ -8660,52 +8660,52 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		if((Pet && getPet() != null && getPet().isDead()) || (!Pet && isDead()))
 		{
-			_ReviveRequested = 1;
-			_RevivePower = Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), Reviver.getWIT()); 
-			_RevivePet = Pet;
+			_reviveRequested = 1;
+			_revivePower = Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), Reviver.getWIT()); 
+			_revivePet = Pet;
 			sendPacket(new ConfirmDlg(SystemMessage.RESSURECTION_REQUEST,Reviver.getName()));
 		}
 	}
 	
-	public void ReviveAnswer(int answer)
+	public void reviveAnswer(int answer)
 	{
-		if (_ReviveRequested != 1 || (!isDead() && !_RevivePet) || (_RevivePet && getPet() != null && !getPet().isDead()))
+		if (_reviveRequested != 1 || (!isDead() && !_revivePet) || (_revivePet && getPet() != null && !getPet().isDead()))
 			return;
 		if (answer == 1)
 		{
-			if (!_RevivePet)
+			if (!_revivePet)
 			{
-				if (_RevivePower != 0)
-					doRevive(_RevivePower);
+				if (_revivePower != 0)
+					doRevive(_revivePower);
 				else
 					doRevive();
 			}
 			else if (getPet() != null)
 			{
-				if (_RevivePower != 0)
-					getPet().doRevive(_RevivePower);
+				if (_revivePower != 0)
+					getPet().doRevive(_revivePower);
 				else
 					getPet().doRevive();
 			}
 		}
-		_ReviveRequested = 0;
-		_RevivePower = 0;
+		_reviveRequested = 0;
+		_revivePower = 0;
 	}
 
 	public boolean isReviveRequested()
 	{
-		return (_ReviveRequested == 1);
+		return (_reviveRequested == 1);
 	}
 
 	public boolean isRevivingPet()
 	{
-		return _RevivePet;
+		return _revivePet;
 	}
 
 	public void removeReviving()
 	{
-		_ReviveRequested = 0;
-		_RevivePower = 0;
+		_reviveRequested = 0;
+		_revivePower = 0;
 	}
 
 	public void onActionRequest()
@@ -8863,11 +8863,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void broadcastSnoop(int type, String name, String _text)
 	{
-		if(_SnoopListener.size() > 0)
+		if(_snoopListener.size() > 0)
 		{
 			Snoop sn = new Snoop(getObjectId(),getName(),type,name,_text);
 			
-            for (L2PcInstance pci : _SnoopListener)
+            for (L2PcInstance pci : _snoopListener)
 				if (pci != null)
 					pci.sendPacket(sn);
 		}
@@ -8875,24 +8875,24 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void addSnooper(L2PcInstance pci )
 	{
-		if(!_SnoopListener.contains(pci))
-			_SnoopListener.add(pci);
+		if(!_snoopListener.contains(pci))
+			_snoopListener.add(pci);
 	}
 	
 	public void removeSnooper(L2PcInstance pci )
 	{
-		_SnoopListener.remove(pci);
+		_snoopListener.remove(pci);
 	}
 	
 	public void addSnooped(L2PcInstance pci )
 	{
-		if(!_SnoopedPlayer.contains(pci))
-			_SnoopedPlayer.add(pci);
+		if(!_snoopedPlayer.contains(pci))
+			_snoopedPlayer.add(pci);
 	}
 	
 	public void removeSnooped(L2PcInstance pci )
 	{
-		_SnoopedPlayer.remove(pci);
+		_snoopedPlayer.remove(pci);
 	}
 	
 	public synchronized void addBypass(String bypass)
@@ -9131,10 +9131,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
 				//ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
 			
-			for(L2PcInstance player : _SnoopedPlayer)
+			for(L2PcInstance player : _snoopedPlayer)
 				player.removeSnooper(this);
 			
-			for(L2PcInstance player : _SnoopListener)
+			for(L2PcInstance player : _snoopListener)
 				player.removeSnooped(this);
 			
 			// Remove L2Object object from _allObjects of L2World
@@ -9143,7 +9143,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private FishData _fish;
 	
-    public void StartFishing()
+    public void startFishing()
     {   
         stopMove(null);
         int rnd = Rnd.get(50) + 150;        
@@ -9187,7 +9187,7 @@ public final class L2PcInstance extends L2PlayableInstance
         broadcastPacket(efs);       
         StartLookingForFishTask();
     }
-    public void StopLookingForFishTask()
+    public void stopLookingForFishTask()
     {
         if (_taskforfish != null)
         {
@@ -9426,7 +9426,7 @@ public final class L2PcInstance extends L2PlayableInstance
         //Ends fishing
         sendPacket(new SystemMessage(SystemMessage.REEL_LINE_AND_STOP_FISHING));
         setIsImobilised(false);
-        StopLookingForFishTask();
+        stopLookingForFishTask();
     }
     public L2Fishing GetFishCombat()
     {

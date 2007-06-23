@@ -34,13 +34,13 @@ public final class RequestHennaItemInfo extends L2GameClientPacket
 {
 	private static final String _C__BB_RequestHennaItemInfo = "[C] bb RequestHennaItemInfo";
 	//private static Logger _log = Logger.getLogger(RequestHennaItemInfo.class.getName());
-	private int SymbolId;
+	private int _symbolId;
 	// format  cd
 	
 	
 	protected void readImpl()
 	{
-		SymbolId  = readD();
+		_symbolId  = readD();
 	}
 
 	protected void runImpl()
@@ -48,7 +48,7 @@ public final class RequestHennaItemInfo extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		    return;
-		L2Henna template = HennaTable.getInstance().getTemplate(SymbolId);
+		L2Henna template = HennaTable.getInstance().getTemplate(_symbolId);
         if(template == null)
         {
             return;

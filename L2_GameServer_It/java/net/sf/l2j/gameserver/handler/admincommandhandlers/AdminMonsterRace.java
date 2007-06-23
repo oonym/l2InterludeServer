@@ -38,7 +38,7 @@ public class AdminMonsterRace implements IAdminCommandHandler
 {
     //private static Logger _log = Logger.getLogger(AdminMonsterRace.class.getName());
 
-    private static String[] _adminCommands = {"admin_mons"};
+    private static final String[] ADMIN_COMMANDS = {"admin_mons"};
 
     private static final int REQUIRED_LEVEL = Config.GM_MONSTERRACE;
     protected static int state = -1;
@@ -62,7 +62,7 @@ public class AdminMonsterRace implements IAdminCommandHandler
 
     public String[] getAdminCommandList()
     {
-        return _adminCommands;
+        return ADMIN_COMMANDS;
     }
 
     private boolean checkLevel(int level)
