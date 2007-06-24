@@ -122,26 +122,23 @@ public class TvTEvent
 					_teams[i].removePlayer(playerName);
 			}
 		}
-		
+
 		int teamOnePlayerCount = _teams[0].getParticipatedPlayerCount();
 		int teamTwoPlayerCount = _teams[1].getParticipatedPlayerCount();
+		int playerCountDifference = Math.abs(teamOnePlayerCount - teamTwoPlayerCount);
+		byte rest = (byte)(getParticipatedPlayersCount() % 2);
 
-		if (teamOnePlayerCount != teamTwoPlayerCount)
+		if ((rest == 0 && playerCountDifference > 0) || (rest != 0 && playerCountDifference > 1))
 		{
-			int difference = Math.abs(teamOnePlayerCount - teamTwoPlayerCount);
-			
-			if (difference > 1)
-			{
-				byte teamWithMorePlayersId = (byte)(teamOnePlayerCount > teamTwoPlayerCount ? 0 : 1);
-				byte teamWithLesserPlayersId = (byte)(teamWithMorePlayersId == 0 ? 1 : 0);
+			byte teamIdWithMorePlayers = (byte)(teamOnePlayerCount > teamTwoPlayerCount ? 0 : 1);
+			byte teamIdWithLesserPlayers = (byte)(teamIdWithMorePlayers == 0 ? 1 : 0);
 
-				for (int i=0;i<difference-1;i++)
-				{
-					L2PcInstance playerInstance = _teams[teamWithMorePlayersId].getRandomPlayerInstance();
+			for (int i=0;i<playerCountDifference;i++)
+			{
+				L2PcInstance playerInstance = _teams[teamIdWithMorePlayers].getRandomPlayerInstance();
 					
-					_teams[teamWithMorePlayersId].removePlayer(playerInstance.getName());
-					_teams[teamWithLesserPlayersId].addPlayer(playerInstance);
-				}
+				_teams[teamIdWithMorePlayers].removePlayer(playerInstance.getName());
+				_teams[teamIdWithLesserPlayers].addPlayer(playerInstance);
 			}
 		}
 
