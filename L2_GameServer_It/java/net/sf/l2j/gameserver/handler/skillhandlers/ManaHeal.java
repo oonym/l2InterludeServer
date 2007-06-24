@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -70,14 +71,14 @@ public class ManaHeal implements ISkillHandler
             
             if (actChar instanceof L2PcInstance && actChar != target)
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S2_MP_RESTORED_BY_S1);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_RESTORED_BY_S1);
                 sm.addString(actChar.getName());
                 sm.addNumber((int)mp);
                 target.sendPacket(sm);
             }
             else
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_MP_RESTORED); 
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_MP_RESTORED); 
                 sm.addNumber((int)mp); 
                 target.sendPacket(sm); 
             }

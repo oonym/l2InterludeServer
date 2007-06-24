@@ -25,6 +25,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -64,7 +65,7 @@ public class Escape implements IUserCommandHandler
             return false;
         }
         
-        SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+        SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
         sm.addString("After " + unstuckTimer/60000 + " min. you be returned to near village.");
         
         activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);

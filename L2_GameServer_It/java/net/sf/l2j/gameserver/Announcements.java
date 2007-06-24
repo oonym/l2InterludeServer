@@ -35,6 +35,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.clientpackets.Say2;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.script.DateRange;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
@@ -101,7 +102,7 @@ public class Announcements
 		    
 		    if (!validDateRange.isValid() || validDateRange.isWithinRange(currentDate))
 		    {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 for (int j=0; j<msg.length; j++)
                 {
                     sm.addString(msg[j]);

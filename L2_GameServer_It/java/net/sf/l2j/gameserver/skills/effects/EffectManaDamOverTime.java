@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.skills.effects;
 
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -46,7 +47,7 @@ class EffectManaDamOverTime extends L2Effect
 		{
 			if(getSkill().isToggle())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.SKILL_REMOVED_DUE_LACK_MP);
+				SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
 				getEffected().sendPacket(sm);
 				return false;
 			}

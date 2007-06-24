@@ -12,6 +12,7 @@ import net.sf.l2j.gameserver.model.L2Multisell.MultiSellIngredient;
 import net.sf.l2j.gameserver.model.L2Multisell.MultiSellListContainer;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -105,7 +106,7 @@ public class MultiSellChoose extends L2GameClientPacket
     	{
             if((double)e.getItemCount() * (double)_amount > Integer.MAX_VALUE )
             {
-                player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+            	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
                 _ingredientsList.clear();
                 _ingredientsList = null;
                 return;
@@ -114,7 +115,7 @@ public class MultiSellChoose extends L2GameClientPacket
             // otherwise, check only the count of items with exactly the needed enchantment level
     		if( inv.getInventoryItemCount(e.getItemId(), maintainEnchantment? e.getEnchantmentLevel() : -1) < (e.getItemCount() * _amount) )
     		{
-    			player.sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
+    			player.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
     			_ingredientsList.clear();
     			_ingredientsList = null;
     			return;
@@ -238,7 +239,7 @@ public class MultiSellChoose extends L2GameClientPacket
 
 	        if (e.getItemCount() * _amount > 1)
 	        {
-	            sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
+	        	sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 	            sm.addItemName(e.getItemId());
 	            sm.addNumber(e.getItemCount() * _amount);
 	            player.sendPacket(sm);
@@ -248,13 +249,13 @@ public class MultiSellChoose extends L2GameClientPacket
 	        {
 	            if(maintainEnchantment && _enchantment > 0)
 	            {
-	                sm = new SystemMessage(SystemMessage.ACQUIRED);
+	                sm = new SystemMessage(SystemMessageId.ACQUIRED);
 	                sm.addNumber(_enchantment);
 	                sm.addItemName(e.getItemId());
 	            }
 	            else
 	            {
-	                sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+	                sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
 	                sm.addItemName(e.getItemId());
 	            }
 	            player.sendPacket(sm);

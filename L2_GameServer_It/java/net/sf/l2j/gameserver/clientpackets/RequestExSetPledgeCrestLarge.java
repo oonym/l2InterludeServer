@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.idfactory.BitSetIDFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -134,7 +135,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
             clan.setCrestLargeId(newId);
             clan.setHasCrestLarge(true);
             
-            activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED));
             
             for (L2PcInstance member : clan.getOnlineMembers(""))
                 member.broadcastUserInfo();

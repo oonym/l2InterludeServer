@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.funcs.Func;
@@ -76,7 +77,7 @@ public class Disablers implements ISkillHandler
         {
             if (weaponInst == null && skill.isOffensive())
             {
-                SystemMessage sm2 = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm2 = new SystemMessage(SystemMessageId.S1_S2);
                 sm2.addString("You must equip a weapon before casting a spell.");
                 activeChar.sendPacket(sm2);
                 return;
@@ -144,7 +145,7 @@ public class Disablers implements ISkillHandler
         	 			skill.getEffects(activeChar, target); 
         	 		else 
         	 		{
-        	 			SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2); 
+        	 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2); 
         	 			sm.addString(target.getName()); 
         	 			sm.addSkillName(skill.getId()); 
         	 			activeChar.sendPacket(sm);  
@@ -169,7 +170,7 @@ public class Disablers implements ISkillHandler
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
                             sm.addSkillName(skill.getDisplayId());
                             activeChar.sendPacket(sm);
@@ -189,7 +190,7 @@ public class Disablers implements ISkillHandler
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
                             sm.addSkillName(skill.getDisplayId());
                             activeChar.sendPacket(sm);
@@ -219,7 +220,7 @@ public class Disablers implements ISkillHandler
                         {
                             if (activeChar instanceof L2PcInstance)
                             {
-                                SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                                SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                                 sm.addString(target.getName());
                                 sm.addSkillName(skill.getDisplayId());
                                 activeChar.sendPacket(sm);
@@ -230,7 +231,7 @@ public class Disablers implements ISkillHandler
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
                             sm.addSkillName(skill.getDisplayId());
                             activeChar.sendPacket(sm);
@@ -244,7 +245,7 @@ public class Disablers implements ISkillHandler
                     if (target instanceof L2Attackable)
                     	skill.getEffects(activeChar, target);
                     else
-                    	activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    	activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     break;
                 }
                 case AGGDAMAGE:
@@ -287,7 +288,7 @@ public class Disablers implements ISkillHandler
                 	{
                 		if (activeChar instanceof L2PcInstance)
                 		{
-                			SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                			SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                 			sm.addString(target.getName());
                 			sm.addSkillName(skill.getId());
                 			activeChar.sendPacket(sm);
@@ -314,7 +315,7 @@ public class Disablers implements ISkillHandler
                 		{
                 			if (activeChar instanceof L2PcInstance)
                 			{
-                				SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                				SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                 				sm.addString(target.getName());
                 				sm.addSkillName(skill.getId());
                 				activeChar.sendPacket(sm);
@@ -346,14 +347,14 @@ public class Disablers implements ISkillHandler
                 		summonOwner = ((L2Summon)target).getOwner();                		
                 		summonPet = summonOwner.getPet();
                 		summonPet.unSummon(summonOwner);
-                        SystemMessage sm = new SystemMessage(SystemMessage.LETHAL_STRIKE);
+                        SystemMessage sm = new SystemMessage(SystemMessageId.LETHAL_STRIKE);
 				        summonOwner.sendPacket(sm);                		 
                 	}
                 	else
                     {
                         if (activeChar instanceof L2PcInstance)
                         {
-                            SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                             sm.addString(target.getName());
                             sm.addSkillName(skill.getId());
                             activeChar.sendPacket(sm);
@@ -461,7 +462,7 @@ public class Disablers implements ISkillHandler
                     	{
                             if (activeChar instanceof L2PcInstance)
                             {
-                                SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                                SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                                 sm.addString(target.getName());
                                 sm.addSkillName(skill.getDisplayId());
                                 activeChar.sendPacket(sm);

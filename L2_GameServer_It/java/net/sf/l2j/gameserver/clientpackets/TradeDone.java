@@ -24,6 +24,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.TradeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -61,7 +62,7 @@ public final class TradeDone extends L2GameClientPacket
 	        {
 	            // Trade partner not found, cancel trade
 	            player.cancelActiveTrade();
-	            SystemMessage msg = new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+	            SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 	            player.sendPacket(msg);
 	            msg = null;
 	            return;

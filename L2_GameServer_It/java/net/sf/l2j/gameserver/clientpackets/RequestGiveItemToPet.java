@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -61,7 +62,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
         L2PetInstance pet = (L2PetInstance)player.getPet(); 
 		if (pet.isDead())
 		{
-			sendPacket(new SystemMessage(SystemMessage.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
+			sendPacket(new SystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
 			return;
 		}
 

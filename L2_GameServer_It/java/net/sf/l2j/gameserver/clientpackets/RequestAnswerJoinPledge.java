@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.JoinPledge;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAdd;
@@ -59,11 +60,11 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 
 		if (_answer == 0)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessage.YOU_DID_NOT_RESPOND_TO_S1_CLAN_INVITATION);
+			SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DID_NOT_RESPOND_TO_S1_CLAN_INVITATION);
 			sm.addString(requestor.getName());
 			activeChar.sendPacket(sm);
 			sm = null;
-			sm = new SystemMessage(SystemMessage.S1_DID_NOT_RESPOND_TO_CLAN_INVITATION);
+			sm = new SystemMessage(SystemMessageId.S1_DID_NOT_RESPOND_TO_CLAN_INVITATION);
 			sm.addString(activeChar.getName());
 			requestor.sendPacket(sm);
 			sm = null;
@@ -96,9 +97,9 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 				clan.addClanMember(activeChar);
 				activeChar.setClanPrivileges(activeChar.getClan().getRankPrivs(activeChar.getPowerGrade()));
 
-				activeChar.sendPacket(new SystemMessage(SystemMessage.ENTERED_THE_CLAN));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.ENTERED_THE_CLAN));
 
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_JOINED_CLAN);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_HAS_JOINED_CLAN);
 				sm.addString(activeChar.getName());
 				clan.broadcastToOnlineMembers(sm);
 				sm = null;

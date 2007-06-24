@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.instancemanager.TownManager;
 import net.sf.l2j.gameserver.model.L2TeleportLocation;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -178,17 +179,17 @@ public final class L2TeleporterInstance extends L2FolkInstance
             //you cannot teleport to village that is in siege
             if (SiegeManager.getInstance().checkIfInZone(list.getLocX(), list.getLocY()))
             {
-                player.sendPacket(new SystemMessage(SystemMessage.NO_PORT_THAT_IS_IN_SIGE));
+                player.sendPacket(new SystemMessage(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE));
                 return;
             }
             else if (TownManager.getInstance().townHasCastleInSeige(list.getLocX(), list.getLocY()))
             {
-                player.sendPacket(new SystemMessage(SystemMessage.NO_PORT_THAT_IS_IN_SIGE));
+                player.sendPacket(new SystemMessage(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE));
                 return;
             }
             else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK && player.getKarma() > 0) //karma
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 sm.addString("Go away, you're not welcome here.");
                 player.sendPacket(sm);
                 return;

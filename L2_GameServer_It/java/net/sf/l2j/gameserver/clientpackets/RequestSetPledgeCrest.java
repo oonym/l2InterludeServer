@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.idfactory.BitSetIDFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -63,7 +64,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 		
 		if (clan.getDissolvingExpiryTime() > System.currentTimeMillis())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_SET_CREST_WHILE_DISSOLUTION_IN_PROGRESS));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_SET_CREST_WHILE_DISSOLUTION_IN_PROGRESS));
         	return;
 		}
 		
@@ -72,7 +73,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 			CrestCache.getInstance().removePledgeCrest(clan.getCrestId());
 			
             clan.setHasCrest(false);
-			activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_CREST_HAS_BEEN_DELETED));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_CREST_HAS_BEEN_DELETED));
             
             for (L2PcInstance member : clan.getOnlineMembers(""))
                 member.broadcastUserInfo();
@@ -89,7 +90,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 		{	
 			if (clan.getLevel() < 3)
 			{	
-				activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_LVL_3_NEEDED_TO_SET_CREST));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_LVL_3_NEEDED_TO_SET_CREST));
 				return;
 			}
 			

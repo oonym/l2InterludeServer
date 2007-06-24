@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Effect.EffectType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AutoAttackStart;
 import net.sf.l2j.gameserver.serverpackets.AutoAttackStop;
@@ -269,7 +270,7 @@ abstract class AbstractAI implements Ctrl
         	L2Effect silentMove = _actor.getEffect(EffectType.SILENT_MOVE);
             if (silentMove != null && silentMove.getSkill() != null)
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.EFFECT_S1_DISAPPEARED);
+                SystemMessage sm = new SystemMessage(SystemMessageId.EFFECT_S1_DISAPPEARED);
                 sm.addSkillName(silentMove.getSkill().getId());
                 silentMove.exit();
                 _actor.sendPacket(sm);

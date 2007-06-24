@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.serverpackets.ExRedSky;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
@@ -194,7 +195,7 @@ public class CursedWeapon
 		// Delete infos from table if any
 		CursedWeaponsManager.removeFromDb(_itemId);
 		
-		SystemMessage sm = new SystemMessage(SystemMessage.S1_HAS_DISAPPEARED);
+		SystemMessage sm = new SystemMessage(SystemMessageId.S1_HAS_DISAPPEARED);
 		sm.addItemName(_itemId);
 		CursedWeaponsManager.announce(sm);
 		
@@ -267,7 +268,7 @@ public class CursedWeapon
 		}
 
 		_isDropped = true;
-		SystemMessage sm = new SystemMessage(SystemMessage.S2_WAS_DROPPED_IN_THE_S1_REGION);
+		SystemMessage sm = new SystemMessage(SystemMessageId.S2_WAS_DROPPED_IN_THE_S1_REGION);
 		if (player != null)
 			sm.addZoneName(player.getX(), player.getY(), player.getZ()); // Region Name
 		else if (_player != null)
@@ -363,7 +364,7 @@ public class CursedWeapon
 		_item = item;
 		//L2ItemInstance[] items = 
 		_player.getInventory().equipItemAndRecord(_item);
-		SystemMessage sm = new SystemMessage(SystemMessage.S1_EQUIPPED);
+		SystemMessage sm = new SystemMessage(SystemMessageId.S1_EQUIPPED);
 		sm.addItemName(_item.getItemId());
 		_player.sendPacket(sm);
 		
@@ -384,7 +385,7 @@ public class CursedWeapon
 		// Refresh player stats
 		_player.broadcastUserInfo();
 
-		sm = new SystemMessage(SystemMessage.THE_OWNER_OF_S2_HAS_APPEARED_IN_THE_S1_REGION);
+		sm = new SystemMessage(SystemMessageId.THE_OWNER_OF_S2_HAS_APPEARED_IN_THE_S1_REGION);
 		sm.addZoneName(_player.getX(), _player.getY(), _player.getZ()); // Region Name
 		sm.addItemName(_item.getItemId());
 		CursedWeaponsManager.announce(sm);

@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2ControllableMobInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -124,7 +125,7 @@ public class AdminKill implements IAdminCommandHandler
 
                 if (obj == null || obj instanceof L2ControllableMobInstance || !(obj instanceof L2Character))
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
                 } else
                 {
                 	kill(activeChar, (L2Character)obj);

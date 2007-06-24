@@ -22,6 +22,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public final class AllyDismiss extends L2GameClientPacket
@@ -48,34 +49,34 @@ public final class AllyDismiss extends L2GameClientPacket
         }
 		if (player.getClan() == null)
         {
-			player.sendPacket(new SystemMessage(SystemMessage.YOU_ARE_NOT_A_CLAN_MEMBER));
+			player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
             return;
         }
         L2Clan leaderClan = player.getClan();
 		if (leaderClan.getAllyId() == 0)
 		{
-			player.sendPacket(new SystemMessage(SystemMessage.NO_CURRENT_ALLIANCES));
+			player.sendPacket(new SystemMessage(SystemMessageId.NO_CURRENT_ALLIANCES));
 			return;
 		}
 		if (!player.isClanLeader() || leaderClan.getClanId() != leaderClan.getAllyId())
 		{
-			player.sendPacket(new SystemMessage(SystemMessage.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
+			player.sendPacket(new SystemMessage(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
 			return;
 		}
 		L2Clan clan = ClanTable.getInstance().getClanByName(_clanName);
         if (clan == null)
         {
-			player.sendPacket(new SystemMessage(SystemMessage.CLAN_DOESNT_EXISTS));
+			player.sendPacket(new SystemMessage(SystemMessageId.CLAN_DOESNT_EXISTS));
 			return;
         }
         if (clan.getClanId() == leaderClan.getClanId())
         {
-			player.sendPacket(new SystemMessage(SystemMessage.ALLIANCE_LEADER_CANT_WITHDRAW));
+			player.sendPacket(new SystemMessage(SystemMessageId.ALLIANCE_LEADER_CANT_WITHDRAW));
 			return;
         }
         if (clan.getAllyId() != leaderClan.getAllyId())
         {
-			player.sendPacket(new SystemMessage(SystemMessage.DIFFERANT_ALLIANCE));
+			player.sendPacket(new SystemMessage(SystemMessageId.DIFFERANT_ALLIANCE));
 			return;
         }
         
@@ -92,7 +93,7 @@ public final class AllyDismiss extends L2GameClientPacket
         		L2Clan.PENALTY_TYPE_CLAN_DISMISSED); //24*60*60*1000 = 86400000
         clan.updateClanInDB();
         
-        player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_EXPELED_A_CLAN));
+        player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXPELED_A_CLAN));
     }
     
     public String getType()

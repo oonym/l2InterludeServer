@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ChairSit;
 import net.sf.l2j.gameserver.serverpackets.RecipeShopManageList;
@@ -145,7 +146,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				if (activeChar.getAccessLevel() < Config.GM_PEACEATTACK &&
 						activeChar.isInsidePeaceZone(pet, target))
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IN_PEACEZONE));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 					return;
 				}
 
@@ -174,11 +175,11 @@ public final class RequestActionUse extends L2GameClientPacket
 				//returns pet to control item
 				if (pet.isDead())
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.DEAD_PET_CANNOT_BE_RETURNED));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.DEAD_PET_CANNOT_BE_RETURNED));
 				}
 				else if (pet.isAttackingNow())
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.PET_CANNOT_SENT_BACK_DURING_BATTLE));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE));
 				} 
 				else
 				{
@@ -191,7 +192,7 @@ public final class RequestActionUse extends L2GameClientPacket
 						if (petInst.getCurrentFed() > (petInst.getMaxFed() * 0.40))
 							pet.unSummon(activeChar);
 						else
-							activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_CANNOT_RESTORE_HUNGRY_PETS));
+							activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_RESTORE_HUNGRY_PETS));
 					}
 				}
 			}
@@ -203,49 +204,49 @@ public final class RequestActionUse extends L2GameClientPacket
 				if (activeChar.isDead())
 				{
 					//A strider cannot be ridden when dead
-					SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
+					SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
 					activeChar.sendPacket(msg);
 					msg = null;
 				}
 				else if (pet.isDead())
 				{   
 					//A dead strider cannot be ridden.
-					SystemMessage msg = new SystemMessage(SystemMessage.DEAD_STRIDER_CANT_BE_RIDDEN);
+					SystemMessage msg = new SystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
 					activeChar.sendPacket(msg);
 					msg = null;
 				}
 				else if (pet.isInCombat())
 				{
 					//A strider in battle cannot be ridden
-					SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
+					SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
 					activeChar.sendPacket(msg);
 					msg = null;
 				}
 				else if (activeChar.isInCombat())
 				{
 					//A strider cannot be ridden while in battle
-					SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+					SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
 					activeChar.sendPacket(msg);   
 					msg = null;
 				}                   
 				else if (activeChar.isSitting() || activeChar.isMoving())
 				{
 					//A strider can be ridden only when standing
-					SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
+					SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
 					activeChar.sendPacket(msg);
 					msg = null;
 				}
 				else if (activeChar.isFishing())
 				{
 					//You can't mount, dismount, break and drop items while fishing
-					SystemMessage msg = new SystemMessage(SystemMessage.CANNOT_DO_WHILE_FISHING_2);
+					SystemMessage msg = new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
 					activeChar.sendPacket(msg);
 					msg = null;
 				}
 				else if (activeChar.isCursedWeaponEquiped())
 				{
 					//You can't mount, dismount, break and drop items while weilding a cursed weapon
-					SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+					SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
 					activeChar.sendPacket(msg);
 				}
 				else if (!pet.isDead() && !activeChar.isMounted())
@@ -449,7 +450,7 @@ public final class RequestActionUse extends L2GameClientPacket
 
 			if (_skills.size() == 0)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessage.SKILL_NOT_AVAILABLE));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE));
 				return;
 			}
 

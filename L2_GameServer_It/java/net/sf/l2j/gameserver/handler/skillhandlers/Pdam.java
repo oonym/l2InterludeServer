@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
@@ -124,13 +125,13 @@ public class Pdam implements ISkillHandler
                     {
                         skill.getEffects(activeChar, target);
                         
-                        SystemMessage sm = new SystemMessage(SystemMessage.YOU_FEEL_S1_EFFECT);
+                        SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
                         sm.addSkillName(skill.getId());
                         target.sendPacket(sm);
                     }
                     else
                     {
-                        SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+                        SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
                         sm.addString(target.getName());
                         sm.addSkillName(skill.getDisplayId());
                         activeChar.sendPacket(sm);
@@ -175,7 +176,7 @@ public class Pdam implements ISkillHandler
             			}
                 	}
                     // Lethal Strike was succefful!
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.LETHAL_STRIKE_SUCCESSFUL));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
                 }
                 else
                 {
@@ -196,7 +197,7 @@ public class Pdam implements ISkillHandler
 	                		      player.setCurrentHp(player.getCurrentHp() - damage);
 	        				}
 	                		
-	                		SystemMessage smsg = new SystemMessage(SystemMessage.S1_GAVE_YOU_S2_DMG);
+	                		SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
 	                		smsg.addString(activeChar.getName());
 	                		smsg.addNumber(damage);
 	                		player.sendPacket(smsg);
@@ -213,7 +214,7 @@ public class Pdam implements ISkillHandler
             }
             else // No - damage
             {
-            	activeChar.sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
+            	activeChar.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
             }
             
             if (skill.getId() == 345 || skill.getId() == 346) // Sonic Rage or Raging Force
@@ -227,13 +228,13 @@ public class Pdam implements ISkillHandler
                         effectcharge++;
                         effect.addNumCharges(1);
                         activeChar.updateEffectIcons();
-                        SystemMessage sm = new SystemMessage(SystemMessage.FORCE_INCREASED_TO_S1);
+                        SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
                         sm.addNumber(effectcharge);
                         activeChar.sendPacket(sm);
                     }
                     else
                     {
-                        SystemMessage sm = new SystemMessage(SystemMessage.FORCE_MAXLEVEL_REACHED);
+                        SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_MAXLEVEL_REACHED);
                         activeChar.sendPacket(sm);
                     }
                 }

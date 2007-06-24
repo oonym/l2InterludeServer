@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2TradeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.BuyList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -54,7 +55,7 @@ public class AdminShop implements IAdminCommandHandler {
 			try {
 				handleBuyRequest(activeChar, command.substring(10));
 			} catch (IndexOutOfBoundsException e) {
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Please specify buylist.");
 				activeChar.sendPacket(sm);
 			}

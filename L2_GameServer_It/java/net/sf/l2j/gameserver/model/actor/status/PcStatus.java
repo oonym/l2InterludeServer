@@ -8,6 +8,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.entity.Duel;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.util.Util;
@@ -98,7 +99,7 @@ public class PcStatus extends PlayableStatus
         if (attacker != null && attacker != getActiveChar() && fullValue > 0)
         {
             // Send a System Message to the L2PcInstance
-            SystemMessage smsg = new SystemMessage(SystemMessage.S1_GAVE_YOU_S2_DMG);
+            SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
 
             if (Config.DEBUG)
                 _log.fine("Attacker:" + attacker.getName());

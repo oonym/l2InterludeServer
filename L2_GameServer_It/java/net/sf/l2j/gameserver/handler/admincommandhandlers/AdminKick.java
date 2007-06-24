@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.LeaveWorld;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -63,7 +64,7 @@ public class AdminKick implements IAdminCommandHandler {
                 {
                     //System.out.println("Player2 "+plyr.getName());
                     plyr.logout();
-    				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+    				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
     				sm.addString("You kicked " + plyr.getName() + " from the game.");
     				activeChar.sendPacket(sm);
     				RegionBBSManager.getInstance().changeCommunityBoard();

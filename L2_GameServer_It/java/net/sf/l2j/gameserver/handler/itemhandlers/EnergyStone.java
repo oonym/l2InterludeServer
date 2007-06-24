@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -68,14 +69,14 @@ public class EnergyStone implements IItemHandler
 
             if (activeChar.isSitting())
             {
-                     activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_MOVE_SITTING));
+                     activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
                      return;
             }
      
             _skill = getChargeSkill(activeChar);
             if (_skill == null)
             {
-                     SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+                     SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
                      sm.addItemName(5589);
                      activeChar.sendPacket(sm);
                      return;
@@ -106,16 +107,16 @@ public class EnergyStone implements IItemHandler
             }
             else if (_effect.getLevel() == 2)
             {
-                activeChar.sendPacket(new SystemMessage(SystemMessage.FORCE_MAXLEVEL_REACHED));
+                activeChar.sendPacket(new SystemMessage(SystemMessageId.FORCE_MAXLEVEL_REACHED));
             }
-            SystemMessage sm = new SystemMessage(SystemMessage.FORCE_INCREASED_TO_S1);
+            SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
             sm.addNumber(_effect.getLevel());
             activeChar.sendPacket(sm);
             return;
         }
         else
         {
-             SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+             SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
              sm.addItemName(5589);
              activeChar.sendPacket(sm);
              return;

@@ -24,6 +24,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SendTradeRequest;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -63,7 +64,7 @@ public final class TradeRequest extends L2GameClientPacket
         if (target == null || !player.getKnownList().knowsObject(target) 
         		|| !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
 		{
-			player.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 			return;
 		}
 		
@@ -84,21 +85,21 @@ public final class TradeRequest extends L2GameClientPacket
 
         if (player.getPrivateStoreType() != 0 || partner.getPrivateStoreType() != 0)
         {
-            player.sendPacket(new SystemMessage(SystemMessage.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+            player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
             return;
         }
 
         if (player.isProcessingTransaction())
 		{
 			if (Config.DEBUG) _log.fine("already trading with someone");
-			player.sendPacket(new SystemMessage(SystemMessage.ALREADY_TRADING));
+			player.sendPacket(new SystemMessage(SystemMessageId.ALREADY_TRADING));
 			return;
 		}
 
 		if (partner.isProcessingRequest() || partner.isProcessingTransaction()) 
 		{
 			_log.info("transaction already in progress.");
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 			sm.addString(partner.getName());
 			player.sendPacket(sm);
             return;
@@ -112,7 +113,7 @@ public final class TradeRequest extends L2GameClientPacket
         
 		player.onTransactionRequest(partner);
 		partner.sendPacket(new SendTradeRequest(player.getObjectId()));
-		SystemMessage sm = new SystemMessage(SystemMessage.REQUEST_S1_FOR_TRADE);
+		SystemMessage sm = new SystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE);
 		sm.addString(partner.getName());
 		player.sendPacket(sm);
 	} 

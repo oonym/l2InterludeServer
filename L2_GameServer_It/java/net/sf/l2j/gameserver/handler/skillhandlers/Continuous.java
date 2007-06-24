@@ -31,6 +31,7 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 
@@ -111,7 +112,7 @@ public class Continuous implements ISkillHandler
 				boolean acted = Formulas.getInstance().calcMagicAffected(
 						activeChar, target, skill);
 				if (!acted) {
-					activeChar.sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
 					continue;
 				}
 				

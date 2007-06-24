@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.TradeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreManageListSell;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgSell;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -103,7 +104,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
         if (_count > player.GetPrivateSellStoreLimit())
         {
         	player.sendPacket(new PrivateStoreManageListSell(player));
-            player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+            player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
             return;
         }
         

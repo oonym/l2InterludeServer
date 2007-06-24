@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Siege;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingItemType;
@@ -1230,15 +1231,16 @@ public final class Formulas
 				if (calcMagicSuccess(attacker, target, skill)
 					&& (target.getLevel() - attacker.getLevel()) <= 9)
 				{
-					if (skill.getSkillType() == SkillType.DRAIN) attacker.sendPacket(new SystemMessage(
-																										SystemMessage.DRAIN_HALF_SUCCESFUL));
-					else attacker.sendPacket(new SystemMessage(SystemMessage.ATTACK_FAILED));
+					if (skill.getSkillType() == SkillType.DRAIN)
+						attacker.sendPacket(new SystemMessage(SystemMessageId.DRAIN_HALF_SUCCESFUL));
+					else
+						attacker.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
 
 					damage /= 2;
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.S1_WAS_UNAFFECTED_BY_S2);
+					SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
 					sm.addString(target.getName());
 					sm.addSkillName(skill.getId());
 					attacker.sendPacket(sm);
@@ -1251,13 +1253,13 @@ public final class Formulas
 			{
 				if (skill.getSkillType() == SkillType.DRAIN)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.RESISTED_S1_DRAIN);
+					SystemMessage sm = new SystemMessage(SystemMessageId.RESISTED_S1_DRAIN);
 					sm.addString(attacker.getName());
 					target.sendPacket(sm);
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.RESISTED_S1_MAGIC);
+					SystemMessage sm = new SystemMessage(SystemMessageId.RESISTED_S1_MAGIC);
 					sm.addString(attacker.getName());
 					target.sendPacket(sm);
 				}

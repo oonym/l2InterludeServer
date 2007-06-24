@@ -43,6 +43,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.model.PetInventory;
 import net.sf.l2j.gameserver.model.actor.stat.PetStat;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
@@ -148,7 +149,7 @@ public class L2PetInstance extends L2Summon
 						setCurrentFed(getCurrentFed() + (100));
 						if (getOwner() != null)
 						{
-							SystemMessage sm = new SystemMessage(SystemMessage.PET_TOOK_S1_BECAUSE_HE_WAS_HUNGRY);
+							SystemMessage sm = new SystemMessage(SystemMessageId.PET_TOOK_S1_BECAUSE_HE_WAS_HUNGRY);
 							sm.addItemName(foodId);
 							getOwner().sendPacket(sm);
 						}
@@ -309,7 +310,7 @@ public class L2PetInstance extends L2Summon
 		if (item == null)
 		{
             if (sendMessage) 
-                getOwner().sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
+                getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
             
 			return false;
 		}
@@ -321,7 +322,7 @@ public class L2PetInstance extends L2Summon
 
 		if (sendMessage)
 		{
-            SystemMessage sm = new SystemMessage(SystemMessage.DISSAPEARED_ITEM);
+            SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
             sm.addNumber(count);
             sm.addItemName(item.getItemId());
             getOwner().sendPacket(sm);
@@ -344,7 +345,7 @@ public class L2PetInstance extends L2Summon
         
 		if (item == null)
 		{
-            if (sendMessage) getOwner().sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_ITEMS));
+            if (sendMessage) getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
 			return false;
 		}
 
@@ -355,7 +356,7 @@ public class L2PetInstance extends L2Summon
 
 		if (sendMessage)
 		{
-            SystemMessage sm = new SystemMessage(SystemMessage.DISSAPEARED_ITEM);
+            SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
             sm.addNumber(count);
             sm.addItemName(itemId);
             getOwner().sendPacket(sm);
@@ -387,7 +388,7 @@ public class L2PetInstance extends L2Summon
 		// Herbs
 		if ( target.getItemId() > 8599 && target.getItemId() < 8615 )   
 		{
-	        SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1);
+	        SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
             smsg.addItemName(target.getItemId());
             getOwner().sendPacket(smsg);
 			return;
@@ -395,7 +396,7 @@ public class L2PetInstance extends L2Summon
 		// Cursed weapons
 		if ( CursedWeaponsManager.getInstance().isCursed(target.getItemId()) )   
 		{
-	        SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1);
+	        SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
             smsg.addItemName(target.getItemId());
             getOwner().sendPacket(smsg);
 			return;
@@ -415,20 +416,20 @@ public class L2PetInstance extends L2Summon
                 
                 if (target.getItemId() == 57)
                 {
-                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1_ADENA);
+                    SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1_ADENA);
                     smsg.addNumber(target.getCount());
                     getOwner().sendPacket(smsg);
                 }
                 else if (target.getCount() > 1)
                 {
-                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S2_S1_s);
+                    SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S2_S1_S);
                     smsg.addItemName(target.getItemId());
                     smsg.addNumber(target.getCount());
                     getOwner().sendPacket(smsg);
                 }
                 else
                 {
-                    SystemMessage smsg = new SystemMessage(SystemMessage.FAILED_TO_PICKUP_S1);
+                    SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
                     smsg.addItemName(target.getItemId());
                     getOwner().sendPacket(smsg);
                 }
@@ -467,7 +468,7 @@ public class L2PetInstance extends L2Summon
 		// called in combat
 		if (!isDead() && attacker != null)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessage.PET_RECEIVED_S2_DAMAGE_BY_S1);
+			SystemMessage sm = new SystemMessage(SystemMessageId.PET_RECEIVED_S2_DAMAGE_BY_S1);
 			if (attacker instanceof L2NpcInstance)
 			{
 				sm.addNpcName( ((L2NpcInstance)attacker).getTemplate().npcId);
@@ -923,9 +924,9 @@ public class L2PetInstance extends L2Summon
     	if (target.getObjectId() != getOwner().getObjectId())
     	{
     		if (pcrit || mcrit)
-    			getOwner().sendPacket(new SystemMessage(SystemMessage.CRITICAL_HIT_BY_PET));
+    			getOwner().sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT_BY_PET));
 
-    		SystemMessage sm = new SystemMessage(SystemMessage.PET_HIT_FOR_S1_DAMAGE);
+    		SystemMessage sm = new SystemMessage(SystemMessageId.PET_HIT_FOR_S1_DAMAGE);
     		sm.addNumber(damage);
     		getOwner().sendPacket(sm);
         }

@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -95,12 +96,12 @@ public class ExtractableItems implements IItemHandler
 
 			if (createAmount > 1)
 			{
-				sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
+				sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 				sm.addItemName(createItemID);
 				sm.addNumber(createAmount);
 			} else
 			{
-				sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+				sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
 				sm.addItemName(createItemID);
 			}
 			activeChar.sendPacket(sm);

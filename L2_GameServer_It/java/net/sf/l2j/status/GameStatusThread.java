@@ -64,6 +64,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -481,7 +482,7 @@ public class GameStatusThread extends Thread
                             L2ItemInstance item = player.getInventory().addItem("Status-Give", itemId, amount, null, null);
                             InventoryUpdate iu = new InventoryUpdate();
                             iu.addItem(item);
-                            SystemMessage sm = new SystemMessage(SystemMessage.YOU_PICKED_UP_S1_S2);
+                            SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
                             sm.addItemName(itemId);
                             sm.addNumber(amount);
                             player.sendPacket(iu);

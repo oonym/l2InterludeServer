@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
@@ -169,7 +170,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			npc2 = (L2Character)activeChar.getTarget();
 			if(npc2 == null)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 				return;
 			}
 		}

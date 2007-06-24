@@ -8,6 +8,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.MobGroup;
 import net.sf.l2j.gameserver.model.MobGroupTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -534,6 +535,6 @@ public class AdminMobGroup implements IAdminCommandHandler
             activeChar.sendMessage(mobGroup.getGroupId() + ": " + mobGroup.getActiveMobCount() + " alive out of " +  mobGroup.getMaxMobCount() + 
                                    " of NPC ID " + mobGroup.getTemplate().npcId + " (" + mobGroup.getStatus() + ")");
         
-        activeChar.sendPacket(new SystemMessage(SystemMessage.FRIEND_LIST_FOOT));
+        activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
     }
 }

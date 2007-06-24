@@ -22,6 +22,7 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -56,7 +57,7 @@ public class CompSpiritShotPacks implements IItemHandler
 		activeChar.getInventory().destroyItem("Extract", item, activeChar, null);
 	    activeChar.getInventory().addItem("Extract", itemToCreateId, amount, activeChar, item);
 
-	    SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S); 
+	    SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S); 
 	    sm.addItemName(itemToCreateId);
         sm.addNumber(amount);
 	    activeChar.sendPacket(sm);

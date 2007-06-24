@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
@@ -103,14 +104,14 @@ public class L2SignsPriestInstance extends L2FolkInstance
                 case 2: // Purchase Record of the Seven Signs
                     if (!player.getInventory().validateCapacity(1))
                     {
-                        player.sendPacket(new SystemMessage(SystemMessage.SLOTS_FULL));
+                        player.sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
                         break;
                     }
 
                     L2ItemInstance adenaItem = player.getInventory().getAdenaInstance();
                     if (!player.reduceAdena("SevenSigns", SevenSigns.RECORD_SEVEN_SIGNS_COST, this, true))
                     {
-                        player.sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
+                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
                         break;
                     }
                     L2ItemInstance recordSevenSigns = player.getInventory().addItem(
@@ -129,7 +130,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
                     sendPacket(su);
 
-                    sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+                    sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
                     sm.addItemName(SevenSigns.RECORD_SEVEN_SIGNS_ID);
                     player.sendPacket(sm);
                     break;
@@ -192,7 +193,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                                                                    SevenSigns.CERTIFICATE_OF_APPROVAL_ID,
                                                                    1, this, false))
                                     {
-                                        sm = new SystemMessage(SystemMessage.DISSAPEARED_ITEM);
+                                        sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
                                         sm.addNumber(1);
                                         sm.addItemName(SevenSigns.CERTIFICATE_OF_APPROVAL_ID);
                                         player.sendPacket(sm);
@@ -202,7 +203,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                                                                 SevenSigns.ADENA_JOIN_DAWN_COST, this,
                                                                 false))
                                     {
-                                        sm = new SystemMessage(SystemMessage.DISSAPEARED_ADENA);
+                                        sm = new SystemMessage(SystemMessageId.DISSAPEARED_ADENA);
                                         sm.addNumber(SevenSigns.ADENA_JOIN_DAWN_COST);
                                         player.sendPacket(sm);
                                         allowJoinDawn = true;
@@ -221,20 +222,20 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     SevenSigns.getInstance().setPlayerInfo(player, cabal, newSeal);
 
                     if (cabal == SevenSigns.CABAL_DAWN) player.sendPacket(new SystemMessage(
-                                                                                            SystemMessage.SEVENSIGNS_PARTECIPATION_DAWN)); // Joined Dawn
-                    else player.sendPacket(new SystemMessage(SystemMessage.SEVENSIGNS_PARTECIPATION_DUSK)); // Joined Dusk
+                                                                                            SystemMessageId.SEVENSIGNS_PARTECIPATION_DAWN)); // Joined Dawn
+                    else player.sendPacket(new SystemMessage(SystemMessageId.SEVENSIGNS_PARTECIPATION_DUSK)); // Joined Dusk
 
                     // Show a confirmation message to the user, indicating which seal they chose.
                     switch (newSeal)
                     {
                         case SevenSigns.SEAL_AVARICE:
-                            player.sendPacket(new SystemMessage(SystemMessage.FIGHT_FOR_AVARICE));
+                            player.sendPacket(new SystemMessage(SystemMessageId.FIGHT_FOR_AVARICE));
                             break;
                         case SevenSigns.SEAL_GNOSIS:
-                            player.sendPacket(new SystemMessage(SystemMessage.FIGHT_FOR_GNOSIS));
+                            player.sendPacket(new SystemMessage(SystemMessageId.FIGHT_FOR_GNOSIS));
                             break;
                         case SevenSigns.SEAL_STRIFE:
-                            player.sendPacket(new SystemMessage(SystemMessage.FIGHT_FOR_STRIFE));
+                            player.sendPacket(new SystemMessage(SystemMessageId.FIGHT_FOR_STRIFE));
                             break;
                     }
 
@@ -256,7 +257,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
 
                     if (contribScore == Config.ALT_MAXIMUM_PLAYER_CONTRIB)
                     {
-                        player.sendPacket(new SystemMessage(SystemMessage.CONTRIB_SCORE_EXCEEDED));
+                        player.sendPacket(new SystemMessage(SystemMessageId.CONTRIB_SCORE_EXCEEDED));
                         break;
                     }
                     else
@@ -331,7 +332,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                                                                                            greenContribCount,
                                                                                            redContribCount);
 
-                        sm = new SystemMessage(SystemMessage.CONTRIB_SCORE_INCREASED);
+                        sm = new SystemMessage(SystemMessageId.CONTRIB_SCORE_INCREASED);
                         sm.addNumber(contribScore);
                         player.sendPacket(sm);
 
@@ -358,7 +359,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
 
                     if (ancientAdenaAmount < ancientAdenaConvert || ancientAdenaConvert < 1)
                     {
-                        player.sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
+                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
                         break;
                     }
 

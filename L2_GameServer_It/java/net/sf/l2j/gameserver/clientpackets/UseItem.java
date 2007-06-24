@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
@@ -69,7 +70,7 @@ public final class UseItem extends L2GameClientPacket
 
 		if (activeChar.getPrivateStoreType() != 0)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
@@ -142,7 +143,7 @@ public final class UseItem extends L2GameClientPacket
             if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
             {
                 // You cannot do anything else while fishing
-                SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_DO_WHILE_FISHING_3);
+                SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
                 getClient().getActiveChar().sendPacket(sm);
                 sm = null;
                 return;
@@ -151,7 +152,7 @@ public final class UseItem extends L2GameClientPacket
 			// Char cannot use item when dead
 			if (activeChar.isDead())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 				sm.addItemName(itemId);
 				getClient().getActiveChar().sendPacket(sm);
 				sm = null;
@@ -162,7 +163,7 @@ public final class UseItem extends L2GameClientPacket
 			if (item.getItem().isForWolf() || item.getItem().isForHatchling()
 				|| item.getItem().isForStrider() || item.getItem().isForBabyPet())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_EQUIP_PET_ITEM); // You cannot equip a pet item.
+				SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_PET_ITEM); // You cannot equip a pet item.
 				sm.addItemName(itemId);
 				getClient().getActiveChar().sendPacket(sm);
 				sm = null;
@@ -198,7 +199,7 @@ public final class UseItem extends L2GameClientPacket
                             || bodyPart == L2Item.SLOT_L_HAND 
                             || bodyPart == L2Item.SLOT_R_HAND))
                 {
-        				SystemMessage sm = new SystemMessage(SystemMessage.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR);
+        				SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR);
         				activeChar.sendPacket(sm);
                         return;
                 } */
@@ -227,13 +228,13 @@ public final class UseItem extends L2GameClientPacket
                 {
 		            if (item.getEnchantLevel() > 0)
 		            {
-		            	sm = new SystemMessage(SystemMessage.EQUIPMENT_S1_S2_REMOVED);
+		            	sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
 		            	sm.addNumber(item.getEnchantLevel());
 		            	sm.addItemName(itemId);
 		            }
 		            else
 		            {
-			            sm = new SystemMessage(SystemMessage.S1_DISARMED);
+			            sm = new SystemMessage(SystemMessageId.S1_DISARMED);
 			            sm.addItemName(itemId);
 		            }
 		            activeChar.sendPacket(sm);
@@ -291,13 +292,13 @@ public final class UseItem extends L2GameClientPacket
 
 					if (item.getEnchantLevel() > 0)
 					{
-						sm = new SystemMessage(SystemMessage.S1_S2_EQUIPPED);
+						sm = new SystemMessage(SystemMessageId.S1_S2_EQUIPPED);
 						sm.addNumber(item.getEnchantLevel());
 						sm.addItemName(itemId);
 					}
 					else
 					{
-						sm = new SystemMessage(SystemMessage.S1_EQUIPPED);
+						sm = new SystemMessage(SystemMessageId.S1_EQUIPPED);
 						sm.addItemName(itemId);
 					}
 					activeChar.sendPacket(sm);

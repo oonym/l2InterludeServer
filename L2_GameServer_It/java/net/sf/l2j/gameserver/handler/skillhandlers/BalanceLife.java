@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -105,7 +106,7 @@ public class BalanceLife implements ISkillHandler
 			su.addAttribute(StatusUpdate.CUR_HP, (int) target.getCurrentHp());
 			target.sendPacket(su);
 
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString("HP of the party has been balanced.");
 			target.sendPacket(sm);
 

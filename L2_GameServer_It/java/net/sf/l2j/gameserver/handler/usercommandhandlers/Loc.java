@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.handler.usercommandhandlers;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -37,27 +38,27 @@ public class Loc implements IUserCommandHandler
     public boolean useUserCommand(@SuppressWarnings("unused") int id, L2PcInstance activeChar)
     {
     	int _nearestTown=MapRegionTable.getInstance().getClosestTownNumber(activeChar);
-    	int msg = 0;
+    	SystemMessageId msg;
     	switch (_nearestTown)
     	{
-    	case 0: msg = SystemMessage.LOC_TI_S1_S2_S3; break;
-    	case 1: msg = SystemMessage.LOC_ELVEN_S1_S2_S3; break;
-    	case 2: msg = SystemMessage.LOC_DARK_ELVEN_S1_S2_S3; break;
-    	case 3: msg = SystemMessage.LOC_ORC_S1_S2_S3; break;
-    	case 4: msg = SystemMessage.LOC_DWARVEN_S1_S2_S3; break;
-    	case 5: msg = SystemMessage.LOC_GLUDIO_S1_S2_S3; break;
-    	case 6: msg = SystemMessage.LOC_GLUDIN_S1_S2_S3; break;
-    	case 7: msg = SystemMessage.LOC_DION_S1_S2_S3; break;
-    	case 8: msg = SystemMessage.LOC_GIRAN_S1_S2_S3; break;
-    	case 9: msg = SystemMessage.LOC_OREN_S1_S2_S3; break;
-    	case 10: msg = SystemMessage.LOC_ADEN_S1_S2_S3; break;
-    	case 11: msg = SystemMessage.LOC_HUNTER_S1_S2_S3; break;
-    	case 12: msg = SystemMessage.LOC_GIRAN_HARBOR_S1_S2_S3; break;
-    	case 13: msg = SystemMessage.LOC_HEINE_S1_S2_S3; break;
-        case 14: msg = SystemMessage.LOC_RUNE_S1_S2_S3; break;
-        case 15: msg = SystemMessage.LOC_GODDARD_S1_S2_S3; break;
-        case 16: msg = SystemMessage.LOC_SCHUTTGART_S1_S2_S3;break;
-        default: msg = SystemMessage.LOC_ADEN_S1_S2_S3;
+    	case 0: msg = SystemMessageId.LOC_TI_S1_S2_S3; break;
+    	case 1: msg = SystemMessageId.LOC_ELVEN_S1_S2_S3; break;
+    	case 2: msg = SystemMessageId.LOC_DARK_ELVEN_S1_S2_S3; break;
+    	case 3: msg = SystemMessageId.LOC_ORC_S1_S2_S3; break;
+    	case 4: msg = SystemMessageId.LOC_DWARVEN_S1_S2_S3; break;
+    	case 5: msg = SystemMessageId.LOC_GLUDIO_S1_S2_S3; break;
+    	case 6: msg = SystemMessageId.LOC_GLUDIN_S1_S2_S3; break;
+    	case 7: msg = SystemMessageId.LOC_DION_S1_S2_S3; break;
+    	case 8: msg = SystemMessageId.LOC_GIRAN_S1_S2_S3; break;
+    	case 9: msg = SystemMessageId.LOC_OREN_S1_S2_S3; break;
+    	case 10: msg = SystemMessageId.LOC_ADEN_S1_S2_S3; break;
+    	case 11: msg = SystemMessageId.LOC_HUNTER_S1_S2_S3; break;
+    	case 12: msg = SystemMessageId.LOC_GIRAN_HARBOR_S1_S2_S3; break;
+    	case 13: msg = SystemMessageId.LOC_HEINE_S1_S2_S3; break;
+        case 14: msg = SystemMessageId.LOC_RUNE_S1_S2_S3; break;
+        case 15: msg = SystemMessageId.LOC_GODDARD_S1_S2_S3; break;
+        case 16: msg = SystemMessageId.LOC_SCHUTTGART_S1_S2_S3;break;
+        default: msg = SystemMessageId.LOC_ADEN_S1_S2_S3;
     	}
         SystemMessage sm = new SystemMessage(msg);
         sm.addNumber(activeChar.getX());

@@ -8,6 +8,7 @@ import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -121,7 +122,7 @@ public class L2CabaleBufferInstance extends L2NpcInstance
             	
            		broadcastPacket(new MagicSkillUser(_caster, player, skill.getId(), skillLevel, skill.getSkillTime(), 0));
                 
-           		SystemMessage sm = new SystemMessage(SystemMessage.YOU_FEEL_S1_EFFECT);
+           		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
            		sm.addSkillName(skillId);
            		player.sendPacket(sm);
                     

@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -55,7 +56,7 @@ public final class RequestReplyStopPledgeWar extends L2GameClientPacket
         } 
         else
         {
-            requestor.sendPacket(new SystemMessage(SystemMessage.REQUEST_TO_END_WAR_HAS_BEEN_DENIED));
+            requestor.sendPacket(new SystemMessage(SystemMessageId.REQUEST_TO_END_WAR_HAS_BEEN_DENIED));
         }
         
         activeChar.setActiveRequester(null);

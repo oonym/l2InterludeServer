@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.actor.knownlist.SummonKnownList;
 import net.sf.l2j.gameserver.model.actor.stat.SummonStat;
 import net.sf.l2j.gameserver.model.actor.status.SummonStatus;
 import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcInfo;
@@ -504,7 +505,7 @@ public abstract class L2Summon extends L2PlayableInstance
         if (target == null)
         {
         	if (getOwner() != null)
-        		getOwner().sendPacket(new SystemMessage(SystemMessage.TARGET_CANT_FOUND));
+        		getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_CANT_FOUND));
             return;
         }
         
@@ -515,7 +516,7 @@ public abstract class L2Summon extends L2PlayableInstance
         		&& getOwner() != null
         		&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.SKILL_NOT_AVAILABLE);
+            SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
             sm.addString(skill.getName());
             getOwner().sendPacket(sm);
             return;
@@ -536,7 +537,7 @@ public abstract class L2Summon extends L2PlayableInstance
         {
             // Send a System Message to the caster
         	if (getOwner() != null)
-        		getOwner().sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_MP));
+        		getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
             return;
         }
         
@@ -545,7 +546,7 @@ public abstract class L2Summon extends L2PlayableInstance
         {
             // Send a System Message to the caster
         	if (getOwner() != null)
-        		getOwner().sendPacket(new SystemMessage(SystemMessage.NOT_ENOUGH_HP));
+        		getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_HP));
             return;
         }
 
@@ -559,7 +560,7 @@ public abstract class L2Summon extends L2PlayableInstance
 					&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
 			{
 				// If summon or target is in a peace zone, send a system message TARGET_IN_PEACEZONE
-	        	sendPacket(new SystemMessage(SystemMessage.TARGET_IN_PEACEZONE));
+	        	sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 				return;
 			}
 

@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -200,7 +201,7 @@ public class AdminTeleport implements IAdminCommandHandler
         }
         else if (command.startsWith("admin_failed"))
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             sm.addString("Trying ActionFailed...");
             activeChar.sendPacket(sm);
             activeChar.sendPacket(new ActionFailed());
@@ -376,7 +377,7 @@ public class AdminTeleport implements IAdminCommandHandler
             activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
             activeChar.teleToLocation(x, y, z, false);
             
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             sm.addString("You have been teleported to " + Cords);
             activeChar.sendPacket(sm);
         } catch (NoSuchElementException nsee)
@@ -573,7 +574,7 @@ public class AdminTeleport implements IAdminCommandHandler
                 SpawnTable.getInstance().addNewSpawn(spawn, true);
                 spawn.init();
                 
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 sm.addString("Created " + template1.name + " on " + target.getObjectId() + ".");
                 activeChar.sendPacket(sm);
                 

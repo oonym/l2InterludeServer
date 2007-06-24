@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2MercManagerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MerchantInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
@@ -199,21 +200,21 @@ public final class RequestWearItem extends L2GameClientPacket
         // Check the weight
 		if (!player.getInventory().validateWeight(weight))
 		{
-			sendPacket(new SystemMessage(SystemMessage.WEIGHT_LIMIT_EXCEEDED));
+			sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
 			return;
 		}
 
         // Check the inventory capacity
 		if (!player.getInventory().validateCapacity(slots))
 		{
-			sendPacket(new SystemMessage(SystemMessage.SLOTS_FULL));
+			sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
 			return;
 		}
 
 		// Charge buyer and add tax to castle treasury if not owned by npc clan because a Try On is not Free
 		if ((totalPrice < 0) || !player.reduceAdena("Wear", (int)totalPrice, player.getLastFolkNPC(), false))
 		{
-			sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
+			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;
 		}
 

@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
@@ -75,13 +76,13 @@ public class ChristmasTree implements IItemHandler
 
             activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             sm.addString("Created " + template1.name + " at x: " + spawn.getLocx() + " y: " + spawn.getLocy() + " z: " + spawn.getLocz());
             activeChar.sendPacket(sm);
         }
         catch (Exception e)
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             sm.addString("Target is not ingame.");
             activeChar.sendPacket(sm);
         }

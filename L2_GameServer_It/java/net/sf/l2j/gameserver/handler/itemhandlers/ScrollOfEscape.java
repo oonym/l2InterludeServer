@@ -31,6 +31,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -63,13 +64,13 @@ public class ScrollOfEscape implements IItemHandler
         
         if (activeChar.isSitting())
         {
-            activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_MOVE_SITTING));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
             return;
         }
         
         if (activeChar.isInOlympiadMode())
         {
-            activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
             return;
         }
         
@@ -115,7 +116,7 @@ public class ScrollOfEscape implements IItemHandler
         activeChar.sendPacket(sg);
         //End SoE Animation section
         
-        SystemMessage sm = new SystemMessage(SystemMessage.S1_DISAPPEARED);
+        SystemMessage sm = new SystemMessage(SystemMessageId.S1_DISAPPEARED);
         sm.addItemName(itemId);
         activeChar.sendPacket(sm);
 
@@ -152,7 +153,7 @@ public class ScrollOfEscape implements IItemHandler
                 }
                 else if(_itemId == 5858) // do nothing
                 {
-                	_activeChar.sendPacket(new SystemMessage(SystemMessage.CLAN_HAS_NO_CLAN_HALL));
+                	_activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_HAS_NO_CLAN_HALL));
                     return;
                 }
                 else if(_itemId == 5859) // do nothing

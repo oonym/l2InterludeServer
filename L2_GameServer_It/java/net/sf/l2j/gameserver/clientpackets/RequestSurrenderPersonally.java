@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -50,7 +51,7 @@ public final class RequestSurrenderPersonally extends L2GameClientPacket
         
         _activeChar.setWantsPeace(1);
         _activeChar.deathPenalty(false);
-        SystemMessage msg = new SystemMessage(SystemMessage.YOU_HAVE_PERSONALLY_SURRENDERED_TO_THE_S1_CLAN);
+        SystemMessage msg = new SystemMessage(SystemMessageId.YOU_HAVE_PERSONALLY_SURRENDERED_TO_THE_S1_CLAN);
         msg.addString(_pledgeName);
         _activeChar.sendPacket(msg);
         msg = null;

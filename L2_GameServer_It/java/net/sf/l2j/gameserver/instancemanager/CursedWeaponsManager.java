@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 import org.w3c.dom.Document;
@@ -407,7 +408,7 @@ public class CursedWeaponsManager
 				cw.giveSkill();
 				player.setCursedWeaponEquipedId(cw.getItemId());
 				
-				SystemMessage sm = new SystemMessage(SystemMessage.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
 				sm.addString(cw.getName());
 				//sm.addItemName(cw.getItemId());
 				sm.addNumber((int)((cw.getEndTime() - System.currentTimeMillis()) / 60000));

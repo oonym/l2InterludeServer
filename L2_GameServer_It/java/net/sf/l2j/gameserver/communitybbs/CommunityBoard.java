@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.communitybbs.Manager.TopBBSManager;
 import net.sf.l2j.gameserver.communitybbs.Manager.TopicBBSManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.L2GameClient;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ShowBoard;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -97,7 +98,7 @@ public class CommunityBoard
         }
         else
         {        	
-			activeChar.sendPacket(new SystemMessage(SystemMessage.CB_OFFLINE));			 
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.CB_OFFLINE));			 
         }
 	}	
 

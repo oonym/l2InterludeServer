@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.base.ClassLevel;
 import net.sf.l2j.gameserver.model.base.PlayerClass;
 import net.sf.l2j.gameserver.model.quest.Quest;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
@@ -211,9 +212,9 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             	changeClass(player, val);
                 
                 if(val >= 88)
-                	player.sendPacket(new SystemMessage(SystemMessage.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
+                	player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
                 else
-                	player.sendPacket(new SystemMessage(SystemMessage.CLASS_TRANSFER));    // system sound for 1st and 2nd occupation
+                	player.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER));    // system sound for 1st and 2nd occupation
 
                 NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                 TextBuilder sb = new TextBuilder();
@@ -270,9 +271,9 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             changeClass(player, val);
             
             if(val >= 88)
-            	player.sendPacket(new SystemMessage(SystemMessage.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
+            	player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
             else
-            	player.sendPacket(new SystemMessage(SystemMessage.CLASS_TRANSFER));    // system sound for 1st and 2nd occupation
+            	player.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER));    // system sound for 1st and 2nd occupation
 
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();

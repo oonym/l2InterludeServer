@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.LeaveWorld;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -72,13 +73,13 @@ public class AdminDisconnect implements IAdminCommandHandler {
 		
 		if (player.getObjectId() == activeChar.getObjectId())
 		{		
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString("You cannot logout your character.");
 			activeChar.sendPacket(sm);
 		}
 		else
 		{				
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Character " + player.getName() + " disconnected from server.");
 			activeChar.sendPacket(sm);
 			

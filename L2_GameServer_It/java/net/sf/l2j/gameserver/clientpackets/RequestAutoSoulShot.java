@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExAutoSoulShot;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -76,7 +77,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                        activeChar.sendPacket(atk);
 	
 	                        //start the auto soulshot use
-	                        SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
+	                        SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 	                        sm.addString(item.getItemName());
 	                        activeChar.sendPacket(sm);
 	                        sm = null;
@@ -92,7 +93,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                            activeChar.sendPacket(atk);
 	
 	                            //start the auto soulshot use
-	                            SystemMessage sm = new SystemMessage(SystemMessage.USE_OF_S1_WILL_BE_AUTO);
+	                            SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 	                            sm.addString(item.getItemName());
 	                            activeChar.sendPacket(sm);
 	                            sm = null;
@@ -101,9 +102,9 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                    	}
 	                    	else {
 	                    		if ((_itemId >= 2509 && _itemId <= 2514) || (_itemId >= 3947 && _itemId <= 3952) || _itemId == 5790)
-	                    			activeChar.sendPacket(new SystemMessage(SystemMessage.SPIRITSHOTS_GRADE_MISMATCH));
+	                    			activeChar.sendPacket(new SystemMessage(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH));
 	                    		else
-	                    			activeChar.sendPacket(new SystemMessage(SystemMessage.SOULSHOTS_GRADE_MISMATCH));
+	                    			activeChar.sendPacket(new SystemMessage(SystemMessageId.SOULSHOTS_GRADE_MISMATCH));
 	                    	}
 	                    }
                     }
@@ -115,7 +116,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
                     activeChar.sendPacket(atk);
 
                     //cancel the auto soulshot use
-                    SystemMessage sm = new SystemMessage(SystemMessage.AUTO_USE_OF_S1_CANCELLED);
+                    SystemMessage sm = new SystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
                     sm.addString(item.getItemName());
                     activeChar.sendPacket(sm);
                     sm = null;

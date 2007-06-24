@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillLaunched;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.PetInfo;
@@ -60,37 +61,37 @@ public class PetSummon implements IItemHandler
         
 		if(activeChar.isSitting())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.CANT_MOVE_SITTING));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
 			return;
 		}
         if (activeChar.isInOlympiadMode())
         {
-            activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
             return;
         }
 		
 		if (activeChar.getPet() != null)
 		{
-            activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_ALREADY_HAVE_A_PET));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ALREADY_HAVE_A_PET));
 			return;
 		}
 		
 		if ( activeChar.isAttackingNow() )
 		{
-            activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_CANNOT_SUMMON_IN_COMBAT));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
 			return;
 		}
         
         if (activeChar.isMounted())
         {
-            activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_ALREADY_HAVE_A_PET));
+            activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ALREADY_HAVE_A_PET));
 			return;
         }
         
         if (activeChar.isCursedWeaponEquiped())
         {
         	// You can't mount while weilding a cursed weapon
-        	activeChar.sendPacket(new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE));
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE));
         }
 		
         npcId = L2PetDataTable.getPetIdByItemId(item.getItemId());
@@ -133,7 +134,7 @@ public class PetSummon implements IItemHandler
 
 		MagicSkillUser msk = new MagicSkillUser(activeChar, 2046, 1, 1000, 600000);
 		activeChar.sendPacket(msk);
-		SystemMessage sm2 = new SystemMessage(SystemMessage.SUMMON_A_PET);
+		SystemMessage sm2 = new SystemMessage(SystemMessageId.SUMMON_A_PET);
 		activeChar.sendPacket (sm2);
         L2World.getInstance().storeObject(newpet);
 		newpet.spawnMe(activeChar.getX()+50, activeChar.getY()+100, activeChar.getZ());

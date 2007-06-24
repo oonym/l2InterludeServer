@@ -25,6 +25,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.StatsSet;
@@ -56,7 +57,7 @@ public class L2SkillCreateItem extends L2Skill
         if (activeChar.isAlikeDead()) return;
         if (_createItemId == null || _createItemCount == 0)
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.SKILL_NOT_AVAILABLE);
+            SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
             activeChar.sendPacket(sm);
             return;
         }
@@ -84,14 +85,14 @@ public class L2SkillCreateItem extends L2Skill
         
         if (count > 1)
         {
-            SystemMessage smsg = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
+            SystemMessage smsg = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
             smsg.addItemName(item.getItemId());
             smsg.addNumber(count);
             activeChar.sendPacket(smsg);
         }
         else
         {
-            SystemMessage smsg = new SystemMessage(SystemMessage.EARNED_ITEM);
+            SystemMessage smsg = new SystemMessage(SystemMessageId.EARNED_ITEM);
             smsg.addItemName(item.getItemId());
             activeChar.sendPacket(smsg);
         }        

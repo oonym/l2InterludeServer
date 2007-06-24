@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.SevenSignsFestival;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Party;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -289,7 +290,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
                     player.destroyItem("SevenSigns", bloodOfferings, this, false);
                     
                     // Send message that the contribution score has increased.
-                    SystemMessage sm = new SystemMessage(SystemMessage.CONTRIB_SCORE_INCREASED);
+                    SystemMessage sm = new SystemMessage(SystemMessageId.CONTRIB_SCORE_INCREASED);
                     sm.addNumber(offeringScore);
                     player.sendPacket(sm);  
                     

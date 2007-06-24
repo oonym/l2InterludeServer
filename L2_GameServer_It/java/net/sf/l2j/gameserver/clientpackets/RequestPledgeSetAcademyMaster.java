@@ -25,6 +25,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -58,7 +59,7 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
 
         if((activeChar.getClanPrivileges() & L2Clan.CP_CL_MASTER_RIGHTS) != L2Clan.CP_CL_MASTER_RIGHTS)
         {
-        	activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_DO_NOT_HAVE_THE_RIGHT_TO_DISMISS_AN_APPRENTICE));
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_DISMISS_AN_APPRENTICE));
         	return;
         }
         
@@ -96,7 +97,7 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         	saveApprenticeAndSponsor(apprenticeMember.getObjectId(), 0, 0);
         	saveApprenticeAndSponsor(sponsorMember.getObjectId(), 0, 0);
         	
-        	sm = new SystemMessage(SystemMessage.S2_CLAN_MEMBER_S1_S_APPRENTICE_HAS_BEEN_REMOVED);
+        	sm = new SystemMessage(SystemMessageId.S2_CLAN_MEMBER_S1_S_APPRENTICE_HAS_BEEN_REMOVED);
         }
         else
         {        
@@ -120,7 +121,7 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         	saveApprenticeAndSponsor(apprenticeMember.getObjectId(), 0, sponsorMember.getObjectId());
         	saveApprenticeAndSponsor(sponsorMember.getObjectId(), apprenticeMember.getObjectId(), 0);
         	
-        	sm = new SystemMessage(SystemMessage.S2_HAS_BEEN_DESIGNATED_AS_APPRENTICE_OF_CLAN_MEMBER_S1);
+        	sm = new SystemMessage(SystemMessageId.S2_HAS_BEEN_DESIGNATED_AS_APPRENTICE_OF_CLAN_MEMBER_S1);
         }
         sm.addString(sponsorMember.getName());
     	sm.addString(apprenticeMember.getName());

@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Rnd;
@@ -69,7 +70,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
     {
         if(killer instanceof L2PlayableInstance)
         {
-        	SystemMessage msg = new SystemMessage(SystemMessage.RAID_WAS_SUCCESSFUL);
+        	SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
         	broadcastPacket(msg);
         }
         

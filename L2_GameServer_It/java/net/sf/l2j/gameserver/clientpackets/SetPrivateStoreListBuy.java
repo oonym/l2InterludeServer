@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.TradeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreManageListBuy;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreMsgBuy;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -101,7 +102,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
         if (_count > player.GetPrivateBuyStoreLimit())
         {
         	player.sendPacket(new PrivateStoreManageListBuy(player));
-        	player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+        	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
             return;
         }
         
@@ -109,7 +110,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
         if (cost > player.getAdena() || cost <= 0)
         {
         	player.sendPacket(new PrivateStoreManageListBuy(player));
-            player.sendPacket(new SystemMessage(SystemMessage.THE_PURCHASE_PRICE_IS_HIGHER_THAN_MONEY));
+            player.sendPacket(new SystemMessage(SystemMessageId.THE_PURCHASE_PRICE_IS_HIGHER_THAN_MONEY));
             return;
         }
 

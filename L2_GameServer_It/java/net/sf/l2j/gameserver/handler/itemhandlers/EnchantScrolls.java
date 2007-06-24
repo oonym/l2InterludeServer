@@ -22,6 +22,7 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ChooseInventoryItem;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -44,7 +45,7 @@ public class EnchantScrolls implements IItemHandler
         if(activeChar.isCastingNow()) return;
 		
 		activeChar.setActiveEnchantItem(item);
-		activeChar.sendPacket(new SystemMessage(SystemMessage.SELECT_ITEM_TO_ENCHANT));
+		activeChar.sendPacket(new SystemMessage(SystemMessageId.SELECT_ITEM_TO_ENCHANT));
 		activeChar.sendPacket(new ChooseInventoryItem(item.getItemId()));
 		return;
 	}

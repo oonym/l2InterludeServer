@@ -24,6 +24,7 @@ import javolution.text.TextBuilder;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class ClanBBSManager extends BaseBBSManager
@@ -240,7 +241,7 @@ public class ClanBBSManager extends BaseBBSManager
 		{
 			if (cl.getLevel() < 2)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessage.NO_CB_IN_MY_CLAN));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.NO_CB_IN_MY_CLAN));
 				parsecmd("_bbsclan_clanlist",activeChar);
 			}
 			else

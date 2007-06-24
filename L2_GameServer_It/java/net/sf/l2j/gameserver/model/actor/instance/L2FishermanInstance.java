@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.L2TradeList;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.AquireSkillList;
 import net.sf.l2j.gameserver.serverpackets.BuyList;
@@ -156,7 +157,7 @@ public class L2FishermanInstance extends L2FolkInstance
 		    if (minlevel > 0)
             {
                 // No more skills to learn, come back when you level.
-		        SystemMessage sm = new SystemMessage(SystemMessage.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN);
+		        SystemMessage sm = new SystemMessage(SystemMessageId.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN);
 		        sm.addNumber(minlevel);
 		        player.sendPacket(sm);
 		    }

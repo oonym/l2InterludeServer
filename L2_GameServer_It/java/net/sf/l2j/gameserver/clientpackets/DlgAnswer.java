@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 
 /**
  * @author Dezmond_snz
@@ -46,7 +46,7 @@ public final class DlgAnswer extends L2GameClientPacket
 	{
 		if (Config.DEBUG)
 			_log.fine(getType()+": Answer acepted. Message ID "+_messageId+", asnwer "+_answer+", unknown field "+_unk);
-		if (_messageId == SystemMessage.RESSURECTION_REQUEST)
+		if (_messageId == SystemMessageId.RESSURECTION_REQUEST.getId())
 			getClient().getActiveChar().reviveAnswer(_answer);
 	}
 

@@ -9,6 +9,7 @@ import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
@@ -58,7 +59,7 @@ public class Manadam implements ISkillHandler
 			boolean acted = Formulas.getInstance().calcMagicAffected(activeChar, target, skill);
 			if (!acted)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessage.MISSED_TARGET));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.MISSED_TARGET));
 			} else
 			{
 				double damage = Formulas.getInstance().calcManaDam(activeChar, target, skill, ss, bss);
@@ -69,7 +70,7 @@ public class Manadam implements ISkillHandler
 				sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
 				// [L2J_JP EDIT START - TSL]
 				target.sendPacket(sump);
-				SystemMessage sm = new SystemMessage(SystemMessage.S2_MP_HAS_BEEN_DRAINED_BY_S1);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_HAS_BEEN_DRAINED_BY_S1);
 				if (activeChar instanceof L2NpcInstance)
 				{
 					int mobId = ((L2NpcInstance)activeChar).getNpcId();
@@ -88,7 +89,7 @@ public class Manadam implements ISkillHandler
 				target.sendPacket(sm);
 				if (activeChar instanceof L2PcInstance)
 	            {
-	                SystemMessage sm2 = new SystemMessage(SystemMessage.YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1);
+	                SystemMessage sm2 = new SystemMessage(SystemMessageId.YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1);
 					sm2.addNumber((int)mp);
 	                activeChar.sendPacket(sm2);
 	            }

@@ -44,6 +44,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -1081,7 +1082,7 @@ public abstract class L2Skill
             if ((wt.mask() & weaponsAllowed) != 0) skillmsg.append(wt).append('/');
         }
         skillmsg.setCharAt(skillmsg.length() - 1, '.');
-        SystemMessage message = new SystemMessage(SystemMessage.S1_S2);
+        SystemMessage message = new SystemMessage(SystemMessageId.S1_S2);
         message.addString(skillmsg.toString());
         activeChar.sendPacket(message);
 
@@ -1118,7 +1119,7 @@ public abstract class L2Skill
             String msg = preCondition.getMessage();
             if (msg != null)
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 sm.addString(msg);
                 activeChar.sendPacket(sm);
             }
@@ -1187,7 +1188,7 @@ public abstract class L2Skill
                         || skillType == SkillType.COMBATPOINTHEAL || skillType == SkillType.MAGE_BANE | skillType == SkillType.WARRIOR_BANE
                         || skillType == SkillType.BETRAY || skillType == SkillType.BALANCE_LIFE)))
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
 
@@ -1297,7 +1298,7 @@ public abstract class L2Skill
                 if ((!(target instanceof L2Attackable || target instanceof L2PlayableInstance)) ||  //   Target is not L2Attackable or L2PlayableInstance
                     (this.getCastRange() >= 0 && (target == null || target == activeChar || target.isAlikeDead()))) //target is null or self or dead/faking
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
 
@@ -1413,7 +1414,7 @@ public abstract class L2Skill
             {
                 if ((!(target instanceof L2Attackable) && !(target instanceof L2PcInstance)))
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
 
@@ -1431,7 +1432,7 @@ public abstract class L2Skill
 
                     if (targetList.size() == 0)
                     {
-                        activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_CANT_FOUND));
+                        activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_CANT_FOUND));
                         return null;
                     }
                 }
@@ -1512,7 +1513,7 @@ public abstract class L2Skill
 				}
 				else 
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 					return null;
 				}
 			}
@@ -1638,7 +1639,7 @@ public abstract class L2Skill
                             if (castle != null) if (castle.getSiege().getIsInProgress())
                             {
                                 condGood = false;
-                                player.sendPacket(new SystemMessage(SystemMessage.CANNOT_BE_RESURRECTED_DURING_SIEGE));
+                                player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_BE_RESURRECTED_DURING_SIEGE));
                             }
 
                             // Can only res party memeber or own pet
@@ -1647,9 +1648,9 @@ public abstract class L2Skill
                             	if (targetPlayer.isReviveRequested())
                             	{
                             		if (targetPlayer.isRevivingPet())
-                            			player.sendPacket(new SystemMessage(SystemMessage.MASTER_CANNOT_RES)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+                            			player.sendPacket(new SystemMessage(SystemMessageId.MASTER_CANNOT_RES)); // While a pet is attempting to resurrect, it cannot help in resurrecting its master.
                             		else
-                            			player.sendPacket(new SystemMessage(SystemMessage.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
+                            			player.sendPacket(new SystemMessage(SystemMessageId.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
                                     condGood = false;
                             	}
                             }
@@ -1675,14 +1676,14 @@ public abstract class L2Skill
                         }
                     }
                 }
-                activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                 return null;
             }
             case TARGET_CORPSE_MOB:
             {
                 if (!(target instanceof L2Attackable) || !target.isDead())
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
 
@@ -1698,7 +1699,7 @@ public abstract class L2Skill
             {
                 if ((!(target instanceof L2Attackable)) || !target.isDead())
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
 
@@ -1786,7 +1787,7 @@ public abstract class L2Skill
             {
                 if (!(target instanceof L2DoorInstance) && !(target instanceof L2ChestInstance))
                 {
-                	activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                	activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
 
@@ -1800,7 +1801,7 @@ public abstract class L2Skill
             }
             case TARGET_ITEM:
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 sm.addString("Target type of skill is not currently handled");
                 activeChar.sendPacket(sm);
                 return null;
@@ -1811,7 +1812,7 @@ public abstract class L2Skill
                 {
                     if (!target.isUndead() || target.isDead())
                     {
-                        activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                        activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                         return null;
                     }
 
@@ -1822,7 +1823,7 @@ public abstract class L2Skill
                 }
                 else
                 {
-                    activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_INCORRECT));
+                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
                 }
             }
@@ -1883,7 +1884,7 @@ public abstract class L2Skill
             }
             default:
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 sm.addString("Target type of skill is not currently handled");
                 activeChar.sendPacket(sm);
                 return null;
@@ -1987,7 +1988,7 @@ public abstract class L2Skill
                         	effectcharge++;
                             effect.addNumCharges(effectcharge);
                             env.target.updateEffectIcons();
-                            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                             sm.addString("Charged to " + effectcharge);
                             env.target.sendPacket(sm);
                         }                

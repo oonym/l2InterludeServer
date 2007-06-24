@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.model;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.clientpackets.L2GameClientPacket;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -90,12 +91,12 @@ public class L2Request
 	{
         if (partner == null)
         {
-        	_player.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_INVITED_THE_WRONG_TARGET));
+        	_player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
             return false;
         }
 		if (partner.getRequest().isProcessingRequest())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 			sm.addString(partner.getName());
 			_player.sendPacket(sm);
 			sm = null;
@@ -103,7 +104,7 @@ public class L2Request
 		}
 		if (isProcessingRequest())
 		{
-        	_player.sendPacket(new SystemMessage(SystemMessage.WAITING_FOR_ANOTHER_REPLY));
+        	_player.sendPacket(new SystemMessage(SystemMessageId.WAITING_FOR_ANOTHER_REPLY));
 			return false;
 		}
 

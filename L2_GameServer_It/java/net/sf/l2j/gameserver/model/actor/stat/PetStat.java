@@ -5,6 +5,7 @@ import net.sf.l2j.gameserver.model.L2PetDataTable;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.PetInfo;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -42,7 +43,7 @@ public class PetStat extends SummonStat
     {
     	if (!super.addExpAndSp(addToExp, addToSp)) return false;
 
-        SystemMessage sm = new SystemMessage(SystemMessage.PET_EARNED_S1_EXP);
+        SystemMessage sm = new SystemMessage(SystemMessageId.PET_EARNED_S1_EXP);
         sm.addNumber((int)addToExp);
                 
         getActiveChar().getOwner().sendPacket(sm);

@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.TradeList;
 import net.sf.l2j.gameserver.model.TradeList.TradeItem;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Util;
@@ -125,7 +126,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
         
         if (player.getAdena() < priceTotal)
 		{
-			sendPacket(new SystemMessage(SystemMessage.YOU_NOT_ENOUGH_ADENA));
+			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			sendPacket(new ActionFailed());
 			return;
 		}

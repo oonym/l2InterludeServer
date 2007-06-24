@@ -47,6 +47,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ControlTowerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SiegeInfo;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -410,9 +411,9 @@ public class Siege
             {
                 SystemMessage sm;
                 if (getCastle().getOwnerId() <= 0) 
-            		sm = new SystemMessage(SystemMessage.SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST);
+            		sm = new SystemMessage(SystemMessageId.SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST);
                 else
-                    sm = new SystemMessage(SystemMessage.S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED);
+                    sm = new SystemMessage(SystemMessageId.S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED);
                 sm.addString(getCastle().getName());
                 Announcements.getInstance().announceToAll(sm);  
                 return;
@@ -891,7 +892,7 @@ public class Siege
             + " and higher may register for a castle siege.");
         else if (player.getClan().getHasCastle() > 0) player.sendMessage("You cannot register because your clan already own a castle.");
         else if (player.getClan().getClanId() == getCastle().getOwnerId())
-            player.sendPacket(new SystemMessage(SystemMessage.CLAN_THAT_OWNS_CASTLE_IS_AUTOMATICALLY_REGISTERED_DEFENDING));
+            player.sendPacket(new SystemMessage(SystemMessageId.CLAN_THAT_OWNS_CASTLE_IS_AUTOMATICALLY_REGISTERED_DEFENDING));
         else if (SiegeManager.getInstance().checkIsRegistered(player.getClan(), getCastle().getCastleId())) player.sendMessage("You are already registered in a Siege.");
         else return true;
 

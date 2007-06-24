@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -85,13 +86,13 @@ public class AdminDelete implements IAdminCommandHandler
                 else SpawnTable.getInstance().deleteSpawn(spawn, true);
             }
 
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             sm.addString("Deleted " + target.getName() + " from " + target.getObjectId() + ".");
             activeChar.sendPacket(sm);
         }
         else
         {
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             sm.addString("Incorrect target.");
             activeChar.sendPacket(sm);
         }

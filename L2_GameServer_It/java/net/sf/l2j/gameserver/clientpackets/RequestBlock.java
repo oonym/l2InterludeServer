@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.gameserver.model.BlockList;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public final class RequestBlock extends L2GameClientPacket
@@ -47,14 +48,14 @@ public final class RequestBlock extends L2GameClientPacket
                if (_target == null)
                {
                    // Incorrect player name.
-                   activeChar.sendPacket(new SystemMessage(SystemMessage.FAILED_TO_REGISTER_TO_IGNORE_LIST));
+                   activeChar.sendPacket(new SystemMessage(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST));
                    return;
                }
                
                if (_target.isGM())
                {
                    // Cannot block a GM character.
-                   activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_MAY_NOT_IMPOSE_A_BLOCK_AN_A_GM));
+                   activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_NOT_IMPOSE_A_BLOCK_AN_A_GM));
                    return;
                }
 

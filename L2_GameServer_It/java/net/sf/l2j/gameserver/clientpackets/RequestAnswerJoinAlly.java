@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -60,8 +61,8 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 
 		if (_response == 0)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION));
-			requestor.sendPacket(new SystemMessage(SystemMessage.NO_RESPONSE_TO_ALLY_INVITATION));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION));
+			requestor.sendPacket(new SystemMessage(SystemMessageId.NO_RESPONSE_TO_ALLY_INVITATION));
 		}
 		else
 		{
@@ -75,9 +76,9 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 			if (clan.checkAllyJoinCondition(requestor, activeChar))
 	        {
 		        //TODO: Need correct message id
-				requestor.sendPacket(new SystemMessage(SystemMessage.YOU_HAVE_SUCCEEDED_INVITING_FRIEND));
+				requestor.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND));
 
-				activeChar.sendPacket(new SystemMessage(SystemMessage.YOU_ACCEPTED_ALLIANCE));
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ACCEPTED_ALLIANCE));
 
 				activeChar.getClan().setAllyId(clan.getAllyId());
 				activeChar.getClan().setAllyName(clan.getAllyName());

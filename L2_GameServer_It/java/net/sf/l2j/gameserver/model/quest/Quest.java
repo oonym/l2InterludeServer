@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -348,7 +349,7 @@ public abstract class Quest
 			player.sendPacket(npcReply);
 		}
 		else {
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString(res);
 			player.sendPacket(sm);
 		}

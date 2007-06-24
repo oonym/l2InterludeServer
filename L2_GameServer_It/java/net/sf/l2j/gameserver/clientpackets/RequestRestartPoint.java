@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.Revive;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.IllegalPlayerAction;
@@ -171,7 +172,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
         if (castle != null && castle.getSiege().getIsInProgress())
         {
             //DeathFinalizer df = new DeathFinalizer(10000);
-            SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
             if (activeChar.getClan() != null
                     && castle.getSiege().checkIsAttacker(activeChar.getClan()))
             {

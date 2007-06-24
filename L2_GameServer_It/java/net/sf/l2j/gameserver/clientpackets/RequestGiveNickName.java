@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -54,7 +55,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 		if (activeChar.isNoble() && _target.matches(activeChar.getName()))
 		{
 			activeChar.setTitle(_title);
-			SystemMessage sm = new SystemMessage(SystemMessage.TITLE_CHANGED);
+			SystemMessage sm = new SystemMessage(SystemMessageId.TITLE_CHANGED);
 			activeChar.sendPacket(sm);
 			activeChar.broadcastUserInfo();
 		}
@@ -63,7 +64,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 		{	
 			if (activeChar.getClan().getLevel() < 3)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
+				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
                 activeChar.sendPacket(sm);
                 sm = null;
 				return;
@@ -77,14 +78,14 @@ public class RequestGiveNickName extends L2GameClientPacket
                 {
         			//is target from the same clan?
     				member.setTitle(_title);
-    				SystemMessage sm = new SystemMessage(SystemMessage.TITLE_CHANGED);
+    				SystemMessage sm = new SystemMessage(SystemMessageId.TITLE_CHANGED);
     				member.sendPacket(sm);
 					member.broadcastUserInfo();
 					sm = null;
                 }
                 else
                 {
-                    SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                    SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                     sm.addString("Target needs to be online to get a title");
                     activeChar.sendPacket(sm);
                     sm = null;
@@ -92,7 +93,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 			}
             else
             {
-                SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 sm.addString("Target does not belong to your clan");
                 activeChar.sendPacket(sm);
                 sm = null;

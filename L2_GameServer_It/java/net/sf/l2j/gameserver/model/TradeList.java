@@ -25,6 +25,7 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
@@ -582,14 +583,14 @@ public class TradeList
         if ((!this.getOwner().getInventory().validateWeight(partnerList.calcItemsWeight()))
             || !(partnerList.getOwner().getInventory().validateWeight(this.calcItemsWeight())))
         {
-            partnerList.getOwner().sendPacket(new SystemMessage(SystemMessage.WEIGHT_LIMIT_EXCEEDED));
-            this.getOwner().sendPacket(new SystemMessage(SystemMessage.WEIGHT_LIMIT_EXCEEDED));
+            partnerList.getOwner().sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
+            this.getOwner().sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
         }
         else if ((!this.getOwner().getInventory().validateCapacity(partnerList.countItemsSlots(this.getOwner())))
             || (!partnerList.getOwner().getInventory().validateCapacity(this.countItemsSlots(partnerList.getOwner()))))
         {
-            partnerList.getOwner().sendPacket(new SystemMessage(SystemMessage.SLOTS_FULL));
-            this.getOwner().sendPacket(new SystemMessage(SystemMessage.SLOTS_FULL));
+            partnerList.getOwner().sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+            this.getOwner().sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
         }
         else
         {
@@ -651,13 +652,13 @@ public class TradeList
 
         if (!player.getInventory().validateWeight(weight))
         {
-            player.sendPacket(new SystemMessage(SystemMessage.WEIGHT_LIMIT_EXCEEDED));
+            player.sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
             return false;
         }
 
         if (!player.getInventory().validateCapacity(slots))
         {
-            player.sendPacket(new SystemMessage(SystemMessage.SLOTS_FULL));
+            player.sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
             return false;
         }
 
@@ -710,13 +711,13 @@ public class TradeList
             // Send messages about the transaction to both players 
             if (newItem.isStackable())
             {
-                SystemMessage msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_S);
+                SystemMessage msg = new SystemMessage(SystemMessageId.S1_PURCHASED_S3_S2_S);
                 msg.addString(player.getName());
                 msg.addItemName(newItem.getItemId());
                 msg.addNumber(item.getCount());
                 _owner.sendPacket(msg);
 
-                msg = new SystemMessage(SystemMessage.PURCHASED_S3_S2_s_FROM_S1);
+                msg = new SystemMessage(SystemMessageId.PURCHASED_S3_S2_S_FROM_S1);
                 msg.addString(_owner.getName());
                 msg.addItemName(newItem.getItemId());
                 msg.addNumber(item.getCount());
@@ -724,12 +725,12 @@ public class TradeList
             }
             else
             {
-                SystemMessage msg = new SystemMessage(SystemMessage.S1_PURCHASED_S2);
+                SystemMessage msg = new SystemMessage(SystemMessageId.S1_PURCHASED_S2);
                 msg.addString(player.getName());
                 msg.addItemName(newItem.getItemId());
                 _owner.sendPacket(msg);
 
-                msg = new SystemMessage(SystemMessage.PURCHASED_S2_FROM_S1);
+                msg = new SystemMessage(SystemMessageId.PURCHASED_S2_FROM_S1);
                 msg.addString(_owner.getName());
                 msg.addItemName(newItem.getItemId());
                 player.sendPacket(msg);
@@ -791,13 +792,13 @@ public class TradeList
             // Send messages about the transaction to both players 
             if (newItem.isStackable())
             {
-                SystemMessage msg = new SystemMessage(SystemMessage.PURCHASED_S3_S2_s_FROM_S1);
+                SystemMessage msg = new SystemMessage(SystemMessageId.PURCHASED_S3_S2_S_FROM_S1);
                 msg.addString(player.getName());
                 msg.addItemName(newItem.getItemId());
                 msg.addNumber(item.getCount());
                 _owner.sendPacket(msg);
 
-                msg = new SystemMessage(SystemMessage.S1_PURCHASED_S3_S2_S);
+                msg = new SystemMessage(SystemMessageId.S1_PURCHASED_S3_S2_S);
                 msg.addString(_owner.getName());
                 msg.addItemName(newItem.getItemId());
                 msg.addNumber(item.getCount());
@@ -805,12 +806,12 @@ public class TradeList
             }
             else
             {
-                SystemMessage msg = new SystemMessage(SystemMessage.PURCHASED_S2_FROM_S1);
+                SystemMessage msg = new SystemMessage(SystemMessageId.PURCHASED_S2_FROM_S1);
                 msg.addString(player.getName());
                 msg.addItemName(newItem.getItemId());
                 _owner.sendPacket(msg);
 
-                msg = new SystemMessage(SystemMessage.S1_PURCHASED_S2);
+                msg = new SystemMessage(SystemMessageId.S1_PURCHASED_S2);
                 msg.addString(_owner.getName());
                 msg.addItemName(newItem.getItemId());
                 player.sendPacket(msg);

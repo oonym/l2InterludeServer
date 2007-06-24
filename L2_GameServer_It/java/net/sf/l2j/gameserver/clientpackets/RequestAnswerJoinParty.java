@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.JoinParty;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -61,7 +62,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
     			player.joinParty(requestor.getParty());
     		} else
             {
-    			SystemMessage msg = new SystemMessage(SystemMessage.PLAYER_DECLINED);
+    			SystemMessage msg = new SystemMessage(SystemMessageId.PLAYER_DECLINED);
     			requestor.sendPacket(msg);
                 msg = null;
                 

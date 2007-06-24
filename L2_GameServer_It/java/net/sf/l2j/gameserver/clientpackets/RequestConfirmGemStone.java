@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExConfirmVariationGemstone;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
@@ -67,7 +68,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 		int gemstoneItemId = gemstoneItem.getItem().getItemId();
 		if (gemstoneItemId != 2130 && gemstoneItemId != 2131)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_IS_NOT_A_SUITABLE_ITEM));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;
 		}
 		
@@ -78,35 +79,35 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 			case L2Item.CRYSTAL_C:
 				if (_gemstoneCount != 20 || gemstoneItemId != 2130)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
 					return;
 				}
 				break;
 			case L2Item.CRYSTAL_B:
 				if (_gemstoneCount != 30 || gemstoneItemId != 2130)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
 					return;
 				}
 				break;
 			case L2Item.CRYSTAL_A:
 				if (_gemstoneCount != 20 || gemstoneItemId != 2131)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
 					return;
 				}
 				break;
 			case L2Item.CRYSTAL_S:
 				if (_gemstoneCount != 25 || gemstoneItemId != 2131)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessage.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
 					return;
 				}
 				break;
 		}
 		
 		activeChar.sendPacket(new ExConfirmVariationGemstone(_gemstoneItemObjId, _gemstoneCount));
-		activeChar.sendPacket(new SystemMessage(SystemMessage.PRESS_THE_AUGMENT_BUTTON_TO_BEGIN));
+		activeChar.sendPacket(new SystemMessage(SystemMessageId.PRESS_THE_AUGMENT_BUTTON_TO_BEGIN));
 	}
 
 	/**

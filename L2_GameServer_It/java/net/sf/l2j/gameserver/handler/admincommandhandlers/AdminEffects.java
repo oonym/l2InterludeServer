@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.CharInfo;
 import net.sf.l2j.gameserver.serverpackets.Earthquake;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
@@ -230,7 +231,7 @@ public class AdminEffects implements IAdminCommandHandler
                activeChar.stopEffect(7029);
                if (val == 0 && sendMessage)
                {
-                   SystemMessage sm = new SystemMessage(SystemMessage.EFFECT_S1_DISAPPEARED);
+                   SystemMessage sm = new SystemMessage(SystemMessageId.EFFECT_S1_DISAPPEARED);
                    sm.addSkillName(7029);
                    activeChar.sendPacket(sm);
                 }
@@ -242,7 +243,7 @@ public class AdminEffects implements IAdminCommandHandler
            }
            catch (Exception e)
            {
-               SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+               SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                sm.addString("Use //gmspeed value = [0...4].");
               activeChar.sendPacket(sm);
            }
@@ -316,7 +317,7 @@ public class AdminEffects implements IAdminCommandHandler
                          NpcInfo info1 = new NpcInfo((L2NpcInstance)player, null);
                          player.broadcastPacket(info1);
                      }
-                     SystemMessage smA = new SystemMessage(SystemMessage.S1_S2);
+                     SystemMessage smA = new SystemMessage(SystemMessageId.S1_S2);
                      smA.addString("Changed name from "+ oldName +" to "+ name +".");    
                      activeChar.sendPacket(smA);
                }
@@ -355,7 +356,7 @@ public class AdminEffects implements IAdminCommandHandler
                        player.setTeam(0);
                        if (teamVal != 0)
                        {
-                           SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+                           SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                            sm.addString("You have joined team " + teamVal);
                            player.sendPacket(sm);
                        }
@@ -380,7 +381,7 @@ public class AdminEffects implements IAdminCommandHandler
            player.setTeam(teamVal);
            if (teamVal != 0)
            {
-               SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+               SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                sm.addString("You have joined team " + teamVal);
                player.sendPacket(sm);
            }

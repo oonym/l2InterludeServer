@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExHeroList;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.MultiSellList;
@@ -138,7 +139,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
                         iu.addModifiedItem(item);
                         player.sendPacket(iu);
                         
-                        SystemMessage sm = new SystemMessage(SystemMessage.EARNED_ITEM);
+                        SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
                         sm.addNumber(passes);
                         sm.addItemName(item.getItemId());
                         player.sendPacket(sm);

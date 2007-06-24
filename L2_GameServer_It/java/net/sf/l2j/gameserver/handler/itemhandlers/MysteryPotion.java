@@ -23,6 +23,7 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -54,7 +55,7 @@ public class MysteryPotion implements IItemHandler
 		activeChar.startAbnormalEffect(BIGHEAD_EFFECT);
 		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 
-		SystemMessage sm = new SystemMessage(SystemMessage.USE_S1);
+		SystemMessage sm = new SystemMessage(SystemMessageId.USE_S1);
 		sm.addSkillName(MYSTERY_POTION_SKILL);
 		activeChar.sendPacket(sm);
 

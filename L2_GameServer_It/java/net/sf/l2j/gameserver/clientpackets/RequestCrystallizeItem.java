@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
@@ -79,7 +80,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		{
 			activeChar
 					.sendPacket(new SystemMessage(
-							SystemMessage.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+							SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
 			return;
 		}
 
@@ -87,7 +88,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		if (skillLevel <= 0)
 		{
 			SystemMessage sm = new SystemMessage(
-					SystemMessage.CRYSTALLIZE_LEVEL_TOO_LOW);
+					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
 			ActionFailed af = new ActionFailed();
@@ -138,7 +139,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				&& skillLevel <= 1)
 		{
 			SystemMessage sm = new SystemMessage(
-					SystemMessage.CRYSTALLIZE_LEVEL_TOO_LOW);
+					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
 			ActionFailed af = new ActionFailed();
@@ -151,7 +152,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				&& skillLevel <= 2)
 		{
 			SystemMessage sm = new SystemMessage(
-					SystemMessage.CRYSTALLIZE_LEVEL_TOO_LOW);
+					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
 			ActionFailed af = new ActionFailed();
@@ -164,7 +165,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				&& skillLevel <= 3)
 		{
 			SystemMessage sm = new SystemMessage(
-					SystemMessage.CRYSTALLIZE_LEVEL_TOO_LOW);
+					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
 			ActionFailed af = new ActionFailed();
@@ -177,7 +178,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				&& skillLevel <= 4)
 		{
 			SystemMessage sm = new SystemMessage(
-					SystemMessage.CRYSTALLIZE_LEVEL_TOO_LOW);
+					SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
 			ActionFailed af = new ActionFailed();
@@ -217,7 +218,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				"Crystalize", crystalId, crystalAmount, activeChar,
 				itemToRemove);
 
-		SystemMessage sm = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
+		SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 		sm.addItemName(crystalId);
 		sm.addNumber(crystalAmount);
 		activeChar.sendPacket(sm);

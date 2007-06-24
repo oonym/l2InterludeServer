@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -61,7 +62,7 @@ public final class RequestFriendList extends L2GameClientPacket
 			ResultSet rset = statement.executeQuery();
 			
 			//======<Friend List>======
-			activeChar.sendPacket(new SystemMessage(SystemMessage.FRIEND_LIST_HEAD));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_HEAD));
 			
             L2PcInstance friend = null;
 			while (rset.next())
@@ -73,13 +74,13 @@ public final class RequestFriendList extends L2GameClientPacket
 				if (friend == null)
 				{
 				    //	(Currently: Offline)
-				    sm = new SystemMessage(SystemMessage.S1_OFFLINE);
+				    sm = new SystemMessage(SystemMessageId.S1_OFFLINE);
 				    sm.addString(friendName);
 				}
 				else
 				{
 				    //(Currently: Online)
-				    sm = new SystemMessage(SystemMessage.S1_ONLINE);
+				    sm = new SystemMessage(SystemMessageId.S1_ONLINE);
 				    sm.addString(friendName);
 				}
 				
@@ -87,7 +88,7 @@ public final class RequestFriendList extends L2GameClientPacket
 			}
 			
 			//=========================
-			activeChar.sendPacket(new SystemMessage(SystemMessage.FRIEND_LIST_FOOT));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
 			sm = null;
 			rset.close();
 			statement.close();

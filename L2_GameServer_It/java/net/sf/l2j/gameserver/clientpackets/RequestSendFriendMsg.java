@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.FriendRecvMsg;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -61,7 +62,7 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
         L2PcInstance targetPlayer = L2World.getInstance().getPlayer(_reciever);
         if (targetPlayer == null) 
         {
-        	activeChar.sendPacket(new SystemMessage(SystemMessage.TARGET_IS_NOT_FOUND_IN_THE_GAME));
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
         	return;
         }
         

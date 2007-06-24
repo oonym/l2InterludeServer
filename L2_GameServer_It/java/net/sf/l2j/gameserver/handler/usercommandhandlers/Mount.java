@@ -23,6 +23,7 @@ import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Broadcast;
@@ -49,31 +50,31 @@ public class Mount implements IUserCommandHandler
             if (activeChar.isDead())
             {
                 // A strider cannot be ridden when player is dead.
-                SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
+                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
                 activeChar.sendPacket(msg);
             }
             else if (pet.isDead())
             {   
                 // A dead strider cannot be ridden.
-                SystemMessage msg = new SystemMessage(SystemMessage.DEAD_STRIDER_CANT_BE_RIDDEN);
+                SystemMessage msg = new SystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
                 activeChar.sendPacket(msg);
             }
             else if (pet.isInCombat())
             {
                 // A strider in battle cannot be ridden.
-                SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
+                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
                 activeChar.sendPacket(msg);
             }
             else if (activeChar.isInCombat())
             {
                 // A pet cannot be ridden while player is in battle.
-                SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
                 activeChar.sendPacket(msg);                        
             }                   
             else if (activeChar.isSitting() || activeChar.isMoving())
             {
                 // A strider can be ridden only when player is standing.
-                SystemMessage msg = new SystemMessage(SystemMessage.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
+                SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
                 activeChar.sendPacket(msg);
             }
             else if (!pet.isDead() && !activeChar.isMounted())

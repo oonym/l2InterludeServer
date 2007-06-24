@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
@@ -65,7 +66,7 @@ public class ChestKey implements IItemHandler
 
 		if (!(target instanceof L2ChestInstance) || target == null)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			activeChar.sendPacket(new ActionFailed());
 		}
 		else

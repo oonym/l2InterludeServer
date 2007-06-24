@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -71,16 +72,16 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
                     statement.setString(6, requestor.getName());
         		    statement.execute();
         		    statement.close();
-        			SystemMessage msg = new SystemMessage(SystemMessage.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
+        			SystemMessage msg = new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
         			requestor.sendPacket(msg);
                     
         			//Player added to your friendlist
-            		msg = new SystemMessage(SystemMessage.S1_ADDED_TO_FRIENDS);
+            		msg = new SystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS);
         			msg.addString(player.getName());
             		requestor.sendPacket(msg);
                     
         			//has joined as friend.
-            		msg = new SystemMessage(SystemMessage.S1_JOINED_AS_FRIEND);
+            		msg = new SystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND);
         			msg.addString(requestor.getName());
             		player.sendPacket(msg);
             		msg = null;
@@ -95,7 +96,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
         		}
     		} else 
             {
-    			SystemMessage msg = new SystemMessage(SystemMessage.FAILED_TO_INVITE_A_FRIEND);
+    			SystemMessage msg = new SystemMessage(SystemMessageId.FAILED_TO_INVITE_A_FRIEND);
     			requestor.sendPacket(msg);
     			msg = null;
     		}

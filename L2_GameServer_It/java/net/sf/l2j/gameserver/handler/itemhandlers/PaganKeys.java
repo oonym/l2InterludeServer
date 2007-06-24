@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
@@ -48,7 +49,7 @@ public class PaganKeys implements IItemHandler
 		
 		if (!(target instanceof L2DoorInstance))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.INCORRECT_TARGET));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}

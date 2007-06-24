@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -69,7 +70,7 @@ public final class RequestFriendDel extends L2GameClientPacket{
                 {
     			    statement.close();
     			    // Player is not in your friendlist
-    			    sm = new SystemMessage(SystemMessage.S1_NOT_ON_YOUR_FRIENDS_LIST);
+    			    sm = new SystemMessage(SystemMessageId.S1_NOT_ON_YOUR_FRIENDS_LIST);
     			    sm.addString(_name);
     			    activeChar.sendPacket(sm);
     			    sm = null;
@@ -85,7 +86,7 @@ public final class RequestFriendDel extends L2GameClientPacket{
                 {
     				statement.close();
     				// Player is not in your friendlist
-    				sm = new SystemMessage(SystemMessage.S1_NOT_ON_YOUR_FRIENDS_LIST);
+    				sm = new SystemMessage(SystemMessageId.S1_NOT_ON_YOUR_FRIENDS_LIST);
     				sm.addString(_name);
     				activeChar.sendPacket(sm);
     				sm = null;
@@ -102,7 +103,7 @@ public final class RequestFriendDel extends L2GameClientPacket{
 			statement.setInt(2, objectId);
 			statement.execute();
 			// Player deleted from your friendlist
-			sm = new SystemMessage(SystemMessage.S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST);
+			sm = new SystemMessage(SystemMessageId.S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST);
 			sm.addString(_name);
 			activeChar.sendPacket(sm);
 			sm = null;

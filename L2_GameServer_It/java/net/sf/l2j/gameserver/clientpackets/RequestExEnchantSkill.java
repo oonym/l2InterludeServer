@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ShortCutRegister;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -133,7 +134,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
                            
             		if (spb == null)// Haven't spellbook
             		{            			
-            			player.sendPacket(new SystemMessage(SystemMessage.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL));
+            			player.sendPacket(new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL));
             			return;
             		}
             		// ok
@@ -142,14 +143,14 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         	}
         	else
         	{
-        		SystemMessage sm = new SystemMessage(SystemMessage.YOU_DONT_HAVE_ENOUGH_EXP_TO_ENCHANT_THAT_SKILL);
+        		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ENOUGH_EXP_TO_ENCHANT_THAT_SKILL);
             	player.sendPacket(sm);
         		return;
         	}
         }
         else
         {
-        	SystemMessage sm = new SystemMessage(SystemMessage.YOU_DONT_HAVE_ENOUGH_SP_TO_ENCHANT_THAT_SKILL);
+        	SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ENOUGH_SP_TO_ENCHANT_THAT_SKILL);
         	player.sendPacket(sm);
         	return;
         }
@@ -168,15 +169,15 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         	su.addAttribute(StatusUpdate.SP, player.getSp());
         	player.sendPacket(su);
 
-            SystemMessage ep = new SystemMessage(SystemMessage.EXP_DECREASED_BY_S1);
+            SystemMessage ep = new SystemMessage(SystemMessageId.EXP_DECREASED_BY_S1);
             ep.addNumber(_requiredExp);
             sendPacket(ep);
 
-            SystemMessage sp = new SystemMessage(SystemMessage.SP_DECREASED_S1);
+            SystemMessage sp = new SystemMessage(SystemMessageId.SP_DECREASED_S1);
             sp.addNumber(_requiredSp);
             sendPacket(sp);
 
-        	SystemMessage sm = new SystemMessage(SystemMessage.YOU_HAVE_SUCCEEDED_IN_ENCHANTING_THE_SKILL_S1);
+        	SystemMessage sm = new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_IN_ENCHANTING_THE_SKILL_S1);
         	sm.addSkillName(_skillId);
         	player.sendPacket(sm);
         }
@@ -187,7 +188,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         		_skillLvl = _baseLvl;
         		player.addSkill(SkillTable.getInstance().getInfo(_skillId, _skillLvl), true);
         	}
-        	SystemMessage sm = new SystemMessage(SystemMessage.YOU_HAVE_FAILED_TO_ENCHANT_THE_SKILL_S1);
+        	SystemMessage sm = new SystemMessage(SystemMessageId.YOU_HAVE_FAILED_TO_ENCHANT_THE_SKILL_S1);
         	sm.addSkillName(_skillId);
         	player.sendPacket(sm);
         }

@@ -23,6 +23,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
@@ -51,7 +52,7 @@ public class L2SkillChargeDmg extends L2Skill
 			EffectCharge e = (EffectCharge)player.getEffect(chargeSkillId);
 			if(e == null || e.numCharges < this.numCharges)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 				sm.addSkillName(this.getId());
 				activeChar.sendPacket(sm);
 				return false;
@@ -71,7 +72,7 @@ public class L2SkillChargeDmg extends L2Skill
 		EffectCharge effect = (EffectCharge) caster.getEffect(chargeSkillId);
 		if (effect == null || effect.numCharges < this.numCharges)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessage.S1_CANNOT_BE_USED);
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 			sm.addSkillName(this.getId());
 			caster.sendPacket(sm);
 			return;

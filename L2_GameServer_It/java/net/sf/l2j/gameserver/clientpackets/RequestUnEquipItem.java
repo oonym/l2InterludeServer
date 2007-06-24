@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
@@ -116,13 +117,13 @@ public class RequestUnEquipItem extends L2GameClientPacket
             SystemMessage sm = null;
             if (unequiped[0].getEnchantLevel() > 0)
             {
-            	sm = new SystemMessage(SystemMessage.EQUIPMENT_S1_S2_REMOVED);
+            	sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
             	sm.addNumber(unequiped[0].getEnchantLevel());
             	sm.addItemName(unequiped[0].getItemId());
             }
             else
             {
-	            sm = new SystemMessage(SystemMessage.S1_DISARMED);
+	            sm = new SystemMessage(SystemMessageId.S1_DISARMED);
 	            sm.addItemName(unequiped[0].getItemId());
             }
             activeChar.sendPacket(sm);

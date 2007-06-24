@@ -21,6 +21,7 @@ import net.sf.l2j.gameserver.datatables.AugmentationData;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExVariationResult;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -66,7 +67,7 @@ public final class RequestRefine extends L2GameClientPacket
 				activeChar.getLevel() < 46) // must be lvl 46
 		{
 			activeChar.sendPacket(new ExVariationResult(0,0,0));
-			activeChar.sendPacket(new SystemMessage(SystemMessage.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS));
 			return;
 		}
 		
@@ -78,12 +79,12 @@ public final class RequestRefine extends L2GameClientPacket
 			int stat12 = 0x0000FFFF&targetItem.getAugmentation().getAugmentationId();
 			int stat34 = targetItem.getAugmentation().getAugmentationId()>>16;
 			activeChar.sendPacket(new ExVariationResult(stat12,stat34,1));
-			activeChar.sendPacket(new SystemMessage(SystemMessage.THE_ITEM_WAS_SUCCESSFULLY_AUGMENTED));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_ITEM_WAS_SUCCESSFULLY_AUGMENTED));
 		}
 		else
 		{
 			activeChar.sendPacket(new ExVariationResult(0,0,0));
-			activeChar.sendPacket(new SystemMessage(SystemMessage.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS));
 		}
 	}
 	

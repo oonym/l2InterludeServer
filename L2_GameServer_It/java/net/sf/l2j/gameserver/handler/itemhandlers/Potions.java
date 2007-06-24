@@ -31,6 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.entity.TvTEvent;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -101,7 +102,7 @@ public class Potions implements IItemHandler
 
 		if (activeChar.isInOlympiadMode())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessage.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
 			return;
 		}
 
@@ -199,7 +200,7 @@ public class Potions implements IItemHandler
 					res = usePotion(activeChar, 2287, (activeChar.getExpertiseIndex()+1));
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
+					SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 					return;
@@ -223,7 +224,7 @@ public class Potions implements IItemHandler
 					res = usePotion(activeChar, 2288, (activeChar.getExpertiseIndex()+1));
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
+					SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 					return;
@@ -247,7 +248,7 @@ public class Potions implements IItemHandler
 					res = usePotion(activeChar, 2289, (activeChar.getExpertiseIndex()+1));
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessage.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
+					SystemMessage sm = new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE); // INCOMPATIBLE_ITEM_GRADE
 					sm.addItemName(itemId);
 					activeChar.sendPacket(sm);
 					return;
@@ -323,7 +324,7 @@ public class Potions implements IItemHandler
 			case 8193: // Fisherman's Potion - Green
 				if (activeChar.getSkillLevel(1315) <= 3) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 1);
@@ -331,7 +332,7 @@ public class Potions implements IItemHandler
 			case 8194: // Fisherman's Potion - Jade
 				if (activeChar.getSkillLevel(1315) <= 6) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 2);
@@ -339,7 +340,7 @@ public class Potions implements IItemHandler
 			case 8195: // Fisherman's Potion - Blue
 				if (activeChar.getSkillLevel(1315) <= 9) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 3);
@@ -347,7 +348,7 @@ public class Potions implements IItemHandler
 			case 8196: // Fisherman's Potion - Yellow
 				if (activeChar.getSkillLevel(1315) <= 12) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 4);
@@ -355,7 +356,7 @@ public class Potions implements IItemHandler
 			case 8197: // Fisherman's Potion - Orange
 				if (activeChar.getSkillLevel(1315) <= 15) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 5);
@@ -363,7 +364,7 @@ public class Potions implements IItemHandler
 			case 8198: // Fisherman's Potion - Purple
 				if (activeChar.getSkillLevel(1315) <= 18) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 6);
@@ -371,7 +372,7 @@ public class Potions implements IItemHandler
 			case 8199: // Fisherman's Potion - Red
 				if (activeChar.getSkillLevel(1315) <= 21) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 7);
@@ -379,7 +380,7 @@ public class Potions implements IItemHandler
 			case 8200: // Fisherman's Potion - White
 				if (activeChar.getSkillLevel(1315) <= 24) {
 					playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-					playable.sendPacket(new SystemMessage(SystemMessage.NOTHING_HAPPENED));
+					playable.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return;
 				}
 				res = usePotion(activeChar, 2274, 8);
@@ -410,7 +411,7 @@ public class Potions implements IItemHandler
 				// One can reuse pots after 2/3 of their duration is over.
 				// It would be faster to check if its > 10 but that would screw custom pot durations...
 				if (e.getTaskTime() > (e.getSkill().getBuffDuration()*67)/100000) return true;
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_PREPARED_FOR_REUSE);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
 				sm.addItemName(itemId);
 				activeChar.sendPacket(sm);
 				return false;

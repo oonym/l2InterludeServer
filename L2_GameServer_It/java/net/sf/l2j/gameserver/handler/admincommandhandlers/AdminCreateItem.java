@@ -25,6 +25,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -79,12 +80,12 @@ public class AdminCreateItem implements IAdminCommandHandler {
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Error while creating item.");
 				activeChar.sendPacket(sm);
 			} catch (NumberFormatException nfe)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Wrong number entered.");
 				activeChar.sendPacket(sm);
 			}
@@ -109,7 +110,7 @@ public class AdminCreateItem implements IAdminCommandHandler {
 		ItemList il = new ItemList(activeChar, true);
 		activeChar.sendPacket(il);
 		
-		SystemMessage sm = new SystemMessage(SystemMessage.S1_S2);
+		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 		sm.addString("You have spawned " + num + " item(s) number " + id + " in your inventory.");
 		activeChar.sendPacket(sm);
 				

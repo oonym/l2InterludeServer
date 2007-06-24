@@ -12,6 +12,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.TvTEventTeam;
 import net.sf.l2j.gameserver.model.entity.TvTEventTeleporter;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
@@ -225,13 +226,13 @@ public class TvTEvent
 
         	if (Config.TVT_EVENT_REWARD[1] > 1)
         	{
-        		systemMessage = new SystemMessage(SystemMessage.EARNED_S2_S1_S);
+        		systemMessage = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
         		systemMessage.addItemName(Config.TVT_EVENT_REWARD[0]);
         		systemMessage.addNumber(Config.TVT_EVENT_REWARD[1]);
         	}
         	else
         	{
-        		systemMessage = new SystemMessage(SystemMessage.EARNED_ITEM);
+        		systemMessage = new SystemMessage(SystemMessageId.EARNED_ITEM);
         		systemMessage.addItemName(Config.TVT_EVENT_REWARD[0]);
         	}
         	

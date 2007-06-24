@@ -49,6 +49,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.AttackableKnownList;
 import net.sf.l2j.gameserver.model.base.SoulCrystal;
 import net.sf.l2j.gameserver.model.quest.Quest;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -601,7 +602,7 @@ public class L2Attackable extends L2NpcInstance
                             L2PcInstance player = (L2PcInstance)attacker;
                             if (isOverhit() && attacker == getOverhitAttacker())
                             {
-                                player.sendPacket(new SystemMessage(SystemMessage.OVER_HIT));
+                                player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
                                 exp += calculateOverhitExp(exp);
                             }
                         }
@@ -685,7 +686,7 @@ public class L2Attackable extends L2NpcInstance
                         if (isOverhit() && attacker == getOverhitAttacker())
                         {
                         	int overHitExp = (int)calculateOverhitExp(exp);
-                        	SystemMessage sms = new SystemMessage(SystemMessage.ACQUIRED_BONUS_EXPERIENCE_THROUGH_OVER_HIT);
+                        	SystemMessage sms = new SystemMessage(SystemMessageId.ACQUIRED_BONUS_EXPERIENCE_THROUGH_OVER_HIT);
                         	sms.addNumber(overHitExp);
                             player.sendPacket(sms);
                             exp += overHitExp;
@@ -1276,7 +1277,7 @@ public class L2Attackable extends L2NpcInstance
 		             if(this instanceof L2RaidBossInstance)
 		             {
 		                 SystemMessage sm;
-		                 sm = new SystemMessage(SystemMessage.S1_DIED_DROPPED_S3_S2);
+		                 sm = new SystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
 		                 sm.addString(getName());
 		                 sm.addItemName(item.getItemId());
 		                 sm.addNumber(item.getCount());
@@ -1909,11 +1910,11 @@ public class L2Attackable extends L2NpcInstance
                 // Too many crystals in inventory.
                 if  (crystalQTY > 1)
                 {
-                    player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_FAILED_RESONATION));
+                    player.sendPacket(new SystemMessage(SystemMessageId.SOUL_CRYSTAL_ABSORBING_FAILED_RESONATION));
                 }
                 // The soul crystal stage of the player is way too high
                 else if (!doLevelup)
-                    player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_REFUSED));
+                    player.sendPacket(new SystemMessage(SystemMessageId.SOUL_CRYSTAL_ABSORBING_REFUSED));
                 
                 crystalQTY = 0;
                 continue;
@@ -1943,7 +1944,7 @@ public class L2Attackable extends L2NpcInstance
                 resetAbsorbList();
             }
             else
-                player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_FAILED));
+                player.sendPacket(new SystemMessage(SystemMessageId.SOUL_CRYSTAL_ABSORBING_FAILED));
         }
     }
     
@@ -1963,13 +1964,13 @@ public class L2Attackable extends L2NpcInstance
             // Send a sound event and text message to the player
             if(broke)
             {
-                player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_BROKE));
+                player.sendPacket(new SystemMessage(SystemMessageId.SOUL_CRYSTAL_BROKE));
             }
             else
-                player.sendPacket(new SystemMessage(SystemMessage.SOUL_CRYSTAL_ABSORBING_SUCCEEDED));
+                player.sendPacket(new SystemMessage(SystemMessageId.SOUL_CRYSTAL_ABSORBING_SUCCEEDED));
             
             // Send system message
-            SystemMessage sms = new SystemMessage(SystemMessage.EARNED_ITEM);
+            SystemMessage sms = new SystemMessage(SystemMessageId.EARNED_ITEM);
             sms.addItemName(giveid);
             player.sendPacket(sms);
                         
