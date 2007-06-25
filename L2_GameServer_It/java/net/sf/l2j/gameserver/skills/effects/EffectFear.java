@@ -80,6 +80,7 @@ final class EffectFear extends L2Effect {
     		// doesn't affect siege golem or wild hog cannon
     		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SIEGE_GOLEM_ID) return false;
     		if (((L2Summon)getEffected()).getNpcId() == L2Summon.HOG_CANNON_ID) return false;
+    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SWOOP_CANNON_ID) return false;
     	}
     	int posX = getEffected().getX();
 		int posY = getEffected().getY();

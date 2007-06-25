@@ -340,6 +340,7 @@ public class Disablers implements ISkillHandler
                 		// doesn't affect siege golem or wild hog cannon
                 		&& !(((L2Summon)target).getNpcId() == L2Summon.SIEGE_GOLEM_ID)
                 		&& !(((L2Summon)target).getNpcId() == L2Summon.HOG_CANNON_ID)
+                		&& !(((L2Summon)target).getNpcId() == L2Summon.SWOOP_CANNON_ID)
                 		)
                 	{
                 		L2PcInstance summonOwner = null;
