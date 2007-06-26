@@ -50,14 +50,15 @@ public class FloodProtector
 
 	// =========================================================
 	// Enum
-	private static final int PROTECTEDACTIONSIZE = 2;
+	private static final int PROTECTEDACTIONSIZE = 3;
 	
 	// reuse delays for protected actions (in game ticks 1 tick = 100ms)
-	private static final int[] REUSEDELAY = new int[]{ 4, 42 };
+	private static final int[] REUSEDELAY = new int[]{ 4, 42, 42 };
 
 	// protected actions
 	public static final int PROTECTED_USEITEM	= 0;
 	public static final int PROTECTED_ROLLDICE	= 1;
+	public static final int PROTECTED_FIREWORK	= 2;
 
 	// =========================================================
 	// Constructor
