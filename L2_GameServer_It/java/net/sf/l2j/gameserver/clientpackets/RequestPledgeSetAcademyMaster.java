@@ -53,7 +53,7 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
     @Override
 	protected void runImpl()
     {
-        L2PcInstance activeChar = getClient().getActiveChar();
+    	L2PcInstance activeChar = getClient().getActiveChar();
         L2Clan clan = activeChar.getClan();
         if (clan == null) return;
 
@@ -115,7 +115,7 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         	if (sponsor != null) 
         		sponsor.setApprentice(apprenticeMember.getObjectId());
         	else // offline
-        		sponsorMember.initApprenticeAndSponsor(0, sponsorMember.getObjectId());
+        		sponsorMember.initApprenticeAndSponsor(apprenticeMember.getObjectId(), 0);
 
         	// saving to database even if online, since both must match
         	saveApprenticeAndSponsor(apprenticeMember.getObjectId(), 0, sponsorMember.getObjectId());
