@@ -249,9 +249,9 @@ public abstract class Quest
         try { res = onAttack(npc, attacker); } catch (Exception e) { return showError(attacker, e); }
         return showResult(attacker, res);
     } 
-    public final boolean notifyDeath(L2NpcInstance npc, L2Character character, QuestState qs) {
+    public final boolean notifyDeath(L2Character killer, L2Character victim, QuestState qs) {
         String res = null;
-        try { res = onDeath(npc, character, qs); } catch (Exception e) { return showError(qs.getPlayer(), e); }
+        try { res = onDeath(killer, victim, qs); } catch (Exception e) { return showError(qs.getPlayer(), e); }
         return showResult(qs.getPlayer(), res);
     } 
     public final boolean notifyEvent(String event, L2NpcInstance npc, L2PcInstance player) {
@@ -290,7 +290,14 @@ public abstract class Quest
 
 	// these are methods that java calls to invoke scripts
     @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker) { return null; } 
-    @SuppressWarnings("unused") public String onDeath (L2NpcInstance npc, L2Character character, QuestState qs) { return onAdvEvent("", npc,qs.getPlayer()); }
+    @SuppressWarnings("unused") public String onDeath (L2Character killer, L2Character victim, QuestState qs) 
+    { 	
+    	if (killer instanceof L2NpcInstance)
+    		return onAdvEvent("", (L2NpcInstance)killer,qs.getPlayer()); 
+    	else 
+    		return onAdvEvent("", null,qs.getPlayer());
+    }
+    
     @SuppressWarnings("unused") public String onAdvEvent(String event, L2NpcInstance npc, L2PcInstance player) 
     {
     	// if not overriden by a subclass, then default to the returned value of the simpler (and older) onEvent override
@@ -301,6 +308,7 @@ public abstract class Quest
 
     	return null; 
     } 
+    
     @SuppressWarnings("unused") public String onEvent(String event, QuestState qs) { return null; } 
     @SuppressWarnings("unused") public String onKill (L2NpcInstance npc, L2PcInstance killer) { return null; }
     @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
