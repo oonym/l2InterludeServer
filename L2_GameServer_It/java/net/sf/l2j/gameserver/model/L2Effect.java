@@ -425,10 +425,11 @@ public abstract class L2Effect
 
         if (_state == EffectState.ACTING)
         {
-            if (_count-- > 0)
+        	if (_count-- > 0)
             {
-            	if (!getInUse()) return; // timer isn't canceled even if it's not active
-            	if (onActionTime()) return;
+            	if (getInUse()) { // effect has to be in use 
+            		if (onActionTime()) return; // false causes effect to finish right away
+            	}
             }
             _state = EffectState.FINISHING;
         }
