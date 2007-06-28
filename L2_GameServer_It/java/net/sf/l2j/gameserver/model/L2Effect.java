@@ -430,6 +430,9 @@ public abstract class L2Effect
             	if (getInUse()) { // effect has to be in use 
             		if (onActionTime()) return; // false causes effect to finish right away
             	}
+            	else if (_count > 0) { // do not finish it yet, in case reactivated
+            		return;
+            	}
             }
             _state = EffectState.FINISHING;
         }
