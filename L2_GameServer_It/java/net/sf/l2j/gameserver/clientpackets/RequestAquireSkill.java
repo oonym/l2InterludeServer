@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2VillageMasterInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExStorageMaxCount;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.ShortCutRegister;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -274,12 +275,11 @@ public class RequestAquireSkill extends L2GameClientPacket
                 //sm = null;
                 return;
             }
+            player.getClan().setReputationScore(player.getClan().getReputationScore()-repCost, true);
             player.getClan().addNewSkill(skill);
             
             if (Config.DEBUG) 
                 _log.fine("Learned pledge skill " + _id + " for " + _requiredSp + " SP.");
-            
-            player.getClan().setReputationScore(player.getClan().getReputationScore()-repCost, true);
             
             SystemMessage cr = new SystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP);
             cr.addNumber(repCost);
@@ -288,6 +288,8 @@ public class RequestAquireSkill extends L2GameClientPacket
             sm.addSkillName(_id);
             player.sendPacket(sm);
             sm = null;
+            
+            player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
             
             ((L2VillageMasterInstance)trainer).showPledgeSkillList(player); //Maybe we shoud add a check here...
             
