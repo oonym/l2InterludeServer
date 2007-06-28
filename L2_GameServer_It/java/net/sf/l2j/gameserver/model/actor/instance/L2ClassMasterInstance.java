@@ -101,10 +101,8 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			if(player.isGM())
 			{
 				showChatWindowChooseClass(player);
-				return;
 			}
-
-            if (((level >= 20 && jobLevel == 1 ) ||
+			else if (((level >= 20 && jobLevel == 1 ) ||
 				(level >= 40 && jobLevel == 2 )) && Config.ALLOW_CLASS_MASTERS)
 			{				
 				showChatWindow(player, classId.getId());
@@ -126,7 +124,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
                         sb.append("</table></body></html>");
                         html.setHtml(sb.toString());
                         player.sendPacket(html);
-                        return;
+                        break;
 					}
 				}
 			}
