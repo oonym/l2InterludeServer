@@ -2000,19 +2000,12 @@ public final class L2PcInstance extends L2PlayableInstance
             getInventory().addItem("Gift",8181,1,this,null); // give academy circlet
             getInventory().updateDatabase(); // update database
         }
-
-		_activeClass = Id;
-
-		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(Id);
+		if (isSubClassActive()) 
+		{ 
+			getSubClasses().get(_classIndex).setClassId(Id); 
+		} 
 		
-		if (t == null)
-		{
-			_log.severe("Missing template for classId: "+Id);
-			throw new Error();
-		}
-		
-		// Set the template of the L2PcInstance
-		setTemplate(t);
+		setClassTemplate(Id);
 	}
 	
 	/** Return the Experience of the L2PcInstance. */
@@ -8293,6 +8286,22 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _classIndex;
 	}
 	
+	private void setClassTemplate(int classId)
+	{
+		_activeClass = classId;
+
+		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(classId);
+		
+		if (t == null)
+		{
+			_log.severe("Missing template for classId: "+classId);
+			throw new Error();
+		}
+		
+		// Set the template of the L2PcInstance
+		setTemplate(t);
+	}
+	
     /**
      * Changes the character's class based on the given class index.
      * <BR><BR>
@@ -8311,22 +8320,23 @@ public final class L2PcInstance extends L2PlayableInstance
 
         if (classIndex == 0) 
         {
-            setClassId(getBaseClass());
+        	setClassTemplate(getBaseClass());
         }
         else 
         {
             try {
-                setClassId(getSubClasses().get(classIndex).getClassId());
-                if(isInParty())
-                	getParty().recalculatePartyLevel();
+            	setClassTemplate(getSubClasses().get(classIndex).getClassId());
             } 
             catch (Exception e) {
                 _log.info("Could not switch " + getName() + "'s sub class to class index " + classIndex + ": " + e); 
                 return false; 
             }
         }
-        
         _classIndex = classIndex;
+        
+        if(isInParty())
+        	getParty().recalculatePartyLevel();
+
         
         /* 
 		 * Update the character's change in class status.
