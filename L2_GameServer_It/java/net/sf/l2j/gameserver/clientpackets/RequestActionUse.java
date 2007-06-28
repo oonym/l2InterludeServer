@@ -154,7 +154,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				{
 					if (target instanceof L2DoorInstance) 
 					{
-						if(((L2DoorInstance)target).isAttackable(activeChar))
+						if(((L2DoorInstance)target).isAttackable(activeChar) && pet.getNpcId() != L2Summon.SWOOP_CANNON_ID)
 							pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 					}
 					// siege golem AI doesn't support attacking other than doors at the moment
@@ -420,10 +420,12 @@ public final class RequestActionUse extends L2GameClientPacket
 			useSkill(4708);
 			break;
 		case 1039: // Swoop Cannon - Cannon Fodder
-			useSkill(5110);
+			if (!(target instanceof L2DoorInstance))
+				useSkill(5110);
 			break;
 		case 1040: // Swoop Cannon - Big Bang
-			useSkill(5111);
+			if (!(target instanceof L2DoorInstance))
+				useSkill(5111);
 			break;
 		default:
 			_log.warning(activeChar.getName()+": unhandled action type "+_actionId);
