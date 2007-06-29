@@ -161,6 +161,7 @@ import net.sf.l2j.gameserver.serverpackets.ObservationMode;
 import net.sf.l2j.gameserver.serverpackets.ObservationReturn;
 import net.sf.l2j.gameserver.serverpackets.PartySmallWindowUpdate;
 import net.sf.l2j.gameserver.serverpackets.PetInventoryUpdate;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListDelete;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListUpdate;
 import net.sf.l2j.gameserver.serverpackets.PrivateStoreListBuy;
@@ -1986,8 +1987,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			if(getLvlJoinedAcademy() <= 16) _clan.setReputationScore(_clan.getReputationScore()+400, true);
             else if(getLvlJoinedAcademy() >= 39) _clan.setReputationScore(_clan.getReputationScore()+170, true); 
             else _clan.setReputationScore(_clan.getReputationScore()+(400-(getLvlJoinedAcademy()-16)*10), true);
-            setLvlJoinedAcademy(0);
-            
+			_clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(_clan));
+			setLvlJoinedAcademy(0);
             //oust pledge member from the academy, cuz he has finished his 2nd class transfer
             SystemMessage msg = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_EXPELLED);
             msg.addString(this.getName());

@@ -717,15 +717,16 @@ public class Castle
             if (_formerOwner != ClanTable.getInstance().getClan(getOwnerId()))
                 _formerOwner.setReputationScore(_formerOwner.getReputationScore()-2000, true);
             else
-            {
-                _formerOwner.setReputationScore(_formerOwner.getReputationScore()+500, true);
-            }
+            	_formerOwner.setReputationScore(_formerOwner.getReputationScore()+500, true);
+
+            _formerOwner.broadcastToOnlineMembers(new PledgeShowInfoUpdate(_formerOwner));
         }
         else 
         {
 
             L2Clan owner = ClanTable.getInstance().getClan(getOwnerId());
             owner.setReputationScore(owner.getReputationScore()+1000, true);
+            owner.broadcastToOnlineMembers(new PledgeShowInfoUpdate(owner));
         }
     }
 }

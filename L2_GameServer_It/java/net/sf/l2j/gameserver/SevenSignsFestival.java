@@ -32,10 +32,12 @@ import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.L2CharPosition;
+import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.L2Spawn;
@@ -47,9 +49,11 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
 import net.sf.l2j.gameserver.util.Util;
+
 
 /**
  *  Seven Signs Festival of Darkness Engine
@@ -66,6 +70,8 @@ public class SevenSignsFestival implements SpawnListener
     private static SevenSignsFestival _instance;
     
     public static final String FESTIVAL_DATA_FILE = "config/signs.properties";
+    
+    private static final String GET_CLAN_NAME = "SELECT clan_name FROM clan_data WHERE clan_id = (SELECT clanid FROM characters WHERE char_name = ?)";
     
     /**
      * These length settings are important! :)
@@ -1128,6 +1134,103 @@ public class SevenSignsFestival implements SpawnListener
         	catch (Exception e) {}
         }
     }
+    
+    /**
+     * If a clan member is a member of the highest-ranked party in the Festival of Darkness, 100 points are added per member
+     */
+    protected void rewardHighestRanked()
+    {
+    	String[] partyMembers;
+    	StatsSet overallData = getOverallHighestScoreData(FESTIVAL_LEVEL_MAX_31);
+        if (overallData != null)
+    	{
+    		partyMembers = overallData.getString("members").split(",");
+    		for (String partyMemberName : partyMembers)
+    			addReputationPointsForPartyMemberClan(partyMemberName);
+    	}
+
+    	overallData = getOverallHighestScoreData(FESTIVAL_LEVEL_MAX_42);
+    	if (overallData != null)
+    	{
+    		partyMembers = overallData.getString("members").split(",");
+    		for (String partyMemberName : partyMembers)
+    			addReputationPointsForPartyMemberClan(partyMemberName);
+    	}
+
+    	overallData = getOverallHighestScoreData(FESTIVAL_LEVEL_MAX_53);
+    	if (overallData != null)
+    	{
+    		partyMembers = overallData.getString("members").split(",");
+    		for (String partyMemberName : partyMembers)
+    			addReputationPointsForPartyMemberClan(partyMemberName);
+    	}
+
+    	overallData = getOverallHighestScoreData(FESTIVAL_LEVEL_MAX_64);
+    	if (overallData != null)
+    	{
+    		partyMembers = overallData.getString("members").split(",");
+    		for (String partyMemberName : partyMembers)
+    			addReputationPointsForPartyMemberClan(partyMemberName);
+    	}
+
+    	overallData = getOverallHighestScoreData(FESTIVAL_LEVEL_MAX_NONE);
+    	if (overallData != null)
+    	{
+    		partyMembers = overallData.getString("members").split(",");
+    		for (String partyMemberName : partyMembers)
+    			addReputationPointsForPartyMemberClan(partyMemberName);
+    	}
+    }
+    
+    private void addReputationPointsForPartyMemberClan(String partyMemberName)
+    {
+    	L2PcInstance player = L2World.getInstance().getPlayer(partyMemberName);
+		if (player != null)
+		{
+			if (player.getClan() != null) 
+			{
+				player.getClan().setReputationScore(player.getClan().getReputationScore()+100, true);
+				player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
+			}
+		}
+		else
+		{
+			java.sql.Connection con = null;
+        	
+        	try
+        	{
+        		con = L2DatabaseFactory.getInstance().getConnection();
+        		PreparedStatement statement = con.prepareStatement(GET_CLAN_NAME);
+        		statement.setString(1, partyMemberName);
+        		ResultSet rset = statement.executeQuery();
+        		if (rset.next())
+        		{
+        			String clanName = rset.getString("clan_name");
+        			if (clanName != null)
+        			{
+        				L2Clan clan = ClanTable.getInstance().getClanByName(clanName);
+        				if (clan != null)
+        				{
+        					clan.setReputationScore(clan.getReputationScore()+100, true);
+        					clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+        				}
+        			}
+        		}
+        		
+        		rset.close();
+        		statement.close();
+        	}
+        	catch (Exception e)
+        	{
+        		_log.warning("could not get clan name of " + partyMemberName + ": "+e);
+        	}
+        	finally
+        	{
+        		try { con.close(); } catch (Exception e) {}
+        	}
+		}
+    }
+    
     
     /**
      * Used to reset all festival data at the beginning of a new quest event period.
