@@ -402,6 +402,12 @@ public enum SystemMessageId
 	SKILL_REMOVED_DUE_LACK_MP(140),
 	
 	/**
+	 * ID: 140<br>
+	 * Message: Your skill has been canceled due to lack of HP.
+	 */
+	SKILL_REMOVED_DUE_LACK_HP(610),
+	
+	/**
 	 * ID: 3<br>
 	 * Message: $s1 is not currently logged in.
 	 */
