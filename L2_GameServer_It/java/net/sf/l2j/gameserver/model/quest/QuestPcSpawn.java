@@ -117,21 +117,6 @@ public class QuestPcSpawn
     {
         try 
         {
-            if (randomOffset)
-            {
-                int offset;
-
-                offset = Rnd.get(1); // Get the direction of the offset
-                if (offset == 0) {offset = -1;} // make offset negative
-                offset *= Rnd.get(50, 100);
-                x += offset;
-
-                offset = Rnd.get(1); // Get the direction of the offset
-                if (offset == 0) {offset = -1;} // make offset negative
-                offset *= Rnd.get(50, 100); 
-                y += offset;
-            }
-            
             L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
             if (template != null)
             {
@@ -150,9 +135,9 @@ public class QuestPcSpawn
                 	_log.log(Level.WARNING, getPlayer().getName() + " requested quest spawn with loc 0,0.  Loc is being adjusted");
 
                 	// attempt to use the player's xyz as a the default spawn location.
-                	x = getPlayer().getX();
-                	y = getPlayer().getY();
-                	z = getPlayer().getZ();
+                	x = getPlayer().getClientX();
+                	y = getPlayer().getClientY();
+                	z = getPlayer().getClientZ();
                 	// if the fail-safe also did not help, abort this spawning and give a severe log 
                     if ((x == 0) && (y == 0))
                     {
@@ -160,6 +145,22 @@ public class QuestPcSpawn
                     	return 0;
                     }
                 }
+                
+                if (randomOffset)
+                {
+                    int offset;
+
+                    offset = Rnd.get(2); // Get the direction of the offset
+                    if (offset == 0) {offset = -1;} // make offset negative
+                    offset *= Rnd.get(50, 100);
+                    x += offset;
+
+                    offset = Rnd.get(2); // Get the direction of the offset
+                    if (offset == 0) {offset = -1;} // make offset negative
+                    offset *= Rnd.get(50, 100); 
+                    y += offset;
+                }
+                
                 spawn.setLocx(x);
                 spawn.setLocy(y);
                 spawn.setLocz(z + 20);
