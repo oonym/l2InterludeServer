@@ -258,26 +258,6 @@ abstract class AbstractAI implements Ctrl
          if (Config.DEBUG)
          _log.warning("AbstractAI: setIntention -> " + intention + " " + arg0 + " " + arg1);
          */
-        
-        // Silent move stop if player attack or cast
-        if (intention == CtrlIntention.AI_INTENTION_ATTACK 
-            || (intention == CtrlIntention.AI_INTENTION_CAST 
-                && arg0 instanceof L2Skill 
-                && ((L2Skill)arg0).getId() != 221
-               )
-           )
-        {
-        	L2Effect silentMove = _actor.getEffect(EffectType.SILENT_MOVE);
-            if (silentMove != null && silentMove.getSkill() != null)
-            {
-                SystemMessage sm = new SystemMessage(SystemMessageId.EFFECT_S1_DISAPPEARED);
-                sm.addSkillName(silentMove.getSkill().getId());
-                silentMove.exit();
-                _actor.sendPacket(sm);
-                sm = null;
-            }
-            silentMove = null;
-        }
 
         // Stop the follow mode if necessary
         if (intention != AI_INTENTION_FOLLOW && intention != AI_INTENTION_ATTACK) stopFollow();
