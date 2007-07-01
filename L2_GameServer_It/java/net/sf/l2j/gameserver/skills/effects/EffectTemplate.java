@@ -46,7 +46,7 @@ public final class EffectTemplate
 	public final Lambda lambda;
 	public final int counter;
 	public final int period; // in seconds
-	public final short abnormalEffect;
+	public final int abnormalEffect;
 	public FuncTemplate[] funcTemplates;
 	
 	public final String stackType;
@@ -54,7 +54,7 @@ public final class EffectTemplate
 	
 	public EffectTemplate(Condition pAttachCond, Condition pApplayCond,
 			String func, Lambda pLambda, int pCounter, int pPeriod, 
-			short pAbnormalEffect, String pStackType, float pStackOrder)
+			int pAbnormalEffect, String pStackType, float pStackOrder)
 	{
 		attachCond = pAttachCond;
 		applayCond = pApplayCond;

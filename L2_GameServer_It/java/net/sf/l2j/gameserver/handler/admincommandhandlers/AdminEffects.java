@@ -123,9 +123,9 @@ public class AdminEffects implements IAdminCommandHandler
                {
                    player = (L2Character)target;
                    if (type.equals("1"))
-                       player.startAbnormalEffect((short)0x0400);
+                       player.startAbnormalEffect(0x0400);
                    else
-                       player.startAbnormalEffect((short)0x0800);
+                       player.startAbnormalEffect(0x0800);
                    player.setIsParalyzed(true);
                    StopMove sm = new StopMove(player);
                    player.sendPacket(sm);
@@ -161,7 +161,7 @@ public class AdminEffects implements IAdminCommandHandler
                {
                    if (!player.isGM())
                    {
-                       player.startAbnormalEffect((short)0x0400);
+                       player.startAbnormalEffect(0x0400);
                        player.setIsParalyzed(true);
 
                        StopMove sm = new StopMove(player);
@@ -180,7 +180,7 @@ public class AdminEffects implements IAdminCommandHandler
            {
                for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
                {
-                   player.stopAbnormalEffect((short)0x0400);
+                   player.stopAbnormalEffect(0x0400);
                    player.setIsParalyzed(false);
                }
            }
@@ -197,7 +197,7 @@ public class AdminEffects implements IAdminCommandHandler
                if (target instanceof L2Character) 
                {
                    player = (L2Character)target;
-                   player.startAbnormalEffect((short)0x2000);
+                   player.startAbnormalEffect(0x2000);
                 }
            }
            catch (Exception e)

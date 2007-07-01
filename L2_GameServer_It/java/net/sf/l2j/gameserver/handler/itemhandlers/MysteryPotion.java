@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class MysteryPotion implements IItemHandler
 {
     private static final int[] ITEM_IDS = { 5234 };
-    private static final short BIGHEAD_EFFECT = 0x2000;
+    private static final int BIGHEAD_EFFECT = 0x2000;
     private static final int MYSTERY_POTION_SKILL = 2103;
     private static final int EFFECT_DURATION = 1200000; // 20 mins
 

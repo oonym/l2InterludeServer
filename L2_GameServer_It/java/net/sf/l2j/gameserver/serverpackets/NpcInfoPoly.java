@@ -43,7 +43,7 @@ public class NpcInfoPoly extends L2GameServerPacket
 	private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
 	private int _rhand, _lhand;
 	private String _name, _title;
-	private short _abnormalEffect;
+	private int _abnormalEffect;
 	L2NpcTemplate _template;
     private int _collisionRadius;
     private int _collisionHeight;

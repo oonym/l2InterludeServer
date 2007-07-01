@@ -38,11 +38,11 @@ final class EffectBigHead extends L2Effect
 	}
 	
 	public void onStart() {
-		 getEffected().startAbnormalEffect((short)0x02000);
+		 getEffected().startAbnormalEffect(0x02000);
 	}
 	
 	public void onExit() {
-		 getEffected().stopAbnormalEffect((short)0x02000);
+		 getEffected().stopAbnormalEffect(0x02000);
 	}
 	
 	public boolean onActionTime() {

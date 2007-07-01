@@ -1854,8 +1854,8 @@ public abstract class L2Character extends L2Object
 	// =========================================================
 	// Abnormal Effect - NEED TO REMOVE ONCE L2CHARABNORMALEFFECT IS COMPLETE
 	// Data Field
-	/** Map 16 bits (0x0000) containing all abnormal effect in progress */
-	private short _AbnormalEffects;
+	/** Map 32 bits (0x0000) containing all abnormal effect in progress */
+	private int _AbnormalEffects;
 
 	/**
 	 * FastTable containing all active skills effects in progress of a L2Character.
@@ -1868,25 +1868,33 @@ public abstract class L2Character extends L2Object
 	/** Table EMPTY_EFFECTS shared by all L2Character without effects in progress */
 	private static final L2Effect[] EMPTY_EFFECTS = new L2Effect[0];
 
-	public static final int ABNORMAL_EFFECT_BLEEDING   = 0x0001; // not sure
-	public static final int ABNORMAL_EFFECT_POISON     = 0x0002;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_3  = 0x0004;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_4  = 0x0008;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_5  = 0x0010;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_6  = 0x0020;
-	public static final int ABNORMAL_EFFECT_STUN       = 0x0040;
-	public static final int ABNORMAL_EFFECT_SLEEP      = 0x0080;
-	public static final int ABNORMAL_EFFECT_MUTED      = 0x0100; // not sure
-	public static final int ABNORMAL_EFFECT_ROOT       = 0x0200;
-	public static final int ABNORMAL_EFFECT_HOLD_1     = 0x0400;
-	public static final int ABNORMAL_EFFECT_HOLD_2     = 0x0800;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_13 = 0x1000;
-	public static final int ABNORMAL_EFFECT_BIG_HEAD   = 0x2000;
-	public static final int ABNORMAL_EFFECT_FLAME      = 0x4000;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_16 = 0x8000;
-	// FIXME : correct the value of the abnormal effect confused
+	public static final int ABNORMAL_EFFECT_BLEEDING		= 0x000001;
+	public static final int ABNORMAL_EFFECT_POISON 			= 0x000002;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_3		= 0x000004;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_4		= 0x000008;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_5		= 0x000010;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_6		= 0x000020;
+	public static final int ABNORMAL_EFFECT_STUN			= 0x000040;
+	public static final int ABNORMAL_EFFECT_SLEEP			= 0x000080;
+	public static final int ABNORMAL_EFFECT_MUTED			= 0x000100;
+	public static final int ABNORMAL_EFFECT_ROOT			= 0x000200;
+	public static final int ABNORMAL_EFFECT_HOLD_1			= 0x000400;
+	public static final int ABNORMAL_EFFECT_HOLD_2			= 0x000800;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_13		= 0x001000;
+	public static final int ABNORMAL_EFFECT_BIG_HEAD		= 0x002000;
+	public static final int ABNORMAL_EFFECT_FLAME			= 0x004000;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_16		= 0x008000;
+	public static final int ABNORMAL_EFFECT_UNKNOWN_17		= 0x010000;
+	public static final int ABNORMAL_EFFECT_FLOATING_ROOT	= 0x020000;
+	public static final int ABNORMAL_EFFECT_DANCE_STUNNED	= 0x040000;
+	public static final int ABNORMAL_EFFECT_FIREROOT_STUN	= 0x080000;
+	public static final int ABNORMAL_EFFECT_STEALTH			= 0x100000;
+	public static final int ABNORMAL_EFFECT_IMPRISIONING_1	= 0x200000;
+	public static final int ABNORMAL_EFFECT_IMPRISIONING_2	= 0x400000;
+	public static final int ABNORMAL_EFFECT_MAGIC_CIRCLE	= 0x800000;
+	
+	// XXX TEMP HACKS (get the proper mask for these effects)
 	public static final int ABNORMAL_EFFECT_CONFUSED   = 0x0020;
-	// FIXME : correct the value of the abnormal effect affraid
 	public static final int ABNORMAL_EFFECT_AFFRAID    = 0x0010;
 
 	// Method - Public
@@ -2197,7 +2205,7 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Active abnormal effects flags in the binary mask and send Server->Client UserInfo/CharInfo packet.<BR><BR>
 	 */
-	public final void startAbnormalEffect(short mask)
+	public final void startAbnormalEffect(int mask)
 	{
 		_AbnormalEffects |= mask;
 		updateAbnormalEffect();
@@ -2315,7 +2323,7 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Modify the abnormal effect map according to the mask.<BR><BR>
 	 */
-	public final void stopAbnormalEffect(short mask)
+	public final void stopAbnormalEffect(int mask)
 	{
 		_AbnormalEffects &= ~mask;
 		updateAbnormalEffect();
@@ -2684,9 +2692,9 @@ public abstract class L2Character extends L2Object
 	 * <B><U> Example of use </U> :</B><BR><BR>
 	 * <li> Server Packet : CharInfo, NpcInfo, NpcInfoPoly, UserInfo...</li><BR><BR>
 	 */
-	public short getAbnormalEffect()
+	public int getAbnormalEffect()
 	{
-		short ae = _AbnormalEffects;
+		int ae = _AbnormalEffects;
 		if (isStunned())  ae |= ABNORMAL_EFFECT_STUN;
 		if (isRooted())   ae |= ABNORMAL_EFFECT_ROOT;
 		if (isSleeping()) ae |= ABNORMAL_EFFECT_SLEEP;

@@ -36,14 +36,14 @@ public class EffectPetrification extends L2Effect
     
     public void onStart() 
     {
-    	getEffected().startAbnormalEffect((short)0x0800);
+    	getEffected().startAbnormalEffect(0x0800);
     	getEffected().setIsParalyzed(true);
     	getEffected().setIsInvul(true);
     }
     
     public void onExit()
     {
-		 getEffected().stopAbnormalEffect((short)0x0800);
+		 getEffected().stopAbnormalEffect(0x0800);
 		 getEffected().setIsParalyzed(false);
 		 getEffected().setIsInvul(false);
     }

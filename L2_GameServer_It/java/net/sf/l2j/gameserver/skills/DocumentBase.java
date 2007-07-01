@@ -212,14 +212,15 @@ abstract class DocumentBase
         }
         Lambda lambda = getLambda(n, template);
         Condition applayCond = parseCondition(n.getFirstChild(), template);
-        short abnormal = 0;
+        int abnormal = 0;
         if (attrs.getNamedItem("abnormal") != null)
         {
             String abn = attrs.getNamedItem("abnormal").getNodeValue();
             if (abn.equals("poison")) abnormal = L2Character.ABNORMAL_EFFECT_POISON;
-            if (abn.equals("bleeding")) abnormal = L2Character.ABNORMAL_EFFECT_BLEEDING;
-            if (abn.equals("flame")) abnormal = L2Character.ABNORMAL_EFFECT_FLAME;
-            if (abn.equals("bighead")) abnormal = L2Character.ABNORMAL_EFFECT_BIG_HEAD;
+            else if (abn.equals("bleeding")) abnormal = L2Character.ABNORMAL_EFFECT_BLEEDING;
+            else if (abn.equals("flame")) abnormal = L2Character.ABNORMAL_EFFECT_FLAME;
+            else if (abn.equals("bighead")) abnormal = L2Character.ABNORMAL_EFFECT_BIG_HEAD;
+            else if (abn.equals("stealth")) abnormal = L2Character.ABNORMAL_EFFECT_STEALTH;
         }
         float stackOrder = 0;
         String stackType = "none";

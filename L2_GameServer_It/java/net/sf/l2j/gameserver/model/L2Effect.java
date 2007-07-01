@@ -120,7 +120,7 @@ public abstract class L2Effect
     private int _count;
 
     // abnormal effect mask
-    private short _abnormalEffect;
+    private int _abnormalEffect;
     
     private boolean _preventExitUpdate;
     
