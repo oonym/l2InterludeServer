@@ -1569,6 +1569,7 @@ public final class L2PcInstance extends L2PlayableInstance
         else
         {
         	if (_lastCompassZone == ExSetCompassZoneCode.GENERALZONE) return;
+        	if (_lastCompassZone == ExSetCompassZoneCode.SIEGEWARZONE2) updatePvPStatus();
         	_lastCompassZone = ExSetCompassZoneCode.GENERALZONE;
         	ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.GENERALZONE);
         	sendPacket(cz);
