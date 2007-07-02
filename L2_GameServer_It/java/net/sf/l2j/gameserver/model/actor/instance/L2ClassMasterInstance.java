@@ -120,7 +120,6 @@ public final class L2ClassMasterInstance extends L2FolkInstance
                         sb.append("<tr><td><br></td></tr>");
                         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class "+(88+i)+"\">Advance to "+CharTemplateTable.getClassNameById(88+i)+"</a></td></tr>");
                         sb.append("<tr><td><br></td></tr>");
-                        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_upgrade_hatchling \">Upgrade Hatchling to Strider</a></td></tr>");
                         sb.append("</table></body></html>");
                         html.setHtml(sb.toString());
                         player.sendPacket(html);
@@ -301,7 +300,6 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_2ndClass\">2nd Classes.</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_3rdClass\">3rd Classes.</a></td></tr>");
         sb.append("<tr><td><br></td></tr>");
-        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_upgrade_hatchling\">Upgrade Hatchling to Strider</a></td></tr>");
         sb.append("</table>");
         sb.append("</body>");
         sb.append("</html>");
