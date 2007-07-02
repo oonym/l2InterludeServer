@@ -850,7 +850,7 @@ public final class Formulas
 				if (siegeModifier > 0) hpRegenMultiplier *= siegeModifier;
 			}
             
-            if (player.getIsInClanHall() == 2)
+            if (player.getIsInClanHall() == 2 && player.getClan() != null)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
             	if (clanHallIndex > 0) 
