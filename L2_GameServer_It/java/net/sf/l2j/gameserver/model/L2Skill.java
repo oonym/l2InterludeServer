@@ -1369,11 +1369,12 @@ public abstract class L2Skill
                             if(obj instanceof L2Summon)
                             {
                                 L2PcInstance trg = ((L2Summon)obj).getOwner();
+                                if (trg == src) continue;
                                 
                                 if((src.getParty() != null && trg.getParty() != null) && 
                                         src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID()) 
                                     continue;
-                                 
+
                                 if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
                                 {
                                 	if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0) 
