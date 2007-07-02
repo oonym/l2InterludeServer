@@ -25,8 +25,10 @@ import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -109,8 +111,56 @@ public class Continuous implements ISkillHandler
 			if (skill.isOffensive())
 			{
 
-				boolean acted = Formulas.getInstance().calcMagicAffected(
-						activeChar, target, skill);
+				boolean ss = false;
+		        boolean sps = false;
+		        boolean bss = false;
+		        if (player != null)
+		        {
+		        	L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
+		        	if (weaponInst != null)
+		        	{
+		        		if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
+		                {
+		                    bss = true;
+		                    if (skill.getId() != 1020) // vitalize
+		                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+		                }
+		                else if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT)
+		                {
+		                    sps = true;
+		                    if (skill.getId() != 1020) // vitalize
+		                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+		                }
+		                else if (weaponInst.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT)
+		                {
+		                    ss = true;
+		                    if (skill.getId() != 1020) // vitalize
+		                    	weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+		                }		
+		        	}
+		        }
+		        else if (activeChar instanceof L2Summon)
+		        {
+		            L2Summon activeSummon = (L2Summon) activeChar;
+
+		            if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
+		            {
+		                bss = true;
+		                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
+		            }
+		            else if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_SPIRITSHOT)
+		            {
+		                sps = true;
+		                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
+		            }
+		            else if (activeSummon.getChargedSoulShot() == L2ItemInstance.CHARGED_SOULSHOT)
+		            {
+		                ss = true;
+		                activeSummon.setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
+		            }
+		        }
+		        
+				boolean acted = Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, ss, sps, bss);
 				if (!acted) {
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
 					continue;
