@@ -18,10 +18,6 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -94,8 +90,8 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         	else // offline
         		sponsorMember.initApprenticeAndSponsor(0, 0);
         	
-        	saveApprenticeAndSponsor(apprenticeMember.getObjectId(), 0, 0);
-        	saveApprenticeAndSponsor(sponsorMember.getObjectId(), 0, 0);
+        	apprenticeMember.saveApprenticeAndSponsor(0, 0);
+        	sponsorMember.saveApprenticeAndSponsor(0, 0);
         	
         	sm = new SystemMessage(SystemMessageId.S2_CLAN_MEMBER_S1_S_APPRENTICE_HAS_BEEN_REMOVED);
         }
@@ -118,8 +114,8 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         		sponsorMember.initApprenticeAndSponsor(apprenticeMember.getObjectId(), 0);
 
         	// saving to database even if online, since both must match
-        	saveApprenticeAndSponsor(apprenticeMember.getObjectId(), 0, sponsorMember.getObjectId());
-        	saveApprenticeAndSponsor(sponsorMember.getObjectId(), apprenticeMember.getObjectId(), 0);
+        	apprenticeMember.saveApprenticeAndSponsor(0, sponsorMember.getObjectId());
+        	sponsorMember.saveApprenticeAndSponsor(apprenticeMember.getObjectId(), 0);
         	
         	sm = new SystemMessage(SystemMessageId.S2_HAS_BEEN_DESIGNATED_AS_APPRENTICE_OF_CLAN_MEMBER_S1);
         }
@@ -139,28 +135,5 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         return _C__D0_19_REQUESTSETPLEADGEACADEMYMASTER;
     }
     
-    public void saveApprenticeAndSponsor(int objectID, int apprentice, int sponsor)
-    {
-    	 java.sql.Connection con = null;
-         
-         try
-         {
-             con = L2DatabaseFactory.getInstance().getConnection();
-             PreparedStatement statement = con.prepareStatement("UPDATE characters SET apprentice=?,sponsor=? WHERE obj_Id=?");
-             statement.setInt(1, apprentice);
-             statement.setInt(2, sponsor);
-             statement.setInt(3, objectID);
-             statement.execute();
-             statement.close();                  
-         }
-         catch (SQLException e)
-         {
-             //_log.warning("could not set apprentice/sponsor:"+e.getMessage());
-         }
-         finally
-         {
-             try { con.close(); } catch (Exception e) {}
-         }
-    }
-  
+ 
 }

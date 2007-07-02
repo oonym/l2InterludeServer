@@ -338,12 +338,39 @@ public class L2Clan
 			getSubPledge(leadssubpledge).setLeaderName("");
 			updateSubPledgeInDB(leadssubpledge);
 		}
-		//remove exmember from db directly only if it's offline
+
 		if (exMember.isOnline())
 		{
 			L2PcInstance player = exMember.getPlayerInstance();
-			player.setApprentice(0);
-			player.setSponsor(0);
+			if(player.getApprentice() != 0)
+			{
+				L2ClanMember apprentice = getClanMember(player.getApprentice());
+				if(apprentice != null)
+				{ 
+					 if (apprentice.getPlayerInstance() != null)
+						 apprentice.getPlayerInstance().setSponsor(0);
+					 else
+						 apprentice.initApprenticeAndSponsor(0, 0);
+
+					 apprentice.saveApprenticeAndSponsor(0, 0);
+					 player.setApprentice(0);
+				}
+			}
+			if(player.getSponsor() != 0)
+			{
+				L2ClanMember sponsor = getClanMember(player.getSponsor());
+				if(sponsor != null)
+				{
+					 if (sponsor.getPlayerInstance() != null)
+						 sponsor.getPlayerInstance().setApprentice(0);
+					 else
+						 sponsor.initApprenticeAndSponsor(0, 0);
+					 
+					 sponsor.saveApprenticeAndSponsor(0, 0);
+					 player.setSponsor(0);
+				}
+			}
+			
 			if (player.isClanLeader())
 			{
 		        SiegeManager.getInstance().removeSiegeSkills(player);
@@ -361,6 +388,7 @@ public class L2Clan
 			removeMemberInDatabase(exMember, clanJoinExpiryTime,
 					getLeaderName().equalsIgnoreCase(name) ? System.currentTimeMillis() + Config.ALT_CLAN_CREATE_DAYS * 86400000L : 0);
 		}
+		exMember.saveApprenticeAndSponsor(0, 0);
 	}
 
 	public L2ClanMember[] getMembers()

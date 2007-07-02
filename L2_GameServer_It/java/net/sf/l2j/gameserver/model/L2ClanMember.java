@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.model;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
@@ -448,4 +449,28 @@ public class L2ClanMember
        }
        return pledgeClass;
 	}
+	
+	public void saveApprenticeAndSponsor(int apprentice, int sponsor)
+    {
+		java.sql.Connection con = null;
+         
+         try
+         {
+             con = L2DatabaseFactory.getInstance().getConnection();
+             PreparedStatement statement = con.prepareStatement("UPDATE characters SET apprentice=?,sponsor=? WHERE obj_Id=?");
+             statement.setInt(1, apprentice);
+             statement.setInt(2, sponsor);
+             statement.setInt(3, getObjectId());
+             statement.execute();
+             statement.close();                  
+         }
+         catch (SQLException e)
+         {
+             //_log.warning("could not set apprentice/sponsor:"+e.getMessage());
+         }
+         finally
+         {
+             try { con.close(); } catch (Exception e) {}
+         }
+    }
 }
