@@ -817,7 +817,7 @@ public class L2NpcInstance extends L2Character
                         if (!player.reduceAdena("PetUpdate", 20000000, this, true)) return;
                         player.getInventory().destroyItem("PetUpdate", summon.getControlItemId(), 1, player, this);
                         
-                        L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(629);
+                        L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(20629);
                         try 
                         {
                         	L2Spawn spawn = new L2Spawn(template1);
