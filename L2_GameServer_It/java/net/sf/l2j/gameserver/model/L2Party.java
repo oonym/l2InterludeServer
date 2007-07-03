@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.SevenSignsFestival;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
@@ -543,10 +544,10 @@ public class L2Party {
 	 * @param rewardedMembers The list of L2PcInstance to reward
 	 * 
 	 */
-	public void distributeXpAndSp(long xpReward, int spReward, List<L2PcInstance> rewardedMembers, int topLvl) 
+	public void distributeXpAndSp(long xpReward, int spReward, List<L2PlayableInstance> rewardedMembers, int topLvl) 
 	{
 		L2SummonInstance summon = null;
-		List<L2PcInstance> validMembers = getValidMembers(rewardedMembers, topLvl);
+		List<L2PlayableInstance> validMembers = getValidMembers(rewardedMembers, topLvl);
 		
 		float penalty;
 		double sqLevel;
@@ -556,12 +557,12 @@ public class L2Party {
 		spReward *= getSpBonus(validMembers.size());
 		
 		double sqLevelSum = 0;
-		for (L2PcInstance character : validMembers)
+		for (L2PlayableInstance character : validMembers)
 			sqLevelSum += (character.getLevel() * character.getLevel());
 		
 		List<L2Character> ToRemove = new FastList<L2Character>();
 		
-		// Go through the members that must be rewarded
+		// Go through the L2PcInstances and L2PetInstances (not L2SummonInstances) that must be rewarded
 		synchronized(rewardedMembers)
 		{
 			for (L2Character member : rewardedMembers)
@@ -583,14 +584,8 @@ public class L2Party {
 					}
 				}
 				// Pets that leech xp from the owner (like babypets) do not get rewarded directly
-				if (member.getPet() instanceof L2PetInstance && ((L2PetInstance)member.getPet()).getPetData().getOwnerExpTaken() > 0)
-				{
-					// Remove the L2PetInstance from the rewarded members
-					if (rewardedMembers.contains(member.getPet()))
-					{
-						ToRemove.add(member.getPet());
-					}
-				}
+				if (member instanceof L2PetInstance && ((L2PetInstance)member).getPetData().getOwnerExpTaken() > 0)
+					continue;
 					
 				// Calculate and add the EXP and SP reward to the member
 				if (validMembers.contains(member))
@@ -635,14 +630,14 @@ public class L2Party {
 		_partyLvl = newLevel;
 	}
 	
-	private List<L2PcInstance> getValidMembers(List<L2PcInstance> members, int topLvl)
+	private List<L2PlayableInstance> getValidMembers(List<L2PlayableInstance> members, int topLvl)
 	{
-		List<L2PcInstance> validMembers = new FastList<L2PcInstance>();
+		List<L2PlayableInstance> validMembers = new FastList<L2PlayableInstance>();
 		
 //		Fixed LevelDiff cutoff point
 		if (Config.PARTY_XP_CUTOFF_METHOD.equalsIgnoreCase("level"))
 		{
-			for (L2PcInstance member : members)
+			for (L2PlayableInstance member : members)
 			{
 				if (topLvl - member.getLevel() <= Config.PARTY_XP_CUTOFF_LEVEL)
 					validMembers.add(member);
@@ -652,12 +647,12 @@ public class L2Party {
 		else if (Config.PARTY_XP_CUTOFF_METHOD.equalsIgnoreCase("percentage")) 
 		{
 			int sqLevelSum = 0;
-			for (L2PcInstance member : members)
+			for (L2PlayableInstance member : members)
 			{
 				sqLevelSum += (member.getLevel() * member.getLevel());
 			}
 			
-			for (L2PcInstance member : members)
+			for (L2PlayableInstance member : members)
 			{
 				int sqLevel = member.getLevel() * member.getLevel();
 				if (sqLevel * 100 >= sqLevelSum * Config.PARTY_XP_CUTOFF_PERCENT)
@@ -668,7 +663,7 @@ public class L2Party {
 		else if (Config.PARTY_XP_CUTOFF_METHOD.equalsIgnoreCase("auto")) 
 		{
 			int sqLevelSum = 0;
-			for (L2PcInstance member : members)
+			for (L2PlayableInstance member : members)
 			{
 				sqLevelSum += (member.getLevel() * member.getLevel());
 			}
@@ -677,7 +672,7 @@ public class L2Party {
 			if (i < 1 ) return members;
 			if (i >= BONUS_EXP_SP.length) i = BONUS_EXP_SP.length -1;
 			
-			for (L2PcInstance member : members)
+			for (L2PlayableInstance member : members)
 			{
 				int sqLevel = member.getLevel() * member.getLevel();
 				if (sqLevel >= sqLevelSum * (1-1/(1 +BONUS_EXP_SP[i] -BONUS_EXP_SP[i-1])))
