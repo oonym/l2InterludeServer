@@ -24,6 +24,7 @@ import java.util.List;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.HelperBuffTable;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.Olympiad;
@@ -805,7 +806,7 @@ public class L2NpcInstance extends L2Character
                     
                     if (getCastle().getOwnerId() > 0)
                     {
-                        L2Clan clan = new L2Clan(getCastle().getOwnerId());
+                        L2Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
                         html.replace("%clanname%", clan.getName());
                         html.replace("%clanleadername%", clan.getLeaderName());
                     }
