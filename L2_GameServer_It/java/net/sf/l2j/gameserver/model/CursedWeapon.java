@@ -94,7 +94,7 @@ public class CursedWeapon
 	    		_player.setKarma(_playerKarma);
 	    		_player.setPkKills(_playerPkKills);
 	    		_player.setCursedWeaponEquipedId(0);
-	    		_player.removeSkill(SkillTable.getInstance().getInfo(_skillId, _player.getSkillLevel(_skillId)), false);
+	    		removeSkill();
 	
 	    		// Remove 
 	    		_player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
@@ -260,7 +260,7 @@ public class CursedWeapon
 			_player.setKarma(_playerKarma);
 			_player.setPkKills(_playerPkKills);
 			_player.setCursedWeaponEquipedId(0);
-			_player.removeSkill(SkillTable.getInstance().getInfo(_skillId, _player.getSkillLevel(_skillId)), false);
+			removeSkill();
 			_player.abortAttack();		
 			//L2ItemInstance item = _player.getInventory().getItemByItemId(_itemId);
 			//_player.getInventory().dropItem("DieDrop", item, _player, null);
@@ -295,11 +295,22 @@ public class CursedWeapon
 		// To properly support subclasses this skill can not be stored.
 		_player.addSkill(skill, false);
 		
+		// Void Burst, Void Flow
+		skill = SkillTable.getInstance().getInfo(3630, 1);
+		_player.addSkill(skill, false);
+		skill = SkillTable.getInstance().getInfo(3631, 1);
+		_player.addSkill(skill, false);
+		
 		if (Config.DEBUG)
 			System.out.println("Player "+_player.getName() +" has been awarded with skill "+skill);
 	}
 	
-	
+	public void removeSkill()
+	{
+		_player.removeSkill(SkillTable.getInstance().getInfo(_skillId, _player.getSkillLevel(_skillId)), false);
+		_player.removeSkill(SkillTable.getInstance().getInfo(3630, 1), false);
+		_player.removeSkill(SkillTable.getInstance().getInfo(3631, 1), false);
+	}
 	
 	
 	// =========================================================
@@ -455,7 +466,7 @@ public class CursedWeapon
 			_player.setKarma(_playerKarma);
 			_player.setPkKills(_playerPkKills);
 			_player.setCursedWeaponEquipedId(0);
-			_player.removeSkill(SkillTable.getInstance().getInfo(_skillId, _player.getSkillLevel(_skillId)), false);
+			removeSkill();
 
 			_player.abortAttack();
 			
