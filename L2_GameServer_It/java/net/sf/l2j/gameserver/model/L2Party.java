@@ -560,14 +560,12 @@ public class L2Party {
 		for (L2PlayableInstance character : validMembers)
 			sqLevelSum += (character.getLevel() * character.getLevel());
 		
-		List<L2Character> ToRemove = new FastList<L2Character>();
-		
 		// Go through the L2PcInstances and L2PetInstances (not L2SummonInstances) that must be rewarded
 		synchronized(rewardedMembers)
 		{
 			for (L2Character member : rewardedMembers)
 			{
-				if(ToRemove != null && ToRemove.contains(member) || member.isDead()) continue;
+				if(member.isDead()) continue;
 				
 				penalty = 0;
 					
@@ -576,12 +574,6 @@ public class L2Party {
 				{
 					summon     = (L2SummonInstance)member.getPet();
 					penalty    = summon.getExpPenalty();
-					
-					// Remove the L2SummonInstance from the rewarded members
-					if (rewardedMembers.contains(member.getPet()))
-					{
-						ToRemove.add(summon);
-					}
 				}
 				// Pets that leech xp from the owner (like babypets) do not get rewarded directly
 				if (member instanceof L2PetInstance && ((L2PetInstance)member).getPetData().getOwnerExpTaken() > 0)
