@@ -100,6 +100,8 @@ public final class Logout extends L2GameClientPacket
 
 		player.deleteMe();
 		notifyFriends(player);
+		
+		getClient().setActiveChar(null);
 	}
 
 	private void notifyFriends(L2PcInstance cha)

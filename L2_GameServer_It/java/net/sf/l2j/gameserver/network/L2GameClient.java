@@ -78,6 +78,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	// Task
 	protected /*final*/ ScheduledFuture _autoSaveInDB;
 	
+	// Client is disconnecting
+	private boolean _isDisconnecting = false;
+	
 	// Crypt
 	public GameCrypt crypt;
 	
@@ -478,6 +481,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     @Override
     protected void onDisconection()
 	{
+		// Dont run this more then once
+		if (_isDisconnecting) return;
+
+		// Set as disconnecting
+		_isDisconnecting = true;
+		
     	// no long running tasks here, do it async
     	try
     	{
