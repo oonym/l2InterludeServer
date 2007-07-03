@@ -146,6 +146,8 @@ public class TvTEvent
 		if (_teams[0].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS || _teams[1].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS)
 		{
 			setState(EventState.INACTIVE);
+			_teams[0].cleanMe();
+			_teams[1].cleanMe();
 			return false;
 		}
 		
