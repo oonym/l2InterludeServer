@@ -31,6 +31,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 	private int _commandsLenght = 0;
     
 	private static final String _C__C1_REQUESTMAKEMACRO = "[C] C1 RequestMakeMacro";
+	private static final int MAX_MACRO_LENGTH = 12;
 	
 	/**
 	 * packet type id 0xc1
@@ -61,6 +62,8 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		String _acronym = readS();
 		int _icon = readC();
 		int _count = readC();
+		if (_count > MAX_MACRO_LENGTH) _count = MAX_MACRO_LENGTH;
+		
 		L2MacroCmd[] commands = new L2MacroCmd[_count];  
         if (Config.DEBUG) System.out.println("Make macro id:"+_id+"\tname:"+_name+"\tdesc:"+_desc+"\tacronym:"+_acronym+"\ticon:"+_icon+"\tcount:"+_count);
         for (int i = 0; i < _count; i++)
