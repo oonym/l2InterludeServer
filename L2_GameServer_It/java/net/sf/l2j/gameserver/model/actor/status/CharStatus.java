@@ -120,12 +120,19 @@ public class CharStatus
 				// cancel duel if player got hit by another player, that is not part of the duel or a monster
 				if ( !(attacker instanceof L2SummonInstance) && !(attacker instanceof L2PcInstance
 						&& ((L2PcInstance)attacker).getDuelId() == ((L2PcInstance)getActiveChar()).getDuelId()) )
+				{
 					((L2PcInstance)getActiveChar()).setDuelState(Duel.DUELSTATE_INTERRUPTED);
+				}
 			}
     	    if (getActiveChar().isDead() && !getActiveChar().isFakeDeath()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
-    	} else {
+    	}
+    	else
+    	{
     	    if (getActiveChar().isDead()) return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
-    	    if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).isInDuel()) // Duelling player attacks mob
+    	    
+    	    if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).isInDuel() &&
+    	    		!(getActiveChar() instanceof L2SummonInstance &&
+    	    		((L2SummonInstance)getActiveChar()).getOwner().getDuelId() == ((L2PcInstance)attacker).getDuelId()) ) // Duelling player attacks mob
     	    {
     	    	((L2PcInstance)attacker).setDuelState(Duel.DUELSTATE_INTERRUPTED);
     	    }
