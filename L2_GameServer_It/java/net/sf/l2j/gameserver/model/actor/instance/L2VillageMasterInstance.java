@@ -638,16 +638,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 return;
             }
 
-        if (clan.createSubPledge(pledgeType, leaderName, clanName) == null)
-        {
-            if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
-            {
-                player.sendPacket(new SystemMessage(SystemMessageId.CLAN_HAS_ALREADY_ESTABLISHED_A_CLAN_ACADEMY));
-            }
-            else
-            	player.sendMessage("You can't create any more sub-units of this type or leader is not correct");
+        if (clan.createSubPledge(player, pledgeType, leaderName, clanName) == null)
             return;
-        }
 
         SystemMessage sm; 
         if (pledgeType == L2Clan.SUBUNIT_ACADEMY)

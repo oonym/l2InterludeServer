@@ -1280,13 +1280,22 @@ public class L2Clan
         return _subPledges.values().toArray(new SubPledge[_subPledges.values().size()]);
     }
     
-    public SubPledge createSubPledge(int pledgeType, String leaderName, String subPledgeName)
+    public SubPledge createSubPledge(L2PcInstance player, int pledgeType, String leaderName, String subPledgeName)
     {
     	SubPledge subPledge = null;
         pledgeType = getAvailablePledgeTypes(pledgeType);
-        if (pledgeType == 0 || _leader.getName().equals(leaderName))
+        if (pledgeType == 0)
         {
-            return null;
+          	if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
+                player.sendPacket(new SystemMessage(SystemMessageId.CLAN_HAS_ALREADY_ESTABLISHED_A_CLAN_ACADEMY));
+        	else 
+        		player.sendMessage("You can't create any more sub-units of this type");
+        	return null;
+        }
+        if (_leader.getName().equals(leaderName))
+        {
+        	player.sendMessage("Leader is not correct");
+        	return null;
         }
         
         // Currently price for subpledges is set to 2500 reputation points.
@@ -1296,7 +1305,8 @@ public class L2Clan
         if(getReputationScore() <= 2500 && pledgeType != -1)
         {
         	SystemMessage sp = new SystemMessage(SystemMessageId.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_MILITARY_UNIT);
-        	_leader.getPlayerInstance().sendPacket(sp);
+        	player.sendPacket(sp);
+        	return null;
         }
         else
         {
