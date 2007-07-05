@@ -282,6 +282,12 @@ public enum SystemMessageId
     DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN(607),
     
 	/**
+	 * ID: 750<br>
+	 * Message: There are no other skills to learn.
+	 */
+    NO_MORE_SKILLS_TO_LEARN(750),
+    
+	/**
 	 * ID: 296<br>
 	 * Message: You received $s1 damage from taking a high fall.
 	 */

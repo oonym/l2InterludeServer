@@ -83,7 +83,6 @@ public class L2FolkInstance extends L2NpcInstance
         
 		if (counts == 0)
 		{
-		    NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		    int minlevel = SkillTreeTable.getInstance().getMinLevelForNewSkill(player, classId);
 		    
 		    if (minlevel > 0)
@@ -94,12 +93,8 @@ public class L2FolkInstance extends L2NpcInstance
 		    }
 		    else
 		    {
-                TextBuilder sb = new TextBuilder();
-		        sb.append("<html><head><body>");
-		        sb.append("You've learned all skills for your class.<br>");
-		        sb.append("</body></html>");
-		        html.setHtml(sb.toString());
-		        player.sendPacket(html);
+		        SystemMessage sm = new SystemMessage(SystemMessageId.NO_MORE_SKILLS_TO_LEARN);
+		        player.sendPacket(sm);
 		    }
 		} 
 		else 
