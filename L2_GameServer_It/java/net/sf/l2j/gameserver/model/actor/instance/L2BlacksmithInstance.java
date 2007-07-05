@@ -3,7 +3,7 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.gameserver.serverpackets.MultiSellList;
+import net.sf.l2j.gameserver.model.L2Multisell;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
@@ -28,8 +28,8 @@ public class L2BlacksmithInstance extends L2FolkInstance
 	{
 		if (command.startsWith("multisell"))
 		{
-			String listId = command.substring(9).trim();
-			player.sendPacket(new MultiSellList(Integer.parseInt(listId), this));
+			int listId = Integer.parseInt(command.substring(9).trim());
+			L2Multisell.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
 		}
 		
 		super.onBypassFeedback(player,command);
