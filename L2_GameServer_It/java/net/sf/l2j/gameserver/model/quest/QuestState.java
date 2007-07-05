@@ -33,6 +33,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.ExShowQuestMark;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.QuestList;
@@ -225,7 +226,10 @@ public final class QuestState
 				_drops.putAll(newDrops);
 			}
 		}
-        
+		
+		if (getQuest().getQuestIntId() < 999 && isStarted())
+			getPlayer().sendPacket(new ExShowQuestMark(getQuest().getQuestIntId()));
+		
 		Quest.updateQuestInDb(this);
 		QuestList ql = new QuestList();
         
