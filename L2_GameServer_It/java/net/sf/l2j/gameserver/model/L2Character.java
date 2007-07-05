@@ -1937,7 +1937,8 @@ public abstract class L2Character extends L2Object
 			// Make sure there's no same effect previously
 			for (int i=0; i<_effects.size(); i++)
 			{
-				if (_effects.get(i).getSkill().getId() == newEffect.getSkill().getId()) 
+				if (_effects.get(i).getSkill().getId() == newEffect.getSkill().getId()
+						&& _effects.get(i).getEffectType() == newEffect.getEffectType()) 
 				{
 					// Started scheduled timer needs to be canceled. There could be a nicer fix...
 					newEffect.stopEffectTask();
