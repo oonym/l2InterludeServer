@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.L2Multisell;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExHeroList;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
-import net.sf.l2j.gameserver.serverpackets.MultiSellList;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -151,7 +151,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
                     }
                     break;
                 case 7:
-                    player.sendPacket(new MultiSellList(102, this));
+                	L2Multisell.getInstance().SeparateAndSend(102, player, false, getCastle().getTaxRate());
                     break;
                     default:
                         _logOlymp.warning("Olympiad System: Couldnt send packet for request " + val);

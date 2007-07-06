@@ -5193,7 +5193,7 @@ public abstract class L2Character extends L2Object
 										(((L2PcInstance)player).getPvpFlag() > 0 ||
 												((L2PcInstance)player).getKarma() > 0)) activeChar.updatePvPStatus();
 							}
-							else if (player instanceof L2Attackable && !(skill.getSkillType() == L2Skill.SkillType.SUMMON)&& !(skill.getSkillType() == L2Skill.SkillType.BEAST_FEED))
+							else if (player instanceof L2Attackable && !(skill.getSkillType() == L2Skill.SkillType.SUMMON)&& !(skill.getSkillType() == L2Skill.SkillType.BEAST_FEED) && !(skill.getSkillType() == L2Skill.SkillType.UNLOCK))
 								activeChar.updatePvPStatus();
 						}
 					}

@@ -168,6 +168,11 @@ public final class L2Augmentation
 		return _effectsId;
 	}
 	
+	public L2Skill getSkill()
+	{
+		return _skill; 
+	}
+	
 	/**
 	 * Applys the boni to the player.
 	 * @param player

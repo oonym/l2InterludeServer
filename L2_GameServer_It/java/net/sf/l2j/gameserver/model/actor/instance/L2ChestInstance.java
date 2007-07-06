@@ -20,7 +20,6 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -37,27 +36,31 @@ import net.sf.l2j.util.Rnd;
 public final class L2ChestInstance extends L2Attackable
 {
 	private volatile boolean _isBox;
+	private volatile boolean _isOpenFailed;
 	private volatile boolean _isOpen;
 	private volatile boolean _specialDrop;
 	
 	public L2ChestInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		_isBox = (Rnd.get(100)<Config.RATE_BOX_SPAWN);
+		_isBox = true;
 		_isOpen = false;
+		_isOpenFailed = false;
 		_specialDrop = false;
 	}
 
+	
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
 	{
 		super.reduceCurrentHp(damage,attacker,awake);
-		if (!isAlikeDead() && _isBox)
+		if (!isAlikeDead() && !_isOpenFailed)
 		{
 			setHaveToDrop(false);
 			setMustRewardExpSp(false);
 			doDie(attacker);
 		}
 	}
+	
 	
 	public boolean isAutoAttackable(L2Character attacker)
 	{
@@ -67,6 +70,11 @@ public final class L2ChestInstance extends L2Attackable
 	public boolean isAttackable()
 	{
 		return true;
+	}
+	
+	public boolean isOpenFailed()
+	{
+		return _isOpenFailed;
 	}
 
 	public void doDie(L2Character killer)
@@ -84,8 +92,9 @@ public final class L2ChestInstance extends L2Attackable
 	public void onSpawn()
 	{
 		super.onSpawn();
-		_isBox = (Rnd.get(100) < Config.RATE_BOX_SPAWN );
+		_isBox = true;
 		_isOpen = false;
+		_isOpenFailed = false;
 		_specialDrop = false;
 		setMustRewardExpSp(true);
 		setHaveToDrop(true);
@@ -100,6 +109,11 @@ public final class L2ChestInstance extends L2Attackable
 	}
 	public synchronized void setOpen() {
 		_isOpen = true;
+	}
+	
+	public synchronized void setOpenFailed()
+	{
+		_isOpenFailed = true;
 	}
 	
 	public synchronized boolean isSpecialDrop()
@@ -131,6 +145,7 @@ public final class L2ChestInstance extends L2Attackable
 			super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
 		}
 	}
+	
 	//cast - trap chest
 	public void chestTrap(L2Character player)
 	{
