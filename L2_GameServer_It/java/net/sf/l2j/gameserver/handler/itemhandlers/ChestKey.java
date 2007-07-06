@@ -79,14 +79,12 @@ public class ChestKey implements IItemHandler
 				return;
 			}
 
-			
 			if (!(activeChar.isInsideRadius(chest, INTERACTION_DISTANCE, false, false)))
 			{
 				activeChar.sendMessage("Too far.");
 				activeChar.sendPacket(new ActionFailed());
 				return;
 			}
-			
 
 			if (!chest.isBox()) {
 				activeChar.sendMessage("Use " + item.getItem().getName() + ".");
@@ -439,7 +437,7 @@ public class ChestKey implements IItemHandler
 					return;
 				}
 			}
-			
+
 			// Remove the required item
 
 			if (openChance > 0 && Rnd.get(100) < openChance)
@@ -460,15 +458,13 @@ public class ChestKey implements IItemHandler
 				activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
 				PlaySound playSound = new PlaySound("interfacesound.system_close_01");
 				activeChar.sendPacket(playSound);
-				activeChar.sendMessage("Failed to open chest!");
-				activeChar.sendPacket(new ActionFailed());
+				activeChar.sendMessage("The key has been broken off!");
 
 				// 50% chance of getting a trap
 				if (Rnd.get(10) < 5) chest.chestTrap(activeChar);
+				chest.setHaveToDrop(false);
 				chest.setMustRewardExpSp(false);
-				chest.setOpenFailed();
-				chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+				chest.doDie(activeChar);
 			}
 		}
 	}
@@ -479,7 +475,6 @@ public class ChestKey implements IItemHandler
 		PlaySound playSound = new PlaySound("interfacesound.system_close_01");
 		player.sendPacket(playSound);
 		player.sendPacket(new ActionFailed());
-		chest.setOpenFailed();
 		chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 		chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, player);
 	}

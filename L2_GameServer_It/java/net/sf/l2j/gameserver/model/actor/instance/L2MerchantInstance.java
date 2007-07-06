@@ -23,11 +23,11 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.TradeController;
-import net.sf.l2j.gameserver.model.L2Multisell;
 import net.sf.l2j.gameserver.model.L2TradeList;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.BuyList;
+import net.sf.l2j.gameserver.serverpackets.MultiSellList;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.Ride;
@@ -178,14 +178,14 @@ public class L2MerchantInstance extends L2FolkInstance
             if (st.countTokens() < 1) return;
 
             int val = Integer.parseInt(st.nextToken());
-            L2Multisell.getInstance().SeparateAndSend(val, player, false, getCastle().getTaxRate());
+            player.sendPacket(new MultiSellList(val, this));
         }
         else if (actualCommand.equalsIgnoreCase("Exc_Multisell"))
         { 
             if (st.countTokens() < 1) return;
 
             int val = Integer.parseInt(st.nextToken());
-            L2Multisell.getInstance().SeparateAndSend(val, player, true, getCastle().getTaxRate());
+            player.sendPacket(new MultiSellList(val, this, true, player));
         }
         else
         {

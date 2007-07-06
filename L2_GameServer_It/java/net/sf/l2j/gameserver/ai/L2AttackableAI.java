@@ -35,7 +35,6 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
@@ -766,12 +765,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
      */
     protected void onEvtAttacked(L2Character attacker)
     {
-    	if (_actor instanceof L2ChestInstance && !((L2ChestInstance)_actor).isOpenFailed())
-    	{
-    		((L2ChestInstance)_actor).deleteMe();
-    		((L2ChestInstance)_actor).getSpawn().startRespawn();
-    	}
-    	
         // Calculate the attack timeout
         _attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
 

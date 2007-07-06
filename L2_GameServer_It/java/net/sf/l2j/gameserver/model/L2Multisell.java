@@ -12,12 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastList;
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.datatables.ItemTable;
-import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.MultiSellList;
-import net.sf.l2j.gameserver.templates.L2Armor;
-import net.sf.l2j.gameserver.templates.L2Item;
-import net.sf.l2j.gameserver.templates.L2Weapon;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -65,185 +59,6 @@ public class L2Multisell
     {
         _entries.clear();
         parse();
-    }
-    
-    /**
-     * This will generate the multisell list for the items.  There exist various
-     * parameters in multisells that affect the way they will appear:
-     * 1) inventory only: 
-     * 		* if true, only show items of the multisell for which the
-     * 		  "primary" ingredients are already in the player's inventory.  By "primary"
-     * 		  ingredients we mean weapon and armor. 
-     * 		* if false, show the entire list.
-     * 2) maintain enchantment: presumably, only lists with "inventory only" set to true 
-     * 		should sometimes have this as true.  This makes no sense otherwise...
-     * 		* If true, then the product will match the enchantment level of the ingredient.
-     * 		  if the player has multiple items that match the ingredient list but the enchantment
-     * 		  levels differ, then the entries need to be duplicated to show the products and 
-     * 		  ingredients for each enchantment level.
-     * 		  For example: If the player has a crystal staff +1 and a crystal staff +3 and goes
-     * 		  to exchange it at the mammon, the list should have all exchange possibilities for 
-     * 		  the +1 staff, followed by all possibilities for the +3 staff.
-     * 		* If false, then any level ingredient will be considered equal and product will always
-     * 		  be at +0 		
-     * 3) apply taxes: affects the amount of adena and ancient adena in ingredients.     
-     *  
-     * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#runImpl()
-     */
-    private MultiSellListContainer generateMultiSell(int listId, boolean inventoryOnly, L2PcInstance player, double taxRate)
-    {
-        MultiSellListContainer listTemplate = L2Multisell.getInstance().getList(listId);
-        MultiSellListContainer list = new MultiSellListContainer();
-        if (listTemplate == null) return list;
-        list = L2Multisell.getInstance().new MultiSellListContainer();
-        list.setListId(listId);
-
-        if (inventoryOnly)
-        {
-        	if (player == null)
-        		return list;
-        	
-        	L2ItemInstance[] items;
-        	if (listTemplate.getMaintainEnchantment()) 
-        		items = player.getInventory().getUniqueItemsByEnchantLevel(false,false,false);
-        	else 
-        		items = player.getInventory().getUniqueItems(false,false,false);
-        		
-        	int enchantLevel;
-            for (L2ItemInstance item : items)
-            {
-            	// only do the matchup on equipable items that are not currently equipped
-            	// so for each appropriate item, produce a set of entries for the multisell list. 
-            	if (!item.isWear() && ((item.getItem() instanceof L2Armor) || (item.getItem() instanceof L2Weapon)))
-            	{
-            		enchantLevel = (listTemplate.getMaintainEnchantment()? item.getEnchantLevel() : 0);
-            		// loop through the entries to see which ones we wish to include
-	                for (MultiSellEntry ent : listTemplate.getEntries())
-	                {
-	                	boolean doInclude = false;
-
-	                	// check ingredients of this entry to see if it's an entry we'd like to include.
-		                for (MultiSellIngredient ing : ent.getIngredients())
-		                {
-		                    if (item.getItemId() == ing.getItemId())
-		                    {
-		                    	doInclude = true;
-		                        break;
-		                    }
-		                }
-		                
-		                // manipulate the ingredients of the template entry for this particular instance shown
-		                // i.e: Assign enchant levels and/or apply taxes as needed.
-		                if (doInclude)
-		                	list.addEntry(prepareEntry(ent, listTemplate.getApplyTaxes(), listTemplate.getMaintainEnchantment(), enchantLevel, taxRate));
-	                }  
-            	}
-            } // end for each inventory item.
-        } // end if "inventory-only"
-        else  // this is a list-all type
-        {
-        	// if no taxes are applied, no modifications are needed
-    		for (MultiSellEntry ent : listTemplate.getEntries())
-    			list.addEntry(prepareEntry(ent, listTemplate.getApplyTaxes(), false, 0, taxRate));        			
-        }
-        
-        return list;
-    }
-
-	// Regarding taxation, the following appears to be the case:
-	// a) The count of aa remains unchanged (taxes do not affect aa directly).
-	// b) 5/6 of the amount of aa is taxed by the normal tax rate.
-	// c) the resulting taxes are added as normal adena value.
-    // d) normal adena are taxed fully.
-    // e) Items other than adena and ancient adena are not taxed even when the list is taxable.
-	// example: If the template has an item worth 120aa, and the tax is 10%,
-	// then from 120aa, take 5/6 so that is 100aa, apply the 10% tax in adena (10a)
-	// so the final price will be 120aa and 10a!
-    private MultiSellEntry prepareEntry(MultiSellEntry templateEntry, boolean applyTaxes, boolean maintainEnchantment, int enchantLevel, double taxRate)
-    {
-    	MultiSellEntry newEntry = L2Multisell.getInstance().new MultiSellEntry();
-    	newEntry.setEntryId(templateEntry.getEntryId()*100000+enchantLevel);
-
-        for (MultiSellIngredient ing : templateEntry.getIngredients())
-        {
-        	// load the ingredient from the template
-        	MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
-
-        	// if taxes are to be applied, modify/add the adena count based on the template adena/ancient adena count
-        	if ( applyTaxes && ((ing.getItemId() == 57) || (ing.getItemId() == 5575)) )
-        	{
-            	if (ing.getItemId() == 57)
-            	{
-            		int taxAmount = (int)Math.round(ing.getItemCount()*taxRate);
-            		if (newIngredient.isTaxIngredient())
-            		{
-            			if (taxAmount == 0)
-            				continue;
-            			newIngredient.setItemCount(taxAmount);
-            		}
-            		else
-            			newIngredient.setItemCount(ing.getItemCount()+taxAmount);
-            	}
-            	else	// ancient adena
-            	{
-            		// add the ancient adena count normally
-            		newEntry.addIngredient(newIngredient);
-                	double taxableCount = ing.getItemCount()*5.0/6;
-                	if (taxRate==0)
-                		continue;
-            		newIngredient = L2Multisell.getInstance().new MultiSellIngredient(57, (int)Math.round(taxableCount*taxRate), false, false);
-            	}
-        	}
-        	// if it is an armor/weapon, modify the enchantment level appropriately, if necessary
-        	else if (maintainEnchantment)
-        	{
-            	L2Item tempItem = ItemTable.getInstance().createDummyItem(ing.getItemId()).getItem();
-            	if ((tempItem instanceof L2Armor) || (tempItem instanceof L2Weapon))
-            		newIngredient.setEnchantmentLevel(enchantLevel);
-        	}
-        	
-        	// finally, add this ingredient to the entry
-        	newEntry.addIngredient(newIngredient);
-        }
-        // Now modify the enchantment level of products, if necessary
-        for (MultiSellIngredient ing : templateEntry.getProducts())
-        {
-        	// load the ingredient from the template
-        	MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
-
-        	if (maintainEnchantment)
-            {
-            	// if it is an armor/weapon, modify the enchantment level appropriately
-            	// (note, if maintain enchantment is "false" this modification will result to a +0)
-            	L2Item tempItem = ItemTable.getInstance().createDummyItem(ing.getItemId()).getItem();
-            	if ((tempItem instanceof L2Armor) || (tempItem instanceof L2Weapon))
-            		newIngredient.setEnchantmentLevel(enchantLevel);
-            }
-        	newEntry.addProduct(newIngredient);
-        }
-        return newEntry;
-    }
-
-    public void SeparateAndSend(int listId, L2PcInstance player, boolean inventoryOnly, double taxRate)
-    {
-		MultiSellListContainer list = generateMultiSell(listId, inventoryOnly, player, taxRate);
-		MultiSellListContainer temp = new MultiSellListContainer();
-		int page = 1;
-
-		temp.setListId(list.getListId());
-		
-		for (MultiSellEntry e : list.getEntries())
-		{
-			if (temp.getEntries().size() == 40)
-			{
-				player.sendPacket(new MultiSellList(temp, page, 0));
-				page++;
-				temp = new MultiSellListContainer();
-				temp.setListId(list.getListId());
-			}
-			temp.addEntry(e);
-		}
-		player.sendPacket(new MultiSellList(temp, page, 1));
     }
 
     public class MultiSellEntry
@@ -304,30 +119,26 @@ public class L2Multisell
 
     public class MultiSellIngredient
     {
-        private int _itemId, _itemCount, _enchantmentLevel;
-        private boolean _isTaxIngredient, _mantainIngredient;
+        private int _itemId;
+        private int _itemCount;
+        private int _enchantmentLevel;
 
-        public MultiSellIngredient(int itemId, int itemCount, boolean isTaxIngredient, boolean mantainIngredient)
+        public MultiSellIngredient(int itemId, int itemCount)
         {
-        	this(itemId, itemCount, 0, isTaxIngredient, mantainIngredient);
+        	this(itemId, itemCount,0);
         }
         
-        public MultiSellIngredient(int itemId, int itemCount, int enchantmentLevel, boolean isTaxIngredient, boolean mantainIngredient)
+        public MultiSellIngredient(int itemId, int itemCount, int enchantmentLevel)
         {
             setItemId(itemId);
             setItemCount(itemCount);
             setEnchantmentLevel(enchantmentLevel);
-            setIsTaxIngredient(isTaxIngredient);
-            setMantainIngredient(mantainIngredient);
         }
-        
         public MultiSellIngredient(MultiSellIngredient e)
         {
         	_itemId = e.getItemId();
         	_itemCount = e.getItemCount();
         	_enchantmentLevel = e.getEnchantmentLevel();
-        	_isTaxIngredient = e.isTaxIngredient();
-        	_mantainIngredient = e.getMantainIngredient();
         }
         /**
          * @param itemId The itemId to set.
@@ -375,26 +186,6 @@ public class L2Multisell
         public int getEnchantmentLevel()
         {
             return _enchantmentLevel;
-        }
-        
-        public void setIsTaxIngredient(boolean isTaxIngredient)
-        {
-        	_isTaxIngredient = isTaxIngredient;
-        }
-        
-        public boolean isTaxIngredient()
-        {
-        	return _isTaxIngredient;
-        }
-        
-        public void setMantainIngredient(boolean mantainIngredient)
-        {
-        	_mantainIngredient = mantainIngredient;
-        }
-        
-        public boolean getMantainIngredient()
-        {
-        	return _mantainIngredient;
         }
     }
 
@@ -558,23 +349,10 @@ public class L2Multisell
         {
             if ("ingredient".equalsIgnoreCase(n.getNodeName()))
             {
-            	Node attribute;
-            	
                 int id = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
-                boolean isTaxIngredient = false, mantainIngredient = false;
-                
-                attribute = n.getAttributes().getNamedItem("isTaxIngredient");
-                
-                if (attribute != null)
-                	isTaxIngredient = Boolean.parseBoolean(attribute.getNodeValue());
-                	
-                attribute = n.getAttributes().getNamedItem("mantainIngredient");
-                
-                if (attribute != null)
-                	mantainIngredient = Boolean.parseBoolean(attribute.getNodeValue());
 
-                MultiSellIngredient e = new MultiSellIngredient(id, count, isTaxIngredient, mantainIngredient);
+                MultiSellIngredient e = new MultiSellIngredient(id, count);
                 entry.addIngredient(e);
             }
             else if ("production".equalsIgnoreCase(n.getNodeName()))
@@ -582,7 +360,7 @@ public class L2Multisell
                 int id = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
                 int count = Integer.parseInt(n.getAttributes().getNamedItem("count").getNodeValue());
 
-                MultiSellIngredient e = new MultiSellIngredient(id, count, false, false); 
+                MultiSellIngredient e = new MultiSellIngredient(id, count); 
                 entry.addProduct(e);
             }
         }

@@ -49,11 +49,6 @@ public class PcInventory extends Inventory
 	 */
 	public L2ItemInstance[] getUniqueItems(boolean allowAdena, boolean allowAncientAdena)
 	{
-		return getUniqueItems(allowAdena, allowAncientAdena, true);
-	}
-	
-	public L2ItemInstance[] getUniqueItems(boolean allowAdena, boolean allowAncientAdena, boolean onlyAvailable)
-	{
 		List<L2ItemInstance> list = new FastList<L2ItemInstance>();
 		for (L2ItemInstance item : _items)
 		{
@@ -71,7 +66,7 @@ public class PcInventory extends Inventory
 					break;
 				}
 			}
-			if (!isDuplicate && (!onlyAvailable || (item.getItem().isSellable() && item.isAvailable(getOwner(), false)))) list.add(item);
+			if (!isDuplicate && item.getItem().isSellable() && item.isAvailable(getOwner(), false)) list.add(item);
 		}
 
 		return list.toArray(new L2ItemInstance[list.size()]);
@@ -83,11 +78,6 @@ public class PcInventory extends Inventory
 	 * @return L2ItemInstance : items in inventory
 	 */
 	public L2ItemInstance[] getUniqueItemsByEnchantLevel(boolean allowAdena, boolean allowAncientAdena)
-	{
-		return getUniqueItemsByEnchantLevel(allowAdena, allowAncientAdena, true);
-	}
-	
-	public L2ItemInstance[] getUniqueItemsByEnchantLevel(boolean allowAdena, boolean allowAncientAdena, boolean onlyAvailable)
 	{
 		List<L2ItemInstance> list = new FastList<L2ItemInstance>();
 		for (L2ItemInstance item : _items)
@@ -104,7 +94,7 @@ public class PcInventory extends Inventory
 					isDuplicate = true;
 					break;
 				}
-			if (!isDuplicate && (!onlyAvailable || (item.getItem().isSellable() && item.isAvailable(getOwner(), false)))) list.add(item);
+			if (!isDuplicate && item.getItem().isSellable() && item.isAvailable(getOwner(), false)) list.add(item);
 		}
 
 		return list.toArray(new L2ItemInstance[list.size()]);
