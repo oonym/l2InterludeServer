@@ -254,7 +254,25 @@ public abstract class L2Character extends L2Object
 	{
 		setIsTeleporting(false);
 
-		spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
+		//spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
+		
+		getPosition().setWorldPosition(getPosition().getX(), getPosition().getY() ,getPosition().getZ());
+        getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
+        // Add the L2Object spawn to _visibleObjects and if necessary to _allplayers of its L2WorldRegion
+        getPosition().getWorldRegion().addVisibleObject(this);
+        
+        // Add the L2Object to surrending object's knownlists and vice versa
+        L2Object[] visible = L2World.getInstance().getVisibleObjects(this, 2000);
+        if (Config.DEBUG) _log.finest("teleported: objects in range:"+visible.length);
+
+        for (int i = 0; i < visible.length; i++)
+        {
+        	// Add this to the current objects knowlist
+            visible[i].getKnownList().addKnownObject(this, null);
+            // Add the object to this ones knownlist
+            getKnownList().addKnownObject(visible[i], null);
+        }
+        
 
 		if (_isPendingRevive) doRevive();
 
@@ -468,7 +486,18 @@ public abstract class L2Character extends L2Object
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
 		getPosition().setXYZ(x, y, z);
 
-		decayMe();
+		//decayMe();
+		getPosition().getWorldRegion().removeVisibleObject(this);
+		
+		// Remove this from everyones knownlist
+		// TODO: for now assuming that only everyone know by this knows this
+		for (L2Character temp : getKnownList().getKnownCharacters())
+		{
+			temp.getKnownList().removeKnownObject(this);
+		}
+		
+		// Remove all known objects
+		getKnownList().removeAllKnownObjects();
 
 		if (!(this instanceof L2PcInstance))
             onTeleported();
