@@ -145,6 +145,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.Seed;
 import net.sf.l2j.gameserver.handler.itemhandlers.SevenSignsRecord;
 import net.sf.l2j.gameserver.handler.itemhandlers.SoulCrystals;
 import net.sf.l2j.gameserver.handler.itemhandlers.SoulShots;
+import net.sf.l2j.gameserver.handler.itemhandlers.SpecialXMas;
 import net.sf.l2j.gameserver.handler.itemhandlers.SpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.SummonItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.WorldMap;
@@ -443,6 +444,7 @@ public class GameServer
         _itemHandler.registerItemHandler(new MercTicket());
 		_itemHandler.registerItemHandler(new FishShots());
 		_itemHandler.registerItemHandler(new ExtractableItems());
+		_itemHandler.registerItemHandler(new SpecialXMas());
 		_itemHandler.registerItemHandler(new SummonItems());
 		_itemHandler.registerItemHandler(new BeastSpice());
         _log.config("ItemHandler: Loaded " + _itemHandler.size() + " handlers.");

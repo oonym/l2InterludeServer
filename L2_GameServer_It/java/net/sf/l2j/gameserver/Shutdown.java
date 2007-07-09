@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.L2GameClient;
-import net.sf.l2j.gameserver.serverpackets.LeaveWorld;
+import net.sf.l2j.gameserver.serverpackets.ServerClose;
 
 /**
  * 
@@ -454,10 +454,10 @@ public class Shutdown extends Thread
 			//Logout Character
 			try {
 				L2GameClient.saveCharToDisk(player);
-			//SystemMessage sm = new SystemMessage(SystemMessage.YOU_HAVE_WON_THE_WAR_OVER_THE_S1_CLAN);
-			//player.sendPacket(sm);
-			LeaveWorld ql = new LeaveWorld();
-			player.sendPacket(ql);
+				//SystemMessage sm = new SystemMessage(SystemMessage.YOU_HAVE_WON_THE_WAR_OVER_THE_S1_CLAN);
+				//player.sendPacket(sm);
+				ServerClose ql = new ServerClose();
+				player.sendPacket(ql);
 			} catch (Throwable t)	{}
 		}
 		try { Thread.sleep(1000); } catch (Throwable t) {_log.log(Level.INFO, "", t);}
