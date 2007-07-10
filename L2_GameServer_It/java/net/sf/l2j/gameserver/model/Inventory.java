@@ -85,6 +85,40 @@ public abstract class Inventory extends ItemContainer
 	// used to quickly check for using of items of special type
 	private int _wearedMask;
 	
+	final class FormalWearListener implements PaperdollListener
+	{
+	    public void notifyUnequiped(int slot, L2ItemInstance item)
+	    {
+	        if (!(getOwner() != null
+	                && getOwner() instanceof L2PcInstance))
+	            return;
+	        
+	        L2PcInstance owner = (L2PcInstance)getOwner(); 
+	
+	        if (item.getItemId() == 6408)
+	            owner.setIsWearingFormalWear(false);
+	    }
+	    public void notifyEquiped(int slot, L2ItemInstance item)
+	    {
+	        if (!(getOwner() != null
+	                && getOwner() instanceof L2PcInstance))
+	            return;
+	        
+	        L2PcInstance owner = (L2PcInstance)getOwner(); 
+	
+	        // If player equip Formal Wear unequip weapons and abort cast/attack 
+	        if (item.getItemId() == 6408) 
+	        {
+	            owner.setIsWearingFormalWear(true);
+	        } 
+	        else 
+	        {
+	            if (!owner.isWearingFormalWear())
+	                return;
+	        }
+	    }
+	}	
+	
 	/**
 	 * Recorder of alterations in inventory
 	 */

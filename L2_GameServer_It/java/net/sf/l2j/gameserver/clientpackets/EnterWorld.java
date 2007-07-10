@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.communitybbs.Manager.RegionBBSManager;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
+import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -45,6 +46,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.model.entity.L2Event;
 import net.sf.l2j.gameserver.model.entity.TvTEvent;
+import net.sf.l2j.gameserver.model.entity.Couple;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.Die;
@@ -153,6 +155,13 @@ public class EnterWorld extends L2GameClientPacket
 		
         if (Config.STORE_SKILL_COOLTIME)
             activeChar.restoreEffects();
+
+        // engage and notify Partner
+        if(Config.L2JMOD_ALLOW_WEDDING)
+        {
+            engage(activeChar);
+            notifyPartner(activeChar,activeChar.getPartnerId());
+        }
         
         if (activeChar.getAllEffects() != null)
         {
@@ -298,6 +307,53 @@ public class EnterWorld extends L2GameClientPacket
         
         TvTEvent.onLogin(activeChar);
 	}
+
+    /**
+     * @param activeChar
+     */
+    private void engage(L2PcInstance cha)
+    {
+        int _chaid = cha.getObjectId();
+    
+        for(Couple cl: CoupleManager.getInstance().getCouples())
+        {
+           if(cl.getPlayer1Id()==_chaid || cl.getPlayer2Id()==_chaid)
+            {
+                if(cl.getMaried())
+                    cha.setMarried(true);
+
+                cha.setCoupleId(cl.getId());
+                
+                if(cl.getPlayer1Id()==_chaid)
+                {
+                    cha.setPartnerId(cl.getPlayer2Id());
+                }
+                else
+                {
+                    cha.setPartnerId(cl.getPlayer1Id());
+                }
+            }
+        }
+    }
+        
+    /**
+     * @param activeChar partnerid
+     */
+    private void notifyPartner(L2PcInstance cha,int partnerId)
+    {
+        if(cha.getPartnerId()!=0)
+        {
+            L2PcInstance partner;
+            partner = (L2PcInstance)L2World.getInstance().findObject(cha.getPartnerId());
+            
+            if (partner != null)
+            {
+                partner.sendMessage("Your Partner has logged in");
+            }
+            
+            partner = null;
+        }
+    }
     
 	/**
 	 * @param activeChar

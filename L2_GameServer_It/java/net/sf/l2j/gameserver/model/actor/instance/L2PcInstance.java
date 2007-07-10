@@ -74,6 +74,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
+import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
@@ -622,7 +623,7 @@ public final class L2PcInstance extends L2PlayableInstance
     private SkillDat _queuedSkill;
 	
     /* Flag to disable equipment/skills while wearing formal wear **/
-    //private boolean _IsWearingFormalWear = false;
+    private boolean _IsWearingFormalWear = false;
     
 	private int _cursedWeaponEquipedId = 0;
 
@@ -667,6 +668,15 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 		}
 	}
+	
+	// L2JMOD Wedding
+	private boolean _married = false;
+    private int _partnerId = 0;
+    private int _coupleId = 0;
+    private boolean _engagerequest = false;
+    private int _engageid = 0;
+    private boolean _marryrequest = false;
+    private boolean _marryaccepted = false;
     
 	/** Skill casting information (used to queue when several skills are cast in a short time) **/
     public class SkillDat
@@ -4000,15 +4010,104 @@ public final class L2PcInstance extends L2PlayableInstance
         
 		return false;
 	}
-    /*
-    public boolean isWearingFormalWear() 
-    { 
-        return _IsWearingFormalWear; 
+
+	public boolean isWearingFormalWear()
+    {
+        return _IsWearingFormalWear;
     }
 
-    public void setIsWearingFormalWear(boolean value) { 
-        _IsWearingFormalWear = value; 
-    }*/
+    public void setIsWearingFormalWear(boolean value)
+    {
+        _IsWearingFormalWear = value;
+    }
+    public boolean isMarried()
+    {
+        return _married;
+    }
+    
+    public void setMarried(boolean state)
+    {
+        _married = state;
+    }
+
+    public boolean isEngageRequest()
+    {
+        return _engagerequest;
+    }
+    
+    public void setEngageRequest(boolean state,int playerid)
+    {
+        _engagerequest = state;
+        _engageid = playerid;
+    }
+    
+    public void setMaryRequest(boolean state)
+    {
+        _marryrequest = state;
+    }
+
+    public boolean isMaryRequest()
+    {
+        return _marryrequest;
+    }
+
+    public void setMarryAccepted(boolean state)
+    {
+        _marryaccepted = state;
+    }
+
+    public boolean isMarryAccepted()
+    {
+        return _marryaccepted;
+    }
+    
+    public int getEngageId()
+    {
+        return _engageid;
+    }
+    
+    public int getPartnerId()
+    {
+        return _partnerId;
+    }
+    
+    public void setPartnerId(int partnerid)
+    {
+        _partnerId = partnerid;
+    }
+    
+    public int getCoupleId()
+    {
+        return _coupleId;
+    }
+    
+    public void setCoupleId(int coupleId)
+    {
+        _coupleId = coupleId;
+    }
+
+    public void EngageAnswer(int answer)
+    {
+        if(_engagerequest==false)
+            return;
+        else if(_engageid==0)
+            return;
+        else
+        {
+            L2PcInstance ptarget = (L2PcInstance)L2World.getInstance().findObject(_engageid);
+            setEngageRequest(false,0);
+            if(ptarget!=null)
+            {
+                if (answer == 1)
+                {
+                    CoupleManager.getInstance().createCouple(ptarget, L2PcInstance.this);
+                    ptarget.sendMessage("Request to Engage has been >ACCEPTED<");
+                }
+                else
+                    ptarget.sendMessage("Request to Engage has been >DENIED<!");
+            }
+        }
+    }
 	
 	/**
 	 * Return the secondary weapon instance (always equiped in the left hand).<BR><BR>
@@ -9760,7 +9859,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _cursedWeaponEquipedId;
 	}
-
 
 	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>();
 

@@ -85,8 +85,6 @@ public final class Say2 extends L2GameClientPacket
 	private String _text;
 	private int _type;
 	private String _target;
-	
-	
 	protected void readImpl()
 	{
 		_text = readS();
@@ -126,7 +124,7 @@ public final class Say2 extends L2GameClientPacket
         {
             if (_type == TELL || _type == SHOUT || _type == TRADE)
             {
-                activeChar.sendMessage("You can not chat with the outside of the jail.");
+                activeChar.sendMessage("You can not chat with players outside of the jail.");
                 return;
             }
         }
@@ -213,28 +211,40 @@ public final class Say2 extends L2GameClientPacket
                 }
                 break;
 			case ALL:
-				for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
-				{
-                    if (player != null && activeChar.isInsideRadius(player, 1250, false, true))
-						player.sendPacket(cs);
-				}
-                activeChar.sendPacket(cs);
-				
 				if (_text.startsWith(".")) 
 				{
 					StringTokenizer st = new StringTokenizer(_text);
-					String target = st.nextToken().substring(1);
-					
-					if (st.hasMoreTokens())
-					{
-						String command = st.nextToken();
-						IVoicedCommandHandler vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
+					IVoicedCommandHandler vch;
+					String command = "";
+					String target = "";
 						
-						if (vch != null) 
-							vch.useVoicedCommand(command, activeChar, target);
-						else
-							_log.warning("No handler registered for bypass '"+command+"'");
+					if (st.countTokens() > 1)
+					{
+						command = st.nextToken().substring(1);
+						target = _text.substring(command.length() + 2);
+						vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
 					}
+					else
+					{
+						command = _text.substring(1);
+						if (Config.DEBUG) _log.info("Command: "+command);
+						vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
+					}
+					if (vch != null)
+						vch.useVoicedCommand(command, activeChar, target);
+					else
+					{
+						if (Config.DEBUG) _log.warning("No handler registered for bypass '"+command+"'");							
+					}
+				}
+				else
+				{
+					for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
+					{
+						if (player != null && activeChar.isInsideRadius(player, 1250, false, true))
+							player.sendPacket(cs);
+					}
+					activeChar.sendPacket(cs);
 				}
                 break;
 			case CLAN:

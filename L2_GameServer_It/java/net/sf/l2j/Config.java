@@ -792,6 +792,17 @@ public final class Config
     public static boolean TVT_EVENT_POTIONS_ALLOWED;
     public static boolean TVT_EVENT_SUMMON_BY_ITEM_ALLOWED;
     
+    /** L2JMOD Wedding system  */
+    public static boolean L2JMOD_ALLOW_WEDDING;
+    public static int L2JMOD_WEDDING_PRICE;
+    public static boolean L2JMOD_WEDDING_PUNISH_INFIDELITY;
+    public static boolean L2JMOD_WEDDING_TELEPORT;
+    public static int L2JMOD_WEDDING_TELEPORT_PRICE;
+    public static int L2JMOD_WEDDING_TELEPORT_DURATION;
+    public static boolean L2JMOD_WEDDING_SAMESEX;
+    public static boolean L2JMOD_WEDDING_FORMALWEAR;
+    public static int L2JMOD_WEDDING_DIVORCE_COSTS;
+    
     // Packet information
     /** Count the amount of packets per minute ? */  
 	public static boolean  COUNT_PACKETS           = false;
@@ -1713,6 +1724,17 @@ public final class Config
                 TVT_EVENT_RUNNING_TIME					= Integer.parseInt(L2JModSettings.getProperty("TvTEventRunningTime", "1800"));
                 TVT_EVENT_PARTICIPATION_NPC_ID			= Integer.parseInt(L2JModSettings.getProperty("TvTEventParticipationNpcId", "0"));
                 
+                /** L2JMOD Wedding system  */
+                L2JMOD_ALLOW_WEDDING                    = Boolean.valueOf(L2JModSettings.getProperty("AllowWedding", "False"));
+                L2JMOD_WEDDING_PRICE                    = Integer.parseInt(L2JModSettings.getProperty("WeddingPrice", "250000000"));
+                L2JMOD_WEDDING_PUNISH_INFIDELITY        = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingPunishInfidelity", "True"));                
+                L2JMOD_WEDDING_TELEPORT                 = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingTeleport", "True"));
+                L2JMOD_WEDDING_TELEPORT_PRICE           = Integer.parseInt(L2JModSettings.getProperty("WeddingTeleportPrice", "50000"));
+                L2JMOD_WEDDING_TELEPORT_DURATION        = Integer.parseInt(L2JModSettings.getProperty("WeddingTeleportDuration", "60"));
+                L2JMOD_WEDDING_SAMESEX                  = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingAllowSameSex", "False"));
+                L2JMOD_WEDDING_FORMALWEAR               = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingFormalWear", "True"));
+                L2JMOD_WEDDING_DIVORCE_COSTS            = Integer.parseInt(L2JModSettings.getProperty("WeddingDivorceCosts", "20"));
+                
                 if (TVT_EVENT_PARTICIPATION_NPC_ID == 0)
                 {
                 	TVT_EVENT_ENABLED = false;
@@ -2175,7 +2197,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("DwarfRecipeLimit")) DWARF_RECIPE_LIMIT = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("CommonRecipeLimit")) COMMON_RECIPE_LIMIT = Integer.parseInt(pValue);
 
-	//ChampionMobs L2JMOD
+        //ChampionMobs L2JMOD
         else if (pName.equalsIgnoreCase("ChampionEnable")) L2JMOD_CHAMPION_ENABLE =  Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("ChampionFrequency")) L2JMOD_CHAMPION_FREQUENCY = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionMinLevel")) L2JMOD_CHAMP_MIN_LVL = Integer.parseInt(pValue);
@@ -2189,6 +2211,17 @@ public final class Config
         else if (pName.equalsIgnoreCase("ChampionRewardItem")) L2JMOD_CHAMPION_REWARD = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionRewardItemID")) L2JMOD_CHAMPION_REWARD_ID = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionRewardItemQty")) L2JMOD_CHAMPION_REWARD_QTY = Integer.parseInt(pValue);
+        
+        // L2JMOD Wedding System
+        else if (pName.equalsIgnoreCase("AllowWedding")) L2JMOD_ALLOW_WEDDING = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("WeddingPrice")) L2JMOD_WEDDING_PRICE = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("WeddingPunishInfidelity")) L2JMOD_WEDDING_PUNISH_INFIDELITY = Boolean.parseBoolean(pValue);
+        else if (pName.equalsIgnoreCase("WeddingTeleport")) L2JMOD_WEDDING_TELEPORT = Boolean.parseBoolean(pValue);
+        else if (pName.equalsIgnoreCase("WeddingTeleportPrice")) L2JMOD_WEDDING_TELEPORT_PRICE = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("WeddingTeleportDuration")) L2JMOD_WEDDING_TELEPORT_DURATION = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("WeddingAllowSameSex")) L2JMOD_WEDDING_SAMESEX = Boolean.parseBoolean(pValue);
+        else if (pName.equalsIgnoreCase("WeddingFormalWear")) L2JMOD_WEDDING_FORMALWEAR = Boolean.parseBoolean(pValue);
+        else if (pName.equalsIgnoreCase("WeddingDivorceCosts")) L2JMOD_WEDDING_DIVORCE_COSTS = Integer.parseInt(pValue);
         
         
         // PvP settings
