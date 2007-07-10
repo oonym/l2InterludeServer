@@ -3442,7 +3442,13 @@ public enum SystemMessageId
  	 * ID: 1061<br>
  	 * Message: The recipe cannot be registered. You do not have the ability to create items.
  	 */
- 	CANT_REGISTER_NO_ABILITY_TO_CRAFT(1061), 
+ 	CANT_REGISTER_NO_ABILITY_TO_CRAFT(1061),
+ 	
+	/**
+ 	 * ID: 1135<br>
+ 	 * Message: While you are engaged in combat, you cannot operate a private store or private workshop.
+ 	 */
+ 	CANT_CRAFT_DURING_COMBAT(1135), 
     
     /**
      * ID: 114<br>
