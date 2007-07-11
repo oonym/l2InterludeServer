@@ -3704,7 +3704,7 @@ public abstract class L2Character extends L2Object
 	{
 		// Get the Move Speed of the L2Charcater
 		float speed = getStat().getMoveSpeed();
-		if (speed <= 0) return;
+		if (speed <= 0 || isMovementDisabled()) return;
 		
 		// Get current position of the L2Character
 		final int curX = super.getX();
