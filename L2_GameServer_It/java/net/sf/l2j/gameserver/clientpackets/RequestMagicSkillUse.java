@@ -62,6 +62,11 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
 
         // Get the level of the used skill
         int level = activeChar.getSkillLevel(_magicId);
+        if (level <= 0) 
+        {
+			activeChar.sendPacket(new ActionFailed());
+			return; 
+		}
         
         // Get the L2Skill template corresponding to the skillID received from the client
 		L2Skill skill = SkillTable.getInstance().getInfo(_magicId, level);
