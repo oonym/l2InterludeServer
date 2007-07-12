@@ -143,7 +143,7 @@ public class Unlock implements ISkillHandler
 						chest.setHaveToDrop(true);
 						chest.setMustRewardExpSp(false);
 						chest.doItemDrop(activeChar);
-						chest.deleteMe();
+						chest.onDecay();
 					}
 					else
 					{
