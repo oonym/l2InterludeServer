@@ -1,5 +1,5 @@
 /*
- *@autor AlterEgo - tnx to Demonia
+ *@autor Julian
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -31,70 +31,27 @@ import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.util.Rnd;
 
 /**
- * This class manages all chest. 
+ * This class manages all chest.
  */
-public final class L2ChestInstance extends L2Attackable
+public final class L2ChestInstance extends L2MonsterInstance
 {
 	private volatile boolean _isBox;
-	private volatile boolean _isOpenFailed;
-	private volatile boolean _isOpen;
+	private volatile boolean _isInteracted;
 	private volatile boolean _specialDrop;
-	
+
 	public L2ChestInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		_isBox = true;
-		_isOpen = false;
-		_isOpenFailed = false;
+		_isBox = (Rnd.get(100)<Config.RATE_BOX_SPAWN);
+		_isInteracted = false;
 		_specialDrop = false;
-	}
-
-	
-	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
-	{
-		super.reduceCurrentHp(damage,attacker,awake);
-		if (!isAlikeDead() && !_isOpenFailed)
-		{
-			setHaveToDrop(false);
-			setMustRewardExpSp(false);
-			doDie(attacker);
-		}
-	}
-	
-	
-	public boolean isAutoAttackable(L2Character attacker)
-	{
-		return true;
-	}
-
-	public boolean isAttackable()
-	{
-		return true;
-	}
-	
-	public boolean isOpenFailed()
-	{
-		return _isOpenFailed;
-	}
-
-	public void doDie(L2Character killer)
-	{
-		killer.setTarget(null);
-		setCurrentHpMp(0,0);
-		super.doDie(killer);
-	}
-
-	public boolean isAggressive()
-	{
-		return false;
 	}
 
 	public void onSpawn()
 	{
 		super.onSpawn();
-		_isBox = true;
-		_isOpen = false;
-		_isOpenFailed = false;
+		_isBox = (Rnd.get(100) < Config.RATE_BOX_SPAWN );
+		_isInteracted = false;
 		_specialDrop = false;
 		setMustRewardExpSp(true);
 		setHaveToDrop(true);
@@ -103,29 +60,24 @@ public final class L2ChestInstance extends L2Attackable
 	public synchronized boolean isBox() {
 		return _isBox;
 	}
-	
-	public synchronized boolean isOpen() {
-		return _isOpen;
+
+	public synchronized boolean isInteracted() {
+		return _isInteracted;
 	}
-	public synchronized void setOpen() {
-		_isOpen = true;
+	public synchronized void setInteracted() {
+		_isInteracted = true;
 	}
-	
-	public synchronized void setOpenFailed()
-	{
-		_isOpenFailed = true;
-	}
-	
+
 	public synchronized boolean isSpecialDrop()
 	{
 		return _specialDrop;
 	}
-	
+
 	public synchronized void setSpecialDrop()
 	{
 		_specialDrop = true;
 	}
-	
+
 	public void doItemDrop(L2NpcTemplate npcTemplate, L2Character lastAttacker)
 	{
 		int id = getTemplate().npcId;
@@ -133,7 +85,7 @@ public final class L2ChestInstance extends L2Attackable
 			id = id - 18265;
 		else
 			id = id - 21801;
-		
+
 		if (_specialDrop)
 		{
 			id = id + 18265;
@@ -145,7 +97,6 @@ public final class L2ChestInstance extends L2Attackable
 			super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
 		}
 	}
-	
 	//cast - trap chest
 	public void chestTrap(L2Character player)
 	{
@@ -155,28 +106,28 @@ public final class L2ChestInstance extends L2Attackable
 		if (getTemplate().level >= 61)
 		{
 			if (rnd >= 90) trapSkillId = 4139;//explosion
-			else if (rnd >= 50) trapSkillId = 4118;//area paralysys 
+			else if (rnd >= 50) trapSkillId = 4118;//area paralysys
 			else if (rnd >= 20) trapSkillId = 1167;//poison cloud
 			else trapSkillId = 223;//sting
 		}
 		else if (getTemplate().level >= 41)
 		{
 			if (rnd >= 90) trapSkillId = 4139;//explosion
-			else if (rnd >= 60) trapSkillId = 96;//bleed 
+			else if (rnd >= 60) trapSkillId = 96;//bleed
 			else if (rnd >= 20) trapSkillId = 1167;//poison cloud
 			else trapSkillId = 4118;//area paralysys
 		}
 		else if (getTemplate().level >= 21)
 		{
 			if (rnd >= 80) trapSkillId = 4139;//explosion
-			else if (rnd >= 50) trapSkillId = 96;//bleed 
+			else if (rnd >= 50) trapSkillId = 96;//bleed
 			else if (rnd >= 20) trapSkillId = 1167;//poison cloud
 			else trapSkillId = 129;//poison
 		}
 		else
 		{
 			if (rnd >= 80) trapSkillId = 4139;//explosion
-			else if (rnd >= 50) trapSkillId = 96;//bleed 
+			else if (rnd >= 50) trapSkillId = 96;//bleed
 			else trapSkillId = 129;//poison
 		}
 
@@ -194,7 +145,7 @@ public final class L2ChestInstance extends L2Attackable
 		else if (lvl > 40 && lvl <= 60) skillLevel = 5;
 		else if (lvl > 60) skillLevel = 6;
 
-		if (player.isDead() 
+		if (player.isDead()
 			|| !player.isVisible()
 			|| !player.isInsideRadius(this, getDistanceToWatchObject(player), false, false))
 			return false;
@@ -210,4 +161,16 @@ public final class L2ChestInstance extends L2Attackable
 		}
 		return false;
 	}
+	
+ 	public boolean isMovementDisabled() {
+ 		if (super.isMovementDisabled()) return true;
+ 		if (isInteracted()) return false;
+ 		return true;
+ 	}	
+
+	public boolean isAttackingDisabled() 
+	{
+		if (super.isAttackingDisabled() || isBox()) return true;
+		 		return false;
+	}	
 }
