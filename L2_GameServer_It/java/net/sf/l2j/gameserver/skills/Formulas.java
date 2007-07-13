@@ -1601,4 +1601,9 @@ public final class Formulas
 					
 		return restorePercent;
 	}
+    
+    public double getSTRBonus(L2Character activeChar)
+    {
+    	return STRbonus[activeChar.getSTR()];
+    }
 }

@@ -74,6 +74,7 @@ public class Pdam implements ISkillHandler
         for (int index = 0; index < targets.length; index++)
         {
             L2Character target = (L2Character) targets[index];
+            Formulas f = Formulas.getInstance();
             if(target.reflectSkill(skill))
             	target = activeChar;
             L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
@@ -85,14 +86,18 @@ public class Pdam implements ISkillHandler
             else if (target.isAlikeDead()) continue;
 
             boolean dual = activeChar.isUsingDualWeapon();
-            boolean shld = Formulas.getInstance().calcShldUse(activeChar, target);
-            boolean crit = Formulas.getInstance().calcCrit(activeChar.getCriticalHit(target, skill));
+            boolean shld = f.calcShldUse(activeChar, target);
+            // PDAM critical chance not affected by buffs, only by STR. Only some skills are meant to crit.
+            boolean crit = false;
+            if (skill.getBaseCritRate() > 0) 
+            	crit = f.calcCrit(skill.getBaseCritRate() * 10 * f.getSTRBonus(activeChar)); 
+            
             boolean soul = (weapon != null
                 && weapon.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT && weapon.getItemType() != L2WeaponType.DAGGER);
 
             if (!crit && (skill.getCondition() & L2Skill.COND_CRIT) != 0) damage = 0;
-            else damage = (int) Formulas.getInstance().calcPhysDam(activeChar, target, skill, shld,
-                                                                   crit, dual, soul);
+            else damage = (int) f.calcPhysDam(activeChar, target, skill, shld, false, dual, soul);
+            if (crit) damage *= 2; // PDAM Critical damage always 2x and not affected by buffs
 
             if (damage > 5000 && activeChar instanceof L2PcInstance)
             {
@@ -121,7 +126,7 @@ public class Pdam implements ISkillHandler
                     target.stopEffect(skill.getId());
                     if (target.getEffect(skill.getId()) != null)
                         target.removeEffect(target.getEffect(skill.getId()));
-                    if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, false, false))
+                    if (f.calcSkillSuccess(activeChar, target, skill, false, false, false))
                     {
                         skill.getEffects(activeChar, target);
                         

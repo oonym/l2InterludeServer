@@ -437,6 +437,7 @@ public abstract class L2Skill
 
     private final boolean _isHeroSkill; // If true the skill is a Hero Skill
 
+    private final int _baseCritRate;  // percent of success for skill critical hit (especially for PDAM & BLOW - they're not affected by rCrit values or buffs). Default loads -1 for all other skills but 0 to PDAM & BLOW
     private final int _lethalEffect1;     // percent of success for lethal 1st effect (hit cp to 1 or if mob hp to 50%) (only for PDAM skills)
     private final int _lethalEffect2;     // percent of success for lethal 2nd effect (hit cp,hp to 1 or if mob hp to 1) (only for PDAM skills)
     private final boolean _directHpDmg;  // If true then dmg is being make directly
@@ -514,6 +515,7 @@ public abstract class L2Skill
 
         _isHeroSkill = HeroSkillTable.isHeroSkill(_id);
 
+        _baseCritRate = set.getInteger("baseCritRate", (_skillType == SkillType.PDAM /* || _skillType == SkillType.BLOW */) ? 0 : -1);
         int l1 = set.getInteger("lethal1",0);
         int l2 = set.getInteger("lethal2",0);
     	if( l1 <= l2 || l2 <= 0)
@@ -991,6 +993,11 @@ public abstract class L2Skill
         return _isHeroSkill;
     }
 
+    public final int getBaseCritRate()
+    {
+    	return _baseCritRate;
+    }
+    
     public final int getLethalChance1()
     {
     	return _lethalEffect1;
