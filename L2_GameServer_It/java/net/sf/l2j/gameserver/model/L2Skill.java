@@ -180,7 +180,7 @@ public abstract class L2Skill
     	SIEGEFLAG,
     	TAKECASTLE,
     	WEAPON_SA,
-    	DELUX_KEY_UNLOCK,
+    	DELUXE_KEY_UNLOCK,
 
     	// Creation
     	COMMON_CRAFT,
@@ -1044,7 +1044,7 @@ public abstract class L2Skill
             case AGGREMOVE:
             case AGGREDUCE_CHAR:
             case BETRAY:
-            case DELUX_KEY_UNLOCK:
+            case DELUXE_KEY_UNLOCK:
                 return true;
             default:
                 return false;

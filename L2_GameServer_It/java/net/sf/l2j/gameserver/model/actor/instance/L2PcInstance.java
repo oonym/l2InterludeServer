@@ -7194,7 +7194,7 @@ public final class L2PcInstance extends L2PlayableInstance
                     && (sklTargetType != SkillTargetType.TARGET_CORPSE_MOB)
                     && (sklTargetType != SkillTargetType.TARGET_AREA_CORPSE_MOB)
                     && (sklType != SkillType.BEAST_FEED)
-                    && (sklType != SkillType.DELUX_KEY_UNLOCK))
+                    && (sklType != SkillType.DELUXE_KEY_UNLOCK))
 			{
 				// send the action failed so that the skill doens't go off.
 				sendPacket (new ActionFailed());

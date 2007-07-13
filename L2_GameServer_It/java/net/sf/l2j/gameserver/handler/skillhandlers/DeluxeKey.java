@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class DeluxeKey implements ISkillHandler
 {
     private static Logger _log = Logger.getLogger(BeastFeed.class.getName());
-    private static final SkillType[] SKILL_IDS = {SkillType.DELUX_KEY_UNLOCK};
+    private static final SkillType[] SKILL_IDS = {SkillType.DELUXE_KEY_UNLOCK};
 
     public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
