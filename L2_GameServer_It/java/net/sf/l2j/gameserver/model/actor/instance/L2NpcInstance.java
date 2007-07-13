@@ -795,7 +795,7 @@ public class L2NpcInstance extends L2Character
             else if (command.equalsIgnoreCase("TerritoryStatus"))
             {
                 NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-                html.setFile("data/html/territorystaus.htm");
+                html.setFile("data/html/territorystatus.htm");
                 html.replace("%objectId%", String.valueOf(getObjectId()));
                 html.replace("%npcname%", getName());
                 
