@@ -707,7 +707,7 @@ public abstract class L2Character extends L2Object
 		if (weaponItem == null)
 			hitted = doAttackHitSimple(attack, target, sAtkHitMoment);
 		else if (weaponItem.getItemType() == L2WeaponType.BOW)
-			hitted = doAttackHitByBow(attack, target, sAtkHitMoment, reuse);
+			hitted = doAttackHitByBow(attack, target, sAtk, reuse);
 		else if (weaponItem.getItemType() == L2WeaponType.POLE)
 			hitted = doAttackHitByPole(attack, sAtkHitMoment);
 		else if (isUsingDualWeapon())
