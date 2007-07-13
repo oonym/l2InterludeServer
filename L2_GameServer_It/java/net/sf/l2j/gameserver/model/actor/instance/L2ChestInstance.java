@@ -20,7 +20,6 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -35,14 +34,12 @@ import net.sf.l2j.util.Rnd;
  */
 public final class L2ChestInstance extends L2MonsterInstance
 {
-	private volatile boolean _isBox;
 	private volatile boolean _isInteracted;
 	private volatile boolean _specialDrop;
 
 	public L2ChestInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		_isBox = (Rnd.get(100)<Config.RATE_BOX_SPAWN);
 		_isInteracted = false;
 		_specialDrop = false;
 	}
@@ -50,20 +47,16 @@ public final class L2ChestInstance extends L2MonsterInstance
 	public void onSpawn()
 	{
 		super.onSpawn();
-		_isBox = (Rnd.get(100) < Config.RATE_BOX_SPAWN );
 		_isInteracted = false;
 		_specialDrop = false;
 		setMustRewardExpSp(true);
 		setHaveToDrop(true);
 	}
 
-	public synchronized boolean isBox() {
-		return _isBox;
-	}
-
 	public synchronized boolean isInteracted() {
 		return _isInteracted;
 	}
+
 	public synchronized void setInteracted() {
 		_isInteracted = true;
 	}
@@ -168,9 +161,4 @@ public final class L2ChestInstance extends L2MonsterInstance
  		return true;
  	}	
 
-	public boolean isAttackingDisabled() 
-	{
-		if (super.isAttackingDisabled() || isBox()) return true;
-		 		return false;
-	}	
 }

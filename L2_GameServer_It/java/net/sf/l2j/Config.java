@@ -398,8 +398,6 @@ public final class Config
     public static float   RATE_KARMA_EXP_LOST;
     /** Rate siege guards prices */
     public static float   RATE_SIEGE_GUARDS_PRICE;
-    /** Rate of boxes spawn */
-    public static int     RATE_BOX_SPAWN; 
     /*Alternative Xp/Sp rewards, if not 0, then calculated as 2^((mob.level-player.level) / coef),
     * A few examples for "AltGameExponentXp = 5." and "AltGameExponentSp = 3."
     * diff = 0 (player and mob has the same level), XP bonus rate = 1, SP bonus rate = 1
@@ -1493,7 +1491,6 @@ public final class Config
                 RATE_CONSUMABLE_COST            = Float.parseFloat(ratesSettings.getProperty("RateConsumableCost", "1."));
                 RATE_DROP_ITEMS                 = Float.parseFloat(ratesSettings.getProperty("RateDropItems", "1."));
                 RATE_DROP_SPOIL                 = Float.parseFloat(ratesSettings.getProperty("RateDropSpoil", "1."));
-                RATE_BOX_SPAWN					= Integer.parseInt(ratesSettings.getProperty("RateBoxSpawn","20"));
                 RATE_DROP_QUEST                 = Float.parseFloat(ratesSettings.getProperty("RateDropQuest", "1."));
                 RATE_KARMA_EXP_LOST             = Float.parseFloat(ratesSettings.getProperty("RateKarmaExpLost", "1."));    
                 RATE_SIEGE_GUARDS_PRICE         = Float.parseFloat(ratesSettings.getProperty("RateSiegeGuardsPrice", "1."));
@@ -2031,7 +2028,6 @@ public final class Config
         else if (pName.equalsIgnoreCase("RateConsumableCost")) RATE_CONSUMABLE_COST = Float.parseFloat(pValue);
         else if (pName.equalsIgnoreCase("RateDropItems")) RATE_DROP_ITEMS = Float.parseFloat(pValue);
         else if (pName.equalsIgnoreCase("RateDropSpoil")) RATE_DROP_SPOIL = Float.parseFloat(pValue);
-        else if (pName.equalsIgnoreCase("RateBoxSpawn")) RATE_BOX_SPAWN = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("RateDropQuest")) RATE_DROP_QUEST = Float.parseFloat(pValue);
         else if (pName.equalsIgnoreCase("RateKarmaExpLost")) RATE_KARMA_EXP_LOST = Float.parseFloat(pValue);
         else if (pName.equalsIgnoreCase("RateSiegeGuardsPrice")) RATE_SIEGE_GUARDS_PRICE = Float.parseFloat(pValue);
