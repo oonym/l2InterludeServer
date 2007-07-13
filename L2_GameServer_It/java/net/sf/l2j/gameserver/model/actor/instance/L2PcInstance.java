@@ -7301,8 +7301,6 @@ public final class L2PcInstance extends L2PlayableInstance
         }
 
         // If all conditions are checked, create a new SkillDat object and set the player _currentSkill
-        System.out.print("skill ok");
-        System.out.print(forceUse);
         setCurrentSkill(skill, forceUse, dontMove);
 
 		// Check if the active L2Skill can be casted (ex : not sleeping...), Check if the target is correct and Notify the AI with AI_INTENTION_CAST and target
