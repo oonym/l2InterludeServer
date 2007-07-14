@@ -195,8 +195,13 @@ public class Pdam implements ISkillHandler
 	        				{
 	                	       if (damage >= player.getCurrentHp()) 
 	                	       {
-	                	    	   player.setCurrentHp(0);
-	                	    	   player.doDie(activeChar);
+	                	    	   if (player.isInDuel()) 
+	                	    		   player.setCurrentHp(1);
+	    	        	    	   else
+	    	        	    	   {
+	    	        	    		   player.setCurrentHp(0);
+	    	        	    		   player.doDie(activeChar);
+	    	        	    	   }
 	                	       }
 	                	       else 
 	                		      player.setCurrentHp(player.getCurrentHp() - damage);
