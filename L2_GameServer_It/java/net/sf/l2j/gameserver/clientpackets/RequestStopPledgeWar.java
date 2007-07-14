@@ -6,7 +6,9 @@ import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public final class RequestStopPledgeWar extends L2GameClientPacket
 {
@@ -42,8 +44,15 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 			player.sendPacket(new ActionFailed());
 			return;
 		}
+		
+		// Check if player who does the request has the correct rights to do it
+		if ((player.getClanPrivileges() & L2Clan.CP_CL_PLEDGE_WAR) != L2Clan.CP_CL_PLEDGE_WAR )
+		{
+			player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
+			return;
+		}        
 
-		_log.info("RequestStopPledgeWar: By leader: " + playerClan.getLeaderName() + " of clan: "
+		_log.info("RequestStopPledgeWar: By leader or authorized player: " + playerClan.getLeaderName() + " of clan: "
 			+ playerClan.getName() + " to clan: " + _pledgeName);
 
 		//        L2PcInstance leader = L2World.getInstance().getPlayer(clan.getLeaderName());
