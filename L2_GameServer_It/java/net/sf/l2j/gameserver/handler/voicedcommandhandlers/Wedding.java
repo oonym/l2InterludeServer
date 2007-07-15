@@ -75,7 +75,7 @@ public class Wedding implements IVoicedCommandHandler
         {
             partner.setPartnerId(0);
             if(partner.isMarried())
-                partner.sendMessage("Your fiance has decided to divorce you.");
+                partner.sendMessage("Your spouse has decided to divorce you.");
             else
                 partner.sendMessage("Your fiance has decided to break the engagement with you.");
 
@@ -149,25 +149,25 @@ public class Wedding implements IVoicedCommandHandler
 
         if(ptarget.isMarried())
         {
-            activeChar.sendMessage("Already married.");
+            activeChar.sendMessage("Player already married.");
             return false;
         }
 
         if(ptarget.getPartnerId()!=0)
         {
-            activeChar.sendMessage("Already engaged.");
+            activeChar.sendMessage("Player already engaged.");
             return false;
         }
 
         if(ptarget.isEngageRequest())
         {
-            activeChar.sendMessage("Already asked by someone else.");
+            activeChar.sendMessage("Player already asked by someone else.");
             return false;
         }
 
         if(ptarget.getPartnerId()!=0)
         {
-            activeChar.sendMessage("Is already engaged with someone else.");
+            activeChar.sendMessage("Player already engaged with someone else.");
             return false;
         }
         
@@ -208,7 +208,7 @@ public class Wedding implements IVoicedCommandHandler
         
         if(!FoundOnFriendList)
         {
-            activeChar.sendMessage("The player you want to ask is not on your friends list, you must first be on each others friends list before you choose to engage..");
+            activeChar.sendMessage("The player you want to ask is not on your friends list, you must first be on each others friends list before you choose to engage.");
             return false;
         }
         
@@ -228,26 +228,43 @@ public class Wedding implements IVoicedCommandHandler
         
         if(activeChar.getPartnerId()==0)
         {
-            activeChar.sendMessage("Couldnt find your fiance in Database - Inform a Gamemaster.");
+            activeChar.sendMessage("Couldn't find your fiance in the Database - Inform a Gamemaster.");
             _log.error("Married but couldn't find parter for "+activeChar.getName());
             return false;
         }
 
         L2PcInstance partner;
         partner = (L2PcInstance)L2World.getInstance().findObject(activeChar.getPartnerId());
-        if(partner ==null)
+        if(partner == null)
         {
-            activeChar.sendPacket(SystemMessage.sendString("Your fiance is not online."));
+            activeChar.sendPacket(SystemMessage.sendString("Your partner is not online."));
             return false;
         }
-        else if(partner.isInJail()){
-            activeChar.sendPacket(SystemMessage.sendString("Your fiance is in Jail."));
+        else if(partner.isInJail())
+        {
+            activeChar.sendPacket(SystemMessage.sendString("Your partner is in Jail."));
             return false;
         }
-        else if(partner.isInOlympiadMode()){
-            activeChar.sendPacket(SystemMessage.sendString("Your fiance is in the Olympiad now."));
+        else if(partner.isInOlympiadMode())
+        {
+            activeChar.sendPacket(SystemMessage.sendString("Your partner is in the Olympiad now."));
             return false;
-        }   
+        }
+        else if(activeChar.atEvent)
+		{
+        	activeChar.sendPacket(SystemMessage.sendString("Your partner is in an event."));
+			return false;
+		}
+        else  if (activeChar.isInDuel())
+        {
+        	activeChar.sendPacket(SystemMessage.sendString("Your partner is in a duel."));
+            return false;
+        }
+        else if (activeChar.isFestivalParticipant()) 
+        {
+            activeChar.sendPacket(SystemMessage.sendString("Your partner is in a festival."));
+            return false;
+        }
         
         int teleportTimer = Config.L2JMOD_WEDDING_TELEPORT_DURATION*1000;
         
