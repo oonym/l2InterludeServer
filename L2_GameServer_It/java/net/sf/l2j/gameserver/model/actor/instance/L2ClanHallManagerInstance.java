@@ -699,7 +699,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
     {
         if (_clanHallId < 0)
         {
-            _clanHallId = ClanHallManager.getInstance().getClanHall(getX(), getY(), 1500).getId();
+            _clanHallId = ClanHallManager.getInstance().getClanHall(getX(), getY(), 500).getId();
             if (_clanHallId < 0) return null;
         }
         return ClanHallManager.getInstance().getClanHall(_clanHallId);

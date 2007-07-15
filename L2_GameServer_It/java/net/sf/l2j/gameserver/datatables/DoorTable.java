@@ -89,7 +89,7 @@ public class DoorTable
 				L2DoorInstance door = parseList(line);
 				_staticItems.put(door.getDoorId(), door);
 				door.spawnMe(door.getX(), door.getY(),door.getZ());
-				ClanHall clanhall = ClanHallManager.getInstance().getClanHall(door.getX(),door.getY(),1500);
+				ClanHall clanhall = ClanHallManager.getInstance().getClanHall(door.getX(),door.getY(),500);
 				if (clanhall != null)
 				{
 				    clanhall.getDoors().add(door);
