@@ -44,14 +44,15 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 		writeC(0x90);
 		writeS(_activeChar.getName());
 		writeD(_clan.getClanId());
+		writeD(0x00);
 		writeS(_clan.getName());
 		writeS(_clan.getLeaderName());
 		writeD(_clan.getCrestId()); // -> no, it's no longer used (nuocnam) fix by game
 		writeD(_clan.getLevel());
 		writeD(_clan.getHasCastle());
 		writeD(_clan.getHasHideout());
-		writeD(0);
-		writeD(_activeChar.getLevel()); 
+		writeD(_clan.getRank());
+		writeD(_clan.getReputationScore()); 
 		writeD(0);
 		writeD(0);
 		
@@ -70,7 +71,8 @@ public class GMViewPledgeInfo extends L2GameServerPacket
             writeD(members[i].getClassId());
             writeD(0); 
             writeD(1);
-		writeD(members[i].isOnline() ? members[i].getObjectId() : 0);
+            writeD(members[i].isOnline() ? members[i].getObjectId() : 0);
+            writeD(0);
 		}		
 	}
 
