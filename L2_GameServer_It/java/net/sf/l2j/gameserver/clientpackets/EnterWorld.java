@@ -229,7 +229,7 @@ public class EnterWorld extends L2GameClientPacket
         sm = null;
         
         sm = new SystemMessage(SystemMessageId.S1_S2);
-        sm.addString(getText("Q29weXJpZ2h0IDIwMDQtMjAwNg=="));
+        sm.addString(getText("Q29weXJpZ2h0IDIwMDQtMjAwNw=="));
         sendPacket(sm);
         sm = new SystemMessage(SystemMessageId.S1_S2);
         sm.addString(getText("V2VsY29tZSB0byA="));
@@ -241,14 +241,12 @@ public class EnterWorld extends L2GameClientPacket
 
 		Quest.playerEnter(activeChar);
 		activeChar.sendPacket(new QuestList());
-
-		String serverNews = HtmCache.getInstance().getHtm("data/html/servnews.htm");
 		
-		if (serverNews != null)
+		if (Config.SERVER_NEWS)
 		{
-			NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
-			htmlMsg.setHtml(serverNews);
-			sendPacket(htmlMsg);
+			String serverNews = HtmCache.getInstance().getHtm("data/html/servnews.htm");
+			if (serverNews != null)
+				sendPacket(new NpcHtmlMessage(1, serverNews));
 		}
 		
 		PetitionManager.getInstance().checkPetitionMessages(activeChar);

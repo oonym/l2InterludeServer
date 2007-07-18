@@ -450,10 +450,12 @@ public class AdminEffects implements IAdminCommandHandler
                String cmd = command.substring(13);
                StringTokenizer st = new StringTokenizer(cmd);
                L2Object obj = activeChar.getTarget();
-               int level = 1;
+               int level = 1,hittime = 1;
                int skill = Integer.parseInt(st.nextToken());
-               if (st.countTokens() == 2)
+               if (st.hasMoreTokens())
                    level = Integer.parseInt(st.nextToken());
+               if (st.hasMoreTokens())
+                   hittime = Integer.parseInt(st.nextToken());
                if (obj == null)
                    obj = activeChar;
                if (obj != null) 
@@ -463,7 +465,7 @@ public class AdminEffects implements IAdminCommandHandler
                    else
                    {
                        L2Character target = (L2Character)obj;
-                       MagicSkillUser MSU = new MagicSkillUser(target,activeChar,skill,level,1,0);
+                       MagicSkillUser MSU = new MagicSkillUser(target,activeChar,skill,level,hittime,0);
                        target.broadcastPacket(MSU);
                        activeChar.sendMessage(obj.getName()+" performs MSU "+skill+"/"+level+" by your request.");
                    }
@@ -473,7 +475,7 @@ public class AdminEffects implements IAdminCommandHandler
            }
            catch(Exception e)
            {
-               activeChar.sendMessage("Usage: //effect skill [level]");
+               activeChar.sendMessage("Usage: //effect skill [level | hittime]");
            }
        }
        return true;
