@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
@@ -326,6 +327,8 @@ public class CursedWeaponsManager
 	public synchronized void checkDrop(L2Attackable attackable, L2PcInstance player)
 	{
 		if (player.isCursedWeaponEquiped())
+			return;
+		if (attackable instanceof L2SiegeGuardInstance)
 			return;
 
 		for (CursedWeapon cw : _cursedWeapons.values())
