@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class ConditionPlayerState extends Condition {
 
-	public enum CheckPlayerState { RESTING, MOVING, RUNNING, FLYING, BEHIND }
+	public enum CheckPlayerState { RESTING, MOVING, RUNNING, FLYING, BEHIND, FRONT }
 	
 	private final CheckPlayerState _check; 
 	private final boolean _required;
@@ -57,6 +57,8 @@ public class ConditionPlayerState extends Condition {
 			return env.player.isFlying() == _required;
         case BEHIND:
             return env.player.isBehindTarget() == _required;
+        case FRONT:
+            return env.player.isFrontTarget() == _required;
 		}
 		return !_required;
 	}

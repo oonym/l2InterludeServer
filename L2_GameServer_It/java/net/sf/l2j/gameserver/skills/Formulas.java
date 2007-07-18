@@ -817,7 +817,6 @@ public final class Formulas
 			cha.addStatFunc(FuncAtkAccuracy.getInstance());
 			cha.addStatFunc(FuncAtkEvasion.getInstance());
 		}
-
 	}
 
 	/**
@@ -998,7 +997,51 @@ public final class Formulas
 
 		return 1.5; // If all is true, then modifer will be 50% more
 	}
-
+	/** Calculate blow damage based on cAtk */
+	public double calcBlowDamage(L2Character attacker, L2Character target, L2Skill skill, boolean shld, boolean ss)
+	{
+		double power = skill.getPower();
+		double damage = attacker.getPAtk(target);
+		double defence = target.getPDef(attacker);
+		if(ss)
+			damage *= 2.;
+		if(shld)
+			defence += target.getShldDef();
+		if(ss && skill.getSSBoost()>0)
+			power *= skill.getSSBoost();
+		
+		//Multiplier should be removed, it's false ??
+		damage += 1.5*attacker.calcStat(Stats.CRITICAL_DAMAGE, damage+power, target, skill);
+		damage *= (double)attacker.getLevel()/target.getLevel();
+		//True with skill ?
+		defence = target.calcStat(Stats.DAGGER_WPN_RES, defence, target, null);
+		if (target instanceof L2NpcInstance)
+		{
+			Integer resistDagger = ((L2NpcInstance) target).getTemplate().getResist(Stats.DAGGER_WPN_RES);
+			damage *= resistDagger.doubleValue() / 100;
+		}
+		damage *= 70. / defence;
+		damage += Rnd.get() * attacker.getRandomDamage(target);
+		// Sami: Must be removed, after armor resistances are checked.
+		// These values are a quick fix to balance dagger gameplay and give
+		// armor resistances vs dagger. daggerWpnRes could also be used if a skill 
+		// was given to all classes. The values here try to be a compromise.
+		// They were originally added in a late C4 rev (2289).
+		if (target instanceof L2PcInstance)
+		{
+			L2Armor armor = ((L2PcInstance)target).getActiveChestArmorItem();
+			if (armor != null)
+			{
+				if(((L2PcInstance)target).isWearingHeavyArmor())
+					damage /= 1.2; // 2
+				//if(((L2PcInstance)target).isWearingLightArmor())
+				//	damage /= 1.1; // 1.5
+				//if(((L2PcInstance)target).isWearingMagicArmor())
+				//	damage /= 1;   // 1.3
+			}            
+		}
+		return damage < 1 ? 1. : damage;
+	}
 	/** Calculated damage caused by ATTACK of attacker on target,
 	 * called separatly for each weapon, if dual-weapon is used.
 	 *
@@ -1136,23 +1179,6 @@ public final class Formulas
 			damage -= target.getShldDef();
 			if (damage < 0) damage = 0;
 		}
-		// Sami: These values are a quick fix to balance dagger gameplay and give
-		// armor resistances vs dagger. daggerWpnRes could also be used if a skill 
-		// was given to all classes. The values here try to be a compromise.
-		// They were added in a late C4 rev (2289).
-		if (target instanceof L2PcInstance && weapon != null && weapon.getItemType() == L2WeaponType.DAGGER && skill != null)
-		{
-			L2Armor armor = ((L2PcInstance)target).getActiveChestArmorItem();
-			if (armor != null)
-			{
-				if(((L2PcInstance)target).isWearingHeavyArmor())
-					damage /= 2; // originally 2.2, 2.5 during early C5
-				if(((L2PcInstance)target).isWearingLightArmor())
-					damage /= 1.5; // originally 1.5, 2 during early C5
-				if(((L2PcInstance)target).isWearingMagicArmor())
-					damage /= 1.3; // originally 1, 1.8 during early C5
-			}            
-		}
 
 		if (attacker instanceof L2NpcInstance)
 		{
@@ -1280,14 +1306,21 @@ public final class Formulas
 	/** Returns true in case of critical hit */
 	public final boolean calcCrit(double rate)
 	{
-		int critHit = Rnd.get(1000);
-		return rate > critHit;
+		return rate > Rnd.get(1000);
 	}
-
+	/** Calcul value of blow success */
+	public final boolean calcBlow(L2Character activeChar, L2Character target, int chance)
+	{
+		return activeChar.calcStat(Stats.BLOW_RATE, chance*(1.0+(activeChar.getDEX()-20)/100), target, null)>Rnd.get(100);
+	}
+	/** Calcul value of lethal chance */
+	public final double calcLethal(L2Character activeChar, L2Character target, int baseLethal)
+	{
+		return activeChar.calcStat(Stats.LETHAL_RATE, (baseLethal*((double)activeChar.getLevel()/target.getLevel())), target, null);
+	}
 	public final boolean calcMCrit(double mRate)
 	{
-		int mcritHit = Rnd.get(1000);
-		return mRate > mcritHit;
+		return mRate > Rnd.get(1000);
 	}
 
 	/** Returns true in case when ATTACK is canceled due to hit */

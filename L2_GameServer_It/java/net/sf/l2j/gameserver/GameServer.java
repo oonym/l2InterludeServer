@@ -151,6 +151,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.SummonItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.WorldMap;
 import net.sf.l2j.gameserver.handler.skillhandlers.BalanceLife;
 import net.sf.l2j.gameserver.handler.skillhandlers.BeastFeed;
+import net.sf.l2j.gameserver.handler.skillhandlers.Blow;
 import net.sf.l2j.gameserver.handler.skillhandlers.Charge;
 import net.sf.l2j.gameserver.handler.skillhandlers.CombatPointHeal;
 import net.sf.l2j.gameserver.handler.skillhandlers.Continuous;
@@ -453,6 +454,7 @@ public class GameServer
         _log.config("ItemHandler: Loaded " + _itemHandler.size() + " handlers.");
 
 		_skillHandler = SkillHandler.getInstance();
+		_skillHandler.registerSkillHandler(new Blow());
 		_skillHandler.registerSkillHandler(new Pdam());
 		_skillHandler.registerSkillHandler(new Mdam());
 		_skillHandler.registerSkillHandler(new Manadam());

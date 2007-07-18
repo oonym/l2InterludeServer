@@ -79,7 +79,7 @@ public abstract class L2Effect
         BETRAY,
         NOBLESSE_BLESSING,
         PETRIFICATION,
-        ROTATE // for bluff skill
+        BLUFF
     }
 
     private static final Func[] _emptyFunctionSet = new Func[0];

@@ -131,6 +131,7 @@ public abstract class L2Skill
     	DRAIN_SOUL,
     	DRAIN(L2SkillDrain.class),
     	DEATHLINK,
+    	BLOW,
 
     	// Disablers
     	BLEED,
@@ -515,7 +516,7 @@ public abstract class L2Skill
 
         _isHeroSkill = HeroSkillTable.isHeroSkill(_id);
 
-        _baseCritRate = set.getInteger("baseCritRate", (_skillType == SkillType.PDAM /* || _skillType == SkillType.BLOW */) ? 0 : -1);
+        _baseCritRate = set.getInteger("baseCritRate", (_skillType == SkillType.PDAM  || _skillType == SkillType.BLOW) ? 0 : -1);
         int l1 = set.getInteger("lethal1",0);
         int l2 = set.getInteger("lethal2",0);
     	if( l1 <= l2 || l2 <= 0)
@@ -1026,6 +1027,7 @@ public abstract class L2Skill
             case ROOT:
             case CONFUSION:
             case ERASE:
+            case BLOW:
             case FEAR:
             case DRAIN:
             case SLEEP:
@@ -1099,11 +1101,6 @@ public abstract class L2Skill
 
     public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
     {
-        if ((getCondition() & L2Skill.COND_BEHIND) != 0)
-        {
-            if (!activeChar.isBehindTarget()) return false;
-        }
-
         if ((getCondition() & L2Skill.COND_SHIELD) != 0)
         {
             /*
