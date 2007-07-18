@@ -3789,6 +3789,23 @@ public abstract class L2Character extends L2Object
 				y = destiny.getY();
 				z = destiny.getZ();
 				distance = Math.sqrt((x - curX)*(x - curX) + (y - curY)*(y - curY));
+				
+				// If no distance to go through, the movement is canceled
+				if (distance < 1)
+				{
+					sin = 0;
+					cos = 1;
+					distance = 0;
+					x = curX;
+					y = curY;
+
+					if (Config.DEBUG) _log.fine("already in range, no movement needed.");
+
+					// Notify the AI that the L2Character is arrived at destination
+					getAI().notifyEvent(CtrlEvent.EVT_ARRIVED, null);
+
+					return;
+				}
 			}
 			if(Config.GEODATA == 2 && originalDistance-distance > 100)
 			{
