@@ -148,7 +148,7 @@ public class Pdam implements ISkillHandler
                 if(!target.isRaid() && ( chance = Rnd.get(100)) < skill.getLethalChance1())
                 {
                 	// 1st lethal effect activate (cp to 1 or if target is npc then hp to 50%)
-                	if(chance >= skill.getLethalChance2())
+                	if(skill.getLethalChance2() > 0 && chance >= skill.getLethalChance2())
                 	{
               		   if (target instanceof L2PcInstance) 
              		   {
