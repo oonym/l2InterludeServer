@@ -147,6 +147,7 @@ public final class Config
 
     /** Alternative game mob ATTACK AI */
     public static boolean ALT_GAME_MOB_ATTACK_AI;
+    public static boolean ALT_MOB_AGRO_IN_PEACEZONE;
 
     /** Alternative freight modes - Freights can be withdrawed from any village */
     public static boolean ALT_GAME_FREIGHTS;
@@ -1546,6 +1547,7 @@ public final class Config
                 ALT_GAME_DELEVEL        = Boolean.parseBoolean(altSettings.getProperty("Delevel", "true"));
                 ALT_GAME_MAGICFAILURES  = Boolean.parseBoolean(altSettings.getProperty("MagicFailures", "false"));
                 ALT_GAME_MOB_ATTACK_AI  = Boolean.parseBoolean(altSettings.getProperty("AltGameMobAttackAI", "false"));
+	            ALT_MOB_AGRO_IN_PEACEZONE  = Boolean.parseBoolean(altSettings.getProperty("AltMobAgroInPeaceZone", "true"));
                 ALT_GAME_EXPONENT_XP    = Float.parseFloat(altSettings.getProperty("AltGameExponentXp", "0."));
                 ALT_GAME_EXPONENT_SP    = Float.parseFloat(altSettings.getProperty("AltGameExponentSp", "0."));
                 ALLOW_CLASS_MASTERS     = Boolean.valueOf(altSettings.getProperty("AllowClassMasters", "False"));
@@ -2167,6 +2169,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("Delevel")) ALT_GAME_DELEVEL = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("MagicFailures")) ALT_GAME_MAGICFAILURES = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltGameMobAttackAI")) ALT_GAME_MOB_ATTACK_AI = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("AltMobAgroInPeaceZone")) ALT_MOB_AGRO_IN_PEACEZONE = Boolean.valueOf(pValue);
 
         else if (pName.equalsIgnoreCase("AltGameExponentXp")) ALT_GAME_EXPONENT_XP = Float.parseFloat(pValue);
         else if (pName.equalsIgnoreCase("AltGameExponentSp")) ALT_GAME_EXPONENT_SP = Float.parseFloat(pValue);

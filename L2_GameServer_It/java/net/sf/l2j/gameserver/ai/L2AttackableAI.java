@@ -29,13 +29,13 @@ import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Territory;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
-import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
@@ -204,6 +204,11 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             // Check if the target isn't another L2NpcInstance
             if (target instanceof L2NpcInstance) return false;
 
+            // depending on config, do not allow mobs to attack _new_ players in peacezones, 
+            // unless they are already following those players from outside the peacezone. 
+            if (!Config.ALT_MOB_AGRO_IN_PEACEZONE && ZoneManager.getInstance().checkIfInZonePeace(target)) 
+            	return false;
+            
             // Check if the actor is Aggressive
             return (me.isAggressive() && GeoData.getInstance().canSeeTarget(me, target));
         }
