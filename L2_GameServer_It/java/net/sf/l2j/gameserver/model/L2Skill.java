@@ -378,6 +378,16 @@ public abstract class L2Skill
     private final int _itemConsumeOT;
     // item consume id over time
     private final int _itemConsumeIdOT;
+    // how many times to consume an item
+    private final int _itemConsumeSteps;
+    // for summon spells: 
+    // a) What is the total lifetime of summons (in millisecs)
+    private final int _summonTotalLifeTime;
+    // b) how much lifetime is lost per second of idleness (non-fighting) 
+    private final int _summonTimeLostIdle;
+    // c) how much time is lost per second of activity (fighting) 
+    private final int _summonTimeLostActive;
+    
     // item consume time in milliseconds
     private final int _itemConsumeTime;
     private final int _castRange;
@@ -470,6 +480,10 @@ public abstract class L2Skill
         _itemConsumeOT = set.getInteger("itemConsumeCountOT", 0);
         _itemConsumeIdOT = set.getInteger("itemConsumeIdOT", 0);
         _itemConsumeTime = set.getInteger("itemConsumeTime", 0);
+        _itemConsumeSteps = set.getInteger("itemConsumeSteps", 0);
+        _summonTotalLifeTime= set.getInteger("summonTotalLifeTime", 1200000);  // 20 minutes default
+        _summonTimeLostIdle= set.getInteger("summonTimeLostIdle", 0);
+        _summonTimeLostActive= set.getInteger("summonTimeLostActive", 0);
 
         _castRange = set.getInteger("castRange", 0);
         _effectRange = set.getInteger("effectRange", -1);
@@ -793,6 +807,35 @@ public abstract class L2Skill
     public final int getItemConsumeIdOT()
     {
         return _itemConsumeIdOT;
+    }
+
+    /**
+     * @return Returns the itemConsume count over time.
+     */
+    public final int getItemConsumeSteps()
+    {
+        return _itemConsumeSteps;
+    }
+    /**
+     * @return Returns the itemConsume count over time.
+     */
+    public final int getTotalLifeTime()
+    {
+        return _summonTotalLifeTime;
+    }
+    /**
+     * @return Returns the itemConsume count over time.
+     */
+    public final int getTimeLostIdle()
+    {
+        return _summonTimeLostIdle;
+    }
+    /**
+     * @return Returns the itemConsumeId over time.
+     */
+    public final int getTimeLostActive()
+    {
+        return _summonTimeLostActive;
     }
 
     /**
