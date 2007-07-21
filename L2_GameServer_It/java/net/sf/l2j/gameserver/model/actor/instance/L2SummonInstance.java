@@ -77,9 +77,9 @@ public class L2SummonInstance extends L2Summon
         lastShowntimeRemaining = _totalLifeTime;
         
         if (_itemConsumeId == 0)
-        	_nextItemConsumeTime = -1;
+        	_nextItemConsumeTime = -1;	// do not consume
         else if (_itemConsumeSteps == 0)
-        	_nextItemConsumeTime = -1;
+        	_nextItemConsumeTime = -1;	// do not consume
         else
         	_nextItemConsumeTime = _totalLifeTime - _totalLifeTime/(_itemConsumeSteps+1);
 
