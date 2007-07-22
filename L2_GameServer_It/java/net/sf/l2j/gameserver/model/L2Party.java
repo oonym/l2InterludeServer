@@ -592,7 +592,8 @@ public class L2Party {
 					preCalculation = (sqLevel / sqLevelSum) * (1 - penalty);
 					
 					// Add the XP/SP points to the requested party member
-					member.addExpAndSp(Math.round(member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null)), 
+					if (!member.isDead())
+						member.addExpAndSp(Math.round(member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null)), 
 						                  (int)member.calcStat(Stats.EXPSP_RATE, spReward * preCalculation, null, null));
 				}
 				else
