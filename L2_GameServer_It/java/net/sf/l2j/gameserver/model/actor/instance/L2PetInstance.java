@@ -463,28 +463,6 @@ public class L2PetInstance extends L2Summon
         destroyControlItem(owner); //this should also delete the pet from the db
     }
 	
-	public void reduceCurrentHp(double damage, L2Character attacker)
-	{
-		// called in combat
-		if (!isDead() && attacker != null)
-		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.PET_RECEIVED_S2_DAMAGE_BY_S1);
-			if (attacker instanceof L2NpcInstance)
-			{
-				sm.addNpcName( ((L2NpcInstance)attacker).getTemplate().npcId);
-			}
-			else
-			{
-				sm.addString(attacker.getName());
-			}
-			sm.addNumber((int)damage);
-			
-			getOwner().sendPacket(sm);
-			getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
-		}
-		super.reduceCurrentHp(damage, attacker);
-	}
-	
 	public synchronized void doDie(L2Character killer) {
 		stopFeed();
 		DecayTaskManager.getInstance().addDecayTask(this,1200000);
