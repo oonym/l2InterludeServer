@@ -22,6 +22,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.ai.L2SummonAI;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -634,5 +635,29 @@ public abstract class L2Summon extends L2PlayableInstance
 	public void setShowSummonAnimation(boolean showSummonAnimation)
 	{
 	    _showSummonAnimation = showSummonAnimation;
+	}
+	
+	/**
+	 * Servitors' skills automatically change their level based on the servitor's level.
+	 * Until level 70, the servitor gets 1 lv of skill per 10 levels. After that, it is 1 
+	 * skill level per 5 servitor levels.  If the resulting skill level doesn't exist use 
+	 * the max that does exist!
+	 * 
+	 * @see net.sf.l2j.gameserver.model.L2Character#doCast(net.sf.l2j.gameserver.model.L2Skill)
+	 */
+	public void doCast(L2Skill skill)
+	{
+		int petLevel = getLevel();
+		int skillLevel = petLevel/10;
+    	if(petLevel >= 70)
+    		skillLevel += (petLevel-65)/10;
+
+    	// adjust the level for servitors less than lv 10
+    	if (skillLevel < 1)
+    		skillLevel = 1;
+    	
+    	L2Skill skillToCast = SkillTable.getInstance().getInfo(skill.getId(),skillLevel);
+    	if (skillToCast != null)
+    		super.doCast(skillToCast);
 	}
 }
