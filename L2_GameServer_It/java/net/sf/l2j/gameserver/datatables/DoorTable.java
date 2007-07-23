@@ -143,6 +143,11 @@ public class DoorTable
 		if (rangeXMin > rangeXMax) _log.severe("Error in door data, ID:"+id);
 		if (rangeYMin > rangeYMax) _log.severe("Error in door data, ID:"+id);
 		if (rangeZMin > rangeZMax) _log.severe("Error in door data, ID:"+id);
+		int collisionRadius; // (max) radius for movement checks
+		if ((rangeXMax - rangeXMin) > (rangeYMax - rangeYMin))
+			collisionRadius = rangeYMax - rangeYMin; 
+		else
+			collisionRadius = rangeXMax - rangeXMin;
 				
 		StatsSet npcDat = new StatsSet(); 
 		npcDat.set("npcId", id);
@@ -163,8 +168,8 @@ public class DoorTable
 		npcDat.set("baseCritRate",  38);
 
 		//npcDat.set("name", "");
-		npcDat.set("collision_radius", 0);
-		npcDat.set("collision_height", 0);
+		npcDat.set("collision_radius", collisionRadius);
+		npcDat.set("collision_height", rangeZMax - rangeZMin);
 		npcDat.set("sex", "male");
 		npcDat.set("type", "");
 		npcDat.set("baseAtkRange", 0);

@@ -123,7 +123,9 @@ public class GeoEngine extends GeoData
     	int z = cha.getZ()+45;
     	if(cha instanceof L2SiegeGuardInstance) z += 30; // well they don't move closer to balcony fence at the moment :(
     	int z2 = target.getZ()+45;
-    	if (DoorTable.getInstance().checkIfDoorsBetween(cha.getX(),cha.getY(),z,target.getX(),target.getY(),z2)) return false; 
+    	if (!(target instanceof L2DoorInstance) 
+    			&& DoorTable.getInstance().checkIfDoorsBetween(cha.getX(),cha.getY(),z,target.getX(),target.getY(),z2))
+    		return false; 
     	if(target instanceof L2DoorInstance) return true; // door coordinates are hinge coords..
     	if(target instanceof L2SiegeGuardInstance) z2 += 30; // well they don't move closer to balcony fence at the moment :(
     	if(cha.getZ() >= target.getZ())
