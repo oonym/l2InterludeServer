@@ -1157,15 +1157,12 @@ public class Siege
     /** Set the date for the next siege. */
     private void setNextSiegeDate()
     {
-        if (getCastle().getSiegeDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis())
+        while (getCastle().getSiegeDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis())
         {
             // Set next siege date if siege has passed
             getCastle().getSiegeDate().add(Calendar.DAY_OF_MONTH, 14); // Schedule to happen in 14 days
-            _isRegistrationOver = false; // Allow registration for next siege
-
-            if (getCastle().getSiegeDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis())
-                setNextSiegeDate(); // Re-run again if still in the pass
         }
+        _isRegistrationOver = false; // Allow registration for next siege
     }
 
     /** Spawn artifact. */
