@@ -90,9 +90,6 @@ public class Duel
 		
 		setFinished(false);
 
-		// Save player Conditions
-		savePlayerConditions();
-
 		if (_partyDuel)
 		{
 			// increase countdown so that start task can teleport players
@@ -346,6 +343,9 @@ public class Duel
 	 */
 	public void startDuel()
 	{
+		// Save player Conditions
+		savePlayerConditions();
+		
 		if (_playerA.isInDuel() || _playerB.isInDuel())
 		{
 			// clean up

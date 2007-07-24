@@ -8502,8 +8502,12 @@ public final class L2PcInstance extends L2PlayableInstance
         restoreHenna();
         sendPacket(new HennaInfo(this));
 
-        setCurrentHpMp(getMaxHp(), getMaxMp());
-        setCurrentCp(getMaxCp());
+        if (getCurrentHp() > getMaxHp())
+        	setCurrentHp(getMaxHp());
+        if (getCurrentMp() > getMaxMp())
+        	setCurrentMp(getMaxMp());
+        if (getCurrentCp() > getMaxCp())
+        	setCurrentCp(getMaxCp());
         updateStats();
 
         // Clear resurrect xp calculation
