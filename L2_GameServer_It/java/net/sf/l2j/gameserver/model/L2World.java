@@ -740,7 +740,7 @@ public final class L2World
      */
     private boolean validRegion(int x, int y)
     {
-        return (x >= 0 && x < REGIONS_X && y >= 0 && y < REGIONS_Y);
+        return (x >= 0 && x <= REGIONS_X && y >= 0 && y <= REGIONS_Y);
     }
     
     /**
@@ -767,9 +767,9 @@ public final class L2World
             }
         }
         
-        for (int x=0; x < REGIONS_X; x++)
+        for (int x=0; x <= REGIONS_X; x++)
         {
-            for (int y=0; y < REGIONS_Y; y++)
+            for (int y=0; y <= REGIONS_Y; y++)
             {
                 for (int a = -1; a <= 1; a++)
                 {
