@@ -153,12 +153,6 @@ public class Wedding implements IVoicedCommandHandler
             return false;
         }
 
-        if(ptarget.getPartnerId()!=0)
-        {
-            activeChar.sendMessage("Player already engaged.");
-            return false;
-        }
-
         if(ptarget.isEngageRequest())
         {
             activeChar.sendMessage("Player already asked by someone else.");
