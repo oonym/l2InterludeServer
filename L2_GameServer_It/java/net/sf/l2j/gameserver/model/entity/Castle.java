@@ -232,6 +232,23 @@ public class Castle
 	    
 	    updateClansReputation();
 	}
+	
+	public void removeOwner(L2Clan clan)
+	{	
+		if (clan != null)
+		{	
+			_formerOwner = clan;
+			clan.setHasCastle(0);
+			new Announcements().announceToAll(clan.getName() + " has lost " +getName() + " castle");
+			clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+		}
+		
+		updateOwnerInDB(null);
+		if (getSiege().getIsInProgress())
+			getSiege().midVictory();
+		
+		updateClansReputation();
+	}
 
 	// This method updates the castle tax rate
 	public void setTaxPercent(L2PcInstance activeChar, int taxPercent)

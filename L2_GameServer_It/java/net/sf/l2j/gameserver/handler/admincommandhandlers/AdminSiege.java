@@ -53,7 +53,7 @@ public class AdminSiege implements IAdminCommandHandler
             "admin_list_siege_clans", "admin_clear_siege_list",
             "admin_move_defenders", "admin_spawn_doors",
             "admin_endsiege", "admin_startsiege",
-            "admin_setcastle", 
+            "admin_setcastle", "admin_removecastle", 
             "admin_clanhall","admin_clanhallset","admin_clanhalldel",
 	    "admin_clanhallopendoors","admin_clanhallclosedoors",
 	    "admin_clanhallteleportself"
@@ -147,6 +147,14 @@ public class AdminSiege implements IAdminCommandHandler
                     activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                 else
                     castle.setOwner(player.getClan());
+            }
+            else if (command.equalsIgnoreCase("admin_removecastle"))
+            {
+            	L2Clan clan = ClanTable.getInstance().getClan(castle.getOwnerId());
+            	if (clan != null)
+            	castle.removeOwner(clan);
+            	
+            	else activeChar.sendMessage("Unable to remove castle");
             }
             else if (command.equalsIgnoreCase("admin_clanhallset"))
             {
@@ -296,7 +304,8 @@ public class AdminSiege implements IAdminCommandHandler
         replyMSG.append("</table>");
         replyMSG.append("<br>");
         replyMSG.append("<table>");
-        replyMSG.append("<tr><td><button value=\"Give Castle\" action=\"bypass -h admin_setcastle " + castleName + "\" width=80 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
+        replyMSG.append("<tr><td><button value=\"Give Castle\" action=\"bypass -h admin_setcastle " + castleName + "\" width=80 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+        replyMSG.append("<td><button value=\"Remove Castle\" action=\"bypass -h admin_removecastle " + castleName + "\" width=80 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
         replyMSG.append("</table>");
         replyMSG.append("<br>");
         replyMSG.append("<table>");
