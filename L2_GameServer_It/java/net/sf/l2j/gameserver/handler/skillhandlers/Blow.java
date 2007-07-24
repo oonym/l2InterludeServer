@@ -19,10 +19,11 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.util.Rnd;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -131,7 +132,7 @@ public class Blow implements ISkillHandler
 	            activeChar.sendPacket(sm);
 			}
 			//Possibility of a lethal strike
-			if(!target.isRaid())
+			if(!target.isRaid() && !(target instanceof L2DoorInstance))
 			{
 				int chance = Rnd.get(100);
 				//2nd lethal effect activate (cp,hp to 1 or if target is npc then hp to 1)
