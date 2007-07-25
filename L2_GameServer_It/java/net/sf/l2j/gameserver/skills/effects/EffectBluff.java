@@ -21,6 +21,9 @@ package net.sf.l2j.gameserver.skills.effects;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Effect;
+import net.sf.l2j.gameserver.model.L2Summon;
+import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -45,6 +48,18 @@ final class EffectBluff extends L2Effect {
     public void onStart()
     { 
         getEffected().startFear();
+    	if(getEffected() instanceof L2FolkInstance) return;
+    	// if(getEffected() instanceof L2SiegeGuardInstance) return;
+    	// Cannot be used on Headquarters Flag.  
+    	if(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062) return;  
+
+    	if(getEffected() instanceof L2Summon) 
+    	{
+    		// doesn't affect siege golem or wild hog cannon
+    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SIEGE_GOLEM_ID) return;
+    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.HOG_CANNON_ID) return;
+    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SWOOP_CANNON_ID) return;
+    	}
         int posX = getEffected().getX();
         int posY = getEffected().getY();
         int posZ = getEffected().getZ();
