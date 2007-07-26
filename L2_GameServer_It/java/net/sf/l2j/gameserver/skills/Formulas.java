@@ -1012,7 +1012,7 @@ public final class Formulas
 		
 		//Multiplier should be removed, it's false ??
 		damage += 1.5*attacker.calcStat(Stats.CRITICAL_DAMAGE, damage+power, target, skill);
-		damage *= (double)attacker.getLevel()/target.getLevel();
+		//damage *= (double)attacker.getLevel()/target.getLevel();
 		//True with skill ?
 		defence = target.calcStat(Stats.DAGGER_WPN_RES, defence, target, null);
 		if (target instanceof L2NpcInstance)
