@@ -455,7 +455,8 @@ public abstract class L2Skill
     private final boolean _isDance;      // If true then casting more dances will cost more MP
     private final int _nextDanceCost;
     private final float _sSBoost;	//If true skill will have SoulShot boost (power*2)
-
+    private final int _aggroPoints; 
+    
     protected Condition _preCondition;
     protected Condition _itemPreCondition;
     protected FuncTemplate[] _funcTemplates;
@@ -538,7 +539,8 @@ public abstract class L2Skill
         _isDance = set.getBool("isDance",false);
         _nextDanceCost = set.getInteger("nextDanceCost", 0);
         _sSBoost = set.getFloat("SSBoost", 0.f);
-
+        _aggroPoints = set.getInteger("aggroPoints", 0);
+        
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
         {
@@ -939,6 +941,11 @@ public abstract class L2Skill
     	return _sSBoost;
     }
 
+    public final int getAggroPoints()
+    {
+    	return _aggroPoints;
+    }
+    
     public final boolean useSoulShot()
     {
         return ((getSkillType() == SkillType.PDAM) || (getSkillType() == SkillType.STUN) || (getSkillType() == SkillType.CHARGEDAM));

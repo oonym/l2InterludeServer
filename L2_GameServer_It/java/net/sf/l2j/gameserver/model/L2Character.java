@@ -38,6 +38,7 @@ import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import net.sf.l2j.gameserver.ai.L2AttackableAI;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
@@ -5304,17 +5305,38 @@ public abstract class L2Character extends L2Object
 
 			if ((this instanceof L2PcInstance) || (this instanceof L2Summon))
 			{
-				L2PcInstance caster = (this instanceof L2PcInstance)? (L2PcInstance) this: ((L2Summon)this).getOwner();
+				L2PcInstance caster = (this instanceof L2PcInstance) ? (L2PcInstance) this
+						: ((L2Summon) this).getOwner();
 				for (L2Object target : targets)
 				{
-	                if (target instanceof L2NpcInstance)
-	                {
-	                	L2NpcInstance npc = (L2NpcInstance) target;
-	                	if (npc.getTemplate().getEventQuests(Quest.QuestEventType.MOB_TARGETED_BY_SKILL) != null)
-		                	for (Quest quest: npc.getTemplate().getEventQuests(Quest.QuestEventType.MOB_TARGETED_BY_SKILL))
-		                		quest.notifySkillUse ( npc, caster, skill);
-	                }
+					if (target instanceof L2NpcInstance)
+					{
+						L2NpcInstance npc = (L2NpcInstance) target;
+						if (npc.getTemplate().getEventQuests(
+								Quest.QuestEventType.MOB_TARGETED_BY_SKILL) != null)
+							for (Quest quest : npc
+									.getTemplate()
+									.getEventQuests(
+											Quest.QuestEventType.MOB_TARGETED_BY_SKILL))
+								quest.notifySkillUse(npc, caster, skill);
+					}
 				}
+				if (skill.getAggroPoints() > 0)
+					for (L2Object spMob : caster.getKnownList()
+							.getKnownObjects().values())
+						if (spMob instanceof L2NpcInstance)
+						{
+							L2NpcInstance npcMob = (L2NpcInstance) spMob;
+							if (npcMob.isInsideRadius(caster, 1000, true, true)
+									&& npcMob.hasAI()
+									&& npcMob.getAI().getIntention() == AI_INTENTION_ATTACK)
+							{
+								L2Object npcTarget = npcMob.getTarget();
+								for (L2Object target : targets)
+									if (npcTarget == target || npcMob == target)
+										npcMob.seeSpell(caster, target, skill);
+							}
+						}
 			}
 		}
 		catch (Exception e)
@@ -5322,7 +5344,12 @@ public abstract class L2Character extends L2Object
 			_log.log(Level.WARNING, "", e);
 		}
 	}
-
+	
+	public void seeSpell(L2PcInstance caster, L2Object target, L2Skill skill) {
+		if (this instanceof L2Attackable)
+			((L2Attackable)this).addDamageHate(caster, 0, (150*skill.getAggroPoints())/(getLevel()+7));
+	}
+	
 	/**
 	 * Return True if the L2Character is behind the target and can't be seen.<BR><BR>
 	 */
@@ -5644,5 +5671,6 @@ public abstract class L2Character extends L2Object
 	}
 
 }
+
 
 

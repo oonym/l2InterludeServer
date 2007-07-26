@@ -251,7 +251,7 @@ public class Disablers implements ISkillHandler
                 case AGGDAMAGE:
                 {
                     if (target instanceof L2Attackable)
-                        target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) skill.getPower());
+                        target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) ((150*skill.getPower())/(target.getLevel()+7)));
                     //TODO [Nemesiss] should this have 100% chance?
                     skill.getEffects(activeChar, target);
                     break;

@@ -359,11 +359,7 @@ public class L2Attackable extends L2NpcInstance
         if (this.isEventMob) return;
         	
         // Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList
-        if (attacker != null)
-        {
-            addDamage(attacker, (int)damage);
-            addBufferHate();
-        }
+        if (attacker != null) addDamage(attacker, (int)damage);
         
         // If this L2Attackable is a L2MonsterInstance and it has spawned minions, call its minions to battle
         if (this instanceof L2MonsterInstance)
@@ -372,11 +368,7 @@ public class L2Attackable extends L2NpcInstance
             if (this instanceof L2MinionInstance)
             {
                 master = ((L2MinionInstance)this).getLeader();
-                if (!master.isInCombat()&&!master.isDead())
-                {
-                    master.addDamage(attacker, 1);
-                    master.addBufferHate();
-                }
+                if (!master.isInCombat()&&!master.isDead()) master.addDamage(attacker, 1);
             }
             if (master.hasMinions())
                 master.callMinionsToAssist(attacker);
@@ -735,91 +727,6 @@ public class L2Attackable extends L2NpcInstance
         addDamageHate(attacker, damage, damage);
     }
     
-    public void addBufferHate()
-    {
-        L2Character target = getMostHated();
-
-        if (target == null)
-            return;
-
-        for (L2PcInstance actor : getKnownList().getKnownPlayers().values())
-        {
-            if (actor.isCastingNow() && target.getLastBuffer() == actor)
-            {
-                int actorLevel = actor.getLevel();
-                double divisor = 0;
-                L2Skill skill = actor.getAttackingCharSkill();
-                
-                if (actorLevel < 10)
-                    divisor = 15;
-                else if (actorLevel > 9 && actorLevel < 20)
-                    divisor = 11.5;
-                else if (actorLevel > 19 && actorLevel < 30)
-                    divisor = 8.5;
-                else if (actorLevel > 29 && actorLevel < 40)
-                    divisor = 6;
-                else if (actorLevel > 39 && actorLevel < 50)
-                    divisor = 4;
-                else if (actorLevel > 49 && actorLevel < 60)
-                    divisor = 2.5;
-                else if (actorLevel > 59 && actorLevel < 70)
-                    divisor = 1.5;
-                else if (actorLevel > 69)
-                    divisor = 1;
-                
-
-                if (skill != null && (skill.getSkillType() == SkillType.HEAL || skill.getSkillType() == SkillType.HEAL_PERCENT || skill.getSkillType() == SkillType.MANAHEAL || skill.getSkillType() == SkillType.MANAHEAL_PERCENT || skill.getSkillType() == SkillType.BALANCE_LIFE))
-                {
-                    L2Object[] targetList = skill.getTargetList(actor,true);
-
-                    if(targetList != null && targetList.length != 0 && (targetList[0] instanceof L2PcInstance || targetList[0] instanceof L2SummonInstance || targetList[0] instanceof L2PetInstance))
-                    {
-                        if ((getMaxHp()/5) < target.getLastHealAmount())
-                            target.setLastHealAmount((getMaxHp()/5));
-                        
-                        addDamageHate(actor, 0, (int)(target.getLastHealAmount()/divisor));
-
-                        if (Config.DEBUG)
-                            System.out.print("Mob detect heal.\n");
-                    }
-                }
-
-                if (skill != null && (skill.getSkillType() == SkillType.BUFF || skill.getSkillType() == SkillType.HOT))
-                {
-                    L2Object[] targetList = skill.getTargetList(actor,true);
-
-                    if(targetList != null && targetList.length != 0 && (targetList[0] instanceof L2PcInstance || targetList[0] instanceof L2SummonInstance || targetList[0] instanceof L2PetInstance))
-                    {
-                        addDamageHate(actor, 0, (int)((skill.getLevel()*getStat().getMpConsume(skill))/divisor));
-
-                        if (Config.DEBUG)
-                            System.out.print("Mob detect buff.\n");
-                    }
-                }
-
-                if (((L2PcInstance)target).isInParty() && skill != null && skill.getTargetType() == L2Skill.SkillTargetType.TARGET_PARTY)
-                {
-                    List<L2PcInstance> members = ((L2PcInstance)target).getParty().getPartyMembers();
-
-                    for (L2PcInstance member : members)
-                    {
-                        if (member == actor)
-                        {
-                            if ((getMaxHp()/3) < (int)(((getHating(target)-getHating(actor))+800)/divisor))
-                                addDamageHate(actor, 0, (getMaxHp()/3));
-                            else
-                                addDamageHate(actor, 0, (int)(((getHating(target)-getHating(actor))+800)/divisor));
-
-                            if (Config.DEBUG)
-                                System.out.print("Mob detect party cast.\n");
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
     /**
      * Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList.<BR><BR>
      * 
@@ -838,14 +745,14 @@ public class L2Attackable extends L2NpcInstance
         {
             // Add new damage and aggro (=damage) to the AggroInfo object
             ai._damage += damage;
-            ai._hate += aggro;
+            ai._hate = (aggro*100)/(getLevel()+7);
         } 
         else 
         {
             // Create a AggroInfo object and Init it
             ai = new AggroInfo(attacker);
             ai._damage = damage;
-            ai._hate = aggro;
+            ai._hate = (aggro*100)/(getLevel()+7);
             
             // Add the attaker L2Character and the AggroInfo object in the _aggroList of the L2Attackable
             getAggroListRP().put(attacker, ai);

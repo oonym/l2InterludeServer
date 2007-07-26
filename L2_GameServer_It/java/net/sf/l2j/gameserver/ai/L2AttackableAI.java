@@ -353,11 +353,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     int hating = npc.getHating(target);
 
                     // Add the attacker to the L2Attackable _aggroList with 0 damage and 1 hate
-                    if (hating == 0)
-                    {
-                        npc.addDamageHate(target, 0, 1);
-                        npc.addBufferHate();
-                    }
+                    if (hating == 0) npc.addDamageHate(target, 0, 1);
                 }
             }
 
@@ -502,11 +498,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             {
                 L2Attackable npc = (L2Attackable) _actor;
                 int hate = npc.getHating(getAttackTarget());
-                if (hate > 0)
-                {
-                    npc.addDamageHate(getAttackTarget(), 0, -hate);
-                    npc.addBufferHate();
-                }
+                if (hate > 0) npc.addDamageHate(getAttackTarget(), 0, -hate);
             }
 
             // Cancel target and timeout
@@ -786,7 +778,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 
         // Add the attacker to the _aggroList of the actor
         ((L2Attackable) _actor).addDamageHate(attacker, 0, 1);
-        ((L2Attackable) _actor).addBufferHate();
 
         // Set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance
         if (!_actor.isRunning()) _actor.setRunning();
@@ -823,7 +814,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         {
             // Add the target to the actor _aggroList or update hate if already present
             me.addDamageHate(target, 0, aggro);
-            me.addBufferHate();
 
             // Get the hate of the actor against the target
             aggro = me.getHating(target);

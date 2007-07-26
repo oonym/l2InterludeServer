@@ -290,11 +290,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 				L2Attackable npc = (L2Attackable) _actor;
 				int hate = npc.getHating(getAttackTarget());
                 
-				if (hate > 0)
-                {
-					npc.addDamageHate(getAttackTarget(), 0, -hate);
-                    npc.addBufferHate();
-                }
+				if (hate > 0) npc.addDamageHate(getAttackTarget(), 0, -hate);
 			}
             
             setAttackTarget(null);
