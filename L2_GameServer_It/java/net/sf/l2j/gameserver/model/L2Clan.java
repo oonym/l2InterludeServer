@@ -89,6 +89,7 @@ public class L2Clan
 
     private ItemContainer _warehouse = new ClanWarehouse(this);
     private List<Integer> _atWarWith = new FastList<Integer>();
+    private List<Integer> _atWarAttackers = new FastList<Integer>();
 
 	private boolean _hasCrestLarge;
 
@@ -740,33 +741,6 @@ public class L2Clan
         }
     }
 
-    private void restorewars()
-    {
-     	java.sql.Connection con = null;
-        
-        try
-        {
-            con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement;
-            statement = con.prepareStatement("SELECT clan1, clan2, wantspeace1, wantspeace2 FROM clan_wars");
-            ResultSet rset = statement.executeQuery();
-            while(rset.next())
-            {
-               if(rset.getInt("clan1") == this._clanId) this.setEnemyClan(rset.getInt("clan2"));
-//               if(rset.getInt("clan2") == this._clanId) this.setEnemyClan(rset.getInt("clan1"));
-           	}
-            statement.close();
-        }
-        catch (Exception e)
-        {
-            _log.warning("could not restore clan wars data:"+e);
-        } 
-        finally 
-        {
-            try { con.close(); } catch (Exception e) {}
-        }
-    }
-    
     private void restore()
     {
         //restorewars();
@@ -839,7 +813,6 @@ public class L2Clan
             
             if (getName() != null)
             	_log.config("Restored clan data for \"" + getName() + "\" from database.");
-            restorewars();
             restoreSubPledges();
             restoreRankPrivs();
             restoreSkills();
@@ -1083,6 +1056,12 @@ public class L2Clan
     		if (_atWarWith.contains(id)) return true;
     	return false;    	
     }
+    public boolean isAtWarAttacker(Integer id)
+    {
+    	if ((_atWarAttackers != null)&&(_atWarAttackers.size() > 0))
+    		if (_atWarAttackers.contains(id)) return true;
+    	return false;    	
+    }
     public void setEnemyClan(L2Clan clan)
     {
     	Integer id = clan.getClanId();
@@ -1092,10 +1071,24 @@ public class L2Clan
     {
     	_atWarWith.add(clan);
     }
+    public void setAttackerClan(L2Clan clan)
+    {
+    	Integer id = clan.getClanId();
+    	_atWarAttackers.add(id);
+    }
+    public void setAttackerClan(Integer clan)
+    {
+    	_atWarAttackers.add(clan);
+    }
     public void deleteEnemyClan(L2Clan clan)
     {
     	Integer id = clan.getClanId();
     	_atWarWith.remove(id);
+    }
+    public void deleteAttackerClan(L2Clan clan)
+    {
+    	Integer id = clan.getClanId();
+    	_atWarAttackers.remove(id);
     }
     public int getHiredGuards(){ return _hiredGuards; }
     public void incrementHiredGuards(){ _hiredGuards++; }
@@ -1111,7 +1104,12 @@ public class L2Clan
     {
     	return _atWarWith;
     }
-    
+
+    public List<Integer> getAttackerList()
+    {
+    	return _atWarAttackers;
+    }
+
     public void broadcastClanStatus()
     {
         for(L2PcInstance member: this.getOnlineMembers(""))

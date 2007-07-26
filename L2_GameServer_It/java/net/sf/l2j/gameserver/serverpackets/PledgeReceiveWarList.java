@@ -28,10 +28,12 @@ public class PledgeReceiveWarList extends L2GameServerPacket
 {
 	private static final String _S__FE_3E_PLEDGERECEIVEWARELIST = "[S] FE:3E PledgeReceiveWarList";
 	private L2Clan _clan;
+	private int _tab;
 	
-	public PledgeReceiveWarList(L2Clan clan)
+	public PledgeReceiveWarList(L2Clan clan, int tab)
 	{
 		_clan = clan;
+		_tab = tab;
 	}
 
 	/**
@@ -43,17 +45,17 @@ public class PledgeReceiveWarList extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x3e);
 		
-		writeD(0x00); // type : 0 = enemy, 1 = attaker
+		writeD(_tab); // type : 0 = Declared, 1 = Under Attack
 		writeD(0x00); // page
-		writeD(_clan.getWarList().size());
-		for(Integer i : _clan.getWarList())
+		writeD(_tab == 0 ? _clan.getWarList().size() : _clan.getAttackerList().size());
+		for(Integer i : _tab == 0 ? _clan.getWarList() : _clan.getAttackerList())
 		{
 			L2Clan clan = ClanTable.getInstance().getClan(i);
 			if (clan == null) continue;
 			
 			writeS(clan.getName());
-			writeD(0x01); //??
-			writeD(0x00); //??
+			writeD(_tab); //??
+			writeD(_tab); //??
 		}
 	}
 

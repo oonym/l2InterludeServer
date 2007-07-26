@@ -17,8 +17,6 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.util.logging.Logger;
-
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2World;
@@ -30,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public final class RequestStopPledgeWar extends L2GameClientPacket
 {
 	private static final String _C__4F_REQUESTSTOPPLEDGEWAR = "[C] 4F RequestStopPledgeWar";
-	private static Logger _log = Logger.getLogger(RequestStopPledgeWar.class.getName());
+	//private static Logger _log = Logger.getLogger(RequestStopPledgeWar.class.getName());
 
 	private String _pledgeName;
 
@@ -69,8 +67,8 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 			return;
 		}        
 
-		_log.info("RequestStopPledgeWar: By leader or authorized player: " + playerClan.getLeaderName() + " of clan: "
-			+ playerClan.getName() + " to clan: " + _pledgeName);
+		//_log.info("RequestStopPledgeWar: By leader or authorized player: " + playerClan.getLeaderName() + " of clan: "
+		//	+ playerClan.getName() + " to clan: " + _pledgeName);
 
 		//        L2PcInstance leader = L2World.getInstance().getPlayer(clan.getLeaderName());
 		//        if(leader != null && leader.isOnline() == 0)

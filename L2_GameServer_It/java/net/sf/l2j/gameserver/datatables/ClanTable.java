@@ -103,6 +103,8 @@ public class ClanTable
 	        } finally {
 	            try { con.close(); } catch (Exception e) {}
 	        }
+
+		restorewars();
 	}
 	
 	/**
@@ -320,9 +322,9 @@ public class ClanTable
         L2Clan clan1 = ClanTable.getInstance().getClan(clanId1);
         L2Clan clan2 = ClanTable.getInstance().getClan(clanId2);
         clan1.setEnemyClan(clan2);
-        //clan2.setEnemyClan(clan1);
+        clan2.setAttackerClan(clan1);
         clan1.broadcastClanStatus();
-        //clan2.broadcastClanStatus();
+        clan2.broadcastClanStatus();
      	java.sql.Connection con = null;
         try
         {
@@ -363,9 +365,9 @@ public class ClanTable
         L2Clan clan1 = ClanTable.getInstance().getClan(clanId1);
         L2Clan clan2 = ClanTable.getInstance().getClan(clanId2);
         clan1.deleteEnemyClan(clan2);
-        //clan2.deleteEnemyClan(clan1);
+        clan2.deleteAttackerClan(clan1);
         clan1.broadcastClanStatus();
-        //clan2.broadcastClanStatus();
+        clan2.broadcastClanStatus();
         //for(L2ClanMember player: clan1.getMembers())
         //{
         //    if(player.getPlayerInstance()!=null)
@@ -425,6 +427,32 @@ public class ClanTable
             clan1.deleteEnemyClan(clan2);
             clan2.deleteEnemyClan(clan1);
             deleteclanswars(clan1.getClanId(),clan2.getClanId());
+        }
+    }
+
+    private void restorewars()
+    {
+     	java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+            statement = con.prepareStatement("SELECT clan1, clan2, wantspeace1, wantspeace2 FROM clan_wars");
+            ResultSet rset = statement.executeQuery();
+            while(rset.next())
+            {
+            	getClan(rset.getInt("clan1")).setEnemyClan(rset.getInt("clan2"));
+            	getClan(rset.getInt("clan2")).setAttackerClan(rset.getInt("clan1"));
+            }
+            statement.close();
+        }
+        catch (Exception e)
+        {
+            _log.warning("could not restore clan wars data:"+e);
+        } 
+        finally 
+        {
+            try { con.close(); } catch (Exception e) {}
         }
     }
 }
