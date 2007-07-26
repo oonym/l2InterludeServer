@@ -231,34 +231,72 @@ public class Wedding implements IVoicedCommandHandler
         partner = (L2PcInstance)L2World.getInstance().findObject(activeChar.getPartnerId());
         if(partner == null)
         {
-            activeChar.sendPacket(SystemMessage.sendString("Your partner is not online."));
+            activeChar.sendMessage("Your partner is not online.");
             return false;
         }
         else if(partner.isInJail())
         {
-            activeChar.sendPacket(SystemMessage.sendString("Your partner is in Jail."));
+            activeChar.sendMessage("Your partner is in Jail.");
             return false;
         }
         else if(partner.isInOlympiadMode())
         {
-            activeChar.sendPacket(SystemMessage.sendString("Your partner is in the Olympiad now."));
+            activeChar.sendMessage("Your partner is in the Olympiad now.");
+            return false;
+        }
+        else if(partner.atEvent)
+        {
+            activeChar.sendMessage("Your partner is in an event.");
+            return false;
+        }
+        else  if (partner.isInDuel())
+        {
+            activeChar.sendMessage("Your partner is in a duel.");
+            return false;
+        }
+        else if (partner.isFestivalParticipant()) 
+        {
+            activeChar.sendMessage("Your partner is in a festival.");
+            return false;
+        }
+        //else if (partner.isInParty() && partner.getParty().isInDimensionalRift()) 
+        //{
+        //    activeChar.sendMessage("Your partner is in dimensional rift.");
+        //    return false;
+        //}
+        
+        
+        else if(activeChar.isInJail())
+        {
+            activeChar.sendMessage("You are in Jail!");
+            return false;
+        }
+        else if(activeChar.isInOlympiadMode())
+        {
+            activeChar.sendMessage("You are in the Olympiad now.");
             return false;
         }
         else if(activeChar.atEvent)
-		{
-        	activeChar.sendPacket(SystemMessage.sendString("Your partner is in an event."));
-			return false;
-		}
+        {
+            activeChar.sendMessage("You are in an event.");
+            return false;
+        }
         else  if (activeChar.isInDuel())
         {
-        	activeChar.sendPacket(SystemMessage.sendString("Your partner is in a duel."));
+            activeChar.sendMessage("You are in a duel!");
             return false;
         }
         else if (activeChar.isFestivalParticipant()) 
         {
-            activeChar.sendPacket(SystemMessage.sendString("Your partner is in a festival."));
+            activeChar.sendMessage("You are in a festival.");
             return false;
         }
+        //else if (activeChar.isInParty() && activeChar.getParty().isInDimensionalRift()) 
+        //{
+        //    activeChar.sendMessage("You are in the dimensional rift.");
+        //    return false;
+        //}
+        
         
         int teleportTimer = Config.L2JMOD_WEDDING_TELEPORT_DURATION*1000;
         
@@ -276,7 +314,7 @@ public class Wedding implements IVoicedCommandHandler
         activeChar.sendPacket(sg);
         //End SoE Animation section
 
-        EscapeFinalizer ef = new EscapeFinalizer(activeChar,partner.getX(),partner.getY(),partner.getZ());
+        EscapeFinalizer ef = new EscapeFinalizer(activeChar,partner.getX(),partner.getY(),partner.getZ(),partner.isIn7sDungeon());
         // continue execution later
         activeChar.setSkillCast(ThreadPoolManager.getInstance().scheduleGeneral(ef, teleportTimer));
         activeChar.setSkillCastEndTime(10+GameTimeController.getGameTicks()+teleportTimer/GameTimeController.MILLIS_IN_TICK);
@@ -290,13 +328,15 @@ public class Wedding implements IVoicedCommandHandler
         private int _partnerx;
         private int _partnery;
         private int _partnerz;
+        private boolean _to7sDungeon;
         
-        EscapeFinalizer(L2PcInstance activeChar,int x,int y,int z)
+        EscapeFinalizer(L2PcInstance activeChar, int x, int y, int z, boolean to7sDungeon)
         {
             _activeChar = activeChar;
-            this._partnerx=x;
-            this._partnery=y;
-            this._partnerz=z;
+            _partnerx = x;
+            _partnery = y;
+            _partnerz = z;
+            _to7sDungeon = to7sDungeon;
         }
         
         public void run()
@@ -304,7 +344,7 @@ public class Wedding implements IVoicedCommandHandler
             if (_activeChar.isDead()) 
                 return; 
             
-            _activeChar.setIsIn7sDungeon(false);
+            _activeChar.setIsIn7sDungeon(_to7sDungeon);
             
             _activeChar.enableAllSkills();
             
