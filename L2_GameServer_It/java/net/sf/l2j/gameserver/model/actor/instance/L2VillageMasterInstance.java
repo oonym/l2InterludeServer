@@ -663,9 +663,10 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         player.sendPacket(sm);
         if(pledgeType != L2Clan.SUBUNIT_ACADEMY)
         {
-        L2ClanMember leaderSubPledge = clan.getClanMember(leaderName);
-        leaderSubPledge.getPlayerInstance().setPledgeClass(leaderSubPledge.calculatePledgeClass(leaderSubPledge.getPlayerInstance()));
-        leaderSubPledge.getPlayerInstance().sendPacket(new UserInfo(leaderSubPledge.getPlayerInstance()));
+        	L2ClanMember leaderSubPledge = clan.getClanMember(leaderName);
+        	if (leaderSubPledge.getPlayerInstance() == null) return;
+        	leaderSubPledge.getPlayerInstance().setPledgeClass(leaderSubPledge.calculatePledgeClass(leaderSubPledge.getPlayerInstance()));
+        	leaderSubPledge.getPlayerInstance().sendPacket(new UserInfo(leaderSubPledge.getPlayerInstance()));
         }
     }
 
