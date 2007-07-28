@@ -114,7 +114,7 @@ public class ShortCuts
     {
         L2ShortCut old = _shortCuts.remove(slot+page*12);
         
-		if (old == null)
+		if (old == null || _owner == null)
 			return;
 		deleteShortCutFromDb(old);
 		if (old.getType() == L2ShortCut.TYPE_ITEM)
