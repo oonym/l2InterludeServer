@@ -899,7 +899,7 @@ public final class Formulas
 			// Mother Tree effect is calculated at last
 			if (player.getInMotherTreeZone()) mpRegenBonus += 1;
             
-            if (player.getIsInClanHall() == 2)
+            if (player.getIsInClanHall() == 2 && player.getClan() != null)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
             	if (clanHallIndex > 0)
