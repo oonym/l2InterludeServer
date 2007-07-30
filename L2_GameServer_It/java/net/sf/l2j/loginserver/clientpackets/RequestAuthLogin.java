@@ -165,9 +165,8 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		catch (HackingException e)
 		{
 			InetAddress address = this.getClient().getConnection().getSocketChannel().socket().getInetAddress();
-			// TODO Make the duration configurable
-			lc.addBanForAddress(address, 5*60*1000);
-			_log.info("Banned ("+address+") for "+(5*60)+" seconds, due to "+e.getConnects()+" incorrect login attempts.");
+			lc.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
+			_log.info("Banned ("+address+") for "+Config.LOGIN_BLOCK_AFTER_BAN+" seconds, due to "+e.getConnects()+" incorrect login attempts.");
 		}
 	}
 }

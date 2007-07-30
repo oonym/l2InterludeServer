@@ -388,13 +388,13 @@ public class AutoSpawnHandler
 		{
 			if (isSpawnRegistered(id))
 				return _registeredSpawns.get(id);
-		} else
+		}
+		else
 		{
 			for (AutoSpawnInstance spawnInst : _registeredSpawns.values())
 				if (spawnInst.getNpcId() == id)
 					return spawnInst;
 		}
-
 		return null;
 	}
 

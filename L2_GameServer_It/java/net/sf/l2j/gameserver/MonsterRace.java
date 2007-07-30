@@ -60,14 +60,14 @@ public class MonsterRace
         for (int i=0; i<8; i++)
         {
             int id = 31003;
-            random = Rnd.get(25);
+            random = Rnd.get(24);
             while(true)
             {
                 for (int j=i-1; j>=0; j--)
                 {
                     if (_monsters[j].getTemplate().npcId == (id + random))
                     {
-                        random = Rnd.get(25);
+                        random = Rnd.get(24);
                         continue;
                     }
                 }

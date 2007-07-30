@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.clientpackets.Say2;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -123,31 +124,16 @@ public class Announcements
 	
 	public void listAnnouncements(L2PcInstance activeChar)
 	{		
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		
-        TextBuilder replyMSG = new TextBuilder("<html><body>");
-		replyMSG.append("<table width=260><tr>");
-		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-		replyMSG.append("<td width=180><center>Announcement Menu</center></td>");
-		replyMSG.append("<td width=40><button value=\"Back\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-		replyMSG.append("</tr></table>");
-		replyMSG.append("<br><br>");
-		replyMSG.append("<center>Add or announce a new announcement:</center>");
-		replyMSG.append("<center><multiedit var=\"new_announcement\" width=240 height=30></center><br>");
-		replyMSG.append("<center><table><tr><td>");
-		replyMSG.append("<button value=\"Add\" action=\"bypass -h admin_add_announcement $new_announcement\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td><td>");
-		replyMSG.append("<button value=\"Announce\" action=\"bypass -h admin_announce_menu $new_announcement\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td><td>");
-		replyMSG.append("<button value=\"Reload\" action=\"bypass -h admin_announce_announcements\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
-		replyMSG.append("</td></tr></table></center>");
-		replyMSG.append("<br>");
+        String content = HtmCache.getInstance().getHtmForce("data/html/admin/announce.htm");
+        NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+        adminReply.setHtml(content);
+        TextBuilder replyMSG = new TextBuilder("<br>");
 		for (int i = 0; i < _announcements.size(); i++)
 		{
 			replyMSG.append("<table width=260><tr><td width=220>" + _announcements.get(i) + "</td><td width=40>");
 			replyMSG.append("<button value=\"Delete\" action=\"bypass -h admin_del_announcement " + i + "\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr></table>");
 		}
-		replyMSG.append("</body></html>");
-		
-		adminReply.setHtml(replyMSG.toString());
+        adminReply.replace("%announces%", replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
 	

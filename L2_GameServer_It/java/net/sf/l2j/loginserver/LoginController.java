@@ -659,8 +659,7 @@ public class LoginController
 
 			if (failedCount >= Config.LOGIN_TRY_BEFORE_BAN)
 			{
-				// TODO Configurable ban duration (10 mins for now)
-				this.addBanForAddress(address, 10*60*1000);
+				this.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
 			}
 		}
 		else

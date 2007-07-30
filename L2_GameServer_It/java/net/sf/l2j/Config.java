@@ -58,8 +58,10 @@ public final class Config
     public static int PORT_LOGIN;
     /** Login Server bind ip */
     public static String LOGIN_BIND_ADDRESS;
-    /** Number of trys of login before ban */
+    /** Number of login tries before IP ban gets activated, default 10*/
     public static int LOGIN_TRY_BEFORE_BAN;
+    /** Number of seconds the IP ban will last, default 10 minutes */
+    public static int LOGIN_BLOCK_AFTER_BAN;
     /** Hostname of the Game Server */
     public static String GAMESERVER_HOSTNAME;
 
@@ -1103,6 +1105,7 @@ public final class Config
 
                 PORT_LOGIN              = Integer.parseInt(serverSettings.getProperty("LoginserverPort", "2106"));
                 LOGIN_TRY_BEFORE_BAN    = Integer.parseInt(serverSettings.getProperty("LoginTryBeforeBan", "10"));
+                LOGIN_BLOCK_AFTER_BAN    = Integer.parseInt(serverSettings.getProperty("LoginBlockAfterBan", "600"));
 
                 GAME_SERVER_LOGIN_PORT  = Integer.parseInt(serverSettings.getProperty("LoginPort","9014"));
                 GAME_SERVER_LOGIN_HOST  = serverSettings.getProperty("LoginHost","127.0.0.1");
