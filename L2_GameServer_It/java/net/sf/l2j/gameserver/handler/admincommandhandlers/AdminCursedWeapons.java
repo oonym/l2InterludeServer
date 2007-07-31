@@ -19,6 +19,8 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -26,112 +28,132 @@ import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.CursedWeapon;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class handles following admin commands:
- * - kill = kills target L2Character
- * 
- * @version $Revision: 1.1.6.3 $ $Date: 2005/04/11 10:06:06 $
+ * - cw_info = displays cursed weapon status
+ * - cw_remove = removes a cursed weapon from the world, item id or name must be provided
+ * - cw_add = adds a cursed weapon into the world, item id or name must be provided. Target will be the weilder
+ * - cw_goto = teleports GM to the specified cursed weapon
+ * - cw_reload = reloads instance manager
+ * @version $Revision: 1.1.6.3 $ $Date: 2007/07/31 10:06:06 $
  */
 public class AdminCursedWeapons implements IAdminCommandHandler {
-    //private static Logger _log = Logger.getLogger(AdminBan.class.getName());
-    private static final String[] ADMIN_COMMANDS = {"admin_cw_infos", "admin_cw_remove", "admin_cw_goto", "admin_cw_reload", "admin_cw_add"};
-    private static final int REQUIRED_LEVEL = Config.GM_MIN;
+	//private static Logger _log = Logger.getLogger(AdminBan.class.getName());
+	private static final String[] ADMIN_COMMANDS = {"admin_cw_info", "admin_cw_remove", "admin_cw_goto", "admin_cw_reload", "admin_cw_add"};
+	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
-    {
-        if (!Config.ALT_PRIVILEGES_ADMIN)
-        {
-            if (!(checkLevel(activeChar.getAccessLevel())))
-            {
-                return false;
-            }
-        }
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	{
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+			if (!(checkLevel(activeChar.getAccessLevel())))
+				return false;
 
-        CursedWeaponsManager cwm = CursedWeaponsManager.getInstance();
-    	       
-        StringTokenizer st = new StringTokenizer(command);
-        st.nextToken();
-        if (command.startsWith("admin_cw_infos"))
-        {
-        	activeChar.sendMessage("Infos on Cursed Weapons:");
-        	for (CursedWeapon cw : cwm.getCursedWeapons())
-        	{
-        		activeChar.sendMessage("> "+cw.getName()+" ("+cw.getItemId()+")");
-	        	if (cw.isActivated())
-	        	{
-	            	L2PcInstance pl = cw.getPlayer();
-	        		activeChar.sendMessage("  Player holding: "+pl.getName());
-	        		activeChar.sendMessage("    Player karma: "+cw.getPlayerKarma());
-	        		activeChar.sendMessage("    Time Remaing: "+(cw.getTimeLeft()/60000)+" min.");
-	        		activeChar.sendMessage("    Kills done: "+cw.getNbKills());
-	        	} else if (cw.isDropped())
-	        	{
-	        		activeChar.sendMessage("  Only dropped on the ground.");
-	        		activeChar.sendMessage("    Time Remaing: "+(cw.getTimeLeft()/60000)+" min.");
-	        		activeChar.sendMessage("    Kills done: "+cw.getNbKills());
-	        	} else
-	        	{
-	            	activeChar.sendMessage("  Didn't exist in the world.");
-	        	}
-	        	activeChar.sendMessage("----------------------");
-        	}
-        }
-        else if (command.startsWith("admin_cw_remove "))
-        {
-        	int id = Integer.parseInt(st.nextToken());
-        	CursedWeapon cw = cwm.getCursedWeapon(id);
-        	
-        	if (cw != null)
-        		cw.endOfLife();
-        	else
-        		activeChar.sendMessage("Unknown cursed weapon ID.");
-        }
-        else if (command.startsWith("admin_cw_goto "))
-        {
-        	int id = Integer.parseInt(st.nextToken());
-        	CursedWeapon cw = cwm.getCursedWeapon(id);
-        	
-        	if (cw != null)
-        		cw.goTo(activeChar);
-        	else
-        		activeChar.sendMessage("Unknown cursed weapon ID.");
-        } else if (command.startsWith("admin_cw_reload"))
-        {
-        	cwm.reload();
-        } else if (command.startsWith("admin_cw_add"))
-        {
-        	int id = Integer.parseInt(st.nextToken());
-        	CursedWeapon cw = cwm.getCursedWeapon(id);
-        	
-        	if (cw != null)
-        	{
-	        	if (cw.isActive()) activeChar.sendMessage("This cursed weapon is already active.");
-	        	else 
-        		{
-        			L2Object target = activeChar.getTarget();
-        			if (target != null && target instanceof L2PcInstance)
-        				((L2PcInstance)target).addItem("AdminCursedWeaponAdd", id, 1, target, true);
-        			else 
-        				activeChar.addItem("AdminCursedWeaponAdd", id, 1, activeChar, true);
-        		}
-	        		
-        	}
-        	else
-        		activeChar.sendMessage("Unknown cursed weapon ID.");
-        } else
-        {
-    		activeChar.sendMessage("Unknown command.");
-        }
+		CursedWeaponsManager cwm = CursedWeaponsManager.getInstance();
+		int id=0;
 
-        return true;
-    }
-    
-    public String[] getAdminCommandList() {
-        return ADMIN_COMMANDS;
-    }
-    
-    private boolean checkLevel(int level) {
-        return (level >= REQUIRED_LEVEL);
-    }
+		StringTokenizer st = new StringTokenizer(command);
+		st.nextToken();
+
+		if (command.startsWith("admin_cw_info"))
+		{
+			activeChar.sendMessage("======= Cursed Weapons: =======");
+			for (CursedWeapon cw : cwm.getCursedWeapons())
+			{
+				activeChar.sendMessage("> "+cw.getName()+" ("+cw.getItemId()+")");
+				if (cw.isActivated())
+				{
+					L2PcInstance pl = cw.getPlayer();
+					activeChar.sendMessage("  Player holding: "+pl.getName());
+					activeChar.sendMessage("    Player karma: "+cw.getPlayerKarma());
+					activeChar.sendMessage("    Time Remaining: "+(cw.getTimeLeft()/60000)+" min.");
+					activeChar.sendMessage("    Kills : "+cw.getNbKills());
+				} else if (cw.isDropped())
+				{
+					activeChar.sendMessage("  Lying on the ground.");
+					activeChar.sendMessage("    Time Remaining: "+(cw.getTimeLeft()/60000)+" min.");
+					activeChar.sendMessage("    Kills : "+cw.getNbKills());
+				} else
+				{
+					activeChar.sendMessage("  Don't exist in the world.");
+				}
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
+			}
+		}
+		else if (command.startsWith("admin_cw_reload"))
+		{
+			cwm.reload();
+		}
+		else
+		{
+			CursedWeapon cw=null;
+			try
+			{
+				String parameter = st.nextToken();
+				Pattern pattern = Pattern.compile("[0-9]*");
+				Matcher regexp = pattern.matcher(parameter);
+				if (regexp.matches())
+					id = Integer.parseInt(parameter);
+				else 
+				{
+					parameter = parameter.replace('_', ' ');
+					for (CursedWeapon cwp : cwm.getCursedWeapons())
+					{
+						if (cwp.getName().toLowerCase().contains(parameter.toLowerCase()))
+						{
+							id=cwp.getItemId();
+							break;
+						}
+					}
+				}
+				cw = cwm.getCursedWeapon(id);
+				if (cw==null)
+				{
+					activeChar.sendMessage("Unknown cursed weapon ID.");
+					return false;
+				}
+			}
+			catch (Exception e)
+			{
+				activeChar.sendMessage("Usage: //cw_remove|//cw_goto|//cw_add <itemid|name>");
+			}
+
+			if (command.startsWith("admin_cw_remove "))
+			{
+				cw.endOfLife();
+			}
+			else if (command.startsWith("admin_cw_goto "))
+			{
+				cw.goTo(activeChar);
+			} 
+			else if (command.startsWith("admin_cw_add"))
+			{
+				if (cw.isActive())
+					activeChar.sendMessage("This cursed weapon is already active.");
+				else 
+				{
+					L2Object target = activeChar.getTarget();
+					if (target != null && target instanceof L2PcInstance)
+						((L2PcInstance)target).addItem("AdminCursedWeaponAdd", id, 1, target, true);
+					else 
+						activeChar.addItem("AdminCursedWeaponAdd", id, 1, activeChar, true);
+				}
+			}
+			else
+			{
+				activeChar.sendMessage("Unknown command.");
+			}
+		}
+		return true;
+	}
+
+	public String[] getAdminCommandList() {
+		return ADMIN_COMMANDS;
+	}
+
+	private boolean checkLevel(int level) {
+		return (level >= REQUIRED_LEVEL);
+	}
 }

@@ -160,7 +160,25 @@ public enum SystemMessageId
      * Message: Your opponent's MP was reduced by $s1.
      */
     YOUR_OPPONENTS_MP_WAS_REDUCED_BY_S1(1867),
-    
+	
+    /**
+	 * ID: 50<br>
+	 * Message: Your target cannot be found.
+	 */
+	TARGET_CANT_FOUND(50),
+	
+    /**
+     * ID: 51<br>
+     * Message: You cannot use this on yourself.
+     */
+	CANNOT_USE_ON_YOURSELF(51),
+	
+    /**
+     * ID: 52<br>
+     * Message: You have earned $s1 adena.
+     */
+	EARNED_ADENA(52),
+	
     /**
      * ID: 53<br>
      * Message: You have earned $s2 $s1(s).
@@ -172,12 +190,6 @@ public enum SystemMessageId
      * Message: You have earned $s1.
      */
     EARNED_ITEM(54),
-    
-    /**
-     * ID: 52<br>
-     * Message: You have earned $s1 adena.
-     */
-	EARNED_ADENA(52),
 	
 	/**
 	 * ID: 301<br>
@@ -310,12 +322,6 @@ public enum SystemMessageId
 	 * Message: That player is not online.
 	 */
 	TARGET_IS_NOT_FOUND_IN_THE_GAME(145),
-	
-	/**
-	 * ID: 50<br>
-	 * Message: Your target cannot be found.
-	 */
-	TARGET_CANT_FOUND(50),
 	
 	/**
 	 * ID: 234<br>

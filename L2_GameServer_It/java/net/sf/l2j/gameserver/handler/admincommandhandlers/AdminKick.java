@@ -26,47 +26,33 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.LeaveWorld;
-import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class AdminKick implements IAdminCommandHandler {
-    //private static Logger _log = Logger.getLogger(AdminKick.class.getName());
     private static final String[] ADMIN_COMMANDS = {"admin_kick" ,"admin_kick_non_gm"};
     private static final int REQUIRED_LEVEL = Config.GM_KICK;
 	
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
-
         if (!Config.ALT_PRIVILEGES_ADMIN)
-        {
     		if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-            {
-                //System.out.println("Not required level");
                 return false;
-            }
-        }
+
 		String target = (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target");
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
         
         if (command.startsWith("admin_kick"))
         {
-            //System.out.println("ADMIN KICK");
             StringTokenizer st = new StringTokenizer(command);
-            //System.out.println("Tokens: "+st.countTokens());
             if (st.countTokens() > 1)
             {
                 st.nextToken();
                 String player = st.nextToken();
-                //System.out.println("Player1 "+player);
                 L2PcInstance plyr = L2World.getInstance().getPlayer(player);
                 if (plyr != null)
                 {
-                    //System.out.println("Player2 "+plyr.getName());
                     plyr.logout();
-    				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-    				sm.addString("You kicked " + plyr.getName() + " from the game.");
-    				activeChar.sendPacket(sm);
+    				activeChar.sendMessage("You kicked " + plyr.getName() + " from the game.");
     				RegionBBSManager.getInstance().changeCommunityBoard();
                 }
             }
