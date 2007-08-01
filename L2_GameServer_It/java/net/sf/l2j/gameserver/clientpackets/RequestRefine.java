@@ -167,6 +167,10 @@ public final class RequestRefine extends L2GameClientPacket
 		}
 
 		if (gemstoneItem.getCount()-modifyGemstoneCount < 0) return false;
+
+		// consume the life stone
+		if (!player.destroyItem("RequestRefine", refinerItem, null, false))
+			return false;
 		
 		// Prepare inventory update
 		InventoryUpdate iu = new InventoryUpdate();
@@ -182,9 +186,6 @@ public final class RequestRefine extends L2GameClientPacket
 			iu.addModifiedItem(gemstoneItem);
 		}
 		
-		// consume the life stone
-		player.destroyItem("RequestRefine", refinerItem, null, false);
-
 		// generate augmentation
 		targetItem.setAugmentation(AugmentationData.getInstance().generateRandomAugmentation(targetItem, lifeStoneLevel, lifeStoneGrade));
 
