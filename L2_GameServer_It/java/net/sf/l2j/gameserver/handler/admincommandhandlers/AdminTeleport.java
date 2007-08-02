@@ -155,8 +155,8 @@ public class AdminTeleport implements IAdminCommandHandler
             }
             catch (StringIndexOutOfBoundsException e)
             {
-                //Case of empty co-ordinates
-                activeChar.sendMessage("Wrong or no Co-ordinates given.");
+                //Case of empty or missing coordinates
+                AdminHelpPage.showHelpPage(activeChar, "teleports.htm");
             }		
         }
         else if (command.startsWith("admin_teleport_character"))
@@ -170,9 +170,8 @@ public class AdminTeleport implements IAdminCommandHandler
             }
             catch (StringIndexOutOfBoundsException e)
             {
-                //Case of empty co-ordinates
-                activeChar.sendMessage("Wrong or no Co-ordinates given.");
-                
+                //Case of empty coordinates
+                activeChar.sendMessage("Wrong or no Coordinates given.");
                 showTeleportCharWindow(activeChar); //back to character teleport
             }
         }
@@ -210,143 +209,36 @@ public class AdminTeleport implements IAdminCommandHandler
         {
             showTeleportWindow(activeChar);
         }
-        else if (command.equals("admin_goup"))
+        else if (command.startsWith("admin_go"))
         {
-            int x = activeChar.getX();
-            int y = activeChar.getY();
-            int z = activeChar.getZ()+150;
+        	int intVal=150;
+        	int x = activeChar.getX(),y = activeChar.getY(),z = activeChar.getZ();
+            try
+            {
+        	String val = command.substring(8);
+        	StringTokenizer st = new StringTokenizer(val);
+        	String dir=st.nextToken();
+        	if (st.hasMoreTokens())
+        		intVal = Integer.parseInt(st.nextToken());
+        	if (dir.equals("east"))
+        		x+=intVal;
+        	else if (dir.equals("west"))
+        		x-=intVal;
+        	else if (dir.equals("north"))
+        		y-=intVal;
+        	else if (dir.equals("south"))
+        		y+=intVal;
+        	else if (dir.equals("up"))
+        		z+=intVal;
+        	else if (dir.equals("down"))
+        		z-=intVal;
             activeChar.teleToLocation(x, y, z, false);
             showTeleportWindow(activeChar);
-        }
-        else if (command.startsWith("admin_goup"))
-        {
-            try
-            {
-            	String val = command.substring(11);
-                int intVal = Integer.parseInt(val);
-                int x = activeChar.getX();
-                int y = activeChar.getY();
-                int z = activeChar.getZ()+intVal;
-                activeChar.teleToLocation(x, y, z, false);
-                showTeleportWindow(activeChar);
             }
-            catch (StringIndexOutOfBoundsException e) {}
-            catch (NumberFormatException nfe) {}
-        }
-        else if (command.equals("admin_godown"))
-        {
-            int x = activeChar.getX();
-            int y = activeChar.getY();
-            int z = activeChar.getZ();
-            activeChar.teleToLocation(x, y, z - 150, false);
-            showTeleportWindow(activeChar);
-        }
-        else if (command.startsWith("admin_godown"))
-        {
-            try
+            catch (Exception e) 
             {
-            	String val = command.substring(13);
-                int intVal = Integer.parseInt(val);
-                int x = activeChar.getX();
-                int y = activeChar.getY();
-                int z = activeChar.getZ()-intVal;
-                activeChar.teleToLocation(x, y, z, false);
-                showTeleportWindow(activeChar);
+            	activeChar.sendMessage("Usage: //go<north|south|east|west|up|down> [offset] (default 150)");
             }
-            catch (StringIndexOutOfBoundsException e) {}
-            catch (NumberFormatException nfe) {}
-        }
-        else if (command.equals("admin_goeast"))
-        {
-            int x = activeChar.getX();
-            int y = activeChar.getY();
-            int z = activeChar.getZ();
-            activeChar.teleToLocation(x+150, y, z, false);
-            showTeleportWindow(activeChar);
-        }
-        else if (command.startsWith("admin_goeast"))
-        {
-            try
-            {
-            	String val = command.substring(13);
-                int intVal = Integer.parseInt(val);
-                int x = activeChar.getX()+intVal;
-                int y = activeChar.getY();
-                int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z, false);
-                showTeleportWindow(activeChar);
-            }
-            catch (StringIndexOutOfBoundsException e) {}
-            catch (NumberFormatException nfe) {}
-        }
-        else if (command.equals("admin_gowest"))
-        {
-            int x = activeChar.getX();
-            int y = activeChar.getY();
-            int z = activeChar.getZ();
-            activeChar.teleToLocation(x-150, y, z, false);
-            showTeleportWindow(activeChar);
-        }
-        else if (command.startsWith("admin_gowest"))
-        {
-            try
-            {
-            	String val = command.substring(13);
-                int intVal = Integer.parseInt(val);
-                int x = activeChar.getX()-intVal;
-                int y = activeChar.getY();
-                int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z, false);
-                showTeleportWindow(activeChar);
-            }
-            catch (StringIndexOutOfBoundsException e) {}
-            catch (NumberFormatException nfe) {}
-        }
-        else if (command.equals("admin_gosouth"))
-        {
-            int x = activeChar.getX();
-            int y = activeChar.getY()+150;
-            int z = activeChar.getZ();
-            activeChar.teleToLocation(x, y, z, false);
-            showTeleportWindow(activeChar);
-        }
-        else if (command.startsWith("admin_gosouth"))
-        {
-            try
-            {
-            	String val = command.substring(14);
-                int intVal = Integer.parseInt(val);
-                int x = activeChar.getX();
-                int y = activeChar.getY()+intVal;
-                int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z, false);
-                showTeleportWindow(activeChar);
-            }
-            catch (StringIndexOutOfBoundsException e) {}
-            catch (NumberFormatException nfe) {}
-        }
-        else if (command.equals("admin_gonorth"))
-        {
-            int x = activeChar.getX();
-            int y = activeChar.getY();
-            int z = activeChar.getZ();
-            activeChar.teleToLocation(x, y-150, z, false);
-            showTeleportWindow(activeChar);
-        }
-        else if (command.startsWith("admin_gonorth"))
-        {
-            try
-            {
-            	String val = command.substring(14);
-                int intVal = Integer.parseInt(val);
-                int x = activeChar.getX();
-                int y = activeChar.getY()-intVal;
-                int z = activeChar.getZ();
-                activeChar.teleToLocation(x, y, z, false);
-                showTeleportWindow(activeChar);
-            }
-            catch (StringIndexOutOfBoundsException e) {}
-            catch (NumberFormatException nfe) {}
         }
         
         return true;
@@ -382,37 +274,14 @@ public class AdminTeleport implements IAdminCommandHandler
             activeChar.sendPacket(sm);
         } catch (NoSuchElementException nsee)
         {
-            activeChar.sendMessage("Wrong or no Co-ordinates given.");
+            activeChar.sendMessage("Wrong or no Coordinates given.");
         }
     }
     
     
     private void showTeleportWindow(L2PcInstance activeChar)
     {
-        
-        NpcHtmlMessage adminReply = new NpcHtmlMessage(5); 
-        
-        TextBuilder replyMSG = new TextBuilder("<html><title>Teleport Menu</title>");
-        replyMSG.append("<body>");
-        
-        replyMSG.append("<br>");
-        replyMSG.append("<center><table>");
-        
-        replyMSG.append("<tr><td><button value=\"  \" action=\"bypass -h admin_tele\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-        replyMSG.append("<td><button value=\"North\" action=\"bypass -h admin_gonorth\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-        replyMSG.append("<td><button value=\"Up\" action=\"bypass -h admin_goup\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
-        replyMSG.append("<tr><td><button value=\"West\" action=\"bypass -h admin_gowest\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-        replyMSG.append("<td><button value=\"  \" action=\"bypass -h admin_tele\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-        replyMSG.append("<td><button value=\"East\" action=\"bypass -h admin_goeast\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
-        replyMSG.append("<tr><td><button value=\"  \" action=\"bypass -h admin_tele\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-        replyMSG.append("<td><button value=\"South\" action=\"bypass -h admin_gosouth\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-        replyMSG.append("<td><button value=\"Down\" action=\"bypass -h admin_godown\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
-        
-        replyMSG.append("</table></center>");
-        replyMSG.append("</body></html>");
-        
-        adminReply.setHtml(replyMSG.toString());
-        activeChar.sendPacket(adminReply);			
+    	AdminHelpPage.showHelpPage(activeChar, "move.htm");
     }
     
     

@@ -425,7 +425,7 @@ public class LoginController
 		return false;
 	}
 
-	public void setAccountAccessLevel(String user, int banLevel)
+	public void setAccountAccessLevel(String account, int banLevel)
 	{
 		java.sql.Connection con = null;
 		PreparedStatement statement = null;
@@ -433,10 +433,10 @@ public class LoginController
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			String stmt = "UPDATE accounts, characters SET accounts.access_level = ? WHERE characters.account_name = accounts.login AND characters.char_name=?";
+			String stmt = "UPDATE accounts SET access_level=? WHERE login=?";
 			statement = con.prepareStatement(stmt);
 			statement.setInt(1, banLevel);
-			statement.setString(2, user);
+			statement.setString(2, account);
 			statement.executeUpdate();
 			statement.close();
 		}
@@ -448,14 +448,8 @@ public class LoginController
 		{
 			try
 			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-			try
-			{
 				statement.close();
+				con.close();
 			}
 			catch (Exception e)
 			{

@@ -1212,8 +1212,7 @@ public class L2Attackable extends L2NpcInstance
     	 if (Config.L2JMOD_CHAMPION_ENABLE && isChampion() && (player.getLevel() <= getLevel()) && Config.L2JMOD_CHAMPION_REWARD > 0 && (Rnd.get(100) < Config.L2JMOD_CHAMPION_REWARD))
 		 {
     		 int champqty = Rnd.get(Config.L2JMOD_CHAMPION_REWARD_QTY);
-    		 if (champqty == 0)  //do not allow for a zero drop
-    			 champqty = 1;
+   			 champqty++; //quantity should actually vary between 1 and whatever admin specified as max, inclusive.
     		 
     		 RewardItem item = new RewardItem(Config.L2JMOD_CHAMPION_REWARD_ID,champqty);
     		 if (Config.AUTO_LOOT) player.addItem("ChampionLoot", item.getItemId(), item.getCount(), this, true); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
