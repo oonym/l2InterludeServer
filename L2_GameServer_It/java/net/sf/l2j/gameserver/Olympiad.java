@@ -36,7 +36,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -57,6 +56,7 @@ import net.sf.l2j.gameserver.serverpackets.ExOlympiadUserInfo;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.StatsSet;
+import net.sf.l2j.util.Rnd;
 
 public class Olympiad
 {
@@ -157,8 +157,6 @@ public class Olympiad
      {-87466, -257752, -3331},
      {-114413, -213241, -3331}
     };
-    
-    protected static Random _rnd;
     
     private static enum COMP_TYPE
     {
@@ -1292,8 +1290,6 @@ public class Olympiad
     	
     	private Map<Integer, List<L2PcInstance>> pickOpponents(List<L2PcInstance> list) throws Exception
     	{
-    		_rnd = new Random();
-    		
     		Map<Integer, List<L2PcInstance>> result = 
     			new FastMap<Integer, List<L2PcInstance>>();
             
@@ -1315,11 +1311,11 @@ public class Olympiad
     			count++;
     			
     			List<L2PcInstance> opponents = new FastList<L2PcInstance>();
-    			first = _rnd.nextInt(list.size());
+    			first = Rnd.nextInt(list.size());
     			opponents.add(list.get(first));
     			list.remove(first);
     			
-    			second = _rnd.nextInt(list.size());
+    			second = Rnd.nextInt(list.size());
     			opponents.add(list.get(second));
     			list.remove(second);
     			

@@ -18,9 +18,8 @@
  */
 package net.sf.l2j.gameserver.skills.funcs;
 
-import java.util.Random;
-
 import net.sf.l2j.gameserver.skills.Env;
+import net.sf.l2j.util.Rnd;
 
 /**
  * @author mkizub
@@ -29,8 +28,6 @@ import net.sf.l2j.gameserver.skills.Env;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public final class LambdaRnd extends Lambda {
-
-	private static final Random _rnd = new Random();
 
 	private final Lambda _max;
 	private final boolean _linear;
@@ -42,8 +39,8 @@ public final class LambdaRnd extends Lambda {
 	}
 	public double calc(Env env) {
 		if (_linear)
-			return _max.calc(env) * _rnd.nextDouble();
-        return _max.calc(env) * _rnd.nextGaussian();
+			return _max.calc(env) * Rnd.nextDouble();
+        return _max.calc(env) * Rnd.nextGaussian();
 	}
 
 }

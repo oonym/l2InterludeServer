@@ -29,7 +29,6 @@
 package net.sf.l2j.gameserver.util;
 
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -43,6 +42,7 @@ import net.sf.l2j.gameserver.model.L2MinionData;
 import net.sf.l2j.gameserver.model.actor.instance.L2MinionInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
@@ -58,7 +58,6 @@ public class MinionList
     private final List<L2MinionInstance> minionReferences;
     protected FastMap<Long,Integer> _respawnTasks = new FastMap<Long,Integer>().setShared(true);
     private final L2MonsterInstance master;
-    private Random _rand;
 
     public MinionList(L2MonsterInstance pMaster)
     {
@@ -221,7 +220,6 @@ public class MinionList
      */
     public void spawnSingleMinion(int minionid)
     {
-        _rand = new Random();
         // Get the template of the Minion to spawn
         L2NpcTemplate minionTemplate = NpcTable.getInstance().getTemplate(minionid);
 
@@ -240,14 +238,14 @@ public class MinionList
         int spawnConstant;
         int randSpawnLim = 170;
         int randPlusMin = 1;
-        spawnConstant = _rand.nextInt(randSpawnLim);
+        spawnConstant = Rnd.nextInt(randSpawnLim);
         //randomize +/-  
-        randPlusMin = _rand.nextInt(2);
+        randPlusMin = Rnd.nextInt(2);
         if (randPlusMin == 1) spawnConstant *= -1;
         int newX = master.getX() + Math.round(spawnConstant);
-        spawnConstant = _rand.nextInt(randSpawnLim);
+        spawnConstant = Rnd.nextInt(randSpawnLim);
         //randomize +/-  
-        randPlusMin = _rand.nextInt(2);
+        randPlusMin = Rnd.nextInt(2);
         if (randPlusMin == 1) spawnConstant *= -1;
         int newY = master.getY() + Math.round(spawnConstant);
 

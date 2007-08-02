@@ -22,7 +22,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -36,6 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
+import net.sf.l2j.util.Rnd;
 
 /**
  * Auto Chat Handler 
@@ -673,8 +673,6 @@ public class AutoChatHandler implements SpawnListener
 
             public synchronized void run()
             {
-                Random rnd = new Random();
-
                 AutoChatInstance chatInst = _registeredChats.get(_runnerNpcId);
                 AutoChatDefinition[] chatDefinitions;
 
@@ -718,7 +716,7 @@ public class AutoChatHandler implements SpawnListener
                         }
 
                         int maxIndex = chatDef.getChatTexts().length;
-                        int lastIndex = rnd.nextInt(maxIndex);
+                        int lastIndex = Rnd.nextInt(maxIndex);
 
                         String creatureName = chatNpc.getName();
                         String text;
@@ -739,7 +737,7 @@ public class AutoChatHandler implements SpawnListener
 
                         if (!nearbyPlayers.isEmpty())
                         {
-                            int randomPlayerIndex = rnd.nextInt(nearbyPlayers.size());
+                            int randomPlayerIndex = Rnd.nextInt(nearbyPlayers.size());
 
                             L2PcInstance randomPlayer = nearbyPlayers.get(randomPlayerIndex);
 

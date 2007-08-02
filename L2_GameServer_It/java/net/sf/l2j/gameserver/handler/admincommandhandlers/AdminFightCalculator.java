@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
-import java.util.Random;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
@@ -34,6 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 /**
  * This class handles following admin commands:
@@ -187,7 +187,6 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			npc2 = new L2MonsterInstance(IdFactory.getInstance().getNextId(),
 					NpcTable.getInstance().getTemplate(mid2));
 		}
-		Random rnd = new Random();
 		
 		int miss1 = 0;
 		int miss2 = 0;
@@ -220,7 +219,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			if (_crit1) crit1++;
 			
 			double _patk1 = npc1.getPAtk(npc2);
-			_patk1 += rnd.nextDouble()* npc1.getRandomDamage(npc2);
+			_patk1 += Rnd.nextDouble()* npc1.getRandomDamage(npc2);
 			patk1 += _patk1;
 			
 			double _pdef1 = npc1.getPDef(npc2);
@@ -244,7 +243,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			if (_crit2) crit2++;
 			
 			double _patk2 = npc2.getPAtk(npc1);
-			_patk2 += rnd.nextDouble()* npc2.getRandomDamage(npc1);
+			_patk2 += Rnd.nextDouble()* npc2.getRandomDamage(npc1);
 			patk2 += _patk2;
 			
 			double _pdef2 = npc2.getPDef(npc1);

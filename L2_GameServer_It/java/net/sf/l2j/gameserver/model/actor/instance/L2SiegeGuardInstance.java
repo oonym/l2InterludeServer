@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.util.Random;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
@@ -36,6 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 /**
  * This class represents all guards in the world. It inherits all methods from
@@ -47,8 +47,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
 {
     @SuppressWarnings("hiding")
 	private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
-	private final Random _rnd = new Random();
-
+	
     private int _homeX;
     private int _homeY;
     private int _homeZ;
@@ -196,7 +195,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
 //					player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
 				} else 
                 {
-					SocialAction sa = new SocialAction(getObjectId(), _rnd.nextInt(8));
+					SocialAction sa = new SocialAction(getObjectId(), Rnd.nextInt(8));
 					broadcastPacket(sa);
 					sendPacket(sa);
 					showChatWindow(player, 0);

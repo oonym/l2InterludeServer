@@ -23,7 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -53,7 +52,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
 import net.sf.l2j.gameserver.util.Util;
-
+import net.sf.l2j.util.Rnd;
 
 /**
  *  Seven Signs Festival of Darkness Engine
@@ -773,7 +772,6 @@ public class SevenSignsFestival implements SpawnListener
     protected boolean _festivalInitialized;
     protected boolean _festivalInProgress;
     protected List<Integer> _accumulatedBonuses;   // The total bonus available (in Ancient Adena)
-    protected Random _rnd = new Random();
     
     private L2NpcInstance _dawnChatGuide; 
     private L2NpcInstance _duskChatGuide;
@@ -2061,17 +2059,17 @@ public class SevenSignsFestival implements SpawnListener
                     int x = _startLocation._x;
                     int y = _startLocation._y;
                     
-                    isPositive = (_rnd.nextInt(2) == 1);
+                    isPositive = (Rnd.nextInt(2) == 1);
                     
                     if (isPositive) 
                     {
-                        x += _rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
-                        y += _rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
+                        x += Rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
+                        y += Rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
                     }
                     else 
                     {
-                        x -= _rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
-                        y -= _rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
+                        x -= Rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
+                        y -= Rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
                     }
                     
                     participant.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -2161,20 +2159,20 @@ public class SevenSignsFestival implements SpawnListener
                  * maximum allowed offset are generated to prevent the mobs from all moving 
                  * to the exact same place.
                  */
-                isPositive = (_rnd.nextInt(2) == 1);
+                isPositive = (Rnd.nextInt(2) == 1);
                 
                 if (isPositive) 
                 {
-                    x += _rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
-                    y += _rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
+                    x += Rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
+                    y += Rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
                 }
                 else 
                 {
-                    x -= _rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
-                    y -= _rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
+                    x -= Rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
+                    y -= Rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
                 }
                 
-                L2CharPosition moveTo = new L2CharPosition(x, y, _startLocation._z, _rnd.nextInt(65536));
+                L2CharPosition moveTo = new L2CharPosition(x, y, _startLocation._z, Rnd.nextInt(65536));
                 
                 festivalMob.setRunning();
                 festivalMob.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, moveTo);
@@ -2240,7 +2238,7 @@ public class SevenSignsFestival implements SpawnListener
                     npcSpawn.setLocx(currSpawn._x);
                     npcSpawn.setLocy(currSpawn._y);
                     npcSpawn.setLocz(currSpawn._z);
-                    npcSpawn.setHeading(_rnd.nextInt(65536));
+                    npcSpawn.setHeading(Rnd.nextInt(65536));
                     npcSpawn.setAmount(1);
                     npcSpawn.setRespawnDelay(respawnDelay);
                     
@@ -2367,7 +2365,7 @@ public class SevenSignsFestival implements SpawnListener
             _z = z;
             
             // Generate a random heading if no positive one given.
-            _heading = (heading < 0) ? _rnd.nextInt(65536) : heading;
+            _heading = (heading < 0) ? Rnd.nextInt(65536) : heading;
             
             _npcId = -1;
         }
@@ -2378,7 +2376,7 @@ public class SevenSignsFestival implements SpawnListener
             _y = spawnData[1];
             _z = spawnData[2];
 
-            _heading = (spawnData[3] < 0) ? _rnd.nextInt(65536) : spawnData[3];
+            _heading = (spawnData[3] < 0) ? Rnd.nextInt(65536) : spawnData[3];
             
             if (spawnData.length > 4)
                 _npcId = spawnData[4];

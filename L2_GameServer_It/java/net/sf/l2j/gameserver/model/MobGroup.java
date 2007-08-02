@@ -18,7 +18,6 @@
 package net.sf.l2j.gameserver.model;
 
 import java.util.List;
-import java.util.Random;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
@@ -27,6 +26,7 @@ import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2ControllableMobInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 /**
  * @author littlecrow
@@ -38,7 +38,6 @@ public final class MobGroup
     private int _groupId;
     private int _maxMobCount;
     
-    private Random _rnd; 
     private List<L2ControllableMobInstance> _mobs;
 
     public MobGroup(int groupId, L2NpcTemplate npcTemplate, int maxMobCount) 
@@ -46,8 +45,6 @@ public final class MobGroup
         _groupId = groupId;
         _npcTemplate = npcTemplate;
         _maxMobCount = maxMobCount;
-        
-        _rnd = new Random();
     }
     
     public int getActiveMobCount()
@@ -128,10 +125,10 @@ public final class MobGroup
             {
                 L2GroupSpawn spawn = new L2GroupSpawn(getTemplate());
                 
-                int signX = (_rnd.nextInt(2) == 0) ? -1 : 1;
-                int signY = (_rnd.nextInt(2) == 0) ? -1 : 1;
-                int randX = _rnd.nextInt(MobGroupTable.RANDOM_RANGE);
-                int randY = _rnd.nextInt(MobGroupTable.RANDOM_RANGE);
+                int signX = (Rnd.nextInt(2) == 0) ? -1 : 1;
+                int signY = (Rnd.nextInt(2) == 0) ? -1 : 1;
+                int randX = Rnd.nextInt(MobGroupTable.RANDOM_RANGE);
+                int randY = Rnd.nextInt(MobGroupTable.RANDOM_RANGE);
                 
                 spawn.setLocx(x + signX * randX);
                 spawn.setLocy(y + signY * randY);
@@ -161,8 +158,8 @@ public final class MobGroup
         	
             if (!mobInst.isDead())
             {
-                int x = player.getX() + _rnd.nextInt(50);
-                int y = player.getY() + _rnd.nextInt(50);
+                int x = player.getX() + Rnd.nextInt(50);
+                int y = player.getY() + Rnd.nextInt(50);
                 
                 mobInst.teleToLocation(x, y, player.getZ(), true);
                 L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
@@ -178,7 +175,7 @@ public final class MobGroup
         if (getActiveMobCount() == 0)
             return null;
         
-        int choice = _rnd.nextInt(getActiveMobCount());
+        int choice = Rnd.nextInt(getActiveMobCount());
         return getMobs().get(choice);
     }
     
@@ -267,10 +264,10 @@ public final class MobGroup
         {
         	if (mobInst == null) continue;
         	
-            int signX = (_rnd.nextInt(2) == 0) ? -1 : 1;
-            int signY = (_rnd.nextInt(2) == 0) ? -1 : 1;
-            int randX = _rnd.nextInt(MobGroupTable.RANDOM_RANGE);
-            int randY = _rnd.nextInt(MobGroupTable.RANDOM_RANGE);
+            int signX = (Rnd.nextInt(2) == 0) ? -1 : 1;
+            int signY = (Rnd.nextInt(2) == 0) ? -1 : 1;
+            int randX = Rnd.nextInt(MobGroupTable.RANDOM_RANGE);
+            int randY = Rnd.nextInt(MobGroupTable.RANDOM_RANGE);
 
             L2ControllableMobAI ai = (L2ControllableMobAI)mobInst.getAI();
             ai.move(activeChar.getX() + signX * randX, activeChar.getY() + signY * randY, activeChar.getZ());

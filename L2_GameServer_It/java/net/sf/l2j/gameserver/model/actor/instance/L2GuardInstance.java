@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.util.Random;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
@@ -36,6 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 /**
  * This class manages all Guards in the world.
@@ -79,8 +79,7 @@ public final class L2GuardInstance extends L2Attackable
 		super(objectId, template);
 		this.getKnownList();	// init knownlist
         
-        Random rnd = new Random();
-        ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new ReturnTask(),RETURN_INTERVAL,RETURN_INTERVAL+rnd.nextInt(60000));
+        ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new ReturnTask(),RETURN_INTERVAL,RETURN_INTERVAL+Rnd.nextInt(60000));
 	}
 
     public final GuardKnownList getKnownList()
@@ -238,8 +237,7 @@ public final class L2GuardInstance extends L2Attackable
 				{	
 					// Send a Server->Client packet SocialAction to the all L2PcInstance on the _knownPlayer of the L2NpcInstance
 					// to display a social action of the L2GuardInstance on their client
-					Random rnd = new Random();
-					SocialAction sa = new SocialAction(getObjectId(), rnd.nextInt(8));
+					SocialAction sa = new SocialAction(getObjectId(), Rnd.nextInt(8));
 					broadcastPacket(sa);
 					
 					

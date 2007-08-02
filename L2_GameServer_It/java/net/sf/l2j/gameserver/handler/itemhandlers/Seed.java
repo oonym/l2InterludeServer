@@ -18,8 +18,6 @@
  */
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
-import java.util.Random;
-
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
@@ -32,6 +30,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.util.Rnd;
 
 public class Seed implements IItemHandler
 {
@@ -166,8 +165,7 @@ public class Seed implements IItemHandler
         if(basicSuccess < 1)
             basicSuccess = 1;
         
-        Random rnd = new Random();
-        int rate = rnd.nextInt(99);
+        int rate = Rnd.nextInt(99);
         
         if(rate < basicSuccess)
             return true;

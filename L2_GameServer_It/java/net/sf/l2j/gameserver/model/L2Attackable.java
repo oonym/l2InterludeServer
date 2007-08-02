@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.model;
 
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
@@ -56,6 +55,7 @@ import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2EtcItemType;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
+import net.sf.l2j.util.Rnd;
 import net.sf.l2j.util.Rnd;
 
 /**
@@ -2006,8 +2006,7 @@ public class L2Attackable extends L2NpcInstance
         // hi-lvl mobs bonus
         if (diff > 0 && diff < 5)//Config.MANOR_HARVEST_DIFF_BONUS)
         {
-            Random rnd = new Random();
-            count += rnd.nextInt(diff);
+            count += Rnd.nextInt(diff);
         }
 
         List<RewardItem> harvested = new FastList<RewardItem>();

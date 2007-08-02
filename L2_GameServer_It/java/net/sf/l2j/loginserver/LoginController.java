@@ -29,7 +29,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -45,6 +44,7 @@ import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
 import net.sf.l2j.loginserver.crypt.ScrambledKeyPair;
 import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
@@ -71,8 +71,6 @@ public class LoginController
 	private Map<InetAddress, FailedLoginAttempt> _hackProtection;
 
 	protected ScrambledKeyPair[] _keyPairs;
-
-	private Random _rnd = new Random();
 
 	protected byte[][] _blowfishKeys;
 	private static final int BLOWFISH_KEYS = 20;
@@ -142,7 +140,7 @@ public class LoginController
 		{
 			for (int j = 0; j < _blowfishKeys[i].length; j++)
 			{
-				_blowfishKeys[i][j] = (byte) (_rnd.nextInt(255)+1);
+				_blowfishKeys[i][j] = (byte) (Rnd.nextInt(255)+1);
 			}
 		}
 		_log.info("Stored "+_blowfishKeys.length+" keys for Blowfish communication");
@@ -176,7 +174,7 @@ public class LoginController
 	{
 		SessionKey key;
 
-		key = new SessionKey(_rnd.nextInt(), _rnd.nextInt(), _rnd.nextInt(), _rnd.nextInt());
+		key = new SessionKey(Rnd.nextInt(), Rnd.nextInt(), Rnd.nextInt(), Rnd.nextInt());
 		_loginServerClients.put(account, client);
 		return key;
 	}
@@ -510,7 +508,7 @@ public class LoginController
 	 */
 	public ScrambledKeyPair getScrambledRSAKeyPair()
 	{
-		return _keyPairs[_rnd.nextInt(10)];
+		return _keyPairs[Rnd.nextInt(10)];
 	}
 
 	/**

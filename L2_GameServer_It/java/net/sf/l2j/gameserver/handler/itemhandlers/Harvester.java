@@ -18,8 +18,6 @@
  */
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
-import java.util.Random;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -31,6 +29,7 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.util.Rnd;
 
 public class Harvester implements IItemHandler
 {
@@ -119,8 +118,7 @@ public class Harvester implements IItemHandler
         if(basicSuccess < 1)
             basicSuccess = 1;
         
-        Random rnd = new Random();
-        int rate = rnd.nextInt(99);
+        int rate = Rnd.nextInt(99);
         
         if(rate < basicSuccess)
             return true;

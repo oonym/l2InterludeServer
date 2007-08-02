@@ -28,7 +28,6 @@
  */
 package net.sf.l2j.gameserver.idfactory;
 
-import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,6 +36,7 @@ import junit.framework.TestCase;
 import net.sf.l2j.Config;
 import net.sf.l2j.Server;
 import net.sf.l2j.Config.IdFactoryType;
+import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
@@ -61,7 +61,6 @@ public class IDFactoryTest extends TestCase
 	protected static final int RELEASER_THREAD_RELEASES       = 1000;
 	protected static final int RELEASER_THREAD_RANDOM_DELAY   = 35;
 	
-	protected Random _random = new Random();
 	private static final long F_SLEEP_INTERVAL = 100;
 	
 	CountDownLatch _latch = new CountDownLatch(REQUESTER_THREADS + RELEASER_THREADS);
@@ -160,14 +159,14 @@ public class IDFactoryTest extends TestCase
 					_myCount.incrementAndGet();
 					_map.add(newId);
 					if (_debug) System.out.println("Got new ID "+newId);
-					if (_random.nextInt(10) == 0)
+					if (Rnd.nextInt(10) == 0)
 					{
 						System.out.println("					Total ID requests: "+_adds.get()+". "+_time2+"ns");
 					}
 				}
 				try
 				{
-					Thread.sleep(_random.nextInt(REQUESTER_THREAD_RANDOM_DELAY));
+					Thread.sleep(Rnd.nextInt(REQUESTER_THREAD_RANDOM_DELAY));
 				}
 				catch (InterruptedException e)
 				{
@@ -199,7 +198,7 @@ public class IDFactoryTest extends TestCase
 					}
 					//if (size > 0)
 						//{
-						int pos     = _random.nextInt(size);
+						int pos     = Rnd.nextInt(size);
 						int id      = _map.get(pos);
 						_time1 = System.nanoTime();
 						_idFactory.releaseId(id);
@@ -209,7 +208,7 @@ public class IDFactoryTest extends TestCase
 						_myCount.decrementAndGet();
 						_removes.incrementAndGet();
 						if (_debug) System.out.println("Released ID "+id);
-						if (_random.nextInt(10) == 0)
+						if (Rnd.nextInt(10) == 0)
 						{
 							System.out.println("Total ID releases: "+_removes.get()+". "+_time2+"ns");
 						}
@@ -217,7 +216,7 @@ public class IDFactoryTest extends TestCase
 				}
 				try
 				{
-					Thread.sleep(_random.nextInt(RELEASER_THREAD_RANDOM_DELAY));
+					Thread.sleep(Rnd.nextInt(RELEASER_THREAD_RANDOM_DELAY));
 				}
 				catch (InterruptedException e)
 				{

@@ -31,7 +31,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -42,6 +41,7 @@ import javolution.xml.stream.XMLStreamReaderImpl;
 
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
+import net.sf.l2j.util.Rnd;
 
 /**
  * 
@@ -61,7 +61,6 @@ public class GameServerTable
 	// RSA Config
 	private static final int KEYS_SIZE = 10;
 	private KeyPair[] _keyPairs;
-	private Random _rnd = new Random();
 
 	public static void load() throws SQLException, GeneralSecurityException
 	{
@@ -251,7 +250,7 @@ public class GameServerTable
 	
 	public KeyPair getKeyPair()
 	{
-		return _keyPairs[_rnd.nextInt(10)];
+		return _keyPairs[Rnd.nextInt(10)];
 	}
 	
 	private byte[] stringToHex(String string)

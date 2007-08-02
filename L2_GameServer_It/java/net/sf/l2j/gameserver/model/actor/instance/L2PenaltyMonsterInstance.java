@@ -17,8 +17,6 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
-import java.util.Random;
-
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.clientpackets.Say2;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
@@ -26,11 +24,11 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.util.Rnd;
 
 public class L2PenaltyMonsterInstance extends L2MonsterInstance
 {
 	private L2PcInstance _ptk;
-	private final static Random _rnd = new Random();
 
 	public L2PenaltyMonsterInstance(int objectId, L2NpcTemplate template)
 	{
@@ -57,7 +55,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 
 	public void setPlayerToKill(L2PcInstance ptk)
 	{
-		if (_rnd.nextInt(100) <= 80)
+		if (Rnd.nextInt(100) <= 80)
 		{
 			CreatureSay cs = new CreatureSay(this.getObjectId(), Say2.ALL, this.getName(),
 												"mmm your bait was delicious");
@@ -71,7 +69,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 
 	public void doDie(L2Character killer)
 	{
-		if (_rnd.nextInt(100) <= 75)
+		if (Rnd.nextInt(100) <= 75)
 		{
 			CreatureSay cs = new CreatureSay(this.getObjectId(), Say2.ALL, this.getName(),
 												"I will tell fishes not to take your bait");

@@ -18,13 +18,13 @@
 package net.sf.l2j.gameserver.model.entity;
 
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.util.Util;
+import net.sf.l2j.util.Rnd;
 
 public class Zone
 {
@@ -85,7 +85,6 @@ public class Zone
     public final Location getRandomLocation()
     {
         int x, y, x1, x2, y1, y2, z;
-        Random rnd = new Random();
 
         if (getCoords().isEmpty()) return null;
 
@@ -97,8 +96,8 @@ public class Zone
         y2 = coords[3];
         z = coords[4];
 
-        x = x1 + rnd.nextInt(x2 - x1);
-        y = y1 + rnd.nextInt(y2 - y1);
+        x = x1 + Rnd.nextInt(x2 - x1);
+        y = y1 + Rnd.nextInt(y2 - y1);
 
         return new Location(x, y, z);
     }
