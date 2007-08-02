@@ -105,9 +105,6 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		// unequip item
 		if (targetItem.isEquipped()) activeChar.disarmWeapons();
 		
-		// cancel boni
-		targetItem.getAugmentation().removeBoni(activeChar);
-		
 		// remove the augmentation
 		targetItem.removeAugmentation();
 		

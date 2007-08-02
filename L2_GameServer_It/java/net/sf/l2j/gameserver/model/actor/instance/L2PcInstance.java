@@ -5069,6 +5069,10 @@ public final class L2PcInstance extends L2PlayableInstance
         	if (wpn.isWear())
         		return false;
 
+			// Remove augementation boni on unequip
+            if (wpn.isAugmented())
+            	wpn.getAugmentation().removeBoni(this);
+        	
             L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
             InventoryUpdate iu = new InventoryUpdate();
             for (int i = 0; i < unequiped.length; i++)
