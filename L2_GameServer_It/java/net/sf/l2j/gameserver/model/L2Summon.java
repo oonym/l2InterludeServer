@@ -657,6 +657,14 @@ public abstract class L2Summon extends L2PlayableInstance
     		skillLevel = 1;
     	
     	L2Skill skillToCast = SkillTable.getInstance().getInfo(skill.getId(),skillLevel);
+
+    	// TODO: Getting max level for a skill is now awkward and holds only non-enchanted levels
+    	if (skillToCast == null) 
+    	{
+    		int maxLevel = SkillTable.getInstance().getMaxLevel(skill.getId(),0);
+    		if (skillLevel > maxLevel) 
+    			skillToCast = SkillTable.getInstance().getInfo(skill.getId(),maxLevel);
+    	}
     	if (skillToCast != null)
     		super.doCast(skillToCast);
 	}
