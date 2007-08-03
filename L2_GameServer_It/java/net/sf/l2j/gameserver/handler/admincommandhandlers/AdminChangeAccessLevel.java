@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * This class handles following admin commands: 
  * - changelvl = change a character's access level
  *  Can be used for character ban (as opposed to regular //ban that affects accounts)
- *  of to grant mod/GM privileges ingame
+ *  or to grant mod/GM privileges ingame
  * @version $Revision: 1.1.2.2.2.3 $ $Date: 2005/04/11 10:06:00 $
  */
 public class AdminChangeAccessLevel implements IAdminCommandHandler
@@ -84,7 +84,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 			{
 				int lvl = Integer.parseInt(parts[1]);
 				if (activeChar.getTarget() instanceof L2PcInstance)
-					((L2PcInstance)activeChar.getTarget()).setAccessLevel(lvl);
+					onLineChange(activeChar, (L2PcInstance)activeChar.getTarget(), lvl);
 				else
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			}
@@ -99,9 +99,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 			int lvl = Integer.parseInt(parts[2]);
 			L2PcInstance player = L2World.getInstance().getPlayer(name);
 			if (player != null)
-			{
-				player.setAccessLevel(lvl);
-			}
+				onLineChange(activeChar, player, lvl);
 			else
 			{
 				Connection con = null;
@@ -117,7 +115,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 					if (count == 0)
 						activeChar.sendMessage("Character not found or access level unaltered.");
 					else
-						activeChar.sendMessage("Character level updated");
+						activeChar.sendMessage("Character's access level is now set to "+lvl);
 				}
 				catch (SQLException se)
 				{
@@ -135,5 +133,23 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param activeChar
+	 * @param player
+	 * @param lvl
+	 */
+	private void onLineChange(L2PcInstance activeChar, L2PcInstance player, int lvl)
+	{
+		player.setAccessLevel(lvl);
+		if (lvl>0)
+			player.sendMessage("Your access level has been changed to "+lvl);
+		else
+		{
+			player.sendMessage("Your character has been banned. Bye.");
+			player.logout();
+		}
+		activeChar.sendMessage("Character's access level is now set to "+lvl+". Effects won't be noticeable until next session.");
 	}
 }

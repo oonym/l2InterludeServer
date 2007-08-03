@@ -64,9 +64,9 @@ public class AdminEffects implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS = { "admin_invis", "admin_invisible", "admin_vis",
 		"admin_visible", "admin_earthquake", "admin_bighead", "admin_shrinkhead", "admin_gmspeed", 
-		"admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", "admin_polyself",
-		"admin_unpolyself", "admin_changename", "admin_clearteams", "admin_setteam_close", "admin_setteam",
-		"admin_social", "admin_effect","admin_play_sounds","admin_play_sound","admin_atmosphere"};
+		"admin_gmspeed_menu", "admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", 
+		"admin_polyself", "admin_unpolyself", "admin_changename", "admin_clearteams", "admin_setteam_close",
+		"admin_setteam", "admin_social", "admin_effect","admin_play_sounds","admin_play_sound","admin_atmosphere"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_GODMODE;
 
@@ -267,9 +267,12 @@ public class AdminEffects implements IAdminCommandHandler
 			int val;
 			try
 			{
-				val = Integer.parseInt(command.substring(14));
-				boolean sendMessage = activeChar.getEffect(7029) != null;
+				if (command.startsWith("admin_gmspeed "))
+					val = Integer.parseInt(command.substring(14));
+				else
+					val = Integer.parseInt(command.substring(19));
 
+				boolean sendMessage = activeChar.getEffect(7029) != null;
 				activeChar.stopEffect(7029);
 				if (val == 0 && sendMessage)
 				{
@@ -288,6 +291,8 @@ public class AdminEffects implements IAdminCommandHandler
 			finally 
 			{
 				activeChar.updateEffectIcons();
+				if (command.startsWith("admin_gmspeed "))
+					return true;
 			}
 		}
 		else if (command.startsWith("admin_polyself"))

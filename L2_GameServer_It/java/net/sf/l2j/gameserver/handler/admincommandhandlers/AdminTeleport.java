@@ -36,7 +36,6 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -77,7 +76,6 @@ public class AdminTeleport implements IAdminCommandHandler
         "admin_godown",
         "admin_tele",
         "admin_teleto",
-        "admin_failed"
     };
     private static final int REQUIRED_LEVEL = Config.GM_TELEPORT;
     private static final int REQUIRED_LEVEL2 = Config.GM_TELEPORT_OTHER;
@@ -198,13 +196,6 @@ public class AdminTeleport implements IAdminCommandHandler
             catch (StringIndexOutOfBoundsException e)
             { }
         }
-        else if (command.startsWith("admin_failed"))
-        {
-            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-            sm.addString("Trying ActionFailed...");
-            activeChar.sendPacket(sm);
-            activeChar.sendPacket(new ActionFailed());
-        }
         else if (command.equals("admin_tele"))
         {
             showTeleportWindow(activeChar);
@@ -295,7 +286,7 @@ public class AdminTeleport implements IAdminCommandHandler
         } 
         else 
         {
-            activeChar.sendMessage("Incorrect target.");
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
             return;
         }
         NpcHtmlMessage adminReply = new NpcHtmlMessage(5); 
@@ -330,13 +321,13 @@ public class AdminTeleport implements IAdminCommandHandler
         } 
         else 
         {
-            activeChar.sendMessage("Incorrect target.");
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
             return;
         }
         
         if (player.getObjectId() == activeChar.getObjectId())
         {
-            player.sendMessage("You cannot teleport your character.");
+        	player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_USE_ON_YOURSELF));
         }
         else
         {
@@ -380,13 +371,13 @@ public class AdminTeleport implements IAdminCommandHandler
         } 
         else 
         {
-            activeChar.sendMessage("Incorrect target.");
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
             return;
         }
         
         if (player.getObjectId() == activeChar.getObjectId())
         {	
-            activeChar.sendMessage("You cannot self teleport.");
+        	player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_USE_ON_YOURSELF));
         }
         else
         {
@@ -461,7 +452,7 @@ public class AdminTeleport implements IAdminCommandHandler
         }
         else
         {
-            activeChar.sendMessage("Incorrect target.");
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
         }
     }
     
