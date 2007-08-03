@@ -43,7 +43,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * - diet = toggles weight penalty mode
  * - tradeoff = toggles trade acceptance mode
  * - reload = reloads specified component from multisell|skill|npc|htm|item|instancemanager
- * - set = alters specified server setting
+ * - set/set_menu/set_mod = alters specified server setting
  * - saveolymp = saves olympiad state manually
  * - manualhero = cycles olympiad and calculate new heroes.
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2007/07/28 10:06:06 $
@@ -51,7 +51,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class AdminAdmin implements IAdminCommandHandler {
 
 	private static final String[] ADMIN_COMMANDS = {"admin_admin", "admin_admin1", "admin_admin2", "admin_admin3", "admin_admin4", "admin_admin5", 
-		"admin_gmliston", "admin_gmlistoff", "admin_silence", "admin_diet", "admin_tradeoff", "admin_reload", "admin_set", 
+		"admin_gmliston", "admin_gmlistoff", "admin_silence", "admin_diet", "admin_tradeoff", "admin_reload", "admin_set", "admin_set_menu", "admin_set_mod", 
 		"admin_saveolymp", "admin_manualhero"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_MENU;
@@ -220,13 +220,12 @@ public class AdminAdmin implements IAdminCommandHandler {
 		else if(command.startsWith("admin_set"))
 		{
 			StringTokenizer st = new StringTokenizer(command);
-			st.nextToken();
+			String[] cmd=st.nextToken().split("_");
 			try
 			{
 				String[] parameter = st.nextToken().split("=");
 				String pName = parameter[0].trim();
 				String pValue = parameter[1].trim();
-
 				if (Config.setParameterValue(pName, pValue))
 					activeChar.sendMessage("parameter set succesfully");
 				else 
@@ -235,7 +234,17 @@ public class AdminAdmin implements IAdminCommandHandler {
 			catch(Exception e)
 			{
 				activeChar.sendMessage("Usage:  //set parameter=value");
-				AdminHelpPage.showHelpPage(activeChar, "settings.htm");
+			}
+			finally
+			{
+
+				if (cmd.length==3)
+				{
+					if (cmd[2].equalsIgnoreCase("menu"))
+						AdminHelpPage.showHelpPage(activeChar, "settings.htm");
+					else if (cmd[2].equalsIgnoreCase("mod"))
+						AdminHelpPage.showHelpPage(activeChar, "mods_menu.htm");
+				}
 			}
 		}
 		return true;
@@ -279,7 +288,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 			break;
 		default:
 			filename="main";
-			break;
+		break;
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename+"_menu.htm");
 	}
