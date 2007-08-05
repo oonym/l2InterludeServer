@@ -651,6 +651,7 @@ public class LoginController
 
 			if (failedCount >= Config.LOGIN_TRY_BEFORE_BAN)
 			{
+				_log.info("Banning '"+address.getHostAddress()+"' for "+Config.LOGIN_BLOCK_AFTER_BAN+" seconds due to "+failedCount+" invalid user/pass attempts");
 				this.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
 			}
 		}

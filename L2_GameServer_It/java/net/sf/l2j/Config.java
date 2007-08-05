@@ -1103,10 +1103,6 @@ public final class Config
                 EXTERNAL_HOSTNAME       = serverSettings.getProperty("ExternalHostname", "*");
                 INTERNAL_HOSTNAME       = serverSettings.getProperty("InternalHostname", "*");
 
-                PORT_LOGIN              = Integer.parseInt(serverSettings.getProperty("LoginserverPort", "2106"));
-                LOGIN_TRY_BEFORE_BAN    = Integer.parseInt(serverSettings.getProperty("LoginTryBeforeBan", "10"));
-                LOGIN_BLOCK_AFTER_BAN    = Integer.parseInt(serverSettings.getProperty("LoginBlockAfterBan", "600"));
-
                 GAME_SERVER_LOGIN_PORT  = Integer.parseInt(serverSettings.getProperty("LoginPort","9014"));
                 GAME_SERVER_LOGIN_HOST  = serverSettings.getProperty("LoginHost","127.0.0.1");
 
@@ -1962,6 +1958,7 @@ public final class Config
                 ACCEPT_ALTERNATE_ID = Boolean.parseBoolean(serverSettings.getProperty("AcceptAlternateID","True"));
 
                 LOGIN_TRY_BEFORE_BAN    = Integer.parseInt(serverSettings.getProperty("LoginTryBeforeBan", "10"));
+                LOGIN_BLOCK_AFTER_BAN   = Integer.parseInt(serverSettings.getProperty("LoginBlockAfterBan", "600"));
                 GM_MIN          = Integer.parseInt(serverSettings.getProperty("GMMinLevel", "100"));
 
                 DATAPACK_ROOT    = new File(serverSettings.getProperty("DatapackRoot", ".")).getCanonicalFile(); //FIXME: in login?
