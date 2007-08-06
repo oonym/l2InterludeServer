@@ -5041,7 +5041,7 @@ public abstract class L2Character extends L2Object
 					getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, getTarget());
 			}
 
-            if (skill.isOffensive())
+            if (skill.isOffensive() && !(skill.getSkillType() == SkillType.UNLOCK) && !(skill.getSkillType() == SkillType.DELUXE_KEY_UNLOCK))
                 getAI().clientStartAutoAttack();
 
             // Notify the AI of the L2Character with EVT_FINISH_CASTING
