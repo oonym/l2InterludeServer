@@ -17,7 +17,7 @@
  */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
-import net.sf.l2j.gameserver.ai.CtrlEvent;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.SocialAction;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.util.Rnd;
@@ -141,35 +142,21 @@ public class Unlock implements ISkillHandler
 						}
 							break;
 					}
-					if (chestChance == 0)
+					if (Rnd.get(100) <= chestChance)
 					{
-						activeChar.sendPacket(SystemMessage.sendString("Too hard to open for you.."));
-						activeChar.sendPacket(new ActionFailed());
-						//if (Rnd.get(100) < chestTrapLimit) chest.chestTrap(activeChar);
-						chest.setInteracted();
-						chest.setMustRewardExpSp(false);
-						chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
-						return;
-					}
-
-					if (Rnd.get(120) < chestChance)
-					{
-						activeChar.sendPacket(SystemMessage.sendString("You open the chest!"));
-
-						chest.setSpecialDrop();
-						chest.setHaveToDrop(true);
-						chest.setMustRewardExpSp(false);
-						chest.doItemDrop(activeChar);
-						chest.onDecay();
+						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(),3));
+	                    chest.setSpecialDrop();
+	                    chest.setMustRewardExpSp(false);
+	                    chest.setInteracted();
+	                    chest.reduceCurrentHp(99999999, activeChar);
 					}
 					else
 					{
-						activeChar.sendPacket(SystemMessage.sendString("Unlock failed!"));
-
-						if (Rnd.get(100) < chestTrapLimit) chest.chestTrap(activeChar);
-						chest.setMustRewardExpSp(false);
-						chest.setInteracted();
-						chest.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+	                    activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(),13));
+	                    if (Rnd.get(100) < chestTrapLimit) chest.chestTrap(activeChar);
+	                    chest.setInteracted();
+	                    chest.addDamageHate(activeChar,0,999);
+	                    chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, activeChar);
 					}
 				}
 			}
