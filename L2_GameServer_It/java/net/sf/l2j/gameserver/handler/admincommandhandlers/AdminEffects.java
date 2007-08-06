@@ -62,22 +62,30 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
  */
 public class AdminEffects implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = { "admin_invis", "admin_invisible", "admin_vis",
-		"admin_visible", "admin_earthquake", "admin_bighead", "admin_shrinkhead", "admin_gmspeed", 
-		"admin_gmspeed_menu", "admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", 
-		"admin_polyself", "admin_unpolyself", "admin_changename", "admin_clearteams", "admin_setteam_close",
-		"admin_setteam", "admin_social", "admin_effect","admin_play_sounds","admin_play_sound","admin_atmosphere"};
+	private static final String[] ADMIN_COMMANDS = { "admin_invis", "admin_invisible", "admin_vis",	"admin_visible", "admin_invis_menu",
+		"admin_earthquake", 
+		"admin_bighead", "admin_shrinkhead",
+		"admin_gmspeed", "admin_gmspeed_menu",
+		"admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", "admin_unpara_all_menu", "admin_para_all_menu", "admin_unpara_menu", "admin_para_menu",
+		"admin_polyself", "admin_unpolyself", "admin_polyself_menu", "admin_unpolyself_menu",
+		"admin_changename", "admin_changename_menu",
+		"admin_clearteams", "admin_setteam_close","admin_setteam",
+		"admin_social", "admin_effect", "admin_social_menu", "admin_effect_menu",
+		"admin_play_sounds","admin_play_sound",
+		"admin_atmosphere","admin_atmosphere_menu"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_GODMODE;
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
-		}
-		if (command.equals("admin_invis")||command.equals("admin_invisible"))
+
+		StringTokenizer st = new StringTokenizer(command);
+		st.nextToken();
+
+		if (command.equals("admin_invis_menu"))
 		{
 			if (!activeChar.getAppearance().getInvisible())
 			{
@@ -93,7 +101,16 @@ public class AdminEffects implements IAdminCommandHandler
 			}
 			RegionBBSManager.getInstance().changeCommunityBoard();
 		}
-		else if (command.equals("admin_vis")||command.equals("admin_visible"))
+		else if (command.startsWith("admin_invis"))
+		{
+			activeChar.getAppearance().setInvisible();
+			activeChar.broadcastUserInfo();
+			activeChar.decayMe();
+			activeChar.spawnMe();
+			RegionBBSManager.getInstance().changeCommunityBoard();
+		}
+
+		else if (command.startsWith("admin_vis"))
 		{
 			activeChar.getAppearance().setVisible();
 			activeChar.broadcastUserInfo();
@@ -103,8 +120,6 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-				String val = command.substring(17);
-				StringTokenizer st = new StringTokenizer(val);
 				String val1 = st.nextToken();
 				int intensity = Integer.parseInt(val1);
 				String val2 = st.nextToken();
@@ -121,8 +136,6 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-				StringTokenizer st = new StringTokenizer(command);
-				st.nextToken();
 				String type = st.nextToken();
 				String state = st.nextToken();
 				adminAtmosphere(type,state,activeChar);
@@ -147,13 +160,11 @@ public class AdminEffects implements IAdminCommandHandler
 			}
 			catch (StringIndexOutOfBoundsException e){}
 		}
-		else if (command.equals("admin_para"))
+		else if (command.startsWith("admin_para ")||command.startsWith("admin_para_menu"))
 		{
 			String type = "1";
-			StringTokenizer st = new StringTokenizer(command);
 			try
 			{
-				st.nextToken();
 				type = st.nextToken();
 			}
 			catch(Exception e){}
@@ -178,7 +189,7 @@ public class AdminEffects implements IAdminCommandHandler
 			{
 			}
 		}
-		else if (command.equals("admin_unpara"))
+		else if (command.equals("admin_unpara")||command.equals("admin_unpara_menu"))
 		{
 			try
 			{
@@ -205,7 +216,6 @@ public class AdminEffects implements IAdminCommandHandler
 					{
 						player.startAbnormalEffect(0x0400);
 						player.setIsParalyzed(true);
-
 						StopMove sm = new StopMove(player);
 						player.sendPacket(sm);
 						player.broadcastPacket(sm);
@@ -264,14 +274,9 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_gmspeed"))
 		{
-			int val;
 			try
 			{
-				if (command.startsWith("admin_gmspeed "))
-					val = Integer.parseInt(command.substring(14));
-				else
-					val = Integer.parseInt(command.substring(19));
-
+				int val = Integer.parseInt(st.nextToken());
 				boolean sendMessage = activeChar.getEffect(7029) != null;
 				activeChar.stopEffect(7029);
 				if (val == 0 && sendMessage)
@@ -291,16 +296,12 @@ public class AdminEffects implements IAdminCommandHandler
 			finally 
 			{
 				activeChar.updateEffectIcons();
-				if (command.startsWith("admin_gmspeed "))
-					return true;
 			}
 		}
 		else if (command.startsWith("admin_polyself"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
 			try
 			{
-				st.nextToken();
 				String id = st.nextToken();
 				activeChar.getPoly().setPolyInfo("npc", id);
 				activeChar.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), false);
@@ -327,7 +328,7 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-				String name = command.substring(17);
+				String name = st.nextToken();
 				String oldName = "null";
 				try
 				{
@@ -380,10 +381,10 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_setteam_close"))
 		{
-			String val = command.substring(20);
-			int teamVal = Integer.parseInt(val);
 			try
 			{
+				String val = st.nextToken();
+				int teamVal = Integer.parseInt(val);
 				for (L2PcInstance player : activeChar.getKnownList().getKnownPlayers().values())
 				{
 					if (activeChar.isInsideRadius(player, 400, false, true))
@@ -426,11 +427,9 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-				String cmd = command.substring(13);
-				StringTokenizer st = new StringTokenizer(cmd);
 				String target=null;
 				L2Object obj = activeChar.getTarget();
-				if (st.countTokens() == 2)
+				if (st.countTokens() == 3)
 				{
 					int social = Integer.parseInt(st.nextToken());
 					target = st.nextToken();
@@ -458,7 +457,7 @@ public class AdminEffects implements IAdminCommandHandler
 						}
 					}
 				}
-				else if (st.countTokens() == 1)
+				else if (st.countTokens() == 2)
 				{
 					int social = Integer.parseInt(st.nextToken());
 					if (obj == null)
@@ -482,8 +481,6 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-				String cmd = command.substring(13);
-				StringTokenizer st = new StringTokenizer(cmd);
 				L2Object obj = activeChar.getTarget();
 				int level = 1,hittime = 1;
 				int skill = Integer.parseInt(st.nextToken());
@@ -513,7 +510,8 @@ public class AdminEffects implements IAdminCommandHandler
 				activeChar.sendMessage("Usage: //effect skill [level | level hittime]");
 			}
 		}
-		showMainPage(activeChar);
+		if (command.contains("menu"))
+			showMainPage(activeChar);
 		return true;
 	}
 

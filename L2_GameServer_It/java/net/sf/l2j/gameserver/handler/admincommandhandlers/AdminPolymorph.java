@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminPolymorph implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = { "admin_polymorph", "admin_unpolymorph" };
+	private static final String[] ADMIN_COMMANDS = { "admin_polymorph", "admin_unpolymorph", "admin_polymorph_menu", "admin_unpolymorph_menu" };
 
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
@@ -69,7 +69,8 @@ public class AdminPolymorph implements IAdminCommandHandler
 		{
 			doUnpoly(activeChar,activeChar.getTarget());
 		}
-		showMainPage(activeChar);
+		if (command.contains("menu"))
+			showMainPage(activeChar);
 		return true;
 	}
 
@@ -128,7 +129,7 @@ public class AdminPolymorph implements IAdminCommandHandler
 		else
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 	}
-	
+
 	private void showMainPage(L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "effects_menu.htm");

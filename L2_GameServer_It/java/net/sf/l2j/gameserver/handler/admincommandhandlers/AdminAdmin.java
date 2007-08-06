@@ -115,7 +115,6 @@ public class AdminAdmin implements IAdminCommandHandler {
 				if(st.nextToken().equalsIgnoreCase("on"))
 				{
 					activeChar.setDietMode(true);
-					activeChar.refreshOverloaded();
 					activeChar.sendMessage("Diet mode on");
 				}
 				else if(st.nextToken().equalsIgnoreCase("off"))
@@ -136,7 +135,11 @@ public class AdminAdmin implements IAdminCommandHandler {
 					activeChar.setDietMode(true);
 					activeChar.sendMessage("Diet mode on");
 				}
-			}            
+			}
+			finally
+			{
+				activeChar.refreshOverloaded();
+			}
 		}
 		else if(command.startsWith("admin_tradeoff"))
 		{

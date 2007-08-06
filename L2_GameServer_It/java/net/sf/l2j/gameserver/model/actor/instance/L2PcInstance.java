@@ -1816,7 +1816,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (_dietMode)
 			return 0;
-
 		return _curWeightPenalty;
 	}
 
