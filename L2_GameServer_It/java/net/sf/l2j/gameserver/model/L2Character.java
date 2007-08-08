@@ -534,8 +534,6 @@ public abstract class L2Character extends L2Object
 		if (Config.DEBUG)
             _log.fine(this.getName()+" doAttack: target="+target);
 
-		TvTEvent.onActivity(this);
-
 		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead())
                 || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath())
                 || !getKnownList().knowsObject(target)
@@ -1109,8 +1107,6 @@ public abstract class L2Character extends L2Object
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
-
-		TvTEvent.onActivity(this);
 
 		if (isSkillDisabled(skill.getId()))
 		{
