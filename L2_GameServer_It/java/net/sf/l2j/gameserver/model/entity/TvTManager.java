@@ -1,20 +1,3 @@
-/* This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
- */
 package net.sf.l2j.gameserver.model.entity;
 
 import net.sf.l2j.Config;
@@ -51,7 +34,7 @@ public class TvTManager implements Runnable
 
 		for (;;)
 		{
-			waiter(Config.TVT_EVENT_INTERVAL * 60000L); // in config given as minutes 60*1000 = 60000
+			waiter(Config.TVT_EVENT_INTERVAL * 60 * 1000); // in config given as minutes
 			
 			if (!TvTEvent.startParticipation())
 			{
@@ -62,7 +45,7 @@ public class TvTManager implements Runnable
 			else
 				Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
 
-			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60000L); // in config given as minutes
+			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60 * 1000); // in config given as minutes
 
 			if (!TvTEvent.startFight())
 			{
@@ -73,7 +56,7 @@ public class TvTManager implements Runnable
 			else
 				Announcements.getInstance().announceToAll("TvT Event: Teleport participants to team spot in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 
-			waiter(Config.TVT_EVENT_RUNNING_TIME * 60000L); // in config given as minutes
+			waiter(Config.TVT_EVENT_RUNNING_TIME * 60 * 1000); // in config given as minutes
 			Announcements.getInstance().announceToAll("TvT Event: Event finish. Team \"" + TvTEvent.calculateRewards() + "\" wins.");
 			Announcements.getInstance().announceToAll("TvT Event: Teleport back to registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 			TvTEvent.stopFight();

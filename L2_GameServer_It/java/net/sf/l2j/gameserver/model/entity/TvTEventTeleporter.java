@@ -1,47 +1,26 @@
-/* This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
- */
 package net.sf.l2j.gameserver.model.entity;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
-import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Summon;
-//import net.sf.l2j.gameserver.model.entity.TvTEvent;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.serverpackets.Ride;
 
 public class TvTEventTeleporter implements Runnable
 {
-	private L2PcInstance _playerInstance = null;
+	private L2PcInstance _playerInstance;
 	private int[] _coordinates = new int[3];
-	boolean _removeCauseInactivity = false;
 
-	public TvTEventTeleporter(L2PcInstance playerInstance, int[] coordinates, boolean noDelay, boolean removeCauseInactivity)
+	public TvTEventTeleporter(L2PcInstance playerInstance, int[] coordinates, boolean reAdd)
 	{
 		_playerInstance = playerInstance;
 		_coordinates = coordinates;
-		_removeCauseInactivity = removeCauseInactivity;
 
 		// in config as seconds
 		long delay = (TvTEvent.isStarted() ? Config.TVT_EVENT_RESPAWN_TELEPORT_DELAY : Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY) * 1000;
 
-		if (noDelay)
+		if (reAdd)
 			delay = 0;
 
 		ThreadPoolManager.getInstance().scheduleGeneral(this, delay);
@@ -51,17 +30,6 @@ public class TvTEventTeleporter implements Runnable
 	{
 		if (_playerInstance == null)
 			return;
-
-		if (_playerInstance.isMounted())
-		{
-			if (_playerInstance.isFlying())
-				_playerInstance.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
-
-			Ride dismount = new Ride(_playerInstance.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-			_playerInstance.broadcastPacket(dismount);
-			_playerInstance.setMountType(0);
-			_playerInstance.setMountObjectID(0);
-		}
 		
 		L2Summon summon = _playerInstance.getPet();
 	   
@@ -73,22 +41,19 @@ public class TvTEventTeleporter implements Runnable
 			if (effect != null)
 				effect.exit();
 		}
-		
-		if (TvTEvent.isStarted() && !_removeCauseInactivity)
-			_playerInstance.setTeam(TvTEvent.getParticipantTeamId(_playerInstance.getName())+1);
-		else
-			_playerInstance.setTeam(0);
 
 		_playerInstance.doRevive();
 		_playerInstance.setCurrentCp(_playerInstance.getMaxCp());
 		_playerInstance.setCurrentHp(_playerInstance.getMaxHp());
 		_playerInstance.setCurrentMp(_playerInstance.getMaxMp());
 		_playerInstance.teleToLocation(_coordinates[0], _coordinates[1], _coordinates[2], false);
+		
+		if (TvTEvent.isStarted())
+			_playerInstance.setTeam(TvTEvent.getParticipantTeamId(_playerInstance.getName())+1);
+		else
+			_playerInstance.setTeam(0);
+		
 		_playerInstance.broadcastStatusUpdate();
 		_playerInstance.broadcastUserInfo();
-
-		String playerName = _playerInstance.getName();
-
-		TvTEvent.getTeams()[TvTEvent.getParticipantTeamId(playerName)].updatePlayerLastActivity(playerName);
 	}
 }

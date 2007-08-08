@@ -1,23 +1,7 @@
-/* This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
- */
 package net.sf.l2j.gameserver.model.entity;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.util.Rnd;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.NpcTable;
@@ -35,13 +19,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
-import net.sf.l2j.util.Rnd;
 
-/**
- * TvTEvent class
- *
- * @author FBIagent
- */
 public class TvTEvent
 {
 	enum EventState
@@ -128,36 +106,6 @@ public class TvTEvent
         _npcSpawn.stopRespawn();
         _npcSpawn = null;
 		_lastNpcSpawn = null;
-		
-		for (byte i=0;i<2;i++)
-		{
-			for (String playerName : _teams[i].getParticipatedPlayerNames())
-			{
-				L2PcInstance playerInstance = _teams[i].getPlayerInstance(playerName);
-				
-				if (playerInstance == null || playerInstance.isOnline() == 0)
-					_teams[i].removePlayer(playerName);
-			}
-		}
-
-		int teamOnePlayerCount = _teams[0].getParticipatedPlayerCount();
-		int teamTwoPlayerCount = _teams[1].getParticipatedPlayerCount();
-		int playerCountDifference = Math.abs(teamOnePlayerCount - teamTwoPlayerCount);
-		byte rest = (byte)(getParticipatedPlayersCount() % 2);
-
-		if ((rest == 0 && playerCountDifference > 0) || (rest != 0 && playerCountDifference > 1))
-		{
-			byte teamIdWithMorePlayers = (byte)(teamOnePlayerCount > teamTwoPlayerCount ? 0 : 1);
-			byte teamIdWithLesserPlayers = (byte)(teamIdWithMorePlayers == 0 ? 1 : 0);
-
-			for (int i=0;i<playerCountDifference;i++)
-			{
-				L2PcInstance playerInstance = _teams[teamIdWithMorePlayers].getRandomPlayerInstance();
-					
-				_teams[teamIdWithMorePlayers].removePlayer(playerInstance.getName());
-				_teams[teamIdWithLesserPlayers].addPlayer(playerInstance);
-			}
-		}
 
 		// not enought participants
 		if (_teams[0].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS || _teams[1].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS)
@@ -175,17 +123,16 @@ public class TvTEvent
 		{
 			for (String playerName : team.getParticipatedPlayerNames())
 			{
-				L2PcInstance playerInstance = team.getPlayerInstance(playerName);
+				L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
 
 				if (playerInstance == null)
 					continue;
 
 				// implements Runnable and starts itself in constructor
-				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false, false);
+				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false);
 			}
 		}
-		
-		new TvTEventInactiveCheck();
+
 		return true;
 	}
 
@@ -204,8 +151,10 @@ public class TvTEvent
 				setState(EventState.REWARDING);
 				return "Nobody";
 			}
+
 			Announcements.getInstance().announceToAll("TvT Event: Both teams are at a tie, next killing team win!");
 		}
+
 		while (_teams[0].getPoints() == _teams[1].getPoints())
 		{
 			try
@@ -223,7 +172,7 @@ public class TvTEvent
 
 		for (String playerName : team.getParticipatedPlayerNames())
 		{
-			L2PcInstance playerInstance = team.getPlayerInstance(playerName);
+			L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
 
 			if (playerInstance == null)
 				continue;
@@ -278,12 +227,12 @@ public class TvTEvent
 		{
 			for (String playerName : team.getParticipatedPlayerNames())
 			{
-				L2PcInstance playerInstance = team.getPlayerInstance(playerName);
+				L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
 
 				if (playerInstance == null)
 					continue;
 
-				new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, false, false);
+				new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, false);
 			}
 		}
 
@@ -326,28 +275,6 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called when player cast or attack
-	 * Updates the activity of a TvTEvent participant
-	 */
-	public static void onActivity(L2Character character)
-	{
-		if (!isStarted())
-			return;
-
-		if (!(character instanceof L2PcInstance))
-			return;
-		
-		String playerName = character.getName();
-
-		byte teamId = getParticipantTeamId(playerName);
-		
-		if (teamId == -1)
-			return;
-		
-		_teams[teamId].updatePlayerLastActivity(playerName);
-	}
-	
-	/**
 	 * Called when a player logs in
 	 */
 	public static void onLogin(L2PcInstance playerInstance)
@@ -361,7 +288,7 @@ public class TvTEvent
 			return;
 
 		_teams[teamId].addPlayer(playerInstance);
-		new TvTEventTeleporter(playerInstance, _teams[teamId].getCoordinates(), true, false);
+		new TvTEventTeleporter(playerInstance, _teams[teamId].getCoordinates(), true);
 	}
 
 	/**
@@ -465,7 +392,7 @@ public class TvTEvent
 			_teams[killerTeamId].increasePoints();
 
 		if (killedTeamId != -1)
-			new TvTEventTeleporter(killedPlayerInstance, _teams[killedTeamId].getCoordinates(), false, false);
+			new TvTEventTeleporter(killedPlayerInstance, _teams[killedTeamId].getCoordinates(), false);
 	}
 
 	private static void setState(EventState state)
@@ -571,10 +498,5 @@ public class TvTEvent
 	public static int[] getTeamsPlayerCounts()
 	{
 		return new int[]{_teams[0].getParticipatedPlayerCount(), _teams[1].getParticipatedPlayerCount()};
-	}
-	
-	public static TvTEventTeam[] getTeams()
-	{
-		return _teams;
 	}
 }
