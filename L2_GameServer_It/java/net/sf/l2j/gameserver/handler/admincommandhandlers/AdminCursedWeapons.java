@@ -19,8 +19,6 @@
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -66,16 +64,18 @@ public class AdminCursedWeapons implements IAdminCommandHandler {
 				if (cw.isActivated())
 				{
 					L2PcInstance pl = cw.getPlayer();
-					activeChar.sendMessage("  Player holding: "+pl.getName());
+					activeChar.sendMessage("  Player holding: "+ pl==null ? "null" : pl.getName());
 					activeChar.sendMessage("    Player karma: "+cw.getPlayerKarma());
 					activeChar.sendMessage("    Time Remaining: "+(cw.getTimeLeft()/60000)+" min.");
 					activeChar.sendMessage("    Kills : "+cw.getNbKills());
-				} else if (cw.isDropped())
+				}
+				else if (cw.isDropped())
 				{
 					activeChar.sendMessage("  Lying on the ground.");
 					activeChar.sendMessage("    Time Remaining: "+(cw.getTimeLeft()/60000)+" min.");
 					activeChar.sendMessage("    Kills : "+cw.getNbKills());
-				} else
+				}
+				else
 				{
 					activeChar.sendMessage("  Don't exist in the world.");
 				}
@@ -92,9 +92,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler {
 			try
 			{
 				String parameter = st.nextToken();
-				Pattern pattern = Pattern.compile("[0-9]*");
-				Matcher regexp = pattern.matcher(parameter);
-				if (regexp.matches())
+				if (parameter.matches("[0-9]*"))
 					id = Integer.parseInt(parameter);
 				else 
 				{
@@ -130,7 +128,12 @@ public class AdminCursedWeapons implements IAdminCommandHandler {
 			} 
 			else if (command.startsWith("admin_cw_add"))
 			{
-				if (cw.isActive())
+				if (cw==null)
+				{
+					activeChar.sendMessage("Usage: //cw_add <itemid|name>");
+					return false;
+				}
+				else if (cw.isActive())
 					activeChar.sendMessage("This cursed weapon is already active.");
 				else 
 				{

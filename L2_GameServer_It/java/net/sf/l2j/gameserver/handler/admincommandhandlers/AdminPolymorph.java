@@ -54,15 +54,20 @@ public class AdminPolymorph implements IAdminCommandHandler
 			StringTokenizer st = new StringTokenizer(command);
 			try
 			{
-				st.nextToken();
-				String type = st.nextToken();
-				String id = st.nextToken();
 				L2Object target = activeChar.getTarget();
-				doPolymorph(activeChar, target, id, type);
+				st.nextToken();
+				String p1 = st.nextToken();
+				if (st.hasMoreTokens())
+				{
+					String p2 = st.nextToken();
+					doPolymorph(activeChar, target, p2, p1);
+				}
+				else
+					doPolymorph(activeChar, target, "npc", p1);
 			}
 			catch(Exception e)
 			{
-				activeChar.sendMessage("Usage: //polymoprh <type> <id>");
+				activeChar.sendMessage("Usage: //polymoprh [type] <id>");
 			}
 		}
 		else if (command.equals("admin_unpolymorph"))
@@ -106,7 +111,6 @@ public class AdminPolymorph implements IAdminCommandHandler
 				Char.sendPacket(sg);
 			}
 			//end of animation
-//			L2Character target = (L2Character) obj;
 			obj.decayMe();
 			obj.spawnMe(obj.getX(),obj.getY(),obj.getZ());
 		}
