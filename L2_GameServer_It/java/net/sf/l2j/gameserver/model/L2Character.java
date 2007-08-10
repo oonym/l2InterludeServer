@@ -1260,12 +1260,12 @@ public abstract class L2Character extends L2Object
 						(skill.getSkillType() == SkillType.MANAHEAL)||
 						(skill.getSkillType() == SkillType.RESURRECT)||
 						(skill.getSkillType() == SkillType.RECALL)||
-						(skill.getSkillType() == SkillType.POISON)||
-						(skill.getSkillType() == SkillType.CANCEL)||
-						(skill.getSkillType() == SkillType.DEBUFF)||
-						(skill.getSkillType() == SkillType.PARALYZE)||
-						(skill.getSkillType() == SkillType.ROOT)||
-						(skill.getSkillType() == SkillType.SLEEP)||
+						//(skill.getSkillType() == SkillType.POISON)||
+						//(skill.getSkillType() == SkillType.CANCEL)||
+						//(skill.getSkillType() == SkillType.DEBUFF)||
+						//(skill.getSkillType() == SkillType.PARALYZE)||
+						//(skill.getSkillType() == SkillType.ROOT)||
+						//(skill.getSkillType() == SkillType.SLEEP)||
 						(skill.getSkillType() == SkillType.DOT))
 				{
 					weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
