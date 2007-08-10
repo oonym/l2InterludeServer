@@ -234,7 +234,7 @@ public class UserInfo extends L2GameServerPacket
         writeD(_activeChar.getAppearance().getHairStyle());
         writeD(_activeChar.getAppearance().getHairColor());
         writeD(_activeChar.getAppearance().getFace());
-        writeD((_activeChar.getAccessLevel() > 0) ? 1 : 0); // builder level 
+        writeD((_activeChar.getAccessLevel() >= Config.GM_ALTG_MIN_LEVEL) ? 1 : 0); // builder level 
 
         String title = _activeChar.getTitle();
         if (_activeChar.getAppearance().getInvisible() && _activeChar.isGM()) title = "Invisible";

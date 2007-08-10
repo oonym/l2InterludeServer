@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class handles following admin commands:
- * - res = resurrects target L2Character
+ * - heal = restores HP/MP/CP on target, name or radius
  * 
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
@@ -81,11 +81,14 @@ public class AdminHeal implements IAdminCommandHandler {
 	private void handleRes(L2PcInstance activeChar, String player) {
 
 		L2Object obj = activeChar.getTarget();
-		if (player != null) {
+		if (player != null) 
+		{
 			L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 
-			if (plyr != null) obj = plyr;            
-			else {
+			if (plyr != null)
+				obj = plyr;            
+			else
+			{
 				try
 				{
 					int radius  = Integer.parseInt(player);
@@ -100,16 +103,18 @@ public class AdminHeal implements IAdminCommandHandler {
 					}
 					activeChar.sendMessage("Healed within " + radius + " unit radius.");
 					return;
-				} catch (NumberFormatException nbe) {}
+				} 
+				catch (NumberFormatException nbe) {}
 			}
 		}
-
-		if (obj == null) obj = activeChar;
-
-		if ((obj != null) && (obj instanceof L2Character)) {
+		if (obj == null)
+			obj = activeChar;
+		if ((obj != null) && (obj instanceof L2Character))
+		{
 			L2Character target = (L2Character)obj;
 			target.setCurrentHpMp(target.getMaxHp(), target.getMaxMp());
-			if ( target instanceof L2PcInstance ) target.setCurrentCp(target.getMaxCp());
+			if ( target instanceof L2PcInstance )
+				target.setCurrentCp(target.getMaxCp());
 			if (Config.DEBUG) 
 				_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") healed character "+target.getName());
 		} 

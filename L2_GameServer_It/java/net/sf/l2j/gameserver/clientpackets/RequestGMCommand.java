@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.util.logging.Logger;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.GMViewCharacterInfo;
@@ -38,11 +39,11 @@ public final class RequestGMCommand extends L2GameClientPacket
 {
 	private static final String _C__6E_REQUESTGMCOMMAND = "[C] 6e RequestGMCommand";
 	static Logger _log = Logger.getLogger(RequestGMCommand.class.getName());
-			
+
 	private String _targetName;
 	private int _command;
-	
-	
+
+
 	protected void readImpl()
 	{
 		_targetName = readS();
@@ -52,57 +53,51 @@ public final class RequestGMCommand extends L2GameClientPacket
 
 	protected void runImpl()
 	{
-		// prevent a non gm from vieweing player stuff
-		if (!this.getClient().getActiveChar().isGM())
-		{
+		// prevent non gm or low level GMs from vieweing player stuff
+		if (!this.getClient().getActiveChar().isGM() || this.getClient().getActiveChar().getAccessLevel()<Config.GM_ALTG_MIN_LEVEL)
 			return;
-		}
-		
-		
+
 		L2PcInstance player = L2World.getInstance().getPlayer(_targetName);
-		
+
 		// player name was incorrect?
-        if (player == null)
-        {
+		if (player == null)
 			return;
-        }
-        
+
 		switch(_command)
 		{
-			case 1: // player status
+		case 1: // player status
 			{
 				sendPacket(new GMViewCharacterInfo(player));
 				break;
 			}
-			case 2: // player clan
+		case 2: // player clan
 			{
 				if (player.getClan() != null)
 					sendPacket(new GMViewPledgeInfo(player.getClan(),player));
-
-                break;
+				break;
 			}
-			case 3: // player skills
+		case 3: // player skills
 			{
 				sendPacket(new GMViewSkillInfo(player));
 				break;
 			}
-			case 4: // player quests
+		case 4: // player quests
 			{
-                sendPacket(new GMViewQuestList(player));
-			    break;
+				sendPacket(new GMViewQuestList(player));
+				break;
 			}
-			case 5: // player inventory
+		case 5: // player inventory
 			{
 				sendPacket(new GMViewItemList(player));
 				break;
 			}
-			case 6: // player warehouse
+		case 6: // player warehouse
 			{
-			    // gm warehouse view to be implemented
+				// gm warehouse view to be implemented
 				sendPacket(new GMViewWarehouseWithdrawList(player));
-			    break;
+				break;
 			}
-				
+
 		}
 	}
 

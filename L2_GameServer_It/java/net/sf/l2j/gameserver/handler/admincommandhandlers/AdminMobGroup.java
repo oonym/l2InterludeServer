@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
+import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.MobGroup;
@@ -53,9 +54,9 @@ public class AdminMobGroup implements IAdminCommandHandler
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
 
+		GMAudit.auditGMAction(activeChar.getName(), command, "", "");
 		if (command.equals("admin_mobmenu")) 
 		{
-			//AdminHelpPage.showHelpPage(activeChar, "mobgroup.htm");
 			showMainPage(activeChar,command);
 			return true;
 		}
@@ -103,7 +104,6 @@ public class AdminMobGroup implements IAdminCommandHandler
 			invul(command, activeChar);
 		else if (command.startsWith("admin_mobgroup_teleport"))
 			teleportGroup(command, activeChar);
-		//AdminHelpPage.showHelpPage(activeChar, );
 		showMainPage(activeChar,command);
 		return true;
 	}
@@ -222,16 +222,6 @@ public class AdminMobGroup implements IAdminCommandHandler
 			return;
 		}
 		group.setFollowMode(target);
-	}
-
-	public String[] getAdminCommandList() 
-	{
-		return ADMIN_COMMANDS;
-	}
-
-	private boolean checkLevel(int level) 
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 
 	private void createGroup(String command, L2PcInstance activeChar) 
@@ -560,4 +550,15 @@ public class AdminMobGroup implements IAdminCommandHandler
 
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
 	}
+
+	public String[] getAdminCommandList() 
+	{
+		return ADMIN_COMMANDS;
+	}
+
+	private boolean checkLevel(int level) 
+	{
+		return (level >= REQUIRED_LEVEL);
+	}
+
 }

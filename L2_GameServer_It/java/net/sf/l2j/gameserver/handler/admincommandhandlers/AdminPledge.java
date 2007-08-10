@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.GMViewPledgeInfo;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
@@ -36,6 +37,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * <LI>With target in a character without clan:<BR>
  * //pledge create clanname
  * <LI>With target in a clan leader:<BR>
+ * //pledge info<BR>
  * //pledge dismiss<BR>
  * //pledge setlevel level<BR>
  * //pledge rep reputation_points<BR>
@@ -70,12 +72,12 @@ public class AdminPledge implements IAdminCommandHandler
 			try
 			{
 				st.nextToken();
-				action = st.nextToken(); // create|dismiss|setlevel|rep
-				parameter = st.nextToken(); // clanname|nothing|level|rep_points
+				action = st.nextToken(); // create|info|dismiss|setlevel|rep
+				parameter = st.nextToken(); // clanname|nothing|nothing|level|rep_points
 			}
 			catch (NoSuchElementException nse)
 			{
-				activeChar.sendMessage("Usage: //pledge <create|dismiss|setlevel|rep> [name|level|points]");	
+				activeChar.sendMessage("Usage: //pledge <create|info|dismiss|setlevel|rep> [name|level|points]");	
 			}
 			if (action.equals("create"))
 			{
@@ -96,7 +98,7 @@ public class AdminPledge implements IAdminCommandHandler
 				showMainPage(activeChar);
 				return false;
 			}
-			else if(action.equals("dismiss"))
+			else if (action.equals("dismiss"))
 			{
 				ClanTable.getInstance().destroyClan(player.getClanId());
 				L2Clan clan = player.getClan();
@@ -105,6 +107,10 @@ public class AdminPledge implements IAdminCommandHandler
 				else
 					activeChar.sendMessage("There was a problem while destroying the clan.");
 			}
+			else if (action.equals("info"))
+			{
+				activeChar.sendPacket(new GMViewPledgeInfo(player.getClan(),player));
+			}			
 			else if (parameter == null)
 				activeChar.sendMessage("Usage: //pledge <setlevel|rep> <number>");
 			else if(action.equals("setlevel"))

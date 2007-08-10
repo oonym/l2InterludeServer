@@ -32,7 +32,7 @@ import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * This class containce global server configuration.<br>
+ * This class contains global server configuration.<br>
  * It has static final fields initialized from configuration files.<br>
  * It's initialized at the very begin of startup, and later JIT will optimize
  * away debug/unused code.
@@ -303,6 +303,8 @@ public final class Config
     public static int     GM_ACCESSLEVEL;
     /** General GM Minimal AccessLevel */
     public static int     GM_MIN;
+    /** Minimum privileges level for a GM to do Alt+G*/
+	public static int     GM_ALTG_MIN_LEVEL;
     /** General GM AccessLevel to change announcements */
     public static int     GM_ANNOUNCE;
     /** General GM AccessLevel can /ban /unban */
@@ -1864,6 +1866,7 @@ public final class Config
 
                 GM_ACCESSLEVEL  = Integer.parseInt(gmSettings.getProperty("GMAccessLevel", "100"));
                 GM_MIN          = Integer.parseInt(gmSettings.getProperty("GMMinLevel", "100"));
+                GM_ALTG_MIN_LEVEL = Integer.parseInt(gmSettings.getProperty("GMCanAltG", "100"));
                 GM_ANNOUNCE     = Integer.parseInt(gmSettings.getProperty("GMCanAnnounce", "100"));
                 GM_BAN          = Integer.parseInt(gmSettings.getProperty("GMCanBan", "100"));
                 GM_BAN_CHAT     = Integer.parseInt(gmSettings.getProperty("GMCanBanChat", "100"));
