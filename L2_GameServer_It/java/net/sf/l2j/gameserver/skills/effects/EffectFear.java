@@ -68,8 +68,8 @@ final class EffectFear extends L2Effect {
 	
     public boolean onActionTime()
     {
-    	// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread is the exception.
-    	if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376) return false;
+    	// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread,curse gloom and horror is the exception.
+    	if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376 && getSkill().getId() != 1169 && getSkill().getId() != 65) return false;
     	if(getEffected() instanceof L2FolkInstance) return false;
     	if(getEffected() instanceof L2SiegeGuardInstance) return false;
     	// Fear skills cannot be used on Headquarters Flag.  
