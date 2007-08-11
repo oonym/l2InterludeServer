@@ -1296,11 +1296,11 @@ public class L2Clan
         	return null;
         }
         
-        // Currently price for subpledges is set to 2500 reputation points.
-        // This needs to be confirmed, since possibly it is:
         // Royal Guard 5000 points per each
         // Order of Knights 10000 points per each
-        if(getReputationScore() <= 2500 && pledgeType != -1)
+        if(pledgeType != -1	&& 
+        		((getReputationScore() < 5000 && pledgeType < L2Clan.SUBUNIT_KNIGHT1) ||
+        		(getReputationScore() < 10000 && pledgeType > L2Clan.SUBUNIT_ROYAL2)))
         {
         	SystemMessage sp = new SystemMessage(SystemMessageId.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_MILITARY_UNIT);
         	player.sendPacket(sp);
