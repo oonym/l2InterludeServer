@@ -46,9 +46,11 @@ import net.sf.l2j.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
 import net.sf.l2j.gameserver.util.Util;
@@ -1189,6 +1191,10 @@ public class SevenSignsFestival implements SpawnListener
 			{
 				player.getClan().setReputationScore(player.getClan().getReputationScore()+100, true);
 				player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
+				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION);
+                sm.addString(partyMemberName);
+                sm.addNumber(100);
+				player.getClan().broadcastToOnlineMembers(sm);
 			}
 		}
 		else
@@ -1211,6 +1217,10 @@ public class SevenSignsFestival implements SpawnListener
         				{
         					clan.setReputationScore(clan.getReputationScore()+100, true);
         					clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+        					SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION);
+        	                sm.addString(partyMemberName);
+        	                sm.addNumber(100);
+        					clan.broadcastToOnlineMembers(sm);
         				}
         			}
         		}

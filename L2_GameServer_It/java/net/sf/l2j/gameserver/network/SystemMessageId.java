@@ -1223,16 +1223,161 @@ public enum SystemMessageId
 	CLAN_LEVEL_INCREASED(274),
 	
 	/**
+	 * ID: 1748<br>
+	 * Message: Clan Academy member $s1 has successfully completed the 2nd class 
+	 * transfer and obtained $s2 Clan Reputation points.
+	 */
+	CLAN_MEMBER_GRADUATED_FROM_ACADEMY(1748),
+	
+	/**
+	 * ID: 1749<br>
+	 * Message: Congratulations! You will now graduate from the Clan Academy and leave 
+	 * your current clan. As a graduate of the academy, you can immediately 
+	 * join a clan as a regular member without being subject to any penalties
+	 */
+	ACADEMY_MEMBERSHIP_TERMINATED(1749),
+	
+	/**
+	 * ID: 1771<br>
+	 * Message: Now that your clan level is above Level 5, it can accumulate clan 
+	 * reputation points.
+	 */
+	CLAN_CAN_ACCUMULATE_CLAN_REPUTATION_POINTS(1771),
+	
+	/**
+	 * ID: 1772<br>
+	 * Message: Since your clan was defeated in a siege, $s1 points have been 
+	 * deducted from your clan's reputation score and given to the opposing clan.
+	 */
+	CLAN_WAS_DEFEATED_IN_SIEGE_AND_LOST_S1_REPUTATION_POINTS(1772),
+	
+	/**
+	 * ID: 1773<br>
+	 * Message: Since your clan emerged victorious from the siege, $s1 points 
+	 * have been added to your clan's reputation score.
+	 */
+	CLAN_VICTORIOUS_IN_SIEGE_AND_GAINED_S1_REPUTATION_POINTS(1773),
+	
+	/**
+	 * ID: 1774<br>
+	 * Message: Your clan's newly acquired contested clan hall has added $s1 
+	 * points to your clan's reputation score.
+	 */
+	CLAN_ACQUIRED_CONTESTED_CLAN_HALL_AND_S1_REPUTATION_POINTS(1774),
+	
+	/**
+	 * ID: 1775<br>
+	 * Message: Clan member $s1 was an active member of the highest-ranked party 
+	 * in the Festival of Darkness. $s2 points have been added to your clan's reputation score.
+	 */
+	CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION(1775),
+	
+	/**
+	 * ID: 1776<br>
+	 * Message: Clan member $s1 was named a hero. $2s points have been added to your 
+	 * clan's reputation score.
+	 */
+	CLAN_MEMBER_S1_BECAME_HERO_AND_GAINED_S2_REPUTATION_POINTS(1776),
+	
+	/**
+	 * ID: 1777<br>
+	 * Message: You have successfully completed a clan quest. $s1 points have been added to your 
+	 * clan's reputation score.
+	 */
+	CLAN_QUEST_COMPLETED_AND_S1_POINTS_GAINED(1777),
+	
+	/**
+	 * ID: 1778<br>
+	 * Message: An opposing clan has captured your clan's contested clan hall. $s1 points have 
+	 * been deducted from your clan's reputation score.
+	 */
+	OPPOSING_CLAN_CAPTURED_CLAN_HALL_AND_YOUR_CLAN_LOSES_S1_POINTS(1778),
+	
+	/**
+	 * ID: 1779<br>
+	 * Message: After losing the contested clan hall, 300 points have been deducted from your 
+	 * clan's reputation score.
+	 */
+	CLAN_LOST_CONTESTED_CLAN_HALL_AND_300_POINTS(1779),
+	
+	/**
+	 * ID: 1780<br>
+	 * Message: Your clan has captured your opponent's contested clan hall. $s1 points have 
+	 * been deducted from your opponent's clan reputation score.
+	 */
+	CLAN_CAPTURED_CONTESTED_CLAN_HALL_AND_S1_POINTS_DEDUCTED_FROM_OPPONENT(1780),	
+	
+	/**
+	 * ID: 1781<br>
+	 * Message: Your clan has added $1s points to its clan reputation score.
+	 */
+	CLAN_ADDED_S1S_POINTS_TO_REPUTATION_SCORE(1781),
+	
+	/**
+	 * ID: 1782<br>
+	 * Message: Your clan member $s1 was killed. $s2 points have been deducted from 
+	 * your clan's reputation score and added to your opponent's clan reputation score.
+	 */
+	CLAN_MEMBER_S1_WAS_KILLED_AND_S2_POINTS_DEDUCTED_FROM_REPUTATION(1782),
+
+	/**
+	 * ID: 1783<br>
+	 * Message: For killing an opposing clan member, $s1 points have been deducted 
+	 * from your opponents' clan reputation score.
+	 */
+	FOR_KILLING_OPPOSING_MEMBER_S1_POINTS_WERE_DEDUCTED_FROM_OPPONENTS(1783),
+
+	/**
+	 * ID: 1784<br>
+	 * Message: Your clan has failed to defend the castle. $s1 points have been 
+	 * deducted from your clan's reputation score and added to your opponents'.
+	 */
+	YOUR_CLAN_FAILED_TO_DEFEND_CASTLE_AND_S1_POINTS_LOST_AND_ADDED_TO_OPPONENT(1784),
+	
+	/**
+	 * ID: 1785<br>
+	 * Message: The clan you belong to has been initialized. $s1 points have been 
+	 * deducted from your clan reputation score.
+	 */
+	YOUR_CLAN_HAS_BEEN_INITIALIZED_AND_S1_POINTS_LOST(1785),
+	
+	/**
+	 * ID: 1786<br>
+	 * Message: Your clan has failed to defend the castle. $s1 points have been 
+	 * deducted from your clan's reputation score.
+	 */
+	YOUR_CLAN_FAILED_TO_DEFEND_CASTLE_AND_S1_POINTS_LOST(1786),
+	
+	/**
+     * ID: 1787<br>
+     * Message: $s1 points have been deducted from the clan's reputation score.
+     */
+    S1_DEDUCTED_FROM_CLAN_REP(1787),
+    
+    /**
+     * ID: 1788<br>
+     * Message: The clan skill $s1 has been added.
+     */
+    CLAN_SKILL_S1_ADDED(1788),
+	
+	/**
+	 * ID: 1789<br>
+	 * Message: Since the Clan Reputation Score has dropped to 0 or lower, your 
+	 * clan skill(s) will be de-activated.
+	 */
+	REPUTATION_POINTS_0_OR_LOWER_CLAN_SKILLS_DEACTIVATED(1789),
+	
+	/**
+	 * ID: 1860<br>
+	 * Message: The Clan Reputation Score is too low.
+	 */
+	CLAN_REPUTATION_SCORE_IS_TOO_LOW(1860),
+	
+	/**
 	 * ID: 1790<br>
 	 * Message: The conditions necessary to increase the clan's level have not been met.
 	 */
 	FAILED_TO_INCREASE_CLAN_LEVEL(1790),
-	
-	/**
-	 * ID: 1771<br>
-	 * Message: Now that your clan level is above Level 5, it can accumulate clan reputation points.
-	 */
-	CLAN_CAN_ACCUMULATE_CLAN_REPUTATION_POINTS(1771),
 	
 	/**
 	 * ID: 540<br>
@@ -1269,14 +1414,6 @@ public enum SystemMessageId
 	 * Message: You have recently been dismissed from a clan. You are not allowed to join another clan for 24-hours.
 	 */
 	CLAN_MEMBERSHIP_TERMINATED(199),
-	
-	/**
-	 * ID: 1749<br>
-	 * Message: Congratulations! You will now graduate from the Clan Academy and leave 
-	 * your current clan. As a graduate of the academy, you can immediately 
-	 * join a clan as a regular member without being subject to any penalties
-	 */
-	ACADEMY_MEMBERSHIP_TERMINATED(1749),
 	
 	/**
 	 * ID: 223<br>
@@ -1442,18 +1579,6 @@ public enum SystemMessageId
      * Message: The attempt to acquire the skill has failed because of an insufficient Clan Reputation Score.
      */
     ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE(1852),
-    
-    /**
-     * ID: 1787<br>
-     * Message: $s1 points have been deducted from the clan's reputation score.
-     */
-    S1_DEDUCTED_FROM_CLAN_REP(1787),
-    
-    /**
-     * ID: 1788<br>
-     * Message: The clan skill $s1 has been added.
-     */
-    CLAN_SKILL_S1_ADDED(1788),
     
     /**
      * ID: 1564<br>

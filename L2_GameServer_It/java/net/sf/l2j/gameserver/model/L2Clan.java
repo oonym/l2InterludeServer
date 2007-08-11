@@ -1302,7 +1302,7 @@ public class L2Clan
         		((getReputationScore() < 5000 && pledgeType < L2Clan.SUBUNIT_KNIGHT1) ||
         		(getReputationScore() < 10000 && pledgeType > L2Clan.SUBUNIT_ROYAL2)))
         {
-        	SystemMessage sp = new SystemMessage(SystemMessageId.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_MILITARY_UNIT);
+        	SystemMessage sp = new SystemMessage(SystemMessageId.CLAN_REPUTATION_SCORE_IS_TOO_LOW);
         	player.sendPacket(sp);
         	return null;
         }
