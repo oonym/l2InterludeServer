@@ -60,7 +60,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 
     //protected static final Logger _log = Logger.getLogger(L2AttackableAI.class.getName());
 
-    private static final int RANDOM_WALK_RATE = 100;
+    private static final int RANDOM_WALK_RATE = 30; // confirmed
     // private static final int MAX_DRIFT_RANGE = 300;
     private static final int MAX_ATTACK_TIMEOUT = 300; // int ticks, i.e. 30 seconds
 
@@ -455,7 +455,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             //_log.config("Curent pos ("+getX()+", "+getY()+"), moving to ("+x1+", "+y1+").");
             // Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
             moveTo(x1, y1, z1);
-
         }
 
         return;
