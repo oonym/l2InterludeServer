@@ -977,6 +977,8 @@ public final class Config
     public static boolean GM_STARTUP_SILENCE;
     /** Add GM in the GM list at startup ? */
     public static boolean GM_STARTUP_AUTO_LIST;
+    /** Change the way admin panel is shown */
+    public static String GM_ADMIN_MENU_STYLE;
 
     /** Allow petition ? */
     public static boolean PETITIONING_ALLOWED;
@@ -1465,6 +1467,8 @@ public final class Config
                 GM_STARTUP_INVISIBLE = Boolean.parseBoolean(otherSettings.getProperty("GMStartupInvisible", "True"));
                 GM_STARTUP_SILENCE = Boolean.parseBoolean(otherSettings.getProperty("GMStartupSilence", "True"));
                 GM_STARTUP_AUTO_LIST = Boolean.parseBoolean(otherSettings.getProperty("GMStartupAutoList", "True"));
+                GM_ADMIN_MENU_STYLE = otherSettings.getProperty("GMAdminMenuStyle", "modern");
+                
 
                 PETITIONING_ALLOWED = Boolean.parseBoolean(otherSettings.getProperty("PetitioningAllowed", "True"));
                 MAX_PETITIONS_PER_PLAYER = Integer.parseInt(otherSettings.getProperty("MaxPetitionsPerPlayer", "5"));
@@ -2248,6 +2252,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("PvPVsPvPTime")) PVP_PVP_TIME = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("GlobalChat")) DEFAULT_GLOBAL_CHAT = pValue;
         else if (pName.equalsIgnoreCase("TradeChat"))  DEFAULT_TRADE_CHAT = pValue;
+        else if (pName.equalsIgnoreCase("MenuStyle"))  GM_ADMIN_MENU_STYLE = pValue;
         else return false;
         return true;
     }

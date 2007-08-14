@@ -63,7 +63,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
 public class AdminEffects implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS = { "admin_invis", "admin_invisible", "admin_vis",	"admin_visible", "admin_invis_menu",
-		"admin_earthquake", 
+		"admin_earthquake", "admin_earthquake_menu",
 		"admin_bighead", "admin_shrinkhead",
 		"admin_gmspeed", "admin_gmspeed_menu",
 		"admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", "admin_unpara_all_menu", "admin_para_all_menu", "admin_unpara_menu", "admin_para_menu",

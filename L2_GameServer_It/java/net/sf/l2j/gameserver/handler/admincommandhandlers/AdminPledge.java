@@ -77,7 +77,6 @@ public class AdminPledge implements IAdminCommandHandler
 			}
 			catch (NoSuchElementException nse)
 			{
-				activeChar.sendMessage("Usage: //pledge <create|info|dismiss|setlevel|rep> [name|level|points]");	
 			}
 			if (action.equals("create"))
 			{
@@ -126,16 +125,23 @@ public class AdminPledge implements IAdminCommandHandler
 			}
 			else if (action.startsWith("rep"))
 			{
-				int points = Integer.parseInt(parameter);
-				L2Clan clan = player.getClan();
-				if (clan.getLevel() < 5)
+				try
 				{
-					activeChar.sendMessage("Only clans of level 5 or above may receive reputation points.");
-					showMainPage(activeChar);
-					return false;
+					int points = Integer.parseInt(parameter);
+					L2Clan clan = player.getClan();
+					if (clan.getLevel() < 5)
+					{
+						activeChar.sendMessage("Only clans of level 5 or above may receive reputation points.");
+						showMainPage(activeChar);
+						return false;
+					}
+					clan.setReputationScore(clan.getReputationScore()+points, true);
+					activeChar.sendMessage("You "+(points>0?"add ":"remove ")+Math.abs(points)+" points "+(points>0?"to ":"from ")+clan.getName()+"'s reputation. Their current score is "+clan.getReputationScore());
 				}
-				clan.setReputationScore(clan.getReputationScore()+points, true);
-				activeChar.sendMessage("You "+(points>0?"add ":"remove ")+Math.abs(points)+" points from "+clan.getName()+"'s reputation score");
+				catch (Exception e)
+				{
+					activeChar.sendMessage("Usage: //pledge <rep> <number>");
+				}
 			}
 		}
 		showMainPage(activeChar);
