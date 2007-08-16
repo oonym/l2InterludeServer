@@ -56,7 +56,6 @@ import net.sf.l2j.gameserver.templates.L2EtcItemType;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Rnd;
-import net.sf.l2j.util.Rnd;
 
 /**
  * This class manages all NPC that can be attacked.<BR><BR>

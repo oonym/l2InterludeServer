@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
@@ -99,7 +98,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler {
 					if (cw.isActivated())
 					{
 						L2PcInstance pl = cw.getPlayer();
-						replyMSG.append("<tr><td>Weilder:</td><td>"+ pl==null ? "null" : pl.getName()+"</td></tr>");
+						replyMSG.append("<tr><td>Weilder:</td><td>"+ (pl==null?"null" : pl.getName())+"</td></tr>");
 						replyMSG.append("<tr><td>Karma:</td><td>"+String.valueOf(cw.getPlayerKarma())+"</td></tr>");
 						replyMSG.append("<tr><td>Kills:</td><td>"+String.valueOf(cw.getPlayerPkKills())+"/"+String.valueOf(cw.getNbKills())+"</td></tr>");
 						replyMSG.append("<tr><td>Time remaining:</td><td>"+String.valueOf(cw.getTimeLeft()/60000)+" min.</td></tr>");

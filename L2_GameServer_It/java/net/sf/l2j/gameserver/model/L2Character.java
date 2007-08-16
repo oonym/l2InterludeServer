@@ -2997,13 +2997,13 @@ public abstract class L2Character extends L2Object
 	/** L2Charcater targeted by the L2Character */
 	private L2Object _target;
 
-	// setted by the start of casting, in game ticks
+	// set by the start of casting, in game ticks
 	private int     _castEndTime;
 	private int     _castInterruptTime;
 
 	private boolean _inCombat;
 
-	// setted by the start of attack, in game ticks
+	// set by the start of attack, in game ticks
 	private int     _attackEndTime;
 	private int     _attacking;
 	private int     _disableBowAttackEndTime;

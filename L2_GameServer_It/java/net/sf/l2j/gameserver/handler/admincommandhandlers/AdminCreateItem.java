@@ -43,7 +43,10 @@ public class AdminCreateItem implements IAdminCommandHandler {
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
+			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
+				return false;
+		
+		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target"), "");
 
 		if (command.equals("admin_itemcreate"))
 		{
@@ -80,8 +83,6 @@ public class AdminCreateItem implements IAdminCommandHandler {
 			}
 			AdminHelpPage.showHelpPage(activeChar, "itemcreation.htm");
 		}
-		String target = (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
 
