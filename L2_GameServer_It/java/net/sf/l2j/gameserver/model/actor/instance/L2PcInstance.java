@@ -2215,7 +2215,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			setHero(true);
 
 		// Add clan skills
-		if (getClan() != null)
+		if (getClan() != null && getClan().getReputationScore() >= 0)
 		{
 			L2Skill[] skills = getClan().getAllSkills();
 			for (L2Skill sk : skills)

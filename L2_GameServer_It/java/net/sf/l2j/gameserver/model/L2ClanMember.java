@@ -99,11 +99,14 @@ public class L2ClanMember
 	        if (_clan.getLevel() > 3 && player.isClanLeader())
 	        	SiegeManager.getInstance().addSiegeSkills(player);
 
-			L2Skill[] skills = _clan.getAllSkills();
-			for (L2Skill sk : skills) 
+			if (_clan.getReputationScore() >= 0)
 			{
-				if(sk.getMinPledgeClass() <= player.getPledgeClass())
-					player.addSkill(sk, false);
+				L2Skill[] skills = _clan.getAllSkills();
+				for (L2Skill sk : skills) 
+				{
+					if(sk.getMinPledgeClass() <= player.getPledgeClass())
+						player.addSkill(sk, false);
+				}
 			}
 		}
 

@@ -1374,6 +1374,12 @@ public enum SystemMessageId
 	CLAN_REPUTATION_SCORE_IS_TOO_LOW(1860),
 	
 	/**
+	 * ID: 1862<br>
+	 * Message: Clan skills will now be activated since the clan's reputation score is 0 or higher.
+	 */
+	CLAN_SKILLS_WILL_BE_ACTIVATED_SINCE_REPUTATION_IS_0_OR_HIGHER(1862),
+	
+	/**
 	 * ID: 1790<br>
 	 * Message: The conditions necessary to increase the clan's level have not been met.
 	 */

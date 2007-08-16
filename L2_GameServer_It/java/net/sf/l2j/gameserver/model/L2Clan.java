@@ -31,6 +31,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.datatables.ClanTable;
+import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -1554,9 +1555,39 @@ public class L2Clan
 
     public void setReputationScore(int value, boolean save)
     {
+    	if(_reputationScore >= 0 && value < 0)
+    	{
+    		broadcastToOnlineMembers(new SystemMessage(SystemMessageId.REPUTATION_POINTS_0_OR_LOWER_CLAN_SKILLS_DEACTIVATED));
+    		L2Skill[] skills = getAllSkills();
+    		for (L2ClanMember member : _members.values())
+    		{
+    			if (member.isOnline() && member.getPlayerInstance() != null)
+    			{
+    				for (L2Skill sk : skills)
+    					member.getPlayerInstance().removeSkill(sk, false); 
+    			}
+    		}
+    	}
+    	else if(_reputationScore < 0 && value >= 0)
+    	{
+    		broadcastToOnlineMembers(new SystemMessage(SystemMessageId.CLAN_SKILLS_WILL_BE_ACTIVATED_SINCE_REPUTATION_IS_0_OR_HIGHER));
+    		L2Skill[] skills = getAllSkills();
+    		for (L2ClanMember member : _members.values())
+    		{
+    			if (member.isOnline() && member.getPlayerInstance() != null)
+    			{
+    				for (L2Skill sk : skills)
+    				{
+    					if(sk.getMinPledgeClass() <= member.getPlayerInstance().getPledgeClass())
+    						member.getPlayerInstance().addSkill(sk, false);
+    				}
+    			}
+    		}
+    	}
+    	
+    	_reputationScore = value;
     	if(_reputationScore > 100000000) _reputationScore = 100000000;
     	if(_reputationScore < -100000000) _reputationScore = -100000000;
-    	_reputationScore = value;
     	if (save) updateClanInDB();
     }
     
