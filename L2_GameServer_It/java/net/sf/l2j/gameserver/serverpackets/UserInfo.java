@@ -250,7 +250,7 @@ public class UserInfo extends L2GameServerPacket
         writeD(_activeChar.getClanCrestId());
         writeD(_activeChar.getAllyId());
         writeD(_activeChar.getAllyCrestId()); // ally crest id
-        writeD(_activeChar.isClanLeader() ? 0x60 : 0); // siege-flags  0x40 - leader rights  0x20 - ??
+        writeD(_activeChar.getSiegeStateFlag()); // siege-flags: 0x180 sword over name, 0x80 shield, 0xC0 crown, 0x1C0 flag, none other found
         writeC(_activeChar.getMountType()); // mount type
         writeC(_activeChar.getPrivateStoreType());
         writeC(_activeChar.hasDwarvenCraft() ? 1 : 0);

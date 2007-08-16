@@ -354,6 +354,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
 	private byte _pvpFlag;
+	
+	/** The Siege Flag state of the L2PcInstance (0x180 sword over name, 0x80 shield, 0xC0 crown, 0x1C0 flag) */
+	private int _siegeStateFlag = 0;
 
 	private int _curWeightPenalty = 0;
 
@@ -778,6 +781,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public int getRelation(L2PcInstance target)
 	{
+		// TODO: Fix, this part of the packet isn't working at the moment, even PVP flag.
 		int result = 0;
 
 		if (getPvpFlag() != 0)
@@ -1403,6 +1407,20 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _macroses;
 	}
 
+	public int getSiegeStateFlag()
+	{
+		return _siegeStateFlag;
+	}
+	
+	/**
+	 * Set the Siege Flag of the L2PcInstance.<BR><BR>
+	 * 0x180 sword over name, 0x80 shield, 0xC0 crown, 0x1C0 flag, none other found
+	 */
+	public void setSiegeStateFlag(int siegeStateFlag)
+	{
+		_siegeStateFlag = siegeStateFlag;
+	}
+	
 	/**
 	 * Set the PvP Flag of the L2PcInstance.<BR><BR>
 	 */
@@ -1411,6 +1429,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		_pvpFlag = (byte)pvpFlag;
 	}
 
+	public byte getPvpFlag()
+	{
+		return _pvpFlag;
+	}
+	
 	public boolean getInPvpZone()
 	{
 		return _inPvpZone;
@@ -2287,11 +2310,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/** Set the SP amount of the L2PcInstance. */
 	public void setSp(int sp) { super.getStat().setSp(sp); }
-
-	public byte getPvpFlag()
-	{
-		return _pvpFlag;
-	}
 
 	/**
 	 * Return true if this L2PcInstance is a clan leader in

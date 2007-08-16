@@ -229,7 +229,7 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_activeChar.getClanCrestId());
 			writeD(_activeChar.getAllyId());
 			writeD(_activeChar.getAllyCrestId());
-			writeD(0);	// new in rev 417   siege-flags
+			writeD(_activeChar.getSiegeStateFlag());	// siege-flags: 0x180 sword over name, 0x80 shield, 0xC0 crown, 0x1C0 flag, none other found
 			
 			writeC(_activeChar.isSitting() ? 0 : 1);	// standing = 1  sitting = 0
 			writeC(_activeChar.isRunning() ? 1 : 0);	// running = 1   walking = 0
@@ -273,7 +273,7 @@ public class CharInfo extends L2GameServerPacket
 			
 	        writeD(_activeChar.getAppearance().getNameColor());
 	        
-	        writeD(0x00); // ??
+	        writeD(0x00); // isRunning() as in UserInfo?
 	        
 	        writeD(_activeChar.getPledgeClass()); 
 	        writeD(0x00); // ??
