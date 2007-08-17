@@ -285,6 +285,7 @@ public class Siege
             //teleportPlayer(Siege.TeleportWhoType.Defender, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
             teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
             _isInProgress = false; // Flag so that siege instance can be started
+            updatePlayerSiegeStateFlags(true);
             saveCastleSiege(); // Save castle specific data
             clearSiegeClan(); // Clear siege clan from db
             removeArtifact(); // Remove artifact from this castle
@@ -292,7 +293,6 @@ public class Siege
             _siegeGuardManager.unspawnSiegeGuard(); // Remove all spawned siege guard from this castle
             if (getCastle().getOwnerId() > 0) _siegeGuardManager.removeMercs();
             getCastle().spawnDoor(); // Respawn door to castle
-            updatePlayerSiegeStateFlags(true);
         }
     }
 
