@@ -189,7 +189,7 @@ public class CharSelectInfo extends L2GameServerPacket
 					else
 						writeD(0x00); //c3 auto-select char
 
-					writeC(charInfoPackage.getEnchantEffect());
+					writeC(charInfoPackage.getEnchantEffect() > 127 ? 127 : charInfoPackage.getEnchantEffect());
 
 					writeD(charInfoPackage.getAugmentationId());
 		}
