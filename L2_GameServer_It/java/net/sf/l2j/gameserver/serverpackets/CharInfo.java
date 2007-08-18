@@ -229,7 +229,9 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_activeChar.getClanCrestId());
 			writeD(_activeChar.getAllyId());
 			writeD(_activeChar.getAllyCrestId());
-			writeD(_activeChar.getSiegeStateFlag());	// siege-flags: 0x180 sword over name, 0x80 shield, 0xC0 crown, 0x1C0 flag, none other found
+	        // 0x40 leader rights
+	        // siege flags: 0x180 sword over name, 0x80 shield, 0xC0 crown (|leader), 0x1C0 flag (|leader)
+	        writeD(_activeChar.isClanLeader() ? (0x40 | _activeChar.getSiegeStateFlag()) : _activeChar.getSiegeStateFlag());
 			
 			writeC(_activeChar.isSitting() ? 0 : 1);	// standing = 1  sitting = 0
 			writeC(_activeChar.isRunning() ? 1 : 0);	// running = 1   walking = 0
