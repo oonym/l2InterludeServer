@@ -245,14 +245,14 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final int RELATION_HAS_KARMA     = 0x00004; // karma ???
 	private static final int RELATION_UNKNOWN_1     = 0x00008; // ???
 	private static final int RELATION_UNKNOWN_2     = 0x00010; // ???
-	private static final int RELATION_UNKNOWN_3     = 0x00020; // siege flags ???
-	private static final int RELATION_UNKNOWN_4     = 0x00040; // siege flags ???
-	private static final int RELATION_UNKNOWN_5     = 0x00080; // siege flags ???
-	private static final int RELATION_UNKNOWN_6     = 0x00100; // siege flags ???
-	private static final int RELATION_UNKNOWN_7     = 0x00200; // siege flags ???
-	private static final int RELATION_UNKNOWN_8     = 0x00400; // siege flags ???
-	private static final int RELATION_UNKNOWN_9     = 0x00800; // siege flags ???
-	private static final int RELATION_UNKNOWN_10    = 0x01000; // siege flags ???
+	private static final int RELATION_UNKNOWN_3     = 0x00020; // ???
+	private static final int RELATION_UNKNOWN_4     = 0x00040; // ???
+	private static final int RELATION_LEADER 	    = 0x00080; // leader
+	private static final int RELATION_UNKNOWN_6     = 0x00100; // ???
+	private static final int RELATION_UNKNOWN_7     = 0x00200; // true if in siege
+	private static final int RELATION_UNKNOWN_8     = 0x00400; // true when attacker
+	private static final int RELATION_UNKNOWN_9     = 0x00800; // blue siege icon, cannot have if red
+	private static final int RELATION_UNKNOWN_10    = 0x01000; // true when red icon, doesn't matter with blue
 	private static final int RELATION_UNKNOWN_11    = 0x02000; // ???
 	private static final int RELATION_UNKNOWN_12    = 0x04000; // ???
 	private static final int RELATION_MUTUAL_WAR    = 0x08000; // double fist
@@ -781,7 +781,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public int getRelation(L2PcInstance target)
 	{
-		// TODO: Fix, this part of the packet isn't working at the moment, even PVP flag.
+		// TODO: Add siege icons
 		int result = 0;
 
 		if (getPvpFlag() != 0)

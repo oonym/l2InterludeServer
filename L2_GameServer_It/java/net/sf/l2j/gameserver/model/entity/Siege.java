@@ -476,7 +476,7 @@ public class Siege
                  if (clear) member.setSiegeStateFlag(0);
                  else member.setSiegeStateFlag(0x180);
                  member.sendPacket(new UserInfo(member));
-                 member.broadcastPacket(new CharInfo(member)); // actually (non-working) relation
+                 member.broadcastPacket(new CharInfo(member)); // actually relation
              }
         }
     	for(L2SiegeClan siegeclan : getDefenderClans())
