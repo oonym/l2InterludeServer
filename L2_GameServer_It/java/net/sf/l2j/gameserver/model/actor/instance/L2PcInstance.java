@@ -6942,8 +6942,9 @@ public final class L2PcInstance extends L2PlayableInstance
             return;
         }
 
-		// If summon siege golem (13), Summon Wild Hog Cannon (299), check its ok to place the flag
-		if ((skill.getId() == 13 || skill.getId() == 299) && !SiegeManager.getInstance().checkIfOkToSummon(this, false))
+		// Check if it's ok to summon
+        // siege golem (13), Wild Hog Cannon (299), Swoop Cannon (448)
+        if ((skill.getId() == 13 || skill.getId() == 299 || skill.getId() == 448) && !SiegeManager.getInstance().checkIfOkToSummon(this, false))
 			return;
 
 
