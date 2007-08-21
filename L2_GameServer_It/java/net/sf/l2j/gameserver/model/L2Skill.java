@@ -1371,7 +1371,7 @@ public abstract class L2Skill
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {
                     if (obj == null) continue;
-                	if (!(obj instanceof L2Character)) continue;
+                	if (!(obj instanceof L2Attackable || obj instanceof L2PlayableInstance)) continue;
                     if (obj == cha) continue;
                     target = (L2Character) obj;
 
@@ -1763,7 +1763,7 @@ public abstract class L2Skill
                 	for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                     {
                         if (obj == null) continue;
-                        if (!(obj instanceof L2Attackable) || ((L2Character) obj).isDead()
+                        if (!(obj instanceof L2Attackable || obj instanceof L2PlayableInstance) || ((L2Character) obj).isDead()
                             || ((L2Character) obj) == activeChar) continue;
 
                         if (!Util.checkIfInRange(radius, target, obj, true)) continue;
