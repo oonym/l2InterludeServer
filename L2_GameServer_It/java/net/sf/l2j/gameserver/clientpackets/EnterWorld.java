@@ -305,9 +305,9 @@ public class EnterWorld extends L2GameClientPacket
 		    {
 		    	if (!siege.getIsInProgress()) continue;
 				if (siege.checkIsAttacker(activeChar.getClan()))
-		    		activeChar.setSiegeStateFlag(0x180);
-		    	if (siege.checkIsDefender(activeChar.getClan()))
-		    		activeChar.setSiegeStateFlag(0x80);
+		    		activeChar.setSiegeState((byte)1);
+				else if (siege.checkIsDefender(activeChar.getClan()))
+		    		activeChar.setSiegeState((byte)2);
 		    }
 		}
 		

@@ -70,7 +70,7 @@ public class UserInfo extends L2GameServerPacket
     private static final String _S__04_USERINFO = "[S] 04 UserInfo";
     private L2PcInstance _activeChar;
     private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd,
-            _flyWalkSpd;
+            _flyWalkSpd, _relation;
     private float _moveMultiplier;
 
     /**
@@ -85,6 +85,9 @@ public class UserInfo extends L2GameServerPacket
         _walkSpd = (int) (_activeChar.getWalkSpeed() / _moveMultiplier);
         _swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
         _swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
+        _relation = _activeChar.isClanLeader() ? 0x40 : 0;
+        if (_activeChar.getSiegeState() == 1) _relation |= 0x180;
+        if (_activeChar.getSiegeState() == 2) _relation |= 0x80;
     }
 
     protected final void writeImpl()
@@ -251,8 +254,8 @@ public class UserInfo extends L2GameServerPacket
         writeD(_activeChar.getAllyId());
         writeD(_activeChar.getAllyCrestId()); // ally crest id
         // 0x40 leader rights
-        // siege flags: 0x180 sword over name, 0x80 shield, 0xC0 crown (|leader), 0x1C0 flag (|leader)
-        writeD(_activeChar.isClanLeader() ? (0x40 | _activeChar.getSiegeStateFlag()) : _activeChar.getSiegeStateFlag());
+        // siege flags: attacker - 0x180 sword over name, defender - 0x80 shield, 0xC0 crown (|leader), 0x1C0 flag (|leader)
+        writeD(_relation);
         writeC(_activeChar.getMountType()); // mount type
         writeC(_activeChar.getPrivateStoreType());
         writeC(_activeChar.hasDwarvenCraft() ? 1 : 0);

@@ -242,25 +242,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	public static final int STORE_PRIVATE_MANUFACTURE = 5;
 	public static final int STORE_PRIVATE_PACKAGE_SELL = 8;
 
-	private static final int RELATION_PVP_FLAG      = 0x00002; // pvp ???
-	private static final int RELATION_HAS_KARMA     = 0x00004; // karma ???
-	private static final int RELATION_UNKNOWN_1     = 0x00008; // ???
-	private static final int RELATION_UNKNOWN_2     = 0x00010; // ???
-	private static final int RELATION_UNKNOWN_3     = 0x00020; // ???
-	private static final int RELATION_UNKNOWN_4     = 0x00040; // ???
-	private static final int RELATION_LEADER 	    = 0x00080; // leader
-	private static final int RELATION_UNKNOWN_6     = 0x00100; // ???
-	private static final int RELATION_UNKNOWN_7     = 0x00200; // true if in siege
-	private static final int RELATION_UNKNOWN_8     = 0x00400; // true when attacker
-	private static final int RELATION_UNKNOWN_9     = 0x00800; // blue siege icon, cannot have if red
-	private static final int RELATION_UNKNOWN_10    = 0x01000; // true when red icon, doesn't matter with blue
-	private static final int RELATION_UNKNOWN_11    = 0x02000; // ???
-	private static final int RELATION_UNKNOWN_12    = 0x04000; // ???
-	private static final int RELATION_MUTUAL_WAR    = 0x08000; // double fist
-	private static final int RELATION_1SIDED_WAR    = 0x10000; // single fist
-	private static final int RELATION_UNKNOWN_13    = 0x20000; // ???
-	private static final int RELATION_UNKNOWN_14    = 0x40000; // ???
-
 	/** The table containing all minimum level needed for each Expertise (None, D, C, B, A, S)*/
 	private static final int[] EXPERTISE_LEVELS =
 	{
@@ -356,8 +337,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
 	private byte _pvpFlag;
 	
-	/** The Siege Flag state of the L2PcInstance */
-	private int _siegeStateFlag = 0;
+	/** The Siege state of the L2PcInstance */
+	private byte _siegeState = 0;
 
 	private int _curWeightPenalty = 0;
 
@@ -783,23 +764,38 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public int getRelation(L2PcInstance target)
 	{
-		// TODO: Add siege icons
 		int result = 0;
 
+		// karma and pvp may not be required
 		if (getPvpFlag() != 0)
-			result |= RELATION_PVP_FLAG;
-
+			result |= RelationChanged.RELATION_PVP_FLAG;
 		if (getKarma() > 0)
-			result |= RELATION_HAS_KARMA;
+			result |= RelationChanged.RELATION_HAS_KARMA;
+		
+		if (isClanLeader())
+			result |= RelationChanged.RELATION_LEADER;
+		
+		if (this.getSiegeState() != 0)
+		{
+			result |= RelationChanged.RELATION_INSIEGE;
+			if (this.getSiegeState() != target.getSiegeState())
+				result |= RelationChanged.RELATION_ENEMY;
+			else 
+				result |= RelationChanged.RELATION_ALLY;
+			if (this.getSiegeState() == 1)
+				result |= RelationChanged.RELATION_ATTACKER;
+		}
 
 		if (getClan() != null && target.getClan() != null)
-		if (target.getPledgeType() != L2Clan.SUBUNIT_ACADEMY)
-				if (target.getClan().isAtWarWith(getClan().getClanId())) {
-					result |= RELATION_1SIDED_WAR;
-					if (getClan().isAtWarWith(target.getClan().getClanId()))
-						result |= RELATION_MUTUAL_WAR;
+		{
+			if (target.getPledgeType() != L2Clan.SUBUNIT_ACADEMY
+				&& target.getClan().isAtWarWith(getClan().getClanId())) 
+			{
+				result |= RelationChanged.RELATION_1SIDED_WAR;
+				if (getClan().isAtWarWith(target.getClan().getClanId()))
+					result |= RelationChanged.RELATION_MUTUAL_WAR;
 			}
-
+		}
 		return result;
 	}
 
@@ -1408,19 +1404,18 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _macroses;
 	}
-
-	public int getSiegeStateFlag()
-	{
-		return _siegeStateFlag;
-	}
 	
 	/**
-	 * Set the Siege Flag of the L2PcInstance.<BR><BR>
-	 * 0x180 sword over name, 0x80 shield (if also leader, 0xC0 crown, 0x1C0 flag)
+	 * Set the siege state of the L2PcInstance.<BR><BR>
+	 * 1 = attacker, 2 = defender, 0 = not involved
 	 */
-	public void setSiegeStateFlag(int siegeStateFlag)
+	public void setSiegeState(byte siegeState)
 	{
-		_siegeStateFlag = siegeStateFlag;
+		_siegeState = siegeState;
+	}
+	public byte getSiegeState()
+	{
+		return _siegeState;
 	}
 	
 	/**
