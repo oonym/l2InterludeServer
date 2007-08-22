@@ -579,6 +579,10 @@ public final class Config
     public static int MIN_NPC_ANIMATION;
     /** Maximal time between 2 animations of a NPC */
     public static int MAX_NPC_ANIMATION;
+    /** Minimal time between animations of a MONSTER */
+    public static int MIN_MONSTER_ANIMATION;
+    /** Maximal time between animations of a MONSTER */
+    public static int MAX_MONSTER_ANIMATION;
 
     /** Activate position recorder ? */
     public static boolean ACTIVATE_POSITION_RECORDER;
@@ -1222,8 +1226,10 @@ public final class Config
 
                 MAX_DRIFT_RANGE                 = Integer.parseInt(optionsSettings.getProperty("MaxDriftRange", "300"));
 
-                MIN_NPC_ANIMATION               = Integer.parseInt(optionsSettings.getProperty("MinNPCAnimation", "0"));
-                MAX_NPC_ANIMATION               = Integer.parseInt(optionsSettings.getProperty("MaxNPCAnimation", "0"));
+                MIN_NPC_ANIMATION               = Integer.parseInt(optionsSettings.getProperty("MinNPCAnimation", "10"));
+                MAX_NPC_ANIMATION               = Integer.parseInt(optionsSettings.getProperty("MaxNPCAnimation", "20"));
+                MIN_MONSTER_ANIMATION           = Integer.parseInt(optionsSettings.getProperty("MinMonsterAnimation", "5"));
+                MAX_MONSTER_ANIMATION           = Integer.parseInt(optionsSettings.getProperty("MaxMonsterAnimation", "20"));
 
                 SERVER_NEWS                     = Boolean.valueOf(optionsSettings.getProperty("ShowServerNews", "False"));
                 SHOW_NPC_LVL                    = Boolean.valueOf(optionsSettings.getProperty("ShowNpcLevel", "False"));

@@ -109,6 +109,4 @@ public final class L2BossInstance extends L2MonsterInstance
     {
         return true;
     }
-
-    
 }

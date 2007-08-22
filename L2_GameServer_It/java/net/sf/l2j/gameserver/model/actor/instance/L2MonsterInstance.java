@@ -94,21 +94,14 @@ public class L2MonsterInstance extends L2Attackable
 		return (getTemplate().aggroRange > 0) && !this.isEventMob;
 	}
 
-	/**
-	 * Return False.<BR><BR>
-	 */
-	public boolean hasRandomAnimation()
-	{
-		return false;
-	}
-    
-	public void onSpawn()
-	{
+    public void onSpawn()
+    {
         super.onSpawn();
         
         if (getTemplate().getMinionData() != null)
-    		try
-    		{
+        {
+            try
+            {
                 for (L2MinionInstance minion : getSpawnedMinions())
                 {
                     if (minion == null) continue;
@@ -119,11 +112,11 @@ public class L2MonsterInstance extends L2Attackable
                 
                 manageMinions();
             }
-    		catch ( NullPointerException e )
-    		{
-    		}
-
-	}
+            catch ( NullPointerException e )
+            {
+            }
+        }
+    }
     
     protected int getMaintenanceInterval() { return MONSTER_MAINTENANCE_INTERVAL; }
     

@@ -30,8 +30,8 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  * 
  * @version $Revision: 1.20.4.6 $ $Date: 2005/07/23 16:13:39 $
  */
-public class L2FriendlyMobInstance extends L2Attackable {
-
+public class L2FriendlyMobInstance extends L2Attackable
+{
 	public L2FriendlyMobInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -55,10 +55,4 @@ public class L2FriendlyMobInstance extends L2Attackable {
 	{
 		return true;
 	}
-
-	public boolean hasRandomAnimation()
-	{
-		return false;
-	}
-
 }

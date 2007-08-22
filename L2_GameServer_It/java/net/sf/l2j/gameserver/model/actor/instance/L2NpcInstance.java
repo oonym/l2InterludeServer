@@ -21,6 +21,8 @@ package net.sf.l2j.gameserver.model.actor.instance;
 import java.text.DateFormat;
 import java.util.List;
 
+import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
+
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
@@ -53,6 +55,8 @@ import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.MobGroupTable;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
+import net.sf.l2j.gameserver.model.actor.instance.L2FriendlyMobInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.NpcKnownList;
 import net.sf.l2j.gameserver.model.actor.stat.NpcStat;
 import net.sf.l2j.gameserver.model.actor.status.NpcStatus;
@@ -121,19 +125,69 @@ public class L2NpcInstance extends L2Character
     private boolean _isInTown = false;
 
     private int _isSpoiledBy = 0;
+
+    private RandomAnimationTask _rAniTask = null;
     
     /** Task launching the function onRandomAnimation() */
-    public class RandomAnimationTask implements Runnable
+    private class RandomAnimationTask implements Runnable
     {
         public void run()
         {
-            try {
-                onRandomAnimation();
-            } 
+            try
+            {
+                if(this != _rAniTask)
+                    return; // Shouldn't happen, but who knows... just to make sure every active npc has only one timer.
+                if(isMob() && getAI().getIntention() != AI_INTENTION_ACTIVE)
+                    return; // Cancel further animation timers until intention is changed to ACTIVE again.
+
+                // Maybe settings are changed in meanwhile by server admin
+                // If this line is missing and MAX_ANIMATION is set to 0, there will be 0 seconds between the animations... :S
+                if(!hasRandomAnimation())
+                    return;
+
+                if(!(isDead() || isStunned() || isSleeping() || isParalyzed()))
+                    onRandomAnimation();
+
+                startRandomAnimationTimer();
+            }
             catch (Throwable t) {}
         }
     }
-    
+
+    /**
+     * Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance and create a new RandomAnimation Task.<BR><BR>
+     */
+    public void onRandomAnimation()
+    {
+        // Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
+        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(1, 3));
+        broadcastPacket(sa);
+    }
+
+    /**
+     * Create a RandomAnimation Task that will be launched after the calculated delay.<BR><BR>
+     */
+    public void startRandomAnimationTimer()
+    {
+        int minWait =  isMob() ? Config.MIN_MONSTER_ANIMATION : Config.MIN_NPC_ANIMATION;
+        int maxWait = isMob() ? Config.MAX_MONSTER_ANIMATION : Config.MAX_NPC_ANIMATION;
+
+        // Calculate the delay before the next animation
+        int interval = Rnd.get(minWait, maxWait) * 1000;
+
+        // Create a RandomAnimation Task that will be launched after the calculated delay 
+        _rAniTask = new RandomAnimationTask();
+        ThreadPoolManager.getInstance().scheduleGeneral(_rAniTask, interval);
+    }
+
+    /**
+     * Check if the server allows Random Animation.<BR><BR>
+     */
+    public boolean hasRandomAnimation()
+    {
+        return (Config.MAX_NPC_ANIMATION > 0);
+    }
+
     public class destroyTemporalNPC implements Runnable
     {
         private L2Spawn _oldSpawn;
@@ -206,8 +260,8 @@ public class L2NpcInstance extends L2Character
         setName(template.name);
         
         // Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it 
-        if (hasRandomAnimation())
-            startRandomAnimation();
+        if (hasRandomAnimation() && !isMob()) // Mob socials are handled by AI
+            startRandomAnimationTimer();
     }
 
     public NpcKnownList getKnownList() 
@@ -230,14 +284,6 @@ public class L2NpcInstance extends L2Character
 			this.setStatus(new NpcStatus(this)); 
 		return (NpcStatus)super.getStatus(); 
 	}
-    
-    /**
-     * Check if the server allow Random Animation.<BR><BR>
-     */
-    public boolean hasRandomAnimation()
-    {
-        return (Config.MAX_NPC_ANIMATION > 0);
-    }
     
     /** Return the L2NpcTemplate of the L2NpcInstance. */
     public final L2NpcTemplate getTemplate() 
@@ -940,34 +986,6 @@ public class L2NpcInstance extends L2Character
             	}
             }
         }
-    }
-    
-    /**
-     * Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance and create a new RandomAnimation Task.<BR><BR>
-     */
-    public void onRandomAnimation()
-    {
-        // Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
-        SocialAction sa = new SocialAction(getObjectId(), Rnd.nextInt(8));
-        broadcastPacket(sa);
-        
-        // Create a new RandomAnimation Task that will be launched after the calculated delay
-        startRandomAnimation();
-    }
-    
-    /**
-     * Create a RandomAnimation Task that will be launched after the calculated delay.<BR><BR>
-     */
-    public void startRandomAnimation()
-    {
-        int minWait = Config.MIN_NPC_ANIMATION;
-        int maxWait = Config.MAX_NPC_ANIMATION;
-        
-        // Calculate the delay before the next animation
-        int interval = (Rnd.nextInt(maxWait - minWait) + minWait) * 1000;
-        
-        // Create a RandomAnimation Task that will be launched after the calculated delay 
-        ThreadPoolManager.getInstance().scheduleGeneral(new RandomAnimationTask(), interval);
     }
     
     /**
@@ -2118,20 +2136,27 @@ public class L2NpcInstance extends L2Character
         return this.getTemplate().name;
     }
     
-    public boolean isDecayed() {
-    	return _isDecayed;
+    public boolean isDecayed()
+    {
+        return _isDecayed;
     }
     
-    public void setDecayed(boolean decayed) {
-    	_isDecayed = decayed;
+    public void setDecayed(boolean decayed)
+    {
+        _isDecayed = decayed;
     }
     
     public void endDecayTask()
     {
-    	if (!isDecayed()) 
-    	{
-	        DecayTaskManager.getInstance().cancelDecayTask(this);
-    		onDecay();
-    	}
+        if (!isDecayed()) 
+        {
+            DecayTaskManager.getInstance().cancelDecayTask(this);
+            onDecay();
+        }
+    }
+
+    public boolean isMob()
+    {
+        return false; // This means we use MAX_NPC_ANIMATION instead of MAX_MONSTER_ANIMATION
     }
 }

@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2World;
+import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -447,8 +448,6 @@ public class AdminEffects implements IAdminCommandHandler
 						{
 							if (performSocial(social,player,activeChar))
 								activeChar.sendMessage(player.getName()+" was affected by your request.");
-							else
-								activeChar.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 						}
 						else
 						{
@@ -617,11 +616,26 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			if (target instanceof L2Character)
 			{
-				if ((target instanceof L2Summon)||((activeChar.getObjectId()!=target.getObjectId())&&(action<2||action>16)))
+				if ((target instanceof L2Summon) || (target instanceof L2ChestInstance))
+				{
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
 					return false;
-				L2Character character=(L2Character)target;
+				}
+				if((target instanceof L2NpcInstance) && (action < 1 || action > 3))
+				{
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
+					return false;
+				}
+				if((target instanceof L2PcInstance) && (action < 2 || action > 16))
+				{
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
+					return false;
+				}
+				L2Character character = (L2Character)target;
 				character.broadcastPacket(new SocialAction(target.getObjectId(),action));
 			}
+			else
+				return false;
 		}
 		catch(Exception e)
 		{

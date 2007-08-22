@@ -554,5 +554,4 @@ public class L2DoorInstance extends L2Character
         
         return result;
     }
-    
 }

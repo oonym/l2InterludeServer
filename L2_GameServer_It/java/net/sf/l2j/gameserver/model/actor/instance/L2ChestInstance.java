@@ -155,10 +155,15 @@ public final class L2ChestInstance extends L2MonsterInstance
 		return false;
 	}
 	
- 	public boolean isMovementDisabled() {
- 		if (super.isMovementDisabled()) return true;
- 		if (isInteracted()) return false;
- 		return true;
- 	}	
+	public boolean isMovementDisabled()
+	{
+		if (super.isMovementDisabled()) return true;
+		if (isInteracted()) return false;
+		return true;
+	}
 
+	public boolean hasRandomAnimation()
+	{
+		return false;
+	}
 }
