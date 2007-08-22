@@ -143,6 +143,12 @@ public final class RequestActionUse extends L2GameClientPacket
 		case 22: // pet attack
 			if (target != null && pet != null && pet != target && !pet.isAttackingDisabled() && !activeChar.isBetrayed())
 			{
+				if (activeChar.isInOlympiadMode() && !activeChar.isOlympiadStart()){
+					// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
+					activeChar.sendPacket(new ActionFailed());
+					return;	
+				}
+
 				if (activeChar.getAccessLevel() < Config.GM_PEACEATTACK &&
 						activeChar.isInsidePeaceZone(pet, target))
 				{

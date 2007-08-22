@@ -88,17 +88,24 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                    	if (activeChar.getActiveWeaponItem() != activeChar.getFistsWeaponItem()
 	                    			&& item.getItem().getCrystalType() == activeChar.getActiveWeaponItem().getCrystalType())
 	                    	{
-	                            activeChar.addAutoSoulShot(_itemId);
-	                            ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
-	                            activeChar.sendPacket(atk);
-	
-	                            //start the auto soulshot use
-	                            SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
-	                            sm.addString(item.getItemName());
-	                            activeChar.sendPacket(sm);
-	                            sm = null;
+	                    		if (_itemId>=3947 && _itemId<=3952 && activeChar.isInOlympiadMode()){
+	                    			SystemMessage sm = new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
+	                    			sm.addString(item.getItemName());
+	                    			activeChar.sendPacket(sm);
+	                    			sm = null;
+	                    		}else{
+	                    			activeChar.addAutoSoulShot(_itemId);
+	                    			ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
+	                    			activeChar.sendPacket(atk);
+
+	                    			// start the auto soulshot use
+	                    			SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
+	                    			sm.addString(item.getItemName());
+	                    			activeChar.sendPacket(sm);
+	                    			sm = null;
 	                            
-	                            activeChar.rechargeAutoSoulShot(true, true, false);
+	                    			activeChar.rechargeAutoSoulShot(true, true, false);
+	                    		}
 	                    	}
 	                    	else {
 	                    		if ((_itemId >= 2509 && _itemId <= 2514) || (_itemId >= 3947 && _itemId <= 3952) || _itemId == 5790)

@@ -566,6 +566,12 @@ public abstract class L2Summon extends L2PlayableInstance
 				return;
 			}
 
+			if (getOwner() != null && getOwner().isInOlympiadMode() && !getOwner().isOlympiadStart()){
+				// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
+				sendPacket(new ActionFailed());
+				return;
+			}
+
             // Check if the target is attackable
 			if (target instanceof L2DoorInstance) 
         	{

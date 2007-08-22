@@ -149,6 +149,7 @@ import net.sf.l2j.gameserver.serverpackets.ExFishingEnd;
 import net.sf.l2j.gameserver.serverpackets.ExFishingStart;
 import net.sf.l2j.gameserver.serverpackets.ExOlympiadMode;
 import net.sf.l2j.gameserver.serverpackets.ExOlympiadUserInfo;
+import net.sf.l2j.gameserver.serverpackets.ExOlympiadUserInfoSpectator;
 import net.sf.l2j.gameserver.serverpackets.ExSetCompassZoneCode;
 import net.sf.l2j.gameserver.serverpackets.HennaInfo;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
@@ -377,6 +378,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
     /** Olympiad */
     private boolean _inOlympiadMode = false;
+    private boolean _OlympiadStart = false;
     private int _olympiadGameId = -1;
     private int _olympiadSide = -1;
 
@@ -3598,12 +3600,20 @@ public final class L2PcInstance extends L2PlayableInstance
 
         if (isInOlympiadMode())
         {
+        	// TODO: implement new OlympiadUserInfo
+        	for (L2PcInstance player : getKnownList().getKnownPlayers().values()) {
+    			if (player.getOlympiadGameId()==getOlympiadGameId()){
+    				if (Config.DEBUG)
+						_log.fine("Send status for Olympia window of " + getObjectId() + "(" + getName() + ") to " + player.getObjectId() + "(" + player.getName() +"). CP: " + getCurrentCp() + " HP: " + getCurrentHp() + " MP: " + getCurrentMp());
+    				player.sendPacket(new ExOlympiadUserInfo(this));
+    			}
+    		}
             if(Olympiad.getInstance().getSpectators(_olympiadGameId) != null)
             {
                 for(L2PcInstance spectator : Olympiad.getInstance().getSpectators(_olympiadGameId))
                 {
                     if (spectator == null) continue;
-                    spectator.sendPacket(new ExOlympiadUserInfo(this, getOlympiadSide()));
+                    spectator.sendPacket(new ExOlympiadUserInfoSpectator(this, getOlympiadSide()));
                 }
             }
         }
@@ -6814,6 +6824,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getParty() != null && getParty().getPartyMembers().contains(attacker))
 			return false;
 
+		// Check if the attacker is in olympia and olympia start
+		if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).isInOlympiadMode() ){
+			if (this.isInOlympiadMode() && this.isOlympiadStart() && ((L2PcInstance)attacker).getOlympiadGameId()==this.getOlympiadGameId())
+				return true;
+			else
+				return false;
+		}
+
 		// Check if the attacker is not in the same clan
 		if (getClan() != null && attacker != null && getClan().isMember(attacker.getName()))
 			return false;
@@ -7165,6 +7183,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				return;
 			}
 
+			if (isInOlympiadMode() && !isOlympiadStart()){
+				// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
+				sendPacket(new ActionFailed());
+				return;	
+			}
 
             // Check if the target is attackable
             if (!target.isAttackable() && (getAccessLevel() < Config.GM_PEACEATTACK))
@@ -8060,6 +8083,15 @@ public final class L2PcInstance extends L2PlayableInstance
     {
     	_inOlympiadMode = b;
     }
+
+	public void setIsOlympiadStart(boolean b)
+    {
+    	_OlympiadStart = b;
+    }
+
+	public boolean isOlympiadStart(){
+		return _OlympiadStart;
+	}
 
     public boolean isHero()
     {

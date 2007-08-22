@@ -184,6 +184,7 @@ import net.sf.l2j.gameserver.handler.usercommandhandlers.Loc;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Mount;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.PartyInfo;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.Time;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.OlympiadStat;
 import net.sf.l2j.gameserver.handler.voicedcommandhandlers.Wedding;
 import net.sf.l2j.gameserver.handler.voicedcommandhandlers.stats;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
@@ -548,6 +549,7 @@ public class GameServer
         _userCommandHandler.registerUserCommandHandler(new Mount());
         _userCommandHandler.registerUserCommandHandler(new PartyInfo());
 		_userCommandHandler.registerUserCommandHandler(new Time());
+		_userCommandHandler.registerUserCommandHandler(new OlympiadStat());
 
         _log.config("UserCommandHandler: Loaded " + _userCommandHandler.size() + " handlers.");
 

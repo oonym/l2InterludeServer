@@ -59,7 +59,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
         }
         else if (command.startsWith("OlympiadNoble"))
         {
-            if (!player.isNoble())
+        	if (!player.isNoble() || player.getClassId().getId()<88)
                 return;
             
             int val = Integer.parseInt(command.substring(14));

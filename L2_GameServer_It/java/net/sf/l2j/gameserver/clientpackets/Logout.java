@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.FriendList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
+import net.sf.l2j.gameserver.Olympiad;
 
 /**
  * This class ...
@@ -76,6 +77,11 @@ public final class Logout extends L2GameClientPacket
 			return;
 		}
 
+        if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
+        {
+            player.sendMessage("You cant logout in olympiad mode");
+            return;
+        }
 
 		// Prevent player from logging out if they are a festival participant
 		// and it is in progress, otherwise notify party members that the player

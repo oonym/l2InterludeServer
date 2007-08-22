@@ -43,6 +43,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
+import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
@@ -358,8 +359,10 @@ public class Hero
                 L2Clan clan = player.getClan();
                 if (clan != null)
                     clan.setReputationScore(clan.getReputationScore()+1000, true);
+                clan.updateClanInDB();
                 player.sendPacket(new UserInfo(player));
                 player.broadcastUserInfo();
+                clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
             }
             else
             {

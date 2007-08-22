@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.CharSelectInfo;
 import net.sf.l2j.gameserver.serverpackets.RestartResponse;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
+import net.sf.l2j.gameserver.Olympiad;
 
 /**
  * This class ...
@@ -60,7 +61,7 @@ public final class RequestRestart extends L2GameClientPacket
             return;
         }
 
-        if (player.isInOlympiadMode())
+        if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
         {
             player.sendMessage("You cant logout in olympiad mode");
             return;

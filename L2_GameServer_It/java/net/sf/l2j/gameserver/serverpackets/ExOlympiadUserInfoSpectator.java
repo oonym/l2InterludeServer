@@ -28,34 +28,37 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * 
  * @author godson
  */
-public class ExOlympiadUserInfo extends L2GameServerPacket
+public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
 {
 	// chcdSddddd
-	private static final String _S__FE_29_OLYMPIADUSERINFO = "[S] FE:2C OlympiadUserInfo";
-	private static L2PcInstance _activeChar;
+	private static final String _S__FE_29_OLYMPIADUSERINFOSPECTATOR = "[S] FE:29 OlympiadUserInfoSpectator";
+	private static int _side;
+	private static L2PcInstance _player;
 	
 
 	/**
 	 * @param _player
 	 * @param _side (1 = right, 2 = left)
 	 */
-	public ExOlympiadUserInfo(L2PcInstance player)
+	public ExOlympiadUserInfoSpectator(L2PcInstance player, int side)
 	{
-		_activeChar = player;
+		_player = player;
+		_side = side;
 	}
 	
 
 	protected final void writeImpl()
 	{
-		/*writeC(0xfe);
-		writeH(0x2c);
-		writeD(_activeChar.getObjectId());
-		writeS(_activeChar.getName());
-		writeD(_activeChar.getClassId().getId());
-		writeD((int)_activeChar.getCurrentHp());
-		writeD(_activeChar.getMaxHp());
-		writeD((int)_activeChar.getCurrentCp());
-		writeD(_activeChar.getMaxCp());*/
+		writeC(0xfe);
+		writeH(0x29);
+		writeC(_side);
+		writeD(_player.getObjectId());
+		writeS(_player.getName());
+		writeD(_player.getClassId().getId());
+		writeD((int)_player.getCurrentHp());
+		writeD(_player.getMaxHp());
+		writeD((int)_player.getCurrentCp());
+		writeD(_player.getMaxCp());
 	}
 	
 	/* (non-Javadoc)
@@ -63,7 +66,6 @@ public class ExOlympiadUserInfo extends L2GameServerPacket
 	 */
 	public String getType()
 	{
-		return _S__FE_29_OLYMPIADUSERINFO;
+		return _S__FE_29_OLYMPIADUSERINFOSPECTATOR;
 	}
 }
-	

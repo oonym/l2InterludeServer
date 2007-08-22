@@ -43,6 +43,7 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2AttackableAI;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
+import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
@@ -255,25 +256,7 @@ public abstract class L2Character extends L2Object
 	{
 		setIsTeleporting(false);
 
-		//spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
-
-		getPosition().setWorldPosition(getPosition().getX(), getPosition().getY() ,getPosition().getZ());
-        getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
-        // Add the L2Object spawn to _visibleObjects and if necessary to _allplayers of its L2WorldRegion
-        getPosition().getWorldRegion().addVisibleObject(this);
-
-        // Add the L2Object to surrending object's knownlists and vice versa
-        L2Object[] visible = L2World.getInstance().getVisibleObjects(this, 2000);
-        if (Config.DEBUG) _log.finest("teleported: objects in range:"+visible.length);
-
-        for (int i = 0; i < visible.length; i++)
-        {
-        	// Add this to the current objects knowlist
-            visible[i].getKnownList().addKnownObject(this, null);
-            // Add the object to this ones knownlist
-            getKnownList().addKnownObject(visible[i], null);
-        }
-
+		spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
 
 		if (_isPendingRevive) doRevive();
 
@@ -487,18 +470,7 @@ public abstract class L2Character extends L2Object
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
 		getPosition().setXYZ(x, y, z);
 
-		//decayMe();
-		getPosition().getWorldRegion().removeVisibleObject(this);
-
-		// Remove this from everyones knownlist
-		// TODO: for now assuming that only everyone know by this knows this
-		for (L2Character temp : getKnownList().getKnownCharacters())
-		{
-			temp.getKnownList().removeKnownObject(this);
-		}
-
-		// Remove all known objects
-		getKnownList().removeAllKnownObjects();
+		decayMe();
 
 		if (!(this instanceof L2PcInstance))
             onTeleported();
@@ -1106,6 +1078,13 @@ public abstract class L2Character extends L2Object
 		{
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
+		}
+
+		if (this instanceof L2PcInstance && ((L2PcInstance)this).isInOlympiadMode() && HeroSkillTable.getInstance().isHeroSkill(skill.getId())){
+			SystemMessage sm = new SystemMessage(SystemMessageId.THIS_SKILL_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
+			sendPacket(sm);
+		 	getAI().notifyEvent(CtrlEvent.EVT_CANCEL); 
+		 	return; 
 		}
 
 		if (isSkillDisabled(skill.getId()))
@@ -4510,6 +4489,20 @@ public abstract class L2Character extends L2Object
 			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 			player.sendPacket(new ActionFailed());
 		}
+		else if (player.isInOlympiadMode() && player.getTarget() != null)
+        {
+        	L2PcInstance target;
+        	if (player.getTarget() instanceof L2Summon)
+        		target=((L2Summon)player.getTarget()).getOwner();
+        	else
+        		target=(L2PcInstance)player.getTarget();
+        	
+        	if (target.isInOlympiadMode() && !player.isOlympiadStart() && player.getOlympiadGameId()!=target.getOlympiadGameId())
+        	{
+        		// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
+        		player.sendPacket(new ActionFailed());
+        	}
+        }
 		else if (player.getTarget() != null && !player.getTarget().isAttackable() && (player.getAccessLevel() < Config.GM_PEACEATTACK))
 		{
 			// If target is not attackable, send a Server->Client packet ActionFailed
