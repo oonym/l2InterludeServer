@@ -7,14 +7,28 @@ import javolution.util.FastMap;
 
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
+/**
+ * @author FBIagent
+ */
 public class TvTEventTeam
 {
+	/** The name of the team<br> */
 	private String _name;
+	/** The team spot coordinated<br> */
 	private int[] _coordinates = new int[3];
+	/** The points of the team<br> */
 	private short _points;
+	/** Name and instance of all participated players in FastMap<br> */
 	private Map<String, L2PcInstance> _participatedPlayers = new FastMap<String, L2PcInstance>();
+	/** Name of all participated players in Vector<br> */
 	private Vector<String> _participatedPlayerNames = new Vector<String>();
 
+	/**
+	 * C'tor initialize the team<br><br>
+	 * 
+	 * @param name<br>
+	 * @param coordinates<br>
+	 */
 	public TvTEventTeam(String name, int[] coordinates)
 	{
 		_name = name;
@@ -22,6 +36,12 @@ public class TvTEventTeam
 		_points = 0;
 	}
 
+	/**
+	 * Adds a player to the team<br><br>
+	 * 
+	 * @param playerInstance<br>
+	 * @return boolean<br>
+	 */
 	public boolean addPlayer(L2PcInstance playerInstance)
 	{
 		if (playerInstance == null)
@@ -40,6 +60,11 @@ public class TvTEventTeam
 		return true;
 	}
 
+	/**
+	 * Removes a player from the team<br><br>
+	 * 
+	 * @param playerName<br>
+	 */
 	public void removePlayer(String playerName)
 	{
 		synchronized (_participatedPlayers)
@@ -49,11 +74,17 @@ public class TvTEventTeam
 		}
 	}
 
+	/**
+	 * Increases the points of the team<br>
+	 */
 	public void increasePoints()
 	{
 		_points++;
 	}
-	
+
+	/**
+	 * Cleanup the team and make it ready for adding players again<br>
+	 */
 	public void cleanMe()
 	{
 		_participatedPlayers.clear();
@@ -63,6 +94,12 @@ public class TvTEventTeam
 		_points = 0;
 	}
 
+	/**
+	 * Is given player in this team?<br><br>
+	 * 
+	 * @param playerName<br>
+	 * @return boolean<br>
+	 */
 	public boolean containsPlayer(String playerName)
 	{
 		boolean containsPlayer;
@@ -75,21 +112,41 @@ public class TvTEventTeam
 		return containsPlayer;
 	}
 
+	/**
+	 * Returns the name of the team<br><br>
+	 * 
+	 * @return String<br>
+	 */
 	public String getName()
 	{
 		return _name;
 	}
 
+	/**
+	 * Returns the coordinates of the team spot<br><br>
+	 * 
+	 * @return int[]<br>
+	 */
 	public int[] getCoordinates()
 	{
 		return _coordinates;
 	}
 
+	/**
+	 * Returns the points of the team<br><br>
+	 * 
+	 * @return short<br>
+	 */
 	public short getPoints()
 	{
 		return _points;
 	}
 
+	/**
+	 * Returns name and instance of all participated players in FastMap<br><br>
+	 * 
+	 * @return Map<String, L2PcInstance><br>
+	 */
 	public Map<String, L2PcInstance> getParticipatedPlayers()
 	{
 		Map<String, L2PcInstance> participatedPlayers = null;
@@ -102,6 +159,11 @@ public class TvTEventTeam
 		return participatedPlayers;
 	}
 
+	/**
+	 * Returns name of all participated players in Vector<br><br>
+	 * 
+	 * @return Vector<String><br>
+	 */
 	public Vector<String> getParticipatedPlayerNames()
 	{
 		Vector<String> participatedPlayerNames = null;
@@ -114,6 +176,11 @@ public class TvTEventTeam
 		return participatedPlayerNames;
 	}
 
+	/**
+	 * Returns player count of this team<br><br>
+	 * 
+	 * @return int<br>
+	 */
 	public int getParticipatedPlayerCount()
 	{
 		int participatedPlayerCount;
