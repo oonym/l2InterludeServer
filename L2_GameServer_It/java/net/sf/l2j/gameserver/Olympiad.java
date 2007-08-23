@@ -1558,8 +1558,8 @@ public class Olympiad
     		_playerOne = null;
     		_playerTwo = null;
     		_players = null;
-    		_playerOneName = null;
-    		_playerTwoName = null;
+    		_playerOneName = "";
+    		_playerTwoName = "";
     		_playerOneID = 0;
     		_playerTwoID = 0;
     	}
@@ -1574,7 +1574,6 @@ public class Olympiad
     		
     		try {
     			if (	_playerOne != null &&
-    					_playerOne.isInOlympiadMode() &&
     					_playerOne.getOlympiadGameId()!=-1)
     			{
     				_playerOneCrash=false;
@@ -1583,7 +1582,6 @@ public class Olympiad
 
     		try {
     			if (	_playerTwo != null &&
-    					_playerTwo.isInOlympiadMode() &&
     					_playerTwo.getOlympiadGameId()!=-1)
             	{
     				_playerTwoCrash=false;
@@ -1607,7 +1605,9 @@ public class Olympiad
         	}
 
     		if (_playerOneCrash || _playerTwoCrash){
-    			clearPlayers();
+    			_playerOne=null;  
+    			_playerTwo=null; 
+    			_aborted = true;
     			return false;
     		}
 
