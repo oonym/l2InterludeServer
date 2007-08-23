@@ -1399,9 +1399,14 @@ public class Olympiad
     private class L2OlympiadGame
     {
     	protected COMP_TYPE _type;
-    	private List<L2PcInstance> _players;
+    	private boolean _aborted;
+    	private String _playerOneName;
+    	private String _playerTwoName;
+    	private int _playerOneID = 0;
+    	private int _playerTwoID = 0;
     	private L2PcInstance _playerOne;
     	private L2PcInstance _playerTwo;
+    	private List<L2PcInstance> _players;
     	private int[] _playerOneLocation;
     	private int[] _playerTwoLocation;
         private int[] _stadiumPort;
@@ -1412,31 +1417,42 @@ public class Olympiad
     	
     	protected L2OlympiadGame(int id, COMP_TYPE type, List<L2PcInstance> list, int[] stadiumPort)
     	{
+    		_aborted = false;
     		_type = type;
-    		_players = list;
             _stadiumPort = stadiumPort;
             _spectators = new FastList<L2PcInstance>();
     		
-    		if (_players != null)
+    		if (list != null)
     		{
-    			_playerOne = _players.get(0);
-    			_playerTwo = _players.get(1);
+    			_players = list;
+    			_playerOne = list.get(0);
+    			_playerTwo = list.get(1);
                 
-                if (_playerOne == null || _playerTwo == null) return;
-                
-                _playerOne.setOlympiadGameId(id);
-                _playerTwo.setOlympiadGameId(id);
-                
+                try {
+                	_playerOneName = _playerOne.getName();
+                	_playerTwoName = _playerTwo.getName();
+                	_playerOne.setOlympiadGameId(id);
+                	_playerTwo.setOlympiadGameId(id);
+                	_playerOneID = _playerOne.getObjectId();
+                	_playerTwoID = _playerTwo.getObjectId();
+                }
+                catch (Exception e)  {
+                	_aborted = true;
+                	clearPlayers();
+                }
                 _log.info("Olympiad System: Game - " + id + ": " 
                           + _playerOne.getName() + " Vs " + _playerTwo.getName());
     		}
-            else return;
+            else {
+            	_aborted = true;
+            	clearPlayers();
+            	return;
+            }
     	}
     	
     	protected void removals()
     	{
-    		if (_players == null)
-    			return;
+    		if (_aborted) return;
             
             if (_playerOne == null || _playerTwo == null) return;
     		
@@ -1537,62 +1553,65 @@ public class Olympiad
             broadcastMessage(_sm, false);
     	}
     	
-    	protected void portPlayersToArena()
+    	protected void clearPlayers()
+    	{
+    		_playerOne = null;
+    		_playerTwo = null;
+    		_players = null;
+    		_playerOneName = null;
+    		_playerTwoName = null;
+    		_playerOneID = 0;
+    		_playerTwoID = 0;
+    	}
+    	
+    	protected boolean portPlayersToArena()
     	{
     		_playerOneLocation = new int[3];
     		_playerTwoLocation = new int[3];
     		
-    		boolean _playerOneCrash=false;
-    		boolean _playerTwoCrash=false;
+    		boolean _playerOneCrash = true;
+    		boolean _playerTwoCrash = true;
     		
-    		try{
+    		try {
     			if (	_playerOne != null &&
-    					L2World.getInstance().getPlayer(_playerOne.getName())!=null &&
-    					L2World.getInstance().getPlayer(_playerOne.getName()).isOnline()==1 &&
-    					L2World.getInstance().getPlayer(_playerOne.getName()).isInOlympiadMode() &&
-    					L2World.getInstance().getPlayer(_playerOne.getName()).getOlympiadGameId()!=-1)
+    					_playerOne.isInOlympiadMode() &&
+    					_playerOne.getOlympiadGameId()!=-1)
     			{
-    				_playerOneCrash=true;
+    				_playerOneCrash=false;
     			}
-    		}catch (Exception e){
-            	_playerOneCrash=true;
-            }
+    		}catch (Exception e) {}
 
-    		try{
+    		try {
     			if (	_playerTwo != null &&
-            			L2World.getInstance().getPlayer(_playerTwo.getName())!=null &&
-            			L2World.getInstance().getPlayer(_playerTwo.getName()).isOnline()==1 &&
-            			L2World.getInstance().getPlayer(_playerTwo.getName()).isInOlympiadMode() &&
-            			L2World.getInstance().getPlayer(_playerTwo.getName()).getOlympiadGameId()!=-1)
+    					_playerTwo.isInOlympiadMode() &&
+    					_playerTwo.getOlympiadGameId()!=-1)
             	{
-    				_playerTwoCrash=true;
+    				_playerTwoCrash=false;
             	}
-    		}catch (Exception e){
-            	_playerTwoCrash=true;
-            }
-
+    		}catch (Exception e){ }
+    		
     		if (_playerOneCrash){
     			StatsSet playerOneStat;
-    			playerOneStat = _nobles.get(_playerOne.getObjectId());
+    			playerOneStat = _nobles.get(_playerOneID);
 				int playerOnePoints = playerOneStat.getInteger(POINTS);
 				playerOneStat.set(POINTS, playerOnePoints - (playerOnePoints / 5));
-				_log.info("Olympia Result: "+_playerOne.getName()+" vs "+_playerTwo.getName()+" ... "+_playerOne.getName()+" lost "+(playerOnePoints - (playerOnePoints / 5))+" points for crash before teleport to arena");
+				_log.info("Olympia Result: "+_playerOneName+" vs "+_playerTwoName+" ... "+_playerOneName+" lost "+(playerOnePoints - (playerOnePoints / 5))+" points for crash before teleport to arena");
     		}
 
     		if (_playerTwoCrash){
     			StatsSet playerTwoStat;
-    			playerTwoStat = _nobles.get(_playerTwo.getObjectId());
+    			playerTwoStat = _nobles.get(_playerTwoID);
     			int playerTwoPoints = playerTwoStat.getInteger(POINTS);
 				playerTwoStat.set(POINTS, playerTwoPoints - (playerTwoPoints / 5));
-				_log.info("Olympia Result: "+_playerOne.getName()+" vs "+_playerTwo.getName()+" ... "+_playerTwo.getName()+" lost "+(playerTwoPoints - (playerTwoPoints / 5))+" points for crash before teleport to arena");
+				_log.info("Olympia Result: "+_playerOneName+" vs "+_playerTwoName+" ... "+_playerTwoName+" lost "+(playerTwoPoints - (playerTwoPoints / 5))+" points for crash before teleport to arena");
         	}
 
     		if (_playerOneCrash || _playerTwoCrash){
-    			_playerOne=null;
-    			_playerTwo=null;
-     			return;
+    			clearPlayers();
+    			return false;
     		}
 
+    		try { 
     		_playerOneLocation[0] = _playerOne.getX();
     		_playerOneLocation[1] = _playerOne.getY();
     		_playerOneLocation[2] = _playerOne.getZ();
@@ -1628,38 +1647,45 @@ public class Olympiad
 
             _playerTwo.setIsInOlympiadMode(true);
             _playerTwo.setIsOlympiadStart(false);
+    		} catch (Exception e) { 
+    			// TODO: clear values
+    			return false; 
+    		}
+    		return true;
     	}
     	
     	protected void sendMessageToPlayers(boolean toBattleBegin, int nsecond)
     	{
-            if (_playerOne == null || _playerTwo == null) return;
-            
             if(!toBattleBegin)
                 _sm = new SystemMessage(SystemMessageId.YOU_WILL_ENTER_THE_OLYMPIAD_STADIUM_IN_S1_SECOND_S);
             else
                 _sm = new SystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
             
             _sm.addNumber(nsecond);
-    		
-    		for (L2PcInstance player : _players)
-    			player.sendPacket(_sm);
+            try {    		
+            	for (L2PcInstance player : _players)
+            		player.sendPacket(_sm);
+            } catch (Exception e) {};
     	}
     	
     	protected void portPlayersBack()
     	{
-            if (_playerOne == null || _playerTwo == null)
-                return;
-            
-    		_playerOne.teleToLocation(_playerOneLocation[0],
-    		                          _playerOneLocation[1],
-    		                          _playerOneLocation[2], true);
+            try { 
+            	_playerOne.teleToLocation(_playerOneLocation[0], 
+            			_playerOneLocation[1],	_playerOneLocation[2], true);
+            }
+            catch (Exception e) {}
     		
-    		_playerTwo.teleToLocation(_playerTwoLocation[0],
-    		                          _playerTwoLocation[1],
-    		                          _playerTwoLocation[2], true);
+            try {
+    			_playerTwo.teleToLocation(_playerTwoLocation[0],
+    					_playerTwoLocation[1],
+    					_playerTwoLocation[2], true);
+            }
+            catch (Exception e) {}
     		
     		for (L2PcInstance player : _players)
     		{
+    			if (player == null) continue;
     			player.setIsInOlympiadMode(false);
     			player.setIsOlympiadStart(false);
                 player.setOlympiadSide(-1);
@@ -1692,30 +1718,20 @@ public class Olympiad
     	
     	protected void validateWinner()
     	{
-
     		StatsSet playerOneStat;
     		StatsSet playerTwoStat;
     		
-    		playerOneStat = _nobles.get(_playerOne.getObjectId());
-			playerTwoStat = _nobles.get(_playerTwo.getObjectId());
+    		playerOneStat = _nobles.get(_playerOneID);
+			playerTwoStat = _nobles.get(_playerTwoID);
 			
 			int playerOnePlayed = playerOneStat.getInteger(COMP_DONE);
 			int playerTwoPlayed = playerTwoStat.getInteger(COMP_DONE);
 			
 			int playerOnePoints = playerOneStat.getInteger(POINTS);
 			int playerTwoPoints = playerTwoStat.getInteger(POINTS);
-			try{
-				if (
-						(_playerOne == null && _playerTwo == null) ||
-						(L2World.getInstance().getPlayer(_playerOne.getName()).isOnline()==0 && L2World.getInstance().getPlayer(_playerOne.getName()).isOnline()==0) ||
-						(L2World.getInstance().getPlayer(_playerOne.getName())==null && L2World.getInstance().getPlayer(_playerTwo.getName())==null) ||
-						(!L2World.getInstance().getPlayer(_playerOne.getName()).isInOlympiadMode() && !L2World.getInstance().getPlayer(_playerTwo.getName()).isInOlympiadMode()) ||
-						(L2World.getInstance().getPlayer(_playerOne.getName()).getOlympiadGameId()==-1 && L2World.getInstance().getPlayer(_playerTwo.getName()).getOlympiadGameId()==-1)
-					){
-					_log.info("Olympia Result: "+_playerOne.getName()+" vs "+_playerTwo.getName()+" ... tie for both crash!");
-						return;
-					}
-			}catch (Exception e){
+			if (_playerOne == null && _playerTwo == null)
+			{					
+				_log.info("Olympia Result: "+_playerOne.getName()+" vs "+_playerTwo.getName()+" ... tie for both crash!");
 				return;
 			}
 
@@ -1723,76 +1739,72 @@ public class Olympiad
 			double hpDiffOne = 9999999;
 			try{
 				if (	_playerOne != null &&
-						L2World.getInstance().getPlayer(_playerOne.getName())!=null &&
-						L2World.getInstance().getPlayer(_playerOne.getName()).isOnline()==1 &&
-						L2World.getInstance().getPlayer(_playerOne.getName()).isInOlympiadMode() &&
-						L2World.getInstance().getPlayer(_playerOne.getName()).getOlympiadGameId()!=-1)
+						_playerOne.getOlympiadGameId()!=-1)
 					{
 						playerOneHp = _playerOne.getCurrentHp()+_playerOne.getCurrentCp();
 						hpDiffOne = (_playerOne.getMaxHp()+_playerOne.getMaxCp()) - playerOneHp;
 					}
-				}catch (Exception e){
-					playerOneHp = 0;
-					hpDiffOne = 9999999;
-				}
+			}catch (Exception e){
+				playerOneHp = 0;
+				hpDiffOne = 9999999;
+			}
 
-				double playerTwoHp = 0;
-				double hpDiffTwo = 9999999;
+			double playerTwoHp = 0;
+			double hpDiffTwo = 9999999;
 			try{
 				if (	_playerTwo != null &&
-						L2World.getInstance().getPlayer(_playerTwo.getName())!=null &&
-						L2World.getInstance().getPlayer(_playerTwo.getName()).isOnline()==1 &&
-						L2World.getInstance().getPlayer(_playerTwo.getName()).isInOlympiadMode() &&
-						L2World.getInstance().getPlayer(_playerTwo.getName()).getOlympiadGameId()!=-1)
+						_playerTwo.getOlympiadGameId()!=-1)
 					{
 						playerTwoHp = _playerTwo.getCurrentHp()+_playerTwo.getCurrentCp();
 						hpDiffTwo = (_playerTwo.getMaxHp()+_playerTwo.getMaxCp()) - playerTwoHp;
 					}
-				}catch (Exception e){
-					playerTwoHp = 0;
-					hpDiffTwo = 9999999;
-				}
+			}catch (Exception e){
+				playerTwoHp = 0;
+				hpDiffTwo = 9999999;
+			}
 
             _sm = new SystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME);
     		_sm2 = new SystemMessage(SystemMessageId.S1_HAS_GAINED_S2_OLYMPIAD_POINTS);
             _sm3 = new SystemMessage(SystemMessageId.S1_HAS_LOST_S2_OLYMPIAD_POINTS);
             
-            String result;
+            String result = "";
 
-            if (_playerTwo.getCurrentHp()==0 || hpDiffOne < hpDiffTwo)
+            if (playerTwoHp==0 || hpDiffOne < hpDiffTwo)
     		{
             	int pointDiff;
             	pointDiff = (playerTwoPoints / 3);
     			playerOneStat.set(POINTS, playerOnePoints + pointDiff);
     			playerTwoStat.set(POINTS, playerTwoPoints - pointDiff);
-    			result=" ("+L2World.getInstance().getPlayer(_playerOne.getName()).getCurrentHp()+"hp vs "+L2World.getInstance().getPlayer(_playerTwo.getName()).getCurrentHp()+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerOne.getName()+" win "+pointDiff+" points";
 
-                _sm.addString(_playerOne.getName());
+                _sm.addString(_playerOneName);
                 broadcastMessage(_sm, true);
-                _sm2.addString(_playerOne.getName());
+                _sm2.addString(_playerOneName);
                 _sm2.addNumber(pointDiff);
                 broadcastMessage(_sm2, true);
-                _sm3.addString(_playerTwo.getName());
+                _sm3.addString(_playerTwoName);
                 _sm3.addNumber(pointDiff);
                 broadcastMessage(_sm3, true);
 
-                L2ItemInstance item = L2World.getInstance().getPlayer(_playerOne.getName()).getInventory().addItem("Olympiad", 6651, 30, L2World.getInstance().getPlayer(_playerOne.getName()), L2World.getInstance().getPlayer(_playerOne.getName()));
-                InventoryUpdate iu = new InventoryUpdate();
-                iu.addModifiedItem(item);
-                L2World.getInstance().getPlayer(_playerOne.getName()).sendPacket(iu);
+                _playerOne =  L2World.getInstance().getPlayer(_playerOneName); // why this...
+                try {
+        			result=" ("+_playerOne.getCurrentHp()+"hp vs "+_playerTwo.getCurrentHp()+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerOne.getName()+" win "+pointDiff+" points";
+        			L2ItemInstance item = _playerOne.getInventory().addItem("Olympiad", 6651, 30, _playerOne, null);
+        			InventoryUpdate iu = new InventoryUpdate();
+        			iu.addModifiedItem(item);
+        			_playerOne.sendPacket(iu);
 
-                SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-                sm.addItemName(item.getItemId());
-                sm.addNumber(30);
-                L2World.getInstance().getPlayer(_playerOne.getName()).sendPacket(sm);
+        			SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+        			sm.addItemName(item.getItemId());
+        			sm.addNumber(30);
+        			_playerOne.sendPacket(sm);
+                } catch (Exception e) { }
     		}
-            else if (_playerOne.getCurrentHp()==0 || hpDiffOne > hpDiffTwo)
+            else if (playerOneHp==0 || hpDiffOne > hpDiffTwo)
     		{
             	int pointDiff;
             	pointDiff = (playerOnePoints / 3);
     			playerTwoStat.set(POINTS, playerTwoPoints + pointDiff);
     			playerOneStat.set(POINTS, playerOnePoints - pointDiff);
-    			result=" ("+L2World.getInstance().getPlayer(_playerOne.getName()).getCurrentHp()+"hp vs "+L2World.getInstance().getPlayer(_playerTwo.getName()).getCurrentHp()+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerTwo.getName()+" win "+pointDiff+" points";
                 
                 _sm.addString(_playerTwo.getName());
                 broadcastMessage(_sm, true);
@@ -1803,15 +1815,19 @@ public class Olympiad
                 _sm3.addNumber(pointDiff);
                 broadcastMessage(_sm3, true);
 
-                L2ItemInstance item = L2World.getInstance().getPlayer(_playerTwo.getName()).getInventory().addItem("Olympiad", 6651, 30, L2World.getInstance().getPlayer(_playerTwo.getName()), L2World.getInstance().getPlayer(_playerTwo.getName()));
-                InventoryUpdate iu = new InventoryUpdate();
-                iu.addModifiedItem(item);
-                L2World.getInstance().getPlayer(_playerTwo.getName()).sendPacket(iu);
+                _playerTwo =  L2World.getInstance().getPlayer(_playerTwoName); // why this...
+                try {
+                	result=" ("+_playerOne.getCurrentHp()+"hp vs "+_playerTwo.getCurrentHp()+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerTwo.getName()+" win "+pointDiff+" points";
+                	L2ItemInstance item = _playerTwo.getInventory().addItem("Olympiad", 6651, 30, _playerTwo, null);
+                	InventoryUpdate iu = new InventoryUpdate();
+                	iu.addModifiedItem(item);
+                	_playerTwo.sendPacket(iu);
 
-                SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-                sm.addItemName(item.getItemId());
-                sm.addNumber(30);
-                L2World.getInstance().getPlayer(_playerTwo.getName()).sendPacket(sm);
+                	SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+                	sm.addItemName(item.getItemId());
+                	sm.addNumber(30);
+                	_playerTwo.sendPacket(sm);
+                } catch (Exception e) { }
     		}
     		else
     		{
@@ -1837,11 +1853,9 @@ public class Olympiad
     	
     	protected void additions()
     	{
-            if (_playerOne == null || _playerTwo == null)
-                return;
-    		
     		for (L2PcInstance player : _players)
     		{
+    			try {
     			//Set HP/CP/MP to Max
     			player.setCurrentCp(player.getMaxCp());
     			player.setCurrentHp(player.getMaxHp());
@@ -1879,16 +1893,17 @@ public class Olympiad
                     sm.addSkillName(1085);
                     player.sendPacket(sm);
                 }
+    			} catch (Exception e) { }
      		}
      	}
     	
-    	protected void makePlayersVisible()
+    	protected boolean makePlayersVisible()
     	{
            /* if (_playerOne == null || _playerTwo == null)
                 return; */
             
             _sm = new SystemMessage(SystemMessageId.STARTS_THE_GAME);
-            
+            try {
             for (L2PcInstance player : _players)
             {
                 player.getAppearance().setVisible();
@@ -1897,32 +1912,38 @@ public class Olympiad
                 if (player.getPet() != null)
                     player.getPet().updateAbnormalEffect();
             }
+            } catch (Exception e) { _aborted = true; return false; }
+            return true;
     	}
 
-    	protected void makeCompetitionStart()
+    	protected boolean makeCompetitionStart()
     	{
-           /* if (_playerOne == null || _playerTwo == null)
-                return; */
+           if (_playerOne == null || _playerTwo == null)
+           {
+        	   _aborted = true; 
+        	   return false;
+           }
 
     		_sm = new SystemMessage(SystemMessageId.STARTS_THE_GAME);
             
-            for (L2PcInstance player : _players)
-            {
-                player.setIsOlympiadStart(true);
-                player.sendPacket(_sm);
-            }            
+    		try {
+    			for (L2PcInstance player : _players)
+    			{
+    				player.setIsOlympiadStart(true);
+    				player.sendPacket(_sm);
+    			}
+    		} catch (Exception e) { 
+    			// TODO: tele the other back?
+    			_aborted = true;
+    			return false; 
+    		}
+    		return true;
     	}
 
     	protected String getTitle()
     	{
     		String msg = "";
-            
-            if (_playerOne == null || _playerTwo == null)
-                return msg;
-    		
-    		msg+= _playerOne.getName() + " : ";
-    		msg+= _playerTwo.getName();
-    		
+    		msg+= _playerOneName + " : " + _playerTwoName;
     		return msg;
     	}
     	
@@ -1930,7 +1951,7 @@ public class Olympiad
     	{
             L2PcInstance[] players = new L2PcInstance[2];
             
-            if (_playerOne == null || _playerTwo == null) return players;
+            if (_playerOne == null || _playerTwo == null) return null;
             
     		players[0] = _playerOne;
     		players[1] = _playerTwo;
@@ -1950,7 +1971,7 @@ public class Olympiad
         
         protected void removeSpectator(L2PcInstance spec)
         {
-            if (_spectators.contains(spec))
+            if (_spectators != null && _spectators.contains(spec))
                 _spectators.remove(spec);
         }
         
@@ -1960,28 +1981,26 @@ public class Olympiad
             {
                 for (L2PcInstance pc : _spectators)
                 {
-                    if(pc == null || !pc.inObserverMode()) continue;
-                    pc.leaveOlympiadObserverMode();
+                    try {
+                    	if(!pc.inObserverMode()) continue;
+                    	pc.leaveOlympiadObserverMode();
+                    } catch (Exception e) {}
                 }
-                
                 _spectators.clear();
             }
         }
         
         private void broadcastMessage(SystemMessage sm, boolean toAll)
         {
-            if (_playerOne == null || _playerTwo == null) return;
-            
-            _playerOne.sendPacket(sm);
-            _playerTwo.sendPacket(sm);
-            
-            if (toAll)
+        	try { _playerOne.sendPacket(sm); } catch (Exception e) {}
+        	try { _playerTwo.sendPacket(sm); } catch (Exception e) {}
+        	
+            if (toAll && _spectators != null)
             {
-                if (_spectators != null)
-                {
                     for (L2PcInstance spec : _spectators)
-                        spec.sendPacket(sm);
-                }
+                    {
+                    	try { spec.sendPacket(sm); } catch (Exception e) {}
+                    }
             }
         }
     }
