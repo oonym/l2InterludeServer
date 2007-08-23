@@ -442,7 +442,9 @@ public final class Config
     public static float         PET_XP_RATE; 
     /** Rate for food consumption of the pet */
     public static int           PET_FOOD_RATE;
-
+    /** Rate for experience rewards of the Sin Eater */ 
+    public static float         SINEATER_XP_RATE; 
+    
     // Karma Drop Rate control
     /** Karma drop limit */
     public static int   KARMA_DROP_LIMIT;
@@ -1523,6 +1525,7 @@ public final class Config
 
                 PET_XP_RATE                     = Float.parseFloat(ratesSettings.getProperty("PetXpRate", "1."));
                 PET_FOOD_RATE                   = Integer.parseInt(ratesSettings.getProperty("PetFoodRate", "1")); 
+                SINEATER_XP_RATE                = Float.parseFloat(ratesSettings.getProperty("SinEaterXpRate", "1.")); 
 
                 KARMA_DROP_LIMIT                = Integer.parseInt(ratesSettings.getProperty("KarmaDropLimit", "10"));
                 KARMA_RATE_DROP                 = Integer.parseInt(ratesSettings.getProperty("KarmaRateDrop", "70"));

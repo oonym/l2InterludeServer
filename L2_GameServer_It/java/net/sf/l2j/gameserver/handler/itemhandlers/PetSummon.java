@@ -47,7 +47,7 @@ public class PetSummon implements IItemHandler
     protected static final Logger _log = Logger.getLogger(PetSummon.class.getName());
 	
 	// all the items ids that this handler knowns
-	private static final int[] ITEM_IDS = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650 };
+   private static final int[] ITEM_IDS = { 2375, 3500, 3501, 3502, 4422, 4423, 4424, 4425, 6648, 6649, 6650, 8663 }; 
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -108,11 +108,9 @@ public class PetSummon implements IItemHandler
             activeChar.setMountType(mount.getMountType());
             activeChar.setMountObjectID(item.getObjectId());
 			return;
-        }
+        }       
 		
-		
-		L2NpcTemplate petTemplate = NpcTable.getInstance().getTemplate(npcId);
-		
+        L2NpcTemplate petTemplate = NpcTable.getInstance().getTemplate(npcId);       
 
 		L2PetInstance newpet = L2PetInstance.spawnPet(petTemplate, activeChar, item);
 		if (newpet == null) return;

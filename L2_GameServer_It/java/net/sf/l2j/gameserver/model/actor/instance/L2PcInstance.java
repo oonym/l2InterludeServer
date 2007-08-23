@@ -8546,6 +8546,14 @@ public final class L2PcInstance extends L2PlayableInstance
         regiveTemporarySkills();
         rewardSkills();
         restoreEffects();
+        
+        //if player has quest 422: Repent Your Sins, remove it
+        QuestState st = getQuestState("422_RepentYourSins");
+        
+        if (st != null)
+        {
+        	st.exitQuest(true);
+        }
 
         for (int i = 0; i < 3; i++)
             _henna[i] = null;

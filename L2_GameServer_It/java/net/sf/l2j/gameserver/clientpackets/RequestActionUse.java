@@ -380,6 +380,8 @@ public final class RequestActionUse extends L2GameClientPacket
 		case 1000: // Siege Golem - Siege Hammer
 			if (target instanceof L2DoorInstance) useSkill(4079);
 			break;
+		case 1001: 
+			break; 
 		case 1003: // Wind Hatchling/Strider - Wild Stun
 			useSkill(4710); //TODO use correct skill lvl based on pet lvl
 			break;

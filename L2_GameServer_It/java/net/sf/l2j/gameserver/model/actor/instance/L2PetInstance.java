@@ -190,7 +190,11 @@ public class L2PetInstance extends L2Summon
         // Wolf : Level 15
         // Hatcling : Level 35
         // Tested and confirmed on official servers
-        getStat().setLevel(template.level);
+        // Sin-eaters are defaulted at the owner's level 
+        if (template.npcId == 12564) 
+           getStat().setLevel((byte)getOwner().getLevel()); 
+        else 
+           getStat().setLevel(template.level); 
 
 		_inventory = new PetInventory(this);
         
@@ -860,8 +864,12 @@ public class L2PetInstance extends L2Summon
 
     public void addExpAndSp(long addToExp, int addToSp) 
     {
-    	getStat().addExpAndSp(Math.round(addToExp * Config.PET_XP_RATE), addToSp);
+       if (this.getNpcId() == 12564) //SinEater 
+          getStat().addExpAndSp(Math.round(addToExp * Config.SINEATER_XP_RATE), addToSp); 
+       else 
+          getStat().addExpAndSp(Math.round(addToExp * Config.PET_XP_RATE), addToSp); 
     }
+    
     public long getExpForThisLevel() { return getStat().getExpForLevel(getLevel()); }
     public long getExpForNextLevel() { return getStat().getExpForLevel(getLevel() + 1); }
     public final int getLevel() { return getStat().getLevel(); }

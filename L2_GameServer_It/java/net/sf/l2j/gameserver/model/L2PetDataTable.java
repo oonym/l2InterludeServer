@@ -137,8 +137,7 @@ public class L2PetDataTable
         //System.out.println("Getting id "+petID+" level "+ petLevel);
         return _petTable.get(petID).get(petLevel);
     }
-    
-	
+    	
 	/**
 	 * Pets stuffs
 	 */
@@ -146,6 +145,11 @@ public class L2PetDataTable
     {
     	return npcId == 12077;
     }
+    
+    public static boolean isSinEater(int npcId) 
+    { 
+       return npcId == 12564; 
+    } 
     
     public static boolean isHatchling(int npcId)
     {
@@ -166,8 +170,7 @@ public class L2PetDataTable
     {
     	return npcId > 12779 && npcId < 12783;
     }
-    
-    
+        
     public static boolean isPetFood(int itemId)
     {
     	return (itemId == 2515) || (itemId == 4038) || (itemId == 5168) || (itemId == 6316) || (itemId == 7582);
@@ -177,6 +180,11 @@ public class L2PetDataTable
     {
     	return itemId == 2515;
     }
+    
+    public static boolean isSinEaterFood(int itemId) 
+    { 
+       return itemId == 2515; 
+    } 
     
     public static boolean isHatchlingFood(int itemId)
     {
@@ -202,6 +210,8 @@ public class L2PetDataTable
     {
     	if (isWolf(npcId))
     		return 2515;
+        else if (isSinEater(npcId)) 
+            return 2515;        
     	else if (isHatchling(npcId))
     		return 4038;
     	else if (isStrider(npcId))
@@ -212,7 +222,6 @@ public class L2PetDataTable
     		return 0;
 	}
     
-    
     public static int getPetIdByItemId(int itemId)
     {
 		switch (itemId)
@@ -220,6 +229,9 @@ public class L2PetDataTable
 			// wolf pet a
 			case 2375:
 				return 12077;
+			// Sin Eater 
+            case 4425: 
+               return 12564; 
 			// hatchling of wind
 			case 3500:
 				return 12311;
@@ -239,8 +251,8 @@ public class L2PetDataTable
 			case 4424:
 				return 12528;
 		    // Wyvern
-            case 4425:
-            	return 12621;
+            case 8663: 
+                return 12621; 
 			// Baby Buffalo
 			case 6648:
 				return 12780;
@@ -250,7 +262,6 @@ public class L2PetDataTable
 			// Baby Kookaburra
 			case 6650:
 				return 12781;
-				
 			// unknown item id.. should never happen
 			default:
 				return 0;
@@ -268,8 +279,7 @@ public class L2PetDataTable
     public static int getHatchlingTwilightId()
     {
     	return 12313;
-    }
-    
+    }    
     public static int getStriderWindId()
     {
     	return 12526;
@@ -281,12 +291,10 @@ public class L2PetDataTable
     public static int getStriderTwilightId()
     {
     	return 12528;
-    }
-    
-    
+    }    
     public static int getWyvernItemId()
     {
-    	return 4425;
+       return 8663; 
     }
     public static int getStriderWindItemId()
     {
@@ -301,12 +309,18 @@ public class L2PetDataTable
     	return 4424;
     }
     
+    public static int getSinEaterItemId() 
+    { 
+       return 4425; 
+    } 
+ 
     public static boolean isPetItem(int itemId)
     {
     	return (itemId == 2375 // wolf
+    			|| itemId == 4425 //Sin Eater 
 				|| itemId == 3500 || itemId == 3501 || itemId == 3502 // hatchlings
 				|| itemId == 4422 || itemId == 4423 || itemId == 4424 // striders
-	            || itemId == 4425 // Wyvern
+				|| itemId == 8663 // Wyvern 
 				|| itemId == 6648 || itemId == 6649 || itemId == 6650); // Babies
     }
     
@@ -316,6 +330,8 @@ public class L2PetDataTable
 		{
 			case 12077:// wolf pet a
 				return new int[]{2375};
+			case 12564://Sin Eater 
+				return new int[]{4425}; 
 			
 			case 12311:// hatchling of wind
 			case 12312:// hatchling of star
@@ -328,8 +344,8 @@ public class L2PetDataTable
 	    		return new int[]{4422, 4423, 4424};
 		    
             case 12621:// Wyvern
-        		return new int[]{4425};
-			
+               return new int[]{8663}; 
+                
 			case 12780:// Baby Buffalo
 			case 12782:// Baby Cougar
 			case 12781:// Baby Kookaburra

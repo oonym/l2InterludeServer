@@ -118,6 +118,11 @@ public final class RequestPetUseItem extends L2GameClientPacket
 				feed(activeChar, pet, item);
 				return;
 			}
+			if (L2PetDataTable.isSinEater(pet.getNpcId()) && L2PetDataTable.isSinEaterFood(itemId)) 
+			{ 
+				feed(activeChar, pet, item); 
+				return; 
+			} 
 			else if (L2PetDataTable.isHatchling(pet.getNpcId()) && L2PetDataTable.isHatchlingFood(itemId))
 			{
 				feed(activeChar, pet, item);
