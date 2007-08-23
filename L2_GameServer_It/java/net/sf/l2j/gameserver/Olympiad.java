@@ -1787,7 +1787,7 @@ public class Olympiad
 
                 _playerOne =  L2World.getInstance().getPlayer(_playerOneName); // why this...
                 try {
-        			result=" ("+_playerOne.getCurrentHp()+"hp vs "+_playerTwo.getCurrentHp()+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerOne.getName()+" win "+pointDiff+" points";
+        			result=" ("+playerOneHp+"hp vs "+playerTwoHp+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerOneName+" win "+pointDiff+" points";
         			L2ItemInstance item = _playerOne.getInventory().addItem("Olympiad", 6651, 30, _playerOne, null);
         			InventoryUpdate iu = new InventoryUpdate();
         			iu.addModifiedItem(item);
@@ -1817,7 +1817,7 @@ public class Olympiad
 
                 _playerTwo =  L2World.getInstance().getPlayer(_playerTwoName); // why this...
                 try {
-                	result=" ("+_playerOne.getCurrentHp()+"hp vs "+_playerTwo.getCurrentHp()+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerTwo.getName()+" win "+pointDiff+" points";
+                	result=" ("+playerOneHp+"hp vs "+playerTwoHp+"hp - "+hpDiffOne+" vs "+hpDiffTwo+") "+_playerTwoName+" win "+pointDiff+" points";
                 	L2ItemInstance item = _playerTwo.getInventory().addItem("Olympiad", 6651, 30, _playerTwo, null);
                 	InventoryUpdate iu = new InventoryUpdate();
                 	iu.addModifiedItem(item);
