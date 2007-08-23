@@ -1718,6 +1718,12 @@ public class Olympiad
     	
     	protected void validateWinner()
     	{
+			if (_aborted || (_playerOne == null && _playerTwo == null))
+			{					
+				_log.info("Olympia Result: "+_playerOneName+" vs "+_playerTwoName+" ... aborted/tie due to crashes!");
+				return;
+			}
+
     		StatsSet playerOneStat;
     		StatsSet playerTwoStat;
     		
@@ -1729,11 +1735,6 @@ public class Olympiad
 			
 			int playerOnePoints = playerOneStat.getInteger(POINTS);
 			int playerTwoPoints = playerTwoStat.getInteger(POINTS);
-			if (_playerOne == null && _playerTwo == null)
-			{					
-				_log.info("Olympia Result: "+_playerOne.getName()+" vs "+_playerTwo.getName()+" ... tie for both crash!");
-				return;
-			}
 
 			double playerOneHp = 0;
 			double hpDiffOne = 9999999;
