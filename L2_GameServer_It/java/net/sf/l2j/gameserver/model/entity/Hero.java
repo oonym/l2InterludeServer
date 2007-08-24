@@ -41,7 +41,9 @@ import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.templates.L2Item;
@@ -245,9 +247,10 @@ public class Hero
                 
                 L2PcInstance player = L2World.getInstance().getPlayer(name);
                 
-                if (player != null)
-                {
-                    player.setHero(false);
+                if (player == null) continue;
+                try 
+                {  
+                	player.setHero(false);
                     
                     items = player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
                     iu = new InventoryUpdate();
@@ -302,7 +305,7 @@ public class Hero
                     
                     player.sendPacket(new UserInfo(player));
                     player.broadcastUserInfo();
-                }
+                } catch (NullPointerException e) {}
             }
         }
         
@@ -358,11 +361,17 @@ public class Hero
                 player.setHero(true);
                 L2Clan clan = player.getClan();
                 if (clan != null)
+                {
                     clan.setReputationScore(clan.getReputationScore()+1000, true);
-                clan.updateClanInDB();
+                    clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+    				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_BECAME_HERO_AND_GAINED_S2_REPUTATION_POINTS);
+                    sm.addString(name);
+                    sm.addNumber(1000);
+    				clan.broadcastToOnlineMembers(sm);
+                }
                 player.sendPacket(new UserInfo(player));
                 player.broadcastUserInfo();
-                clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+                
             }
             else
             {
@@ -381,7 +390,14 @@ public class Hero
             			{
             				L2Clan clan = ClanTable.getInstance().getClanByName(clanName);
             				if (clan != null)
+            				{
             					clan.setReputationScore(clan.getReputationScore()+1000, true);
+                                clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
+                				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_BECAME_HERO_AND_GAINED_S2_REPUTATION_POINTS);
+                                sm.addString(name);
+                                sm.addNumber(1000);
+                				clan.broadcastToOnlineMembers(sm);
+            				}
             			}
             		}
             		

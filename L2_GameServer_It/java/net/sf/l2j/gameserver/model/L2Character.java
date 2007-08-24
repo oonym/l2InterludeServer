@@ -1080,13 +1080,6 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 
-		if (this instanceof L2PcInstance && ((L2PcInstance)this).isInOlympiadMode() && HeroSkillTable.getInstance().isHeroSkill(skill.getId())){
-			SystemMessage sm = new SystemMessage(SystemMessageId.THIS_SKILL_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
-			sendPacket(sm);
-		 	getAI().notifyEvent(CtrlEvent.EVT_CANCEL); 
-		 	return; 
-		}
-
 		if (isSkillDisabled(skill.getId()))
 		{
 			if (this instanceof L2PcInstance)
