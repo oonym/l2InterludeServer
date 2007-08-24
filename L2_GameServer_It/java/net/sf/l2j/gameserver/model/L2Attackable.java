@@ -691,11 +691,8 @@ public class L2Attackable extends L2NpcInstance
                         L2PcInstance player = (L2PcInstance)attacker;
                         if (isOverhit() && attacker == getOverhitAttacker())
                         {
-                        	int overHitExp = (int)calculateOverhitExp(exp);
-                        	SystemMessage sms = new SystemMessage(SystemMessageId.ACQUIRED_BONUS_EXPERIENCE_THROUGH_OVER_HIT);
-                        	sms.addNumber(overHitExp);
-                            player.sendPacket(sms);
-                            exp += overHitExp;
+                        	player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
+                            exp += calculateOverhitExp(exp);
                         }
                     }
                     
