@@ -25,7 +25,9 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.IUserCommandHandler;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -44,7 +46,14 @@ public class Escape implements IUserCommandHandler
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
     public boolean useUserCommand(@SuppressWarnings("unused") int id, L2PcInstance activeChar)
-    {   
+    {
+    	// Thanks nbd
+    	if (!TvTEvent.onEscapeUse(activeChar.getName()))
+    	{
+    		activeChar.sendPacket(new ActionFailed());
+    		return false;
+    	}
+
         if (activeChar.isCastingNow() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() ||
                 activeChar.isInOlympiadMode())
             return false;

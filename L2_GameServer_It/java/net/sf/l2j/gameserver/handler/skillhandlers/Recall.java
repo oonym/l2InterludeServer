@@ -26,7 +26,9 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Recall implements ISkillHandler
@@ -38,6 +40,13 @@ public class Recall implements ISkillHandler
 	{
         if (activeChar instanceof L2PcInstance)
         {
+        	// Thanks nbd
+        	if (!TvTEvent.onEscapeUse(((L2PcInstance)activeChar).getName()))
+        	{
+        		((L2PcInstance)activeChar).sendPacket(new ActionFailed());
+        		return;
+        	}
+
             if (((L2PcInstance)activeChar).isInOlympiadMode())
             {
                 ((L2PcInstance)activeChar).sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));

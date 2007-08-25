@@ -51,7 +51,7 @@ public class TvTManager implements Runnable
 
 		for (;;)
 		{
-			waiter(Config.TVT_EVENT_INTERVAL * 60 * 1000); // in config given as minutes
+			waiter(Config.TVT_EVENT_INTERVAL * 60); // in config given as minutes
 			
 			if (!TvTEvent.startParticipation())
 			{
@@ -62,7 +62,7 @@ public class TvTManager implements Runnable
 			else
 				Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
 
-			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60 * 1000); // in config given as minutes
+			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60); // in config given as minutes
 
 			if (!TvTEvent.startFight())
 			{
@@ -73,9 +73,9 @@ public class TvTManager implements Runnable
 			else
 				Announcements.getInstance().announceToAll("TvT Event: Teleport participants to team spot in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 
-			waiter(Config.TVT_EVENT_RUNNING_TIME * 60 * 1000); // in config given as minutes
-			Announcements.getInstance().announceToAll("TvT Event: Event finish. Team \"" + TvTEvent.calculateRewards() + "\" wins.");
-			Announcements.getInstance().announceToAll("TvT Event: Teleport back to registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+			waiter(Config.TVT_EVENT_RUNNING_TIME * 60); // in config given as minutes
+			Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());
+			TvTEvent.sysMsgToAllParticipants("TvT Event: Teleport back to registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 			TvTEvent.stopFight();
 		}
 	}
@@ -85,12 +85,9 @@ public class TvTManager implements Runnable
 	 * 
 	 * @param interval<br>
 	 */
-	void waiter(long interval)
+	void waiter(int seconds)
 	{
-		long startWaiterTime = System.currentTimeMillis();
-		int seconds = (int)(interval / 1000);
-
-		while (startWaiterTime + interval > System.currentTimeMillis())
+		while (seconds > 1)
 		{
 			seconds--; // here because we don't want to see two time announce at the same time
 			
@@ -136,10 +133,10 @@ public class TvTManager implements Runnable
 				}
 			}
 
-			long startOneSecondWaiterStartTime = System.currentTimeMillis();
+			long oneSecWaitStart = System.currentTimeMillis();
 
 			// only the try catch with Thread.sleep(1000) give bad countdown on high wait times
-			while (startOneSecondWaiterStartTime + 1000 > System.currentTimeMillis())
+			while (oneSecWaitStart + 1000L > System.currentTimeMillis())
 			{
 				try
 				{

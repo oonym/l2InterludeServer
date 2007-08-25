@@ -5,9 +5,11 @@ import net.sf.l2j.util.Rnd;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
+import net.sf.l2j.gameserver.datatables.DoorTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.PcInventory;
+import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.TvTEventTeam;
@@ -110,6 +112,7 @@ public class TvTEvent
 	 * Starts the TvTEvent fight<br>
 	 * 1. Set state EventState.STARTING<br>
 	 * 2. Remove participation npc from world<br>
+	 * 3. Close doors specified in configs<br>
 	 * 3. Abort if not enought participants(return false)<br>
 	 * 4. Set state EventState.STARTED<br>
 	 * 5. Teleport all participants to team spot<br><br>
@@ -123,6 +126,14 @@ public class TvTEvent
         _npcSpawn.stopRespawn();
         _npcSpawn = null;
 		_lastNpcSpawn = null;
+		
+		for (int doorId : Config.TVT_EVENT_DOOR_IDS)
+		{
+			L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
+			
+			if (doorInstance != null)
+				doorInstance.closeMe();
+		}
 
 		// not enought participants
 		if (_teams[0].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS || _teams[1].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS)
@@ -171,7 +182,7 @@ public class TvTEvent
 			{
 				// the fight cannot be completed
 				setState(EventState.REWARDING);
-				return "Nobody";
+				return "TvT Event: Event finish. No team won, cause of inactivity!";
 			}
 			
 			sysMsgToAllParticipants("TvT Event: Both teams are at a tie, next killing team win!");
@@ -196,50 +207,56 @@ public class TvTEvent
 		{
 			L2PcInstance playerInstance = team.getParticipatedPlayers().get(playerName);
 
-			if (playerInstance == null)
-				continue;
+			for (int[] reward : Config.TVT_EVENT_REWARDS)
+			{
+				if (playerInstance == null)
+					continue;
 			
-        	PcInventory inv = playerInstance.getInventory();
+				PcInventory inv = playerInstance.getInventory();
             
-        	if (ItemTable.getInstance().createDummyItem(Config.TVT_EVENT_REWARD[0]).isStackable())
-        		inv.addItem("TvT Event", Config.TVT_EVENT_REWARD[0], Config.TVT_EVENT_REWARD[1], playerInstance, playerInstance);
-        	else
-        	{
-        		for (int i=0;i<Config.TVT_EVENT_REWARD[1];i++)
-        			inv.addItem("TvT Event", Config.TVT_EVENT_REWARD[0], 1, playerInstance, playerInstance);
-        	}
+				if (ItemTable.getInstance().createDummyItem(reward[0]).isStackable())
+					inv.addItem("TvT Event", reward[0], reward[1], playerInstance, playerInstance);
+				else
+				{
+					for (int i=0;i<reward[1];i++)
+						inv.addItem("TvT Event", reward[0], 1, playerInstance, playerInstance);
+				}
             
-        	SystemMessage systemMessage = null;
+				SystemMessage systemMessage = null;
 
-        	if (Config.TVT_EVENT_REWARD[1] > 1)
-        	{
-        		systemMessage = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-        		systemMessage.addItemName(Config.TVT_EVENT_REWARD[0]);
-        		systemMessage.addNumber(Config.TVT_EVENT_REWARD[1]);
-        	}
-        	else
-        	{
-        		systemMessage = new SystemMessage(SystemMessageId.EARNED_ITEM);
-        		systemMessage.addItemName(Config.TVT_EVENT_REWARD[0]);
-        	}
+				if (reward[1] > 1)
+				{
+					systemMessage = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+					systemMessage.addItemName(reward[0]);
+					systemMessage.addNumber(reward[1]);
+				}
+				else
+				{
+					systemMessage = new SystemMessage(SystemMessageId.EARNED_ITEM);
+					systemMessage.addItemName(reward[0]);
+				}
         	
-        	playerInstance.sendPacket(systemMessage);
-            
-        	StatusUpdate statusUpdate = new StatusUpdate(playerInstance.getObjectId());
-        	statusUpdate.addAttribute(StatusUpdate.CUR_LOAD, playerInstance.getCurrentLoad());
-        	playerInstance.sendPacket(statusUpdate);
+				playerInstance.sendPacket(systemMessage);
+			}
 
-        	NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
-        	npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Your team win the event. Look in your inventar there should be the reward.</body></html>");
-        	playerInstance.sendPacket(npcHtmlMessage);
+			StatusUpdate statusUpdate = new StatusUpdate(playerInstance.getObjectId());
+
+			statusUpdate.addAttribute(StatusUpdate.CUR_LOAD, playerInstance.getCurrentLoad());
+			playerInstance.sendPacket(statusUpdate);
+
+			NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
+
+			npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Your team won the event. Look in your inventar there should be the reward.</body></html>");
+			playerInstance.sendPacket(npcHtmlMessage);
 		}
 		
-		return team.getName();
+		return "TvT Event: Event finish. Team " + team.getName() + " won with " + team.getPoints() + " kills.";
 	}
 
 	/**
 	 * Stops the TvTEvent fight<br>
 	 * 1. Set state EventState.INACTIVATING<br>
+	 * 2. Open doors specified in configs<br>
 	 * 2. Teleport all participants back to participation npc location<br>
 	 * 3. Teams cleaning<br>
 	 * 4. Set state EventState.INACTIVE<br>
@@ -247,6 +264,14 @@ public class TvTEvent
 	public static void stopFight()
 	{
 		setState(EventState.INACTIVATING);
+		
+		for (int doorId : Config.TVT_EVENT_DOOR_IDS)
+		{
+			L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
+			
+			if (doorInstance != null)
+				doorInstance.openMe();
+		}
 
 		for (TvTEventTeam team : _teams)
 		{
@@ -286,8 +311,7 @@ public class TvTEvent
 		else
 			teamId = (byte)(_teams[0].getParticipatedPlayerCount() > _teams[1].getParticipatedPlayerCount() ? 1 : 0);
 		
-		_teams[teamId].addPlayer(playerInstance);
-		return true;
+		return _teams[teamId].addPlayer(playerInstance);
 	}
 
 	/**
@@ -351,6 +375,19 @@ public class TvTEvent
 	}
 
 	/**
+	 * Called when a player logs out<br><br>
+	 * 
+	 * @param playerInstance<br>
+	 */
+	public static void onLogout(L2PcInstance playerInstance)
+	{
+		if (playerInstance == null || (!isStarting() && !isStarted()))
+			return;
+		
+		removeParticipant(playerInstance.getName());
+	}
+
+	/**
 	 * Called on every bypass starting with "npc_"<br><br> 
 	 * 
 	 * @param command<br>
@@ -368,7 +405,7 @@ public class TvTEvent
 			if (addParticipant(playerInstance))
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>You are on the registration list now.</body></html>");
 			else
-				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Unable to register!</body></html>");
+				return;
 			
 			playerInstance.sendPacket(npcHtmlMessage);		
 		}
@@ -388,6 +425,7 @@ public class TvTEvent
 	 * 
 	 * @param playerName<br>
 	 * @param targetPlayerName<br>
+	 * @return boolean<br>
 	 */
 	public static boolean onAction(String playerName, String targetPlayerName)
 	{
@@ -411,6 +449,7 @@ public class TvTEvent
 	 * Called on every potion use<br><br>
 	 * 
 	 * @param playerName<br>
+	 * @return boolean<br>
 	 */
 	public static boolean onPotionUse(String playerName)
 	{
@@ -424,9 +463,27 @@ public class TvTEvent
 	}
 
 	/**
+	 * Called on every escape use(thanks to nbd)<br><br>
+	 * 
+	 * @param playerName<br>
+	 * @return boolean<br>
+	 */
+	public static boolean onEscapeUse(String playerName)
+	{
+		if (!isStarted())
+			return true;
+
+		if (isPlayerParticipant(playerName))
+			return false;
+
+		return true;
+	}
+
+	/**
 	 * Called on every summon item use<br><br>
 	 *
 	 * @param playerName<br>
+	 * @return boolean<br>
 	 */
 	public static boolean onItemSummon(String playerName)
 	{

@@ -798,10 +798,11 @@ public final class Config
     public static int[] TVT_EVENT_TEAM_1_COORDINATES = new int[3];
     public static String TVT_EVENT_TEAM_2_NAME;
     public static int[] TVT_EVENT_TEAM_2_COORDINATES = new int[3];
-    public static int[] TVT_EVENT_REWARD = new int[2];
+    public static List<int[]> TVT_EVENT_REWARDS = new FastList<int[]>();
     public static boolean TVT_EVENT_TARGET_TEAM_MEMBERS_ALLOWED;
     public static boolean TVT_EVENT_POTIONS_ALLOWED;
     public static boolean TVT_EVENT_SUMMON_BY_ITEM_ALLOWED;
+    public static List<Integer> TVT_EVENT_DOOR_IDS = new FastList<Integer>();
 
     /** L2JMOD Wedding system  */
     public static boolean L2JMOD_ALLOW_WEDDING;
@@ -1802,21 +1803,45 @@ public final class Config
                                 TVT_EVENT_TEAM_2_COORDINATES[0]    = Integer.parseInt(propertySplit[0]);
                                 TVT_EVENT_TEAM_2_COORDINATES[1]    = Integer.parseInt(propertySplit[1]);
                                 TVT_EVENT_TEAM_2_COORDINATES[2]    = Integer.parseInt(propertySplit[2]);
-                                propertySplit                    = L2JModSettings.getProperty("TvTEventReward", "57,100000").split(",");
+                                propertySplit                    = L2JModSettings.getProperty("TvTEventReward", "57,100000").split(";");
 
-                                if (propertySplit.length < 2)
+                                for (String reward : propertySplit)
                                 {
-                                    TVT_EVENT_ENABLED = false;
-                                    System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventReward");
+                                	String[] rewardSplit = reward.split(",");
+
+                                	if (rewardSplit.length != 2)
+                                		System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventReward \"" + reward + "\"");
+                                	else
+                                	{
+                                		try
+                                		{
+                                			TVT_EVENT_REWARDS.add(new int[]{Integer.valueOf(rewardSplit[0]), Integer.valueOf(rewardSplit[1])});
+                                		}
+                                		catch (NumberFormatException nfe)
+                                		{
+                                			if (!reward.equals(""))
+                                				System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventReward \"" + reward + "\"");
+                                		}
+                                	}
                                 }
-                                else
-                                {
-                                    TVT_EVENT_REWARD[0] = Integer.parseInt(propertySplit[0]);
-                                    TVT_EVENT_REWARD[1] = Integer.parseInt(propertySplit[1]);
-                                    TVT_EVENT_TARGET_TEAM_MEMBERS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventTargetTeamMembersAllowed", "true"));
-                                    TVT_EVENT_POTIONS_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventPotionsAllowed", "false"));
-                                    TVT_EVENT_SUMMON_BY_ITEM_ALLOWED = Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventSummonByItemAllowed", "false"));
-                                }
+                                
+                                TVT_EVENT_TARGET_TEAM_MEMBERS_ALLOWED	= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventTargetTeamMembersAllowed", "true"));
+                        		TVT_EVENT_POTIONS_ALLOWED				= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventPotionsAllowed", "false"));
+                        		TVT_EVENT_SUMMON_BY_ITEM_ALLOWED		= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventSummonByItemAllowed", "false"));
+                        		propertySplit							= L2JModSettings.getProperty("TvTEventDoorsCloseOpenOnStartEnd", "").split(";");
+                        		
+                        		for (String door : propertySplit)
+                        		{
+                        			try
+                        			{
+                        				TVT_EVENT_DOOR_IDS.add(Integer.valueOf(door));
+                        			}
+                        			catch (NumberFormatException nfe)
+                        			{
+                        				if (!door.equals(""))
+                        					System.out.println("TvTEventEngine[Config.load()]: invalid config property -> TvTEventDoorsCloseOpenOnStartEnd \"" + door + "\"");
+                        			}
+                        		}
                             }
                         }
                     }

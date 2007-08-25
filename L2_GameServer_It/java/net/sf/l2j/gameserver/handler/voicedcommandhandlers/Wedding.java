@@ -15,6 +15,8 @@ import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ConfirmDlg;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
@@ -213,7 +215,7 @@ public class Wedding implements IVoicedCommandHandler
     }
     
     public boolean GoToLove(L2PcInstance activeChar)
-    {   
+    {
         if(!activeChar.isMarried())
         {
             activeChar.sendMessage("You're not married."); 
@@ -296,6 +298,12 @@ public class Wedding implements IVoicedCommandHandler
         //    activeChar.sendMessage("You are in the dimensional rift.");
         //    return false;
         //}
+        // Thanks nbd
+        else if (!TvTEvent.onEscapeUse(activeChar.getName()))
+        {
+        	activeChar.sendPacket(new ActionFailed());
+        	return false;
+        }
         
         
         int teleportTimer = Config.L2JMOD_WEDDING_TELEPORT_DURATION*1000;

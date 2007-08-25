@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.communitybbs.Manager.RegionBBSManager;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
@@ -118,7 +119,8 @@ public final class RequestRestart extends L2GameClientPacket
         
         // detach the client from the char so that the connection isnt closed in the deleteMe
         player.setClient(null);
-        
+
+        TvTEvent.onLogout(player);
         RegionBBSManager.getInstance().changeCommunityBoard();
         
         // removing player from the world
