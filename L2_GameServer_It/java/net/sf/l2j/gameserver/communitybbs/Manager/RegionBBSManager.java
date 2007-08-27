@@ -592,6 +592,8 @@ public class RegionBBSManager extends BaseBBSManager
 	
 	public String getCommunityPage(int page, String type)
 	{
-		return _communityPages.get(page).get(type);
+		if (_communityPages.get(page) != null)
+			return _communityPages.get(page).get(type);
+		else return null;
 	}
 }

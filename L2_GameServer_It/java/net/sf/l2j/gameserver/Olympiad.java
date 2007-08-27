@@ -1825,16 +1825,16 @@ public class Olympiad
     			_sm = new SystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
                 broadcastMessage(_sm, true);
     		}
-            _log.info("Olympia Result: "+_playerOne.getName()+" vs "+_playerTwo.getName()+" ... "+result);
+            _log.info("Olympia Result: "+_playerOneName+" vs "+_playerTwoName+" ... "+result);
             
     		playerOneStat.set(COMP_DONE, playerOnePlayed + 1);
     		playerTwoStat.set(COMP_DONE, playerTwoPlayed + 1);
     		
-    		_nobles.remove(_playerOne.getObjectId());
-    		_nobles.remove(_playerTwo.getObjectId());
+    		_nobles.remove(_playerOneID);
+    		_nobles.remove(_playerTwoID);
     		
-    		_nobles.put(_playerOne.getObjectId(), playerOneStat);
-    		_nobles.put(_playerTwo.getObjectId(), playerTwoStat);
+    		_nobles.put(_playerOneID, playerOneStat);
+    		_nobles.put(_playerTwoID, playerTwoStat);
             
             _sm = new SystemMessage(SystemMessageId.YOU_WILL_GO_BACK_TO_THE_VILLAGE_IN_S1_SECOND_S);
             _sm.addNumber(20);

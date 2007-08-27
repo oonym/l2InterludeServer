@@ -30,6 +30,7 @@ public abstract class BaseBBSManager
 	public abstract void parsewrite(String ar1,String ar2,String ar3,String ar4,String ar5, L2PcInstance activeChar);
 	protected void separateAndSend(String html, L2PcInstance acha)
 	{
+		if (html == null) return;
 		if (html.length() < 4090)
 		{
 			acha.sendPacket(new ShowBoard(html, "101"));
