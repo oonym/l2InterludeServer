@@ -63,14 +63,14 @@ public final class IllegalPlayerAction implements Runnable
         switch(punishment)
         {
             case PUNISH_KICK:
-                _actor.sendMessage("You are will be kicked for illegal action, GM informed");
+                _actor.sendMessage("You will be kicked for illegal action, GM informed.");
                 break;
             case PUNISH_KICKBAN:
-                _actor.sendMessage("You are banned for illegal action, GM informed");
+                _actor.sendMessage("You are banned for illegal action, GM informed.");
                 break;
             case PUNISH_JAIL:
             	_actor.sendMessage("Illegal action performed!");
-            	_actor.sendMessage("You will be teleported to GM Consultation Service area and jailed");
+            	_actor.sendMessage("You will be teleported to GM Consultation Service area and jailed.");
             	break;
         }
     }
