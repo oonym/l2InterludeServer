@@ -84,11 +84,11 @@ public class Seed implements IItemHandler
                 if(calcSuccess())
                 {
                     _target.setSeeded(item.getItemId(),_activeChar.getLevel());
-                    _activeChar.sendPacket(new SystemMessage(SystemMessageId.SEED_SUCCESSFULLY_SOWN));
+                    _activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN));
                 }
                 else
                 {
-                    _activeChar.sendPacket(new SystemMessage(SystemMessageId.SEED_NOT_SOWN));
+                    _activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_SEED_WAS_NOT_SOWN));
                 }
 
                 // remove seed from inv & attack target
@@ -98,7 +98,7 @@ public class Seed implements IItemHandler
             }
             else
             {
-                _activeChar.sendPacket(new SystemMessage(SystemMessageId.SEED_CANNOT_BE_SOWN_HERE));
+                _activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_SEED_MAY_NOT_BE_SOWN_HERE));
             }
         }
     }

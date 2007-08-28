@@ -3501,24 +3501,6 @@ public enum SystemMessageId
     YOU_ARE_NOT_IN_PETITION_CHAT(745),
     
     /**
-     * ID: 889<br>
-     * Message: The seed was successfully sown.
-     */
-    SEED_SUCCESSFULLY_SOWN(889),
-    
-    /**
-     * ID: 890<br>
-     * Message: The seed was not sown.
-     */
-    SEED_NOT_SOWN(890),
-    
-    /**
-     * ID: 882<br>
-     * Message: The seed quantity is incorrect.
-     */
-    SEED_CANNOT_BE_SOWN_HERE(882),
-    
-    /**
      * ID: 829<br>
      * Message: You cannot recommend yourself.
      */
@@ -4503,7 +4485,212 @@ public enum SystemMessageId
      * ID: 1269<br>
      * Message: The new sub class has been added.
      */
-    ADD_NEW_SUBCLASS(1269);
+    ADD_NEW_SUBCLASS(1269),
+    
+    /**
+     * ID: 871<br>
+     * Message: The seed has been sown.
+     */
+    THE_SEED_HAS_BEEN_SOWN(871),
+    
+    /**
+     * ID: 872<br>
+     * Message: This seed may not be sown here.
+     */
+    THIS_SEED_MAY_NOT_BE_SOWN_HERE(872),
+
+    /**
+     * ID: 879<br>
+     * Message: The manor system is currently under maintenance.
+     */
+    THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE(879),
+        
+    /**
+     * ID: 880<br>
+     * Message: The transaction is complete.
+     */
+    THE_TRANSACTION_IS_COMPLETE(880),
+    
+    /**
+     * ID: 881<br>
+     * Message: There is a discrepancy on the invoice.
+     */
+    THERE_IS_A_DISCREPANCY_ON_THE_INVOICE(881),
+    
+    /**
+     * ID: 882<br>
+     * Message: The seed quantity is incorrect.
+     */
+    THE_SEED_QUANTITY_IS_INCORRECT(882),
+    
+    /**
+     * ID: 883<br>
+     * Message: The seed information is incorrect.
+     */
+    THE_SEED_INFORMATION_IS_INCORRECT(883),
+    
+    /**
+     * ID: 884<br>
+     * Message: The manor information has been updated.
+     */
+    THE_MANOR_INFORMATION_HAS_BEEN_UPDATED(884),
+  
+    /**
+     * ID: 885<br>
+     * Message: The number of crops is incorrect.
+     */
+    THE_NUMBER_OF_CROPS_IS_INCORRECT(885),
+  
+    /**
+     * ID: 886<br>
+     * Message: The crops are priced incorrectly.
+     */
+    THE_CROPS_ARE_PRICED_INCORRECTLY(886),
+  
+    /**
+     * ID: 887<br>
+     * Message: The type is incorrect.
+     */
+    THE_TYPE_IS_INCORRECT(887),
+  
+    /**
+     * ID: 888<br>
+     * Message: No crops can be purchased at this time.
+     */
+    NO_CROPS_CAN_BE_PURCHASED_AT_THIS_TIME(888),
+    
+    /**
+     * ID: 889<br>
+     * Message: The seed was successfully sown.
+     */
+    THE_SEED_WAS_SUCCESSFULLY_SOWN(889),
+
+    /**
+     * ID: 890<br>
+     * Message: The seed was not sown.
+     */
+    THE_SEED_WAS_NOT_SOWN(890),
+
+    /**
+     * ID: 891<br>
+     * Message: You are not authorized to harvest.
+     */
+    YOU_ARE_NOT_AUTHORIZED_TO_HARVEST(891),
+    
+    /**
+     * ID: 892<br>
+     * Message: The harvest has failed.
+     */
+    THE_HARVEST_HAS_FAILED(892),
+    
+    /**
+     * ID: 893<br>
+     * Message: The harvest failed because the seed was not sown.
+     */
+    THE_HARVEST_FAILED_BECAUSE_THE_SEED_WAS_NOT_SOWN(893),
+    
+    /**
+     * ID: 933<br>
+     * Message: The seed pricing greatly differs from standard seed prices.
+     */
+    THE_SEED_PRICING_GREATLY_DIFFERS_FROM_STANDARD_SEED_PRICES(933),
+    
+    /**
+     * ID: 935<br>
+     * Message: The amount is not sufficient and so the manor is not in operation.
+     */
+    THE_AMOUNT_IS_NOT_SUFFICIENT_AND_SO_THE_MANOR_IS_NOT_IN_OPERATION(935),
+    
+    /**
+     * ID: 1041<br>
+     * Message: The next seed purchase price is $s1 adena.
+     */
+    THE_NEXT_SEED_PURCHASE_PRICE_IS_S1_ADENA(1041),
+    
+    /**
+     * ID: 1058<br>
+     * Message: The sales price for seeds is $s1 adena.
+     */
+    THE_SALES_PRICE_FOR_SEEDS_IS_S1_ADENA(1058),
+    
+    /**
+     * ID: 1060<br>
+     * Message: The remainder after selling the seeds is $s1.
+     */
+    THE_REMAINDER_AFTER_SELLING_THE_SEEDS_IS_S1(1060),
+    
+    /**
+     * ID: 1137<br>
+     * Message: $s1 harvested $s3 $s2(s).
+     */
+    S1_HARVESTED_S3_S2S(1137),
+    
+    /**
+     * ID: 1138<br>
+     * Message: $s1 harvested $s2(s).
+     */
+    S1_HARVESTED_S2S(1138),
+    
+    /**
+     * ID: 1490<br>
+     * Message: Traded $s2 of crop $s1.
+     */
+    TRADED_S2_OF_CROP_S1(1490),
+    
+    /**
+     * ID: 1491<br>
+     * Message: Failed in trading $s2 of crop $s1.
+     */
+    FAILED_IN_TRADING_S2_OF_CROP_S1(1491),
+    
+    /**
+     * ID: 1516<br>
+     * Message: The target is unavailable for seeding.
+     */
+    THE_TARGET_IS_UNAVAILABLE_FOR_SEEDING(1516),
+    
+    /**
+     * ID: 1557<br>
+     * Message: Seed price should be more than $s1 and less than $s2.
+     */
+    SEED_PRICE_SHOULD_BE_MORE_THAN_S1_AND_LESS_THAN_S2(1557),
+    
+    /**
+     * ID: 1558<br>
+     * Message: The quantity of seed should be more than $s1 and less than $s2.
+     */
+    THE_QUANTITY_OF_SEED_SHOULD_BE_MORE_THAN_S1_AND_LESS_THAN_S2(1558),
+    
+    /**
+     * ID: 1559<br>
+     * Message: Crop price should be more than $s1 and less than $s2.
+     */
+    CROP_PRICE_SHOULD_BE_MORE_THAN_S1_AND_LESS_THAN_S2(1559),
+    
+    /**
+     * ID: 1560<br>
+     * Message: The quantity of crop should be more than $s1 and less than $s2
+     */
+    THE_QUANTITY_OF_CROP_SHOULD_BE_MORE_THAN_S1_AND_LESS_THAN_S2(1560),
+    
+    /**
+     * ID: 1605<br>
+     * Message: * Here, you can buy only seeds of $s1 Manor.
+     */
+    HERE_YOU_CAN_BUY_ONLY_SEEDS_OF_S1_MANOR(1605),
+    
+    /**
+     * ID: 1675<br>
+     * Message: A manor cannot be set up between 6 a.m. and 8 p.m.
+     */
+    A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM(1675),
+       
+    /**
+     * ID: 2013<br>
+     * Message: Your seed or remaining purchase amount is inadequate.
+     */
+    YOUR_SEED_OR_REMAINING_PURCHASE_AMOUNT_IS_INADEQUATE(2013);
+   
     
     private int _id;
     
