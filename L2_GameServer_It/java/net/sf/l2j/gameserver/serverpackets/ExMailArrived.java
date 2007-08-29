@@ -24,7 +24,7 @@ package net.sf.l2j.gameserver.serverpackets;
  * @author -Wooden-
  *
  */
-class ExMailArrived extends L2GameServerPacket
+public class ExMailArrived extends L2GameServerPacket
 {
 	private static final String _S__FE_2D_EXMAILARRIVED = "[S] FE:2D ExMailArrived";
 
