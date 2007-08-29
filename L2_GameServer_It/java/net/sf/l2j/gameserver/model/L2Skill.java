@@ -1394,12 +1394,12 @@ public abstract class L2Skill
                                     src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                                     continue;
 
+                                if(trg.getInPeaceZone()) continue;
+                                
                                 if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
                                 {
                                     if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                                         continue;
-
-                                    if(trg.getInPeaceZone()) continue;
 
                                     if(src.getClan() != null && trg.getClan() != null)
                                     {
@@ -1425,8 +1425,6 @@ public abstract class L2Skill
                                 	if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                                 		continue;
 
-                                	if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
-
                                 	if(src.getClan() != null && trg.getClan() != null)
                                 	{
                                 		if(src.getClan().getClanId() == trg.getClan().getClanId())
@@ -1435,8 +1433,9 @@ public abstract class L2Skill
 
                                 	if(!src.checkPvpSkill(trg, this))
                                 		continue;
-
                                 }
+                                
+                            	if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
                             }
                         }
                         else
@@ -1779,12 +1778,12 @@ public abstract class L2Skill
                         			src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                         		continue;
 
+                    		if(trg.getInPeaceZone()) continue;
+                    		
                         	if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
                         	{
                         		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                         			continue;
-
-                        		if(trg.getInPeaceZone()) continue;
 
                         		if(src.getClan() != null && trg.getClan() != null)
                         		{
@@ -1809,8 +1808,6 @@ public abstract class L2Skill
                         		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                         			continue;
 
-                        		if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
-
                         		if(src.getClan() != null && trg.getClan() != null)
                         		{
                         			if(src.getClan().getClanId() == trg.getClan().getClanId())
@@ -1819,8 +1816,9 @@ public abstract class L2Skill
 
                         		if(!src.checkPvpSkill(trg, this))
                         			continue;
-
                         	}
+                        	
+                    		if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
                         }
 
                         targetList.add((L2Character) obj);
