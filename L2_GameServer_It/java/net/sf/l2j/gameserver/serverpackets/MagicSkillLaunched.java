@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.L2Object;
 
 /**
  * 
@@ -38,16 +39,19 @@ public class MagicSkillLaunched extends L2GameServerPacket
 	private int _charObjId;
 	private int _skillId;
 	private int _skillLevel;
-	private int _dat2;
-	private int _targetId;
+	private int _numberOfTargets;
+	private L2Object[] _targets;
+	private int _singleTargetId;
 	
-	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel, L2Character target)
+	
+	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel, L2Object[] targets)
 	{
 		_charObjId = cha.getObjectId();
 		_skillId = skillId;
 		_skillLevel = skillLevel;
-		_dat2 = 1;
-		_targetId = target.getObjectId();
+		_numberOfTargets = targets.length;
+		_targets = targets;
+		_singleTargetId = 0;
 	}
 	
 	public MagicSkillLaunched(L2Character cha, int skillId, int skillLevel)
@@ -55,8 +59,8 @@ public class MagicSkillLaunched extends L2GameServerPacket
 		_charObjId = cha.getObjectId();
 		_skillId = skillId;
 		_skillLevel = skillLevel;
-		_dat2 = 1;
-		_targetId = cha.getTargetId();
+		_numberOfTargets = 1;
+		_singleTargetId = cha.getTargetId();
 	}
 	
 	protected final void writeImpl()
@@ -65,8 +69,20 @@ public class MagicSkillLaunched extends L2GameServerPacket
 		writeD(_charObjId);
 		writeD(_skillId);
 		writeD(_skillLevel);
-		writeD(_dat2);  // failed or not
-		writeD(_targetId);
+		writeD(_numberOfTargets); // also failed or not?
+		if (_singleTargetId > 0 || _numberOfTargets == 0) 
+			writeD(_singleTargetId);
+		else for(L2Object target : _targets)
+		{
+			try 
+			{ 
+				writeD(target.getObjectId());
+			} 
+			catch (NullPointerException e) 
+			{ 
+				writeD(0); // untested 
+			}
+		}
 	}
 	
 	/* (non-Javadoc)

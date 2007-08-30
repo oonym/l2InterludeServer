@@ -295,27 +295,21 @@ public abstract class L2Character extends L2Object
 		if (!(mov instanceof CharInfo))
 			sendPacket(mov);
 
-		if (getKnownList().getKnownPlayers() == null) return;
+		//if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
 
-		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
-
-		if (knownPlayers == null) return;
-
-		if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
-
-        try {
-        	for (L2PcInstance player : knownPlayers)
-        	{
-        		if (player == null || player == this) continue;
-        		player.sendPacket(mov);
-        		if (mov instanceof CharInfo && this instanceof L2PcInstance) {
-        			int relation = ((L2PcInstance)this).getRelation(player);
-        			if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
-        				player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
+		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+		{
+			try 
+			{
+				player.sendPacket(mov);
+				if (mov instanceof CharInfo && this instanceof L2PcInstance) {
+					int relation = ((L2PcInstance)this).getRelation(player);
+					if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
+						player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
         		}
-        		//if(Config.DEVELOPER && !isInsideRadius(player, 3500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
-        	}
-        } catch (Exception e) { } // this npe catch might not be necessary any more
+				//if(Config.DEVELOPER && !isInsideRadius(player, 3500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
+        	} catch (NullPointerException e) { } 
+        }
 	}
 
 	/**
@@ -331,23 +325,20 @@ public abstract class L2Character extends L2Object
 		if (!(mov instanceof CharInfo))
 			sendPacket(mov);
 
-		if (getKnownList().getKnownPlayers() == null) return;
+		//if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
 
-		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
-
-		if (knownPlayers == null) return;
-
-		if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
-
-        for (L2PcInstance player : knownPlayers)
+        for (L2PcInstance player : getKnownList().getKnownPlayers().values())
         {
-        	if (player == null || player == this || !isInsideRadius(player, radiusInKnownlist, false, false)) continue;
-        	player.sendPacket(mov);
-        	if (mov instanceof CharInfo && this instanceof L2PcInstance) {
-        		int relation = ((L2PcInstance)this).getRelation(player);
-        		if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
-        			player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
-        	}
+        	try 
+        	{
+        		if (!isInsideRadius(player, radiusInKnownlist, false, false)) continue;
+        		player.sendPacket(mov);
+        		if (mov instanceof CharInfo && this instanceof L2PcInstance) {
+        			int relation = ((L2PcInstance)this).getRelation(player);
+        			if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
+        				player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
+        		}
+        	} catch (NullPointerException e) {}
         }
 	}
 
@@ -1288,7 +1279,7 @@ public abstract class L2Character extends L2Object
 		}
 
 		// launch the magic in skillTime milliseconds
-		if (skillTime > 50)
+		if (skillTime > 60)
 		{
 			// Send a Server->Client packet SetupGauge with the color of the gauge and the casting time
 			if (this instanceof L2PcInstance)
@@ -1307,7 +1298,8 @@ public abstract class L2Character extends L2Object
 			}
 
 			// Create a task MagicUseTask with Medium priority to launch the MagicSkill at the end of the casting time
-			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill), skillTime);
+			// Note: for client animation reasons even a bit before
+			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill), skillTime-50);
 		}
 		else
 		{
@@ -4885,7 +4877,7 @@ public abstract class L2Character extends L2Object
 
             return;
         }
-
+		
 		// Escaping from under skill's radius. First version, not perfect in AoE skills.
 		int escapeRange = 0;
 		if(skill.getEffectRange() > escapeRange) escapeRange = skill.getEffectRange();
@@ -4940,10 +4932,13 @@ public abstract class L2Character extends L2Object
 			if (level < 1)
                 level = 1;
 
+			// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
+			if (!skill.isPotion()) broadcastPacket(new MagicSkillLaunched(this, magicId, level, targets));
+			
 			// Go through targets table
 			for (int i = 0;i < targets.length;i++)
 			{
-				if (targets[i] instanceof L2Character)
+				if (targets[i] instanceof L2PlayableInstance)
 				{
 					L2Character target = (L2Character) targets[i];
 
@@ -4956,9 +4951,6 @@ public abstract class L2Character extends L2Object
 
 					if (Config.DEBUG)
                         _log.fine("msl: "+getName()+" "+magicId+" "+level+" "+target.getTitle());
-
-					// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
-					broadcastPacket(new MagicSkillLaunched(this, magicId, level, target));
 
 					if (this instanceof L2PcInstance && target instanceof L2Summon)
 					{

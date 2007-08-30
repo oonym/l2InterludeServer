@@ -79,12 +79,12 @@ public class MagicSkillUser extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
-		writeH(0x00); // size of the mighty loop :)
+		writeH(0x00); // unknown loop but not AoE
 		//for()
 		//{
-			writeD(0x00);
-			writeD(0x00);
-			writeD(0x00);
+			writeH(0x00);
+			writeH(0x00);
+			writeH(0x00);
 		//}
 	}
 	
