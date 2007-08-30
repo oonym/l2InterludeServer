@@ -569,6 +569,15 @@ public abstract class L2Character extends L2Object
 			//Check for arrows and MP
 			if (this instanceof L2PcInstance)
 			{
+				// Checking if target has moved to peace zone - only for player-bow attacks at the moment
+				// Other melee is checked in movement code and for offensive spells a check is done every time
+				if (target.isInsidePeaceZone((L2PcInstance)this))
+				{
+					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+					sendPacket(new ActionFailed());
+					return;
+				}
+				
 				// Verify if the bow can be use
 				if (_disableBowAttackEndTime <= GameTimeController.getGameTicks())
 				{
@@ -4542,19 +4551,54 @@ public abstract class L2Character extends L2Object
 
 	public boolean isInsidePeaceZone(L2Object attacker, L2Object target)
 	{
-		return (
-				target != null &&
-				!(target instanceof L2MonsterInstance) &&                                   // Target is not a monster and
-				(                                                                           // (
-						ZoneManager.getInstance().checkIfInZonePeace(attacker) ||           //   Player is inside peace zone or
-						ZoneManager.getInstance().checkIfInZonePeace(target)                //   Target is inside peace zone
-				) &&                                                                        // ) and
-				(                                                                           // (
-						!(target instanceof L2PcInstance) ||                                //   Target is not a player or
-						(!Config.ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE) ||       //   Target is a player and killable in peace zone is false or
-						(((L2PcInstance)target).getKarma() <= 0)                            //   Target is a player, killable in peace zone is true, and has no karma
-				)                                                                           // )
-		);
+		if (target == null) return false;
+		if (target instanceof L2MonsterInstance) return false;
+		if (attacker instanceof L2MonsterInstance) return false;
+		if (Config.ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE)
+		{
+			// allows red to be attacked and red to attack flagged players
+			if (target instanceof L2PcInstance && ((L2PcInstance)target).getKarma() > 0)
+				return false;
+			if (target instanceof L2Summon && ((L2Summon)target).getOwner().getKarma() > 0)
+				return false;
+			if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).getKarma() > 0)
+			{
+				if(target instanceof L2PcInstance && ((L2PcInstance)target).getPvpFlag() > 0)
+					return false;
+				if(target instanceof L2Summon && ((L2Summon)target).getOwner().getPvpFlag() > 0)
+					return false;
+			}
+			if (attacker instanceof L2Summon && ((L2Summon)attacker).getOwner().getKarma() > 0)
+			{
+				if(target instanceof L2PcInstance && ((L2PcInstance)target).getPvpFlag() > 0)
+					return false;
+				if(target instanceof L2Summon && ((L2Summon)target).getOwner().getPvpFlag() > 0)
+					return false;
+			}
+		}
+		// Right now only L2PcInstance has up-to-date zone status...
+		if (attacker instanceof L2PcInstance)
+		{
+			if (target instanceof L2PcInstance)
+			{
+				return (((L2PcInstance)target).getInPeaceZone() || ((L2PcInstance)attacker).getInPeaceZone());
+			}
+			else return ( 
+					((L2PcInstance)attacker).getInPeaceZone() ||
+					ZoneManager.getInstance().checkIfInZonePeace(target)
+					);
+		}
+		if (target instanceof L2PcInstance)
+		{
+			return ( 
+					((L2PcInstance)target).getInPeaceZone() ||
+					ZoneManager.getInstance().checkIfInZonePeace(attacker)
+					);
+		}
+		return ( 
+				ZoneManager.getInstance().checkIfInZonePeace(attacker) ||   
+				ZoneManager.getInstance().checkIfInZonePeace(target)        
+				);
 	}
 
     /**
