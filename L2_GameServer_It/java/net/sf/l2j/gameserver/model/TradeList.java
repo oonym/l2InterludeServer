@@ -755,12 +755,20 @@ public class TradeList
         PcInventory playerInventory = player.getInventory();
         
         //we must check item are available before begining transaction, TODO: should we remove that check when transfering items as it's done here? (there might be synchro problems if player clicks fast if we remove it)
+        // also check if augmented items are traded. If so, cancel it...
         for (ItemRequest item : items)
         {
             // Check if requested item is available for manipulation 
             L2ItemInstance oldItem = player.checkItemManipulation(item.getObjectId(), item.getCount(), "sell");
             if (oldItem == null)
                 return false;
+            if ( oldItem.getAugmentation()!=null )
+            {
+            	String msg = "Transaction failed. Augmented items may not be exchanged.";
+            	_owner.sendMessage(msg);
+            	player.sendMessage(msg);
+            	return false;
+            }
         }
 
         // Prepare inventory update packet

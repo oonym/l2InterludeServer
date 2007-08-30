@@ -17,6 +17,7 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.AugmentationData;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
@@ -26,6 +27,7 @@ import net.sf.l2j.gameserver.serverpackets.ExVariationResult;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
+import net.sf.l2j.gameserver.util.Util;
 
 /**
  * Format:(ch) dddd
@@ -91,6 +93,23 @@ public final class RequestRefine extends L2GameClientPacket
 	boolean TryAugmentItem(L2PcInstance player, L2ItemInstance targetItem,L2ItemInstance refinerItem, L2ItemInstance gemstoneItem)
 	{
 		if (targetItem.isAugmented() || targetItem.isWear()) return false;
+
+		// check for the items to be in the inventory of the owner
+		if ( player.getInventory().getItemByObjectId(refinerItem.getObjectId())==null )
+		{
+			Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to refine an item with wrong LifeStone-id.",Config.DEFAULT_PUNISH);
+			return false;
+		}
+		if ( player.getInventory().getItemByObjectId(targetItem.getObjectId())==null )
+		{
+			Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to refine an item with wrong Weapon-id.",Config.DEFAULT_PUNISH);
+			return false;
+		}
+		if ( player.getInventory().getItemByObjectId(gemstoneItem.getObjectId())==null )
+		{
+			Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried to refine an item with wrong Gemstone-id.",Config.DEFAULT_PUNISH);
+			return false;
+		}
 
 		int itemGrade = targetItem.getItem().getItemGrade();
 		int itemType = targetItem.getItem().getType2();

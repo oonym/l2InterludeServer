@@ -4098,6 +4098,12 @@ public enum SystemMessageId
     AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS(2001),
     
     /**
+     * ID: 2011<br>
+     * Message: The augmented item cannot be discarded.
+     */
+    AUGMENTED_ITEM_CANNOT_BE_DISCARDED(2011),
+    
+    /**
      * ID: 1979<br>
      * Message: $s1's remaining Mana is now 10.
      */
