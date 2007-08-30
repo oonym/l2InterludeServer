@@ -4207,7 +4207,12 @@ public final class L2PcInstance extends L2PlayableInstance
 					if (!ArenaManager.getInstance().checkIfInZone(this))
 					{
 						boolean isKillerPc = (killer instanceof L2PcInstance);
-		                if (isKillerPc && ((L2PcInstance)killer).getClan() != null && getClan() != null && _clan.isAtWarWith(((L2PcInstance) killer).getClanId()) && ((L2PcInstance)killer).getClan().isAtWarWith(_clan.getClanId()))
+		                if (isKillerPc && ((L2PcInstance)killer).getClan() != null
+		                               && getClan() != null
+                                   && !isAcademyMember()
+                                   && !(((L2PcInstance)killer).isAcademyMember())
+		                               && _clan.isAtWarWith(((L2PcInstance) killer).getClanId())
+		                               && ((L2PcInstance)killer).getClan().isAtWarWith(_clan.getClanId()))
 		                {
 		                    if (getClan().getReputationScore() > 0) // when your reputation score is 0 or below, the other clan cannot acquire any reputation points
 		                		((L2PcInstance) killer).getClan().setReputationScore(((L2PcInstance) killer).getClan().getReputationScore()+2, true);
@@ -6866,7 +6871,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 
 				// Check if clan is at war
-				if (this.getClan() != null && ((L2PcInstance)attacker).getClan() != null && (this.getClan().isAtWarWith(((L2PcInstance)attacker).getClanId()) && this.getWantsPeace() == 0 && ((L2PcInstance)attacker).getWantsPeace() == 0))
+				if (this.getClan() != null && ((L2PcInstance)attacker).getClan() != null
+				                           && (this.getClan().isAtWarWith(((L2PcInstance)attacker).getClanId())
+				                           && this.getWantsPeace() == 0
+				                           && ((L2PcInstance)attacker).getWantsPeace() == 0
+				                           && !this.isAcademyMember()))
 				return true;
 			}
 		}
@@ -8199,6 +8208,11 @@ public final class L2PcInstance extends L2PlayableInstance
     public int getLvlJoinedAcademy()
     {
     	return _lvlJoinedAcademy;
+    }
+
+    public boolean isAcademyMember()
+    {
+      return _lvlJoinedAcademy > 0;
     }
 
 	public void setTeam(int team)
