@@ -1653,7 +1653,7 @@ public class L2Attackable extends L2NpcInstance
     private void levelSoulCrystals(L2Character attacker)
     {
         // Only L2PcInstance can absorb a soul
-        if (!(attacker instanceof L2PcInstance))
+        if (!(attacker instanceof L2PcInstance) && !(attacker instanceof L2Summon))
         {
             resetAbsorbList(); return;
         }
@@ -1675,7 +1675,9 @@ public class L2Attackable extends L2NpcInstance
         boolean doLevelup = true;
         boolean isBossMob = maxAbsorbLevel > 10 ? true : false;         
         
-        L2PcInstance killer = (L2PcInstance)attacker;
+        L2NpcTemplate.AbsorbCrystalType absorbType = getTemplate().absorbType;         
+        
+        L2PcInstance killer = (attacker instanceof L2Summon)? ((L2Summon)attacker).getOwner() : (L2PcInstance)attacker;
         
         // If this mob is a boss, then skip some checkings 
         if (!isBossMob)
@@ -1721,8 +1723,15 @@ public class L2Attackable extends L2NpcInstance
         
         List<L2PcInstance> players = new FastList<L2PcInstance>();        
                 
-        if (isBossMob && killer.isInParty())
+        if (absorbType == L2NpcTemplate.AbsorbCrystalType.FULL_PARTY && killer.isInParty())
             players = killer.getParty().getPartyMembers();
+        else if (absorbType == L2NpcTemplate.AbsorbCrystalType.PARTY_ONE_RANDOM && killer.isInParty())
+        {
+        	// This is a naive method for selecting a random member.  It gets any random party member and  
+        	// then checks if the member has a valid crystal.  It does not select the random party member 
+        	// among those who have crystals, only.  However, this might actually be correct (same as retail).
+            players.add(killer.getParty().getPartyMembers().get(Rnd.get(killer.getParty().getMemberCount())));
+        }
         else
             players.add(killer); 
         
@@ -1837,19 +1846,23 @@ public class L2Attackable extends L2NpcInstance
                 continue;
             }
                         
-            // Ember and Anakazel(78) are not 100% success rate and each individual 
-            // member of the party has a failure rate on leveling.           
-            if(isBossMob && (getNpcId() == 25319 || getNpcId() == 25338))
-                doLevelup = false;
+            /* TODO: Confirm boss chance for crystal level up and for crystal breaking.
+             * It is known that bosses with FULL_PARTY crystal level ups have 100% success rate, but this is not 
+             * the case for the other bosses (one-random or last-hit).  
+             * While not confirmed, it is most reasonable that crystals leveled up at bosses will never break.
+             * Also, the chance to level up is guessed as around 70% if not higher.
+             */
+            int chanceLevelUp = isBossMob? 70:SoulCrystal.LEVEL_CHANCE;
             
-            // If succeeds or it is a boss mob, level up the crystal.
-            if ((isBossMob && doLevelup) || (dice <= SoulCrystal.LEVEL_CHANCE))
+            // If succeeds or it is a full party absorb, level up the crystal.
+            if (((absorbType == L2NpcTemplate.AbsorbCrystalType.FULL_PARTY) && doLevelup) || (dice <= chanceLevelUp))
             {
                 // Give staged crystal
                 exchangeCrystal(player, crystalOLD, crystalNEW, false);
             }
-            // If true and not a boss mob, break the crystal.
-            else if (!isBossMob && dice >= (100.0 - SoulCrystal.BREAK_CHANCE))
+            
+            // If true and not a last-hit mob, break the crystal.
+            else if ((!isBossMob) && dice >= (100.0 - SoulCrystal.BREAK_CHANCE))
             {
                 // Remove current crystal an give a broken open.
                 if      (crystalNME.startsWith("red"))

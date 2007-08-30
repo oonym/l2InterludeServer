@@ -71,7 +71,15 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final String  factionId;
 	public final int     factionRange;
     public final int     absorbLevel;
-	
+    public final AbsorbCrystalType absorbType;
+    
+    public static enum AbsorbCrystalType
+    {
+        LAST_HIT,
+        FULL_PARTY,
+        PARTY_ONE_RANDOM
+    }
+    	
 	private final StatsSet _npcStatsSet;
 
 	/** fixed skills*/
@@ -121,6 +129,8 @@ public final class L2NpcTemplate extends L2CharTemplate
 			factionId = f.intern();
 		factionRange  = set.getInteger("factionRange");
         absorbLevel  = set.getInteger("absorb_level", 0);
+    	absorbType = AbsorbCrystalType.valueOf(set.getString("absorb_type"));
+        
 		//String r = set.getString("race", null);
 		//if (r == null)
 		//	race = null;
