@@ -22,8 +22,6 @@ import java.util.concurrent.Future;
 import javolution.util.FastMap;
 
 import net.sf.l2j.gameserver.ThreadPoolManager;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
-import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -38,8 +36,8 @@ import net.sf.l2j.util.Rnd;
  */
 public final class L2BabyPetInstance extends L2PetInstance
 {
-	protected int _weakHealId;
-	protected int _strongHealId;
+	protected L2Skill _weakHeal;
+	protected L2Skill _strongHeal;
     private Future _healingTask;
 	
 	public L2BabyPetInstance(int objectId, L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)
@@ -81,31 +79,26 @@ public final class L2BabyPetInstance extends L2PetInstance
 			}
 		}
 		// process the results.  Only store the ID of the skills.  The levels are generated on the fly, based on the pet's level!
-		if (skill1 == null)
-		{
-			_weakHealId = 0;
-			_strongHealId = 0;
-		}
-		else
+		if (skill1 != null)
 		{
 			if (skill2 == null)
 			{
 				 // duplicate so that the same skill will be used in both normal and emergency situations
-				_weakHealId = skill1.getId();
-				_strongHealId = _weakHealId;
+				_weakHeal = skill1;
+				_strongHeal = skill1;
 			}
 			else
 			{
 				// arrange the weak and strong skills appropriately
 				if(skill1.getPower() > skill2.getPower())
 				{
-					_weakHealId = skill2.getId();
-					_strongHealId = skill1.getId();
+					_weakHeal = skill2;
+					_strongHeal = skill1;
 				}
 				else
 				{
-					_weakHealId = skill1.getId();
-					_strongHealId = skill2.getId();
+					_weakHeal = skill1;
+					_strongHeal = skill2;
 				}
 			}
 
@@ -155,34 +148,31 @@ public final class L2BabyPetInstance extends L2PetInstance
         	L2PcInstance owner = _baby.getOwner();
         	
         	// if the owner is dead, merely wait for the owner to be resurrected
-            if (!owner.isDead())
+        	// if the pet is still casting from the previous iteration, allow the cast to complete...
+            if (!owner.isDead() && !_baby.isCastingNow() && !_baby.isBetrayed())
             {
-            	// find which skill (if any) to cast and at what level 
-            	int babyLevel = _baby.getLevel();
-            	int skillLevel = babyLevel / 10;
-            	if (skillLevel < 1)
-            		skillLevel = 1;
+            	// casting automatically stops any other action (such as autofollow or a move-to).  
+            	// We need to gather the necessary info to restore the previous state.
+            	boolean previousFollowStatus = _baby.getFollowStatus();
             	
-            	if(babyLevel >= 70)
-            		skillLevel += (babyLevel-65)/10;
-
-            	L2Skill skillToCast = null;
-
             	// if the owner's HP is more than 80%, do nothing.  
             	// if the owner's HP is very low (less than 20%) have a high chance for strong heal
             	// otherwise, have a low chance for weak heal
             	if ((owner.getCurrentHp()/owner.getMaxHp() < 0.2) && Rnd.get(4) < 3)
-            		skillToCast = SkillTable.getInstance().getInfo(_strongHealId, skillLevel);
+	        		_baby.useMagic(_strongHeal, false, false);
             	else if ((owner.getCurrentHp()/owner.getMaxHp() < 0.8) && Rnd.get(4) < 1)
-            		skillToCast = SkillTable.getInstance().getInfo(_weakHealId, skillLevel); 
-            	
-            	if (skillToCast != null)
-            	{
-	        		// after the pet is done casting, it should return to whatever it was doing 
-	        		CtrlIntention oldIntention = getAI().getIntention();
-	        		_baby.doCast(skillToCast );
-	        		getAI().setIntention(oldIntention, owner);
-            	}
+	        		_baby.useMagic(_weakHeal,false,false);
+
+            	// calling useMagic changes the follow status, if the babypet actually casts 
+            	// (as opposed to failing due some factors, such as too low MP, etc).
+            	// if the status has actually been changed, revert it.  Else, allow the pet to 
+            	// continue whatever it was trying to do.
+            	// NOTE: This is important since the pet may have been told to attack a target.
+            	// reverting the follow status will abort this attack!  While aborting the attack 
+            	// in order to heal is natural, it is not acceptable to abort the attack on its own, 
+            	// merely because the timer stroke and without taking any other action...
+            	if(previousFollowStatus != _baby.getFollowStatus())
+            		setFollowStatus(previousFollowStatus);
             }
         }
     }

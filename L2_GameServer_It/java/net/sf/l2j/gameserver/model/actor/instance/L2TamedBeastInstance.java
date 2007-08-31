@@ -18,6 +18,8 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
+
 import java.util.concurrent.Future;
 
 import net.sf.l2j.util.Rnd;
@@ -31,6 +33,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.serverpackets.NpcInfo;
+import net.sf.l2j.gameserver.serverpackets.StopMove;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Point3D;
 
@@ -230,11 +233,15 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 		if (_owner.isDead()) 
 			return;
 		
+		// if the tamed beast is currently in the middle of casting, let it complete its skill...
+		if(isCastingNow())
+			return;
+		
 		float HPRatio = ((float) _owner.getCurrentHp())/_owner.getMaxHp();
 		
 		// if the owner has a lot of HP, then debuff the enemy with a random debuff among the available skills
 		// use of more than one debuff at this moment is acceptable
-		if (HPRatio >= 0.8 )
+		if (HPRatio >= 0.8)
 		{
 			FastMap<Integer, L2Skill> skills = (FastMap<Integer, L2Skill>) getTemplate().getSkills();
 			
@@ -243,8 +250,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 	    		// if the skill is a debuff, check if the attacker has it already [  attacker.getEffect(L2Skill skill) ]
 				if ((skill.getSkillType() == L2Skill.SkillType.DEBUFF) && Rnd.get(3) < 1 && (attacker.getEffect(skill) != null))
 				{
-					setTarget(attacker);
-					doCast(skill);
+					sitCastAndFollow(skill, attacker);
 				}
 			}
 		}
@@ -276,15 +282,31 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 						(skill.getSkillType() == L2Skill.SkillType.MPHOT) )
 					)
 				{
-					setTarget(_owner);
-					doCast(skill);
+					sitCastAndFollow(skill, _owner);
 					return;
 				}
 			}
 		}
-		getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, _owner);
     }	
-			
+    
+    /**
+     * Prepare and cast a skill:
+     *   First smoothly prepare the beast for casting, by abandoning other actions
+     *   Next, call super.doCast(skill) in order to actually cast the spell
+     *   Finally, return to auto-following the owner.
+     * 	
+     * @see net.sf.l2j.gameserver.model.L2Character#doCast(net.sf.l2j.gameserver.model.L2Skill)
+     */  
+    protected void sitCastAndFollow(L2Skill skill, L2Character target)
+    {
+		stopMove(null);
+		broadcastPacket(new StopMove(this));
+		getAI().setIntention(AI_INTENTION_IDLE);
+
+		setTarget(target);
+		doCast(skill);
+		getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, _owner);
+    }			
     
     private class CheckDuration implements Runnable
     {
@@ -372,6 +394,9 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     		// if the owner is dead, do nothing...
     		if (owner.isDead()) 
     			return;
+    		// if the tamed beast is currently casting a spell, do not interfere (do not attempt to cast anything new yet).
+    		if (isCastingNow())
+    			return;
     		
     		int totalBuffsOnOwner = 0;
     		int i=0;
@@ -398,11 +423,9 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 			// if the owner has less than 60% of this beast's available buff, cast a random buff
 			if (_numBuffs*2/3 > totalBuffsOnOwner)
 			{
-				_tamedBeast.setTarget(owner);
-				_tamedBeast.doCast(buffToGive);
+				_tamedBeast.sitCastAndFollow(buffToGive, owner);
 			}
     		getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, _tamedBeast.getOwner());
     	}
     }
-    
 }

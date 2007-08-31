@@ -1195,7 +1195,7 @@ public abstract class L2Character extends L2Object
 		int displayId = skill.getDisplayId();
 
 		// Get the level of the skill
-		int level = getSkillLevel(magicId);
+		int level = skill.getLevel();
 
 		if (level < 1)
             level = 1;
