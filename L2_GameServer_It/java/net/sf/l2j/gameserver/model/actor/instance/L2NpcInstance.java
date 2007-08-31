@@ -1196,7 +1196,7 @@ public class L2NpcInstance extends L2Character
         if (qs == null) 
         {
             // no quests found
-            content = "<html><body>I have no tasks for you right now.</body></html>";
+            content = "<html><body>You are either not carrying out your quest or don't meet the criteria.</body></html>";
         } 
         else 
         {
