@@ -36,14 +36,14 @@ public class EtcStatusUpdate extends L2GameServerPacket
 	@Override
 	protected void writeImpl()
 	{
-		writeC(0xF3);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
-		writeD(0x00);
+		writeC(0xF3); // several icons to second line:
+		writeD(0x00); // increase force 1-7
+		writeD(0x00); // weight penalty 1-4 (1=50%, 2=66.6%, 3=80%, 4=100%)
+		writeD(0x00); // 1 = block all chat 
+		writeD(0x00); // 1 = danger area
+		writeD(0x00); // grade penalty
+		writeD(0x00); // charm of courage (no xp loss in siege..)
+		writeD(0x00); // death penalty 1..4.. (combat ability decreased due to death) 
 	}
 	
 	/**
