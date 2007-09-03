@@ -57,8 +57,8 @@ import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
 import net.sf.l2j.gameserver.serverpackets.AuthLoginFail;
 import net.sf.l2j.gameserver.serverpackets.CharSelectInfo;
 import net.sf.l2j.loginserver.crypt.NewCrypt;
-import net.sf.l2j.util.Util;
 import net.sf.l2j.util.Rnd;
+import net.sf.l2j.util.Util;
 
 public class LoginServerThread extends Thread
 {

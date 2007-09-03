@@ -24,8 +24,8 @@ import java.sql.ResultSet;
 import javolution.util.FastList;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2World;
-import net.sf.l2j.gameserver.model.entity.Couple;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.Couple;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.ai2;
 import java.util.Set;
 
 import javolution.util.FastSet;
-
 import net.sf.l2j.gameserver.datatables.NpcTable;
 
 /**

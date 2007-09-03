@@ -18,14 +18,12 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.TaskPriority;
 import net.sf.l2j.gameserver.datatables.CharNameTable;
 import net.sf.l2j.gameserver.datatables.CharTemplateTable;
 import net.sf.l2j.gameserver.datatables.ItemTable;

@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.SevenSignsFestival;
 import net.sf.l2j.gameserver.communitybbs.Manager.RegionBBSManager;
 import net.sf.l2j.gameserver.datatables.SkillTable;
@@ -35,7 +36,6 @@ import net.sf.l2j.gameserver.serverpackets.CharSelectInfo;
 import net.sf.l2j.gameserver.serverpackets.RestartResponse;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
-import net.sf.l2j.gameserver.Olympiad;
 
 /**
  * This class ...

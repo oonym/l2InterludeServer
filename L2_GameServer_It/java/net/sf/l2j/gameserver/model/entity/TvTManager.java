@@ -3,7 +3,6 @@ package net.sf.l2j.gameserver.model.entity;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.ThreadPoolManager;
-import net.sf.l2j.gameserver.model.entity.TvTEvent;
 
 /**
  * @author FBIagent

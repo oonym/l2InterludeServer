@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**

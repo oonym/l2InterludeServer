@@ -33,8 +33,8 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
-import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
 import net.sf.l2j.gameserver.skills.Env;
+import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
 import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.skills.funcs.FuncTemplate;
 

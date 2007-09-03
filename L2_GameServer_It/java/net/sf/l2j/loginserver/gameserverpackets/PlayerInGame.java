@@ -21,7 +21,6 @@ package net.sf.l2j.loginserver.gameserverpackets;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 
 /**

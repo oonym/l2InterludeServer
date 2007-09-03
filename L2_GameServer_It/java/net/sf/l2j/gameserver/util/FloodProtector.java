@@ -19,11 +19,10 @@ package net.sf.l2j.gameserver.util;
 
 import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.GameTimeController;
-import net.sf.l2j.Config;
-
 import javolution.util.FastMap;
 import javolution.util.FastMap.Entry;
+import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.GameTimeController;
 
 /**
  * Flood protector

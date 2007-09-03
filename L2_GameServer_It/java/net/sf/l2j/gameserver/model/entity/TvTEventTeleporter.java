@@ -4,7 +4,6 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Summon;
-import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class TvTEventTeleporter implements Runnable

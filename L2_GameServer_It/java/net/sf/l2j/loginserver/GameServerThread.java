@@ -35,7 +35,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastSet;
 import net.sf.l2j.Config;
-import net.sf.l2j.loginserver.SessionKey;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
 import net.sf.l2j.loginserver.crypt.NewCrypt;
 import net.sf.l2j.loginserver.gameserverpackets.BlowFishKey;

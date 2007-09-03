@@ -19,8 +19,8 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.concurrent.Future;
-import javolution.util.FastMap;
 
+import javolution.util.FastMap;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;

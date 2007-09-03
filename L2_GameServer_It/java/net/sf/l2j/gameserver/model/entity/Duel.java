@@ -20,19 +20,19 @@ package net.sf.l2j.gameserver.model.entity;
 
 import java.util.Calendar;
 import java.util.logging.Logger;
-import javolution.util.FastList;
 
-import net.sf.l2j.gameserver.ai.CtrlIntention;
+import javolution.util.FastList;
 import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.ExDuelEnd;
 import net.sf.l2j.gameserver.serverpackets.ExDuelReady;
 import net.sf.l2j.gameserver.serverpackets.ExDuelStart;
-import net.sf.l2j.gameserver.serverpackets.ExDuelEnd;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.serverpackets.PlaySound;
 import net.sf.l2j.gameserver.serverpackets.SocialAction;
