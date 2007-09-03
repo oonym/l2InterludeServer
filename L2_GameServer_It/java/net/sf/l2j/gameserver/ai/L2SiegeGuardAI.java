@@ -542,8 +542,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
             if (_attackTarget != null)
             {
                 L2Attackable npc = (L2Attackable) _actor;
-                int hate = npc.getHating(_attackTarget);
-                if (hate > 0) npc.addDamageHate(_attackTarget, 0, -hate);
+                npc.stopHating((L2Attackable)_attackTarget);
             }
 
             // Cancel target and timeout

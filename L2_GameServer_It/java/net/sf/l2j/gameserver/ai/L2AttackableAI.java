@@ -499,8 +499,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             if (getAttackTarget() != null)
             {
                 L2Attackable npc = (L2Attackable) _actor;
-                int hate = npc.getHating(getAttackTarget());
-                if (hate > 0) npc.addDamageHate(getAttackTarget(), 0, -hate);
+                npc.stopHating((L2Attackable)getAttackTarget());
             }
 
             // Cancel target and timeout

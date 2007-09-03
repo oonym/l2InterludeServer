@@ -755,11 +755,20 @@ public class L2Attackable extends L2NpcInstance
             ai._hate = 0;
             getAggroListRP().put(attacker, ai);
         }
-        
+
+        // If aggro is negative, its comming from SEE_SPELL, buffs use constant 150
+        if (aggro < 0) {
+        	ai._hate -= (aggro*150)/(getLevel()+7);
+        	aggro = -aggro;
+        }
+        // if damage == 0 -> this is case of adding only to aggro list, dont apply formula on it
+        else if (damage == 0) ai._hate += aggro;
+        // else its damage that must be added using constant 100
+        else ai._hate += (aggro*100)/(getLevel()+7);
+
         // Add new damage and aggro (=damage) to the AggroInfo object
         ai._damage += damage;
-        ai._hate += (aggro*100)/(getLevel()+7);
-        
+
         // Set the intention to the L2Attackable to AI_INTENTION_ACTIVE
         if (aggro > 0 && getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE) getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
         
@@ -780,6 +789,13 @@ public class L2Attackable extends L2NpcInstance
             } 
             catch (Exception e) { _log.log(Level.SEVERE, "", e); }
         }
+    }
+
+    public void stopHating(L2Attackable target) {
+    	if (target == null) return;
+    	AggroInfo ai = getAggroListRP().get(target);
+    	if (ai == null) return;
+    	ai._hate = 0;
     }
     
     /**

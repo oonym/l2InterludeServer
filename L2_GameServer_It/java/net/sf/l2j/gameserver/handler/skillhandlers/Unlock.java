@@ -155,7 +155,7 @@ public class Unlock implements ISkillHandler
 	                    activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(),13));
 	                    if (Rnd.get(100) < chestTrapLimit) chest.chestTrap(activeChar);
 	                    chest.setInteracted();
-	                    chest.addDamageHate(activeChar,0,999);
+	                    chest.addDamageHate(activeChar,0,1);
 	                    chest.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, activeChar);
 					}
 				}
