@@ -737,22 +737,17 @@ public class L2Attackable extends L2NpcInstance
         
         // Get the AggroInfo of the attacker L2Character from the _aggroList of the L2Attackable
         AggroInfo ai = getAggroListRP().get(attacker);
-        if (ai != null) 
+        if (ai == null) 
         {
-            // Add new damage and aggro (=damage) to the AggroInfo object
-            ai._damage += damage;
-            ai._hate += (aggro*100)/(getLevel()+7);
-        } 
-        else 
-        {
-            // Create a AggroInfo object and Init it
             ai = new AggroInfo(attacker);
-            ai._damage = damage;
-            ai._hate = (aggro*100)/(getLevel()+7);
-            
-            // Add the attaker L2Character and the AggroInfo object in the _aggroList of the L2Attackable
+            ai._damage = 0;
+            ai._hate = 0;
             getAggroListRP().put(attacker, ai);
         }
+        
+        // Add new damage and aggro (=damage) to the AggroInfo object
+        ai._damage += damage;
+        ai._hate += (aggro*100)/(getLevel()+7);
         
         // Set the intention to the L2Attackable to AI_INTENTION_ACTIVE
         if (aggro > 0 && getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE) getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
