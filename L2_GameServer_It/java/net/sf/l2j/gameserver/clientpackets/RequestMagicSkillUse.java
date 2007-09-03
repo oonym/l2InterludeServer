@@ -40,6 +40,7 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
 	private boolean _ctrlPressed;
 	private boolean _shiftPressed;
 	
+	@Override
 	protected void readImpl()
 	{
 		_magicId      = readD();              // Identifier of the used skill
@@ -48,6 +49,7 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
         
 	}
 
+	@Override
 	protected void runImpl()
 	{
         // Get the current L2PcInstance of the player
@@ -93,6 +95,7 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__2F_REQUESTMAGICSKILLUSE;

@@ -81,9 +81,9 @@ public abstract class L2Summon extends L2PlayableInstance
 	public L2Summon(int objectId, L2NpcTemplate template, L2PcInstance owner)
 	{
 		super(objectId, template);
-        this.getKnownList();	// init knownlist
-        this.getStat();			// init stats
-        this.getStatus();		// init status
+        getKnownList();	// init knownlist
+        getStat();			// init stats
+        getStatus();		// init status
         
         _showSummonAnimation = true;
 		_owner = owner;
@@ -92,27 +92,31 @@ public abstract class L2Summon extends L2PlayableInstance
 		setXYZInvisible(owner.getX()+50, owner.getY()+100, owner.getZ()+100);
 	}
 
-    public final SummonKnownList getKnownList()
+    @Override
+	public final SummonKnownList getKnownList()
     {
     	if(super.getKnownList() == null || !(super.getKnownList() instanceof SummonKnownList))
-    		this.setKnownList(new SummonKnownList(this));
+    		setKnownList(new SummonKnownList(this));
     	return (SummonKnownList)super.getKnownList();
     }
     
-    public SummonStat getStat()
+    @Override
+	public SummonStat getStat()
     {
     	if(super.getStat() == null || !(super.getStat() instanceof SummonStat))
-    		this.setStat(new SummonStat(this));
+    		setStat(new SummonStat(this));
     	return (SummonStat)super.getStat();
     }
     
-    public SummonStatus getStatus()
+    @Override
+	public SummonStatus getStatus()
     {
     	if(super.getStatus() == null || !(super.getStatus() instanceof SummonStatus))
-    		this.setStatus(new SummonStatus(this));
+    		setStatus(new SummonStatus(this));
     	return (SummonStatus)super.getStatus();
     }
 	
+	@Override
 	public L2CharacterAI getAI() 
     {
 		if (_ai == null)
@@ -127,6 +131,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		return _ai;
 	}
 	
+	@Override
 	public L2NpcTemplate getTemplate()
 	{
 		return (L2NpcTemplate)super.getTemplate();
@@ -135,6 +140,7 @@ public abstract class L2Summon extends L2PlayableInstance
 	// this defines the action buttons, 1 for Summon, 2 for Pets
     public abstract int getSummonType();
 
+	@Override
 	public void updateAbnormalEffect()
     {
 		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
@@ -149,6 +155,7 @@ public abstract class L2Summon extends L2PlayableInstance
         return false;
     }
 
+	@Override
 	public void onAction(L2PcInstance player)
     {
         if (player == _owner && player.getTarget() == this)
@@ -268,6 +275,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		setFollowStatus(true);
     }
 	
+	@Override
 	public synchronized void doDie(L2Character killer)
     {
         DecayTaskManager.getInstance().addDecayTask(this);
@@ -289,12 +297,14 @@ public abstract class L2Summon extends L2PlayableInstance
         DecayTaskManager.getInstance().cancelDecayTask(this);
     }
     
-    public void onDecay()
+    @Override
+	public void onDecay()
     {
         deleteMe(_owner);
     }    
     
-    public void broadcastStatusUpdate()
+    @Override
+	public void broadcastStatusUpdate()
     {
         super.broadcastStatusUpdate();
 
@@ -357,7 +367,8 @@ public abstract class L2Summon extends L2PlayableInstance
     }
     
 
-    public boolean isAutoAttackable(L2Character attacker)
+    @Override
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return _owner.isAutoAttackable(attacker);
     }
@@ -402,21 +413,25 @@ public abstract class L2Summon extends L2PlayableInstance
         return;
     }
 	
+	@Override
 	public L2ItemInstance getActiveWeaponInstance() 
 	{
 		return null;
 	}
 	
+	@Override
 	public L2Weapon getActiveWeaponItem() 
     {
 		return null;
 	}
     
+	@Override
 	public L2ItemInstance getSecondaryWeaponInstance() 
     {
 		return null;
 	}
     
+	@Override
 	public L2Weapon getSecondaryWeaponItem() 
     {
 		return null;
@@ -425,6 +440,7 @@ public abstract class L2Summon extends L2PlayableInstance
 	/**
 	 * Return the L2Party object of its L2PcInstance owner or null.<BR><BR>
 	 */
+	@Override
 	public L2Party getParty()
 	{
 		if (_owner == null) 
@@ -436,7 +452,8 @@ public abstract class L2Summon extends L2PlayableInstance
 	/**
 	 * Return True if the L2Character has a Party in progress.<BR><BR>
 	 */
-    public boolean isInParty()
+    @Override
+	public boolean isInParty()
 	{
     	if (_owner == null)
     		return false;
@@ -489,7 +506,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		{
 			// OWNER_PET should be cast even if no target has been found
 			case TARGET_OWNER_PET:
-				target = this.getOwner();
+				target = getOwner();
 				break;
 			// PARTY, AURA, SELF should be cast even if no target has been found
 			case TARGET_PARTY:
@@ -604,6 +621,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
 	}
 	
+	@Override
 	public void setIsImobilised(boolean value)
 	{
 		super.setIsImobilised(value);
@@ -651,6 +669,7 @@ public abstract class L2Summon extends L2PlayableInstance
 	 * 
 	 * @see net.sf.l2j.gameserver.model.L2Character#doCast(net.sf.l2j.gameserver.model.L2Skill)
 	 */
+	@Override
 	public void doCast(L2Skill skill)
 	{
 		int petLevel = getLevel();

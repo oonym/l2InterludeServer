@@ -30,11 +30,13 @@ public final class RequestPrivateStoreQuitSell extends L2GameClientPacket
 	private static final String _C__76_REQUESTPRIVATESTOREQUITSELL = "[C] 76 RequestPrivateStoreQuitSell";
 	//private static Logger _log = Logger.getLogger(RequestPrivateStoreQuitSell.class.getName());
 	
+	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
@@ -48,6 +50,7 @@ public final class RequestPrivateStoreQuitSell extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__76_REQUESTPRIVATESTOREQUITSELL;

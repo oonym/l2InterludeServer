@@ -36,11 +36,13 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 	
 	private int _crestId;
 	
+	@Override
 	protected void readImpl()
 	{
 		_crestId = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		if (_crestId == 0)
@@ -63,6 +65,7 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__68_REQUESTPLEDGECREST;

@@ -28,7 +28,8 @@ public final class RequestExitPartyMatchingWaitingRoom extends L2GameClientPacke
 {
     private static final String _C__D0_17_REQUESTEXITPARTYMATCHINGWAITINGROOM = "[C] D0:17 RequestExitPartyMatchingWaitingRoom";
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
     	//trigger
     }

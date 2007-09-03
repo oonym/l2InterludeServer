@@ -51,6 +51,7 @@ public class AskJoinAlly extends L2GameServerPacket
 		_requestorObjId = requestorObjId;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xa8);
@@ -61,6 +62,7 @@ public class AskJoinAlly extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__A8_ASKJOINALLY_0XA8;

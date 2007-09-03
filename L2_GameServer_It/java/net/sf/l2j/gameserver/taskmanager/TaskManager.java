@@ -121,7 +121,8 @@ public final class TaskManager
             }
         }
 
-        public boolean equals(Object object)
+        @Override
+		public boolean equals(Object object)
         {
             return id == ((ExecutedTask) object).id;
         }

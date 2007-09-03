@@ -87,8 +87,8 @@ public class StatusUpdate extends L2GameServerPacket
 
         Attribute(int pId, int pValue)
         {
-            this.id = pId;
-            this.value = pValue;
+            id = pId;
+            value = pValue;
         }
     }
 
@@ -103,7 +103,8 @@ public class StatusUpdate extends L2GameServerPacket
         _attributes.add(new Attribute(id, level));
     }
 
-    protected final void writeImpl()
+    @Override
+	protected final void writeImpl()
     {
         writeC(0x0e);
         writeD(_objectId);
@@ -121,7 +122,8 @@ public class StatusUpdate extends L2GameServerPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__1A_STATUSUPDATE;
     }

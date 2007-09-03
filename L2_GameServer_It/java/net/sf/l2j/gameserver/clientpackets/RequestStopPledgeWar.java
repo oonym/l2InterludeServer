@@ -32,11 +32,13 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 
 	private String _pledgeName;
 
+	@Override
 	protected void readImpl()
 	{
 		_pledgeName = readS();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
@@ -93,6 +95,7 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
         }
 	}
 
+	@Override
 	public String getType()
 	{
 		return _C__4F_REQUESTSTOPPLEDGEWAR;

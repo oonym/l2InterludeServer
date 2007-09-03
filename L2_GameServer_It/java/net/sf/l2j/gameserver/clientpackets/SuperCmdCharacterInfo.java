@@ -33,6 +33,7 @@ public final class SuperCmdCharacterInfo extends L2GameClientPacket
 	private String _characterName;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_characterName = readS();

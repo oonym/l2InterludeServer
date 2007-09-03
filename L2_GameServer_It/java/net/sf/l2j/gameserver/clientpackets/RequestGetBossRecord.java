@@ -28,7 +28,8 @@ public class RequestGetBossRecord extends L2GameClientPacket
     private static final String _C__D0_18_REQUESTGETBOSSRECORD = "[C] D0:18 RequestGetBossRecord";
     private int _bossId;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _bossId = readD();
     }

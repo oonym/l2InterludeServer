@@ -35,6 +35,7 @@ public final class DlgAnswer extends L2GameClientPacket
 	private int _messageId;
 	private int _answer, _unk;
 	
+	@Override
 	protected void readImpl()
 	{
 		_messageId = readD();
@@ -42,6 +43,7 @@ public final class DlgAnswer extends L2GameClientPacket
 		_unk = readD();
 	}
 
+	@Override
 	public void runImpl()
 	{
 		if (Config.DEBUG)
@@ -53,6 +55,7 @@ public final class DlgAnswer extends L2GameClientPacket
 			 	
 	}
 
+	@Override
 	public String getType()
 	{
 		return _C__C5_DLGANSWER;

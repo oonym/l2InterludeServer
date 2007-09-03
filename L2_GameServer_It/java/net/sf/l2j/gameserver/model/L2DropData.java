@@ -159,7 +159,8 @@ public class L2DropData
      * Returns a report of the object
      * @return String
      */
-    public String toString()
+    @Override
+	public String toString()
     {
         String out = "ItemID: " + getItemId() + " Min: " + getMinDrop() + 
         	" Max: " + getMaxDrop() + " Chance: " + (getChance() / 10000.0) + "%";
@@ -176,7 +177,8 @@ public class L2DropData
      * @param Object to compare to the current one
      * @return boolean 
      */
-    public boolean equals(Object o)
+    @Override
+	public boolean equals(Object o)
     {
         if (o instanceof L2DropData)
         {

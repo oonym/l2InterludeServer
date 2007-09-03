@@ -79,6 +79,7 @@ public class L2SymbolMakerInstance extends L2FolkInstance
 	 * @return Returns the unknown1.
 	 */
     
+	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (command.equals("Draw"))
@@ -135,6 +136,7 @@ public class L2SymbolMakerInstance extends L2FolkInstance
 	 * this is called when a player interacts with this NPC
 	 * @param player
 	 */
+	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (Config.DEBUG) _log.fine("Symbol Maker activated");
@@ -142,6 +144,7 @@ public class L2SymbolMakerInstance extends L2FolkInstance
 		super.onAction(player);
 	}
 	
+	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
 		String pom = "";
@@ -158,7 +161,8 @@ public class L2SymbolMakerInstance extends L2FolkInstance
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
      */
-    public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
+    @Override
+	public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
     {
         return false;
     }

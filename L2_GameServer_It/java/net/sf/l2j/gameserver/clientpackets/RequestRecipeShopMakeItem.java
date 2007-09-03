@@ -38,6 +38,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 	@SuppressWarnings("unused")
     private int _unknow;
 	
+	@Override
 	protected void readImpl()
 	{
 		_id = readD();
@@ -45,6 +46,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 		_unknow = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -76,7 +78,8 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType() 
+    @Override
+	public String getType() 
     {
         return _C__AF_REQUESTRECIPESHOPMAKEITEM;
     }

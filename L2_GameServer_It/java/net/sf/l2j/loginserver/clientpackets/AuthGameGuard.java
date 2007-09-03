@@ -66,7 +66,7 @@ public class AuthGameGuard extends L2LoginClientPacket
 	@Override
 	protected boolean readImpl()
 	{
-		if (this.getAvaliableBytes() >= 20)
+		if (getAvaliableBytes() >= 20)
 		{
 			_sessionId = readD();
 			_data1 = readD();
@@ -87,14 +87,14 @@ public class AuthGameGuard extends L2LoginClientPacket
 	@Override
 	public void run()
 	{
-		if (_sessionId == this.getClient().getSessionId())
+		if (_sessionId == getClient().getSessionId())
 		{
-			this.getClient().setState(LoginClientState.AUTHED_GG);
-			this.getClient().sendPacket(new GGAuth(this.getClient().getSessionId()));
+			getClient().setState(LoginClientState.AUTHED_GG);
+			getClient().sendPacket(new GGAuth(getClient().getSessionId()));
 		}
 		else
 		{
-			this.getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
+			getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
 		}
 	}
 }

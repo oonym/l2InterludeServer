@@ -39,6 +39,7 @@ public class CharDeleteFail extends L2GameServerPacket
 		_error = errorCode;
 	}
 
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x24);
@@ -48,6 +49,7 @@ public class CharDeleteFail extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__34_CHARDELETEFAIL;

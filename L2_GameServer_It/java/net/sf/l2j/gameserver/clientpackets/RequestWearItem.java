@@ -89,7 +89,8 @@ public final class RequestWearItem extends L2GameClientPacket
      * Decrypt the RequestWearItem Client->Server Packet and Create _items table containing all ItemID to Wear.<BR><BR>
      * 
      */
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         // Read and Decrypt the RequestWearItem Client->Server Packet
     	_activeChar = getClient().getActiveChar();
@@ -116,7 +117,8 @@ public final class RequestWearItem extends L2GameClientPacket
      * Launch Wear action.<BR><BR>
      * 
      */
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
 		// Get the current player and return if null
         L2PcInstance player = getClient().getActiveChar();
@@ -263,7 +265,8 @@ public final class RequestWearItem extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__C6_REQUESTWEARITEM;
     }

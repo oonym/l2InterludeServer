@@ -46,7 +46,7 @@ public class SellList extends L2GameServerPacket
 		_activeChar = player;
 		_lease = null;
 		_money = _activeChar.getAdena();
-		this.doLease();
+		doLease();
 	}
 	
 	public SellList(L2PcInstance player, L2MerchantInstance lease)
@@ -54,7 +54,7 @@ public class SellList extends L2GameServerPacket
 		_activeChar = player;
 		_lease = lease;
 		_money = _activeChar.getAdena();
-		this.doLease();
+		doLease();
 	}
 	
 	private void doLease()
@@ -76,6 +76,7 @@ public class SellList extends L2GameServerPacket
 		}
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x10);
@@ -105,6 +106,7 @@ public class SellList extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__10_SELLLIST;

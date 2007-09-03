@@ -122,7 +122,8 @@ public class Universe implements java.io.Serializable
             return res;
         }
 
-        public String toString()
+        @Override
+		public String toString()
         {
             return String.valueOf(_x) + " " + _y + " " + _z + " " + _flag;
         }
@@ -163,7 +164,8 @@ public class Universe implements java.io.Serializable
             return res;
         }
 
-        public String toString()
+        @Override
+		public String toString()
         {
             return String.valueOf(_x) + " " + _y + " " + _z;
         }
@@ -294,7 +296,7 @@ public class Universe implements java.io.Serializable
 
         public UniverseFilter(String pExt)
         {
-            this._ext = pExt;
+            _ext = pExt;
         }
 
         /* (non-Javadoc)

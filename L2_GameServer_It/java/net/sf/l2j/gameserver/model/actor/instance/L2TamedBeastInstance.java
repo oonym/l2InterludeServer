@@ -129,7 +129,8 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     	}
     }
     
-    public void doDie(L2Character killer)
+    @Override
+	public void doDie(L2Character killer)
     {
     	super.doDie(killer);
     	
@@ -157,7 +158,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     	if (owner != null)
     	{
         	_owner = owner;
-	    	this.setTitle(owner.getName());
+	    	setTitle(owner.getName());
 	    	// broadcast the new title
 	    	broadcastPacket( new NpcInfo(this, owner) );
 

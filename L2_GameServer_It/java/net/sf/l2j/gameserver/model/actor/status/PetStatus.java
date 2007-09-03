@@ -39,8 +39,10 @@ public class PetStatus extends SummonStatus
 
     // =========================================================
     // Method - Public
-    public final void reduceHp(double value, L2Character attacker) { reduceHp(value, attacker, true); }
-    public final void reduceHp(double value, L2Character attacker, boolean awake)
+    @Override
+	public final void reduceHp(double value, L2Character attacker) { reduceHp(value, attacker, true); }
+    @Override
+	public final void reduceHp(double value, L2Character attacker, boolean awake)
     {
         if (getActiveChar().isDead()) return;
 
@@ -65,7 +67,8 @@ public class PetStatus extends SummonStatus
 
     // =========================================================
     // Property - Public
-    public L2PetInstance getActiveChar() { return (L2PetInstance)super.getActiveChar(); }
+    @Override
+	public L2PetInstance getActiveChar() { return (L2PetInstance)super.getActiveChar(); }
 
     public int getCurrentFed() { return _currentFed; }
     public void setCurrentFed(int value) { _currentFed = value; }

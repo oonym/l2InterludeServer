@@ -40,6 +40,7 @@ public class ConditionGameTime extends Condition {
 		_required = required;
 	}
 	
+	@Override
 	public boolean testImpl(@SuppressWarnings("unused") Env env) {
 		switch (_check)
 		{

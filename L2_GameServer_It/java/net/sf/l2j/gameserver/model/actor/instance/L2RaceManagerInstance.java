@@ -69,7 +69,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
     public L2RaceManagerInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        this.getKnownList();	// init knownlist
+        getKnownList();	// init knownlist
         if (_notInitialized)
         {
             _notInitialized = false;
@@ -143,10 +143,11 @@ public class L2RaceManagerInstance extends L2NpcInstance
         _managers.add(this);
     }
 
-    public final RaceManagerKnownList getKnownList()
+    @Override
+	public final RaceManagerKnownList getKnownList()
     {
     	if(super.getKnownList() == null || !(super.getKnownList() instanceof RaceManagerKnownList))
-    		this.setKnownList(new RaceManagerKnownList(this));
+    		setKnownList(new RaceManagerKnownList(this));
         return (RaceManagerKnownList) super.getKnownList();
     }
 
@@ -156,7 +157,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 
     	public Announcement(SystemMessageId pType)
         {
-            this._type = pType;
+            _type = pType;
         }
 
         public void run()
@@ -257,7 +258,8 @@ public class L2RaceManagerInstance extends L2NpcInstance
 
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         if (command.startsWith("BuyTicket") && _state != ACCEPTING_BETS)
         {
@@ -436,7 +438,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 
         public Race(Info[] pInfo)
         {
-            this._info = pInfo;
+            _info = pInfo;
         }
 
         public Info getLaneInfo(int lane)
@@ -453,10 +455,10 @@ public class L2RaceManagerInstance extends L2NpcInstance
 
             public Info(int pId, int pPlace, int pOdds, int pPayout)
             {
-                this._id = pId;
-                this._place = pPlace;
-                this._odds = pOdds;
-                this._payout = pPayout;
+                _id = pId;
+                _place = pPlace;
+                _odds = pOdds;
+                _payout = pPayout;
             }
 
             public int getId()

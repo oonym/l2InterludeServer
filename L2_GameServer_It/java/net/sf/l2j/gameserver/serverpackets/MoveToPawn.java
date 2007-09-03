@@ -49,6 +49,7 @@ public class MoveToPawn extends L2GameServerPacket
 		_z = cha.getZ();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x60);
@@ -65,6 +66,7 @@ public class MoveToPawn extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__75_MOVETOPAWN;

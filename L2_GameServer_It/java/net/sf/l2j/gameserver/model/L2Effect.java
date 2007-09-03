@@ -131,8 +131,8 @@ public abstract class L2Effect
 
         EffectTask(int pDelay, int pRate)
         {
-            this._delay = pDelay;
-            this._rate = pRate;
+            _delay = pDelay;
+            _rate = pRate;
         }
 
         public void run()

@@ -49,6 +49,7 @@ public final class AuthLogin extends L2GameClientPacket
 	/**
 	 * @param decrypt
 	 */
+	@Override
 	protected void readImpl()
 	{
 		_loginName = readS().toLowerCase();
@@ -58,6 +59,7 @@ public final class AuthLogin extends L2GameClientPacket
 		_loginKey2 = readD();
 	}
 	
+	@Override
 	protected void runImpl()
 	{
 		SessionKey key = new SessionKey(_loginKey1, _loginKey2, _playKey1, _playKey2);
@@ -67,7 +69,7 @@ public final class AuthLogin extends L2GameClientPacket
 			_log.info("key:" + key);
 		}
 		
-		L2GameClient client = this.getClient();
+		L2GameClient client = getClient();
 		
 		// avoid potential exploits
 		if (client.getAccountName() == null)
@@ -82,6 +84,7 @@ public final class AuthLogin extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__08_AUTHLOGIN;

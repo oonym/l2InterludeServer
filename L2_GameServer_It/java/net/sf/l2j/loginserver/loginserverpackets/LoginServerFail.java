@@ -36,6 +36,7 @@ public class LoginServerFail extends ServerBasePacket
 		writeC(reason);
 	}
 	
+	@Override
 	public byte[] getContent()
 	{
 		return getBytes();

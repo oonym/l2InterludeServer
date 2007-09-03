@@ -33,7 +33,8 @@ public final class RequestPledgePowerGradeList extends L2GameClientPacket
     private static final String _C__D0_1A_REQUESTPLEDGEPOWERGRADELIST = "[C] D0:1A RequestPledgePowerGradeList";
     
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
     	// trigger
     }

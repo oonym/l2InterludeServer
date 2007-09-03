@@ -35,13 +35,15 @@ public final class RequestReplyStartPledgeWar extends L2GameClientPacket
     
     private int _answer;
             
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         @SuppressWarnings("unused") String _reqName = readS();
         _answer  = readD();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar == null)
@@ -65,7 +67,8 @@ public final class RequestReplyStartPledgeWar extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__4e_REQUESTREPLYSTARTPLEDGEWAR;
     }

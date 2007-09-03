@@ -32,7 +32,8 @@ public final class RequestPledgePower extends L2GameClientPacket
     private int _action;
     private int _privs;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _rank = readD();
         _action = readD();
@@ -43,7 +44,8 @@ public final class RequestPledgePower extends L2GameClientPacket
         else _privs = 0;
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance player = getClient().getActiveChar();
         if (player == null) return;
@@ -76,7 +78,8 @@ public final class RequestPledgePower extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__C0_REQUESTPLEDGEPOWER;
     }

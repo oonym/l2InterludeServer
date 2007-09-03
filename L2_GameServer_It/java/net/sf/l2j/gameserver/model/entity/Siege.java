@@ -748,7 +748,7 @@ public class Siege
     			return;
     		}
     	}
-    	if (force || this.checkIfCanRegister(player)) saveSiegeClan(player.getClan(), 1, false); // Save to database
+    	if (force || checkIfCanRegister(player)) saveSiegeClan(player.getClan(), 1, false); // Save to database
     }
 
     /**
@@ -764,7 +764,7 @@ public class Siege
     {
         if (getCastle().getOwnerId() <= 0) player.sendMessage("You cannot register as a defender because "
             + getCastle().getName() + " is owned by NPC.");
-        else if (force || this.checkIfCanRegister(player)) saveSiegeClan(player.getClan(), 2, false); // Save to database
+        else if (force || checkIfCanRegister(player)) saveSiegeClan(player.getClan(), 2, false); // Save to database
     }
 
     /**
@@ -854,19 +854,19 @@ public class Siege
         switch (teleportWho)
         {
             case Owner:
-                players = this.getOwnersInZone();
+                players = getOwnersInZone();
                 break;
             case Attacker:
-                players = this.getAttackersInZone();
+                players = getAttackersInZone();
                 break;
             case DefenderNotOwner:
-                players = this.getDefendersButNotOwnersInZone();
+                players = getDefendersButNotOwnersInZone();
                 break;
             case Spectator:
-                players = this.getSpectatorsInZone();
+                players = getSpectatorsInZone();
                 break;
             default:
-                players = this.getPlayersInZone();
+                players = getPlayersInZone();
         }
         ;
 

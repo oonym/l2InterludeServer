@@ -123,7 +123,8 @@ public class QuestTimer
     	return _player;
     }
     
-    public final String toString()
+    @Override
+	public final String toString()
     {
         return _name;
     }

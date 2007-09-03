@@ -34,6 +34,7 @@ public final class KeyPacket extends L2GameServerPacket
 		_key = key;
 	}
 	
+	@Override
 	public void writeImpl()
 	{
 		writeC(0x00);
@@ -46,6 +47,7 @@ public final class KeyPacket extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.L2GameServerPacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__01_KEYPACKET;

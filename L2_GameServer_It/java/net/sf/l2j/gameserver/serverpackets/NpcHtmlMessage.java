@@ -152,9 +152,10 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		_npcObjId = npcObjId;
 	}
 	
+	@Override
 	public void runImpl()
 	{
-		this.buildBypassCache(this.getClient().getActiveChar());
+		buildBypassCache(getClient().getActiveChar());
 	}
 	
 	public void setHtml(String text)
@@ -214,6 +215,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		}		
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x0f);
@@ -226,6 +228,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__1B_NPCHTMLMESSAGE;

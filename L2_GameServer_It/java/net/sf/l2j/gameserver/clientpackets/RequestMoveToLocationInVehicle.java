@@ -41,6 +41,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 	 * @param buf
 	 * @param client
 	 */
+	@Override
 	protected void readImpl()
 	{
 		int _x, _y, _z;

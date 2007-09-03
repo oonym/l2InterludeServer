@@ -39,7 +39,8 @@ public class FaenorEventParser extends FaenorParser
     static Logger _log = Logger.getLogger(FaenorEventParser.class.getName());
     private DateRange _eventDates = null;
     
-    public void parseScript(Node eventNode, @SuppressWarnings("unused") BSFManager context)
+    @Override
+	public void parseScript(Node eventNode, @SuppressWarnings("unused") BSFManager context)
     {
         String ID = attribute(eventNode, "ID");
         
@@ -120,7 +121,8 @@ public class FaenorEventParser extends FaenorParser
     
     static class FaenorEventParserFactory extends ParserFactory
     {
-        public Parser create()
+        @Override
+		public Parser create()
         {
             return(new FaenorEventParser());
         }

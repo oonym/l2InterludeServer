@@ -27,13 +27,15 @@ public final class RequestReplySurrenderPledgeWar extends L2GameClientPacket
 
     private int _answer;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         @SuppressWarnings("unused") String _reqName = readS();
         _answer  = readD();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar == null)
@@ -54,7 +56,8 @@ public final class RequestReplySurrenderPledgeWar extends L2GameClientPacket
         activeChar.onTransactionRequest(null);
     }
 
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__52_REQUESTREPLYSURRENDERPLEDGEWAR;
     }

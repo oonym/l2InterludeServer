@@ -40,11 +40,13 @@ public final class RequestAllyCrest extends L2GameClientPacket
 	 * 
 	 * @param rawPacket
 	 */
+	@Override
 	protected void readImpl()
 	{
 		_crestId = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		if (Config.DEBUG) _log.fine("allycrestid " + _crestId + " requested");
@@ -65,6 +67,7 @@ public final class RequestAllyCrest extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__88_REQUESTALLYCREST;

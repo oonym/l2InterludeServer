@@ -33,6 +33,7 @@ public final class RequestSetSeed extends L2GameClientPacket
 	private int[][] _list;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_data1 = readD(); //??

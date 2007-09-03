@@ -56,6 +56,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 	private int _count;
 	private int[] _items; // count*2
 	
+	@Override
 	protected void readImpl()
 	{
 		_listId = readD();
@@ -78,6 +79,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 		}
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
@@ -334,6 +336,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__1F_REQUESTBUYITEM;

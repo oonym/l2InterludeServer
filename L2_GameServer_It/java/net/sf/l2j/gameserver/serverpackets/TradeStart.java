@@ -38,6 +38,7 @@ public class TradeStart extends L2GameServerPacket
         _itemList = _activeChar.getInventory().getAvailableItems(true);
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{//0x2e TradeStart   d h (h dddhh dhhh)
 		if (_activeChar.getActiveTradeList() == null || _activeChar.getActiveTradeList().getPartner() == null)
@@ -67,6 +68,7 @@ public class TradeStart extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__2E_TRADESTART;

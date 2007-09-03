@@ -27,6 +27,7 @@ public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 	private int _unk;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_unk = readD();		

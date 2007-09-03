@@ -144,7 +144,7 @@ public class GameStatusThread extends Thread
     public GameStatusThread(Socket client, int uptime, String StatusPW) throws IOException
     {
         _cSocket = client;
-        this._uptime = uptime;
+        _uptime = uptime;
         
         _print = new PrintWriter(_cSocket.getOutputStream());
         _read  = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
@@ -186,7 +186,8 @@ public class GameStatusThread extends Thread
         }
     }
     
-    @SuppressWarnings("deprecation")
+    @Override
+	@SuppressWarnings("deprecation")
     public void run()
     {
         String _usrCommand = "";

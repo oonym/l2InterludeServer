@@ -30,11 +30,13 @@ public final class RequestAllyInfo extends L2GameClientPacket
 	private static final String _C__8E_REQUESTALLYINFO = "[C] 8E RequestAllyInfo";
 	
 	
+	@Override
 	public void readImpl()
 	{
 		
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		AllyInfo ai = new AllyInfo(getClient().getActiveChar());
@@ -44,6 +46,7 @@ public final class RequestAllyInfo extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__8E_REQUESTALLYINFO;

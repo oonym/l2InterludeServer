@@ -80,14 +80,16 @@ public class L2XmassTreeInstance extends L2NpcInstance
         _aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 3000);
     }
 
-    public void deleteMe()
+    @Override
+	public void deleteMe()
     {
         if (_aiTask != null) _aiTask.cancel(true);
 
         super.deleteMe();
     }
 
-    public int getDistanceToWatchObject(L2Object object)
+    @Override
+	public int getDistanceToWatchObject(L2Object object)
     {
         return 900;
     }
@@ -95,7 +97,8 @@ public class L2XmassTreeInstance extends L2NpcInstance
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
      */
-    public boolean isAutoAttackable(@SuppressWarnings("unused")
+    @Override
+	public boolean isAutoAttackable(@SuppressWarnings("unused")
     L2Character attacker)
     {
         return false;

@@ -63,6 +63,7 @@ public enum L2EtcItemType {
      * Returns the name of the EtcItemType
      * @return String
      */
+	@Override
 	public String toString()
 	{
 		return _name;

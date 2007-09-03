@@ -34,11 +34,13 @@ final class EffectBuff extends L2Effect {
 		super(env, template);
 	}
 
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.BUFF;
 	}
 
+	@Override
 	public boolean onActionTime()
     {
     	// just stop this effect

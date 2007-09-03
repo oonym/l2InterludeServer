@@ -30,15 +30,18 @@ public abstract class AbstractServerBasePacket extends L2GameServerPacket
     /**
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#runImpl()
      */
-    abstract public void runImpl();
+    @Override
+	abstract public void runImpl();
 
     /**
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
      */
-    abstract protected void writeImpl();
+    @Override
+	abstract protected void writeImpl();
 
     /**
      * @see net.sf.l2j.gameserver.BasePacket#getType()
      */
-    abstract public String getType();
+    @Override
+	abstract public String getType();
 }

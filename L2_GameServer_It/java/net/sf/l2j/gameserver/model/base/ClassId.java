@@ -139,10 +139,10 @@ public enum ClassId {
      */
     private ClassId(int pId, boolean pIsMage, Race pRace, ClassId pParent)
     {
-        this._id = pId;
-        this._isMage = pIsMage;
-        this._race = pRace;
-        this._parent = pParent;
+        _id = pId;
+        _isMage = pIsMage;
+        _race = pRace;
+        _parent = pParent;
     }
 
     /**

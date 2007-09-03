@@ -33,6 +33,7 @@ public class SuperCmdSummonCmd extends L2GameClientPacket
 	private String _summonName;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_summonName = readS();

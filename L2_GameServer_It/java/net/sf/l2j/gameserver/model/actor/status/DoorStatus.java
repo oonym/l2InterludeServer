@@ -39,5 +39,6 @@ public class DoorStatus extends CharStatus
 
     // =========================================================
     // Property - Public
-    public L2DoorInstance getActiveChar() { return (L2DoorInstance)super.getActiveChar(); }
+    @Override
+	public L2DoorInstance getActiveChar() { return (L2DoorInstance)super.getActiveChar(); }
 }

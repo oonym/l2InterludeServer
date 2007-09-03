@@ -33,7 +33,8 @@ public class FuncEnchant extends Func
         super(pStat, pOrder, owner);
     }
 
-    public void calc(Env env)
+    @Override
+	public void calc(Env env)
     {
         if (cond != null && !cond.test(env)) return;
         L2ItemInstance item = (L2ItemInstance) funcOwner;

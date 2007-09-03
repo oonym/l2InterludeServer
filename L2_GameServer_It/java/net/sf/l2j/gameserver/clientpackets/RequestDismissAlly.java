@@ -32,11 +32,13 @@ public final class RequestDismissAlly extends L2GameClientPacket
 	private static final String _C__86_REQUESTDISMISSALLY = "[C] 86 RequestDismissAlly";
 	//static Logger _log = Logger.getLogger(RequestDismissAlly.class.getName());
 
+	@Override
 	protected void readImpl()
 	{
 		// trigger packet
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -55,6 +57,7 @@ public final class RequestDismissAlly extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__86_REQUESTDISMISSALLY;

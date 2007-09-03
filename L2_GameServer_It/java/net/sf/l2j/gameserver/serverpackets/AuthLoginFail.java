@@ -49,6 +49,7 @@ public class AuthLoginFail extends L2GameServerPacket
 		_reason = reason;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x14);
@@ -58,6 +59,7 @@ public class AuthLoginFail extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__12_AUTHLOGINFAIL;

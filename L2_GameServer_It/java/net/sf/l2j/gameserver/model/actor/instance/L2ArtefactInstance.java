@@ -52,13 +52,15 @@ public final class L2ArtefactInstance extends L2NpcInstance
 	/**
 	 * Return False.<BR><BR>
 	 */
-    @SuppressWarnings("unused")
+    @Override
+	@SuppressWarnings("unused")
     public boolean isAutoAttackable(L2Character attacker) 
 	{
         return false;
     }
     
-    public boolean isAttackable()
+    @Override
+	public boolean isAttackable()
     {
         return false;
     }
@@ -78,7 +80,8 @@ public final class L2ArtefactInstance extends L2NpcInstance
 	 * @param player The L2PcInstance that start an action on the L2ArtefactInstance
 	 * 
 	 */
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (getObjectId() != player.getTargetId())
         {
@@ -98,7 +101,9 @@ public final class L2ArtefactInstance extends L2NpcInstance
         }
     }
     
-    public void reduceCurrentHp(double damage, L2Character attacker){}
-    public void reduceCurrentHp(double damage, L2Character attacker, boolean awake){}
+    @Override
+	public void reduceCurrentHp(double damage, L2Character attacker){}
+    @Override
+	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake){}
     
 }

@@ -48,7 +48,7 @@ public class AiInstance
 	public AiInstance(AiInstance instance, AiPlugingParameters params)
 	{
 		this(params);
-		this.copyHanlders(instance);		
+		copyHanlders(instance);		
 	}
 	
 	public void copyHanlders(AiInstance instance)
@@ -56,7 +56,7 @@ public class AiInstance
 		//then copy all the hanlders from 'instance'
 		for(EventHandlerSet set :instance.getEventHandlerSets())
 		{
-			this.addHandlerSet(set.getEventType(), set);
+			addHandlerSet(set.getEventType(), set);
 		}
 	}
 	

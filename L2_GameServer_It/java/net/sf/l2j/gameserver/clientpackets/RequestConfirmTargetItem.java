@@ -38,6 +38,7 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 	 * @param buf
 	 * @param client
 	 */
+	@Override
 	protected void readImpl()
 	{
 		_itemObjId = readD();

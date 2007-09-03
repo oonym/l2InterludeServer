@@ -39,7 +39,8 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
     	_activeChar = player;
     }
     
-    protected final void writeImpl()
+    @Override
+	protected final void writeImpl()
     {
         writeC(0x73);
         writeD(_activeChar.getObjectId());
@@ -53,7 +54,8 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__73_ValidateLocationInVehicle;
     }

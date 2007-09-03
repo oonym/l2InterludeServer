@@ -33,12 +33,14 @@ class EffectRelax extends L2Effect
 		super(env, template);
 	}
 	
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.RELAXING;
 	}
 
 	/** Notify started */
+	@Override
 	public void onStart() {
         setRelax(true);
 		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
@@ -54,6 +56,7 @@ class EffectRelax extends L2Effect
 		super.onExit();
 	}
 
+	@Override
 	public boolean onActionTime()
 	{
         boolean retval = true;

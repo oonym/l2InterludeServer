@@ -32,6 +32,7 @@ public class RequestCursedWeaponList extends L2GameClientPacket
 {
 	private static final String _C__D0_22_REQUESTCURSEDWEAPONLIST = "[C] D0:22 RequestCursedWeaponList";
 	
+	@Override
 	protected void readImpl()
 	{
 		//nothing to read it's just a trigger

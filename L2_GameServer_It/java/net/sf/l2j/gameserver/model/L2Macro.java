@@ -46,11 +46,11 @@ public class L2Macro
 
         public L2MacroCmd(int pEntry, int pType, int pD1, int pD2, String pCmd)
         {
-            this.entry = pEntry;
-            this.type = pType;
-            this.d1 = pD1;
-            this.d2 = pD2;
-            this.cmd = pCmd;
+            entry = pEntry;
+            type = pType;
+            d1 = pD1;
+            d2 = pD2;
+            cmd = pCmd;
         }
     }
 
@@ -59,12 +59,12 @@ public class L2Macro
      */
     public L2Macro(int pId, int pIcon, String pName, String pDescr, String pAcronym, L2MacroCmd[] pCommands)
     {
-        this.id = pId;
-        this.icon = pIcon;
-        this.name = pName;
-        this.descr = pDescr;
-        this.acronym = pAcronym;
-        this.commands = pCommands;
+        id = pId;
+        icon = pIcon;
+        name = pName;
+        descr = pDescr;
+        acronym = pAcronym;
+        commands = pCommands;
     }
 
 }

@@ -61,9 +61,10 @@ public class RequestServerLogin extends L2LoginClientPacket
 		return _serverId;
 	}
 
+	@Override
 	public boolean readImpl()
 	{
-		if (this.getAvaliableBytes() >= 9)
+		if (getAvaliableBytes() >= 9)
 		{
 			_skey1 = readD();
 			_skey2 = readD();
@@ -82,24 +83,24 @@ public class RequestServerLogin extends L2LoginClientPacket
 	@Override
 	public void run()
 	{
-		SessionKey sk = this.getClient().getSessionKey();
+		SessionKey sk = getClient().getSessionKey();
 		
 		// if we didnt showed the license we cant check these values
 		if (!Config.SHOW_LICENCE || sk.checkLoginPair(_skey1, _skey2))
 		{
-			if (LoginController.getInstance().isLoginPossible(this.getClient(), _serverId))
+			if (LoginController.getInstance().isLoginPossible(getClient(), _serverId))
 			{
-				this.getClient().setJoinedGS(true);
-				this.getClient().sendPacket(new PlayOk(sk));
+				getClient().setJoinedGS(true);
+				getClient().sendPacket(new PlayOk(sk));
 			}
 			else
 			{
-				this.getClient().close(PlayFailReason.REASON_TOO_MANY_PLAYERS);
+				getClient().close(PlayFailReason.REASON_TOO_MANY_PLAYERS);
 			}
 		}
 		else
 		{
-			this.getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
+			getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
 		}
 	}
 }

@@ -729,7 +729,7 @@ public final class QuestState
      */
     public final QuestPcSpawn getPcSpawn()
     {
-        return QuestPcSpawnManager.getInstance().getPcSpawn(this.getPlayer());
+        return QuestPcSpawnManager.getInstance().getPcSpawn(getPlayer());
     }
 
 	public String showHtmlFile(String fileName) 

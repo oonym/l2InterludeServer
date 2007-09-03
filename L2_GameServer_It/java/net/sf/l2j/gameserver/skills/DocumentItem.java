@@ -56,7 +56,7 @@ final class DocumentItem extends DocumentBase
     public DocumentItem(Map<Integer, Item> pItemData, File file)
     {
         super(file);
-        this._itemData = pItemData;
+        _itemData = pItemData;
     }
 
     /**
@@ -67,22 +67,26 @@ final class DocumentItem extends DocumentBase
         _currentItem = item;
     }
 
-    protected StatsSet getStatsSet()
+    @Override
+	protected StatsSet getStatsSet()
     {
         return _currentItem.set;
     }
 
-    protected String getTableValue(String name)
+    @Override
+	protected String getTableValue(String name)
     {
         return _tables.get(name)[_currentItem.currentLevel];
     }
 
-    protected String getTableValue(String name, int idx)
+    @Override
+	protected String getTableValue(String name, int idx)
     {
         return _tables.get(name)[idx - 1];
     }
 
-    protected void parseDocument(Document doc)
+    @Override
+	protected void parseDocument(Document doc)
     {
         for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
         {

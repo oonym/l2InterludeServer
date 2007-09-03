@@ -54,7 +54,8 @@ public class MultiSellList extends L2GameServerPacket
     	_finished = finished;
     }
     
-    protected void writeImpl()
+    @Override
+	protected void writeImpl()
     {
     	// [ddddd] [dchh] [hdhdh] [hhdh]
     	

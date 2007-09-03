@@ -59,14 +59,17 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 		super(objectId, template);
 	}
     
-    public boolean isRaid()
+    @Override
+	public boolean isRaid()
     {
         return true; 
     }
 
-    protected int getMaintenanceInterval() { return RAIDBOSS_MAINTENANCE_INTERVAL; }
+    @Override
+	protected int getMaintenanceInterval() { return RAIDBOSS_MAINTENANCE_INTERVAL; }
 	
-    public void doDie(L2Character killer)
+    @Override
+	public void doDie(L2Character killer)
     {
         if(killer instanceof L2PlayableInstance)
         {
@@ -99,7 +102,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
             L2NpcTemplate boxTemplate = NpcTable.getInstance().getTemplate(boxId);
             final L2NpcInstance box = new L2NpcInstance(IdFactory.getInstance().getNextId(), boxTemplate);
             box.setCurrentHpMp(box.getMaxHp(), box.getMaxMp());
-            box.spawnMe(this.getX(), this.getY(), (this.getZ()+20));
+            box.spawnMe(getX(), getY(), (getZ()+20));
             
             ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
                 public void run()
@@ -163,7 +166,8 @@ public final class L2RaidBossInstance extends L2MonsterInstance
      * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR> 
      * 
      */
-    public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
+    @Override
+	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
     {
         super.reduceCurrentHp(damage, attacker, awake);
     }

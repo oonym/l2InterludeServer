@@ -201,13 +201,13 @@ public class L2Manor
         
         public SeedData(int pLevel,int pCrop)
         {
-            this._level = pLevel;
-            this._crop = pCrop;
+            _level = pLevel;
+            _crop = pCrop;
         }
         
         public void setData(int pId, int t1, int t2, int t1a, int t2a, int gl, int di, int gi, int or, int ad, int in)
         {
-            this._id = pId;
+            _id = pId;
             _type1 = t1;
             _type2 = t2;
             _type1amount = t1a;

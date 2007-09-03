@@ -43,6 +43,7 @@ public class Earthquake extends L2GameServerPacket
 		_duration = duration;
 	}
 
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xc4);
@@ -57,6 +58,7 @@ public class Earthquake extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__C4_EARTHQUAKE;

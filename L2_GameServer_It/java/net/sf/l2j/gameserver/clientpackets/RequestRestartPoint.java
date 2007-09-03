@@ -50,7 +50,8 @@ public final class RequestRestartPoint extends L2GameClientPacket
     protected boolean _continuation;
     
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _requestedPointType = readD();
     }
@@ -146,7 +147,8 @@ public final class RequestRestartPoint extends L2GameClientPacket
         }
     }
     
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         
@@ -200,7 +202,8 @@ public final class RequestRestartPoint extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__6d_REQUESTRESTARTPOINT;
     }

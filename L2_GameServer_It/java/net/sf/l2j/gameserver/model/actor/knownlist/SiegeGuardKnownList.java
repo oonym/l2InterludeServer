@@ -38,8 +38,10 @@ public class SiegeGuardKnownList extends AttackableKnownList
 
     // =========================================================
     // Method - Public
-    public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
-    public boolean addKnownObject(L2Object object, L2Character dropper)
+    @Override
+	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
+    @Override
+	public boolean addKnownObject(L2Object object, L2Character dropper)
     {
         if (!super.addKnownObject(object, dropper)) return false;
 
@@ -72,5 +74,6 @@ public class SiegeGuardKnownList extends AttackableKnownList
 
     // =========================================================
     // Property - Public
-    public final L2SiegeGuardInstance getActiveChar() { return (L2SiegeGuardInstance)super.getActiveChar(); }
+    @Override
+	public final L2SiegeGuardInstance getActiveChar() { return (L2SiegeGuardInstance)super.getActiveChar(); }
 }

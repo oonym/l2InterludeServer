@@ -41,7 +41,8 @@ public class FaenorWorldDataParser extends FaenorParser
     //Script Types
     private final static String PET_DATA = "PetData";
     
-    public void parseScript(Node eventNode, BSFManager context)
+    @Override
+	public void parseScript(Node eventNode, BSFManager context)
     {
         if (Config.DEBUG) System.out.println("Parsing WorldData");
         
@@ -127,7 +128,8 @@ public class FaenorWorldDataParser extends FaenorParser
 
     static class FaenorWorldDataParserFactory extends ParserFactory
     {
-        public Parser create()
+        @Override
+		public Parser create()
         {
             return(new FaenorWorldDataParser());
         }

@@ -29,14 +29,17 @@ public class EffectMute extends L2Effect {
 	}
 
 
+	@Override
 	public EffectType getEffectType() {
 		return L2Effect.EffectType.MUTE;
 	}
 
+	@Override
 	public void onStart() {
 		getEffected().startMuted();
 	}
 	
+	@Override
 	public boolean onActionTime() {
 		// Simply stop the effect
 		getEffected().stopMuted(this);
@@ -44,6 +47,7 @@ public class EffectMute extends L2Effect {
 	}
 
 
+	@Override
 	public void onExit() {
 		getEffected().stopMuted(this);
 	}

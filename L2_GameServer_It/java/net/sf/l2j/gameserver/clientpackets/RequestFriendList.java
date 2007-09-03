@@ -38,11 +38,13 @@ public final class RequestFriendList extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(RequestFriendList.class.getName());
 	private static final String _C__60_REQUESTFRIENDLIST = "[C] 60 RequestFriendList";
 	
+	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
 	
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -101,6 +103,7 @@ public final class RequestFriendList extends L2GameClientPacket
 		}
 	}
 	
+	@Override
 	public String getType()
 	{
 		return _C__60_REQUESTFRIENDLIST;

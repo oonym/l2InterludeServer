@@ -245,10 +245,10 @@ public class L2NpcInstance extends L2Character
         // Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object 
         // and link _calculators to NPC_STD_CALCULATOR
         super(objectId, template);
-        this.getKnownList();   // init knownlist 
-        this.getStat();                        // init stats 
-        this.getStatus();              // init status 
-        this.initCharStatusUpdateValues();
+        getKnownList();   // init knownlist 
+        getStat();                        // init stats 
+        getStatus();              // init status 
+        initCharStatusUpdateValues();
         
         if (template == null)
         {
@@ -264,29 +264,33 @@ public class L2NpcInstance extends L2Character
             startRandomAnimationTimer();
     }
 
-    public NpcKnownList getKnownList() 
+    @Override
+	public NpcKnownList getKnownList() 
 	{ 
     	if(super.getKnownList() == null || !(super.getKnownList() instanceof NpcKnownList)) 
-    		this.setKnownList(new NpcKnownList(this)); 
+    		setKnownList(new NpcKnownList(this)); 
     	return (NpcKnownList)super.getKnownList(); 
 	}
     
+	@Override
 	public NpcStat getStat() 
 	{ 
 		if(super.getStat() == null || !(super.getStat() instanceof NpcStat)) 
-			this.setStat(new NpcStat(this)); 
+			setStat(new NpcStat(this)); 
 		return (NpcStat)super.getStat(); 
 	}
 	
+	@Override
 	public NpcStatus getStatus() 
 	{ 
 		if(super.getStatus() == null || !(super.getStatus() instanceof NpcStatus)) 
-			this.setStatus(new NpcStatus(this)); 
+			setStatus(new NpcStatus(this)); 
 		return (NpcStatus)super.getStatus(); 
 	}
     
     /** Return the L2NpcTemplate of the L2NpcInstance. */
-    public final L2NpcTemplate getTemplate() 
+    @Override
+	public final L2NpcTemplate getTemplate() 
     { 
         return (L2NpcTemplate)super.getTemplate(); 
     }
@@ -299,7 +303,8 @@ public class L2NpcInstance extends L2Character
         return getTemplate().npcId;
     }
     
-    public boolean isAttackable()
+    @Override
+	public boolean isAttackable()
     {
         return false;
     }
@@ -319,7 +324,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Return the Level of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
      */
-    public final int getLevel() 
+    @Override
+	public final int getLevel() 
     {
         return getTemplate().level;
     }
@@ -351,7 +357,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Return True if this L2NpcInstance is undead in function of the L2NpcTemplate.<BR><BR>
      */
-    public boolean isUndead()
+    @Override
+	public boolean isUndead()
     {
         return getTemplate().isUndead;
     }
@@ -359,7 +366,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Send a packet NpcInfo with state of abnormal effect to all L2PcInstance in the _KnownPlayers of the L2NpcInstance.<BR><BR>
      */
-    public void updateAbnormalEffect()
+    @Override
+	public void updateAbnormalEffect()
     {
         //NpcInfo info = new NpcInfo(this);
         //broadcastPacket(info);
@@ -426,7 +434,8 @@ public class L2NpcInstance extends L2Character
      * <li> L2MonsterInstance : Check if the attacker is not another L2MonsterInstance</li>
      * <li> L2PcInstance</li><BR><BR>
      */
-    public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker) 
+    @Override
+	public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker) 
     {
         return false;
     }
@@ -532,7 +541,8 @@ public class L2NpcInstance extends L2Character
      * @param player The L2PcInstance that start an action on the L2NpcInstance
      * 
      */
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
@@ -607,7 +617,7 @@ public class L2NpcInstance extends L2Character
                     broadcastPacket(sa);
                     
                     // Open a chat window on client with the text of the L2NpcInstance
-                    if(this.isEventMob){ L2Event.showEventHtml(player, String.valueOf(this.getObjectId())); }
+                    if(isEventMob){ L2Event.showEventHtml(player, String.valueOf(getObjectId())); }
                     else 
                     {
                         Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.NPC_FIRST_TALK);
@@ -643,7 +653,8 @@ public class L2NpcInstance extends L2Character
      * @param client The thread that manage the player that pessed Shift and click on the L2NpcInstance
      * 
      */
-    public void onActionShift(L2GameClient client)
+    @Override
+	public void onActionShift(L2GameClient client)
     {
         // Get the L2PcInstance corresponding to the thread
         L2PcInstance player = client.getActiveChar();
@@ -991,7 +1002,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Return null (regular NPCs don't have weapons instancies).<BR><BR>
      */
-    public L2ItemInstance getActiveWeaponInstance()
+    @Override
+	public L2ItemInstance getActiveWeaponInstance()
     {
         // regular NPCs dont have weapons instancies
         return null;
@@ -1000,7 +1012,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Return the weapon item equiped in the right hand of the L2NpcInstance or null.<BR><BR>
      */
-    public L2Weapon getActiveWeaponItem()
+    @Override
+	public L2Weapon getActiveWeaponItem()
     {
         // Get the weapon identifier equiped in the right hand of the L2NpcInstance
         int weaponId = getTemplate().rhand;
@@ -1020,7 +1033,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Return null (regular NPCs don't have weapons instancies).<BR><BR>
      */
-    public L2ItemInstance getSecondaryWeaponInstance()
+    @Override
+	public L2ItemInstance getSecondaryWeaponInstance()
     {
         // regular NPCs dont have weapons instancies
         return null;
@@ -1029,7 +1043,8 @@ public class L2NpcInstance extends L2Character
     /**
      * Return the weapon item equiped in the left hand of the L2NpcInstance or null.<BR><BR>
      */
-    public L2Weapon getSecondaryWeaponItem()
+    @Override
+	public L2Weapon getSecondaryWeaponItem()
     {
         // Get the weapon identifier equiped in the right hand of the L2NpcInstance
         int weaponId = getTemplate().lhand;
@@ -1563,7 +1578,7 @@ public class L2NpcInstance extends L2Character
         
         
         // Select the player
-        this.setTarget(player);
+        setTarget(player);
         
         
         // Calculate the min and max level between wich the player must be to obtain buff
@@ -1609,7 +1624,7 @@ public class L2NpcInstance extends L2Character
                   if (skill.getSkillType() == SkillType.SUMMON)
                       player.doCast(skill);
                   else
-                      this.doCast(skill);
+                      doCast(skill);
               }
            }
         }
@@ -2048,7 +2063,8 @@ public class L2NpcInstance extends L2Character
      * @param killer The L2Character who killed it
      * 
      */
-    public void doDie(L2Character killer) 
+    @Override
+	public void doDie(L2Character killer) 
     {
         DecayTaskManager.getInstance().addDecayTask(this);
         
@@ -2066,7 +2082,8 @@ public class L2NpcInstance extends L2Character
         _spawn = spawn;
     }
     
-    public void onSpawn()
+    @Override
+	public void onSpawn()
     {
     }
     
@@ -2082,7 +2099,8 @@ public class L2NpcInstance extends L2Character
      * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packets to players</B></FONT><BR><BR>
      * 
      */
-    public void onDecay()
+    @Override
+	public void onDecay()
     {
    	 if (isDecayed()) return;
 	 setDecayed(true);
@@ -2131,9 +2149,10 @@ public class L2NpcInstance extends L2Character
         return _spawn;
     }
     
-    public String toString()
+    @Override
+	public String toString()
     {
-        return this.getTemplate().name;
+        return getTemplate().name;
     }
     
     public boolean isDecayed()

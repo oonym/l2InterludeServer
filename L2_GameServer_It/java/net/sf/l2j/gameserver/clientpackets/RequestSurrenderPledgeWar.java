@@ -35,12 +35,14 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket
     private L2Clan _clan;
     private L2PcInstance _activeChar;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _pledgeName  = readS();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
     	_activeChar = getClient().getActiveChar();
 		if (_activeChar == null)
@@ -94,7 +96,8 @@ public final class RequestSurrenderPledgeWar extends L2GameClientPacket
         leader.sendPacket(new SurrenderPledgeWar(_clan.getName(),player.getName()));*/
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__51_REQUESTSURRENDERPLEDGEWAR;
     }

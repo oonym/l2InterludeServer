@@ -69,9 +69,9 @@ public class Expression
 
     private Expression(BSFManager pContext, String pLang, String pCode)
     {
-        this._context = pContext;
-        this._lang = pLang;
-        this._code = pCode;
+        _context = pContext;
+        _lang = pLang;
+        _code = pCode;
     }
 
     public <T> void addDynamicVariable(String name, T value, Class<T> type)

@@ -44,8 +44,10 @@ public class GuardKnownList extends AttackableKnownList
 
     // =========================================================
     // Method - Public
-    public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
-    public boolean addKnownObject(L2Object object, L2Character dropper)
+    @Override
+	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
+    @Override
+	public boolean addKnownObject(L2Object object, L2Character dropper)
     {
         if (!super.addKnownObject(object, dropper)) return false;
 
@@ -85,7 +87,8 @@ public class GuardKnownList extends AttackableKnownList
         return true;
     }
 
-    public boolean removeKnownObject(L2Object object)
+    @Override
+	public boolean removeKnownObject(L2Object object)
     {
         if (!super.removeKnownObject(object)) return false;
 
@@ -107,5 +110,6 @@ public class GuardKnownList extends AttackableKnownList
 
     // =========================================================
     // Property - Public
-    public final L2GuardInstance getActiveChar() { return (L2GuardInstance)super.getActiveChar(); }
+    @Override
+	public final L2GuardInstance getActiveChar() { return (L2GuardInstance)super.getActiveChar(); }
 }

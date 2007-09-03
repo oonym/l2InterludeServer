@@ -45,6 +45,7 @@ public class ChangeMoveType extends L2GameServerPacket
 		_running = character.isRunning();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x2e);
@@ -56,6 +57,7 @@ public class ChangeMoveType extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__3E_CHANGEMOVETYPE;

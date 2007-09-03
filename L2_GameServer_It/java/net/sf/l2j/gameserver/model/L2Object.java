@@ -377,7 +377,8 @@ public abstract class L2Object
         return getPosition().getWorldRegion();
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "" + getObjectId();
     }

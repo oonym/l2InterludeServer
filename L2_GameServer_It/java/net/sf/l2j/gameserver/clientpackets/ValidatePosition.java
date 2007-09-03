@@ -49,7 +49,8 @@ public class ValidatePosition extends L2GameClientPacket
     private int _data;
     
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _x  = readD();
         _y  = readD();
@@ -58,7 +59,8 @@ public class ValidatePosition extends L2GameClientPacket
         _data  = readD();
     }
     
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar == null || activeChar.isTeleporting()) return;
@@ -178,7 +180,8 @@ public class ValidatePosition extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__48_VALIDATEPOSITION;
     }

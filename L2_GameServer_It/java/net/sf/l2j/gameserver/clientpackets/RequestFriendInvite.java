@@ -43,11 +43,13 @@ public final class RequestFriendInvite extends L2GameClientPacket
 
 	private String _name;
 	
+	@Override
 	protected void readImpl()
 	{
 		_name = readS();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		SystemMessage sm;
@@ -123,6 +125,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		}
 	}
 	
+	@Override
 	public String getType()
 	{
 		return _C__5E_REQUESTFRIENDINVITE;

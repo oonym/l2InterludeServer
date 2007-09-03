@@ -40,6 +40,7 @@ public class GetItem extends L2GameServerPacket
 		_playerId = playerId;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x0d);
@@ -54,6 +55,7 @@ public class GetItem extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__17_GETITEM;

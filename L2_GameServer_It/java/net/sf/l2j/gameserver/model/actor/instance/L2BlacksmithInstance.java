@@ -33,12 +33,14 @@ public class L2BlacksmithInstance extends L2FolkInstance
 		super(objectId, template);
 	}
 	
+	@Override
 	public void onAction(L2PcInstance player)
 	{
 		player.setLastFolkNPC(this);
 		super.onAction(player);
 	}
 	
+	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (command.startsWith("multisell"))
@@ -50,6 +52,7 @@ public class L2BlacksmithInstance extends L2FolkInstance
 		super.onBypassFeedback(player,command);
 	}
 	
+	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
 		String pom = "";

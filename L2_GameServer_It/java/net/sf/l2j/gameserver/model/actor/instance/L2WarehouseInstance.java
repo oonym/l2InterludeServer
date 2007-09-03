@@ -48,14 +48,16 @@ public final class L2WarehouseInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Warehouse activated");
         player.setLastFolkNPC(this);
         super.onAction(player);
     }
 
-    public String getHtmlPath(int npcId, int val)
+    @Override
+	public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
         if (val == 0)
@@ -228,7 +230,8 @@ public final class L2WarehouseInstance extends L2FolkInstance
         player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.FREIGHT));
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         // lil check to prevent enchant exploit
         if (player.getActiveEnchantItem() != null)

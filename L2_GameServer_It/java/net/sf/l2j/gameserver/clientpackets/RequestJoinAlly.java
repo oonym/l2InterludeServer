@@ -38,11 +38,13 @@ public final class RequestJoinAlly extends L2GameClientPacket
 
 	private int _id;
 	
+	@Override
 	protected void readImpl()
 	{
 		_id = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -82,6 +84,7 @@ public final class RequestJoinAlly extends L2GameClientPacket
 	}
 	
 	
+	@Override
 	public String getType()
 	{
 		return _C__82_REQUESTJOINALLY;

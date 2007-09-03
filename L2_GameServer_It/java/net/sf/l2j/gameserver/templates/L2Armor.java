@@ -72,6 +72,7 @@ public final class L2Armor extends L2Item
 	 * Returns the type of the armor.
 	 * @return L2ArmorType
 	 */
+	@Override
 	public L2ArmorType getItemType()
 	{
 		return (L2ArmorType)super._type;
@@ -81,6 +82,7 @@ public final class L2Armor extends L2Item
 	 * Returns the ID of the item after applying the mask.
 	 * @return int : ID of the item
 	 */
+	@Override
 	public final int getItemMask()
 	{
 		return getItemType().mask();
@@ -146,6 +148,7 @@ public final class L2Armor extends L2Item
 	 * @param player : L2Character pointing out the player
 	 * @return Func[] : array of functions
 	 */
+	@Override
 	public Func[] getStatFuncs(L2ItemInstance instance, L2Character player)
     {
     	List<Func> funcs = new FastList<Func>();

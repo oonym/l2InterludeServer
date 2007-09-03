@@ -76,8 +76,8 @@ public class Castle
 	public Castle(int castleId)
 	{
 		_castleId = castleId;
-        this.load();
-		this.loadDoor();
+        load();
+		loadDoor();
 	}
 
 	// =========================================================

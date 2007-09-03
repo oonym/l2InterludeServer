@@ -64,6 +64,7 @@ public enum L2WeaponType {
      * Returns the name of the WeaponType
      * @return String
      */
+	@Override
 	public String toString()
 	{
 		return _name;

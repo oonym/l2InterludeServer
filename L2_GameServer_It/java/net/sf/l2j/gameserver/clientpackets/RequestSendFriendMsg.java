@@ -48,13 +48,15 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
     private String _message;
     private String _reciever;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _message = readS();
         _reciever = readS();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
     	L2PcInstance activeChar = getClient().getActiveChar();
     	if (activeChar == null) return;
@@ -79,7 +81,8 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
         targetPlayer.sendPacket(frm);
     }
 
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__CC_REQUESTSENDMSG;
     }

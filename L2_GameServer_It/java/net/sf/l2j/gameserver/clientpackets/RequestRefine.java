@@ -41,6 +41,7 @@ public final class RequestRefine extends L2GameClientPacket
 	private int _gemstoneItemObjId;
 	private int _gemstoneCount;
 	
+	@Override
 	protected void readImpl()
 	{
 		_targetItemObjId = readD();

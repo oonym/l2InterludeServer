@@ -29,7 +29,8 @@ public class RequestAskJoinPartyRoom extends L2GameClientPacket
     private String _player; // not tested, just guessed
     
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _player = readS();
     }

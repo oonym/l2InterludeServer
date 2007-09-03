@@ -128,5 +128,6 @@ public abstract class FaenorParser extends Parser
     /**
      * @param script
      */
-    public abstract void parseScript(Node node, BSFManager context);
+    @Override
+	public abstract void parseScript(Node node, BSFManager context);
 }

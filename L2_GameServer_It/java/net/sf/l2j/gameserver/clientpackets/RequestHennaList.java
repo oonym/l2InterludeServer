@@ -36,12 +36,14 @@ public final class RequestHennaList extends L2GameClientPacket
     @SuppressWarnings("unused")
     private int _unknown;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _unknown = readD(); // ??
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar == null) return;
@@ -54,7 +56,8 @@ public final class RequestHennaList extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__BA_RequestHennaList;
     }

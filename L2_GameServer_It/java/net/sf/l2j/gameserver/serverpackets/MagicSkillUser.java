@@ -67,6 +67,7 @@ public class MagicSkillUser extends L2GameServerPacket
 		_z = cha.getZ();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x48);
@@ -91,6 +92,7 @@ public class MagicSkillUser extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__5A_MAGICSKILLUSER;

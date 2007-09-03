@@ -43,6 +43,7 @@ public class ClanBBSManager extends BaseBBSManager
 	 * @param command
 	 * @param activeChar
 	 */
+	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("_bbsclan"))

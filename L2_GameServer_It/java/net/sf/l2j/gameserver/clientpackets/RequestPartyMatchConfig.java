@@ -35,6 +35,7 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket
 	private String _memo;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_automaticRegistration    = readD();
@@ -57,6 +58,7 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket
         }*/
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		// TODO: this packet is currently for creating a new party room 
@@ -72,6 +74,7 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__6F_REQUESTPARTYMATCHCONFIG;

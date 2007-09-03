@@ -41,13 +41,15 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
     private int _itemId;
     private int _type; // 1 = on : 0 = off;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _itemId = readD();
         _type = readD();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         
@@ -135,7 +137,8 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__CF_REQUESTAUTOSOULSHOT;
     }

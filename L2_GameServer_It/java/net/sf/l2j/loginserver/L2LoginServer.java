@@ -158,7 +158,7 @@ public class L2LoginServer
 			System.exit(1);
 		}
 		
-		this.loadBanFile();
+		loadBanFile();
 		
 		InetAddress bindAddress = null;
 		if (!Config.LOGIN_BIND_ADDRESS.equals("*"))

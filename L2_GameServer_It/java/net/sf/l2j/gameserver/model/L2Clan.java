@@ -989,7 +989,7 @@ public class L2Clan
 		}
 		for (L2Clan clan : ClanTable.getInstance().getClans())
 		{
-			if (clan.getAllyId() == this.getAllyId())
+			if (clan.getAllyId() == getAllyId())
 			{
 				clan.broadcastToOnlineMembers(packet);
 			}
@@ -1018,6 +1018,7 @@ public class L2Clan
 		}
 	}
 	
+	@Override
 	public String toString()
 	{
 		return getName();
@@ -1112,7 +1113,7 @@ public class L2Clan
 
     public void broadcastClanStatus()
     {
-        for(L2PcInstance member: this.getOnlineMembers(""))
+        for(L2PcInstance member: getOnlineMembers(""))
         {
         	member.sendPacket(new PledgeShowMemberListDeleteAll());
         	member.sendPacket(new PledgeShowMemberListAll(this, member));

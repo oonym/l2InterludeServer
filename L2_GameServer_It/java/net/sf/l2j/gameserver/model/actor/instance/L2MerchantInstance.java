@@ -53,7 +53,8 @@ public class L2MerchantInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Merchant activated");
         player.sendPacket(new ActionFailed());
@@ -61,7 +62,8 @@ public class L2MerchantInstance extends L2FolkInstance
         super.onAction(player);
     }
 
-    public String getHtmlPath(int npcId, int val)
+    @Override
+	public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
 
@@ -129,7 +131,8 @@ public class L2MerchantInstance extends L2FolkInstance
         player.sendPacket(new ActionFailed());
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         player.sendPacket(new ActionFailed());
 
@@ -250,7 +253,8 @@ public class L2MerchantInstance extends L2FolkInstance
         player.startRentPet(time);
     }
 
-    public void onActionShift(L2GameClient client)
+    @Override
+	public void onActionShift(L2GameClient client)
     {
         L2PcInstance player = client.getActiveChar();
         if (player == null) return;

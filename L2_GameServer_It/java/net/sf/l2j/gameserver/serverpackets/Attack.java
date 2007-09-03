@@ -104,6 +104,7 @@ public class Attack extends L2GameServerPacket
 		return _hits.length > 0;
 	}
 
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x05);
@@ -127,6 +128,7 @@ public class Attack extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__06_ATTACK;

@@ -35,6 +35,7 @@ public class ItemLogFormatter extends Formatter
 	private static final String CRLF = "\r\n";
 	private SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
 	
+	@Override
 	public String format(LogRecord record)
 	{
         TextBuilder output = new TextBuilder();

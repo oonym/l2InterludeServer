@@ -40,7 +40,8 @@ public final class RequestBlock extends L2GameClientPacket
    private Integer _type;
    private L2PcInstance _target;
    
-   protected void readImpl()
+   @Override
+protected void readImpl()
    {
        _type = readD(); //0x00 - block, 0x01 - unblock, 0x03 - allblock, 0x04 - allunblock
 
@@ -51,7 +52,8 @@ public final class RequestBlock extends L2GameClientPacket
        }
    }
    
-   protected void runImpl()
+   @Override
+protected void runImpl()
    {
        L2PcInstance activeChar = getClient().getActiveChar();
        
@@ -95,7 +97,8 @@ public final class RequestBlock extends L2GameClientPacket
        }
    }
    
-   public String getType()
+   @Override
+public String getType()
    {
        return _C__A0_REQUESTBLOCK;
    }

@@ -41,6 +41,7 @@ public class InitLS extends ServerBasePacket
     	writeB(publickey);
     }
 	
+	@Override
 	public byte[] getContent()
 	{
 		return getBytes();

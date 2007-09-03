@@ -39,6 +39,7 @@ public class ConditionSkillStats extends Condition {
 		_stat = stat;
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		if (env.skill == null)
 			return false;

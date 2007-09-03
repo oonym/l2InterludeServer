@@ -43,6 +43,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 	 * @param buf
 	 * @param client
 	 */
+	@Override
 	protected void readImpl()
 	{
 		_targetItemObjId = readD();

@@ -52,12 +52,14 @@ public class L2FishermanInstance extends L2FolkInstance
 	 * this is called when a player interacts with this NPC
 	 * @param player
 	 */
+	@Override
 	public void onAction(L2PcInstance player)
 	{
 		player.setLastFolkNPC(this);
 		super.onAction(player);
 	}
 	
+	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
 		String pom = "";
@@ -104,6 +106,7 @@ public class L2FishermanInstance extends L2FolkInstance
         player.sendPacket(new ActionFailed());
     }
     
+	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{	
 		if (command.startsWith("FishSkillList"))

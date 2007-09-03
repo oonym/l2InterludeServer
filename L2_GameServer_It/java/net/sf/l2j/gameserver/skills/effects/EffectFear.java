@@ -45,18 +45,21 @@ final class EffectFear extends L2Effect {
 		super(env, template);
 	}
 
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.FEAR;
 	}
 	
 	/** Notify started */
+	@Override
 	public void onStart() {
 		getEffected().startFear();
 		onActionTime();
 	}
 	
 	/** Notify exited */
+	@Override
 	public void onExit() {
 		
 		getEffected().stopFear(this);
@@ -66,7 +69,8 @@ final class EffectFear extends L2Effect {
 		
 	
 	
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
     	// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread,curse gloom and horror is the exception.
     	if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376 && getSkill().getId() != 1169 && getSkill().getId() != 65) return false;

@@ -46,6 +46,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 	private int _level;
 	private int _skillType;
 	
+	@Override
 	protected void readImpl()
 	{
 		_id = readD();
@@ -53,6 +54,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 		_skillType = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -171,6 +173,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 	 * 
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__6B_REQUESTAQUIRESKILLINFO;

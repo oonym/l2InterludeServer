@@ -43,7 +43,8 @@ public class L2WeddingManagerInstance extends L2NpcInstance
         super(objectId, template);
     }
     
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
         player.setTarget(this);
@@ -65,7 +66,8 @@ public class L2WeddingManagerInstance extends L2NpcInstance
         player.sendPacket(html);
     }
     
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         // standard msg
         String filename = "data/html/mods/Wedding_start.htm";
@@ -74,7 +76,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
         // if player has no partner
         if(player.getPartnerId()==0){
             filename = "data/html/mods/Wedding_nopartner.htm";
-            this.sendHtmlMessage(player, filename, replace);
+            sendHtmlMessage(player, filename, replace);
             return;
         }
         else
@@ -84,7 +86,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
             if(ptarget==null || ptarget.isOnline()==0)
             {
                 filename = "data/html/mods/Wedding_notfound.htm";
-                this.sendHtmlMessage(player, filename, replace);
+                sendHtmlMessage(player, filename, replace);
                 return;
             }
             else
@@ -93,13 +95,13 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                 if(player.isMarried())
                 {
                     filename = "data/html/mods/Wedding_already.htm";
-                    this.sendHtmlMessage(player, filename, replace);
+                    sendHtmlMessage(player, filename, replace);
                     return;
                 }
                 else if (player.isMarryAccepted())
                 {
                     filename = "data/html/mods/Wedding_waitforpartner.htm";
-                    this.sendHtmlMessage(player, filename, replace);
+                    sendHtmlMessage(player, filename, replace);
                     return;
                 }
                 else if (command.startsWith("AcceptWedding"))
@@ -145,7 +147,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                     
                     filename = "data/html/mods/Wedding_accepted.htm";
                     replace = ptarget.getName();
-                    this.sendHtmlMessage(ptarget, filename, replace);
+                    sendHtmlMessage(ptarget, filename, replace);
                     return;
                 }                
                 else if (command.startsWith("DeclineWedding"))
@@ -158,7 +160,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                     ptarget.sendMessage("Your partner declined");
                     replace = ptarget.getName();
                     filename = "data/html/mods/Wedding_declined.htm";
-                    this.sendHtmlMessage(ptarget, filename, replace);
+                    sendHtmlMessage(ptarget, filename, replace);
                     return;
                 }
                 else if (player.isMaryRequest())
@@ -181,14 +183,14 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                     if(Config.L2JMOD_WEDDING_FORMALWEAR && !player.isWearingFormalWear())
                     {
                         filename = "data/html/mods/Wedding_noformal.htm";
-                        this.sendHtmlMessage(player, filename, replace);
+                        sendHtmlMessage(player, filename, replace);
                         return;
                     }
                     filename = "data/html/mods/Wedding_ask.htm";
                     player.setMaryRequest(false);
                     ptarget.setMaryRequest(false);
                     replace = ptarget.getName();
-                    this.sendHtmlMessage(player, filename, replace);
+                    sendHtmlMessage(player, filename, replace);
                     return;
                 }  
                 else if (command.startsWith("AskWedding"))
@@ -211,14 +213,14 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                     if(Config.L2JMOD_WEDDING_FORMALWEAR && !player.isWearingFormalWear())
                     {
                         filename = "data/html/mods/Wedding_noformal.htm";
-                        this.sendHtmlMessage(player, filename, replace);
+                        sendHtmlMessage(player, filename, replace);
                         return;
                     }
                     else if(player.getAdena()<Config.L2JMOD_WEDDING_PRICE)
                     {
                         filename = "data/html/mods/Wedding_adena.htm";
                         replace = String.valueOf(Config.L2JMOD_WEDDING_PRICE);
-                        this.sendHtmlMessage(player, filename, replace);
+                        sendHtmlMessage(player, filename, replace);
                         return;
                     }
                     else
@@ -228,13 +230,13 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                         replace = ptarget.getName();
                         filename = "data/html/mods/Wedding_requested.htm";
                         player.getInventory().reduceAdena("Wedding", Config.L2JMOD_WEDDING_PRICE, player, player.getLastFolkNPC());                       
-                        this.sendHtmlMessage(player, filename, replace);
+                        sendHtmlMessage(player, filename, replace);
                         return;
                     }                    
                 } 
             }
         }                
-        this.sendHtmlMessage(player, filename, replace);
+        sendHtmlMessage(player, filename, replace);
     } 
 
     private void sendHtmlMessage(L2PcInstance player, String filename, String replace)

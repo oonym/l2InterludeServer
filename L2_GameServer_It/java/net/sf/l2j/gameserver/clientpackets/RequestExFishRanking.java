@@ -28,7 +28,8 @@ public final class RequestExFishRanking extends L2GameClientPacket
 {
     private static final String _C__D0_1F_REQUESTEXFISHRANKING = "[C] D0:1F RequestExFishRanking";
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
     	// trigger
     }

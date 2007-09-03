@@ -47,9 +47,9 @@ public class ExOlympiadSpelledInfo extends L2GameServerPacket
 		
 		public Effect(int pSkillId, int pDat, int pDuration)
 		{
-			this._skillId = pSkillId;
-			this._dat = pDat;
-			this._duration = pDuration;	
+			_skillId = pSkillId;
+			_dat = pDat;
+			_duration = pDuration;	
 		}
 	}
 	
@@ -64,6 +64,7 @@ public class ExOlympiadSpelledInfo extends L2GameServerPacket
 		_effects.add(new Effect(skillId, dat, duration));		
 	}
 
+	@Override
 	protected final void writeImpl()
 	{
         if (_player == null)
@@ -83,6 +84,7 @@ public class ExOlympiadSpelledInfo extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__FE_2A_OLYMPIADSPELLEDINFO;

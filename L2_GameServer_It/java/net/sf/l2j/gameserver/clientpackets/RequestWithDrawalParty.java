@@ -32,11 +32,13 @@ public final class RequestWithDrawalParty extends L2GameClientPacket
 	private static final String _C__2B_REQUESTWITHDRAWALPARTY = "[C] 2B RequestWithDrawalParty";
 	//private static Logger _log = Logger.getLogger(RequestWithDrawalParty.class.getName());
 	
+	@Override
 	protected void readImpl()
 	{
 		//trigger
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
@@ -45,6 +47,7 @@ public final class RequestWithDrawalParty extends L2GameClientPacket
 		if (player.isInParty()) player.getParty().oustPartyMember(player);		
 	}
 	
+	@Override
 	public String getType()
 	{
 		return _C__2B_REQUESTWITHDRAWALPARTY;

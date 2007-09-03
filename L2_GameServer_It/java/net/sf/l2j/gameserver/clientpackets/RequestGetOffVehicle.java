@@ -32,6 +32,7 @@ public final class RequestGetOffVehicle extends L2GameClientPacket
 {
 	 private int _id, _x, _y, _z;
 	 
+	@Override
 	protected void readImpl()
 	{
 		_id  = readD();

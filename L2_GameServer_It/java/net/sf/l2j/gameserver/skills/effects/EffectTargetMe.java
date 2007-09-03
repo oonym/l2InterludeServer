@@ -33,13 +33,15 @@ public class EffectTargetMe extends L2Effect
         super(env, template);
     }
 
-    public EffectType getEffectType()
+    @Override
+	public EffectType getEffectType()
     {
         return EffectType.TARGET_ME;
     }
     
     /** Notify started */
-    public void onStart() {
+    @Override
+	public void onStart() {
     	//Should only work on PC?  
     	if (getEffected() instanceof L2PcInstance)
     	{
@@ -50,11 +52,13 @@ public class EffectTargetMe extends L2Effect
     }
     
     /** Notify exited */
-    public void onExit() {
+    @Override
+	public void onExit() {
         //nothing
     }
     
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
     	//nothing
         return false;

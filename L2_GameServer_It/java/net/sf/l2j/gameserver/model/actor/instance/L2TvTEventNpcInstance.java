@@ -14,6 +14,7 @@ public class L2TvTEventNpcInstance extends L2NpcInstance
 		super(objectId, template);
 	}
 	
+	@Override
 	public void showChatWindow(L2PcInstance playerInstance, int val)
 	{
 		if (playerInstance == null)

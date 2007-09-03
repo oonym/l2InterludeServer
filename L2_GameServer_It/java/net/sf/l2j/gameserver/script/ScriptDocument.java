@@ -77,7 +77,8 @@ public class ScriptDocument
         return _name;
     }
     
-    public String toString()
+    @Override
+	public String toString()
     {
         return _name;
     }

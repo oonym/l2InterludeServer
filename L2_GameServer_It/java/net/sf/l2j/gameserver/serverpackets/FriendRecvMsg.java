@@ -44,6 +44,7 @@ public class FriendRecvMsg extends L2GameServerPacket
 		_message = message;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xfd);
@@ -54,6 +55,7 @@ public class FriendRecvMsg extends L2GameServerPacket
 		writeS(_message);
 	}
 
+	@Override
 	public String getType()
 	{
 		return _S__FD_FRIENDRECVMSG;

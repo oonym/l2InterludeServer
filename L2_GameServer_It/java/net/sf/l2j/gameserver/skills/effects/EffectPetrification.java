@@ -29,26 +29,30 @@ public class EffectPetrification extends L2Effect
         super(env, template);
     }
 	
-    public EffectType getEffectType() 
+    @Override
+	public EffectType getEffectType() 
     {
         return L2Effect.EffectType.PETRIFICATION;
     }
     
-    public void onStart() 
+    @Override
+	public void onStart() 
     {
     	getEffected().startAbnormalEffect(0x0800);
     	getEffected().setIsParalyzed(true);
     	getEffected().setIsInvul(true);
     }
     
-    public void onExit()
+    @Override
+	public void onExit()
     {
 		 getEffected().stopAbnormalEffect(0x0800);
 		 getEffected().setIsParalyzed(false);
 		 getEffected().setIsInvul(false);
     }
     
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
     	return false;
     }

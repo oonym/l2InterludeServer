@@ -32,11 +32,13 @@ public class RequestRecipeShopMessageSet extends L2GameClientPacket
     
     private String _name;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _name = readS();
 	}
 
+	@Override
 	protected void runImpl()
 	{
         L2PcInstance player = getClient().getActiveChar();
@@ -53,7 +55,8 @@ public class RequestRecipeShopMessageSet extends L2GameClientPacket
             
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__B1_RequestRecipeShopMessageSet;
     }

@@ -39,14 +39,16 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
     private int _castleId;
     private int _clanId;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _castleId = readD();
         _clanId = readD();
         _approved = readD();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null) return;
@@ -85,7 +87,8 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
     }
     
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__A5_RequestConfirmSiegeWaitingList;
     }

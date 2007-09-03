@@ -335,9 +335,9 @@ public class RecipeController
 		
 		public RecipeItemMaker(L2PcInstance pPlayer, L2RecipeList pRecipeList, L2PcInstance pTarget)
 		{
-			this._player = pPlayer;
-			this._target = pTarget;
-			this._recipeList = pRecipeList;
+			_player = pPlayer;
+			_target = pTarget;
+			_recipeList = pRecipeList;
 			
 			_isValid = false;
 			_skillId = _recipeList.isDwarvenRecipe()	? L2Skill.SKILL_CREATE_DWARVEN

@@ -76,7 +76,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 	@Override
 	public boolean readImpl()
 	{
-		if (this.getAvaliableBytes() >= 128)
+		if (getAvaliableBytes() >= 128)
 		{
 			readB(_raw);
 			return true;
@@ -94,7 +94,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		try
 		{
 			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
-			rsaCipher.init(Cipher.DECRYPT_MODE, this.getClient().getRSAPrivateKey());
+			rsaCipher.init(Cipher.DECRYPT_MODE, getClient().getRSAPrivateKey());
 			decrypted = rsaCipher.doFinal(_raw, 0x00, 0x80 );
 		}
 		catch (GeneralSecurityException e)
@@ -112,10 +112,10 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		_ncotp |= decrypted[0x7f] << 24;
 
 		LoginController lc = LoginController.getInstance();
-		L2LoginClient client = this.getClient();
+		L2LoginClient client = getClient();
 		try
 		{
-			AuthLoginResult result = lc.tryAuthLogin(_user, _password, this.getClient());
+			AuthLoginResult result = lc.tryAuthLogin(_user, _password, getClient());
 			
 			switch (result)
 			{
@@ -125,11 +125,11 @@ public class RequestAuthLogin extends L2LoginClientPacket
 					client.setSessionKey(lc.assignSessionKeyToClient(_user, client));
 					if (Config.SHOW_LICENCE)
 					{
-						client.sendPacket(new LoginOk(this.getClient().getSessionKey()));
+						client.sendPacket(new LoginOk(getClient().getSessionKey()));
 					}
 					else
 					{
-						this.getClient().sendPacket(new ServerList(this.getClient()));
+						getClient().sendPacket(new ServerList(getClient()));
 					}
 					break;
 				case INVALID_PASSWORD:
@@ -164,7 +164,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		}
 		catch (HackingException e)
 		{
-			InetAddress address = this.getClient().getConnection().getSocketChannel().socket().getInetAddress();
+			InetAddress address = getClient().getConnection().getSocketChannel().socket().getInetAddress();
 			lc.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
 			_log.info("Banned ("+address+") for "+Config.LOGIN_BLOCK_AFTER_BAN+" seconds, due to "+e.getConnects()+" incorrect login attempts.");
 		}

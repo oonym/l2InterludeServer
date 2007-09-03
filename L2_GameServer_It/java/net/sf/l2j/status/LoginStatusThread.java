@@ -246,6 +246,7 @@ public class LoginStatusThread extends Thread
 		return false;
 	}
 
+	@Override
 	public void run()
 	{
 		String _usrCommand = "";

@@ -47,7 +47,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#size()
      */
-    public int size()
+    @Override
+	public int size()
     {
         return _objectMap.size();
     }
@@ -55,7 +56,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#isEmpty()
      */
-    public boolean isEmpty()
+    @Override
+	public boolean isEmpty()
     {
         return _objectMap.isEmpty();
     }
@@ -63,7 +65,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#clear()
      */
-    public void clear()
+    @Override
+	public void clear()
     {
         _objectMap.clear();
     }
@@ -71,7 +74,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#put(T)
      */
-    public void put(T obj)
+    @Override
+	public void put(T obj)
     {
         if (obj != null)
             _objectMap.put(obj.getObjectId(), obj);
@@ -80,7 +84,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#remove(T)
      */
-    public void remove(T obj)
+    @Override
+	public void remove(T obj)
     {
         if (obj != null)
             _objectMap.remove(obj.getObjectId());
@@ -89,7 +94,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#get(int)
      */
-    public T get(int id)
+    @Override
+	public T get(int id)
     {
         return _objectMap.get(id);
     }
@@ -97,7 +103,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#contains(T)
      */
-    public boolean contains(T obj)
+    @Override
+	public boolean contains(T obj)
     {
         if (obj == null)
             return false;
@@ -107,7 +114,8 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#iterator()
      */
-    public Iterator<T> iterator()
+    @Override
+	public Iterator<T> iterator()
     {
         return _objectMap.values().iterator();
     }

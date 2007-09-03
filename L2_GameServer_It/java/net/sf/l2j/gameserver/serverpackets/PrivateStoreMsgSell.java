@@ -38,6 +38,7 @@ public class PrivateStoreMsgSell extends L2GameServerPacket
 			_storeMsg = _activeChar.getSellList().getTitle();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x9c);
@@ -48,6 +49,7 @@ public class PrivateStoreMsgSell extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__B5_PRIVATESTOREMSGSELL;

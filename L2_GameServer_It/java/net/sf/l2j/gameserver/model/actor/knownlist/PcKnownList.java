@@ -87,8 +87,10 @@ public class PcKnownList extends PlayableKnownList
      * @param object The L2Object to add to _knownObjects and _knownPlayer
      * @param dropper The L2Character who dropped the L2Object
      */
-    public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
-    public boolean addKnownObject(L2Object object, L2Character dropper)
+    @Override
+	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
+    @Override
+	public boolean addKnownObject(L2Object object, L2Character dropper)
     {
         if (!super.addKnownObject(object, dropper)) return false;
 
@@ -226,7 +228,8 @@ public class PcKnownList extends PlayableKnownList
      * @param object The L2Object to remove from _knownObjects and _knownPlayer
      *
      */
-    public boolean removeKnownObject(L2Object object)
+    @Override
+	public boolean removeKnownObject(L2Object object)
     {
             if (!super.removeKnownObject(object)) return false;
         // Send Server-Client Packet DeleteObject to the L2PcInstance
@@ -240,9 +243,11 @@ public class PcKnownList extends PlayableKnownList
 
     // =========================================================
     // Property - Public
-    public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
+    @Override
+	public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
 
-    public int getDistanceToForgetObject(L2Object object) 
+    @Override
+	public int getDistanceToForgetObject(L2Object object) 
     { 
     	// when knownlist grows, the distance to forget should be at least  
     	// the same as the previous watch range, or it becomes possible that
@@ -254,7 +259,8 @@ public class PcKnownList extends PlayableKnownList
         else return 2310;
     }
  
-    public int getDistanceToWatchObject(L2Object object) 
+    @Override
+	public int getDistanceToWatchObject(L2Object object) 
     { 
         int knownlistSize = getKnownObjects().size(); 
  

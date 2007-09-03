@@ -28,12 +28,14 @@ public final class TaskCleanUp extends Task
 {
     public static final String NAME = "CleanUp";
     
-    public String getName()
+    @Override
+	public String getName()
     {
         return NAME;
     }
 
-    public void onTimeElapsed(ExecutedTask task)
+    @Override
+	public void onTimeElapsed(ExecutedTask task)
     {
         System.runFinalization();
         System.gc();

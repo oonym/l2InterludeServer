@@ -49,7 +49,8 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
         super(objectId, template);
     }
     
-    public void onBypassFeedback (L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback (L2PcInstance player, String command)
     {  
         if (command.startsWith("OlympiadDesc"))
         {

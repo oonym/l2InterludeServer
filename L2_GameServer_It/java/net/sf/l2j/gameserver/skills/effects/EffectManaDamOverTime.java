@@ -31,11 +31,13 @@ class EffectManaDamOverTime extends L2Effect
 		super(env, template);
 	}
 	
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.MANA_DMG_OVER_TIME;
 	}
 
+	@Override
 	public boolean onActionTime()
 	{	
 		if(getEffected().isDead())

@@ -71,7 +71,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	{
 		super(con);
 		_state = LoginClientState.CONNECTED;
-		String ip = this.getConnection().getSocketChannel().socket().getInetAddress().getHostAddress();
+		String ip = getConnection().getSocketChannel().socket().getInetAddress().getHostAddress();
 		
 		// TODO unhardcode this
 		if (ip.startsWith("192.168") || ip.startsWith("10.0") || ip.equals("127.0.0.1"))
@@ -106,7 +106,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			this.closeNow();
+			closeNow();
 			return false;
 		}
 		
@@ -114,8 +114,8 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		{
 			byte[] dump = new byte[size];
 			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
-			_log.warning("Wrong checksum from client: "+this.toString());
-			this.closeNow();
+			_log.warning("Wrong checksum from client: "+toString());
+			closeNow();
 		}
 		
 		return ret;
@@ -229,22 +229,22 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	
 	public void sendPacket(L2LoginServerPacket lsp)
 	{
-		this.getConnection().sendPacket(lsp);
+		getConnection().sendPacket(lsp);
 	}
 	
 	public void close(LoginFailReason reason)
 	{
-		this.getConnection().close(new LoginFail(reason));
+		getConnection().close(new LoginFail(reason));
 	}
 	
 	public void close(PlayFailReason reason)
 	{
-		this.getConnection().close(new PlayFail(reason));
+		getConnection().close(new PlayFail(reason));
 	}
 	
 	public void close(L2LoginServerPacket lsp)
 	{
-		this.getConnection().close(lsp);
+		getConnection().close(lsp);
 	}
 	
 	@Override
@@ -252,25 +252,26 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	{
 		if (Config.DEBUG)
 		{
-			_log.info("DISCONNECTED: "+this.toString());
+			_log.info("DISCONNECTED: "+toString());
 		}
 		
-		if (this.getState() != LoginClientState.AUTHED_LOGIN)
+		if (getState() != LoginClientState.AUTHED_LOGIN)
 		{
 			LoginController.getInstance().removeLoginClient(this);
 		}
-		else if (!this.hasJoinedGS())
+		else if (!hasJoinedGS())
 		{
-			LoginController.getInstance().removeAuthedLoginClient(this.getAccount());
+			LoginController.getInstance().removeAuthedLoginClient(getAccount());
 		}
 	}
 	
+	@Override
 	public String toString()
 	{
-		InetAddress address = this.getConnection().getSocketChannel().socket().getInetAddress();
-		if (this.getState() == LoginClientState.AUTHED_LOGIN)
+		InetAddress address = getConnection().getSocketChannel().socket().getInetAddress();
+		if (getState() == LoginClientState.AUTHED_LOGIN)
 		{
-			return "["+this.getAccount()+" ("+(address == null ? "disconnected" : address.getHostAddress())+")]";
+			return "["+getAccount()+" ("+(address == null ? "disconnected" : address.getHostAddress())+")]";
 		}
 		else
 		{

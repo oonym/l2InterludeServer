@@ -48,12 +48,14 @@ public final class RequestRestart extends L2GameClientPacket
     private static Logger _log = Logger.getLogger(RequestRestart.class.getName());
     
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
     	// trigger
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance player = getClient().getActiveChar();
         if (player == null)
@@ -115,7 +117,7 @@ public final class RequestRestart extends L2GameClientPacket
         	player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
         }
         
-        L2GameClient client = this.getClient();
+        L2GameClient client = getClient();
         
         // detach the client from the char so that the connection isnt closed in the deleteMe
         player.setClient(null);
@@ -146,7 +148,8 @@ public final class RequestRestart extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__46_REQUESTRESTART;
     }

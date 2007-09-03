@@ -43,7 +43,8 @@ public class ChairSit extends L2GameServerPacket
         _staticObjectId = staticObjectId;
     }
     
-    protected final void writeImpl()
+    @Override
+	protected final void writeImpl()
     {
         writeC(0xe1);
         writeD(_activeChar.getObjectId());
@@ -53,7 +54,8 @@ public class ChairSit extends L2GameServerPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__e1_CHAIRSIT;
     }

@@ -65,8 +65,8 @@ public class OlympiadStadiaManager
 
     public void reload()
     {
-        this.getOlympiadStadias().clear();
-        this.load();
+        getOlympiadStadias().clear();
+        load();
     }
 
     // =========================================================

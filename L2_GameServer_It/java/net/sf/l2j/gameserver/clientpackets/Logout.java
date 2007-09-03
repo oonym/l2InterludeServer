@@ -49,11 +49,13 @@ public final class Logout extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(Logout.class.getName());
 
 
+	@Override
 	protected void readImpl()
 	{
 
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		// Dont allow leaving if player is fighting
@@ -150,6 +152,7 @@ public final class Logout extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__09_LOGOUT;

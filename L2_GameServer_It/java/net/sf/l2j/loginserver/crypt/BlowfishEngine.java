@@ -286,9 +286,9 @@ public class BlowfishEngine
      */
     public void init(boolean pEncrypting, byte[] key)
     {
-        this.encrypting = pEncrypting;
-        this.workingKey = key;
-        setKey(this.workingKey);
+        encrypting = pEncrypting;
+        workingKey = key;
+        setKey(workingKey);
         return;
     }
 

@@ -81,13 +81,13 @@ public class GameServerTable
 
 	public GameServerTable() throws SQLException, NoSuchAlgorithmException, InvalidAlgorithmParameterException
 	{
-		this.loadServerNames();
+		loadServerNames();
 		_log.info("Loaded "+_serverNames.size()+" server names");
 		
-		this.loadRegisteredGameServers();
+		loadRegisteredGameServers();
 		_log.info("Loaded "+_gameServerTable.size()+" registered Game Servers");
 		
-		this.loadRSAKeys();
+		loadRSAKeys();
 		_log.info("Cached "+_keyPairs.length+" RSA keys for Game Server communication.");
 	}
 	
@@ -152,7 +152,7 @@ public class GameServerTable
 		while (rset.next())
 		{
 			id = rset.getInt("server_id");
-			gsi = new GameServerInfo(id, this.stringToHex(rset.getString("hexid")));
+			gsi = new GameServerInfo(id, stringToHex(rset.getString("hexid")));
 			_gameServerTable.put(id, gsi);
 		}
 		rset.close();
@@ -240,7 +240,7 @@ public class GameServerTable
 	
 	public String getServerNameById(int id)
 	{
-		return this.getServerNames().get(id);
+		return getServerNames().get(id);
 	}
 	
 	public Map<Integer, String> getServerNames()
@@ -441,10 +441,10 @@ public class GameServerTable
 		
 		public void setDown()
 		{
-			this.setAuthed(false);
-			this.setPort(0);
-			this.setGameServerThread(null);
-			this.setStatus(ServerStatus.STATUS_DOWN);
+			setAuthed(false);
+			setPort(0);
+			setGameServerThread(null);
+			setStatus(ServerStatus.STATUS_DOWN);
 		}
 	}
 }

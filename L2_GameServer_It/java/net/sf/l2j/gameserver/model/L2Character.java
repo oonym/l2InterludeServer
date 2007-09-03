@@ -199,7 +199,7 @@ public abstract class L2Character extends L2Object
 	public L2Character(int objectId, L2CharTemplate template)
 	{
 		super(objectId);
-		this.getKnownList();
+		getKnownList();
 
 		// Set its template to the new L2Character
 		_template = template;
@@ -437,8 +437,8 @@ public abstract class L2Character extends L2Object
 	{
 		// Stop movement
 		stopMove(null, false);
-		this.abortAttack();
-		this.abortCast();
+		abortAttack();
+		abortCast();
 
 		setIsTeleporting(true);
 		setTarget(null);
@@ -494,7 +494,7 @@ public abstract class L2Character extends L2Object
 	protected void doAttack(L2Character target)
 	{
 		if (Config.DEBUG)
-            _log.fine(this.getName()+" doAttack: target="+target);
+            _log.fine(getName()+" doAttack: target="+target);
 
 		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead())
                 || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath())
@@ -942,10 +942,10 @@ public abstract class L2Character extends L2Object
 		// ===========================================================
 		// Make sure that char is facing selected target
 		angleTarget = Util.calculateAngleFrom(this, getTarget());
-		this.setHeading((int)((angleTarget / 9.0) * 1610.0)); // = this.setHeading((int)((angleTarget / 360.0) * 64400.0));
+		setHeading((int)((angleTarget / 9.0) * 1610.0)); // = this.setHeading((int)((angleTarget / 360.0) * 64400.0));
 
 		// Update char's heading degree
-		angleChar = Util.convertHeadingToDegree(this.getHeading());
+		angleChar = Util.convertHeadingToDegree(getHeading());
 		double attackpercent = 85;
 		int attackcountmax = (int)getStat().calcStat(Stats.ATTACK_COUNT_MAX, 3, null, null);
 		int attackcount = 0;
@@ -968,7 +968,7 @@ public abstract class L2Character extends L2Object
 				if (!Util.checkIfInRange(maxRadius, this, obj, false)) continue;
 
 				//otherwise hit too high/low. 650 because mob z coord sometimes wrong on hills
-                if(Math.abs(obj.getZ() - this.getZ()) > 650) continue;
+                if(Math.abs(obj.getZ() - getZ()) > 650) continue;
 				angleTarget = Util.calculateAngleFrom(this, obj);
 				if (
 						Math.abs(angleChar - angleTarget) > maxAngleDiff &&
@@ -1215,7 +1215,7 @@ public abstract class L2Character extends L2Object
 			skillInterruptTime = 0;
 
 		// Calculate altered Cast Speed due to BSpS/SpS
-		L2ItemInstance weaponInst = this.getActiveWeaponInstance();
+		L2ItemInstance weaponInst = getActiveWeaponInstance();
 
 		if ((weaponInst != null)&&(skill.isMagic())&&((skill.getTargetType())!=(SkillTargetType.TARGET_SELF))) {
 			if ((weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -1613,10 +1613,11 @@ public abstract class L2Character extends L2Object
 	public boolean isInvul(){return _isInvul  || _isTeleporting;}
 	public boolean isUndead() { return _template.isUndead; }
 
+	@Override
 	public CharKnownList getKnownList()
 	{
 		if(super.getKnownList() == null || !(super.getKnownList() instanceof CharKnownList))
-			this.setKnownList(new CharKnownList(this));
+			setKnownList(new CharKnownList(this));
 		return ((CharKnownList)super.getKnownList());
 	}
 
@@ -1784,7 +1785,7 @@ public abstract class L2Character extends L2Object
 
 		NotifyAITask(CtrlEvent evt)
 		{
-			this._evt = evt;
+			_evt = evt;
 		}
 
 		public void run()
@@ -2346,7 +2347,7 @@ public abstract class L2Character extends L2Object
 			}
 		}
 
-		this.updateStats();
+		updateStats();
 	}
 
 	/**
@@ -2912,7 +2913,7 @@ public abstract class L2Character extends L2Object
 		 */
 		public void detachAI()
 		{
-			L2Character.this._ai = null;
+			_ai = null;
 		}
 	}
 
@@ -3578,7 +3579,7 @@ public abstract class L2Character extends L2Object
 
 		if (object != null && object != _target)
 		{
-			this.getKnownList().addKnownObject(object);
+			getKnownList().addKnownObject(object);
 			object.getKnownList().addKnownObject(this);
 		}
 
@@ -4328,11 +4329,11 @@ public abstract class L2Character extends L2Object
 					}
 
 					// Absorb HP from the damage inflicted
-					double absorbPercent = this.getStat().calcStat(Stats.ABSORB_DAMAGE_PERCENT,0, null,null);
+					double absorbPercent = getStat().calcStat(Stats.ABSORB_DAMAGE_PERCENT,0, null,null);
 
 					if (absorbPercent > 0)
 					{
-						int maxCanAbsorb = (int)(this.getMaxHp() - this.getCurrentHp());
+						int maxCanAbsorb = (int)(getMaxHp() - getCurrentHp());
 						int absorbDamage = (int)(absorbPercent / 100. * damage);
 
 						if (absorbDamage > maxCanAbsorb)
@@ -4474,6 +4475,7 @@ public abstract class L2Character extends L2Object
 	 * @param player The L2PcInstance to attack
 	 *
 	 */
+	@Override
 	public void onForcedAttack(L2PcInstance player)
 	{
         if (isInsidePeaceZone(player))
@@ -4614,14 +4616,14 @@ public abstract class L2Character extends L2Object
         {
             if (this instanceof L2PcInstance)
             {
-            	_log.warning("Player "+ this.getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
+            	_log.warning("Player "+ getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
             	((L2PcInstance)this).sendMessage("Error with your coordinates! Please reboot your game fully!");
             	((L2PcInstance)this).teleToLocation(80753,145481,-3532, false); // Near Giran luxury shop
             }
             else
             {
-            	_log.warning("Object "+ this.getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
-            	this.decayMe();
+            	_log.warning("Object "+ getName() +" at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
+            	decayMe();
             }
             return false;
         }
@@ -4654,7 +4656,7 @@ public abstract class L2Character extends L2Object
             atkSpd = getPAtkSpd();
         } else
         {
-    		L2Weapon weapon = this.getActiveWeaponItem();
+    		L2Weapon weapon = getActiveWeaponItem();
     		if (weapon !=null)
     		{
     			switch (weapon.getItemType())
@@ -4808,7 +4810,7 @@ public abstract class L2Character extends L2Object
      * @return The number of Buffs affecting this L2Character
      */
     public int getBuffCount() {
-        L2Effect[] effects = this.getAllEffects();
+        L2Effect[] effects = getAllEffects();
         int numBuffs=0;
         if (effects != null) {
             for (L2Effect e : effects) {
@@ -4835,7 +4837,7 @@ public abstract class L2Character extends L2Object
      * @param preferSkill If != 0 the given skill Id will be removed instead of first
      */
     public void removeFirstBuff(int preferSkill) {
-        L2Effect[] effects = this.getAllEffects();
+        L2Effect[] effects = getAllEffects();
         L2Effect removeMe=null;
         if (effects != null) {
             for (L2Effect e : effects) {
@@ -4997,10 +4999,10 @@ public abstract class L2Character extends L2Object
 
 					if (this instanceof L2PcInstance && target instanceof L2Summon)
 					{
-						if (this.equals(((L2Summon)target).getOwner()))
-							this.sendPacket(new PetInfo((L2Summon)target));
+						if (equals(((L2Summon)target).getOwner()))
+							sendPacket(new PetInfo((L2Summon)target));
 						else
-							this.sendPacket(new NpcInfo((L2Summon)target, this));
+							sendPacket(new NpcInfo((L2Summon)target, this));
 					}
 				}
 			}
@@ -5209,7 +5211,7 @@ public abstract class L2Character extends L2Object
 					{
 						if (activeWeapon.getSkillEffects(this, player, skill).length > 0 && this instanceof L2PcInstance)
 						{
-							this.sendPacket(SystemMessage.sendString("Target affected by weapon special ability!"));
+							sendPacket(SystemMessage.sendString("Target affected by weapon special ability!"));
 						}
 					}
 
@@ -5388,7 +5390,7 @@ public abstract class L2Character extends L2Object
             if (Math.abs(angleDiff) <= maxAngleDiff)
             {
                 if (Config.DEBUG)
-                    _log.info("Char " + this.getName() + " is behind " + target.getName());
+                    _log.info("Char " + getName() + " is behind " + target.getName());
                 return true;
             }
 		}
@@ -5419,7 +5421,7 @@ public abstract class L2Character extends L2Object
             if (Math.abs(angleDiff) <= maxAngleDiff)
             {
                 if (Config.DEBUG)
-                    _log.info("Char " + this.getName() + " is side " + target.getName());
+                    _log.info("Char " + getName() + " is side " + target.getName());
                 return true;
             }
 		}
@@ -5484,7 +5486,7 @@ public abstract class L2Character extends L2Object
 
 	public void stopPvPFlag()
 	{
-		this.stopPvpRegTask();
+		stopPvpRegTask();
 
 		updatePvPFlag(0);
 
@@ -5528,9 +5530,10 @@ public abstract class L2Character extends L2Object
 		return weaponItem.getRandomDamage();
 	}
 
+	@Override
 	public String toString()
 	{
-		return "mob "+this.getObjectId();
+		return "mob "+getObjectId();
 	}
 
 	public int getAttackEndTime()

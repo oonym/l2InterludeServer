@@ -47,12 +47,14 @@ public final class RequestJoinParty extends L2GameClientPacket
 	private String _name;
 	private int _itemDistribution;
 
-    protected void readImpl()
+    @Override
+	protected void readImpl()
 	{
         _name = readS();
         _itemDistribution = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
         L2PcInstance requestor = getClient().getActiveChar();
@@ -195,6 +197,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__29_REQUESTJOINPARTY;

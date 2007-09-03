@@ -46,16 +46,16 @@ public class Point3D implements Serializable
 
 	public Point3D(int pX, int pY, int pZ)
 	{
-		this._x = pX;
-		this._y = pY;
-		this._z = pZ;
+		_x = pX;
+		_y = pY;
+		_z = pZ;
 	}
 
 	public Point3D(int pX, int pY)
 	{
-		this._x = pX;
-		this._y = pY;
-		this._z = 0;
+		_x = pX;
+		_y = pY;
+		_z = 0;
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class Point3D implements Serializable
 	{
 		synchronized (worldPosition)
 		{
-			this._x = worldPosition._x;
-			this._y = worldPosition._y;
-			this._z = worldPosition._z;
+			_x = worldPosition._x;
+			_y = worldPosition._y;
+			_z = worldPosition._z;
 		}
 	}
 
@@ -75,22 +75,25 @@ public class Point3D implements Serializable
 	{
 		synchronized (point)
 		{
-			this._x = point._x;
-			this._y = point._y;
-			this._z = point._z;
+			_x = point._x;
+			_y = point._y;
+			_z = point._z;
 		}
 	}
 
+	@Override
 	public String toString()
 	{
 		return "(" + _x + ", " + _y + ", " + _z + ")";
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return _x ^ _y ^ _z;
 	}
 
+	@Override
 	public synchronized boolean equals(Object o)
 	{
 		if (o instanceof Point3D)

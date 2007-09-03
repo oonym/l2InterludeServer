@@ -41,6 +41,7 @@ public class ConditionPlayerState extends Condition {
 		_required = required;
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		switch (_check)
 		{

@@ -67,7 +67,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				}
 				else
 				{
-					this.printDebug(opcode, buf, state, client);
+					printDebug(opcode, buf, state, client);
 				}
 				break;
 			case AUTHED:
@@ -95,7 +95,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new RequestPledgeCrest();
 						break;
 					default:
-						this.printDebug(opcode, buf, state, client);
+						printDebug(opcode, buf, state, client);
 						break;
 				}
 				break;
@@ -788,7 +788,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		                    	msg = new RequestDuelSurrender();
 		                    	break;
 		                    default: 
-		                     	this.printDebugDoubleOpcode(opcode, id2, buf, state, client);
+		                     	printDebugDoubleOpcode(opcode, id2, buf, state, client);
 		                    	break;
 		                }
 						break;
@@ -796,7 +796,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new RequestChangePartyLeader(data, _client);     
 						break;*/
 					default:
-						this.printDebug(opcode, buf, state, client);
+						printDebug(opcode, buf, state, client);
 						break;
 				}
 				break;

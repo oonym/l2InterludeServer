@@ -35,7 +35,8 @@ public final class RequestPledgeMemberInfo extends L2GameClientPacket
     private int _unk1;
     private String _player;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _unk1 = readD();
         _player = readS();

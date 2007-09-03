@@ -55,7 +55,8 @@ public class SellListProcure extends L2GameServerPacket
         }
     }
     
-    protected final void writeImpl()
+    @Override
+	protected final void writeImpl()
     {
         writeC(0xE9);
         writeD(_money);         // money
@@ -74,7 +75,8 @@ public class SellListProcure extends L2GameServerPacket
         }
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__E9_SELLLISTPROCURE;
     }

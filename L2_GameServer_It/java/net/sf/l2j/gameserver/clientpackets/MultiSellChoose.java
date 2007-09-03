@@ -50,7 +50,8 @@ public class MultiSellChoose extends L2GameClientPacket
     private int _enchantment;
     private int _transactionTax;	// local handling of taxation
 
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _listId = readD();
         _entryId = readD();
@@ -61,7 +62,8 @@ public class MultiSellChoose extends L2GameClientPacket
         _transactionTax = 0;	// initialize tax amount to 0...
     }
 
-    public void runImpl()
+    @Override
+	public void runImpl()
     {
     	if(_amount < 1 || _amount > 5000 || _amount > Integer.MAX_VALUE )
     		return;
@@ -387,7 +389,8 @@ public class MultiSellChoose extends L2GameClientPacket
         return newEntry;
     }
 
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__A7_MULTISELLCHOOSE;
     }

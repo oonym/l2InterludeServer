@@ -35,12 +35,14 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
     private L2Clan _clan;
     private L2PcInstance player;
 
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _pledgeName = readS();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         player = getClient().getActiveChar();
         if (player == null) return;
@@ -139,7 +141,8 @@ public final class RequestStartPledgeWar extends L2GameClientPacket
         }
     }
 
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__4D_REQUESTSTARTPLEDGEWAR;
     }

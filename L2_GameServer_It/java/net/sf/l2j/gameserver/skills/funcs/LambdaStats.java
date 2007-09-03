@@ -43,6 +43,7 @@ public final class LambdaStats extends Lambda {
 	{
 		_stat = stat;
 	}
+	@Override
 	public double calc(Env env) {
 		switch (_stat)
 		{

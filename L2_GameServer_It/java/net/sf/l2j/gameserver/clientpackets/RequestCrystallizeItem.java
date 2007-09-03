@@ -50,12 +50,14 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 	private int _objectId;
 	private int _count;
 
+	@Override
 	protected void readImpl()
 	{
 		_objectId = readD();
 		_count = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -260,6 +262,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 	 * 
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__72_REQUESTDCRYSTALLIZEITEM;

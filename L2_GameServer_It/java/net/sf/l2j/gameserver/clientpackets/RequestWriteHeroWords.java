@@ -35,6 +35,7 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	 * @param buf
 	 * @param client
 	 */
+	@Override
 	protected void readImpl()
 	{
 		_heroWords = readS();

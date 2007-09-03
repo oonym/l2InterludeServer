@@ -44,7 +44,8 @@ public class Status extends Thread
     private int						_mode;
     private List<LoginStatusThread> _loginStatus;
     
-    public void run()
+    @Override
+	public void run()
     {
         while (true)
         {

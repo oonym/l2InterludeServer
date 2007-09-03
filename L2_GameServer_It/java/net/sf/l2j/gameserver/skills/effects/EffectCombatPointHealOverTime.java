@@ -30,12 +30,14 @@ class EffectCombatPointHealOverTime extends L2Effect
         super(env, template);
     }
 
-    public EffectType getEffectType()
+    @Override
+	public EffectType getEffectType()
     {
         return EffectType.COMBAT_POINT_HEAL_OVER_TIME;
     }
 
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {   
         if(getEffected().isDead())
             return false;

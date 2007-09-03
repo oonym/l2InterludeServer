@@ -39,12 +39,12 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		//System.out.println(this.getType());
 		try
 		{
-			this.readImpl();
+			readImpl();
 			return true;
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed reading: "+this.getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: "+getClient().toString()+" - Failed reading: "+getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
 			t.printStackTrace();
 		}
 		return false;
@@ -52,6 +52,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	
 	protected abstract void readImpl();
 	
+	@Override
 	public void run()
 	{
 		try
@@ -68,7 +69,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 				if (getClient().packetsSentInSec > 12) return;
 			}
 			
-			this.runImpl();
+			runImpl();
             if (this instanceof MoveBackwardToLocation 
             	|| this instanceof AttackRequest 
             	|| this instanceof RequestMagicSkillUse)
@@ -82,7 +83,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed running: "+this.getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: "+getClient().toString()+" - Failed running: "+getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
 			t.printStackTrace();
 		}
 	}
@@ -91,7 +92,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	
 	protected final void sendPacket(L2GameServerPacket gsp)
 	{
-		this.getClient().sendPacket(gsp);
+		getClient().sendPacket(gsp);
 	}
 	
 	/**

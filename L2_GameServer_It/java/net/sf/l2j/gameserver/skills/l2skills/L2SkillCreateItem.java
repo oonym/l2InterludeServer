@@ -50,7 +50,8 @@ public class L2SkillCreateItem extends L2Skill
     /**
      * @see net.sf.l2j.gameserver.model.L2Skill#useSkill(net.sf.l2j.gameserver.model.L2Character, net.sf.l2j.gameserver.model.L2Object[])
      */
-    public void useSkill(L2Character activeChar, L2Object[] targets)
+    @Override
+	public void useSkill(L2Character activeChar, L2Object[] targets)
     {
         if (activeChar.isAlikeDead()) return;
         if (_createItemId == null || _createItemCount == 0)

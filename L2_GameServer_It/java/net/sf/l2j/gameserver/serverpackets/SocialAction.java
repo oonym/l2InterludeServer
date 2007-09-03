@@ -39,6 +39,7 @@ public class SocialAction extends L2GameServerPacket
 		_actionId = actionId;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x2d);
@@ -49,6 +50,7 @@ public class SocialAction extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__3D_SOCIALACTION;

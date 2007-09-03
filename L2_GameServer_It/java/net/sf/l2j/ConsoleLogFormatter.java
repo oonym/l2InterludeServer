@@ -39,6 +39,7 @@ public class ConsoleLogFormatter extends Formatter
 	 */
 //	private static final String _ = " ";
 	private static final String CRLF = "\r\n";
+	@Override
 	public String format(LogRecord record)
 	{
         TextBuilder output = new TextBuilder();

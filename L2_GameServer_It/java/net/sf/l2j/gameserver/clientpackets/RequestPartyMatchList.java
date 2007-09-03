@@ -48,6 +48,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
 	private String _unk5;
     
     
+	@Override
 	protected void readImpl()
 	{
 		_status = readD();
@@ -61,6 +62,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
         */
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		if (_status == 1)
@@ -89,6 +91,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__70_REQUESTPARTYMATCHLIST;

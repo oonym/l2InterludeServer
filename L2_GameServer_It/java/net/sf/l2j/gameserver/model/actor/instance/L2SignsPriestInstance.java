@@ -48,7 +48,8 @@ public class L2SignsPriestInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         if (command.startsWith("SevenSignsDesc"))
         {
@@ -93,7 +94,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                     	}
                     	catch (Exception e3)
                     	{
-                    		_log.warning("Failed to retrieve cabal from bypass command. NpcId: " + this.getNpcId() + "; Command: " + command);
+                    		_log.warning("Failed to retrieve cabal from bypass command. NpcId: " + getNpcId() + "; Command: " + command);
                     	}
                     }
                 }

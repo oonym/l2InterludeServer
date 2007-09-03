@@ -28,6 +28,7 @@ public class CharCreateOk extends L2GameServerPacket
 {
 	private static final String _S__25_CHARCREATEOK = "[S] 19 CharCreateOk";
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x19);
@@ -37,6 +38,7 @@ public class CharCreateOk extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__25_CHARCREATEOK;

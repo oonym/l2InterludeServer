@@ -47,6 +47,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 	private int _size;
 	private byte[] _data;
 	
+	@Override
 	protected void readImpl()
 	{
 		_size = readD();

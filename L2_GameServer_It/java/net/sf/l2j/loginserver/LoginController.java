@@ -113,10 +113,10 @@ public class LoginController
 		}
 		_log.info("Cached 10 KeyPairs for RSA communication");
 
-		this.testCipher((RSAPrivateKey) _keyPairs[0]._pair.getPrivate());
+		testCipher((RSAPrivateKey) _keyPairs[0]._pair.getPrivate());
 		
 		// Store keys for blowfish communication
-		this.generateBlowFishKeys();
+		generateBlowFishKeys();
 	}
 
 	/**
@@ -200,11 +200,11 @@ public class LoginController
 	{
 		AuthLoginResult ret = AuthLoginResult.INVALID_PASSWORD;
 		// check auth
-		if (this.loginValid(account, password, client))
+		if (loginValid(account, password, client))
 		{
 			// login was successful, verify presence on Gameservers
 			ret = AuthLoginResult.ALREADY_ON_GS;
-			if (!this.isAccountInAnyGameServer(account))
+			if (!isAccountInAnyGameServer(account))
 			{
 				// account isnt on any GS verify LS itself
 				ret = AuthLoginResult.ALREADY_ON_LS;
@@ -218,7 +218,7 @@ public class LoginController
 						ret = AuthLoginResult.AUTH_SUCCESS;
 						
 						// remove him from the non-authed list
-						this.removeLoginClient(client);
+						removeLoginClient(client);
 					}
 				}
 			}

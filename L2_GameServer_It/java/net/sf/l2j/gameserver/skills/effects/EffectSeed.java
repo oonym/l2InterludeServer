@@ -30,11 +30,13 @@ public final class EffectSeed extends L2Effect {
 		super(env, template);
 	}
 
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.SEED;
 	}
 
+	@Override
 	public boolean onActionTime()
     {
     	// just stop this effect

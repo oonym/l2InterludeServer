@@ -30,6 +30,7 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
     
     private boolean _isDwarvenCraft;
     
+	@Override
 	protected void readImpl()
 	{
         _isDwarvenCraft = (readD() == 0);
@@ -39,6 +40,7 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
         }
 	}
 
+	@Override
 	protected void runImpl()
 	{
 	    if (getClient().getActiveChar() == null)
@@ -56,7 +58,8 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType() 
+    @Override
+	public String getType() 
     {
         return _C__AC_REQUESTRECIPEBOOKOPEN;
     }

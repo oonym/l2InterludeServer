@@ -76,6 +76,7 @@ public class PledgeShowMemberListAll extends L2GameServerPacket
 		_members = _clan.getMembers();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		
@@ -140,6 +141,7 @@ public class PledgeShowMemberListAll extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__68_PLEDGESHOWMEMBERLISTALL;

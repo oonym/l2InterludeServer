@@ -40,6 +40,7 @@ public class RecipeShopSellList extends L2GameServerPacket
         _manufacturer = manufacturer;
     }
 	
+	@Override
 	protected final void writeImpl()
     {
         L2ManufactureList createList = _manufacturer.getCreateList();
@@ -70,7 +71,8 @@ public class RecipeShopSellList extends L2GameServerPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__D9_RecipeShopSellList;
     }

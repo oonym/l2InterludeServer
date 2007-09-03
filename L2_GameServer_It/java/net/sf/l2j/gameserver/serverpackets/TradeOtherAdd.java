@@ -36,6 +36,7 @@ public class TradeOtherAdd extends L2GameServerPacket
 		_item = item;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x21);
@@ -58,6 +59,7 @@ public class TradeOtherAdd extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__31_TRADEOTHERADD;

@@ -37,6 +37,7 @@ public final class LambdaRnd extends Lambda {
 		_max = max;
 		_linear = linear;
 	}
+	@Override
 	public double calc(Env env) {
 		if (_linear)
 			return _max.calc(env) * Rnd.nextDouble();

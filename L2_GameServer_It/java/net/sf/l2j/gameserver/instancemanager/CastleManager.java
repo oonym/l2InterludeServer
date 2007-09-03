@@ -91,8 +91,8 @@ public class CastleManager
 
     public void reload()
     {
-    	this.getCastles().clear();
-    	this.load();
+    	getCastles().clear();
+    	load();
     }
 
     // =========================================================

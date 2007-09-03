@@ -37,6 +37,7 @@ public class StopRotation extends L2GameServerPacket
 		_degree = degree;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x63);
@@ -47,6 +48,7 @@ public class StopRotation extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__78_STOPROTATION;

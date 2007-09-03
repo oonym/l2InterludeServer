@@ -31,12 +31,14 @@ public class GameGuardReply extends L2GameClientPacket
 {
     private static final String _C__CA_GAMEGUARDREPLY = "[C] CA GameGuardReply";
 
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
     	
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         
@@ -46,7 +48,8 @@ public class GameGuardReply extends L2GameClientPacket
         getClient().setGameGuardOk(true);
     }
 
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__CA_GAMEGUARDREPLY;
     }

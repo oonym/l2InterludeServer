@@ -31,12 +31,15 @@ public class PcWarehouse extends Warehouse
 		_owner = owner;
 	}
 
+	@Override
 	public L2PcInstance getOwner() { return _owner; }
+	@Override
 	public ItemLocation getBaseLocation() { return ItemLocation.WAREHOUSE; }
 	public String getLocationId() { return "0"; }
 	public int getLocationId(@SuppressWarnings("unused") boolean dummy) { return 0; }
 	public void setLocationId(@SuppressWarnings("unused") L2PcInstance dummy) { return; }
 
+	@Override
 	public boolean validateCapacity(int slots)
 	{
 		return (_items.size() + slots <= _owner.GetWareHouseLimit());

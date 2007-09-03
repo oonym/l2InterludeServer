@@ -33,6 +33,7 @@ public final class RequestWithdrawPartyRoom extends L2GameClientPacket
 	private int _data2;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_data1 = readD();

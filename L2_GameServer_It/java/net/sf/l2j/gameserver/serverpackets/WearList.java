@@ -49,6 +49,7 @@ public class WearList extends L2GameServerPacket
 		_money = currentMoney;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xef);
@@ -90,6 +91,7 @@ public class WearList extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__EF_WEARLIST;

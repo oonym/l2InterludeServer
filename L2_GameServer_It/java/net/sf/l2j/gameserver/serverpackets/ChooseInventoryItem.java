@@ -29,6 +29,7 @@ public class ChooseInventoryItem extends L2GameServerPacket
 		_itemId=itemId;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x6f);
@@ -38,6 +39,7 @@ public class ChooseInventoryItem extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__6F_CHOOSEINVENTORYITEM;

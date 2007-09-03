@@ -29,11 +29,13 @@ public final class RequestGmList extends L2GameClientPacket
 {
 	private static final String _C__81_REQUESTGMLIST = "[C] 81 RequestGmList";
 
+	@Override
 	protected void readImpl()
 	{
 		
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		if (getClient().getActiveChar() == null)
@@ -44,6 +46,7 @@ public final class RequestGmList extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__81_REQUESTGMLIST;

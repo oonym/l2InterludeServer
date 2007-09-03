@@ -53,6 +53,7 @@ public class DropItem extends L2GameServerPacket
 		_charObjId = playerObjId;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x0c);
@@ -80,6 +81,7 @@ public class DropItem extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__16_DROPITEM;

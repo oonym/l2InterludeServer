@@ -84,11 +84,13 @@ public class EnterWorld extends L2GameClientPacket
     
 	public TaskPriority getPriority() { return TaskPriority.PR_URGENT; }
 	
+	@Override
 	protected void readImpl()
 	{
 		// this is just a trigger packet. it has no content
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -96,7 +98,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (activeChar == null)
 		{
 			_log.warning("EnterWorld failed! activeChar is null...");
-			this.getClient().closeNow();
+			getClient().closeNow();
 		    return;
 		}
 		
@@ -476,6 +478,7 @@ public class EnterWorld extends L2GameClientPacket
     /* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__03_ENTERWORLD;

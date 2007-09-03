@@ -35,6 +35,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 		super(objectId, template);
 	}
 
+	@Override
 	public L2Character getMostHated()
 	{
 		return _ptk; //zawsze attakuje tylko 1 osobe chodzby nie wiem co xD
@@ -57,7 +58,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 	{
 		if (Rnd.nextInt(100) <= 80)
 		{
-			CreatureSay cs = new CreatureSay(this.getObjectId(), Say2.ALL, this.getName(),
+			CreatureSay cs = new CreatureSay(getObjectId(), Say2.ALL, getName(),
 												"mmm your bait was delicious");
 			this.broadcastPacket(cs);
 		}
@@ -67,11 +68,12 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 		addAttackerToAttackByList(ptk);
 	}
 
+	@Override
 	public void doDie(L2Character killer)
 	{
 		if (Rnd.nextInt(100) <= 75)
 		{
-			CreatureSay cs = new CreatureSay(this.getObjectId(), Say2.ALL, this.getName(),
+			CreatureSay cs = new CreatureSay(getObjectId(), Say2.ALL, getName(),
 												"I will tell fishes not to take your bait");
 			this.broadcastPacket(cs);
 		}

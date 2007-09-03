@@ -34,12 +34,14 @@ public class MagicSkillCanceld extends L2GameServerPacket
 		_objectId = objectId; 
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x49);
 		writeD(_objectId);
 	}
 	
+	@Override
 	public String getType()
 	{
 		return _S__5B_MAGICSKILLCANCELD;

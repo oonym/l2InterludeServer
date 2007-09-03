@@ -41,19 +41,20 @@ public class L2SiegeFlagInstance extends L2NpcInstance
         _siege = SiegeManager.getInstance().getSiege(_player.getX(), _player.getY());
         if (_player.getClan() == null || _siege == null)
         {
-            this.deleteMe();
+            deleteMe();
         }
         else
         {
             L2SiegeClan sc = _siege.getAttackerClan(_player.getClan());
             if (sc == null)
-                this.deleteMe();
+                deleteMe();
             else
                 sc.addFlag(this);
         }
 	}
 
-    public boolean isAttackable()
+    @Override
+	public boolean isAttackable()
     {
         // Attackable during siege by attacker only
         return (getCastle() != null
@@ -61,6 +62,7 @@ public class L2SiegeFlagInstance extends L2NpcInstance
                 && getCastle().getSiege().getIsInProgress());
     }
 
+	@Override
 	public boolean isAutoAttackable(L2Character attacker) 
 	{
 		// Attackable during siege by attacker only
@@ -71,7 +73,8 @@ public class L2SiegeFlagInstance extends L2NpcInstance
 		        && getCastle().getSiege().getIsInProgress());
 	}
 	
-    public void doDie(L2Character killer)
+    @Override
+	public void doDie(L2Character killer)
     {
         L2SiegeClan sc = _siege.getAttackerClan(_player.getClan());
         if (sc != null)
@@ -80,11 +83,13 @@ public class L2SiegeFlagInstance extends L2NpcInstance
         super.doDie(killer);
     }
 
-    public void onForcedAttack(L2PcInstance player)
+    @Override
+	public void onForcedAttack(L2PcInstance player)
 	{
 		onAction(player);
 	}
 	
+	@Override
 	public void onAction(L2PcInstance player)
 	{
         if (player == null)

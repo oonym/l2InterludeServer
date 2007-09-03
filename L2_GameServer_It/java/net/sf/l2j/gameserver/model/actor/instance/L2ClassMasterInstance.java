@@ -53,6 +53,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 		super(objectId, template);
 	}
 	
+	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (getObjectId() != player.getTargetId())
@@ -157,11 +158,13 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 		}
 	}
 	
+	@Override
 	public String getHtmlPath(@SuppressWarnings("unused") int npcId, int val)
 	{
 		return "data/html/classmaster/" + val + ".htm";
 	}
 
+	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if(command.startsWith("1stClass"))

@@ -28,21 +28,25 @@ public class EffectStunSelf extends L2Effect
 		super(env, template);
 	}
 	
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.STUN_SELF;
 	}
 	
+	@Override
 	public void onStart()
 	{
 		getEffector().startStunning();
 	}
 	
+	@Override
 	public void onExit()
 	{
 		getEffector().stopStunning(this);
 	}
 	
+	@Override
 	public boolean onActionTime()
 	{
 		// just stop this effect

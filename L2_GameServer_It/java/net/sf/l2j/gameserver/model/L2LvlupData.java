@@ -153,7 +153,7 @@ public class L2LvlupData
      */
     public void setClassid(int pClassid)
     {
-        this._classid = pClassid;
+        _classid = pClassid;
     }
 
     /**

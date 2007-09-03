@@ -31,11 +31,13 @@ public final class RequestQuestList extends L2GameClientPacket
 	//private static Logger _log = Logger.getLogger(RequestQuestList.class.getName());
 
 	
+	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		QuestList ql = new QuestList();
@@ -45,6 +47,7 @@ public final class RequestQuestList extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__63_REQUESTQUESTLIST;

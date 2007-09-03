@@ -57,6 +57,7 @@ public class ShortCutRegister extends L2GameServerPacket
 		_shortcut = shortcut;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x44);
@@ -92,6 +93,7 @@ public class ShortCutRegister extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__56_SHORTCUTREGISTER;

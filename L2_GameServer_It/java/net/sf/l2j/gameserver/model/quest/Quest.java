@@ -133,7 +133,7 @@ public abstract class Quest
 	 * @param state
 	 */
 	public void setInitialState(State state) {
-		this._initialState = state;
+		_initialState = state;
 	}
 	
 	/**

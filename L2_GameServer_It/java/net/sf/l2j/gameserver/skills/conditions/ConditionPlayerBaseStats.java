@@ -40,6 +40,7 @@ public class ConditionPlayerBaseStats extends Condition {
 		_value = value;
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		if (!(env.player instanceof L2PcInstance))
 			return false;

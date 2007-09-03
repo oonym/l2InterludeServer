@@ -64,11 +64,13 @@ public class GeoNodeLoc extends AbstractNodeLoc
 		return _z;
 	}
 	
+	@Override
 	public short getNodeX()
 	{
 		return _x;
 	}
 	
+	@Override
 	public short getNodeY()
 	{
 		return _y;

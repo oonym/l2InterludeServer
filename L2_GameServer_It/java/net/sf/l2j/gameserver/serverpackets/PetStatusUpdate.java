@@ -47,6 +47,7 @@ public class PetStatusUpdate extends L2GameServerPacket
 		}
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xb5);
@@ -68,6 +69,7 @@ public class PetStatusUpdate extends L2GameServerPacket
 		writeQ(_summon.getExpForNextLevel());// 100% absolute value
 	}
 	
+	@Override
 	public String getType()
 	{
 		return _S__CE_PETSTATUSSHOW;

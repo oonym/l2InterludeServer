@@ -40,6 +40,7 @@ public final class L2EtcItem  extends L2Item
 	 * Returns the type of Etc Item
 	 * @return L2EtcItemType
 	 */
+	@Override
 	public L2EtcItemType getItemType()
 	{
 		return (L2EtcItemType)super._type;
@@ -49,7 +50,8 @@ public final class L2EtcItem  extends L2Item
      * Returns if the item is consumable
      * @return boolean
      */
-    public final boolean isConsumable()
+    @Override
+	public final boolean isConsumable()
     {
         return ((getItemType() == L2EtcItemType.SHOT) || (getItemType() == L2EtcItemType.POTION)); // || (type == L2EtcItemType.SCROLL));
     }
@@ -58,6 +60,7 @@ public final class L2EtcItem  extends L2Item
 	 * Returns the ID of the Etc item after applying the mask.
 	 * @return int : ID of the EtcItem
 	 */
+	@Override
 	public int getItemMask()
 	{
 		return getItemType().mask();

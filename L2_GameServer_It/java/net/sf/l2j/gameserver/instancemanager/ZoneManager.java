@@ -149,8 +149,8 @@ public class ZoneManager
 
     public void reload()
     {
-    	this.getZoneTypes().clear();
-    	this.load();
+    	getZoneTypes().clear();
+    	load();
     }
     
     // =========================================================

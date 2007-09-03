@@ -34,6 +34,7 @@ public class PartyMemberPosition extends L2GameServerPacket
 		_party = actor.getParty();
 	}
 
+	@Override
 	protected void writeImpl()
 	{
 		writeC(0xa7);
@@ -50,6 +51,7 @@ public class PartyMemberPosition extends L2GameServerPacket
 		}
 	}
 
+	@Override
 	public String getType()
 	{
 		return null;

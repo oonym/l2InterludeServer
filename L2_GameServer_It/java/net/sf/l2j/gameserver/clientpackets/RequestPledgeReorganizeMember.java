@@ -38,6 +38,7 @@ public final class RequestPledgeReorganizeMember extends L2GameClientPacket
 	@SuppressWarnings("unused")
 	private String _unk2;
 
+	@Override
 	protected void readImpl()
 	{
 		_unk1 = readD();

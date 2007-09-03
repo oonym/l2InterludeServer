@@ -202,23 +202,27 @@ public class L2PetInstance extends L2Summon
         _mountable = L2PetDataTable.isMountable(npcId);
 	}
 	
-    public PetStat getStat()
+    @Override
+	public PetStat getStat()
     {
     	if(super.getStat() == null || !(super.getStat() instanceof PetStat))
-    		this.setStat(new PetStat(this));
+    		setStat(new PetStat(this));
     	return (PetStat)super.getStat();
     }
 	
-    public double getLevelMod() { return (100.0 - 11 + getLevel()) / 100.0; }
+    @Override
+	public double getLevelMod() { return (100.0 - 11 + getLevel()) / 100.0; }
     
 	public boolean isRespawned() { return _respawned; }
 	
-    public int getSummonType() { return 2; }
+    @Override
+	public int getSummonType() { return 2; }
 	
+	@Override
 	public void onAction(L2PcInstance player)
 	{
 		boolean isOwner = player.getObjectId() == getOwner().getObjectId();
-		boolean thisIsTarget = player.getTarget() != null && player.getTarget().getObjectId() == this.getObjectId();
+		boolean thisIsTarget = player.getTarget() != null && player.getTarget().getObjectId() == getObjectId();
 		
 		if (isOwner && thisIsTarget)
 		{
@@ -239,6 +243,7 @@ public class L2PetInstance extends L2Summon
         }
 	}
 	
+	@Override
 	public int getControlItemId() { return _controlItemId; }
 	
 	public L2ItemInstance getControlItem() 
@@ -252,11 +257,13 @@ public class L2PetInstance extends L2Summon
 	
 	//public void setPvpFlag(byte pvpFlag) { _pvpFlag = pvpFlag; }
 	
+	@Override
 	public void setPkKills(int pkKills) { _pkKills = pkKills; }
 	
     /**
      * Returns the pet's currently equipped weapon instance (if any). 
      */
+	@Override
 	public L2ItemInstance getActiveWeaponInstance()
 	{
 		for (L2ItemInstance item : getInventory().getItems())
@@ -270,6 +277,7 @@ public class L2PetInstance extends L2Summon
     /**
      * Returns the pet's currently equipped weapon (if any). 
      */
+	@Override
 	public L2Weapon getActiveWeaponItem()
 	{
         L2ItemInstance weapon = getActiveWeaponInstance();
@@ -280,18 +288,21 @@ public class L2PetInstance extends L2Summon
         return (L2Weapon)weapon.getItem();
 	}
     
+	@Override
 	public L2ItemInstance getSecondaryWeaponInstance()
 	{
 		// temporary? unavailable
 		return null;
 	}
     
+	@Override
 	public L2Weapon getSecondaryWeaponItem()
 	{
 		// temporary? unavailable
 		return null;
 	}
 	
+	@Override
 	public PetInventory getInventory() 
     { 
         return _inventory; 
@@ -306,6 +317,7 @@ public class L2PetInstance extends L2Summon
 	 * @param sendMessage : boolean Specifies whether to send message to Client about this action
      * @return boolean informing if the action was successfull
 	 */
+	@Override
 	public boolean destroyItem(String process, int objectId, int count, L2Object reference, boolean sendMessage)
     {
         L2ItemInstance item = _inventory.destroyItem(process, objectId, count, getOwner(), reference);
@@ -342,6 +354,7 @@ public class L2PetInstance extends L2Summon
 	 * @param sendMessage : boolean Specifies whether to send message to Client about this action
      * @return boolean informing if the action was successfull
 	 */
+	@Override
 	public boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference, boolean sendMessage)
 	{
         L2ItemInstance item = _inventory.destroyItemByItemId(process, itemId, count, getOwner(), reference);
@@ -368,6 +381,7 @@ public class L2PetInstance extends L2Summon
         return true;
 	}
 
+	@Override
 	protected void doPickupItem(L2Object object)
 	{
 		getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -460,12 +474,14 @@ public class L2PetInstance extends L2Summon
 			followOwner();
 	}
 
+	@Override
 	public void deleteMe(L2PcInstance owner)
     {
         super.deleteMe(owner);
         destroyControlItem(owner); //this should also delete the pet from the db
     }
 	
+	@Override
 	public synchronized void doDie(L2Character killer) {
 		stopFeed();
 		DecayTaskManager.getInstance().addDecayTask(this,1200000);
@@ -473,7 +489,8 @@ public class L2PetInstance extends L2Summon
 		deathPenalty();
 	}
 
-    public void doRevive()
+    @Override
+	public void doRevive()
     {
     	if (_curFed > (getMaxFed() / 10))
     		_curFed = getMaxFed() / 10;
@@ -487,6 +504,7 @@ public class L2PetInstance extends L2Summon
         startFeed(false);
     }
 
+	@Override
 	public void doRevive(double revivePower)
 	{
 		// Restore the pet's lost experience, 
@@ -541,6 +559,7 @@ public class L2PetInstance extends L2Summon
     	return newItem;
     }
 
+	@Override
 	public void giveAllToOwner()
 	{
 		try
@@ -690,7 +709,8 @@ public class L2PetInstance extends L2Summon
 //	}
 //		
     /** @return Returns the mountable. */
-    public boolean isMountable() { return _mountable; }
+    @Override
+	public boolean isMountable() { return _mountable; }
 
 	private static L2PetInstance restore(L2ItemInstance control, L2NpcTemplate template, L2PcInstance owner)
 	{
@@ -740,6 +760,7 @@ public class L2PetInstance extends L2Summon
 		}
 	}
    
+	@Override
 	public void store()
 	{
 		if (getControlItemId() == 0)
@@ -821,6 +842,7 @@ public class L2PetInstance extends L2Summon
 	    }
 	}
 	
+	@Override
 	public synchronized void unSummon (L2PcInstance owner)
     {
 		stopFeed();
@@ -862,30 +884,45 @@ public class L2PetInstance extends L2Summon
         getStat().addExp(-lostExp);
     }
 
-    public void addExpAndSp(long addToExp, int addToSp) 
+    @Override
+	public void addExpAndSp(long addToExp, int addToSp) 
     {
-       if (this.getNpcId() == 12564) //SinEater 
+       if (getNpcId() == 12564) //SinEater 
           getStat().addExpAndSp(Math.round(addToExp * Config.SINEATER_XP_RATE), addToSp); 
        else 
           getStat().addExpAndSp(Math.round(addToExp * Config.PET_XP_RATE), addToSp); 
     }
     
-    public long getExpForThisLevel() { return getStat().getExpForLevel(getLevel()); }
-    public long getExpForNextLevel() { return getStat().getExpForLevel(getLevel() + 1); }
-    public final int getLevel() { return getStat().getLevel(); }
+    @Override
+	public long getExpForThisLevel() { return getStat().getExpForLevel(getLevel()); }
+    @Override
+	public long getExpForNextLevel() { return getStat().getExpForLevel(getLevel() + 1); }
+    @Override
+	public final int getLevel() { return getStat().getLevel(); }
     public int getMaxFed() { return getStat().getMaxFeed(); }
-    public int getAccuracy() { return getStat().getAccuracy(); }
-    public int getCriticalHit(L2Character target, L2Skill skill) { return getStat().getCriticalHit(target, skill); }
-    public int getEvasionRate(L2Character target) { return getStat().getEvasionRate(target); }
-    public int getRunSpeed() { return getStat().getRunSpeed(); }
-    public int getPAtkSpd() { return getStat().getPAtkSpd(); }
-    public int getMAtkSpd() { return getStat().getMAtkSpd(); }
-    public int getMAtk(L2Character target, L2Skill skill) { return getStat().getMAtk(target, skill); }
-    public int getMDef(L2Character target, L2Skill skill) { return getStat().getMDef(target, skill); }
-    public int getPAtk(L2Character target) { return getStat().getPAtk(target); }
-    public int getPDef(L2Character target) { return getStat().getPDef(target); }
+    @Override
+	public int getAccuracy() { return getStat().getAccuracy(); }
+    @Override
+	public int getCriticalHit(L2Character target, L2Skill skill) { return getStat().getCriticalHit(target, skill); }
+    @Override
+	public int getEvasionRate(L2Character target) { return getStat().getEvasionRate(target); }
+    @Override
+	public int getRunSpeed() { return getStat().getRunSpeed(); }
+    @Override
+	public int getPAtkSpd() { return getStat().getPAtkSpd(); }
+    @Override
+	public int getMAtkSpd() { return getStat().getMAtkSpd(); }
+    @Override
+	public int getMAtk(L2Character target, L2Skill skill) { return getStat().getMAtk(target, skill); }
+    @Override
+	public int getMDef(L2Character target, L2Skill skill) { return getStat().getMDef(target, skill); }
+    @Override
+	public int getPAtk(L2Character target) { return getStat().getPAtk(target); }
+    @Override
+	public int getPDef(L2Character target) { return getStat().getPDef(target); }
     
-    public final int getSkillLevel(int skillId)
+    @Override
+	public final int getSkillLevel(int skillId)
     {
         if (_skills == null || _skills.get(skillId) == null) return -1;
         int lvl = getLevel();
@@ -901,7 +938,8 @@ public class L2PetInstance extends L2Summon
     	L2World.getInstance().addPet(oldOwnerId, this);
     }
     
-    public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
+    @Override
+	public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
     {
     	if (miss) return;
         	

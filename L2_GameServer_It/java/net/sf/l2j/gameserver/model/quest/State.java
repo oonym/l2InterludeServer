@@ -53,7 +53,7 @@ public class State
     public State(String name, Quest quest)
     {
         _name = name;
-		this._quest = quest;
+		_quest = quest;
 		quest.addState(this);
     }
 
@@ -119,7 +119,8 @@ public class State
      * Return name of the quest
      * @return String
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return _name;
     }
 

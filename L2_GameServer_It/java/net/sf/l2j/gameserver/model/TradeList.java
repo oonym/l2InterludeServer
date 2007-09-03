@@ -455,9 +455,9 @@ public class TradeList
                     if (partnerList.isConfirmed())
                     {
                         partnerList.lock();
-                        this.lock();
+                        lock();
                         if (!partnerList.validate()) return false;
-                        if (!this.validate()) return false;
+                        if (!validate()) return false;
 
                         doExchange(partnerList);
                     }
@@ -580,17 +580,17 @@ public class TradeList
     {
         boolean success = false;
         // check weight and slots
-        if ((!this.getOwner().getInventory().validateWeight(partnerList.calcItemsWeight()))
-            || !(partnerList.getOwner().getInventory().validateWeight(this.calcItemsWeight())))
+        if ((!getOwner().getInventory().validateWeight(partnerList.calcItemsWeight()))
+            || !(partnerList.getOwner().getInventory().validateWeight(calcItemsWeight())))
         {
             partnerList.getOwner().sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
-            this.getOwner().sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
+            getOwner().sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
         }
-        else if ((!this.getOwner().getInventory().validateCapacity(partnerList.countItemsSlots(this.getOwner())))
-            || (!partnerList.getOwner().getInventory().validateCapacity(this.countItemsSlots(partnerList.getOwner()))))
+        else if ((!getOwner().getInventory().validateCapacity(partnerList.countItemsSlots(getOwner())))
+            || (!partnerList.getOwner().getInventory().validateCapacity(countItemsSlots(partnerList.getOwner()))))
         {
             partnerList.getOwner().sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
-            this.getOwner().sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+            getOwner().sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
         }
         else
         {
@@ -599,8 +599,8 @@ public class TradeList
             InventoryUpdate partnerIU = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
 
             // Transfer items
-            partnerList.TransferItems(this.getOwner(), partnerIU, ownerIU);
-            this.TransferItems(partnerList.getOwner(), ownerIU, partnerIU);
+            partnerList.TransferItems(getOwner(), partnerIU, ownerIU);
+            TransferItems(partnerList.getOwner(), ownerIU, partnerIU);
 
             // Send inventory update packet
             if (ownerIU != null) _owner.sendPacket(ownerIU);
@@ -621,7 +621,7 @@ public class TradeList
         }
         // Finish the trade
         partnerList.getOwner().onTradeFinish(success);
-        this.getOwner().onTradeFinish(success);
+        getOwner().onTradeFinish(success);
     }
 
     /**

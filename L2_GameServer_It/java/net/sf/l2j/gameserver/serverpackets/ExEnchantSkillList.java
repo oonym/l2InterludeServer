@@ -36,10 +36,10 @@ public class ExEnchantSkillList extends L2GameServerPacket
 
         Skill(int pId, int pNextLevel, int pSp, int pExp)
         {
-            this.id = pId;
-            this.nextLevel = pNextLevel;
-            this.sp = pSp;
-            this.exp = pExp;
+            id = pId;
+            nextLevel = pNextLevel;
+            sp = pSp;
+            exp = pExp;
         }
     }
 

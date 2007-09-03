@@ -32,21 +32,25 @@ public class EffectPsychicalMute extends L2Effect {
     }
 
 
-    public EffectType getEffectType() {
+    @Override
+	public EffectType getEffectType() {
         return L2Effect.EffectType.PSYCHICAL_MUTE;
     }
 
-    public void onStart() {
+    @Override
+	public void onStart() {
         getEffected().startPsychicalMuted();
     }
     
-    public boolean onActionTime() {
+    @Override
+	public boolean onActionTime() {
         // Simply stop the effect
         getEffected().stopPsychicalMuted(this);
         return false;
     }
 
-    public void onExit() {
+    @Override
+	public void onExit() {
         getEffected().stopPsychicalMuted(this);
     }
 }

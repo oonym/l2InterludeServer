@@ -49,6 +49,7 @@ public class PetItemList extends L2GameServerPacket
 		}
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xB2);
@@ -83,6 +84,7 @@ public class PetItemList extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__cb_PETITEMLIST;

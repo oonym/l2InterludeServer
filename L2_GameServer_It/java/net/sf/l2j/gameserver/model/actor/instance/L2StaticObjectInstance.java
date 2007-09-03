@@ -103,7 +103,8 @@ public class L2StaticObjectInstance extends L2Object
      * this is called when a player interacts with this NPC
      * @param player
      */
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
 	if(_type < 0) _log.info("L2StaticObjectInstance: StaticObject with invalid type! StaticObjectId: "+getStaticObjectId());
         // Check if the L2PcInstance already target the L2NpcInstance

@@ -87,7 +87,7 @@ abstract class DocumentBase
 
     DocumentBase(File pFile)
     {
-        this._file = pFile;
+        _file = pFile;
         _tables = new FastMap<String, String[]>();
     }
 

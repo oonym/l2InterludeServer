@@ -40,13 +40,16 @@ public class SummonKnownList extends PlayableKnownList
 
     // =========================================================
     // Property - Public
-    public final L2Summon getActiveChar() { return (L2Summon)super.getActiveChar(); }
+    @Override
+	public final L2Summon getActiveChar() { return (L2Summon)super.getActiveChar(); }
 
-    public int getDistanceToForgetObject(L2Object object)
+    @Override
+	public int getDistanceToForgetObject(L2Object object)
     {
         if (object == getActiveChar().getOwner() || object == getActiveChar().getTarget()) return 6000;
         return 3000;
     }
 
-    public int getDistanceToWatchObject(L2Object object) { return 1500; }
+    @Override
+	public int getDistanceToWatchObject(L2Object object) { return 1500; }
 }

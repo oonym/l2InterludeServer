@@ -54,8 +54,8 @@ public class ServerStatus extends GameServerBasePacket
 
         Attribute(int pId, int pValue)
         {
-            this.id = pId;
-            this.value = pValue;
+            id = pId;
+            value = pValue;
         }
     }
 

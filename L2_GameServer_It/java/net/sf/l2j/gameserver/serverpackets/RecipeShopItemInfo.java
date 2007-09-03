@@ -39,6 +39,7 @@ public class RecipeShopItemInfo  extends L2GameServerPacket
 		_recipeId = recipeId;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
         if (!(L2World.getInstance().findObject(_shopId) instanceof L2PcInstance))
@@ -56,6 +57,7 @@ public class RecipeShopItemInfo  extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__DA_RecipeShopItemInfo;

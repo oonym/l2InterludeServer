@@ -218,7 +218,8 @@ public class L2Potion extends L2Object
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
      */
-    public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
+    @Override
+	public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
     {
         return false;
     }

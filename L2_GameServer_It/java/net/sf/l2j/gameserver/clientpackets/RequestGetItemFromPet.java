@@ -40,6 +40,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 	@SuppressWarnings("unused")
     private int _unknown;
 	
+	@Override
 	protected void readImpl()
 	{
 		_objectId = readD();
@@ -47,6 +48,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 		_unknown  = readD();// = 0 for most trades
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar(); 
@@ -65,6 +67,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 			_log.warning("Invalid Item transfer request: " + pet.getName() + "(pet) --> " + player.getName());
 	}
 
+	@Override
 	public String getType()
 	{
 		return REQUESTGETITEMFROMPET__C__8C;

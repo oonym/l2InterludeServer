@@ -38,6 +38,7 @@ public class ConditionLogicNot extends Condition {
 			_condition.setListener(this);
 	}
 	
+	@Override
 	void setListener(ConditionListener listener)
 	{
 		if (listener != null)
@@ -47,6 +48,7 @@ public class ConditionLogicNot extends Condition {
 		super.setListener(listener);
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		return !_condition.test(env);
 	}

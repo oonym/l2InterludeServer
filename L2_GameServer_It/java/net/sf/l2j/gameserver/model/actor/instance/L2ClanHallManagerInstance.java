@@ -61,7 +61,8 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 		super(objectId, template);
 	}
     
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         player.sendPacket( new ActionFailed() );
@@ -92,7 +93,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                     {
                         NpcHtmlMessage html = new NpcHtmlMessage(1);
                         html.setFile("data/html/clanHallManager/vault.htm");
-                        this.sendHtmlMessage(player, html);
+                        sendHtmlMessage(player, html);
                     }
                 }
                 else
@@ -592,7 +593,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
             }
             else if (actualCommand.equalsIgnoreCase("support"))
             {
-                this.setTarget(player);
+                setTarget(player);
                 L2Skill skill;
                 if (val == "") return;
 
@@ -607,7 +608,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                         if (skill.getSkillType() == SkillType.SUMMON)
                             player.doCast(skill);
                         else
-                            this.doCast(skill);
+                            doCast(skill);
                         if (getClanHall().getFunction(ClanHall.FUNC_SUPPORT)== null)
                             return;
                         NpcHtmlMessage html = new NpcHtmlMessage(1);
@@ -642,7 +643,8 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 	 * this is called when a player interacts with this NPC
 	 * @param player
 	 */
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
         player.setTarget(this);

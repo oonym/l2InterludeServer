@@ -141,7 +141,8 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
         }
     }
     
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         if (command.startsWith("FestivalDesc")) 	
         {

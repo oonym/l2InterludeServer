@@ -28,6 +28,7 @@ public class EnchantResult extends L2GameServerPacket
 		_unknown = unknown;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x81);
@@ -37,6 +38,7 @@ public class EnchantResult extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__81_ENCHANTRESULT;

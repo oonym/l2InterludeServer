@@ -42,7 +42,8 @@ public class JarClassLoader extends ClassLoader {
     	_jars.add(filename);
     }
 
-    public Class<?> findClass(String name) throws ClassNotFoundException {
+    @Override
+	public Class<?> findClass(String name) throws ClassNotFoundException {
     	try {
     		byte[] b = loadClassData(name);
     		return defineClass(name, b, 0, b.length);

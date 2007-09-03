@@ -80,83 +80,83 @@ public class L2PetData
         //      if (stat.equalsIgnoreCase(PET_EXP)) { this.setPetExp(value); } 
         if (stat.equalsIgnoreCase(PET_MAX_EXP))
         {
-            this.setPetMaxExp(value);
+            setPetMaxExp(value);
         }
         //        else if (stat.equalsIgnoreCase(PET_HP)) { this.setPetHP(value); } 
         else if (stat.equalsIgnoreCase(PET_MAX_HP))
         {
-            this.setPetMaxHP(value);
+            setPetMaxHP(value);
         }
         //        else if (stat.equalsIgnoreCase(PET_MP)) { this.setPetMP(value); } 
         else if (stat.equalsIgnoreCase(PET_MAX_MP))
         {
-            this.setPetMaxMP(value);
+            setPetMaxMP(value);
         }
         else if (stat.equalsIgnoreCase(PET_PATK))
         {
-            this.setPetPAtk(value);
+            setPetPAtk(value);
         }
         else if (stat.equalsIgnoreCase(PET_PDEF))
         {
-            this.setPetPDef(value);
+            setPetPDef(value);
         }
         else if (stat.equalsIgnoreCase(PET_MATK))
         {
-            this.setPetMAtk(value);
+            setPetMAtk(value);
         }
         else if (stat.equalsIgnoreCase(PET_MDEF))
         {
-            this.setPetMDef(value);
+            setPetMDef(value);
         }
         else if (stat.equalsIgnoreCase(PET_ACCURACY))
         {
-            this.setPetAccuracy(value);
+            setPetAccuracy(value);
         }
         else if (stat.equalsIgnoreCase(PET_EVASION))
         {
-            this.setPetEvasion(value);
+            setPetEvasion(value);
         }
         else if (stat.equalsIgnoreCase(PET_CRITICAL))
         {
-            this.setPetCritical(value);
+            setPetCritical(value);
         }
         else if (stat.equalsIgnoreCase(PET_SPEED))
         {
-            this.setPetSpeed(value);
+            setPetSpeed(value);
         }
         else if (stat.equalsIgnoreCase(PET_ATK_SPEED))
         {
-            this.setPetAtkSpeed(value);
+            setPetAtkSpeed(value);
         }
         else if (stat.equalsIgnoreCase(PET_CAST_SPEED))
         {
-            this.setPetCastSpeed(value);
+            setPetCastSpeed(value);
         }
         //        else if (stat.equalsIgnoreCase(PET_FEED)) { this.setPetFeed(value); }          
         else if (stat.equalsIgnoreCase(PET_MAX_FEED))
         {
-            this.setPetMaxFeed(value);
+            setPetMaxFeed(value);
         }
         else if (stat.equalsIgnoreCase(PET_FEED_NORMAL))
         {
-            this.setPetFeedNormal(value);
+            setPetFeedNormal(value);
         }
         else if (stat.equalsIgnoreCase(PET_FEED_BATTLE))
         {
-            this.setPetFeedBattle(value);
+            setPetFeedBattle(value);
         }
         //        else if (stat.equalsIgnoreCase(PET_LOAD)) { this.setPetLoad(value); } 
         else if (stat.equalsIgnoreCase(PET_MAX_LOAD))
         {
-            this.setPetMaxLoad(value);
+            setPetMaxLoad(value);
         }
         else if (stat.equalsIgnoreCase(PET_REGEN_HP))
         {
-            this.setPetRegenHP(value);
+            setPetRegenHP(value);
         }
         else if (stat.equalsIgnoreCase(PET_REGEN_MP))
         {
-            this.setPetRegenMP(value);
+            setPetRegenMP(value);
         }
     }
     public void setStat(String stat, long value)
@@ -164,7 +164,7 @@ public class L2PetData
         //      if (stat.equalsIgnoreCase(PET_EXP)) { this.setPetExp(value); } 
         if (stat.equalsIgnoreCase(PET_MAX_EXP))
         {
-            this.setPetMaxExp(value);
+            setPetMaxExp(value);
         }
     }
     public void setStat(String stat, float value)
@@ -172,7 +172,7 @@ public class L2PetData
         //      if (stat.equalsIgnoreCase(PET_EXP)) { this.setPetExp(value); } 
         if (stat.equalsIgnoreCase(OWNER_EXP_TAKEN))
         {
-            this.setOwnerExpTaken(value);
+            setOwnerExpTaken(value);
         }
     }
 
@@ -184,7 +184,7 @@ public class L2PetData
 
     public void setPetID(int pPetID)
     {
-        this._petId = pPetID;
+        _petId = pPetID;
     }
 
     //  Level   
@@ -195,7 +195,7 @@ public class L2PetData
 
     public void setPetLevel(int pPetLevel)
     {
-        this._petLevel = pPetLevel;
+        _petLevel = pPetLevel;
     }
 
     //  Exp     
@@ -210,7 +210,7 @@ public class L2PetData
 
     public void setPetMaxExp(long pPetMaxExp)
     {
-        this._petMaxExp = pPetMaxExp;
+        _petMaxExp = pPetMaxExp;
     }
 
     public float getOwnerExpTaken()
@@ -220,7 +220,7 @@ public class L2PetData
 
     public void setOwnerExpTaken(float pOwnerExpTaken)
     {
-    	this._ownerExpTaken = pOwnerExpTaken;
+    	_ownerExpTaken = pOwnerExpTaken;
     }
     
     //  HP     
@@ -235,7 +235,7 @@ public class L2PetData
 
     public void setPetMaxHP(int pPetMaxHP)
     {
-        this._petMaxHP = pPetMaxHP;
+        _petMaxHP = pPetMaxHP;
     }
 
     //  Mp     
@@ -250,7 +250,7 @@ public class L2PetData
 
     public void setPetMaxMP(int pPetMaxMP)
     {
-        this._petMaxMP = pPetMaxMP;
+        _petMaxMP = pPetMaxMP;
     }
 
     //  PAtk     
@@ -261,7 +261,7 @@ public class L2PetData
 
     public void setPetPAtk(int pPetPAtk)
     {
-        this._petPAtk = pPetPAtk;
+        _petPAtk = pPetPAtk;
     }
 
     //  PDef     
@@ -272,7 +272,7 @@ public class L2PetData
 
     public void setPetPDef(int pPetPDef)
     {
-        this._petPDef = pPetPDef;
+        _petPDef = pPetPDef;
     }
 
     //  MAtk   
@@ -283,7 +283,7 @@ public class L2PetData
 
     public void setPetMAtk(int pPetMAtk)
     {
-        this._petMAtk = pPetMAtk;
+        _petMAtk = pPetMAtk;
     }
 
     //  MDef 
@@ -294,7 +294,7 @@ public class L2PetData
 
     public void setPetMDef(int pPetMDef)
     {
-        this._petMDef = pPetMDef;
+        _petMDef = pPetMDef;
     }
 
     //  Accuracy 
@@ -305,7 +305,7 @@ public class L2PetData
 
     public void setPetAccuracy(int pPetAccuracy)
     {
-        this._petAccuracy = pPetAccuracy;
+        _petAccuracy = pPetAccuracy;
     }
 
     //  Evasion 
@@ -316,7 +316,7 @@ public class L2PetData
 
     public void setPetEvasion(int pPetEvasion)
     {
-        this._petEvasion = pPetEvasion;
+        _petEvasion = pPetEvasion;
     }
 
     //  Critical 
@@ -327,7 +327,7 @@ public class L2PetData
 
     public void setPetCritical(int pPetCritical)
     {
-        this._petCritical = pPetCritical;
+        _petCritical = pPetCritical;
     }
 
     //  Speed 
@@ -338,7 +338,7 @@ public class L2PetData
 
     public void setPetSpeed(int pPetSpeed)
     {
-        this._petSpeed = pPetSpeed;
+        _petSpeed = pPetSpeed;
     }
 
     //  Atk Speed 
@@ -349,7 +349,7 @@ public class L2PetData
 
     public void setPetAtkSpeed(int pPetAtkSpeed)
     {
-        this._petAtkSpeed = pPetAtkSpeed;
+        _petAtkSpeed = pPetAtkSpeed;
     }
 
     //  Cast Speed 
@@ -360,7 +360,7 @@ public class L2PetData
 
     public void setPetCastSpeed(int pPetCastSpeed)
     {
-        this._petCastSpeed = pPetCastSpeed;
+        _petCastSpeed = pPetCastSpeed;
     }
 
     //  Feed     
@@ -375,7 +375,7 @@ public class L2PetData
 
     public void setPetMaxFeed(int pPetMaxFeed)
     {
-        this._petMaxFeed = pPetMaxFeed;
+        _petMaxFeed = pPetMaxFeed;
     }
 
     //  Normal Feed 
@@ -386,7 +386,7 @@ public class L2PetData
 
     public void setPetFeedNormal(int pPetFeedNormal)
     {
-        this._petFeedNormal = pPetFeedNormal;
+        _petFeedNormal = pPetFeedNormal;
     }
 
     //  Battle Feed 
@@ -397,7 +397,7 @@ public class L2PetData
 
     public void setPetFeedBattle(int pPetFeedBattle)
     {
-        this._petFeedBattle = pPetFeedBattle;
+        _petFeedBattle = pPetFeedBattle;
     }
 
     //  Load     
@@ -412,7 +412,7 @@ public class L2PetData
 
     public void setPetMaxLoad(int pPetMaxLoad)
     {
-        this._petMaxLoad = pPetMaxLoad;
+        _petMaxLoad = pPetMaxLoad;
     }
 
     //  Regen HP     
@@ -423,7 +423,7 @@ public class L2PetData
 
     public void setPetRegenHP(int pPetRegenHP)
     {
-        this._petRegenHP = pPetRegenHP;
+        _petRegenHP = pPetRegenHP;
     }
 
     //  Regen MP     
@@ -434,10 +434,11 @@ public class L2PetData
 
     public void setPetRegenMP(int pPetRegenMP)
     {
-        this._petRegenMP = pPetRegenMP;
+        _petRegenMP = pPetRegenMP;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "PetID: " + getPetID() + " \t" + "PetLevel: " + getPetLevel() + " \t" +
         //        PET_EXP + ": " + getPetExp() + " \t" + 

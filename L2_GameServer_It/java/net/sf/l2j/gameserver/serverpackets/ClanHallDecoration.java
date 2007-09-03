@@ -50,6 +50,7 @@ public class ClanHallDecoration extends L2GameServerPacket
 		writeD(0);
 		writeD(0); 
 	 */
+	@Override
 	protected final void writeImpl(){
 		writeC(0xf7);
 		writeD(_clanHall.getId()); // clanhall id
@@ -141,6 +142,7 @@ public class ClanHallDecoration extends L2GameServerPacket
 		writeD(0);
 		writeD(0); 
 	}
+	@Override
 	public String getType()
 	{
 		return _S__F7_AGITDECOINFO;

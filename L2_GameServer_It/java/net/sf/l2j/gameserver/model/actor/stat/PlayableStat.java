@@ -150,5 +150,6 @@ public class PlayableStat extends CharStat
 
     // =========================================================
     // Property - Public
-    public L2PlayableInstance getActiveChar() { return (L2PlayableInstance)super.getActiveChar(); }
+    @Override
+	public L2PlayableInstance getActiveChar() { return (L2PlayableInstance)super.getActiveChar(); }
 }

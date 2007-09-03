@@ -29,6 +29,7 @@ public final class RequestOustFromPartyRoom extends L2GameClientPacket
 	@SuppressWarnings("unused")
 	private int _id;
 	
+	@Override
 	protected void readImpl()
 	{
 		_id = readD();

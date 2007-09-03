@@ -56,6 +56,7 @@ public enum L2ArmorType {
 	 * Returns the name of the ArmorType
 	 * @return String
 	 */
+	@Override
 	public String toString()
 	{
 		return _name;

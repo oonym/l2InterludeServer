@@ -45,6 +45,7 @@ public class ShortCutInit extends L2GameServerPacket
 		_shortCuts = _activeChar.getAllShortCuts();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x45);
@@ -95,6 +96,7 @@ public class ShortCutInit extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__57_SHORTCUTINIT;

@@ -57,7 +57,8 @@ public class SSQStatus extends L2GameServerPacket
         _page = recordPage;
     }
 
-    protected final void writeImpl()
+    @Override
+	protected final void writeImpl()
     {
     	int winningCabal = SevenSigns.getInstance().getCabalHighestScore();
     	int totalDawnMembers = SevenSigns.getInstance().getTotalMembers(SevenSigns.CABAL_DAWN);
@@ -427,7 +428,8 @@ public class SSQStatus extends L2GameServerPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__F5_SSQStatus;
     }

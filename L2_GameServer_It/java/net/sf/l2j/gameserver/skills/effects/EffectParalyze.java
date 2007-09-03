@@ -28,22 +28,26 @@ final class EffectParalyze extends L2Effect {
 		super(env, template);
 	}
 
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.PARALYZE;
 	}
 	
+	@Override
 	public void onStart() 
 	{
        	 getEffected().setIsParalyzed(true);
 	}
 	
+	@Override
 	public void onExit() 
 	{
 		 getEffected().setIsParalyzed(false);
 	}
 	
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
     	return false;
     }

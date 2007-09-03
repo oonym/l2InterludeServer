@@ -33,6 +33,7 @@ public final class LambdaCalc extends Lambda {
 	{
 		funcs = new Func[0];
 	}
+	@Override
 	public double calc(Env env) {
 		double saveValue = env.value;
 		try

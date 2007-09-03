@@ -53,7 +53,8 @@ public class PcStat extends PlayableStat
 
     // =========================================================
     // Method - Public
-    public boolean addExp(long value)
+    @Override
+	public boolean addExp(long value)
     {
     	L2PcInstance activeChar = getActiveChar();
     	
@@ -93,7 +94,8 @@ public class PcStat extends PlayableStat
      * @param addToExp The Experience value to add
      * @param addToSp The SP value to add
      */
-    public boolean addExpAndSp(long addToExp, int addToSp)
+    @Override
+	public boolean addExpAndSp(long addToExp, int addToSp)
     {
     	float ratioTakenByPet = 0;
     	//Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp/Sp
@@ -130,7 +132,8 @@ public class PcStat extends PlayableStat
         return true;
     }
     
-    public boolean removeExpAndSp(long addToExp, int addToSp)
+    @Override
+	public boolean removeExpAndSp(long addToExp, int addToSp)
     {
         if (!super.removeExpAndSp(addToExp, addToSp)) return false;
 
@@ -144,7 +147,8 @@ public class PcStat extends PlayableStat
         return true;
     }
 
-    public final boolean addLevel(byte value)
+    @Override
+	public final boolean addLevel(byte value)
     {
 		if (getLevel() + value > Experience.MAX_LEVEL - 1) return false;
 
@@ -232,7 +236,8 @@ public class PcStat extends PlayableStat
         return levelIncreased;
     }
 
-    public boolean addSp(int value)
+    @Override
+	public boolean addSp(int value)
     {
         if (!super.addSp(value)) return false;
 
@@ -243,16 +248,19 @@ public class PcStat extends PlayableStat
         return true;
     }
 
-    public final long getExpForLevel(int level) { return Experience.LEVEL[level]; }
+    @Override
+	public final long getExpForLevel(int level) { return Experience.LEVEL[level]; }
 
     // =========================================================
     // Method - Private
 
     // =========================================================
     // Property - Public
-    public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
+    @Override
+	public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
 
-    public final long getExp()
+    @Override
+	public final long getExp()
     {
         if (getActiveChar().isSubClassActive()) 
 	        return getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).getExp();
@@ -260,7 +268,8 @@ public class PcStat extends PlayableStat
         return super.getExp();
     }
     
-    public final void setExp(long value)
+    @Override
+	public final void setExp(long value)
     {
         if (getActiveChar().isSubClassActive())
             getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).setExp(value);
@@ -268,14 +277,16 @@ public class PcStat extends PlayableStat
             super.setExp(value);
     }
 
-    public final byte getLevel()
+    @Override
+	public final byte getLevel()
     {
         if (getActiveChar().isSubClassActive()) 
         	return getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).getLevel();
         	
         return super.getLevel();
     }
-    public final void setLevel(byte value)
+    @Override
+	public final void setLevel(byte value)
     {
 		if (value > Experience.MAX_LEVEL - 1) 
 			value = Experience.MAX_LEVEL - 1;
@@ -286,7 +297,8 @@ public class PcStat extends PlayableStat
             super.setLevel(value);
     }
 
-    public final int getMaxHp()
+    @Override
+	public final int getMaxHp()
     {
         // Get the Max HP (base+modifier) of the L2PcInstance
         int val = super.getMaxHp();
@@ -301,7 +313,8 @@ public class PcStat extends PlayableStat
         return val;
     }
 
-    public final int getMaxMp()
+    @Override
+	public final int getMaxMp()
     {
         // Get the Max MP (base+modifier) of the L2PcInstance
         int val = super.getMaxMp();
@@ -318,14 +331,16 @@ public class PcStat extends PlayableStat
         return val;
     }
 
-    public final int getSp()
+    @Override
+	public final int getSp()
     {
         if (getActiveChar().isSubClassActive()) 
         	return getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).getSp();
         	
         return super.getSp();
     }
-    public final void setSp(int value)
+    @Override
+	public final void setSp(int value)
     {
         if (getActiveChar().isSubClassActive())
             getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).setSp(value);

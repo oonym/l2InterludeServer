@@ -583,6 +583,7 @@ public abstract class L2Item
      * Returns the name of the item
      * @return String
      */
+	@Override
 	public String toString()
 	{
 		return _name;

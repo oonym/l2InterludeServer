@@ -24,12 +24,14 @@ public class NormalCamera extends L2GameServerPacket
 
     public NormalCamera(){}
     
-    public void writeImpl()
+    @Override
+	public void writeImpl()
     {
         writeC(0xc8);
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__C8_NORMALCAMERA;
     }

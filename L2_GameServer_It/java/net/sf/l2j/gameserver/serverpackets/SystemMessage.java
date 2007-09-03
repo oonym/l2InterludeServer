@@ -113,6 +113,7 @@ public class SystemMessage extends L2GameServerPacket
 		return this;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x64);
@@ -165,6 +166,7 @@ public class SystemMessage extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__7A_SYSTEMMESSAGE;

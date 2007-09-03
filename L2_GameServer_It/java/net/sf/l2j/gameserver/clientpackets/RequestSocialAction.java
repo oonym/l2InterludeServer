@@ -42,11 +42,13 @@ public class RequestSocialAction extends L2GameClientPacket
 	private int _actionId;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_actionId  = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -86,6 +88,7 @@ public class RequestSocialAction extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__1B_REQUESTSOCIALACTION;

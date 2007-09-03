@@ -86,20 +86,27 @@ public class L2DoorInstance extends L2Character
     public class AIAccessor extends L2Character.AIAccessor
     {
         protected AIAccessor() {}
-        public L2DoorInstance getActor() { return L2DoorInstance.this; }
-        @SuppressWarnings("unused")
+        @Override
+		public L2DoorInstance getActor() { return L2DoorInstance.this; }
+        @Override
+		@SuppressWarnings("unused")
         public void moveTo(int x, int y, int z, int offset) {}
-        @SuppressWarnings("unused")
+        @Override
+		@SuppressWarnings("unused")
         public void moveTo(int x, int y, int z) {}
-        @SuppressWarnings("unused")
+        @Override
+		@SuppressWarnings("unused")
         public void stopMove(L2CharPosition pos) {}
-        @SuppressWarnings("unused")
+        @Override
+		@SuppressWarnings("unused")
         public void doAttack(L2Character target) {}
-        @SuppressWarnings("unused")
+        @Override
+		@SuppressWarnings("unused")
         public void doCast(L2Skill skill) {}
     }
     
-    public L2CharacterAI getAI() {
+    @Override
+	public L2CharacterAI getAI() {
         if (_ai == null)
         {
             synchronized(this)
@@ -111,7 +118,8 @@ public class L2DoorInstance extends L2Character
         return _ai;
     }
     
-    public boolean hasAI() {
+    @Override
+	public boolean hasAI() {
         return (_ai != null);
     }
     
@@ -163,32 +171,35 @@ public class L2DoorInstance extends L2Character
     public L2DoorInstance(int objectId, L2CharTemplate template, int doorId, String name, boolean unlockable)
     {
         super(objectId, template);
-        this.getKnownList();	// init knownlist
-        this.getStat();			// init stats
-        this.getStatus();		// init status
+        getKnownList();	// init knownlist
+        getStat();			// init stats
+        getStatus();		// init status
         _doorId = doorId;
         _name = name;
         _unlockable = unlockable;
     }
 
-    public final DoorKnownList getKnownList()
+    @Override
+	public final DoorKnownList getKnownList()
     {
     	if(super.getKnownList() == null || !(super.getKnownList() instanceof DoorKnownList))
-    		this.setKnownList(new DoorKnownList(this));
+    		setKnownList(new DoorKnownList(this));
     	return (DoorKnownList)super.getKnownList();
     }
     
-    public final DoorStat getStat()
+    @Override
+	public final DoorStat getStat()
     {
     	if(super.getStat() == null || !(super.getStat() instanceof DoorStat))
-    		this.setStat(new DoorStat(this));
+    		setStat(new DoorStat(this));
     	return (DoorStat)super.getStat();
     }
     
-    public final DoorStatus getStatus()
+    @Override
+	public final DoorStatus getStatus()
     {
     	if(super.getStatus() == null || !(super.getStatus() instanceof DoorStatus))
-    		this.setStatus(new DoorStatus(this));
+    		setStatus(new DoorStatus(this));
     	return (DoorStatus)super.getStatus();
     }
     
@@ -197,7 +208,8 @@ public class L2DoorInstance extends L2Character
         return _unlockable;
     }
     
-    public final int getLevel() 
+    @Override
+	public final int getLevel() 
     {
         return 1;
     }
@@ -280,7 +292,8 @@ public class L2DoorInstance extends L2Character
         return true;
     }
     
-    public boolean isAutoAttackable(L2Character attacker)
+    @Override
+	public boolean isAutoAttackable(L2Character attacker)
     {
         if (isUnlockable())
             return true;
@@ -300,7 +313,8 @@ public class L2DoorInstance extends L2Character
     }
 
     
-    public void updateAbnormalEffect() {}
+    @Override
+	public void updateAbnormalEffect() {}
     
     public int getDistanceToWatchObject(L2Object object)
     {
@@ -328,27 +342,32 @@ public class L2DoorInstance extends L2Character
     /**
      * Return null.<BR><BR>
      */ 
-    public L2ItemInstance getActiveWeaponInstance() 
+    @Override
+	public L2ItemInstance getActiveWeaponInstance() 
     {
         return null;
     }
     
-    public L2Weapon getActiveWeaponItem() 
+    @Override
+	public L2Weapon getActiveWeaponItem() 
     {
         return null;
     }
 
-    public L2ItemInstance getSecondaryWeaponInstance() 
+    @Override
+	public L2ItemInstance getSecondaryWeaponInstance() 
     {
         return null;
     }
 
-    public L2Weapon getSecondaryWeaponItem() 
+    @Override
+	public L2Weapon getSecondaryWeaponItem() 
     {
         return null;
     }
 
-    public void onAction(L2PcInstance player) 
+    @Override
+	public void onAction(L2PcInstance player) 
     {
         if (player == null)
             return;
@@ -402,7 +421,8 @@ public class L2DoorInstance extends L2Character
         }
     }
 
-    public void onActionShift(L2GameClient client) 
+    @Override
+	public void onActionShift(L2GameClient client) 
     {
         L2PcInstance player = client.getActiveChar();
         if (player == null) return;
@@ -449,7 +469,8 @@ public class L2DoorInstance extends L2Character
         player.sendPacket(new ActionFailed());
     }
 
-    public void broadcastStatusUpdate()
+    @Override
+	public void broadcastStatusUpdate()
     {
         Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values(); 
         if (knownPlayers == null || knownPlayers.isEmpty())
@@ -467,7 +488,7 @@ public class L2DoorInstance extends L2Character
 
     public void onClose()
     {
-        this.closeMe();
+        closeMe();
     }
     
     public final void closeMe() 
@@ -482,7 +503,8 @@ public class L2DoorInstance extends L2Character
         broadcastStatusUpdate();
     } 
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "door "+_doorId;
     }

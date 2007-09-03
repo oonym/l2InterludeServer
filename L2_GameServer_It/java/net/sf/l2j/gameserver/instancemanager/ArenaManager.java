@@ -65,8 +65,8 @@ public class ArenaManager
 
     public void reload()
     {
-    	this.getArenas().clear();
-    	this.load();
+    	getArenas().clear();
+    	load();
     }
 
     // =========================================================

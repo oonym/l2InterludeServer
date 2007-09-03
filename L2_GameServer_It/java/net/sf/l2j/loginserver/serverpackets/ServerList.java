@@ -75,16 +75,16 @@ public final class ServerList extends L2LoginServerPacket
 		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers,
 				int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
 		{
-			this._ip = pIp;
-			this._port = pPort;
-			this._pvp = pPvp;
-			this._testServer = pTestServer;
-			this._currentPlayers = pCurrentPlayers;
-			this._maxPlayers = pMaxPlayers;
-			this._brackets = pBrackets;
-			this._clock = pClock;
-			this._status = pStatus;
-			this._serverId = pServer_id;
+			_ip = pIp;
+			_port = pPort;
+			_pvp = pPvp;
+			_testServer = pTestServer;
+			_currentPlayers = pCurrentPlayers;
+			_maxPlayers = pMaxPlayers;
+			_brackets = pBrackets;
+			_clock = pClock;
+			_status = pStatus;
+			_serverId = pServer_id;
 		}
 	}
 
@@ -97,17 +97,17 @@ public final class ServerList extends L2LoginServerPacket
 			if (gsi.getStatus() == ServerStatus.STATUS_GM_ONLY && client.getAccessLevel() >= Config.GM_MIN)
 			{
 				// Server is GM-Only but you've got GM Status
-				this.addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
+				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
 			}
 			else if (gsi.getStatus() != ServerStatus.STATUS_GM_ONLY)
 			{
 				// Server is not GM-Only
-				this.addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
+				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
 			}
 			else
 			{
 				// Server's GM-Only and you've got no GM-Status
-				this.addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), ServerStatus.STATUS_DOWN, gsi.getId());
+				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), ServerStatus.STATUS_DOWN, gsi.getId());
 			}
 		}
 	}
@@ -119,6 +119,7 @@ public final class ServerList extends L2LoginServerPacket
 				clock, status, server_id));
 	}
 
+	@Override
 	public void write()
 	{
 		writeC(0x04);

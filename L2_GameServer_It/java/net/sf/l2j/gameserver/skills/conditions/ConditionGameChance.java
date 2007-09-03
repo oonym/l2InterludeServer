@@ -34,7 +34,8 @@ public class ConditionGameChance extends Condition
         _chance = chance;
     }
     
-    public boolean testImpl(Env env)
+    @Override
+	public boolean testImpl(Env env)
     {
         return Rnd.get(100) < _chance;
     }

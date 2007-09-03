@@ -40,6 +40,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 	private int[] _items; // count*2
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_count = readD();
@@ -53,6 +54,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
         }
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
@@ -93,6 +95,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 	}
 	
 	
+	@Override
 	public String getType()
 	{
 		return _C__B2_RequestRecipeShopListSet;

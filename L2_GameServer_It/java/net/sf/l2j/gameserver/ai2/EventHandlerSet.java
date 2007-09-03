@@ -110,6 +110,7 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 	}
 
 	
+	@Override
 	public String toString()
 	{
 		String str = "EventHandlerSet: size:"+_handlers.size()+" Priority:"+_comparatorPrio+(_insertionTime != 0 ? " TimePoints: "+(int)( (System.currentTimeMillis() - _insertionTime)/1000) : "");

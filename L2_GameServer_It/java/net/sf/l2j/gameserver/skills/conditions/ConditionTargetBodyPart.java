@@ -39,7 +39,8 @@ public class ConditionTargetBodyPart extends Condition
         _armor = armor;
     }
 
-    public boolean testImpl(Env env)
+    @Override
+	public boolean testImpl(Env env)
     {
         // target is attacker
         if (env.target == null) return true;

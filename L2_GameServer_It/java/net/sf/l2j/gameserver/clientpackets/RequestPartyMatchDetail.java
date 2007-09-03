@@ -38,6 +38,7 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket
 	private int _unk1;
     
     
+	@Override
 	protected void readImpl()
 	{
 		_objectId = readD();
@@ -45,6 +46,7 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket
         _unk1 = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		//TODO: this packet is currently for starting auto join
@@ -58,6 +60,7 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__71_REQUESTPARTYMATCHDETAIL;

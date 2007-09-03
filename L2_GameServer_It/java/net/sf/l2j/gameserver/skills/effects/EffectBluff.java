@@ -39,13 +39,15 @@ final class EffectBluff extends L2Effect {
         super(env, template);
     }
 
-    public EffectType getEffectType()
+    @Override
+	public EffectType getEffectType()
     {
         return EffectType.BLUFF; //test for bluff effect
     }
     
     /** Notify started */
-    public void onStart()
+    @Override
+	public void onStart()
     { 
         getEffected().startFear();
     	if(getEffected() instanceof L2FolkInstance) return;
@@ -81,12 +83,14 @@ final class EffectBluff extends L2Effect {
         getEffected().setTarget(null);
         onActionTime();
     }
-    public void onExit()
+    @Override
+	public void onExit()
     {
         getEffected().stopFear(this);
         
     }
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
         return false;
     }

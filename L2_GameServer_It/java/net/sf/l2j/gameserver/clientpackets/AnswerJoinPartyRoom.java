@@ -29,7 +29,8 @@ public final class AnswerJoinPartyRoom extends L2GameClientPacket
     @SuppressWarnings("unused")
 	private int _requesterID; // not tested, just guessed
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _requesterID = readD();
     }

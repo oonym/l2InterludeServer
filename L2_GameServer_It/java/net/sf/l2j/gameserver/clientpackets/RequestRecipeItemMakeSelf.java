@@ -34,11 +34,13 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 
 	private int _id;
 	
+	@Override
 	protected void readImpl()
 	{
 		_id = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -63,7 +65,8 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
-    public String getType() 
+    @Override
+	public String getType() 
     {
         return _C__AF_REQUESTRECIPEITEMMAKESELF;
     }

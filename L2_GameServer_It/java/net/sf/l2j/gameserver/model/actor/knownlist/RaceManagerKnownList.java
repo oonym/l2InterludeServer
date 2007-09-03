@@ -38,8 +38,10 @@ public class RaceManagerKnownList extends NpcKnownList
 
     // =========================================================
     // Method - Public
-    public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
-    public boolean addKnownObject(L2Object object, L2Character dropper)
+    @Override
+	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
+    @Override
+	public boolean addKnownObject(L2Object object, L2Character dropper)
     {
         if (!super.addKnownObject(object, dropper)) return false;
 
@@ -53,7 +55,8 @@ public class RaceManagerKnownList extends NpcKnownList
         return true;
     }
 
-    public boolean removeKnownObject(L2Object object)
+    @Override
+	public boolean removeKnownObject(L2Object object)
     {
         if (!super.removeKnownObject(object)) return false;
 
@@ -76,5 +79,6 @@ public class RaceManagerKnownList extends NpcKnownList
 
     // =========================================================
     // Property - Public
-    public L2RaceManagerInstance getActiveChar() { return (L2RaceManagerInstance)super.getActiveChar(); }
+    @Override
+	public L2RaceManagerInstance getActiveChar() { return (L2RaceManagerInstance)super.getActiveChar(); }
 }

@@ -32,6 +32,7 @@ public class RequestDismissPartyRoom extends L2GameClientPacket
 	private int _data1;
 	private int _data2;
 
+	@Override
 	protected void readImpl()
 	{
 		_data1 = readD();

@@ -51,7 +51,8 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
         super(objectId, template);
     }
     
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
 		player.sendPacket( new ActionFailed() );
 
@@ -101,7 +102,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 			    	msg.append("</table>");
 			        msg.append("</body></html>");
 
-			        this.sendHtmlMessage(player, msg.toString());
+			        sendHtmlMessage(player, msg.toString());
 	            }
                 return;
 			}
@@ -171,7 +172,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 	        	msg.append("</center>");
 	        	msg.append("</body></html>");
 
-		        this.sendHtmlMessage(player, msg.toString());
+		        sendHtmlMessage(player, msg.toString());
                 return;
 	        }
 		}
@@ -179,7 +180,8 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
         super.onBypassFeedback(player, command);
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
 	{
         player.sendPacket(new ActionFailed());
 		player.setTarget(this);

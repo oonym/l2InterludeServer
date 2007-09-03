@@ -48,6 +48,7 @@ public class L2SkillElemental extends L2Skill {
 			_seedAny = false;
 	}
 
+	@Override
 	public void useSkill(L2Character activeChar, L2Object[] targets) {
 		if (activeChar.isAlikeDead())
 			return;
@@ -156,10 +157,10 @@ public class L2SkillElemental extends L2Skill {
 			}
 			
 			// activate attacked effects, if any
-			target.stopEffect(this.getId());
-            if (target.getEffect(this.getId()) != null)
-                target.removeEffect(target.getEffect(this.getId()));
-            this.getEffects(activeChar, target);
+			target.stopEffect(getId());
+            if (target.getEffect(getId()) != null)
+                target.removeEffect(target.getEffect(getId()));
+            getEffects(activeChar, target);
 		}
 	}
 }

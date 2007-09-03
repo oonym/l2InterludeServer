@@ -56,9 +56,9 @@ public final class IllegalPlayerAction implements Runnable
     
     public IllegalPlayerAction(L2PcInstance actor, String message, int punishment)
     {
-        this._message        = message;
-        this._punishment     = punishment;
-        this._actor          = actor;
+        _message        = message;
+        _punishment     = punishment;
+        _actor          = actor;
         
         switch(punishment)
         {

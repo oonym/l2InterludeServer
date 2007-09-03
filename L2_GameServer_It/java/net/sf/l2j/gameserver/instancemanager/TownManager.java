@@ -67,8 +67,8 @@ public class TownManager
 
     public void reload()
     {
-    	this.getTowns().clear();
-    	this.load();
+    	getTowns().clear();
+    	load();
     }
 
     // =========================================================

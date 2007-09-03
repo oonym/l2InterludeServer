@@ -69,7 +69,8 @@ public class L2PlayerAI extends L2CharacterAI
      * @param arg1 The second parameter of the Intention
      *
      */
-    synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
+    @Override
+	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
     {
         /*
          if (Config.DEBUG)
@@ -107,7 +108,8 @@ public class L2PlayerAI extends L2CharacterAI
      * Check if actual intention is set to CAST and, if so, retrieves latest intention
      * before the actual CAST and set it as the current intention for the player
      */
-    protected void onEvtFinishCasting()
+    @Override
+	protected void onEvtFinishCasting()
     {
         // forget interupted actions after offensive skill
         if (_skill != null && _skill.isOffensive()) _interuptedIntentions.clear();
@@ -149,7 +151,8 @@ public class L2PlayerAI extends L2CharacterAI
         }
     }
 
-    protected void onIntentionRest()
+    @Override
+	protected void onIntentionRest()
     {
         if (getIntention() != AI_INTENTION_REST)
         {
@@ -164,12 +167,14 @@ public class L2PlayerAI extends L2CharacterAI
         }
     }
 
-    protected void onIntentionActive()
+    @Override
+	protected void onIntentionActive()
     {
         setIntention(AI_INTENTION_IDLE);
     }
 
-    protected void clientNotifyDead()
+    @Override
+	protected void clientNotifyDead()
     {
         _clientMovingToPawnOffset = 0;
         _clientMoving = false;
@@ -256,7 +261,8 @@ public class L2PlayerAI extends L2CharacterAI
         return;
     }
 
-    protected void onEvtThink()
+    @Override
+	protected void onEvtThink()
     {
         if (_thinking || _actor.isAllSkillsDisabled()) return;
 
@@ -279,7 +285,8 @@ public class L2PlayerAI extends L2CharacterAI
         }
     }
 
-    protected void onEvtArrivedRevalidate()
+    @Override
+	protected void onEvtArrivedRevalidate()
     {
         ThreadPoolManager.getInstance().executeTask(new KnownListAsynchronousUpdateTask(_actor));
         super.onEvtArrivedRevalidate();

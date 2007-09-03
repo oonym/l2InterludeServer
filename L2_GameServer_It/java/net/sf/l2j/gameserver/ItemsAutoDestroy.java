@@ -62,7 +62,8 @@ public class ItemsAutoDestroy
     
     protected class CheckItemsForDestroy extends Thread
     {
-        public void run()
+        @Override
+		public void run()
         {
         	if (Config.DEBUG)
         		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items to check.");

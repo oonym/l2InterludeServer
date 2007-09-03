@@ -33,6 +33,7 @@ public class PledgeShowMemberListDelete extends L2GameServerPacket
 		_player = playerName;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x56);
@@ -42,6 +43,7 @@ public class PledgeShowMemberListDelete extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__6B_PLEDGESHOWMEMBERLISTDELETE;

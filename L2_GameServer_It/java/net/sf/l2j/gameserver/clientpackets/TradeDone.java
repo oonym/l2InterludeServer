@@ -39,11 +39,13 @@ public final class TradeDone extends L2GameClientPacket
 
 	private int _response;
 	
+	@Override
 	protected void readImpl()
 	{
 		_response = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
         L2PcInstance player = getClient().getActiveChar();
@@ -83,6 +85,7 @@ public final class TradeDone extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__17_TRADEDONE;

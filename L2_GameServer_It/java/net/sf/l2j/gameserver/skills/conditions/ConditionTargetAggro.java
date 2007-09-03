@@ -39,6 +39,7 @@ public class ConditionTargetAggro extends Condition {
 		_isAggro = isAggro;
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		L2Character target = env.target;
 		if (target instanceof L2MonsterInstance)

@@ -60,8 +60,8 @@ public final class L2WorldRegion
         _surroundingRegions = new FastList<L2WorldRegion>();
         //_surroundingRegions.add(this); //done in L2World.initRegions()
 
-        this._tileX = pTileX;
-        this._tileY = pTileY;
+        _tileX = pTileX;
+        _tileY = pTileY;
         
         // default a newly initialized region to inactive, unless always on is specified
         if (Config.GRIDS_ALWAYS_ON)

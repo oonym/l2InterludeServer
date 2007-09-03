@@ -42,23 +42,27 @@ final class EffectConfuseMob extends L2Effect {
 		super(env, template);
 	}
 
+	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.CONFUSE_MOB_ONLY;
 	}
 	
 	/** Notify started */
+	@Override
 	public void onStart() {
 		getEffected().startConfused();
 		onActionTime();
 	}
 	
 	/** Notify exited */
+	@Override
 	public void onExit() {
 		getEffected().stopConfused(this);
 	}
 	
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
 		List<L2Character> targetList = new FastList<L2Character>();
         

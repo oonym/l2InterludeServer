@@ -47,7 +47,8 @@ public final class BuyListSeed extends L2GameServerPacket
     
     
     //;BuyListSeedPacket;ddh(h dddhh [dhhh] d)
-    protected final void writeImpl()
+    @Override
+	protected final void writeImpl()
     {
         writeC(0xe8);
         
@@ -69,7 +70,8 @@ public final class BuyListSeed extends L2GameServerPacket
         }
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__E8_BUYLISTSEED;
     }

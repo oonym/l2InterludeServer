@@ -51,11 +51,13 @@ public final class UseItem extends L2GameClientPacket
 
 	private int _objectId;
 	
+	@Override
 	protected void readImpl()
 	{
 		_objectId = readD();
 	}
 
+	@Override
 	protected void runImpl()
 	{
 
@@ -390,6 +392,7 @@ public final class UseItem extends L2GameClientPacket
 //		}
 	}
 
+	@Override
 	public String getType()
 	{
 		return _C__14_USEITEM;

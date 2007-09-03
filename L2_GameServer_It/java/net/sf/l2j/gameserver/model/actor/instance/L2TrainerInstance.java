@@ -42,14 +42,16 @@ public final class L2TrainerInstance extends L2FolkInstance
      * this is called when a player interacts with this NPC
      * @param player
      */
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Trainer activated");
         player.setLastFolkNPC(this);
         super.onAction(player);
     }
 
-    public String getHtmlPath(int npcId, int val)
+    @Override
+	public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
         if (val == 0)

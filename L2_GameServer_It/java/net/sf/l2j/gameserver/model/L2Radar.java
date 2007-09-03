@@ -90,14 +90,15 @@ public final class L2Radar
             _z = z;
         }
 
-        public boolean equals(Object obj)
+        @Override
+		public boolean equals(Object obj)
         {
             try
             {
                 RadarMarker temp = (RadarMarker) obj;
                 
-                if ((temp._x == this._x) && (temp._y == this._y) 
-                        && (temp._z == this._z) && (temp._type == this._type))
+                if ((temp._x == _x) && (temp._y == _y) 
+                        && (temp._z == _z) && (temp._type == _type))
                     return true;
 
                 return false;

@@ -48,6 +48,7 @@ public class TeleportToLocation extends L2GameServerPacket
 		_z = z;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x28);
@@ -60,6 +61,7 @@ public class TeleportToLocation extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__38_TELEPORTTOLOCATION;

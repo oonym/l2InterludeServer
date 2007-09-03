@@ -66,7 +66,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false)) return;
 
@@ -445,7 +446,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         }
     }
 
-    public String getHtmlPath(int npcId, int val)
+    @Override
+	public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
 
@@ -455,7 +457,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         return "data/html/villagemaster/" + pom + ".htm";
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Village Master activated");
         player.setLastFolkNPC(this);

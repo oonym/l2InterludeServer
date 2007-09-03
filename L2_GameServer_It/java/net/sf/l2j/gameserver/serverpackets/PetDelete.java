@@ -32,6 +32,7 @@ public class PetDelete extends L2GameServerPacket
 		_petObjId= petObjId;	//objectId
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xb6);
@@ -39,6 +40,7 @@ public class PetDelete extends L2GameServerPacket
 		writeD(_petObjId);//objectId
 	}
 	
+	@Override
 	public String getType()
 	{
 		return _S__CF_PETDELETE;

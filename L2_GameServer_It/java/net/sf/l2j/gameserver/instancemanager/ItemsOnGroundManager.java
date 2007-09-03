@@ -202,7 +202,8 @@ public class ItemsOnGroundManager
 
     protected class storeInDb extends Thread
     {
-    	public void run()
+    	@Override
+		public void run()
         {
     	if(!Config.SAVE_DROPPED_ITEM) return;
     	

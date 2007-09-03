@@ -1341,7 +1341,7 @@ public abstract class L2Skill
             case TARGET_AREA:
             {
                 if ((!(target instanceof L2Attackable || target instanceof L2PlayableInstance)) ||  //   Target is not L2Attackable or L2PlayableInstance
-                    (this.getCastRange() >= 0 && (target == null || target == activeChar || target.isAlikeDead()))) //target is null or self or dead/faking
+                    (getCastRange() >= 0 && (target == null || target == activeChar || target.isAlikeDead()))) //target is null or self or dead/faking
                 {
                     activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
@@ -1875,7 +1875,7 @@ public abstract class L2Skill
             {
                 L2Character cha;
                 int radius = getSkillRadius();
-                if (this.getCastRange() >= 0 && (target instanceof L2NpcInstance || target instanceof L2SummonInstance)
+                if (getCastRange() >= 0 && (target instanceof L2NpcInstance || target instanceof L2SummonInstance)
                 		&& target.isUndead() && !target.isAlikeDead())
                 {
                     cha = target;
@@ -2101,7 +2101,8 @@ public abstract class L2Skill
     	else _preCondition = c;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return "" + _name + "[id=" + _id + ",lvl=" + _level + "]";
     }

@@ -36,13 +36,15 @@ final class EffectBetray extends L2Effect {
         super(env, template);
     }
 
-    public EffectType getEffectType()
+    @Override
+	public EffectType getEffectType()
     {
         return EffectType.BETRAY;
     }
     
     /** Notify started */
-    public void onStart() {
+    @Override
+	public void onStart() {
         if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
         {
             L2PcInstance targetOwner = null;
@@ -53,7 +55,8 @@ final class EffectBetray extends L2Effect {
         }
         }
      /** Notify exited */
-    public void onExit() 
+    @Override
+	public void onExit() 
     {
         if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
         {
@@ -64,7 +67,8 @@ final class EffectBetray extends L2Effect {
         }
     }
     
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {
         L2PcInstance targetOwner = null;
         targetOwner = ((L2Summon)getEffected()).getOwner();

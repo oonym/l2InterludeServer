@@ -29,16 +29,19 @@ public class PetInventory extends Inventory
 		_owner = owner;
 	}
     
+	@Override
 	public L2PetInstance getOwner() 
     { 
         return _owner; 
     }
     
+	@Override
 	protected ItemLocation getBaseLocation() 
     {
         return ItemLocation.PET; 
     }
     
+	@Override
 	protected ItemLocation getEquipLocation() 
     { 
         return ItemLocation.PET_EQUIP; 

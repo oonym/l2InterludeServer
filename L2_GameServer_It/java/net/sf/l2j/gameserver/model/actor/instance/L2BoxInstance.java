@@ -100,6 +100,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		super(objectId, _template);
 	}
 
+	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		String playerName = player.getName();
@@ -129,11 +130,13 @@ public class L2BoxInstance extends L2NpcInstance {
 		//else _log.info("onBypassFeedback unknown command "+command);
 	}
 
+	@Override
 	public boolean hasRandomAnimation()
 	{
 		return false;
 	}
 
+	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
 		String pom = "";

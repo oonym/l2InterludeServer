@@ -38,6 +38,7 @@ public final class RequestDuelStart extends L2GameClientPacket
 	private int _partyDuel;
 	
 	
+	@Override
 	protected void readImpl()
 	{
 		_player = readS();

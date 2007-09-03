@@ -540,7 +540,8 @@ public abstract class Inventory extends ItemContainer
      * 
      * @param item : L2ItemInstance to be added from inventory
      */
-    protected void addItem(L2ItemInstance item)
+    @Override
+	protected void addItem(L2ItemInstance item)
     {
     	super.addItem(item);
     	if (item.isEquipped())
@@ -551,7 +552,8 @@ public abstract class Inventory extends ItemContainer
      * Removes item from inventory for further adjustments.
      * @param item : L2ItemInstance to be removed from inventory
      */
-    protected void removeItem(L2ItemInstance item)
+    @Override
+	protected void removeItem(L2ItemInstance item)
     {
     	// Unequip item if equiped
 //    	if (item.isEquipped()) unEquipItemInSlotAndRecord(item.getEquipSlot());
@@ -1084,6 +1086,7 @@ public abstract class Inventory extends ItemContainer
 	/**
 	 * Refresh the weight of equipment loaded
 	 */
+	@Override
 	protected void refreshWeight()
 	{
 		int weight = 0;
@@ -1133,6 +1136,7 @@ public abstract class Inventory extends ItemContainer
 	/**
 	 * Get back items in inventory from database
 	 */
+	@Override
 	public void restore()
 	{
 	    java.sql.Connection con = null;

@@ -36,7 +36,8 @@ public abstract class EventHandler
         return _owner;
     }
     
-    public final boolean equals(Object object)
+    @Override
+	public final boolean equals(Object object)
     {
         if (object instanceof EventHandler && _owner == ((EventHandler)object)._owner)
             return true;

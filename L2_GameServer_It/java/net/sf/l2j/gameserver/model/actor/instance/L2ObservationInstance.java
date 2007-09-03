@@ -45,7 +45,8 @@ public final class L2ObservationInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         // first do the common stuff
         // and handle the commands that all NPC classes know
@@ -69,7 +70,8 @@ public final class L2ObservationInstance extends L2FolkInstance
         }
     }
 
-    public String getHtmlPath(int npcId, int val)
+    @Override
+	public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
         if (val == 0)
@@ -84,7 +86,8 @@ public final class L2ObservationInstance extends L2FolkInstance
         return "data/html/observation/" + pom + ".htm";
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Teleporter activated");
         super.onAction(player);

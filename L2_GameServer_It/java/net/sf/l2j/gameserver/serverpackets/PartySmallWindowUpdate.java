@@ -35,6 +35,7 @@ public class PartySmallWindowUpdate extends L2GameServerPacket
 		_member = member;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x52);
@@ -56,6 +57,7 @@ public class PartySmallWindowUpdate extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__67_PARTYSMALLWINDOWUPDATE;

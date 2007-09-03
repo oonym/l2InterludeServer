@@ -85,6 +85,7 @@ public final class Say2 extends L2GameClientPacket
 	private String _text;
 	private int _type;
 	private String _target;
+	@Override
 	protected void readImpl()
 	{
 		_text = readS();
@@ -92,6 +93,7 @@ public final class Say2 extends L2GameClientPacket
 		_target = (_type == TELL) ? readS() : null;
 	}
 	
+	@Override
 	protected void runImpl()
 	{
 		if (Config.DEBUG) 
@@ -287,6 +289,7 @@ public final class Say2 extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__38_SAY2;

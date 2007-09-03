@@ -143,7 +143,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		activeChar = pActiveChar;
 		if (activeChar != null)
 		{
-			L2World.getInstance().storeObject(this.getActiveChar());
+			L2World.getInstance().storeObject(getActiveChar());
 		}
 	}
 	
@@ -179,7 +179,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	
 	public void sendPacket(L2GameServerPacket gsp)
 	{
-		this.getConnection().sendPacket(gsp);
+		getConnection().sendPacket(gsp);
 		gsp.runImpl();
 	}
 	
@@ -451,7 +451,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     
     public void close(L2GameServerPacket gsp)
     {
-    	this.getConnection().close(gsp);
+    	getConnection().close(gsp);
     }
     
     /**
@@ -462,7 +462,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     {
         if (charslot < 0 || charslot >= _charSlotMapping.size())
         {
-            _log.warning(this.toString()+" tried to delete Character in slot "+charslot+" but no characters exits at that slot.");
+            _log.warning(toString()+" tried to delete Character in slot "+charslot+" but no characters exits at that slot.");
             return -1;
         }
         Integer objectId = _charSlotMapping.get(charslot);
@@ -472,7 +472,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     @Override
     protected void onForcedDisconnection()
     {
-    	_log.info("Client "+this.toString()+" disconnected abnormally.");
+    	_log.info("Client "+toString()+" disconnected abnormally.");
     }
     
     @Override
@@ -492,17 +492,18 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     /**
      * Produces the best possible string representation of this client.
      */
-    public String toString()
+    @Override
+	public String toString()
 	{
-		InetAddress address = this.getConnection().getSocketChannel().socket().getInetAddress();
-		switch (this.getState())
+		InetAddress address = getConnection().getSocketChannel().socket().getInetAddress();
+		switch (getState())
 		{
 			case CONNECTED:
 				return "["+(address == null ? "disconnected" : address.getHostAddress())+"]";
 			case AUTHED:
-				return "[Account: "+this.getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+				return "[Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
 			case IN_GAME:
-				return "[Character: "+this.getActiveChar().getName()+" - Account: "+this.getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+				return "[Character: "+getActiveChar().getName()+" - Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
 		}
 		throw new IllegalStateException("Missing state on switch");
 	}

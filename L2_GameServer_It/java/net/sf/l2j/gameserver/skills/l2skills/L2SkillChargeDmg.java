@@ -44,16 +44,17 @@ public class L2SkillChargeDmg extends L2Skill
 		chargeSkillId = set.getInteger("charge_skill_id");
 	}
 
+	@Override
 	public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
 	{
 		if (activeChar instanceof L2PcInstance)
 		{
 			L2PcInstance player = (L2PcInstance)activeChar;
 			EffectCharge e = (EffectCharge)player.getEffect(chargeSkillId);
-			if(e == null || e.numCharges < this.numCharges)
+			if(e == null || e.numCharges < numCharges)
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
-				sm.addSkillName(this.getId());
+				sm.addSkillName(getId());
 				activeChar.sendPacket(sm);
 				return false;
 			}
@@ -61,6 +62,7 @@ public class L2SkillChargeDmg extends L2Skill
 		return super.checkCondition(activeChar, itemOrWeapon);
 	}
 	
+	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
     {
 		if (caster.isAlikeDead())
@@ -70,17 +72,17 @@ public class L2SkillChargeDmg extends L2Skill
 		
 		// get the effect
 		EffectCharge effect = (EffectCharge) caster.getEffect(chargeSkillId);
-		if (effect == null || effect.numCharges < this.numCharges)
+		if (effect == null || effect.numCharges < numCharges)
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
-			sm.addSkillName(this.getId());
+			sm.addSkillName(getId());
 			caster.sendPacket(sm);
 			return;
 		}
         double modifier = 0;
-        modifier = (effect.numCharges-this.numCharges)*0.33;		
-		if (this.getTargetType() != SkillTargetType.TARGET_AREA && this.getTargetType() != SkillTargetType.TARGET_MULTIFACE)
-			effect.numCharges -= this.numCharges;
+        modifier = (effect.numCharges-numCharges)*0.33;		
+		if (getTargetType() != SkillTargetType.TARGET_AREA && getTargetType() != SkillTargetType.TARGET_MULTIFACE)
+			effect.numCharges -= numCharges;
         //effect.num_charges = 0;
 		caster.updateEffectIcons();
         if (effect.numCharges == 0)

@@ -45,6 +45,7 @@ public class CharMoveToLocation extends L2GameServerPacket
 		_zDst = cha.getZdestination();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x01);
@@ -63,6 +64,7 @@ public class CharMoveToLocation extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__01_CHARMOVETOLOCATION;

@@ -56,6 +56,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 		_packageSale = _storePlayer.getSellList().isPackaged();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x9b);
@@ -82,6 +83,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__B4_PRIVATESTORELISTSELL;

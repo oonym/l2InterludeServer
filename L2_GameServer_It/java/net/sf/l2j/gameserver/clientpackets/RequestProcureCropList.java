@@ -34,6 +34,7 @@ public class RequestProcureCropList extends L2GameClientPacket
 {
 	private static final String _C__D0_09_REQUESTPROCURECROPLIST = "[C] D0:09 RequestProcureCropList";
 	
+	@Override
 	protected void readImpl()
 	{
 		int size = readD();

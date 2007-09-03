@@ -252,12 +252,12 @@ public class Auction
 	    int requiredAdena = bid;
 	    if (getHighestBidderName().equals(bidder.getClan().getLeaderName()))
 	    		requiredAdena = bid - getHighestBidderMaxBid();
-		if ((getHighestBidderId() >0 && bid > this.getHighestBidderMaxBid()) 
+		if ((getHighestBidderId() >0 && bid > getHighestBidderMaxBid()) 
 				|| (getHighestBidderId() == 0 && bid > getStartingBid()))
 	    {
 			if(takeItem(bidder, 57, requiredAdena))
 			{
-				this.updateInDB(bidder, bid);
+				updateInDB(bidder, bid);
             	bidder.getClan().setAuctionBiddedAt(_id, true);
             	return;
 			}
@@ -492,7 +492,7 @@ public class Auction
             statement.setLong(12, _endDate); 
             statement.execute();
             statement.close();            
-            this.loadBid();
+            loadBid();
         }
         catch (Exception e)
         {

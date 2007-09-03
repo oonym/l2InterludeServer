@@ -40,11 +40,11 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 	{
 		try
 		{
-			this.writeImpl();
+			writeImpl();
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+this.getClient().toString()+" - Failed writing: "+this.getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: "+getClient().toString()+" - Failed writing: "+getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
 			t.printStackTrace();
 		}
 	}

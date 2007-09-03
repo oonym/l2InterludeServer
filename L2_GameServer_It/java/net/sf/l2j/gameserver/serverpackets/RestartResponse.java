@@ -34,6 +34,7 @@ public class RestartResponse extends L2GameServerPacket
 		_message = "ok merong~ khaha";
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x5f);
@@ -45,6 +46,7 @@ public class RestartResponse extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__74_RESTARTRESPONSE;

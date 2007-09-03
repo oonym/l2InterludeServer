@@ -31,22 +31,26 @@ public class EffectRemoveTarget extends L2Effect
         super(env, template);
     }
 
-    public EffectType getEffectType()
+    @Override
+	public EffectType getEffectType()
     {
         return EffectType.REMOVE_TARGET;
     }
     
     /** Notify started */
-    public void onStart() {
+    @Override
+	public void onStart() {
         getEffected().setTarget(null);
     }
     
     /** Notify exited */
-    public void onExit() {
+    @Override
+	public void onExit() {
         //nothing
     }
     
-    public boolean onActionTime()
+    @Override
+	public boolean onActionTime()
     {        
     	//nothing
         return false;

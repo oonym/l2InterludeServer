@@ -31,7 +31,8 @@ import org.w3c.dom.Node;
  */
 public class FaenorQuestParser extends FaenorParser
 {
-    public void parseScript(Node questNode, @SuppressWarnings("unused") BSFManager context)
+    @Override
+	public void parseScript(Node questNode, @SuppressWarnings("unused") BSFManager context)
     {
         if (DEBUG) System.out.println("Parsing Quest.");
         
@@ -100,7 +101,8 @@ public class FaenorQuestParser extends FaenorParser
     
     static class FaenorQuestParserFactory extends ParserFactory
     {
-        public Parser create()
+        @Override
+		public Parser create()
         {
             return(new FaenorQuestParser());
         }

@@ -64,20 +64,22 @@ public class L2MonsterInstance extends L2Attackable
 	public L2MonsterInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		this.getKnownList();	// init knownlist
+		getKnownList();	// init knownlist
         _minionList  = new MinionList(this);
 	}	
 
-    public final MonsterKnownList getKnownList()
+    @Override
+	public final MonsterKnownList getKnownList()
     {
     	if(super.getKnownList() == null || !(super.getKnownList() instanceof MonsterKnownList))
-    		this.setKnownList(new MonsterKnownList(this));
+    		setKnownList(new MonsterKnownList(this));
     	return (MonsterKnownList)super.getKnownList();
     }
 		
 	/**
 	 * Return True if the attacker is not another L2MonsterInstance.<BR><BR>
 	 */
+	@Override
 	public boolean isAutoAttackable(L2Character attacker) 
 	{
 		if (attacker instanceof L2MonsterInstance)
@@ -89,12 +91,14 @@ public class L2MonsterInstance extends L2Attackable
 	/**
 	 * Return True if the L2MonsterInstance is Agressive (aggroRange > 0).<BR><BR>
 	 */
+	@Override
 	public boolean isAggressive()
 	{
-		return (getTemplate().aggroRange > 0) && !this.isEventMob;
+		return (getTemplate().aggroRange > 0) && !isEventMob;
 	}
 
-    public void onSpawn()
+    @Override
+	public void onSpawn()
     {
         super.onSpawn();
         
@@ -192,7 +196,8 @@ public class L2MonsterInstance extends L2Attackable
         }
     }
     
-    public void doDie(L2Character killer) 
+    @Override
+	public void doDie(L2Character killer) 
     {
         if (_minionMaintainTask != null)
             _minionMaintainTask.cancel(true); // doesn't do it?
@@ -233,7 +238,8 @@ public class L2MonsterInstance extends L2Attackable
         return _minionList.hasMinions();
     }
     
-    public void addDamageHate(L2Character attacker, int damage, int aggro)
+    @Override
+	public void addDamageHate(L2Character attacker, int damage, int aggro)
     {
         if (!(attacker instanceof L2MonsterInstance))
         {
@@ -241,7 +247,8 @@ public class L2MonsterInstance extends L2Attackable
         }
     }
     
-    public void deleteMe()
+    @Override
+	public void deleteMe()
     {
         if (hasMinions())
         {

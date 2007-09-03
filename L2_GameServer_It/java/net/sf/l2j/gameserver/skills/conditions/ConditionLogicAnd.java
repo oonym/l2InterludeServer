@@ -50,6 +50,7 @@ public class ConditionLogicAnd extends Condition {
 		conditions = tmp;
 	}
 	
+	@Override
 	void setListener(ConditionListener listener)
 	{
 		if (listener != null) {
@@ -62,6 +63,7 @@ public class ConditionLogicAnd extends Condition {
 		super.setListener(listener);
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		for (Condition c : conditions) {
 			if (!c.test(env))

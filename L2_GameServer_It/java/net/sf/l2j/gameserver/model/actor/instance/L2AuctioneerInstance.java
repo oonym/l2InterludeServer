@@ -51,7 +51,8 @@ public final class L2AuctioneerInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
     	if (Config.DEBUG) _log.warning("Auctioneer activated");
         player.sendPacket(new ActionFailed());
@@ -62,7 +63,8 @@ public final class L2AuctioneerInstance extends L2FolkInstance
             showMessageWindow(player);
     }
 
-    public void onBypassFeedback(L2PcInstance player, String command)
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command)
     {
         if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false)) return;
         player.sendPacket(new ActionFailed());

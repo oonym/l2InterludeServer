@@ -45,8 +45,10 @@ public class CharKnownList extends ObjectKnownList
 
     // =========================================================
     // Method - Public
-    public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
-    public boolean addKnownObject(L2Object object, L2Character dropper)
+    @Override
+	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
+    @Override
+	public boolean addKnownObject(L2Object object, L2Character dropper)
     {
         if (!super.addKnownObject(object, dropper)) return false;
         if (object instanceof L2PcInstance) {
@@ -63,7 +65,8 @@ public class CharKnownList extends ObjectKnownList
     public final boolean knowsThePlayer(L2PcInstance player) { return getActiveChar() == player || getKnownPlayers().containsKey(player.getObjectId()); }
     
     /** Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI. */
-    public final void removeAllKnownObjects()
+    @Override
+	public final void removeAllKnownObjects()
     {
         super.removeAllKnownObjects();
         getKnownPlayers().clear();
@@ -77,7 +80,8 @@ public class CharKnownList extends ObjectKnownList
         if (getActiveChar().hasAI()) getActiveChar().setAI(null);
     }
     
-    public boolean removeKnownObject(L2Object object)
+    @Override
+	public boolean removeKnownObject(L2Object object)
     {
         if (!super.removeKnownObject(object)) return false;
         if (object instanceof L2PcInstance) {
@@ -97,9 +101,11 @@ public class CharKnownList extends ObjectKnownList
     // Property - Public
     public L2Character getActiveChar() { return (L2Character)super.getActiveObject(); }
     
-    public int getDistanceToForgetObject(L2Object object) { return 0; }
+    @Override
+	public int getDistanceToForgetObject(L2Object object) { return 0; }
 
-    public int getDistanceToWatchObject(L2Object object) { return 0; }
+    @Override
+	public int getDistanceToWatchObject(L2Object object) { return 0; }
 
     public Collection<L2Character> getKnownCharacters()
     {

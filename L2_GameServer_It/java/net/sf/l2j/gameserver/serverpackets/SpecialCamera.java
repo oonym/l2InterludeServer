@@ -39,7 +39,8 @@ public class SpecialCamera extends L2GameServerPacket
         _duration = duration;
     }
     
-    public void writeImpl()
+    @Override
+	public void writeImpl()
     {   
         writeC(0xc7);
         writeD(_id);
@@ -50,7 +51,8 @@ public class SpecialCamera extends L2GameServerPacket
         writeD(_duration);
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__C7_SPECIALCAMERA;
     }

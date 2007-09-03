@@ -62,6 +62,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 						" type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x42);
@@ -98,6 +99,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__54_WAREHOUSEWITHDRAWALLIST;

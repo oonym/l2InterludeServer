@@ -107,7 +107,7 @@ public class L2Spawn
 		public SpawnTask(/*int objid*/L2NpcInstance pOldNpc)
 		{
 			//_objId= objid;
-            this._oldNpc = pOldNpc;
+            _oldNpc = pOldNpc;
 		}
 		
 		public void run()

@@ -69,7 +69,8 @@ public class WayPointNode extends L2Object
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.model.L2Object#isAutoAttackable(net.sf.l2j.gameserver.model.L2Character)
      */
-    public boolean isAutoAttackable(@SuppressWarnings("unused")
+    @Override
+	public boolean isAutoAttackable(@SuppressWarnings("unused")
     L2Character attacker)
     {
         return false;
@@ -104,7 +105,8 @@ public class WayPointNode extends L2Object
                      player.getZ());
     }
 
-    public void onAction(L2PcInstance player)
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (player.getTarget() != this)
         {
@@ -116,19 +118,19 @@ public class WayPointNode extends L2Object
 
     public void setNormalInfo(String type, int id, String title)
     {
-        this._type = type;
+        _type = type;
         changeID(id, title);
     }
 
     public void setNormalInfo(String type, int id)
     {
-        this._type = type;
+        _type = type;
         changeID(id);
     }
 
     private void changeID(int id)
     {
-        this._id = id;
+        _id = id;
         toggleVisible();
         toggleVisible();
     }
@@ -155,7 +157,8 @@ public class WayPointNode extends L2Object
         changeID(Config.SELECTED_NODE_ID, SELECTED);
     }
 
-    public boolean isMarker()
+    @Override
+	public boolean isMarker()
     {
         return true;
     }
@@ -167,7 +170,7 @@ public class WayPointNode extends L2Object
 
     public final void setTitle(String title)
     {
-        this._title = title;
+        _title = title;
     }
 
     public int getId()
@@ -182,7 +185,7 @@ public class WayPointNode extends L2Object
 
     public void setType(String type)
     {
-        this._type = type;
+        _type = type;
     }
 
     /**

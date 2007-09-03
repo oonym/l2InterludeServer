@@ -47,6 +47,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 	private int _objectID;
 	private int _count;
 	
+	@Override
 	protected void readImpl()
 	{
 		_objectID = readD();

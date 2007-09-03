@@ -161,7 +161,8 @@ public class L2CabaleBufferInstance extends L2NpcInstance
         _aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CabalaAI(this), 3000, 3000);
     }
     
-    public void deleteMe()
+    @Override
+	public void deleteMe()
     {
         if (_aiTask != null)
         {
@@ -172,12 +173,14 @@ public class L2CabaleBufferInstance extends L2NpcInstance
         super.deleteMe();
     }
     
-    public int getDistanceToWatchObject(L2Object object)
+    @Override
+	public int getDistanceToWatchObject(L2Object object)
     {
         return 900;
     }
     
-    public boolean isAutoAttackable(L2Character attacker)
+    @Override
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return false;
     }

@@ -77,6 +77,7 @@ public class QuestList extends L2GameServerPacket
         
 	}
 	
+	@Override
 	public void runImpl()
 	{
 		if (getClient() != null && getClient().getActiveChar() != null)
@@ -86,6 +87,7 @@ public class QuestList extends L2GameServerPacket
         }
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 	    /**
@@ -159,6 +161,7 @@ public class QuestList extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__98_QUESTLIST;

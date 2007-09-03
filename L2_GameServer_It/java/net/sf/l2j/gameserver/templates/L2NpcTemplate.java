@@ -306,7 +306,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 			}
 			else
 			{
-				_log.warning("Quest event not allowed in multiple quests.  Skipped addition of Event Type \""+EventType+"\" for NPC \""+this.name +"\" and quest \""+q.getName()+"\".");
+				_log.warning("Quest event not allowed in multiple quests.  Skipped addition of Event Type \""+EventType+"\" for NPC \""+name +"\" and quest \""+q.getName()+"\".");
 			}
 		}
     }

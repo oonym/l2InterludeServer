@@ -40,14 +40,18 @@ public class PcInventory extends Inventory
 
 	public PcInventory(L2PcInstance owner)
 	{
-		this._owner = owner;
+		_owner = owner;
 	}
 	
+	@Override
 	public L2PcInstance getOwner() { return _owner; }
+	@Override
 	protected ItemLocation getBaseLocation() { return ItemLocation.INVENTORY; } 
+	@Override
 	protected ItemLocation getEquipLocation() { return ItemLocation.PAPERDOLL; }
 
 	public L2ItemInstance getAdenaInstance() {return _adena;}
+	@Override
 	public int getAdena() {return _adena != null ? _adena.getCount() : 0;}
 	
 	public L2ItemInstance getAncientAdenaInstance() 
@@ -286,7 +290,8 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item or the updated item in inventory
      */
-    public L2ItemInstance addItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
+    @Override
+	public L2ItemInstance addItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
     {
         item = super.addItem(process, item, actor, reference);
     	
@@ -308,7 +313,8 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item or the updated item in inventory
      */
-    public L2ItemInstance addItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
+    @Override
+	public L2ItemInstance addItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
     {
         L2ItemInstance item = super.addItem(process, itemId, count, actor, reference);
         
@@ -330,7 +336,8 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item or the updated item in inventory
      */
-    public L2ItemInstance transferItem(String process, int objectId, int count, ItemContainer target, L2PcInstance actor, L2Object reference)
+    @Override
+	public L2ItemInstance transferItem(String process, int objectId, int count, ItemContainer target, L2PcInstance actor, L2Object reference)
     {
         L2ItemInstance item = super.transferItem(process, objectId, count, target, actor, reference);
         
@@ -351,6 +358,7 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
+	@Override
 	public L2ItemInstance destroyItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
 	{
         item = super.destroyItem(process, item, actor, reference);
@@ -373,6 +381,7 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
+	@Override
 	public L2ItemInstance destroyItem(String process, int objectId, int count, L2PcInstance actor, L2Object reference)
     {
         L2ItemInstance item = super.destroyItem(process, objectId, count, actor, reference);
@@ -395,6 +404,7 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
+	@Override
 	public L2ItemInstance destroyItemByItemId(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
 	{
 		L2ItemInstance item = super.destroyItemByItemId(process, itemId, count, actor, reference);
@@ -416,6 +426,7 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
+	@Override
 	public L2ItemInstance dropItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
 	{
         item = super.dropItem(process, item, actor, reference);
@@ -438,6 +449,7 @@ public class PcInventory extends Inventory
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the destroyed item or the updated item in inventory
 	 */
+	@Override
 	public L2ItemInstance dropItem(String process, int objectId, int count, L2PcInstance actor, L2Object reference)
 	{
         L2ItemInstance item = super.dropItem(process, objectId, count, actor, reference);
@@ -455,7 +467,8 @@ public class PcInventory extends Inventory
      * <b>Overloaded</b>, when removes item from inventory, remove also owner shortcuts.
      * @param item : L2ItemInstance to be removed from inventory
      */
-    protected void removeItem(L2ItemInstance item)
+    @Override
+	protected void removeItem(L2ItemInstance item)
     {
         // Removes any reference to the item from Shortcut bar
     	getOwner().removeItemFromShortCut(item.getObjectId());
@@ -475,6 +488,7 @@ public class PcInventory extends Inventory
 	/**
 	 * Refresh the weight of equipment loaded
 	 */
+	@Override
 	public void refreshWeight()
 	{
 		super.refreshWeight();
@@ -484,7 +498,8 @@ public class PcInventory extends Inventory
 	/**
 	 * Get back items in inventory from database
 	 */
-    public void restore()
+    @Override
+	public void restore()
     {
     	super.restore();
     	_adena = getItemByItemId(ADENA_ID);
@@ -557,11 +572,13 @@ public class PcInventory extends Inventory
     	return validateCapacity(slots); 
     } 
 
+	@Override
 	public boolean validateCapacity(int slots)
 	{
 		return (_items.size() + slots <= _owner.GetInventoryLimit());
 	}
 
+	@Override
 	public boolean validateWeight(int weight)
 	{
 		return (_totalWeight + weight <= _owner.getMaxLoad());

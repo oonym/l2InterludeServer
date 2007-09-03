@@ -36,7 +36,8 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
     private int _set; // 1 set, 0 delete
     private String _targetPlayerName;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _set = readD();
         _currPlayerName = readS();

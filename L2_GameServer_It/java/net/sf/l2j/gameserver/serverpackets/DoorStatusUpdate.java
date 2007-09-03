@@ -43,6 +43,7 @@ public class DoorStatusUpdate extends L2GameServerPacket
 		_door=door;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x4d);
@@ -58,6 +59,7 @@ public class DoorStatusUpdate extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__61_DOORSTATUSUPDATE;

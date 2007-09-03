@@ -44,6 +44,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 	private int _length;
 	private byte[] _data;
 	
+	@Override
 	protected void readImpl()
 	{
 		_length  = readD();
@@ -51,6 +52,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 		readB(_data);
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -141,6 +143,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__53_REQUESTSETPLEDGECREST;

@@ -41,7 +41,9 @@ public class DoorStat extends CharStat
 
     // =========================================================
     // Property - Public
-    public L2DoorInstance getActiveChar() { return (L2DoorInstance)super.getActiveChar(); }
+    @Override
+	public L2DoorInstance getActiveChar() { return (L2DoorInstance)super.getActiveChar(); }
 
-    public final byte getLevel() { return 1; }
+    @Override
+	public final byte getLevel() { return 1; }
 }

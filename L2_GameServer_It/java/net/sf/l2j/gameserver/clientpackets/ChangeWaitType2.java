@@ -29,11 +29,13 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 
 	private boolean _typeStand;
 	
+	@Override
 	protected void readImpl()
 	{
 		_typeStand = (readD() == 1);
 	}
 
+	@Override
 	protected void runImpl()
 	{
 	    if(getClient() != null && getClient().getActiveChar() != null)
@@ -48,6 +50,7 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _C__1D_CHANGEWAITTYPE2;

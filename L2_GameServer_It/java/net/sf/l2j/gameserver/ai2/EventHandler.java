@@ -40,6 +40,7 @@ public abstract class EventHandler
 	
 	abstract AiPlugingParameters getPlugingParameters();
 	
+	@Override
 	public String toString()
 	{
 		return "EventHandler: "+getEvenType().name()+" Priority:"+getPriority();

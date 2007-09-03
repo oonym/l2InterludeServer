@@ -38,6 +38,7 @@ public class ConditionPlayerRace extends Condition {
 		_race = race;
 	}
 	
+	@Override
 	public boolean testImpl(Env env) {
 		if (!(env.player instanceof L2PcInstance))
 			return false;

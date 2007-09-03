@@ -104,7 +104,8 @@ public class BitSetIDFactory extends IdFactory
         }
     }
     
-    public synchronized void releaseId(int objectID)
+    @Override
+	public synchronized void releaseId(int objectID)
     {
         if ((objectID - FIRST_OID) > -1)
         {
@@ -114,7 +115,8 @@ public class BitSetIDFactory extends IdFactory
             _log.warning("BitSet ID Factory: release objectID "+objectID+" failed (< "+FIRST_OID+")");
     }
     
-    public synchronized int getNextId()
+    @Override
+	public synchronized int getNextId()
     {
         int newID = _nextFreeId.get();
         _freeIds.set(newID);
@@ -143,7 +145,8 @@ public class BitSetIDFactory extends IdFactory
         return newID + FIRST_OID;
     }
     
-    public synchronized int size()
+    @Override
+	public synchronized int size()
     {
         return _freeIdCount.get();
     }

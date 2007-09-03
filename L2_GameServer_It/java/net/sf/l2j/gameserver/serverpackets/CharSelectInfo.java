@@ -73,6 +73,7 @@ public class CharSelectInfo extends L2GameServerPacket
 		return _characterPackages;
 	}
 
+	@Override
 	protected final void writeImpl()
 	{
 		int size = (_characterPackages.length);
@@ -366,6 +367,7 @@ public class CharSelectInfo extends L2GameServerPacket
 		return charInfopackage;
 	}
 
+	@Override
 	public String getType()
 	{
 		return _S__1F_CHARSELECTINFO;

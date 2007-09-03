@@ -52,6 +52,7 @@ public class AskJoinParty extends L2GameServerPacket
 		_itemDistribution = itemDistribution;
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x39);
@@ -62,6 +63,7 @@ public class AskJoinParty extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__4B_ASKJOINPARTY_0X4B;

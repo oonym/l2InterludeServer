@@ -35,6 +35,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 	private static final String _C__D0_2E_REQUESTREFINECANCEL = "[C] D0:2E RequestRefineCancel";
 	private int _targetItemObjId;
 	
+	@Override
 	protected void readImpl()
 	{
 		_targetItemObjId = readD();

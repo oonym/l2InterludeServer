@@ -55,6 +55,7 @@ public final class RequestActionUse extends L2GameClientPacket
 	private boolean _ctrlPressed;
 	private boolean _shiftPressed;
 
+	@Override
 	protected void readImpl()
 	{
 		_actionId     = readD();
@@ -62,6 +63,7 @@ public final class RequestActionUse extends L2GameClientPacket
 		_shiftPressed = (readC() == 1);
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
@@ -75,14 +77,14 @@ public final class RequestActionUse extends L2GameClientPacket
 		// dont do anything if player is dead
 		if (activeChar.isAlikeDead())
 		{
-			this.getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(new ActionFailed());
 			return;
 		}
 
 		// don't do anything if player is confused
 		if (activeChar.isOutOfControl())
 		{
-			this.getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(new ActionFailed());
 			return;
 		}
 
@@ -287,7 +289,7 @@ public final class RequestActionUse extends L2GameClientPacket
 		case 37:
 			if (activeChar.isAlikeDead())
 			{
-				this.getClient().sendPacket(new ActionFailed());
+				getClient().sendPacket(new ActionFailed());
 				return;
 			}
 			if(activeChar.getPrivateStoreType() != 0){
@@ -335,7 +337,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			// Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
 			if (activeChar.isAlikeDead())
 			{
-				this.getClient().sendPacket(new ActionFailed());
+				getClient().sendPacket(new ActionFailed());
 				return;
 			}
 			if(activeChar.getPrivateStoreType() != 0){
@@ -521,6 +523,7 @@ public final class RequestActionUse extends L2GameClientPacket
 		useSkill(skillId, activeChar.getTarget());
 	}
 
+	@Override
 	public String getType()
 	{
 		return _C__45_REQUESTACTIONUSE;

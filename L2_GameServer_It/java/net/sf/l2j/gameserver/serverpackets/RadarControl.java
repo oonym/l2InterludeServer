@@ -40,6 +40,7 @@ public class RadarControl extends L2GameServerPacket
         _z = z;
     }
 	
+	@Override
 	protected final void writeImpl()
     {
         writeC(0xEB);
@@ -53,7 +54,8 @@ public class RadarControl extends L2GameServerPacket
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__EB_RadarControl;
     }

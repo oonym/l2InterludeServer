@@ -99,12 +99,14 @@ public class L2SummonInstance extends L2Summon
                                                                                      delay, delay);
     }
 
-    public final int getLevel()
+    @Override
+	public final int getLevel()
     {
         return (getTemplate() != null ? getTemplate().level : 0);
     }
 
-    public int getSummonType()
+    @Override
+	public int getSummonType()
     {
         return 1;
     }
@@ -195,7 +197,8 @@ public class L2SummonInstance extends L2Summon
         getOwner().sendPacket(sm);
     }
 
-    public synchronized void doDie(L2Character killer)
+    @Override
+	public synchronized void doDie(L2Character killer)
     {
         if (Config.DEBUG)
             _log.warning("L2SummonInstance: " + getTemplate().name + " (" + getOwner().getName()
@@ -300,7 +303,8 @@ public class L2SummonInstance extends L2Summon
         }
     }
 
-    public void unSummon(L2PcInstance owner)
+    @Override
+	public void unSummon(L2PcInstance owner)
     {
         if (Config.DEBUG)
             _log.warning("L2SummonInstance: " + getTemplate().name + " (" + owner.getName()
@@ -315,13 +319,15 @@ public class L2SummonInstance extends L2Summon
         super.unSummon(owner);
     }
 
-    public boolean destroyItem(String process, int objectId, int count, L2Object reference,
+    @Override
+	public boolean destroyItem(String process, int objectId, int count, L2Object reference,
                                boolean sendMessage)
     {
         return getOwner().destroyItem(process, objectId, count, reference, sendMessage);
     }
 
-    public boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference,
+    @Override
+	public boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference,
                                        boolean sendMessage)
     {
         if (Config.DEBUG)
@@ -331,7 +337,8 @@ public class L2SummonInstance extends L2Summon
         return getOwner().destroyItemByItemId(process, itemId, count, reference, sendMessage);
     }
     
-    public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
+    @Override
+	public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
     {
     	if (miss) return;
         	

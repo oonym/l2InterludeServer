@@ -35,13 +35,15 @@ public class CameraMode extends L2GameServerPacket
         _mode = mode;
     }
     
-    public void writeImpl()
+    @Override
+	public void writeImpl()
     {
         writeC(0xf1);
         writeD(_mode);
     }
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _S__F1_CAMERAMODE;
     }

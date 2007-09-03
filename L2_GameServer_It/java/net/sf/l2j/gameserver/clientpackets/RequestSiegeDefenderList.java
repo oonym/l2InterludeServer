@@ -34,12 +34,14 @@ public final class RequestSiegeDefenderList extends L2GameClientPacket
 
     private int _castleId;
     
-    protected void readImpl()
+    @Override
+	protected void readImpl()
     {
         _castleId = readD();
     }
 
-    protected void runImpl()
+    @Override
+	protected void runImpl()
     {
         Castle castle = CastleManager.getInstance().getCastle(_castleId);
         if (castle == null) return;
@@ -48,7 +50,8 @@ public final class RequestSiegeDefenderList extends L2GameClientPacket
     }
     
     
-    public String getType()
+    @Override
+	public String getType()
     {
         return _C__a3_RequestSiegeDefenderList;
     }

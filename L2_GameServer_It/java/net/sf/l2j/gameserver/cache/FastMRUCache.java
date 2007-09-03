@@ -55,7 +55,8 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
             _node = object;
         }
         
-        public boolean equals(Object object)
+        @Override
+		public boolean equals(Object object)
         {
         	return _node == object;
         }
@@ -67,11 +68,13 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
      */
     private static final Factory FACTORY = new Factory() {
 
-        public Object create() {
+        @Override
+		public Object create() {
             return new FastMRUCache();
         }
 
-        public void cleanup(Object obj) {
+        @Override
+		public void cleanup(Object obj) {
             ((FastMRUCache) obj).reset();
         }
     };
@@ -110,7 +113,8 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
     }
     
     // Implements Reusable.
-    public synchronized void reset() {
+    @Override
+	public synchronized void reset() {
         _map.reset();
         _cache.reset();
         _mruList.reset();
@@ -156,7 +160,8 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         return result;
     }
     
-    public synchronized boolean remove(Object key)
+    @Override
+	public synchronized boolean remove(Object key)
     {
         _cache.remove(key);
         _mruList.remove(key);
@@ -168,7 +173,8 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         return _map;
     }
     
-    public int size()
+    @Override
+	public int size()
     {
         return _mruList.size();
     }
@@ -183,7 +189,8 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
         return _forgetTime;
     }
     
-    public synchronized void clear()
+    @Override
+	public synchronized void clear()
     {
         _cache.clear();
         _mruList.clear();
@@ -191,19 +198,23 @@ public class FastMRUCache<K,V> extends FastCollection implements Reusable
     }
     
     // Implements FastCollection abstract method.
-    public final Record head() {
+    @Override
+	public final Record head() {
         return _mruList.head();
     }
 
-    public final Record tail() {
+    @Override
+	public final Record tail() {
         return _mruList.tail();
     }
 
-    public final Object valueOf(Record record) {
+    @Override
+	public final Object valueOf(Record record) {
         return ((FastMap.Entry) record).getKey();
     }
 
-    public final void delete(Record record) {
+    @Override
+	public final void delete(Record record) {
         remove(((FastMap.Entry) record).getKey());
     }
 }

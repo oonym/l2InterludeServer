@@ -47,6 +47,7 @@ public final class Action extends L2GameClientPacket
     private int _originZ;
 	private int _actionId;
 	
+	@Override
 	protected void readImpl()
 	{
 		_objectId  = readD();   // Target object Identifier
@@ -56,6 +57,7 @@ public final class Action extends L2GameClientPacket
 		_actionId  = readC();   // Action identifier : 0-Simple click, 1-Shift click
 	}
 
+	@Override
 	protected void runImpl()
 	{
 		if (Config.DEBUG) _log.fine("Action:" + _actionId);
@@ -74,7 +76,7 @@ public final class Action extends L2GameClientPacket
 		if (obj == null) {
 			// pressing e.g. pickup many times quickly would get you here
 			// _log.warning("Character: " + activeChar.getName() + " request action with non existent ObjectID:" + _objectId);
-			this.getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(new ActionFailed());
         	return;
         }
         // Check if the target is valid, if the player haven't a shop or isn't the requester of a transaction (ex : FriendInvite, JoinAlly, JoinParty...)
@@ -94,18 +96,19 @@ public final class Action extends L2GameClientPacket
 				default:
 					// Ivalid action detected (probably client cheating), log this
 					_log.warning("Character: " + activeChar.getName() + " requested invalid action: " + _actionId);
-					this.getClient().sendPacket(new ActionFailed());
+					getClient().sendPacket(new ActionFailed());
 					break;
 			}
 		}
 		else
 			// Actions prohibited when in trade
-			this.getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(new ActionFailed());
 	}
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return ACTION__C__04;

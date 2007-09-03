@@ -37,12 +37,14 @@ public class TaskSevenSignsUpdate extends Task
     private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
     public static final String NAME = "SevenSignsUpdate";
     
-    public String getName()
+    @Override
+	public String getName()
     {
         return NAME;
     }
 
-    public void onTimeElapsed(ExecutedTask task)
+    @Override
+	public void onTimeElapsed(ExecutedTask task)
     {
         try {
             SevenSigns.getInstance().saveSevenSignsData(null, true);
@@ -57,7 +59,8 @@ public class TaskSevenSignsUpdate extends Task
         }
     }
     
-    public void initializate()
+    @Override
+	public void initializate()
     {
         super.initializate();
         TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "1800000", "1800000", "");

@@ -38,6 +38,7 @@ public class Revive extends L2GameServerPacket
 		_objectId = obj.getObjectId();
 	}
 	
+	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x07);
@@ -47,6 +48,7 @@ public class Revive extends L2GameServerPacket
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
+	@Override
 	public String getType()
 	{
 		return _S__0C_REVIVE;
