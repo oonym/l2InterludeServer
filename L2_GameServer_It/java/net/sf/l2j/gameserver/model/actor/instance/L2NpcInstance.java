@@ -55,8 +55,6 @@ import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.MobGroupTable;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
-import net.sf.l2j.gameserver.model.actor.instance.L2FriendlyMobInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.knownlist.NpcKnownList;
 import net.sf.l2j.gameserver.model.actor.stat.NpcStat;
 import net.sf.l2j.gameserver.model.actor.status.NpcStatus;

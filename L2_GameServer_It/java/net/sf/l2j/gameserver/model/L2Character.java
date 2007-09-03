@@ -20,7 +20,6 @@ package net.sf.l2j.gameserver.model;
 
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;

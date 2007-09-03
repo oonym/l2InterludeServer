@@ -48,14 +48,12 @@ import net.sf.l2j.gameserver.model.actor.instance.L2ControlTowerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.serverpackets.CharInfo;
 import net.sf.l2j.gameserver.serverpackets.RelationChanged;
 import net.sf.l2j.gameserver.serverpackets.SiegeInfo;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
-import net.sf.l2j.gameserver.util.Broadcast;
 
 public class Siege
 {

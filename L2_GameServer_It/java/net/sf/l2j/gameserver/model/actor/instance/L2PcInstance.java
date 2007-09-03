@@ -8106,12 +8106,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (hero && _baseClass == _activeClass)
 		{
-			for (L2Skill s : HeroSkillTable.getInstance().GetHeroSkills())
+			for (L2Skill s : HeroSkillTable.GetHeroSkills())
 				addSkill(s, false); //Dont Save Hero skills to database
 		}
 		else
 		{
-			for (L2Skill s : HeroSkillTable.getInstance().GetHeroSkills())
+			for (L2Skill s : HeroSkillTable.GetHeroSkills())
 				super.removeSkill(s); //Just Remove skills from nonHero characters
 		}
 		_hero = hero;
