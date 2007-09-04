@@ -27,6 +27,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.entity.Castle;
+import net.sf.l2j.gameserver.SevenSigns;
 
 
 public class CastleManager
@@ -271,4 +272,24 @@ public class CastleManager
         if (_castles == null) _castles = new FastList<Castle>();
         return _castles;
     }
+
+	public final void validateTaxes(int sealStrifeOwner)
+	{
+		int maxTax;
+		switch(sealStrifeOwner)
+		{
+			case SevenSigns.CABAL_DUSK:
+				maxTax = 5;
+				break;
+			case SevenSigns.CABAL_DAWN:
+				maxTax = 25;
+				break;
+			default: // no owner
+				maxTax = 15;
+				break;
+		}
+		for(Castle castle : _castles)
+			if(castle.getTaxPercent() > maxTax)
+				castle.setTaxPercent(maxTax);
+	}
 }

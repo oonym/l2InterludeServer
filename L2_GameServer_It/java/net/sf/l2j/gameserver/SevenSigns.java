@@ -29,6 +29,7 @@ import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
 import net.sf.l2j.gameserver.model.L2World;
@@ -1253,22 +1254,24 @@ public class SevenSigns
 				case SEAL_AVARICE:
 					if (newSealOwner == CABAL_DAWN)
 						sendMessageToAll(SystemMessageId.DAWN_OBTAINED_AVARICE);
-					if (newSealOwner == CABAL_DUSK)
+					else if (newSealOwner == CABAL_DUSK)
 						sendMessageToAll(SystemMessageId.DUSK_OBTAINED_AVARICE);
 					break;
 				case SEAL_GNOSIS:
 					if (newSealOwner == CABAL_DAWN)
 						sendMessageToAll(SystemMessageId.DAWN_OBTAINED_GNOSIS);
-					if (newSealOwner == CABAL_DUSK)
+					else if (newSealOwner == CABAL_DUSK)
 						sendMessageToAll(SystemMessageId.DUSK_OBTAINED_GNOSIS);
 					break;
 				case SEAL_STRIFE:
 					if (newSealOwner == CABAL_DAWN)
 						sendMessageToAll(SystemMessageId.DAWN_OBTAINED_STRIFE);
-					if (newSealOwner == CABAL_DUSK)
+					else if (newSealOwner == CABAL_DUSK)
 						sendMessageToAll(SystemMessageId.DUSK_OBTAINED_STRIFE);
+					
+					CastleManager.getInstance().validateTaxes(newSealOwner);
 					break;
-			}    	
+			}
 		}
 	}
 	
