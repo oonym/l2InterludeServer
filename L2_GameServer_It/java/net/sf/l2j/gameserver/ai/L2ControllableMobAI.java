@@ -289,7 +289,7 @@ public class L2ControllableMobAI extends L2AttackableAI
             {
 				// stop hating
 				L2Attackable npc = (L2Attackable) _actor;
-				npc.stopHating((L2Attackable)getAttackTarget());
+				npc.stopHating(getAttackTarget());
 			}
             
             setAttackTarget(null);

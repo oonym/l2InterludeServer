@@ -323,7 +323,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         if(_attackTarget instanceof L2PcInstance && sGuard.getCastle().getSiege().checkIsDefender(((L2PcInstance)_attackTarget).getClan())) 
         {
         	// Cancel the target
-        	sGuard.clearHating(_attackTarget);
+        	sGuard.stopHating(_attackTarget);
         	_actor.setTarget(null);
         	setIntention(AI_INTENTION_IDLE, null, null);
         	return;
@@ -333,7 +333,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
     	{
         	// Siege guards differ from normal mobs currently:
         	// If target cannot seen, don't attack any more
-        	sGuard.clearHating(_attackTarget); 
+        	sGuard.stopHating(_attackTarget); 
         	_actor.setTarget(null);
         	setIntention(AI_INTENTION_IDLE, null, null);
         	return;
@@ -542,7 +542,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
             if (_attackTarget != null)
             {
                 L2Attackable npc = (L2Attackable) _actor;
-                npc.stopHating((L2Attackable)_attackTarget);
+                npc.stopHating(_attackTarget);
             }
 
             // Cancel target and timeout
