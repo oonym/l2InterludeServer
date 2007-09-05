@@ -487,7 +487,18 @@ public class Disablers implements ISkillHandler
                     	 for (String stat : _negateStats)
                     	 {                                
                     		 stat = stat.toLowerCase().intern();
-                        	 if (stat == "buff") negateEffect(target,SkillType.BUFF,-1);
+                        	 if (stat == "buff") 
+                        	 {
+                             	int lvlmodifier= 52+skill.getMagicLevel()*2;
+                            	if(skill.getMagicLevel()==12) lvlmodifier = (Experience.MAX_LEVEL - 1);
+                            	int landrate = 90;
+                            	if((target.getLevel() - lvlmodifier)>0) landrate = 90-4*(target.getLevel()-lvlmodifier);
+                            	
+                            	landrate *= (100 - activeChar.calcStat(Stats.CANCEL_RES, 0, target, null))/100;
+                            	
+                            	if(Rnd.get(100) < landrate)
+                            		negateEffect(target,SkillType.BUFF,-1);
+                        	 }
 	                    	 if (stat == "debuff") negateEffect(target,SkillType.DEBUFF,-1);
 	                    	 if (stat == "weakness") negateEffect(target,SkillType.WEAKNESS,-1);
 	                    	 if (stat == "stun") negateEffect(target,SkillType.STUN,-1);
