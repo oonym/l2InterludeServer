@@ -22,7 +22,8 @@ import java.util.List;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.L2Character;
-import net.sf.l2j.gameserver.model.L2Summon;
+import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 
 /**
  * This class ...
@@ -60,7 +61,7 @@ public class PartySpelled extends L2GameServerPacket
     {
         if (_activeChar == null) return;
         writeC(0xee);
-        writeD(_activeChar instanceof L2Summon ? 2 : 0);
+        writeD(_activeChar instanceof L2SummonInstance ? 2 : _activeChar instanceof L2PetInstance ? 1 : 0);
         writeD(_activeChar.getObjectId());
         writeD(_effects.size());
         for (Effect temp : _effects)
