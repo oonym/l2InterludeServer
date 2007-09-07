@@ -109,6 +109,9 @@ public class RequestRecordInfo extends L2GameClientPacket
 					}
 					else
 						_activeChar.sendPacket(new NpcInfo(summon, _activeChar));
+					
+					// The PetInfo packet wipes the PartySpelled (list of active spells icons).  Re-add them
+					summon.updateEffectIcons(true);
 				}
 	           	else if (object instanceof L2PcInstance)
 				{
