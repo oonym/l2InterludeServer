@@ -62,8 +62,11 @@ public abstract class L2Summon extends L2PlayableInstance
     
     private int _chargedSoulShot;
     private int _chargedSpiritShot;
-    private int _usedSoulShots = 0;
-    private int _usedSpiritShots = 0;
+    
+    // TODO: currently, all servitors use 1 shot.  However, this value
+    // should vary depending on the servitor template (id and level)!
+    private int _soulShotsPerHit = 1;
+    private int _spiritShotsPerHit = 1;
 	protected boolean _showSummonAnimation;
     
 	public class AIAccessor extends L2Character.AIAccessor
@@ -235,24 +238,14 @@ public abstract class L2Summon extends L2PlayableInstance
         return _maxLoad;
     }
     
-    public final int getUsedSoulShots()
+    public final int getSoulShotsPerHit()
     {
-        return _usedSoulShots;
+        return _soulShotsPerHit;
     }
     
-    public final int getUsedSpiritShots()
+    public final int getSpiritShotsPerHit()
     {
-        return _usedSpiritShots;
-    }
-    
-    public final void increaseUsedSoulShots(int numShots)
-    {
-        _usedSoulShots += numShots;
-    }
-    
-    public final void increaseUsedSpiritShots(int numShots)
-    {
-        _usedSpiritShots += numShots;
+        return _spiritShotsPerHit;
     }
     
     public void setMaxLoad(int maxLoad)
