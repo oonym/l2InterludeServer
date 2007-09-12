@@ -65,7 +65,7 @@ public class AdminPolymorph implements IAdminCommandHandler
 			}
 			catch(Exception e)
 			{
-				activeChar.sendMessage("Usage: //polymoprh [type] <id>");
+				activeChar.sendMessage("Usage: //polymorph [type] <id>");
 			}
 		}
 		else if (command.equals("admin_unpolymorph"))

@@ -453,7 +453,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 			othGroupId = Integer.parseInt(command.split(" ")[2]);
 		} 
 		catch (Exception e) {
-			activeChar.sendMessage("Usage: //mobgroup_attack_grp <groupId> <TargetGroupId>");
+			activeChar.sendMessage("Usage: //mobgroup_attackgrp <groupId> <TargetGroupId>");
 			return;
 		}
 
