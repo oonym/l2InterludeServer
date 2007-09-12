@@ -263,7 +263,7 @@ public final class QuestState
 		_vars.put(var, val);
 		return val;
 	}
-
+	
 	/**
 	 * Return value of parameter "val" after adding the couple (var,val) in class variable "vars".<BR><BR>
 	 * <U><I>Actions :</I></U><BR>
@@ -294,11 +294,115 @@ public final class QuestState
 			Quest.createQuestVarInDb(this, var, val);
 		
 		if (var == "cond") {
-			QuestList ql = new QuestList();
-	        getPlayer().sendPacket(ql);
+	        try
+	        {
+	        	int previousVal = 0;
+	        	try
+	        	{
+	        		previousVal = Integer.parseInt(old);
+	        	}
+	        	catch(Exception ex)
+	        	{
+	        		previousVal = 0;
+	        	}
+	        	setCond(Integer.parseInt(val), previousVal);
+	        } 
+	        catch (Exception e)
+	        {
+	            _log.finer(getPlayer().getName()+", "+getQuest().getName()+" cond ["+val+"] is not an integer.  Value stored, but no packet was sent: " + e);
+	        }			
 		}
         
 		return val;
+	}
+	
+	/**
+	 * Internally handles the progression of the quest so that it is ready for sending 
+	 * appropriate packets to the client<BR><BR>
+	 * <U><I>Actions :</I></U><BR>
+	 * <LI>Check if the new progress number resets the quest to a previous (smaller) step</LI>
+	 * <LI>If not, check if quest progress steps have been skipped</LI>
+	 * <LI>If skipped, prepare the variable completedStateFlags appropriately to be ready for sending to clients</LI>
+	 * <LI>If no steps were skipped, flags do not need to be prepared...</LI>
+	 * <LI>If the passed step resets the quest to a previous step, reset such that steps after the parameter are not
+	 * considered, while skipped steps before the parameter, if any, maintain their info</LI>
+	 * @param cond : int indicating the step number for the current quest progress (as will be shown to the client)
+	 * @param old : int indicating the previously noted step 
+	 * 
+	 * For more info on the variable communicating the progress steps to the client, please see
+	 * @link net.sf.l2j.loginserver.serverpacket.QuestList
+	 */	
+	private void setCond(int cond, int old)
+	{
+		int completedStateFlags = 0;	// initializing...
+
+		// if there is no change since last setting, there is nothing to do here
+		if (cond == old)
+			return;
+		
+		// cond 0 and 1 do not need completedStateFlags.  Also, if cond > 1, the 1st step must
+		// always exist (i.e. it can never be skipped).  So if cond is 2, we can still safely 
+		// assume no steps have been skipped.
+		// Finally, more than 31 steps CANNOT be supported in any way with skipping.
+		if (cond < 3 || cond > 31)
+		{
+			unset("__completedStateFlags");
+		}
+		else
+			completedStateFlags = getInt("__completedStateFlags");
+		
+		// case 1: No steps have been skipped so far...
+		if(completedStateFlags == 0)
+		{
+			// check if this step also doesn't skip anything.  If so, no further work is needed
+			// also, in this case, no work is needed if the state is being reset to a smaller value
+			// in those cases, skip forward to informing the client about the change...
+			
+			// ELSE, if we just now skipped for the first time...prepare the flags!!!
+			if (cond > (old+1))
+			{
+				// set the most significant bit to 1 (indicates that there exist skipped states)
+				completedStateFlags = 0x80000000;
+				
+				// since no flag had been skipped until now, the least significant bits must all 
+				// be set to 1, up until "old" number of bits.
+				completedStateFlags |= ((1<<old)-1);
+				
+				// now, just set the bit corresponding to the passed cond to 1 (current step)
+				completedStateFlags |= (1<<(cond-1));
+				set("__completedStateFlags", String.valueOf(completedStateFlags));
+			}
+		}
+		// case 2: There were exist previously skipped steps
+		else
+		{
+			// if this is a push back to a previous step, clear all completion flags ahead
+			if (cond < old)
+			{
+				completedStateFlags &= ((1<<cond)-1);  // note, this also unsets the flag indicating that there exist skips
+
+				//now, check if this resulted in no steps being skipped any more
+				if ( completedStateFlags == ((1<<cond)-1) )
+					unset("__completedStateFlags");
+				else
+				{
+					// set the most significant bit back to 1 again, to correctly indicate that this skips states.
+					completedStateFlags |= 0x80000000;
+					set("__completedStateFlags", String.valueOf(completedStateFlags));
+				}
+			}
+			// if this moves forward, it changes nothing on previously skipped steps...so just mark this 
+			// state and we are done
+			else
+			{
+				completedStateFlags |= (1<<(cond-1));
+				set("__completedStateFlags", String.valueOf(completedStateFlags));
+			}			
+		}
+		
+		// send a packet to the client to inform it of the quest progress (step change)
+		QuestList ql = new QuestList();
+		getPlayer().sendPacket(ql);
 	}
 
 	/**
@@ -317,7 +421,7 @@ public final class QuestState
         
 		if (old != null)
 			Quest.deleteQuestVarInDb(this, var);
-        
+		
 		return old;
 	}
 
