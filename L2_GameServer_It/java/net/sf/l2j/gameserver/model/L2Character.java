@@ -4504,7 +4504,6 @@ public abstract class L2Character extends L2Object
 		{
 			// If target is not attackable, send a Server->Client packet ActionFailed
 			player.sendPacket(new ActionFailed());
-			return;
 		}
 		else if (player.isConfused())
 		{
@@ -4525,12 +4524,6 @@ public abstract class L2Character extends L2Object
 	            player.sendPacket(new ActionFailed());
 	            return;
 	        }
-			//_log.config("Not within a zone");
-			//player.startAttack(this);
-
-			// Send a Server->Client packet MyTargetSelected to start attack
-			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
-
 			// Notify AI with AI_INTENTION_ATTACK
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 		}
@@ -5695,6 +5688,7 @@ public abstract class L2Character extends L2Object
 	}
 
 }
+
 
 
 

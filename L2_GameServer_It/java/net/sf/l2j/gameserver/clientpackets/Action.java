@@ -69,8 +69,12 @@ public final class Action extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
-        // Get the L2OPbject targeted corresponding to _objectId
-		L2Object obj = L2World.getInstance().findObject(_objectId);
+		L2Object obj;
+		
+		if (activeChar.getTargetId() == _objectId)
+			obj = activeChar.getTarget();
+		else
+			obj = L2World.getInstance().findObject(_objectId);
 
 		// If object requested does not exist, add warn msg into logs
 		if (obj == null) {

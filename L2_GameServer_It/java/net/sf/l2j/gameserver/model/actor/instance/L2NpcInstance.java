@@ -542,6 +542,10 @@ public class L2NpcInstance extends L2Character
     @Override
 	public void onAction(L2PcInstance player)
     {
+    	if (player.isConfused()) {
+    		player.sendPacket(new ActionFailed());
+    		return;
+    	}
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
         {
@@ -570,11 +574,7 @@ public class L2NpcInstance extends L2Character
         }
         else
         {
-            // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-            // The player.getLevel() - getLevel() permit to display the correct color
-            MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
-            player.sendPacket(my);
-            
+        	player.sendPacket(new ValidateLocation(this));
             // Check if the player is attackable (without a forced attack) and isn't dead
             if (isAutoAttackable(player) && !isAlikeDead())
             {
@@ -604,8 +604,6 @@ public class L2NpcInstance extends L2Character
                     // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
                     player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
                     
-                    // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
-                    player.sendPacket(new ActionFailed());
                 } 
                 else 
                 {
@@ -624,10 +622,6 @@ public class L2NpcInstance extends L2Character
                         else
                         	showChatWindow(player, 0);
                     }
-                    
-                    // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-                    player.sendPacket(new ActionFailed());					
-                    // player.setCurrentState(L2Character.STATE_IDLE);
                 }
             }
         }

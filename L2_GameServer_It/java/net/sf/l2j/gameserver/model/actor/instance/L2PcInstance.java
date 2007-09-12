@@ -183,6 +183,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.TargetSelected;
 import net.sf.l2j.gameserver.serverpackets.TradeStart;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
+import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2Armor;
@@ -3447,8 +3448,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (player.isConfused())
 		{
 			// Send a Server->Client packet ActionFailed to the player
-			ActionFailed af = new ActionFailed();
-			player.sendPacket(af);
+			player.sendPacket(new ActionFailed());
+			return;
 		}
 
 		// Check if the player already target this L2PcInstance
@@ -3459,11 +3460,12 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// Send a Server->Client packet MyTargetSelected to the player
 			// The color to display in the select window is White
-			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
-			player.sendPacket(my);
+			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
+			if (player != this) player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
+			if (player != this) player.sendPacket(new ValidateLocation(this));
 			// Check if this L2PcInstance has a Private Store
 			if (getPrivateStoreType() != 0)
             {
