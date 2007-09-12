@@ -5005,6 +5005,8 @@ public abstract class L2Character extends L2Object
 							sendPacket(new PetInfo((L2Summon)target));
 						else
 							sendPacket(new NpcInfo((L2Summon)target, this));
+						// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
+						((L2Summon)target).updateEffectIcons(true);
 					}
 				}
 			}
