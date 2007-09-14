@@ -143,10 +143,17 @@ public class L2Party {
 		{
 			_itemLastLoot++;
 			if (_itemLastLoot >= getMemberCount()) _itemLastLoot = 0;
-			L2PcInstance member = getPartyMembers().get(_itemLastLoot);
-			
-			if (member.getInventory().validateCapacityByItemId(ItemId) &&
-                    Util.checkIfInRange(1400, target, member, true)) return member;
+			L2PcInstance member;
+			try 
+			{ 
+				member = getPartyMembers().get(_itemLastLoot); 
+				if (member.getInventory().validateCapacityByItemId(ItemId) &&
+	                    Util.checkIfInRange(1400, target, member, true)) return member;
+			} 
+			catch (Exception e)
+			{
+				// continue, take another member if this just logged off
+			}
 		}
 		
 		return null;
