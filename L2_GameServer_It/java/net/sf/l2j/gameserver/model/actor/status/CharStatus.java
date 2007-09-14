@@ -94,9 +94,8 @@ public class CharStatus
     {
         if (object == getActiveChar()) return;
 
-        synchronized (getActiveChar())
+        synchronized (getStatusListener())
         {
-            if (_StatusListener == null) _StatusListener = new CopyOnWriteArraySet<L2Character>();
             getStatusListener().add(object);
         }
     }
@@ -264,11 +263,9 @@ public class CharStatus
      */
     public final void removeStatusListener(L2Character object)
     {
-        synchronized (getActiveChar())
+    	synchronized (getStatusListener())
         {
-            if (getStatusListener() == null) return;
             getStatusListener().remove(object);
-            if (getStatusListener() != null && getStatusListener().isEmpty()) setStatusListener(null);
         }
     }
 
@@ -471,8 +468,11 @@ public class CharStatus
      * @return The list of L2Character to inform or null if empty
      *
      */
-    public final Set<L2Character> getStatusListener() { return _StatusListener; }
-    private final void setStatusListener(Set<L2Character> value) { _StatusListener = value; }
+    public final Set<L2Character> getStatusListener() 
+    { 
+    	if (_StatusListener == null) _StatusListener = new CopyOnWriteArraySet<L2Character>();
+    	return _StatusListener; 
+    }
     
     // =========================================================
     // Runnable

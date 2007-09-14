@@ -389,7 +389,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public void broadcastStatusUpdate()
 	{
-		if (getStatus().getStatusListener() == null || getStatus().getStatusListener().isEmpty()) return;
+		if (getStatus().getStatusListener().isEmpty()) return;
 
 		if (!needHpUpdate(352))
 			return;
@@ -405,10 +405,13 @@ public abstract class L2Character extends L2Object
 		// Go through the StatusListener
 		// Send the Server->Client packet StatusUpdate with current HP and MP
 
-		Set<L2Character> listeners = getStatus().getStatusListener();
-		if (listeners != null)
-			for (L2Character temp : listeners)
-				temp.sendPacket(su);
+		synchronized (getStatus().getStatusListener())
+		{
+			for (L2Character temp : getStatus().getStatusListener())
+			{
+				try { temp.sendPacket(su); } catch (NullPointerException e) {}
+			}
+		}
 	}
 
 	/**
