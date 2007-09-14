@@ -322,31 +322,44 @@ public class TradeController
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-	public void dataCountStore(){
+	public void dataCountStore()
+	{
 		java.sql.Connection con = null;
+		PreparedStatement statement;
+
 		int listId;
+		if (_listsTaskItem==null) return;
+
 		try
 		{
-			if(_listsTaskItem==null)return;
-			for (L2TradeList list : _listsTaskItem.values()){
+			con = L2DatabaseFactory.getInstance().getConnection();
+
+			for (L2TradeList list : _listsTaskItem.values())
+			{
+				if (list==null) continue;
 				listId = list.getListId();
-				if(list==null)continue;
-				for(L2ItemInstance Item :list.getItems()){
-					if(Item.getCount()<Item.getInitCount()){
-						con = L2DatabaseFactory.getInstance().getConnection();
-						PreparedStatement statement = con.prepareStatement("UPDATE merchant_buylists SET currentCount =? WHERE item_id =? && shop_id = ?");
+
+				for (L2ItemInstance Item :list.getItems())
+				{
+					if (Item.getCount()<Item.getInitCount()) //needed?
+					{	
+						statement = con.prepareStatement("UPDATE merchant_buylists SET currentCount=? WHERE item_id=? AND shop_id=?");
 						statement.setInt(1, Item.getCount());
 						statement.setInt(2, Item.getItemId());
 						statement.setInt(3, listId);
 						statement.executeUpdate();
-			            statement.close();
+						statement.close();
 					}
 				}
 			}
-        } catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			_log.log(Level.SEVERE, "TradeController: Could not store Count Item" );
-		} finally {
-			try { con.close(); } catch (Exception e) {}
+		}
+		finally
+		{
+			try { con.close(); } catch (Exception e) { e.printStackTrace(); }
 		}
 	}
 	/**
