@@ -502,7 +502,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			case AUTHED:
 				return "[Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
 			case IN_GAME:
-				return "[Character: "+getActiveChar().getName()+" - Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+				return "[Character: "+(getActiveChar() == null ? "disconnected" : getActiveChar().getName())+" - Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
 		}
 		throw new IllegalStateException("Missing state on switch");
 	}
