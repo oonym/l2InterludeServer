@@ -494,17 +494,25 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     @Override
 	public String toString()
 	{
-		InetAddress address = getConnection().getSocketChannel().socket().getInetAddress();
-		switch (getState())
+		try
 		{
-			case CONNECTED:
-				return "["+(address == null ? "disconnected" : address.getHostAddress())+"]";
-			case AUTHED:
-				return "[Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
-			case IN_GAME:
-				return "[Character: "+(getActiveChar() == null ? "disconnected" : getActiveChar().getName())+" - Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+			InetAddress address = getConnection().getSocketChannel().socket().getInetAddress();
+			switch (getState())
+			{
+				case CONNECTED:
+					return "[IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+				case AUTHED:
+					return "[Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+				case IN_GAME:
+					return "[Character: "+(getActiveChar() == null ? "disconnected" : getActiveChar().getName())+" - Account: "+getAccountName()+" - IP: "+(address == null ? "disconnected" : address.getHostAddress())+"]";
+				default:
+					throw new IllegalStateException("Missing state on switch");
+			}
+		} 
+		catch (NullPointerException e)
+		{
+			return "[Character read failed due to disconnect]";
 		}
-		throw new IllegalStateException("Missing state on switch");
 	}
 	
 	class DisconnectTask implements Runnable
