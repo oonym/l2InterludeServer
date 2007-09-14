@@ -952,7 +952,7 @@ public class Duel
 		}
 	}
 	
-	public void onDebuff(L2PcInstance player, L2Effect debuff)
+	public void onBuff(L2PcInstance player, L2Effect debuff)
 	{
 		for (FastList.Node<PlayerCondition> e = _playerConditions.head(), end = _playerConditions.tail(); (e = e.getNext()) != end;)
 		{

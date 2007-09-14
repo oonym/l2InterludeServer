@@ -1590,6 +1590,12 @@ public abstract class L2Skill
                             if ((((L2PcInstance) newTarget).getAllyId() == 0 || ((L2PcInstance) newTarget).getAllyId() != player.getAllyId())
                                 && (((L2PcInstance) newTarget).getClan() == null || ((L2PcInstance) newTarget).getClanId() != player.getClanId()))
                                 continue;
+                            if (player.isInDuel() && 
+                            	  (
+                            		player.getDuelId() != ((L2PcInstance)newTarget).getDuelId() ||
+                            		(player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget))
+                            	  )
+                            	) continue;
                             if (targetType == SkillTargetType.TARGET_CORPSE_ALLY
                                 && !((L2PcInstance) newTarget).isDead()) continue;
 
@@ -1636,7 +1642,13 @@ public abstract class L2Skill
 
                             if (targetType == SkillTargetType.TARGET_CORPSE_CLAN && !newTarget.isDead())
                                 continue;
-
+                            if (player.isInDuel() && 
+                              	  (
+                              		player.getDuelId() != newTarget.getDuelId() ||
+                              		(player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget))
+                              	  )
+                              	) continue;
+                            
                             if (!Util.checkIfInRange(radius, activeChar, newTarget, true)) continue;
 
                             // Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met

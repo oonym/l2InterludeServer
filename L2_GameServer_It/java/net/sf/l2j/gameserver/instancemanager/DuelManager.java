@@ -153,11 +153,11 @@ public class DuelManager
 	 * @param player
 	 * @param debuff
 	 */
-	public void onDebuff(L2PcInstance player, L2Effect debuff)
+	public void onBuff(L2PcInstance player, L2Effect buff)
 	{
-		if (player == null || !player.isInDuel() || debuff == null) return;
+		if (player == null || !player.isInDuel() || buff == null) return;
 		Duel duel = getDuel(player.getDuelId());
-		if (duel != null) duel.onDebuff(player, debuff);
+		if (duel != null) duel.onBuff(player, buff);
 	}
 	
 	/**
