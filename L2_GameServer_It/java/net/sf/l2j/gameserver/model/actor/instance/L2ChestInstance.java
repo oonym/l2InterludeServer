@@ -76,21 +76,26 @@ public final class L2ChestInstance extends L2MonsterInstance
 	public void doItemDrop(L2NpcTemplate npcTemplate, L2Character lastAttacker)
 	{
 		int id = getTemplate().npcId;
-		if (id>=18265 && id<=18286)
-			id = id - 18265;
-		else
-			id = id - 21801;
 
-		if (_specialDrop)
+		if (!_specialDrop)
 		{
-			id = id + 18265;
-			super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
+			if (id >= 18265 && id <= 18286)
+				id += 3536;
+			else if (id == 18287 || id == 18288)
+				id = 21671;
+			else if (id == 18289 || id == 18290)
+				id = 21694;
+			else if (id == 18291 || id == 18292)
+				id = 21717;
+			else if (id == 18293 || id == 18294)
+				id = 21740;
+			else if (id == 18295 || id == 18296)
+				id = 21763;
+			else if (id == 18297 || id == 18298)
+				id = 21786;
 		}
-		else
-		{
-			id = id + 21801;
-			super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
-		}
+
+		super.doItemDrop(NpcTable.getInstance().getTemplate(id),lastAttacker);
 	}
 	//cast - trap chest
 	public void chestTrap(L2Character player)

@@ -46,6 +46,7 @@ import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
+import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
@@ -55,6 +56,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance.SkillDat;
@@ -444,6 +446,7 @@ public abstract class L2Character extends L2Object
 
 		setIsTeleporting(true);
 		setTarget(null);
+		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 
         if (Config.RESPAWN_RANDOM_ENABLED && allowRandomOffset)
         {
@@ -472,7 +475,27 @@ public abstract class L2Character extends L2Object
 
 	public void teleToLocation(int x, int y, int z) { teleToLocation(x, y, z, false); }
 
-	public void teleToLocation(Location loc, boolean allowRandomOffset) { teleToLocation(loc.getX(), loc.getY(), loc.getZ(), allowRandomOffset); }
+	public void teleToLocation(Location loc, boolean allowRandomOffset)
+	{
+		int x = loc.getX();
+		int y = loc.getY();
+		int z = loc.getZ();
+		
+		if (this instanceof L2PcInstance && DimensionalRiftManager.getInstance().checkIfInRiftZone(getX(), getY(), getZ(), true)) // true -> ignore waiting room :)
+		{
+			L2PcInstance player = (L2PcInstance)this;
+			player.sendMessage("You have been sent to the waiting room.");
+			if(player.isInParty() && player.getParty().isInDimensionalRift())
+			{
+				player.getParty().getDimensionalRift().usedTeleport(player);
+			}
+			int[] newCoords = DimensionalRiftManager.getInstance().getRoom((byte) 0, (byte) 0).getTeleportCoords();
+			x = newCoords[0];
+			y = newCoords[1];
+			z = newCoords[2];
+		}
+		teleToLocation(x, y, z, allowRandomOffset);
+	}
 
 	public void teleToLocation(TeleportWhereType teleportWhere) { teleToLocation(MapRegionTable.getInstance().getTeleToLocation(this, teleportWhere), true); }
 
@@ -484,7 +507,7 @@ public abstract class L2Character extends L2Object
 	 * <B><U> Actions</U> :</B><BR><BR>
 	 * <li>Get the active weapon (always equiped in the right hand) </li><BR><BR>
 	 * <li>If weapon is a bow, check for arrows, MP and bow re-use delay (if necessary, equip the L2PcInstance with arrows in left hand)</li>
-	 * <li>If weapon is a bow, consumme MP and set the new period of bow non re-use </li><BR><BR>
+	 * <li>If weapon is a bow, consume MP and set the new period of bow non re-use </li><BR><BR>
 	 * <li>Get the Attack Speed of the L2Character (delay (in milliseconds) before next attack) </li>
 	 * <li>Select the type of attack to start (Simple, Bow, Pole or Dual) and verify if SoulShot are charged then start calculation</li>
 	 * <li>If the Server->Client packet Attack contains at least 1 hit, send the Server->Client packet Attack to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character</li>
@@ -3756,7 +3779,7 @@ public abstract class L2Character extends L2Object
 			int originalY = y;
 			int originalZ = z;
 
-			if (Config.GEODATA == 2 || this instanceof L2PlayableInstance)
+			if (Config.GEODATA == 2 || this instanceof L2PlayableInstance || this instanceof L2RiftInvaderInstance)
 			{
 				Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
 				// location probably always different due to rounding

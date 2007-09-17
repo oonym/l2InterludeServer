@@ -63,14 +63,14 @@ public class Escape implements IUserCommandHandler
         // Check to see if the player is in a festival.
         if (activeChar.isFestivalParticipant()) 
         {
-            activeChar.sendPacket(SystemMessage.sendString("You may not use an escape command in a festival."));
+            activeChar.sendMessage("You may not use an escape command in a festival.");
             return false;
         }
         
         // Check to see if player is in jail
         if (activeChar.isInJail())
         {
-            activeChar.sendPacket(SystemMessage.sendString("You can not escape from jail."));
+            activeChar.sendMessage("You can not escape from jail.");
             return false;
         }
         

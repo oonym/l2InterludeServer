@@ -296,6 +296,31 @@ public final class Config
     /** How much adena receive characters who pick two or less of the winning number */
     public static int ALT_LOTTERY_2_AND_1_NUMBER_PRIZE;
 
+    /** Minimum siz e of a party that may enter dimensional rift */
+    public static int RIFT_MIN_PARTY_SIZE;
+
+    /** Time in ms the party has to wait until the mobs spawn when entering a room */
+    public static int RIFT_SPAWN_DELAY;
+
+    /** Amount of random rift jumps before party is ported back */
+    public static int RIFT_MAX_JUMPS;
+
+    /** Random time between two jumps in dimensional rift - in seconds */
+    public static int RIFT_AUTO_JUMPS_TIME_MIN;
+    public static int RIFT_AUTO_JUMPS_TIME_MAX;
+
+    /** Dimensional Fragment cost for entering rift */
+    public static int RIFT_ENTER_COST_RECRUIT;
+    public static int RIFT_ENTER_COST_SOLDIER;
+    public static int RIFT_ENTER_COST_OFFICER;
+    public static int RIFT_ENTER_COST_CAPTAIN;
+    public static int RIFT_ENTER_COST_COMMANDER;
+    public static int RIFT_ENTER_COST_HERO;
+
+    /** time multiplier for boss room */
+    public static float RIFT_BOSS_ROOM_TIME_MUTIPLY;
+
+
     /* **************************************************************************
      * GM CONFIG General GM AccessLevel *
      ************************************************************************* */
@@ -304,7 +329,7 @@ public final class Config
     /** General GM Minimal AccessLevel */
     public static int     GM_MIN;
     /** Minimum privileges level for a GM to do Alt+G*/
-	public static int     GM_ALTG_MIN_LEVEL;
+    public static int     GM_ALTG_MIN_LEVEL;
     /** General GM AccessLevel to change announcements */
     public static int     GM_ANNOUNCE;
     /** General GM AccessLevel can /ban /unban */
@@ -1617,6 +1642,20 @@ public final class Config
 
                 ALT_DEV_NO_QUESTS                = Boolean.parseBoolean(altSettings.getProperty("AltDevNoQuests", "False"));
                 ALT_DEV_NO_SPAWNS                = Boolean.parseBoolean(altSettings.getProperty("AltDevNoSpawns", "False"));
+
+                // Dimensional Rift Config
+                RIFT_MIN_PARTY_SIZE              = Integer.parseInt(altSettings.getProperty("RiftMinPartySize", "5")); 
+                RIFT_MAX_JUMPS                   = Integer.parseInt(altSettings.getProperty("MaxRiftJumps", "4")); 
+				RIFT_SPAWN_DELAY                 = Integer.parseInt(altSettings.getProperty("RiftSpawnDelay", "10000"));
+                RIFT_AUTO_JUMPS_TIME_MIN         = Integer.parseInt(altSettings.getProperty("AutoJumpsDelayMin", "480")); 
+                RIFT_AUTO_JUMPS_TIME_MAX         = Integer.parseInt(altSettings.getProperty("AutoJumpsDelayMax", "600")); 
+                RIFT_ENTER_COST_RECRUIT          = Integer.parseInt(altSettings.getProperty("RecruitCost", "18")); 
+                RIFT_ENTER_COST_SOLDIER          = Integer.parseInt(altSettings.getProperty("SoldierCost", "21")); 
+                RIFT_ENTER_COST_OFFICER          = Integer.parseInt(altSettings.getProperty("OfficerCost", "24")); 
+                RIFT_ENTER_COST_CAPTAIN          = Integer.parseInt(altSettings.getProperty("CaptainCost", "27")); 
+                RIFT_ENTER_COST_COMMANDER        = Integer.parseInt(altSettings.getProperty("CommanderCost", "30")); 
+                RIFT_ENTER_COST_HERO             = Integer.parseInt(altSettings.getProperty("HeroCost", "33")); 
+                RIFT_BOSS_ROOM_TIME_MUTIPLY      = Float.parseFloat(altSettings.getProperty("BossRoomTimeMultiply", "1.5"));
             }
             catch (Exception e)
             {

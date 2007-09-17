@@ -39,6 +39,7 @@ import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.games.Lottery;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -881,7 +882,7 @@ public class L2NpcInstance extends L2Character
                 String quest = "";
                 try 
                 {
-                	quest = command.substring(5).trim();
+                    quest = command.substring(5).trim();
                 } catch (IndexOutOfBoundsException ioobe) {}
                 if (quest.length() == 0)
                     showQuestWindow(player);
@@ -893,38 +894,38 @@ public class L2NpcInstance extends L2Character
                 int val = 0;
                 try 
                 {
-                	val = Integer.parseInt(command.substring(5));
+                    val = Integer.parseInt(command.substring(5));
                 } catch (IndexOutOfBoundsException ioobe) {
                 } catch (NumberFormatException nfe) {}
                 showChatWindow(player, val);
             }
             else if (command.startsWith("Link"))
-        	{
-            	String path = command.substring(5).trim();
+            {
+                String path = command.substring(5).trim();
                 if (path.indexOf("..") != -1)
                     return;
-        		String filename = "data/html/"+path;
-        		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-        		html.setFile(filename);
-        		html.replace("%objectId%", String.valueOf(getObjectId()));
-        		player.sendPacket(html);
-        	}
+                String filename = "data/html/"+path;
+                NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+                html.setFile(filename);
+                html.replace("%objectId%", String.valueOf(getObjectId()));
+                player.sendPacket(html);
+            }
             else if (command.startsWith("NobleTeleport"))
             {
-            	if (!player.isNoble())
-            	{
-            		String filename = "data/html/teleporter/nobleteleporter-no.htm";
-                	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+                if (!player.isNoble())
+                {
+                    String filename = "data/html/teleporter/nobleteleporter-no.htm";
+                    NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
                     html.setFile(filename);
                     html.replace("%objectId%", String.valueOf(getObjectId()));
                     html.replace("%npcname%", getName());
                     player.sendPacket(html);
-            		return;
-            	}
+                    return;
+                }
                 int val = 0;
                 try 
                 {
-                	val = Integer.parseInt(command.substring(5));
+                    val = Integer.parseInt(command.substring(5));
                 } catch (IndexOutOfBoundsException ioobe) {
                 } catch (NumberFormatException nfe) {}
                 showChatWindow(player, val);
@@ -934,7 +935,7 @@ public class L2NpcInstance extends L2Character
                 int val = 0;
                 try 
                 {
-                	val = Integer.parseInt(command.substring(5));
+                    val = Integer.parseInt(command.substring(5));
                 } catch (IndexOutOfBoundsException ioobe) {
                 } catch (NumberFormatException nfe) {}
                 if (val == 0){
@@ -953,40 +954,71 @@ public class L2NpcInstance extends L2Character
                 makeSupportMagic(player);
             }
             else if (command.startsWith("multisell"))
-    		{
-            	L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(command.substring(9).trim()), player, false, getCastle().getTaxRate());
-    		}
+            {
+                L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(command.substring(9).trim()), player, false, getCastle().getTaxRate());
+            }
             else if (command.startsWith("exc_multisell"))
             {
-            	L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(command.substring(13).trim()), player, true, getCastle().getTaxRate());
+                L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(command.substring(13).trim()), player, true, getCastle().getTaxRate());
             }
             else if (command.startsWith("Augment"))
             {
-            	int cmdChoice = Integer.parseInt(command.substring(8, 9).trim());
-            	switch (cmdChoice)
-            	{
-            		case 1:
-            			player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_TO_BE_AUGMENTED));
-            			player.sendPacket(new ExShowVariationMakeWindow());
-            			break;
-            		case 2:
-            			player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
-            			player.sendPacket(new ExShowVariationCancelWindow());
-            			break;
-            	}
+                int cmdChoice = Integer.parseInt(command.substring(8, 9).trim());
+                switch (cmdChoice)
+                {
+                    case 1:
+                        player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_TO_BE_AUGMENTED));
+                        player.sendPacket(new ExShowVariationMakeWindow());
+                        break;
+                    case 2:
+                        player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
+                        player.sendPacket(new ExShowVariationCancelWindow());
+                        break;
+                }
             }
             else if (command.startsWith("npcfind_byid"))
             {
-            	try
-            	{
-            		L2Spawn spawn = SpawnTable.getInstance().getTemplate(Integer.parseInt(command.substring(12).trim()));
-            		
-            		if(spawn!=null) 
-            			player.sendPacket(new RadarControl(1,1,spawn.getLocx(),spawn.getLocy(),spawn.getLocz()));
-            	} catch (NumberFormatException nfe)
-            	{ 
-            		player.sendMessage("Wrong command parameters");
-            	}
+                try
+                {
+                    L2Spawn spawn = SpawnTable.getInstance().getTemplate(Integer.parseInt(command.substring(12).trim()));
+                    
+                    if(spawn!=null) 
+                        player.sendPacket(new RadarControl(1,1,spawn.getLocx(),spawn.getLocy(),spawn.getLocz()));
+                } catch (NumberFormatException nfe)
+                { 
+                    player.sendMessage("Wrong command parameters");
+                }
+            }
+            else if (command.startsWith("EnterRift"))
+            {
+                try
+                {
+                    Byte b1 = Byte.parseByte(command.substring(10)); // Selected Area: Recruit, Soldier etc
+                    DimensionalRiftManager.getInstance().start(player, b1, this);
+                }
+                catch(Exception e){}
+            }
+            else if (command.startsWith("ChangeRiftRoom"))
+            {
+                if(player.isInParty() && player.getParty().isInDimensionalRift())
+                {
+                    player.getParty().getDimensionalRift().manualTeleport(player, this);
+                }
+                else
+                {
+                    DimensionalRiftManager.getInstance().handleCheat(player, this);
+                }
+            }
+            else if (command.startsWith("ExitRift"))
+            {
+                if(player.isInParty() && player.getParty().isInDimensionalRift())
+                {
+                    player.getParty().getDimensionalRift().manualExitRift(player, this);
+                }
+                else
+                {
+                    DimensionalRiftManager.getInstance().handleCheat(player, this);
+                }
             }
         }
     }
@@ -1971,6 +2003,11 @@ public class L2NpcInstance extends L2Character
                     filename = (getHtmlPath(npcId, val));
                 break;
             default:
+                if (npcId >= 31865 && npcId <= 31918)
+                {
+                    filename += "rift/GuardianOfBorder.htm";
+                    break;
+                }
                 if ((npcId >= 31093 && npcId <= 31094) ||
                         (npcId >= 31172 && npcId <= 31201) ||
                         (npcId >= 31239 && npcId <= 31254))

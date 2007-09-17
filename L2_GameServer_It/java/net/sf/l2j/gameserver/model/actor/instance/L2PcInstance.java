@@ -76,6 +76,7 @@ import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
+import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
@@ -3955,9 +3956,22 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 1000)
             newTarget = null;
 
-		// Can't target and attack festival monsters if not participant
-		if (newTarget instanceof L2FestivalMonsterInstance && !isFestivalParticipant())
-			newTarget = null;
+		if(!isGM())
+		{
+			// Can't target and attack festival monsters if not participant
+			if((newTarget instanceof L2FestivalMonsterInstance) && !isFestivalParticipant())
+				newTarget = null;
+			
+			// Can't target and attack rift invaders if not in the same room
+			else if(isInParty() && getParty().isInDimensionalRift())
+			{
+				byte riftType = getParty().getDimensionalRift().getType();
+				byte riftRoom = getParty().getDimensionalRift().getCurrentRoom();
+				
+				if (newTarget != null && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(newTarget.getX(), newTarget.getY(), newTarget.getZ()))
+					newTarget = null;
+			}
+		}
 
 		// Get the current target
 		L2Object oldTarget = getTarget();
@@ -4270,6 +4284,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			_cubics.clear();
 		}
+
+		if (isInParty() && getParty().isInDimensionalRift())
+			getParty().getDimensionalRift().getDeadMemberList().add(this);
 
 		stopRentPet();
 		stopWaterTask();
@@ -8858,6 +8875,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		updateEffectIcons();
 		_reviveRequested = 0;
 		_revivePower = 0;
+
+		if (isInParty() && getParty().isInDimensionalRift())
+		{
+			if (!DimensionalRiftManager.getInstance().checkIfInPeaceZone(getX(), getY(), getZ()))
+				getParty().getDimensionalRift().memberRessurected(this);
+		}
 	}
 
 	@Override

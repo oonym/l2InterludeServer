@@ -261,11 +261,11 @@ public class Wedding implements IVoicedCommandHandler
             activeChar.sendMessage("Your partner is in a festival.");
             return false;
         }
-        //else if (partner.isInParty() && partner.getParty().isInDimensionalRift()) 
-        //{
-        //    activeChar.sendMessage("Your partner is in dimensional rift.");
-        //    return false;
-        //}
+        else if (partner.isInParty() && partner.getParty().isInDimensionalRift()) 
+        {
+            activeChar.sendMessage("Your partner is in dimensional rift.");
+            return false;
+        }
         
         
         else if(activeChar.isInJail())
@@ -293,11 +293,11 @@ public class Wedding implements IVoicedCommandHandler
             activeChar.sendMessage("You are in a festival.");
             return false;
         }
-        //else if (activeChar.isInParty() && activeChar.getParty().isInDimensionalRift()) 
-        //{
-        //    activeChar.sendMessage("You are in the dimensional rift.");
-        //    return false;
-        //}
+        else if (activeChar.isInParty() && activeChar.getParty().isInDimensionalRift()) 
+        {
+            activeChar.sendMessage("You are in the dimensional rift.");
+            return false;
+        }
         // Thanks nbd
         else if (!TvTEvent.onEscapeUse(activeChar.getName()))
         {
