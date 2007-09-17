@@ -149,7 +149,7 @@ public class QuestList extends L2GameServerPacket
                 continue;
 			}
 			
-			int states = qs.getInt("__completedStateFlags");
+			int states = qs.getInt("__compltdStateFlags");
 			if (states != 0 )
 				writeD(states);
 			else

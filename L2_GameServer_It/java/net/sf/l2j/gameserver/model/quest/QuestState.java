@@ -346,10 +346,10 @@ public final class QuestState
 		// Finally, more than 31 steps CANNOT be supported in any way with skipping.
 		if (cond < 3 || cond > 31)
 		{
-			unset("__completedStateFlags");
+			unset("__compltdStateFlags");
 		}
 		else
-			completedStateFlags = getInt("__completedStateFlags");
+			completedStateFlags = getInt("__compltdStateFlags");
 		
 		// case 1: No steps have been skipped so far...
 		if(completedStateFlags == 0)
