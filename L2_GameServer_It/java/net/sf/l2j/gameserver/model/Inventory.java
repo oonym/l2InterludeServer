@@ -490,15 +490,21 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public L2ItemInstance dropItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
 	{
-		if (!_items.contains(item)) return null;
+		synchronized (item)
+		{
+			if (!_items.contains(item))
+			{
+				return null;
+			}
 
-		removeItem(item);
-		item.setOwnerId(process, 0, actor, reference);
-        item.setLocation(ItemLocation.VOID);
-        item.setLastChange(L2ItemInstance.REMOVED);
+			removeItem(item);
+			item.setOwnerId(process, 0, actor, reference);
+			item.setLocation(ItemLocation.VOID);
+			item.setLastChange(L2ItemInstance.REMOVED);
 
-		item.updateDatabase();
-		refreshWeight();
+			item.updateDatabase();
+			refreshWeight();
+		}
 		return item;
 	}
 

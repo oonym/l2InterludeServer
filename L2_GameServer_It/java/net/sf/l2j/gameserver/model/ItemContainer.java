@@ -272,14 +272,26 @@ public abstract class ItemContainer
      */
     public L2ItemInstance transferItem(String process, int objectId, int count, ItemContainer target, L2PcInstance actor, L2Object reference)
     {
-        if (target == null) return null;
+        if (target == null)
+        {
+        	return null;
+        }
         
     	L2ItemInstance sourceitem = getItemByObjectId(objectId);
-    	if (sourceitem == null) return null;
+    	if (sourceitem == null)
+    	{
+    		return null;
+    	}
         L2ItemInstance targetitem = sourceitem.isStackable() ? target.getItemByItemId(sourceitem.getItemId()) : null;
 
         synchronized(sourceitem)
         {
+        	// check if this item still present in this container
+        	if (getItemByObjectId(objectId) != sourceitem)
+        	{
+        		return null;
+        	}
+        	
         	// Check if requested quantity is available
         	if (count > sourceitem.getCount()) count = sourceitem.getCount();
     
@@ -293,7 +305,9 @@ public abstract class ItemContainer
         	else
         	{
         		if (sourceitem.getCount() > count) // If possible, only update counts 
+        		{
         			sourceitem.changeCount(process, -count, actor, reference);
+        		}
         		else // Otherwise destroy old item
         		{
             		removeItem(sourceitem);
@@ -301,9 +315,13 @@ public abstract class ItemContainer
         		}
         		
         		if (targetitem != null) // If possible, only update counts
+        		{
         			targetitem.changeCount(process, count, actor, reference);
+        		}
         		else // Otherwise add new item 
+        		{
         			targetitem = target.addItem(process, sourceitem.getItemId(), count, actor, reference);
+        		}
         	}
     		
     		// Updates database
@@ -324,10 +342,14 @@ public abstract class ItemContainer
 	 */
 	public L2ItemInstance destroyItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
 	{
-		if (!_items.contains(item)) return null;
-
         synchronized(item)
         {
+        	// check if item is present in this container
+        	if (!_items.contains(item))
+        	{
+        		return null;
+        	}
+        	
     		removeItem(item);
             ItemTable.getInstance().destroyItem(process, item, actor, reference);
     

@@ -74,7 +74,9 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		}
 		
 		if (player.transferItem("Transfer", _objectId, _amount, pet.getInventory(), pet) == null)
-			_log.warning("Invalid Item transfer request: " + pet.getName() + "(pet) --> " + player.getName());
+		{
+			_log.warning("Invalid item transfer request: " + pet.getName() + "(pet) --> " + player.getName());
+		}
 	}
 
 	@Override
