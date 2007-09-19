@@ -370,7 +370,7 @@ public final class QuestState
 				
 				// now, just set the bit corresponding to the passed cond to 1 (current step)
 				completedStateFlags |= (1<<(cond-1));
-				set("__completedStateFlags", String.valueOf(completedStateFlags));
+				set("__compltdStateFlags", String.valueOf(completedStateFlags));
 			}
 		}
 		// case 2: There were exist previously skipped steps
@@ -383,12 +383,12 @@ public final class QuestState
 
 				//now, check if this resulted in no steps being skipped any more
 				if ( completedStateFlags == ((1<<cond)-1) )
-					unset("__completedStateFlags");
+					unset("__compltdStateFlags");
 				else
 				{
 					// set the most significant bit back to 1 again, to correctly indicate that this skips states.
 					completedStateFlags |= 0x80000000;
-					set("__completedStateFlags", String.valueOf(completedStateFlags));
+					set("__compltdStateFlags", String.valueOf(completedStateFlags));
 				}
 			}
 			// if this moves forward, it changes nothing on previously skipped steps...so just mark this 
@@ -396,7 +396,7 @@ public final class QuestState
 			else
 			{
 				completedStateFlags |= (1<<(cond-1));
-				set("__completedStateFlags", String.valueOf(completedStateFlags));
+				set("__compltdStateFlags", String.valueOf(completedStateFlags));
 			}			
 		}
 		
