@@ -19,8 +19,6 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.gameserver.ThreadPoolManager;
-import net.sf.l2j.gameserver.datatables.NpcTable;
-import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
@@ -78,39 +76,6 @@ public final class L2RaidBossInstance extends L2MonsterInstance
         }
         
         RaidBossSpawnManager.getInstance().updateStatus(this, true);
-        
-        if (getNpcId() == 25035 || getNpcId() == 25054 || getNpcId() == 25126
-                || getNpcId() == 25220)
-        {
-            int boxId = 0;
-            switch(getNpcId())
-            {
-                case 25035: // Shilen?s Messenger Cabrio
-                    boxId = 31027;
-                    break;
-                case 25054: // Demon Kernon
-                    boxId = 31028;
-                    break;
-                case 25126: // Golkonda, the Longhorn General
-                    boxId = 31029;
-                    break;
-                case 25220: // Death Lord Hallate
-                    boxId = 31030;
-                    break;
-            }
-            
-            L2NpcTemplate boxTemplate = NpcTable.getInstance().getTemplate(boxId);
-            final L2NpcInstance box = new L2NpcInstance(IdFactory.getInstance().getNextId(), boxTemplate);
-            box.setCurrentHpMp(box.getMaxHp(), box.getMaxMp());
-            box.spawnMe(getX(), getY(), (getZ()+20));
-            
-            ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-                public void run()
-                {
-                    box.deleteMe();
-                }
-            }, 60000);
-        }
         super.doDie(killer);
     }
     

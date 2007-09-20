@@ -31,6 +31,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
@@ -38,6 +39,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -690,14 +692,6 @@ public abstract class Quest
     	return addEventId(npcId, Quest.QuestEventType.MOB_TARGETED_BY_SKILL);
     }
     
-    /**
-     * Return a QuestPcSpawn for the given player instance
-     */
-    public final QuestPcSpawn getPcSpawn(L2PcInstance player)
-    {
-        return QuestPcSpawnManager.getInstance().getPcSpawn(player);
-    }
-    
     // returns a random party member's L2PcInstance for the passed player's party
     // returns the passed player if he has no party.
     public L2PcInstance getRandomPartyMember(L2PcInstance player)
@@ -869,4 +863,86 @@ public abstract class Quest
          
          return content;
 	}
+	
+    // =========================================================
+    //  QUEST SPAWNS
+    // =========================================================
+
+	public class DeSpawnScheduleTimerTask implements Runnable
+    {
+        L2NpcInstance _npc = null;
+        public DeSpawnScheduleTimerTask(L2NpcInstance npc)
+        {
+        	_npc = npc;
+        }
+        
+        public void run()
+        {
+           _npc.onDecay();
+        }
+    }
+
+	// Method - Public
+    /**
+     * Add a temporary (quest) spawn
+     * Return instance of newly spawned npc
+     */
+	public L2NpcInstance addSpawn(int npcId, L2Character cha)
+	{
+	    return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), false, 0);
+	}
+	
+    public L2NpcInstance addSpawn(int npcId, int x, int y, int z,int heading, boolean randomOffset, int despawnDelay)
+    {
+    	L2NpcInstance result = null;
+        try 
+        {
+            L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+            if (template != null)
+            {
+                // Sometimes, even if the quest script specifies some xyz (for example npc.getX() etc) by the time the code
+            	// reaches here, xyz have become 0!  Also, a questdev might have purposely set xy to 0,0...however,
+            	// the spawn code is coded such that if x=y=0, it looks into location for the spawn loc!  This will NOT work
+            	// with quest spawns!  For both of the above cases, we need a fail-safe spawn.  For this, we use the 
+                // default spawn location, which is at the player's loc.
+                if ((x == 0) && (y == 0))
+                {
+                	_log.log(Level.SEVERE, "Failed to adjust bad locks for quest spawn!  Spawn aborted!");
+                	return null;
+                }
+                if (randomOffset)
+                {
+                    int offset;
+
+                    offset = Rnd.get(2); // Get the direction of the offset
+                    if (offset == 0) {offset = -1;} // make offset negative
+                    offset *= Rnd.get(50, 100);
+                    x += offset;
+
+                    offset = Rnd.get(2); // Get the direction of the offset
+                    if (offset == 0) {offset = -1;} // make offset negative
+                    offset *= Rnd.get(50, 100); 
+                    y += offset;
+                }       
+                L2Spawn spawn = new L2Spawn(template);
+                spawn.setHeading(heading);
+                spawn.setLocx(x);
+                spawn.setLocy(y);
+                spawn.setLocz(z+20);
+                spawn.stopRespawn();
+                result = spawn.spawnOne();
+
+	            if (despawnDelay > 0)
+		            ThreadPoolManager.getInstance().scheduleGeneral(new DeSpawnScheduleTimerTask(result), despawnDelay);
+	            
+	            return result;
+            }
+        }
+        catch (Exception e1)
+        {
+        	_log.warning("Could not spawn Npc " + npcId);
+        }
+          
+        return null;
+    }
 }

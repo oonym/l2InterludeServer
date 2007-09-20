@@ -816,6 +816,11 @@ public final class QuestState
     {
     	getQuest().startQuestTimer(name, time, null, getPlayer());
     }
+
+    public void startQuestTimer(String name, long time, L2NpcInstance npc)
+    {
+    	getQuest().startQuestTimer(name, time, npc, getPlayer());
+    }
     
     /**
      * Return the QuestTimer object with the specified name
@@ -827,15 +832,72 @@ public final class QuestState
     }
     
     /**
-     * NOTE: This is to be deprecated; replaced by Quest.getPcSpawn(L2PcInstance)
-     * For now, I shall leave it as is
-     * Return a QuestPcSpawn for curren player instance
+     * Add spawn for player instance
+     * Return object id of newly spawned npc
      */
-    public final QuestPcSpawn getPcSpawn()
+    public L2NpcInstance addSpawn(int npcId)
     {
-        return QuestPcSpawnManager.getInstance().getPcSpawn(getPlayer());
+    	return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, false, 0);
     }
 
+    public L2NpcInstance addSpawn(int npcId, int despawnDelay)
+    {
+    	return addSpawn(npcId, getPlayer().getX(), getPlayer().getY(), getPlayer().getZ(), 0, false, despawnDelay);
+    }
+
+    public L2NpcInstance addSpawn(int npcId, int x, int y, int z)
+    {
+    	return addSpawn(npcId, x, y, z, 0, false, 0);
+    }
+
+    /**
+     * Add spawn for player instance
+     * Will despawn after the spawn length expires
+     * Uses player's coords and heading.
+     * Adds a little randomization in the x y coords
+     * Return object id of newly spawned npc
+     */
+    public L2NpcInstance addSpawn(int npcId, L2Character cha, int despawnDelay)
+    {
+        return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), true, despawnDelay);
+    }
+
+	public L2NpcInstance addSpawn(int npcId, L2Character cha)
+	{
+	    return addSpawn(npcId, cha, true);
+	}
+
+    /**
+     * Add spawn for player instance
+     * Inherits coords and heading from specified L2Character instance.
+     * It could be either the player, or any killed/attacked mob
+     * Return object id of newly spawned npc
+     */
+    public L2NpcInstance addSpawn(int npcId, L2Character cha, boolean randomOffset)
+    {
+        return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, 0);
+    }
+
+    /**
+     * Add spawn for player instance
+     * Will despawn after the spawn length expires
+     * Return object id of newly spawned npc
+     */
+    public L2NpcInstance addSpawn(int npcId, int x, int y, int z, int despawnDelay)
+    {
+        return addSpawn(npcId, x, y, z, 0, false, despawnDelay);
+    }
+
+    
+    /**
+     * Add spawn for player instance
+     * Return object id of newly spawned npc
+     */
+    public L2NpcInstance addSpawn(int npcId, int x, int y, int z,int heading, boolean randomOffset, int despawnDelay)
+    {
+    	return getQuest().addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay);
+    }
+    
 	public String showHtmlFile(String fileName) 
     {
     	return getQuest().showHtmlFile(getPlayer(), fileName);
