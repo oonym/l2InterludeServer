@@ -3488,10 +3488,16 @@ public final class L2PcInstance extends L2PlayableInstance
 						if (Config.GEODATA > 0)
 						{
 							if (GeoData.getInstance().canSeeTarget(player, this))
+							{
 								player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+								player.onActionRequest();
+							}
 						}
 						else
+						{
 							player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+							player.onActionRequest();
+						}
 					}
 				} else
 				{
