@@ -817,6 +817,7 @@ public final class Config
     public static int TVT_EVENT_PARTICIPATION_NPC_ID;
     public static int[] TVT_EVENT_PARTICIPATION_NPC_COORDINATES = new int[3];
     public static int TVT_EVENT_MIN_PLAYERS_IN_TEAMS;
+    public static int TVT_EVENT_MAX_PLAYERS_IN_TEAMS;
     public static int TVT_EVENT_RESPAWN_TELEPORT_DELAY;
     public static int TVT_EVENT_START_LEAVE_TELEPORT_DELAY;
     public static String TVT_EVENT_TEAM_1_NAME;
@@ -828,6 +829,8 @@ public final class Config
     public static boolean TVT_EVENT_POTIONS_ALLOWED;
     public static boolean TVT_EVENT_SUMMON_BY_ITEM_ALLOWED;
     public static List<Integer> TVT_EVENT_DOOR_IDS = new FastList<Integer>();
+    public static byte TVT_EVENT_MIN_LVL;
+    public static byte TVT_EVENT_MAX_LVL;
 
     /** L2JMOD Wedding system  */
     public static boolean L2JMOD_ALLOW_WEDDING;
@@ -1807,16 +1810,19 @@ public final class Config
                     }
                     else
                     {
-                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[0]    = Integer.parseInt(propertySplit[0]); 
-                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[1]    = Integer.parseInt(propertySplit[1]);
-                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[2]    = Integer.parseInt(propertySplit[2]);
+                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[0]  = Integer.parseInt(propertySplit[0]); 
+                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[1]  = Integer.parseInt(propertySplit[1]);
+                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[2]  = Integer.parseInt(propertySplit[2]);
 
-                        TVT_EVENT_MIN_PLAYERS_IN_TEAMS                = Integer.parseInt(L2JModSettings.getProperty("TvTEventMinPlayersInTeams", "1"));
+                        TVT_EVENT_MIN_PLAYERS_IN_TEAMS              = Integer.parseInt(L2JModSettings.getProperty("TvTEventMinPlayersInTeams", "1"));
+                        TVT_EVENT_MAX_PLAYERS_IN_TEAMS              = Integer.parseInt(L2JModSettings.getProperty("TvTEventMaxPlayersInTeams", "20"));
+                        TVT_EVENT_MIN_LVL							= (byte)Integer.parseInt(L2JModSettings.getProperty("TvTEventMinPlayerLevel", "1"));
+                        TVT_EVENT_MAX_LVL							= (byte)Integer.parseInt(L2JModSettings.getProperty("TvTEventMaxPlayerLevel", "80"));
                         TVT_EVENT_RESPAWN_TELEPORT_DELAY            = Integer.parseInt(L2JModSettings.getProperty("TvTEventRespawnTeleportDelay", "20"));
                         TVT_EVENT_START_LEAVE_TELEPORT_DELAY        = Integer.parseInt(L2JModSettings.getProperty("TvTEventStartLeaveTeleportDelay", "20"));
 
-                        TVT_EVENT_TEAM_1_NAME                        = L2JModSettings.getProperty("TvTEventTeam1Name", "Team1");
-                        propertySplit                                = L2JModSettings.getProperty("TvTEventTeam1Coordinates", "0,0,0").split(",");
+                        TVT_EVENT_TEAM_1_NAME                       = L2JModSettings.getProperty("TvTEventTeam1Name", "Team1");
+                        propertySplit                               = L2JModSettings.getProperty("TvTEventTeam1Coordinates", "0,0,0").split(",");
 
                         if (propertySplit.length < 3)
                         {

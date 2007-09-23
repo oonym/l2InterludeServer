@@ -61,7 +61,7 @@ public class TvTEvent
 	/**
 	 * Starts the participation of the TvTEvent<br>
 	 * 1. Get L2NpcTemplate by Config.TVT_EVENT_PARTICIPATION_NPC_ID<br>
-	 * 2. Try to spawn a new npc of it for participation<br><br>
+	 * 2. Try to spawn a new npc of it<br><br>
 	 * 
 	 * @return boolean<br>
 	 */
@@ -109,8 +109,7 @@ public class TvTEvent
 	/**
 	 * Starts the TvTEvent fight<br>
 	 * 1. Set state EventState.STARTING<br>
-	 * 2. Remove participation npc from world<br>
-	 * 3. Close doors specified in configs<br>
+	 * 2. Close doors specified in configs<br>
 	 * 3. Abort if not enought participants(return false)<br>
 	 * 4. Set state EventState.STARTED<br>
 	 * 5. Teleport all participants to team spot<br><br>
@@ -120,18 +119,6 @@ public class TvTEvent
 	public static boolean startFight()
 	{
 		setState(EventState.STARTING);
-		_lastNpcSpawn.deleteMe();
-        _npcSpawn.stopRespawn();
-        _npcSpawn = null;
-		_lastNpcSpawn = null;
-		
-		for (int doorId : Config.TVT_EVENT_DOOR_IDS)
-		{
-			L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
-			
-			if (doorInstance != null)
-				doorInstance.closeMe();
-		}
 
 		// not enought participants
 		if (_teams[0].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS || _teams[1].getParticipatedPlayerCount() < Config.TVT_EVENT_MIN_PLAYERS_IN_TEAMS)
@@ -139,9 +126,11 @@ public class TvTEvent
 			setState(EventState.INACTIVE);
 			_teams[0].cleanMe();
 			_teams[1].cleanMe();
+			unSpawnNpc();
 			return false;
 		}
 		
+		closeDoors();
 		setState(EventState.STARTED); // set state to STARTED here, so TvTEventTeleporter know to teleport to team spot
 
 		// teleport all participants to there team spot
@@ -254,22 +243,17 @@ public class TvTEvent
 	/**
 	 * Stops the TvTEvent fight<br>
 	 * 1. Set state EventState.INACTIVATING<br>
-	 * 2. Open doors specified in configs<br>
-	 * 2. Teleport all participants back to participation npc location<br>
-	 * 3. Teams cleaning<br>
-	 * 4. Set state EventState.INACTIVE<br>
+	 * 2. Remove tvt npc from world<br>
+	 * 3. Open doors specified in configs<br>
+	 * 4. Teleport all participants back to participation npc location<br>
+	 * 5. Teams cleaning<br>
+	 * 6. Set state EventState.INACTIVE<br>
 	 */
 	public static void stopFight()
 	{
 		setState(EventState.INACTIVATING);
-		
-		for (int doorId : Config.TVT_EVENT_DOOR_IDS)
-		{
-			L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
-			
-			if (doorInstance != null)
-				doorInstance.openMe();
-		}
+		unSpawnNpc();
+		openDoors();
 
 		for (TvTEventTeam team : _teams)
 		{
@@ -354,6 +338,45 @@ public class TvTEvent
 	}
 
 	/**
+	 * Close doors specified in configs
+	 */
+	private static void closeDoors()
+	{
+		for (int doorId : Config.TVT_EVENT_DOOR_IDS)
+		{
+			L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
+			
+			if (doorInstance != null)
+				doorInstance.closeMe();
+		}
+	}
+
+	/**
+	 * Open doors specified in configs
+	 */
+	private static void openDoors()
+	{
+		for (int doorId : Config.TVT_EVENT_DOOR_IDS)
+		{
+			L2DoorInstance doorInstance = DoorTable.getInstance().getDoor(doorId);
+			
+			if (doorInstance != null)
+				doorInstance.openMe();
+		}
+	}
+
+	/**
+	 * UnSpawns the TvTEvent npc
+	 */
+	private static void unSpawnNpc()
+	{
+		_lastNpcSpawn.deleteMe();
+        _npcSpawn.stopRespawn();
+        _npcSpawn = null;
+		_lastNpcSpawn = null;
+	}
+
+	/**
 	 * Called when a player logs in<br><br>
 	 * 
 	 * @param playerInstance<br>
@@ -399,10 +422,19 @@ public class TvTEvent
 		if (command.equals("tvt_event_participation"))
 		{
 			NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
+			int playerLevel = playerInstance.getLevel();
 
-			if (addParticipant(playerInstance))
+			if (playerInstance.isCursedWeaponEquiped())
+				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Cursed weapon orwners are not allowed to participate.</body></html>");
+			else if (playerInstance.getKarma() > 0)
+				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Chaotic players are not allowed to participate.</body></html>");
+			else if (playerLevel < Config.TVT_EVENT_MIN_LVL || playerLevel > Config.TVT_EVENT_MAX_LVL)
+				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Only players from level " + Config.TVT_EVENT_MIN_LVL + " to level " + Config.TVT_EVENT_MAX_LVL + " are allowed tro participate.</body></html>");
+			else if (_teams[0].getParticipatedPlayerCount() > 19 && _teams[1].getParticipatedPlayerCount() > 19)
+				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>The event is full! Maximum of " + Config.TVT_EVENT_MAX_PLAYERS_IN_TEAMS + "  player are allowed in one team.</body></html>");
+			else if (addParticipant(playerInstance))
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>You are on the registration list now.</body></html>");
-			else
+			else // addParticipant returned false cause playerInstance == null
 				return;
 			
 			playerInstance.sendPacket(npcHtmlMessage);		
@@ -685,5 +717,15 @@ public class TvTEvent
 	public static int[] getTeamsPlayerCounts()
 	{
 		return new int[]{_teams[0].getParticipatedPlayerCount(), _teams[1].getParticipatedPlayerCount()};
+	}
+	
+	/**
+	 * Returns points count of both teams
+	 * 
+	 * @return int[]
+	 */
+	public static int[] getTeamsPoints()
+	{
+		return new int[]{_teams[0].getPoints(), _teams[1].getPoints()};
 	}
 }

@@ -70,7 +70,7 @@ public class TvTManager implements Runnable
 				continue;
 			}
 			else
-				Announcements.getInstance().announceToAll("TvT Event: Teleport participants to team spot in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+				TvTEvent.sysMsgToAllParticipants("TvT Event: Teleport participants to team spot in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 
 			waiter(Config.TVT_EVENT_RUNNING_TIME * 60); // in config given as minutes
 			Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());
