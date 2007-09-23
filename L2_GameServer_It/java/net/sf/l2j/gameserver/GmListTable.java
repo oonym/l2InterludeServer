@@ -110,7 +110,10 @@ public class GmListTable
 		for (GmListEntry temp : _gmList)
 		{
 			if (temp.gm == player)
+			{
 				_gmList.remove(temp);
+				break;
+			}
 		}
 	}
 	
@@ -123,7 +126,10 @@ public class GmListTable
 		for (GmListEntry temp : _gmList)
 		{
 			if (temp.gm == player)
+			{
 				temp.hidden = false;
+				break;
+			}
 		}
 	}
 	
@@ -136,7 +142,10 @@ public class GmListTable
 		for (GmListEntry temp : _gmList)
 		{
 			if (temp.gm == player)
+			{
 				temp.hidden = true;
+				break;
+			}
 		}
 	}
 	
