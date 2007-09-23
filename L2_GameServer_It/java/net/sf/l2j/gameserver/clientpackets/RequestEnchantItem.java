@@ -209,26 +209,30 @@ public final class RequestEnchantItem extends L2GameClientPacket
         
         if (Rnd.get(100) < chance)
         {
-            if (item.getEnchantLevel() >= maxEnchantLevel && maxEnchantLevel != 0)
+            synchronized(item)
             {
-                activeChar.sendPacket(new SystemMessage(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION));
-                return;
+            	if (item.getOwnerId() == 0 // has just lost the item
+            	    || (item.getEnchantLevel() >= maxEnchantLevel && maxEnchantLevel != 0))
+            	{
+            		activeChar.sendPacket(new SystemMessage(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION));
+            		return;
+            	}
+            	if (item.getEnchantLevel() == 0)
+            	{
+            		sm = new SystemMessage(SystemMessageId.S1_SUCCESSFULLY_ENCHANTED);
+            		sm.addItemName(item.getItemId());
+            		activeChar.sendPacket(sm);
+            	}
+            	else
+            	{
+            		sm = new SystemMessage(SystemMessageId.S1_S2_SUCCESSFULLY_ENCHANTED);
+            		sm.addNumber(item.getEnchantLevel());
+            		sm.addItemName(item.getItemId());
+            		activeChar.sendPacket(sm);
+            	}
+            	item.setEnchantLevel(item.getEnchantLevel()+1);
+            	item.updateDatabase();
             }
-            if (item.getEnchantLevel() == 0)
-            {
-                sm = new SystemMessage(SystemMessageId.S1_SUCCESSFULLY_ENCHANTED);
-                sm.addItemName(item.getItemId());
-                activeChar.sendPacket(sm);
-            }
-            else
-            {
-                sm = new SystemMessage(SystemMessageId.S1_S2_SUCCESSFULLY_ENCHANTED);
-                sm.addNumber(item.getEnchantLevel());
-                sm.addItemName(item.getItemId());
-                activeChar.sendPacket(sm);
-            }
-            item.setEnchantLevel(item.getEnchantLevel()+1);
-            item.updateDatabase();
         }
         else
         {
