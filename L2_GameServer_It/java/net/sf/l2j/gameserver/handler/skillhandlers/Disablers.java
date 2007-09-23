@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.l2j.gameserver.ai.CtrlEvent;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.ai.L2AttackableAI;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -267,9 +269,9 @@ public class Disablers implements ISkillHandler
                     					   - target.calcStat(Stats.AGGRESSION, ((L2Attackable)target).getHating(activeChar), target, skill); 
                     						
                     	if (skill.getPower() > 0)
-                    		target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -(int) skill.getPower());
+                    		((L2Attackable)target).reduceHate(null, (int) skill.getPower());
                     	else if (aggdiff > 0)
-                    		target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -(int) aggdiff);
+                    		((L2Attackable)target).reduceHate(null, (int) aggdiff);
                     }
                     break;
                 }
@@ -280,7 +282,15 @@ public class Disablers implements ISkillHandler
                 	{
                 		if (target instanceof L2Attackable)
                 		{
-                			target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, -((L2Attackable)target).getHating(activeChar));
+                    		L2Attackable targ = (L2Attackable)target;
+                			targ.stopHating(activeChar);
+                    		if (targ.getMostHated() == null)
+                            {
+                           		((L2AttackableAI)targ.getAI()).setGlobalAggro(-25);
+                        		targ.clearAggroList();
+                        		targ.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+                        		targ.setWalking();	
+                            }
                         }
                     	skill.getEffects(activeChar, target);
                     }
@@ -306,10 +316,10 @@ public class Disablers implements ISkillHandler
                 			if (skill.getTargetType() == L2Skill.SkillTargetType.TARGET_UNDEAD)
                 			{
                 				if(target.isUndead())
-                					target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -((L2Attackable)target).getHating(((L2Attackable)target).getMostHated()));
+                					((L2Attackable)target).reduceHate(null, ((L2Attackable)target).getHating(((L2Attackable)target).getMostHated()));
                 			}
                 			else
-                				target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, null, -((L2Attackable)target).getHating(((L2Attackable)target).getMostHated()));
+                				((L2Attackable)target).reduceHate(null, ((L2Attackable)target).getHating(((L2Attackable)target).getMostHated()));
                 		}
                 		else
                 		{

@@ -292,9 +292,6 @@ public class L2ControllableMobAI extends L2AttackableAI
 				npc.stopHating(getAttackTarget());
 			}
             
-            setAttackTarget(null);
-			clientStopAutoAttack();
-			clientStopMoving(null);
 			setIntention(AI_INTENTION_ACTIVE);
 		} 
         else 

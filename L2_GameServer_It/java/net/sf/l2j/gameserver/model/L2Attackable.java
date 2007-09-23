@@ -791,10 +791,57 @@ public class L2Attackable extends L2NpcInstance
         }
     }
 
+    public void reduceHate(L2Character target, int amount) 
+    {
+    	if (target == null) // whole aggrolist 
+    	{
+    		L2Character mostHated = getMostHated();
+        	if (mostHated == null) // makes target passive for a moment more
+        	{
+        		((L2AttackableAI)getAI()).setGlobalAggro(-25);
+        		return;
+        	}
+        	else
+        	{
+        		for(L2Character aggroed : getAggroListRP().keySet())
+        		{
+        			AggroInfo ai = getAggroListRP().get(aggroed);
+        	    	if (ai == null) return; 
+        	    	ai._hate -= amount;
+        		}
+        	}
+
+        	amount = getHating(mostHated);
+        	if (amount <= 0)
+            {
+        		((L2AttackableAI)getAI()).setGlobalAggro(-25);
+        		clearAggroList();
+        		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+        		setWalking();
+            }
+        	return;
+    	}
+    	AggroInfo ai = getAggroListRP().get(target);
+    	if (ai == null) return; 
+    	ai._hate -= amount;
+    	
+        if (ai._hate <= 0)
+        {
+        	if (getMostHated() == null)
+        	{
+        		((L2AttackableAI)getAI()).setGlobalAggro(-25);
+        		clearAggroList();
+        		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+        		setWalking();
+        	}
+        }
+    }
+
     /**
      * Clears _aggroList hate of the L2Character without removing from the list.<BR><BR>
      */
-    public void stopHating(L2Character target) {
+    public void stopHating(L2Character target) 
+    {
     	if (target == null) return;
     	AggroInfo ai = getAggroListRP().get(target);
     	if (ai == null) return;
