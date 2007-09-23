@@ -857,25 +857,14 @@ public final class QuestState
      * Adds a little randomization in the x y coords
      * Return object id of newly spawned npc
      */
+	public L2NpcInstance addSpawn(int npcId, L2Character cha)
+	{
+	    return addSpawn(npcId, cha, true,0);
+	}
+
     public L2NpcInstance addSpawn(int npcId, L2Character cha, int despawnDelay)
     {
         return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), true, despawnDelay);
-    }
-
-	public L2NpcInstance addSpawn(int npcId, L2Character cha)
-	{
-	    return addSpawn(npcId, cha, true);
-	}
-
-    /**
-     * Add spawn for player instance
-     * Inherits coords and heading from specified L2Character instance.
-     * It could be either the player, or any killed/attacked mob
-     * Return object id of newly spawned npc
-     */
-    public L2NpcInstance addSpawn(int npcId, L2Character cha, boolean randomOffset)
-    {
-        return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, 0);
     }
 
     /**
@@ -888,7 +877,17 @@ public final class QuestState
         return addSpawn(npcId, x, y, z, 0, false, despawnDelay);
     }
 
-    
+    /**
+     * Add spawn for player instance
+     * Inherits coords and heading from specified L2Character instance.
+     * It could be either the player, or any killed/attacked mob
+     * Return object id of newly spawned npc
+     */
+    public L2NpcInstance addSpawn(int npcId, L2Character cha, boolean randomOffset, int despawnDelay)
+    {
+        return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, despawnDelay);
+    }
+
     /**
      * Add spawn for player instance
      * Return object id of newly spawned npc
