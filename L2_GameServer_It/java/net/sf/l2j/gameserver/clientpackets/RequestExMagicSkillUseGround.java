@@ -24,44 +24,35 @@ package net.sf.l2j.gameserver.clientpackets;
 public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 {
 	private static final String _C__D0_2F_REQUESTEXMAGICSKILLUSEGROUND = "[C] D0:2F RequestExMagicSkillUseGround";
-	private int _unk;
-	private int _unk2;
-	private int _unk3;
-	private int _unk4;
-	private int _unk5;
-	private int _unk6;
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
+	private int _x;
+	private int _y;
+	private int _z;
+	private int _skillId;
+	private int _ctrlPressed;
+	private int _shiftPressed;
+	
 	@Override
 	protected void readImpl()
 	{
-		_unk = readD();
-		_unk2 = readD();
-		_unk3 = readD();
-		_unk4 = readD();
-		_unk5 = readD();
-		_unk6 = readC();
+		_x = readD();
+		_y = readD();
+		_z = readD();
+		_skillId = readD();
+		_ctrlPressed = readD();
+		_shiftPressed = readC();
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
 	 */
 	@Override
 	protected void runImpl()
 	{
-		// TODO
-		System.out.println("C6: RequestExMagicSkillUseGround. unk: "+_unk);
-		System.out.println("C6: RequestExMagicSkillUseGround. unk2: "+_unk2);
-		System.out.println("C6: RequestExMagicSkillUseGround. unk3: "+_unk3);
-		System.out.println("C6: RequestExMagicSkillUseGround. unk4: "+_unk4);
-		System.out.println("C6: RequestExMagicSkillUseGround. unk5: "+_unk5);
-		System.out.println("C6: RequestExMagicSkillUseGround. unk6: "+_unk6);
-
+		// TODO: remove me
+		System.out.println("C6: RequestExMagicSkillUseGround. x: "+_x+" y: "+_y+" z: "+_z+" skill: "+_skillId+" crtl: "+_ctrlPressed+" shift: "+_shiftPressed);
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
@@ -70,5 +61,4 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 	{
 		return _C__D0_2F_REQUESTEXMAGICSKILLUSEGROUND;
 	}
-
 }
