@@ -73,15 +73,15 @@ public class DimensionalRiftManager
         return _instance;
     }
 
-    public DimensionalRiftManager()
+    private DimensionalRiftManager()
     {
         loadRooms();
         loadSpawns();
     }
 
-    public DimensionalRiftRoom getRoom(byte _type, byte room)
+    public DimensionalRiftRoom getRoom(byte type, byte room)
     {
-        return _rooms.get(_type).get(room);
+        return _rooms.get(type) == null ? null : _rooms.get(type).get(room);
     }
 
     private void loadRooms()
@@ -445,7 +445,8 @@ public class DimensionalRiftManager
             for(L2Spawn spawn : _roomSpawns)
             {
                 spawn.stopRespawn();
-                spawn.getLastSpawn().deleteMe();
+                if(spawn.getLastSpawn() != null)
+                    spawn.getLastSpawn().deleteMe();
             }
         }
     }
