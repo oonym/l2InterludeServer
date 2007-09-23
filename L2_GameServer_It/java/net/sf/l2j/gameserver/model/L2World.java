@@ -218,7 +218,7 @@ public final class L2World
      */
     public L2PcInstance[] getAllGMs()
     {
-        return GmListTable.getInstance().getAllGms();
+        return GmListTable.getInstance().getAllGms(true);
     }
     
     /**

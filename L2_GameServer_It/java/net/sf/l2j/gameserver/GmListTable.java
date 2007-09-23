@@ -18,8 +18,7 @@
  */
 package net.sf.l2j.gameserver;
 
-import java.util.HashSet;
-import java.util.Set;
+import javolution.util.FastList;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
@@ -38,9 +37,20 @@ public class GmListTable
 	private static Logger _log = Logger.getLogger(GmListTable.class.getName());
 	private static GmListTable _instance;
 	
+	class GmListEntry
+	{
+		public L2PcInstance gm;
+		public boolean hidden;
+		
+		public GmListEntry(L2PcInstance player)
+		{
+			gm = player;
+		}
+	}
+	
 	
 	/** Set(L2PcInstance>) containing all the GM in game */
-	private Set<L2PcInstance> _gmList;
+	private FastList<GmListEntry> _gmList;
 	
 	public static GmListTable getInstance()
 	{
@@ -51,67 +61,129 @@ public class GmListTable
 		return _instance;
 	}
 	
-    public L2PcInstance[] getAllGms()
-    {
-        return _gmList.toArray(new L2PcInstance[_gmList.size()]);
-    }
+	public L2PcInstance[] getAllGms(boolean includeHidden)
+	{
+		FastList<L2PcInstance> tmpGmList = new FastList<L2PcInstance>();
+		
+		for (GmListEntry temp : _gmList)
+		{
+			if (includeHidden || !temp.hidden)
+				tmpGmList.add(temp.gm);
+		}
+		
+		return tmpGmList.toArray(new L2PcInstance[tmpGmList.size()]);
+	}
+	
+	public String[] getAllGmNames(boolean includeHidden)
+	{
+		FastList<String> tmpGmList = new FastList<String>();
+		
+		for (GmListEntry temp : _gmList)
+		{
+			if (!temp.hidden)
+				tmpGmList.add(temp.gm.getName());
+			else if (includeHidden)
+				tmpGmList.add(temp.gm.getName()+" (invis)");
+		}
+		
+		return tmpGmList.toArray(new String[tmpGmList.size()]);
+	}
 	
 	private GmListTable()
 	{
-		_gmList = new HashSet<L2PcInstance>();
+		_gmList = new FastList<GmListEntry>();
 	}
 	
 	/**
 	 * Add a L2PcInstance player to the Set _gmList
 	 */
-	public void addGm(L2PcInstance player)
+	public void addGm(L2PcInstance player, boolean hidden)
 	{
 		if (Config.DEBUG) _log.fine("added gm: "+player.getName());
-		_gmList.add(player);
+		_gmList.add(new GmListEntry(player));
 	}
 	
 	public void deleteGm(L2PcInstance player)
 	{
 		if (Config.DEBUG) _log.fine("deleted gm: "+player.getName());
-		_gmList.remove(player);
+		
+		for (GmListEntry temp : _gmList)
+		{
+			if (temp.gm == player)
+				_gmList.remove(temp);
+		}
 	}
 	
-	public boolean isGmOnline()
+	/**
+	 * GM will be displayed on clients gmlist
+	 * @param player
+	 */
+	public void showGm(L2PcInstance player)
 	{
-		return (!_gmList.isEmpty());
+		for (GmListEntry temp : _gmList)
+		{
+			if (temp.gm == player)
+				temp.hidden = false;
+		}
 	}
 	
-	public void sendListToPlayer (L2PcInstance player){
-		if (_gmList.isEmpty()) {
+	/**
+	 * GM will no longer be displayed on clients gmlist
+	 * @param player
+	 */
+	public void hideGm(L2PcInstance player)
+	{
+		for (GmListEntry temp : _gmList)
+		{
+			if (temp.gm == player)
+				temp.hidden = true;
+		}
+	}
+	
+	public boolean isGmOnline(boolean includeHidden)
+	{
+		for (GmListEntry temp : _gmList)
+		{
+			if (includeHidden || !temp.hidden)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public void sendListToPlayer (L2PcInstance player)
+	{
+		if (!isGmOnline(player.isGM()))
+		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.NO_GM_PROVIDING_SERVICE_NOW); //There are not any GMs that are providing customer service currently.
 			player.sendPacket(sm);
-		} else {
+		} else
+		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.GM_LIST);
 			player.sendPacket(sm);
-            for (L2PcInstance gm : _gmList) {
+			
+            for (String name : getAllGmNames(player.isGM()))
+            {
 				sm = new SystemMessage(SystemMessageId.GM_S1);
-				sm.addString(gm.getName());
+				sm.addString(name);
 				player.sendPacket(sm);
 			}
 		}
 	}
-    
-    public Set<L2PcInstance> listOnlineGms()
-    {
-        return _gmList;
-    }
 	
 	public static void broadcastToGMs(L2GameServerPacket packet)
 	{
-		for (L2PcInstance gm : getInstance().listOnlineGms())
+		for (L2PcInstance gm : getInstance().getAllGms(true))
 		{
-            gm.sendPacket(packet);
+			gm.sendPacket(packet);
 		}
 	}
-    
-    public static void broadcastMessageToGMs(String message) {
-        for (L2PcInstance gm : getInstance().listOnlineGms()) {
-            gm.sendPacket(SystemMessage.sendString(message));
-        }
-    }
+	
+	public static void broadcastMessageToGMs(String message)
+	{
+		for (L2PcInstance gm : getInstance().getAllGms(true))
+		{
+			gm.sendPacket(SystemMessage.sendString(message));
+		}
+	}
 }

@@ -133,7 +133,9 @@ public class EnterWorld extends L2GameClientPacket
             if (Config.GM_STARTUP_AUTO_LIST 
                     && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_MENU
                       || Config.ALT_PRIVILEGES_ADMIN && AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_gmliston")))
-            	GmListTable.getInstance().addGm(activeChar);
+            	GmListTable.getInstance().addGm(activeChar, false);
+            else
+            	GmListTable.getInstance().addGm(activeChar, true);
             
             if (Config.GM_NAME_COLOR_ENABLED)
             {

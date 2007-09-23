@@ -381,9 +381,9 @@ public class GameStatusThread extends Thread
                     int igm = 0;
                     String gmList = "";
                     
-                    for (L2PcInstance player : GmListTable.getInstance().getAllGms())
+                    for (String player : GmListTable.getInstance().getAllGmNames(true))
                     {
-                            gmList = gmList + ", " + player.getName();
+                            gmList = gmList + ", " + player;
                             igm++;
                     }
                     _print.println("There are currently " + igm +" GM(s) online...");
@@ -873,7 +873,7 @@ public class GameStatusThread extends Thread
     
     private int getOnlineGMS()
     {
-        return GmListTable.getInstance().getAllGms().length;
+        return GmListTable.getInstance().getAllGms(true).length;
     }
     
     private String getUptime(int time)

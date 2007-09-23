@@ -56,7 +56,7 @@ public final class RequestPetition extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
-		if (!GmListTable.getInstance().isGmOnline())
+		if (!GmListTable.getInstance().isGmOnline(false))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.NO_GM_PROVIDING_SERVICE_NOW));
 			return;
