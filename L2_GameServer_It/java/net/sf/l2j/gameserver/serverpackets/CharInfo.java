@@ -24,6 +24,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.Inventory;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
@@ -87,8 +88,15 @@ public class CharInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
+		boolean gmSeeInvis = false;
+		
 		if (_activeChar.getAppearance().getInvisible())
-			return;
+		{
+			if (getClient().getActiveChar().isGM())
+				gmSeeInvis = true;
+			else
+				return;
+		}
 		
 		if (_activeChar.getPoly().isMorphed())
 		{
@@ -126,15 +134,40 @@ public class CharInfo extends L2GameServerPacket
 				writeC(_activeChar.isRunning() ? 1 : 0);
 				writeC(_activeChar.isInCombat() ? 1 : 0);
 				writeC(_activeChar.isAlikeDead() ? 1 : 0);
-				writeC(_activeChar.getAppearance().getInvisible()? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
+				
+				if (gmSeeInvis)
+				{
+					writeC(0);
+				}
+				else
+				{
+					writeC(_activeChar.getAppearance().getInvisible()? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
+				}
+				
 				writeS(_activeChar.getName());
-				writeS(_activeChar.getTitle());
+				
+				if (gmSeeInvis)
+				{
+					writeS("Invisible");
+				}
+				else
+				{
+					writeS(_activeChar.getTitle());
+				}
+				
 				writeD(0);
 				writeD(0);
 				writeD(0000);  // hmm karma ??
-	
-				writeH(_activeChar.getAbnormalEffect());  // C2
-				writeH(0x00);  // C2
+				
+				if (gmSeeInvis)
+				{
+					writeD( (_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH) );
+				}
+				else
+				{
+					writeD(_activeChar.getAbnormalEffect());  // C2
+				}
+				
 				writeD(0);  // C2
 				writeD(0);  // C2
 				writeD(0);  // C2
@@ -225,7 +258,15 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_activeChar.getAppearance().getHairColor());
 			writeD(_activeChar.getAppearance().getFace());
 			
-			writeS(_activeChar.getTitle());
+			if (gmSeeInvis)
+			{
+				writeS("Invisible");
+			}
+			else
+			{
+				writeS(_activeChar.getTitle());
+			}
+			
 			writeD(_activeChar.getClanId());
 			writeD(_activeChar.getClanCrestId());
 			writeD(_activeChar.getAllyId());
@@ -239,7 +280,15 @@ public class CharInfo extends L2GameServerPacket
 			writeC(_activeChar.isInCombat() ? 1 : 0);
 			writeC(_activeChar.isAlikeDead() ? 1 : 0);
 			
-			writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0);	// invisible = 1  visible =0
+			if (gmSeeInvis)
+			{
+				writeC(0);
+			}
+			else
+			{
+				writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0);	// invisible = 1  visible =0
+			}
+			
 			writeC(_activeChar.getMountType());	// 1 on strider   2 on wyvern   0 no mount
 			writeC(_activeChar.getPrivateStoreType());   //  1 - sellshop
 			
@@ -249,7 +298,15 @@ public class CharInfo extends L2GameServerPacket
 			
 			writeC(0x00);	// find party members
 			
-	        writeD(_activeChar.getAbnormalEffect());
+			if (gmSeeInvis)
+			{
+				writeD( (_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH) );
+			}
+			else
+			{
+				writeD(_activeChar.getAbnormalEffect());
+			}
+			
 			writeC(_activeChar.getRecomLeft());                       //Changed by Thorgrim
 			writeH(_activeChar.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
 			writeD(_activeChar.getClassId().getId());
