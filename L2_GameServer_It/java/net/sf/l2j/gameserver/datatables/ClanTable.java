@@ -78,6 +78,9 @@ public class ClanTable
 	            PreparedStatement statement = con.prepareStatement("SELECT clan_id FROM clan_data");	           
 	            ResultSet result = statement.executeQuery();
 	            
+	            // Count the clans
+	            int clanCount = 0;
+	            
 	            while(result.next())
 	            {
 	            	_clans.put(Integer.parseInt(result.getString("clan_id")),new L2Clan(Integer.parseInt(result.getString("clan_id"))));
@@ -93,9 +96,12 @@ public class ClanTable
 		            		scheduleRemoveClan(clan.getClanId());
 		            	}
 	            	}
+	            	clanCount++;
 	            }
 	            result.close();
 	            statement.close();
+	            
+	            _log.config("Restored "+clanCount+" clans from the database.");
 	        }
 	        catch (Exception e) {
 	            _log.warning("data error on ClanTable: " + e);
