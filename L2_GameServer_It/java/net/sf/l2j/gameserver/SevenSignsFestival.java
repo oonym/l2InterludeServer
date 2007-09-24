@@ -70,8 +70,6 @@ public class SevenSignsFestival implements SpawnListener
     protected static final Logger _log = Logger.getLogger(SevenSignsFestival.class.getName());
     private static SevenSignsFestival _instance;
     
-    public static final String FESTIVAL_DATA_FILE = "config/signs.properties";
-    
     private static final String GET_CLAN_NAME = "SELECT clan_name FROM clan_data WHERE clan_id = (SELECT clanid FROM characters WHERE char_name = ?)";
     
     /**
@@ -908,8 +906,8 @@ public class SevenSignsFestival implements SpawnListener
         if (npcId < 18009 || npcId > 18108)
             return false;
         
-        String npcIdStr = String.valueOf(npcId);
-        return (npcIdStr.substring(4).equals("4") || npcIdStr.substring(4).equals("9"));
+        int identifier = npcId%10;
+        return (identifier == 4 || identifier == 9);
     }
     
     /**
