@@ -211,7 +211,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
         {
             synchronized(item)
             {
-            	if (item.getOwnerId() == 0 // has just lost the item
+            	if (item.getOwnerId() != activeChar.getObjectId() // has just lost the item
             	    || (item.getEnchantLevel() >= maxEnchantLevel && maxEnchantLevel != 0))
             	{
             		activeChar.sendPacket(new SystemMessage(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION));
