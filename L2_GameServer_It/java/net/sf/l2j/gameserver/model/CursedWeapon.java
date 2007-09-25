@@ -329,7 +329,7 @@ public class CursedWeapon
 	public boolean checkDrop(L2Attackable attackable,
 			L2PcInstance player)
 	{
-		if (Rnd.get(100000) <= _dropRate)
+		if (Rnd.get(100000) < _dropRate)
 		{
 			// Drop the item
 			dropIt(attackable, player);
