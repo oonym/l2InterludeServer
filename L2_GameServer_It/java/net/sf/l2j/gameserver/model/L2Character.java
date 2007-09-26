@@ -5393,18 +5393,18 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Return True if the L2Character is behind the target and can't be seen.<BR><BR>
 	 */
-	public boolean isBehindTarget()
+	public boolean isBehind(L2Object target)
 	{
         double angleChar, angleTarget, angleDiff, maxAngleDiff = 45;
 
-        if(getTarget() == null)
+        if(target == null)
 			return false;
 
-		if (getTarget() instanceof L2Character)
+		if (target instanceof L2Character)
 		{
-			L2Character target = (L2Character) getTarget();
-            angleChar = Util.calculateAngleFrom(target, this);
-            angleTarget = Util.convertHeadingToDegree(target.getHeading());
+			L2Character target1 = (L2Character) target;
+            angleChar = Util.calculateAngleFrom(target1, this);
+            angleTarget = Util.convertHeadingToDegree(target1.getHeading());
             angleDiff = angleChar - angleTarget;
             if (angleDiff <= -360 + maxAngleDiff) angleDiff += 360;
             if (angleDiff >= 360 - maxAngleDiff) angleDiff -= 360;
@@ -5421,21 +5421,27 @@ public abstract class L2Character extends L2Object
 		}
 		return false;
 	}
+
+	public boolean isBehindTarget()
+	{
+		return isBehind(getTarget());
+	}
+
 	/**
 	 * Return True if the L2Character is behind the target and can't be seen.<BR><BR>
 	 */
-	public boolean isFrontTarget()
+	public boolean isFront(L2Object target)
 	{
         double angleChar, angleTarget, angleDiff, maxAngleDiff = 45;
 
-        if(getTarget() == null)
+        if(target == null)
 			return false;
 
-		if (getTarget() instanceof L2Character)
+		if (target instanceof L2Character)
 		{
-			L2Character target = (L2Character) getTarget();
-            angleChar = Util.calculateAngleFrom(target, this);
-            angleTarget = Util.convertHeadingToDegree(target.getHeading());
+			L2Character target1 = (L2Character) target;
+            angleChar = Util.calculateAngleFrom(target1, this);
+            angleTarget = Util.convertHeadingToDegree(target1.getHeading());
             angleDiff = angleChar - angleTarget;
             if (angleDiff <= -180 + maxAngleDiff) angleDiff += 180;
             if (angleDiff >= 180 - maxAngleDiff) angleDiff -= 180;
@@ -5451,6 +5457,11 @@ public abstract class L2Character extends L2Object
 			_log.fine("isSideTarget's target not an L2 Character.");
 		}
 		return false;
+	}
+
+	public boolean isFrontTarget()
+	{
+		return isFront(getTarget());
 	}
 
 
@@ -5712,7 +5723,5 @@ public abstract class L2Character extends L2Object
 	}
 
 }
-
-
 
 

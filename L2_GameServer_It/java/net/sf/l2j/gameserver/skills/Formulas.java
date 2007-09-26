@@ -1419,8 +1419,17 @@ public final class Formulas
 	/** Returns true if shield defence successfull */
 	public boolean calcShldUse(L2Character attacker, L2Character target)
 	{
-		double shldRate = target.calcStat(Stats.SHIELD_RATE, 0, attacker, null);
-		return shldRate > Rnd.get(80);
+		L2Weapon at_weapon = attacker.getActiveWeaponItem();
+		double shldRate = target.calcStat(Stats.SHIELD_RATE, 0, attacker, null)
+			* DEXbonus[target.getDEX()];
+		if (shldRate == 0.0) return false;
+		// Check for passive skill Aegis (316) or Aegis Stance (318)
+		if (target.getKnownSkill(316) == null && target.getEffect(318) == null)
+			if (!target.isFront(attacker)) return false;
+		// if attacker use bow and target wear shield, shield block rate is multiplied by 1.3 (30%)
+		if (at_weapon != null && at_weapon.getItemType() == L2WeaponType.BOW)
+			shldRate *= 1.3;
+		return shldRate > Rnd.get(100);
 	}
 
 	public boolean calcMagicAffected(L2Character actor, L2Character target, L2Skill skill)
