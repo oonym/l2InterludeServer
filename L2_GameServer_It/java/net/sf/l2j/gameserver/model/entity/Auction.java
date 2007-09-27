@@ -253,7 +253,7 @@ public class Auction
 	    if (getHighestBidderName().equals(bidder.getClan().getLeaderName()))
 	    		requiredAdena = bid - getHighestBidderMaxBid();
 		if ((getHighestBidderId() >0 && bid > getHighestBidderMaxBid()) 
-				|| (getHighestBidderId() == 0 && bid > getStartingBid()))
+				|| (getHighestBidderId() == 0 && bid >= getStartingBid()))
 	    {
 			if(takeItem(bidder, 57, requiredAdena))
 			{
