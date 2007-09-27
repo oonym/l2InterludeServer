@@ -159,7 +159,7 @@ public class L2NpcInstance extends L2Character
     public void onRandomAnimation()
     {
         // Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
-        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(1, 3));
+        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(2, 3));
         broadcastPacket(sa);
     }
 
