@@ -356,7 +356,6 @@ public final class UseItem extends L2GameClientPacket
 				InventoryUpdate iu = new InventoryUpdate();
 				iu.addItems(Arrays.asList(items));
 				activeChar.sendPacket(iu);
-				activeChar.sendPacket(new EtcStatusUpdate());
 				activeChar.abortAttack();
 				activeChar.broadcastUserInfo();
 			}

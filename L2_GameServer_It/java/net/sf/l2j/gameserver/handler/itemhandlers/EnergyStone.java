@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
@@ -69,17 +70,17 @@ public class EnergyStone implements IItemHandler
 
             if (activeChar.isSitting())
             {
-                     activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
-                     return;
+            	activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
+            	return;
             }
      
             _skill = getChargeSkill(activeChar);
             if (_skill == null)
             {
-                     SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
-                     sm.addItemName(5589);
-                     activeChar.sendPacket(sm);
-                     return;
+            	SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+            	sm.addItemName(5589);
+            	activeChar.sendPacket(sm);
+            	return;
             }
      
             _effect = getChargeEffect(activeChar);
@@ -102,7 +103,7 @@ public class EnergyStone implements IItemHandler
                 activeChar.sendPacket(MSU);
                 activeChar.broadcastPacket(MSU);
                 _effect.addNumCharges(1);
-                activeChar.updateEffectIcons();
+                activeChar.sendPacket(new EtcStatusUpdate(activeChar));
                 activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
             }
             else if (_effect.getLevel() == 2)

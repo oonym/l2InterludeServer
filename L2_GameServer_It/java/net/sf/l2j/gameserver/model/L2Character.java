@@ -1976,8 +1976,6 @@ public abstract class L2Character extends L2Object
                 tempskill.getSkillType() == L2Skill.SkillType.REFLECT ||
                 tempskill.getSkillType() == L2Skill.SkillType.HEAL_PERCENT ||
                 tempskill.getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT)&&
-                tempskill.getId() != 4267 &&
-                tempskill.getId() != 4270 &&
                 !(tempskill.getId() > 4360  && tempskill.getId() < 4367))
         	) removeFirstBuff(tempskill.getId());
 
@@ -1991,7 +1989,7 @@ public abstract class L2Character extends L2Object
             		{
             			int skillid = _effects.get(i).getSkill().getId();
             			if (!_effects.get(i).getSkill().isToggle() &&
-            				(skillid != 4267 && skillid != 4270 && !(skillid > 4360  && skillid < 4367))
+            				(!(skillid > 4360  && skillid < 4367))
             				) pos++;
             		}
             		else break;
@@ -2649,26 +2647,35 @@ public abstract class L2Character extends L2Object
             return; // nothing to do (should not happen)
 
         // Add special effects
-		if (player != null && mi != null)
+        // Note: Now handled by EtcStatusUpdate packet
+        // NOTE: CHECK IF THEY WERE EVEN VISIBLE TO OTHERS...
+		/* if (player != null && mi != null)
 		{
 			if (player.getWeightPenalty() > 0)
 				mi.addEffect(4270, player.getWeightPenalty(), -1);
-			if (player.getexpertisePenalty() > 0)
+			if (player.getExpertisePenalty() > 0)
 				mi.addEffect(4267, 1, -1);
 			if (player.getMessageRefusal())
 				mi.addEffect(4269, 1, -1);
-		}
+		}*/
 
         // Go through all effects if any
         L2Effect[] effects = getAllEffects();
 		if (effects != null && effects.length > 0)
+		{
 			for (int i = 0; i < effects.length; i++)
 			{
 				L2Effect effect = effects[i];
 
 				if (effect == null)
 					continue;
-
+				
+				if (effect.getEffectType() == L2Effect.EffectType.CHARGE && player != null)
+				{
+					// handled by EtcStatusUpdate
+					continue;
+				}
+				
 				if (effect.getInUse())
 				{
                     if (mi != null)
@@ -2679,8 +2686,8 @@ public abstract class L2Character extends L2Object
                         effect.addOlympiadSpelledIcon(os);
 				}
 			}
-
-
+		}
+			
         // Send the packets if needed
         if (mi != null)
             sendPacket(mi);
@@ -4839,8 +4846,6 @@ public abstract class L2Character extends L2Object
                         e.getSkill().getSkillType() == L2Skill.SkillType.REFLECT ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.HEAL_PERCENT ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT) &&
-                        e.getSkill().getId() != 4267 &&
-                        e.getSkill().getId() != 4270 &&
                         !(e.getSkill().getId() > 4360  && e.getSkill().getId() < 4367)) { // 7s buffs
                         numBuffs++;
                     }
@@ -4866,8 +4871,6 @@ public abstract class L2Character extends L2Object
                         e.getSkill().getSkillType() == L2Skill.SkillType.REFLECT ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.HEAL_PERCENT ||
                         e.getSkill().getSkillType() == L2Skill.SkillType.MANAHEAL_PERCENT) &&
-                        e.getSkill().getId() != 4267 &&
-                        e.getSkill().getId() != 4270 &&
                         !(e.getSkill().getId() > 4360  && e.getSkill().getId() < 4367)) {
                         if (preferSkill == 0) { removeMe=e; break; }
                         else if (e.getSkill().getId() == preferSkill) { removeMe=e; break; }

@@ -32,13 +32,13 @@
     
     <path id="classpath">
         <fileset dir="${lib}">
-            <include name="c3p0-0.9.1.1.jar"/>
+            <include name="c3p0-0.9.1.2.jar"/>
             <include name="bsf.jar"/>
             <include name="bsh-2.0b4.jar"/>
         	<include name="commons-logging-1.1.jar"/>
         	<include name="jython.jar"/>
         	<include name="javolution.jar"/>
-        	<include name="mysql-connector-java-5.0.5-bin.jar"/>
+        	<include name="mysql-connector-java-5.0.7-bin.jar"/>
         	<include name="mmocore.jar"/>
         </fileset>
     </path>   
@@ -79,7 +79,7 @@
             <fileset dir="${build.classes}"/>
             <manifest>
                 <attribute name="Main-Class" value="net.sf.l2j.Server"/>
-                <attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.1.jar jython.jar mysql-connector-java-5.0.5-bin.jar javolution.jar mmocore.jar"/>
+                <attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.0.7-bin.jar javolution.jar mmocore.jar"/>
             </manifest>
         </jar>
         
@@ -126,8 +126,8 @@
     	
     	<copy todir="${build.dist.login}">
 			<fileset dir="${src}/../lib">
-				<include name="c3p0-0.9.1.1.jar"/>
-				<include name="mysql-connector-java-5.0.5-bin.jar"/>
+				<include name="c3p0-0.9.1.2.jar"/>
+				<include name="mysql-connector-java-5.0.7-bin.jar"/>
 				<include name="javolution.jar"/>
 				<include name="mmocore.jar"/>
 			</fileset>

@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
@@ -241,10 +242,13 @@ public class Pdam implements ISkillHandler
                     {
                         effectcharge++;
                         effect.addNumCharges(1);
-                        activeChar.updateEffectIcons();
-                        SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
-                        sm.addNumber(effectcharge);
-                        activeChar.sendPacket(sm);
+                        if (activeChar instanceof L2PcInstance)
+                        {
+                        	activeChar.sendPacket(new EtcStatusUpdate((L2PcInstance)activeChar));
+                        	SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
+                        	sm.addNumber(effectcharge);
+                        	activeChar.sendPacket(sm);
+                        }
                     }
                     else
                     {

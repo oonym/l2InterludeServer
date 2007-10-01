@@ -45,6 +45,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -2043,10 +2044,13 @@ public abstract class L2Skill
                         {
                         	effectcharge++;
                             effect.addNumCharges(effectcharge);
-                            env.target.updateEffectIcons();
-                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-                            sm.addString("Charged to " + effectcharge);
-                            env.target.sendPacket(sm);
+                            if (env.target instanceof L2PcInstance)
+                            {
+                            	env.target.sendPacket(new EtcStatusUpdate((L2PcInstance)env.target));
+                                SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
+                                sm.addNumber(effectcharge);
+                                env.target.sendPacket(sm);
+                            }
                         }
                     }
                     else effects.add(e);

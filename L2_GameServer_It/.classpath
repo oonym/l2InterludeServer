@@ -6,12 +6,12 @@
 	<classpathentry kind="var" path="JUNIT_HOME/junit.jar" sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.0.0/src/org.junit_3.8.1/junitsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/javolution.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsf.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jython.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-2.0b4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/c3p0-0.9.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/mmocore.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.5-bin.jar"/>
+	<classpathentry kind="lib" path="lib/jython.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.7-bin.jar"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

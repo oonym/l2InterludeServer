@@ -150,8 +150,7 @@ public class EnterWorld extends L2GameClientPacket
             activeChar.setProtection(true);
         
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
-		activeChar.sendPacket(new EtcStatusUpdate());
-		
+
 		if (L2Event.active && L2Event.connectionLossData.containsKey(activeChar.getName()) && L2Event.isOnEvent(activeChar))
             L2Event.restoreChar(activeChar);
         else if (L2Event.connectionLossData.containsKey(activeChar.getName()))
@@ -160,8 +159,11 @@ public class EnterWorld extends L2GameClientPacket
 		if (SevenSigns.getInstance().isSealValidationPeriod())
 			sendPacket(new SignsSky());
 		
-        if (Config.STORE_SKILL_COOLTIME)
+        // buff and status icons
+		if (Config.STORE_SKILL_COOLTIME)
             activeChar.restoreEffects();
+        
+        activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 
         // engage and notify Partner
         if(Config.L2JMOD_ALLOW_WEDDING)
