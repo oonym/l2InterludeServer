@@ -7935,6 +7935,18 @@ public final class L2PcInstance extends L2PlayableInstance
     {
         if (getPet() != null)
             getPet().unSummon(this);
+        
+        if (getCubics().size() > 0)
+        {
+            for (L2CubicInstance cubic : getCubics().values())
+            {
+                cubic.stopAction();
+                cubic.cancelDisappear();
+            }
+
+            getCubics().clear();
+        }
+        
     	_olympiadGameId = id;
         _obsX = getX();
         if (isSitting())
