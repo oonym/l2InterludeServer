@@ -41,7 +41,8 @@ public class Scrolls implements IItemHandler
 											3933, 3934, 3935, 4218, 5593, 5594, 5595, 6037,
 											8515, 8516, 8517, 8518, 8519, 8520, // charm of courage
 											8594, 8595, 8596, 8597, 8598, 8599, // scrolls of recovery
-											8954, 8955, 8956                    // primeval crystal
+											8954, 8955, 8956,                   // primeval crystal
+											9146, 9147, 9148, 9149, 9150, 9151, 9152, 9153, 9154, 9155
                                    		  };
 
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -205,6 +206,46 @@ public class Scrolls implements IItemHandler
          		activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2170, 1, 1, 0));
          		useScroll(activeChar, 2170, 1);
          		break;
+         	case 9146: // Scroll of Guidance - For Event XML:2050
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2050, 1, 1, 0));
+         		useScroll(activeChar, 2050, 1);
+         		break;
+         	case 9147: // Scroll of Death Whipser - For Event XML:2051
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2051, 1, 1, 0));
+         		useScroll(activeChar, 2051, 1);
+         		break;
+         	case 9148: // Scroll of Focus - For Event XML:2052
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2052, 1, 1, 0));
+         		useScroll(activeChar, 2052, 1);
+         		break;
+         	case 9149: // Scroll of Acumen - For Event XML:2053
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2053, 1, 1, 0));
+         		useScroll(activeChar, 2053, 1);
+         		break;
+         	case 9150: // Scroll of Haste - For Event XML:2054
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2054, 1, 1, 0));
+         		useScroll(activeChar, 2054, 1);
+         		break;
+         	case 9151: // Scroll of Agility - For Event XML:2055
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2055, 1, 1, 0));
+         		useScroll(activeChar, 2055, 1);
+         		break;
+         	case 9152: // Scroll of Enpower - For Event XML:2056
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2056, 1, 1, 0));
+         		useScroll(activeChar, 2056, 1);
+         		break;      
+         	case 9153: // Scroll of Might - For Event XML:2057
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2057, 1, 1, 0));
+         		useScroll(activeChar, 2057, 1);
+         		break;      
+         	case 9154: // Scroll of Wind Walk - For Event XML:2058
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2058, 1, 1, 0));
+         		useScroll(activeChar, 2058, 1);
+         		break;      
+         	case 9155: // Scroll of Shield - For Event XML:2059
+         		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2059, 1, 1, 0));
+         		useScroll(activeChar, 2059, 1);
+         		break;    		
          	default:
          		break;
 		}
