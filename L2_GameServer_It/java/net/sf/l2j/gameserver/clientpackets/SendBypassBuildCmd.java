@@ -41,6 +41,8 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 	protected void readImpl()
 	{
 		_command = readS();
+		if (_command != null)
+			_command = _command.trim(); 
 	}
 
 	@Override
