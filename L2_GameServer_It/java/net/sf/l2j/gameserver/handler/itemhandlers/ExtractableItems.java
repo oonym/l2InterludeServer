@@ -19,6 +19,8 @@
 
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
+import java.util.logging.Logger;
+
 import net.sf.l2j.gameserver.datatables.ExtractableItemsData;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
@@ -42,6 +44,7 @@ import net.sf.l2j.util.Rnd;
 
 public class ExtractableItems implements IItemHandler
 {
+	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -75,7 +78,7 @@ public class ExtractableItems implements IItemHandler
 
 		if (createItemID == 0)
 		{
-			activeChar.sendMessage("Nothing happend.");
+			activeChar.sendMessage("Nothing happened.");
 			return;
 		}
 
@@ -83,6 +86,12 @@ public class ExtractableItems implements IItemHandler
 
 		if (createItemID > 0)
 		{
+			if (ItemTable.getInstance().createDummyItem(createItemID) == null)
+			{
+				_log.warning("createItemID "+createItemID+" doesn't have template!");
+				activeChar.sendMessage("Nothing happened.");
+				return;
+			}
 			if (ItemTable.getInstance().createDummyItem(createItemID)
 					.isStackable())
 				inv.addItem("Extract", createItemID, createAmount, activeChar,
