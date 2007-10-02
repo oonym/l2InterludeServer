@@ -323,14 +323,13 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 1\">Advance to "+CharTemplateTable.getClassNameById(1)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 4\">Advance to "+CharTemplateTable.getClassNameById(4)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 7\">Advance to "+CharTemplateTable.getClassNameById(7)+"</a></td></tr>");
-        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 10\">Advance to "+CharTemplateTable.getClassNameById(10)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 11\">Advance to "+CharTemplateTable.getClassNameById(11)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 15\">Advance to "+CharTemplateTable.getClassNameById(15)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 19\">Advance to "+CharTemplateTable.getClassNameById(19)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 22\">Advance to "+CharTemplateTable.getClassNameById(22)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 26\">Advance to "+CharTemplateTable.getClassNameById(26)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 29\">Advance to "+CharTemplateTable.getClassNameById(29)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 32\">Advance to "+CharTemplateTable.getClassNameById(32)+"</a></td></tr>");
-        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 34\">Advance to "+CharTemplateTable.getClassNameById(34)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 35\">Advance to "+CharTemplateTable.getClassNameById(35)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 39\">Advance to "+CharTemplateTable.getClassNameById(39)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 42\">Advance to "+CharTemplateTable.getClassNameById(42)+"</a></td></tr>");
@@ -453,7 +452,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
         sb.append("<tr><td><br></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 0\">Advance to "+CharTemplateTable.getClassNameById(0)+"</a></td></tr>");
-        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 11\">Advance to "+CharTemplateTable.getClassNameById(11)+"</a></td></tr>");
+        sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 10\">Advance to "+CharTemplateTable.getClassNameById(10)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 18\">Advance to "+CharTemplateTable.getClassNameById(18)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 25\">Advance to "+CharTemplateTable.getClassNameById(25)+"</a></td></tr>");
         sb.append("<tr><td><a action=\"bypass -h npc_"+getObjectId()+"_change_class 31\">Advance to "+CharTemplateTable.getClassNameById(31)+"</a></td></tr>");
