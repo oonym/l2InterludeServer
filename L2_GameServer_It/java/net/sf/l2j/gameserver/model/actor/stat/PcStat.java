@@ -138,12 +138,12 @@ public class PcStat extends PlayableStat
         if (!super.removeExpAndSp(addToExp, addToSp)) return false;
 
         // Send a Server->Client System Message to the L2PcInstance
-        //TODO: add right System msg
-        SystemMessage sm = new SystemMessage(SystemMessageId.YOU_EARNED_S1_EXP_AND_S2_SP);
+        SystemMessage sm = new SystemMessage(SystemMessageId.EXP_DECREASED_BY_S1);
         sm.addNumber((int)addToExp);
+        getActiveChar().sendPacket(sm);
+        sm = new SystemMessage(SystemMessageId.SP_DECREASED_S1);
         sm.addNumber(addToSp);
         getActiveChar().sendPacket(sm);
-
         return true;
     }
 
