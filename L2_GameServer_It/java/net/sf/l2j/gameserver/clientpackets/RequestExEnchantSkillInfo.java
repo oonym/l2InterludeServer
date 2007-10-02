@@ -106,7 +106,7 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
         byte rate = SkillTreeTable.getInstance().getSkillRate(activeChar, skill);
         ExEnchantSkillInfo asi = new ExEnchantSkillInfo(skill.getId(), skill.getLevel(), requiredSp, requiredExp, rate);
             
-        if (Config.SP_BOOK_NEEDED && (skill.getLevel() == 101 || skill.getLevel() == 141)) // only first lvl requires book
+        if (Config.ES_SP_BOOK_NEEDED && (skill.getLevel() == 101 || skill.getLevel() == 141)) // only first lvl requires book
         {
         	int spbId = 6622;
         	asi.addRequirement(4, spbId, 1, 0);

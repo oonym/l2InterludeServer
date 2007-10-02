@@ -242,6 +242,8 @@ public final class Config
 
     /** Spell Book needed to learn skill */
     public static boolean SP_BOOK_NEEDED;
+    /** Spell Book needet to enchant skill */
+    public static boolean ES_SP_BOOK_NEEDED;
     /** Logging Chat Window */
     public static boolean LOG_CHAT;
     /** Logging Item Window */
@@ -1604,6 +1606,7 @@ public final class Config
                 ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(altSettings.getProperty("AltGameSkillHitRate", "1."));
                 IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
                 SP_BOOK_NEEDED          = Boolean.parseBoolean(altSettings.getProperty("SpBookNeeded", "true"));
+                ES_SP_BOOK_NEEDED       = Boolean.parseBoolean(altSettings.getProperty("EnchantSkillSpBookNeeded","true"));
                 AUTO_LOOT               = altSettings.getProperty("AutoLoot").equalsIgnoreCase("True");
                 AUTO_LOOT_HERBS         = altSettings.getProperty("AutoLootHerbs").equalsIgnoreCase("True");
                 ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE    = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanBeKilledInPeaceZone", "false"));
