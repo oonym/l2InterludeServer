@@ -157,6 +157,17 @@ public final class Say2 extends L2GameClientPacket
 				if (receiver != null && 
 						!BlockList.isBlocked(receiver, activeChar))
 				{	
+					if (Config.JAIL_DISABLE_CHAT && receiver.isInJail())
+			        {
+			                activeChar.sendMessage("Player is in jail.");
+			                return;
+			        }
+					if (receiver.isChatBanned())
+			        {
+			                activeChar.sendMessage("Player is chat banned.");
+			                return;
+			        }
+
 					if (!receiver.getMessageRefusal())
 					{
 						receiver.sendPacket(cs);
