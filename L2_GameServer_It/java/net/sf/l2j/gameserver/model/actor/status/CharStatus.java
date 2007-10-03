@@ -332,7 +332,9 @@ public class CharStatus
     
     public final void setCurrentCp(double newCp, boolean broadcastPacket)
     {
-        synchronized (getActiveChar())
+        // Avoid setting CP on dead actors
+        if (getActiveChar().isDead()) return;
+        synchronized (this)
         {
             // Get the Max CP of the L2Character
             int maxCp = getActiveChar().getStat().getMaxCp();
@@ -372,7 +374,9 @@ public class CharStatus
     
     public final void setCurrentHp(double newHp, boolean broadcastPacket)
     {
-        synchronized (getActiveChar())
+        // avoid setting HP of dead actors
+        if (getActiveChar().isDead()) return;
+        synchronized (this)
         {
             // Get the Max HP of the L2Character
             double maxHp = getActiveChar().getStat().getMaxHp();
@@ -427,7 +431,9 @@ public class CharStatus
     }
     public final void setCurrentMp(double newMp, boolean broadcastPacket)
     {
-        synchronized (getActiveChar())
+        // avoid setting MP on dead actors
+        if (getActiveChar().isDead()) return;
+        synchronized (this)
         {
             // Get the Max MP of the L2Character
             int maxMp = getActiveChar().getStat().getMaxMp();
@@ -483,6 +489,13 @@ public class CharStatus
         {
             try
             {
+                // dead actors doesnt have regen
+                if (getActiveChar().isDead())
+                {
+                    stopHpMpRegeneration();
+                    return;
+				}
+                
                 CharStat charstat = getActiveChar().getStat();
                 
                 // Modify the current CP of the L2Character and broadcast Server->Client packet StatusUpdate
@@ -508,4 +521,3 @@ public class CharStatus
         }
     }
 }
-
