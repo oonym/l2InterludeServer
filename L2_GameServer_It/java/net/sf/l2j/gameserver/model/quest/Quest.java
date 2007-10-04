@@ -247,9 +247,9 @@ public abstract class Quest
 	
     
 	// these are methods to call from java
-    public final boolean notifyAttack(L2NpcInstance npc, L2PcInstance attacker, boolean isPet, int damage) {
+    public final boolean notifyAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet) {
         String res = null;
-        try { res = onAttack(npc, attacker, isPet, damage); } catch (Exception e) { return showError(attacker, e); }
+        try { res = onAttack(npc, attacker, damage, isPet); } catch (Exception e) { return showError(attacker, e); }
         return showResult(attacker, res);
     } 
     public final boolean notifyDeath(L2Character killer, L2Character victim, QuestState qs) {
@@ -292,7 +292,7 @@ public abstract class Quest
 
 
 	// these are methods that java calls to invoke scripts
-    @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker, boolean isPet, int damage) { return null; } 
+    @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet) { return null; } 
     @SuppressWarnings("unused") public String onDeath (L2Character killer, L2Character victim, QuestState qs) 
     { 	
     	if (killer instanceof L2NpcInstance)

@@ -784,7 +784,7 @@ public class L2Attackable extends L2NpcInstance
                     
                     if (getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED) !=null)
                     	for (Quest quest: getTemplate().getEventQuests(Quest.QuestEventType.MOBGOTATTACKED))
-                    		quest.notifyAttack(this, player, attacker instanceof L2Summon, damage);
+                    		quest.notifyAttack(this, player, damage, attacker instanceof L2Summon);
                 }
             } 
             catch (Exception e) { _log.log(Level.SEVERE, "", e); }
