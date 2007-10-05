@@ -10142,7 +10142,7 @@ public final class L2PcInstance extends L2PlayableInstance
     	// sendPacket(new EtcStatusUpdate(this));
     }
 
-	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>();
+	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>().setShared(true);
 
 	/**
 	 * Simple class containing all neccessary information to maintain
