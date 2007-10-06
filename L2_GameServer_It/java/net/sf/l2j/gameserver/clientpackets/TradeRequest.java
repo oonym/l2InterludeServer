@@ -100,7 +100,7 @@ public final class TradeRequest extends L2GameClientPacket
 
 		if (partner.isProcessingRequest() || partner.isProcessingTransaction()) 
 		{
-			_log.info("transaction already in progress.");
+			if (Config.DEBUG) _log.info("transaction already in progress.");
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 			sm.addString(partner.getName());
 			player.sendPacket(sm);
