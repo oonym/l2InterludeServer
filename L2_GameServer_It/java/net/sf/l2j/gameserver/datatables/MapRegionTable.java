@@ -191,6 +191,36 @@ public class MapRegionTable
 	{
 		return ( posY >> 15 ) + 10;// + centerTileX;
 	}
+	
+	public int getAreaCastle(L2Character activeChar)
+	{
+		int area = getClosestTownNumber(activeChar);
+		int castle;
+		switch (area) 
+		{
+		case 0:  castle = 1; break;//Talking Island Village
+        case 1:  castle = 4; break; //Elven Village
+        case 2:  castle = 4; break; //Dark Elven Village
+        case 3:  castle = 9; break; //Orc Village
+        case 4:  castle = 9; break; //Dwarven Village
+        case 5:  castle = 1; break; //Town of Gludio
+        case 6:  castle = 1; break; //Gludin Village
+        case 7:  castle = 2; break; //Town of Dion
+        case 8:  castle = 3; break; //Town of Giran
+        case 9:  castle = 4; break; //Town of Oren
+        case 10: castle = 5; break; //Town of Aden
+        case 11: castle = 5; break; //Hunters Village
+        case 12: castle = 3; break; //Giran Harbor
+        case 13: castle = 6; break; //Heine
+        case 14: castle = 8; break; //Rune Township
+        case 15: castle = 7; break; //Town of Goddard
+        case 16: castle = 9; break; //Town of Shuttgart 
+        case 17: castle = 4; break; //Ivory Tower
+        case 18: castle = 8; break; //Primeval Isle Wharf
+        default: castle = 5; break; //Town of Aden
+		}
+		return castle;
+	}
 
 	public int getClosestTownNumber(L2Character activeChar)
     {

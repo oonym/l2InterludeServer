@@ -609,6 +609,13 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		            case 0xc2:
 						msg = new RequestDeleteMacro();
 						break;
+					// Manor
+		            case 0xc3:
+		            	msg = new RequestBuyProcure();
+		            	break;
+		            case 0xc4:
+		            	msg = new RequestBuySeed();
+		            	break;
 		            case 0xc5:
 						msg = new DlgAnswer();
 						break;

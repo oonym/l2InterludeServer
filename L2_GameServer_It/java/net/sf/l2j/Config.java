@@ -279,6 +279,27 @@ public final class Config
 
     /** Olympaid Validation Period */
     public static long ALT_OLY_VPERIOD;
+    
+    /** Manor Refresh Starting time */
+    public static int ALT_MANOR_REFRESH_TIME;
+    
+    /** Manor Refresh Min */
+    public static int ALT_MANOR_REFRESH_MIN; 
+    
+    /** Manor Next Period Approve Starting time */
+    public static int ALT_MANOR_APPROVE_TIME; 
+    
+    /** Manor Next Period Approve Min */
+    public static int ALT_MANOR_APPROVE_MIN;
+    
+    /** Manor Maintenance Time */
+    public static int ALT_MANOR_MAINTENANCE_PERIOD; 
+    
+    /** Manor Save All Actions */
+    public static boolean ALT_MANOR_SAVE_ALL_ACTIONS;
+    
+    /** Manor Save Period Rate */
+    public static int ALT_MANOR_SAVE_PERIOD_RATE;
 
     /** Initial Lottery prize */
     public static int ALT_LOTTERY_PRIZE;
@@ -533,6 +554,9 @@ public final class Config
 
     /** Allow fishing ? */
     public static boolean ALLOWFISHING;    
+    
+    /** Allow Manor system */
+    public static boolean ALLOW_MANOR;
 
     /** Jail config **/
     public static boolean JAIL_IS_PVP;
@@ -1234,6 +1258,7 @@ public final class Config
                 FLOODPROTECTOR_INITIALSIZE        = Integer.parseInt(optionsSettings.getProperty("FloodProtectorInitialSize", "50"));
                 ALLOW_DISCARDITEM               = Boolean.valueOf(optionsSettings.getProperty("AllowDiscardItem", "True"));
                 ALLOWFISHING                    = Boolean.valueOf(optionsSettings.getProperty("AllowFishing", "False"));
+                ALLOW_MANOR                     = Boolean.parseBoolean(optionsSettings.getProperty("AllowManor", "False"));
                 ALLOW_BOAT                      = Boolean.valueOf(optionsSettings.getProperty("AllowBoat", "False"));
                 ALLOW_CURSED_WEAPONS            = Boolean.valueOf(optionsSettings.getProperty("AllowCursedWeapons", "False"));
 
@@ -1642,6 +1667,14 @@ public final class Config
                 ALT_OLY_IWAIT                                       = Long.parseLong(altSettings.getProperty("AltOlyIWait","300000"));
                 ALT_OLY_WPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyWPeriod","604800000"));
                 ALT_OLY_VPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyVPeriod","86400000"));
+                
+                ALT_MANOR_REFRESH_TIME                              = Integer.parseInt(altSettings.getProperty("AltManorRefreshTime","20"));
+    	        ALT_MANOR_REFRESH_MIN                               = Integer.parseInt(altSettings.getProperty("AltManorRefreshMin","00"));
+    	        ALT_MANOR_APPROVE_TIME                              = Integer.parseInt(altSettings.getProperty("AltManorApproveTime","6"));
+    	        ALT_MANOR_APPROVE_MIN                               = Integer.parseInt(altSettings.getProperty("AltManorApproveMin","00"));
+    	        ALT_MANOR_MAINTENANCE_PERIOD                        = Integer.parseInt(altSettings.getProperty("AltManorMaintenancePreiod","360000"));
+    	        ALT_MANOR_SAVE_ALL_ACTIONS                          = Boolean.parseBoolean(altSettings.getProperty("AltManorSaveAllActions","false"));
+    	        ALT_MANOR_SAVE_PERIOD_RATE                          = Integer.parseInt(altSettings.getProperty("AltManorSavePeriodRate","2"));
 
                 ALT_LOTTERY_PRIZE                = Integer.parseInt(altSettings.getProperty("AltLotteryPrize","50000"));
                 ALT_LOTTERY_TICKET_PRICE         = Integer.parseInt(altSettings.getProperty("AltLotteryTicketPrice","2000"));

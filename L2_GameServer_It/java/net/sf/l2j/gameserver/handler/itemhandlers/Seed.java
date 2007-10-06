@@ -18,157 +18,117 @@
  */
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
-import net.sf.l2j.gameserver.ai.CtrlEvent;
-import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
+import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
+import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Manor;
+import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.instance.L2BossInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MonsterInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
-import net.sf.l2j.util.Rnd;
 
-public class Seed implements IItemHandler
-{
-    private static int[] ITEM_IDS = { // generic seeds (lo-grade)
-                                      5016,5017,5018,5019,5020,5021,5022,5023,5024,
-                                      5025,5026,5027,5028,5029,5030,5031,5032,5033,
-                                      5034,5035,5036,5037,5038,5039,5040,5041,5042,
-                                      5043,5044,5045,5046,5047,5048,5049,5050,5051,
-                                      5052,5053,5054,5055,5056,5057,5058,5059,5060,
-                                      5061,5221,5222,5223,5224,5225,5226,5227,
-
-                                      // alternative seeds(hi-grade)
-                                      5650,5651,5652,5653,5654,5655,5656,5657,5658,
-                                      5659,5660,5661,5662,5663,5664,5665,5666,5667,
-                                      5668,5669,5670,5671,5672,5673,5674,5675,5676,
-                                      5678,5678,5679,5680,5681,5682,5683,5684,5685,
-                                      5686,5687,5688,5689,5690,5691,5692,5693,5694,
-                                      5695,5696,5697,5698,5699,5700,5701,5702
-                                      };
+/**
+ * @author  l3x
+ */
+public class Seed implements IItemHandler {
+	
+	private static int[] _itemIds = { 
+									5016,5017,5018,5019,5020,5021,5022,5023,5024,5025,
+									5026,5027,5028,5029,5030,5031,5032,5033,5034,5035,
+									5036,5037,5038,5039,5041,5042,5043,5044,5045,5046,
+									5047,5048,5049,5050,5051,5052,5053,5054,5055,5056,
+									5057,5058,5059,5060,5061,5221,5222,5223,5224,5225,
+									5226,5227,5650,5651,5652,5653,5654,5655,5656,5657,
+									5658,5659,5660,5661,5662,5663,5664,5665,5666,5667,
+									5668,5669,5670,5671,5672,5673,5674,5675,5676,5677,
+									5678,5679,5680,5681,5682,5683,5684,5685,5686,5687,
+									5688,5689,5690,5691,5692,5693,5694,5695,5696,5697,
+									5698,5699,5700,5701,5702,6728,6729,6730,6731,6732,
+									6733,6734,6735,6736,6737,6738,6739,6740,6741,6742,
+									6743,6744,6745,6746,6754,6755,6756,6757,6758,6759,
+									6760,6761,6762,6763,6764,6765,6766,6767,6768,6769,
+									6770,6771,6772,7016,7017,7018,7019,7020,7021,7022,
+									7023,7024,7025,7026,7027,7028,7029,7030,7031,7032,
+									7033,7034,7035,7036,7037,7038,7039,7040,7041,7042,
+									7043,7044,7045,7046,7047,7048,7049,7050,7051,7052,
+									7053,7054,7055,7056,7057,8223,8224,8225,8226,8227,
+									8229,8230,8231,8232,8233,8234,8236,8237,8238,8239,
+									8240,8241,8242,8243,8244,8245,8246,8247,8248,8249,
+									8250,8251,8252,8253,8254,8255,8256,8257,8258,8259,
+									8260,8261,8262,8263,8264,8265,8266,8267,8268,8269,
+									8270,8271,8272,8521,8522,8523,8524
+    };
+		
     
     private int _seedId;
     private L2MonsterInstance _target;
     private L2PcInstance _activeChar;
     
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
-    {
+    public void useItem(L2PlayableInstance playable, L2ItemInstance item) {
         if (!(playable instanceof L2PcInstance))
             return;
+        
+        if (CastleManorManager.getInstance().isDisabled())
+        	return;
 
         _activeChar = (L2PcInstance)playable;
         
-        if(!(_activeChar.getTarget() instanceof L2MonsterInstance))
-        {
+        if(!(_activeChar.getTarget() instanceof L2NpcInstance)) {
+            _activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+            _activeChar.sendPacket(new ActionFailed());
+            return;
+        }
+        
+        L2NpcInstance target = (L2NpcInstance) _activeChar.getTarget();
+        
+        if ( !(target instanceof L2MonsterInstance)  ||
+        		(target instanceof L2ChestInstance)  ||
+        		(target instanceof L2BossInstance)   ||
+        		(target instanceof L2RaidBossInstance)) {
+        	_activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_TARGET_IS_UNAVAILABLE_FOR_SEEDING));
+        	_activeChar.sendPacket(new ActionFailed());
+        	return;
+        }
+        
+        _target = (L2MonsterInstance) target;
+        
+        if(_target == null || _target.isDead()) {
         	_activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+        	_activeChar.sendPacket(new ActionFailed());
             return;
         }
 
-         _target = (L2MonsterInstance)_activeChar.getTarget();
-        
-        if(_target != null && !_target.isDead() && !_target.isSeeded())
-        {
-            _seedId = item.getItemId();
-                        
-            if(areaValid(MapRegionTable.getInstance().getClosestTownNumber(_activeChar)))
-            {
-                //TODO: valid action animId for seed planting
-                MagicSkillUser MSU = new MagicSkillUser(_activeChar,_target,2023,1,2,2);
-                _activeChar.sendPacket(MSU);
-                _activeChar.broadcastPacket(MSU);
-
-                if(calcSuccess())
-                {
-                    _target.setSeeded(item.getItemId(),_activeChar.getLevel());
-                    _activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN));
-                }
-                else
-                {
-                    _activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_SEED_WAS_NOT_SOWN));
-                }
-
-                // remove seed from inv & attack target
-                _activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
-                _target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, _activeChar);
-                _activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _target);
-            }
-            else
-            {
-                _activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_SEED_MAY_NOT_BE_SOWN_HERE));
-            }
+        if(_target.isSeeded()) {
+        	_activeChar.sendPacket(new ActionFailed());
+        	return;
         }
+        
+        _seedId = item.getItemId();
+            
+        if(areaValid(MapRegionTable.getInstance().getAreaCastle(_activeChar))) {
+        	//TODO: get right skill level
+        	_target.setSeeded(_seedId, _activeChar);
+        	L2Skill skill = SkillTable.getInstance().getInfo(2097, 3); //sowing skill
+        	_activeChar.useMagic(skill,false,false);
+        } else {
+        	_activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_SEED_MAY_NOT_BE_SOWN_HERE));
+        }
+    }
+
+    private boolean areaValid(int castleId) {
+		return (L2Manor.getInstance().getCastleIdForSeed(_seedId) == castleId);
     }
     
-    public int[] getItemIds()
-    {
-        return ITEM_IDS;
-    }
-
-    private boolean areaValid(int area)
-    {
-        
-        switch(area)
-        {
-            case 5: // gludio
-                return ((_seedId >= 5016 && _seedId <= 5023) || (_seedId >= 5650 && _seedId <= 5657));
-            case 7: // dion
-                return ((_seedId >= 5024 && _seedId <= 5032) || (_seedId >= 5658 && _seedId <= 5666));
-            case 8: // giran
-                return ((_seedId >= 5033 && _seedId <= 5041) || (_seedId >= 5667 && _seedId <= 5675));
-            case 9: // oren
-                return ((_seedId >= 5042 && _seedId <= 5052) || (_seedId >= 5676 && _seedId <= 5686));
-            case 10: // aden
-                return ((_seedId >= 5053 && _seedId <= 5061) || (_seedId >= 5687 && _seedId <= 5695));
-            case 13: // heine
-                return ((_seedId >= 5221 && _seedId <= 5227) || (_seedId >= 5696 && _seedId <= 5702));
-            default:
-                return false;
-        }
-        
-    }
-    
-    private boolean calcSuccess()
-    {
-        int basicSuccess = 90;//Config.MANOR_BASIC_SUCCESS;
-        int levelSeed = 0;
-	    levelSeed = L2Manor.getInstance().getSeedLevel(_seedId);
-        int levelPlayer = _activeChar.getLevel();
-        int levelTarget = _target.getLevel();
-
-        int diffPlayerTarget = (levelPlayer - levelTarget);
-        if(diffPlayerTarget < 0)
-            diffPlayerTarget = -diffPlayerTarget;
-        
-        int diffSeedTarget = (levelSeed - levelTarget);
-        if(diffSeedTarget < 0)
-            diffSeedTarget = -diffSeedTarget;
-        
-        // apply penalty, target <=> player levels
-        // 15% penalty for each level
-        if(diffPlayerTarget > 5)//Config.MANOR_DIFF_PLAYER_TARGET)
-        {
-            basicSuccess -= (diffPlayerTarget - 75);//Config.MANOR_DIFF_PLAYER_TARGET)*Config.MANOR_DIFF_PLAYER_TARGET_PENALTY;
-        }
-        
-        // apply penalty, seed <=> target levels
-        // 15% penalty for each level
-        if(diffSeedTarget > 5)//Config.MANOR_DIFF_SEED_TARGET)
-        {
-            basicSuccess -= (diffSeedTarget - 75);//Config.MANOR_DIFF_SEED_TARGET)*Config.MANOR_DIFF_SEED_TARGET_PENALTY;
-        }
-        
-        // success rate cant be less than 1%
-        if(basicSuccess < 1)
-            basicSuccess = 1;
-        
-        int rate = Rnd.nextInt(99);
-        
-        if(rate < basicSuccess)
-            return true;
-        return false;
+    public int[] getItemIds() {
+        return _itemIds;
     }
 }

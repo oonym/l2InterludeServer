@@ -18,52 +18,45 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-import java.util.List;
+import javolution.util.FastList;
 
 /**
  * Format : (h) d [dS]
- * h this H is the sub-id (1B)
+ * h  sub id
+ * 
  * d: number of manors
  * [
- * d: manor id ? or just incremental (i coded as if it was incremental)
+ * d: id 
  * S: manor name
  * ]
- * @author -Wooden-
+ * @author l3x
  *
  */
-public class ExSendManorList extends L2GameServerPacket
-{
-    private static final String _S__FE_1B_EXSENDMANORLIST = "[S] FE:1B ExSendManorList";
-    private List<String> _manors;
-    
-    public ExSendManorList(List<String> manors)
-    {
-        _manors = manors;
-    }
+public class ExSendManorList extends L2GameServerPacket {
+	private static final String _S__FE_1B_EXSENDMANORLIST = "[S] FE:1B ExSendManorList";
 
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-     */
-    @Override
-	protected void writeImpl()
-    {
-        writeC(0xFE);
-        writeH(0x1B);
-        writeD(_manors.size());
-        for(String name : _manors)
-        {
-            writeS(name);
-        }
-        
-    }
+	private FastList<String> _manors;
 
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _S__FE_1B_EXSENDMANORLIST;
-    }
-    
+	public ExSendManorList(FastList<String> manors) {
+		_manors = manors;
+	}
+
+	@Override
+	protected void writeImpl() {
+		writeC(0xFE);
+		writeH(0x1B);
+		writeD(_manors.size());
+		for (int i = 0; i < _manors.size(); i++)
+		{
+			int j = i + 1;
+			writeD(j);
+			writeS(_manors.get(i));
+		}
+
+	}
+
+	@Override
+	public String getType() {
+		return _S__FE_1B_EXSENDMANORLIST;
+	}
 }

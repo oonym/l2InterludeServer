@@ -181,6 +181,8 @@ public abstract class L2Skill
     	TAKECASTLE,
     	WEAPON_SA,
     	DELUXE_KEY_UNLOCK,
+    	SOW,
+        HARVEST,
 
     	// Creation
     	COMMON_CRAFT,
@@ -1093,6 +1095,8 @@ public abstract class L2Skill
             case AGGREDUCE_CHAR:
             case BETRAY:
             case DELUXE_KEY_UNLOCK:
+            case SOW:
+            case HARVEST:
                 return true;
             default:
                 return false;

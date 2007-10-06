@@ -93,6 +93,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminKill;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminLevel;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminLogin;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMammon;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminManor;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMenu;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMobGroup;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminMonsterRace;
@@ -159,6 +160,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Disablers;
 import net.sf.l2j.gameserver.handler.skillhandlers.DrainSoul;
 import net.sf.l2j.gameserver.handler.skillhandlers.Fishing;
 import net.sf.l2j.gameserver.handler.skillhandlers.FishingSkill;
+import net.sf.l2j.gameserver.handler.skillhandlers.Harvest;
 import net.sf.l2j.gameserver.handler.skillhandlers.Heal;
 import net.sf.l2j.gameserver.handler.skillhandlers.ManaHeal;
 import net.sf.l2j.gameserver.handler.skillhandlers.Manadam;
@@ -167,6 +169,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Pdam;
 import net.sf.l2j.gameserver.handler.skillhandlers.Recall;
 import net.sf.l2j.gameserver.handler.skillhandlers.Resurrect;
 import net.sf.l2j.gameserver.handler.skillhandlers.SiegeFlag;
+import net.sf.l2j.gameserver.handler.skillhandlers.Sow;
 import net.sf.l2j.gameserver.handler.skillhandlers.Spoil;
 import net.sf.l2j.gameserver.handler.skillhandlers.StrSiegeAssault;
 import net.sf.l2j.gameserver.handler.skillhandlers.SummonFriend;
@@ -189,6 +192,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.AuctionManager;
 import net.sf.l2j.gameserver.instancemanager.BoatManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
+import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
@@ -202,6 +206,7 @@ import net.sf.l2j.gameserver.instancemanager.RaidBossSpawnManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.AutoChatHandler;
 import net.sf.l2j.gameserver.model.AutoSpawnHandler;
+import net.sf.l2j.gameserver.model.L2Manor;
 import net.sf.l2j.gameserver.model.L2PetDataTable;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.entity.Hero;
@@ -380,10 +385,14 @@ public class GameServer
 		Announcements.getInstance();
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
+		
+		/** Load Manor data */
+		L2Manor.getInstance();
 
 		/** Load Manager */
 		AuctionManager.getInstance();
 		BoatManager.getInstance();
+		CastleManorManager.getInstance();
 		MercTicketManager.getInstance();
 		//PartyCommandManager.getInstance();
 		PetitionManager.getInstance();
@@ -481,6 +490,8 @@ public class GameServer
 		_skillHandler.registerSkillHandler(new FishingSkill());
         _skillHandler.registerSkillHandler(new BeastFeed());
         _skillHandler.registerSkillHandler(new DeluxeKey());
+        _skillHandler.registerSkillHandler(new Sow());
+        _skillHandler.registerSkillHandler(new Harvest());
         _log.config("SkillHandler: Loaded " + _skillHandler.size() + " handlers.");
 
 		_adminCommandHandler = AdminCommandHandler.getInstance();
@@ -536,6 +547,7 @@ public class GameServer
         _adminCommandHandler.registerAdminCommandHandler(new AdminCursedWeapons());
         _adminCommandHandler.registerAdminCommandHandler(new AdminGeodata());
         _adminCommandHandler.registerAdminCommandHandler(new AdminGeoEditor());
+        _adminCommandHandler.registerAdminCommandHandler(new AdminManor());
         //_adminCommandHandler.registerAdminCommandHandler(new AdminRadar());
         _log.config("AdminCommandHandler: Loaded " + _adminCommandHandler.size() + " handlers.");
 
