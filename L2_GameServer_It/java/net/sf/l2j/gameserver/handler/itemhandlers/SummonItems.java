@@ -45,6 +45,7 @@ import net.sf.l2j.gameserver.serverpackets.PetInfo;
 import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
+import net.sf.l2j.gameserver.util.FloodProtector;
 
 public class SummonItems implements IItemHandler
 {
@@ -57,6 +58,8 @@ public class SummonItems implements IItemHandler
 			return;
 
 		L2PcInstance activeChar = (L2PcInstance)playable;
+		
+		if ( !FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_ITEMPETSUMMON) ) return;
 
 		if(activeChar.isSitting())
 		{
