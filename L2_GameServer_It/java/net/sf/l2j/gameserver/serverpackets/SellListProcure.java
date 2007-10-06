@@ -44,7 +44,7 @@ public class SellListProcure extends L2GameServerPacket
         _money = player.getAdena();
         _activeChar = player;
         _castle = castleId;
-        _procureList =  CastleManager.getInstance().getCastle(_castle).getCropProcure();
+        _procureList =  CastleManager.getInstance().getCastleById(_castle).getCropProcure();
         for(CropProcure c : _procureList)
         {
             L2ItemInstance item = _activeChar.getInventory().getItemByItemId(c.getId());

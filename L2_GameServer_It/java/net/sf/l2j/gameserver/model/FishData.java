@@ -45,6 +45,21 @@ public class FishData
 			_waitTime = wait_time;
 			_combatTime = combat_time;
 		}
+		
+		public FishData(FishData copyOf)
+		{
+			_id = copyOf.getId();
+			_level = copyOf.getLevel();
+			_name = copyOf.getName();
+			_hp = copyOf.getHP();
+			_hpRegen = copyOf.getHpRegen();
+			_type = copyOf.getType();
+			_group = copyOf.getGroup();
+			_fishGuts = copyOf.getFishGuts();
+			_gutsCheckTime = copyOf.getGutsCheckTime();
+			_waitTime = copyOf.getWaitTime();
+			_combatTime = copyOf.getCombatTime();
+		}
 
 		/**
 		 * @return Returns the id.

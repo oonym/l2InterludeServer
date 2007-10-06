@@ -31,19 +31,16 @@ import net.sf.l2j.gameserver.CastleUpdater;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.DoorTable;
-import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.CropProcure;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.SeedProduction;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.SevenSigns;
+import net.sf.l2j.gameserver.model.zone.type.L2CastleZone;
 
 public class Castle
 {
@@ -68,8 +65,7 @@ public class Castle
 	private int _taxPercent                    = 0;
 	private double _taxRate                    = 0;
 	private int _treasury                      = 0;
-    private Zone _zone;
-    private List<Zone> _zoneTown;
+    private L2CastleZone _zone;
     private L2Clan _formerOwner				   = null;
 
 	// =========================================================
@@ -130,55 +126,43 @@ public class Castle
 	/**
 	 * Move non clan members off castle area and to nearest town.<BR><BR>
 	 */
-	public void banishForeigner(L2PcInstance activeChar)
+	public void banishForeigners()
     {
-		// Get players from this and nearest world regions
-        for (L2PlayableInstance player : L2World.getInstance().getVisiblePlayable(activeChar))
-        {
-            if(!(player instanceof L2PcInstance)) continue;
-            
-        	// Skip if player is in clan
-            if (((L2PcInstance)player).getClanId() == getOwnerId())
-                continue;
-            
-            if (checkIfInZone(player)) player.teleToLocation(MapRegionTable.TeleportWhereType.Town); 
-        }
+		_zone.banishForeigners(getOwnerId());
     }
 
     /**
      * Return true if object is inside the zone
      */
-    public boolean checkIfInZone(L2Object obj)
+    public boolean checkIfInZone(int x, int y, int z)
     {
-        return checkIfInZone(obj.getX(), obj.getY());
+    	return _zone.isInsideZone(x, y, z);
+    }
+    
+    /**
+     * Sets this castles zone
+     * @param zone
+     */
+    public void setZone(L2CastleZone zone)
+    {
+    	_zone = zone;
+    }
+    
+    public L2CastleZone getZone()
+    {
+    	return _zone;
+    }
+    
+    /**
+     * Get the objects distance to this castle
+     * @param obj
+     * @return
+     */
+    public double getDistance(L2Object obj)
+    {
+    	return _zone.getDistanceToZone(obj);
     }
 
-    /**
-     * Return true if object is inside the zone
-     */
-    public boolean checkIfInZone(int x, int y)
-    {
-        return getZone().checkIfInZone(x, y);
-    }
-
-    /**
-     * Return true if object is inside the zone
-     */
-    public boolean checkIfInZoneTowns(L2Object obj)
-    {
-        return checkIfInZoneTowns(obj.getX(), obj.getY());
-    }
-
-    /**
-     * Return true if object is inside the zone
-     */
-    public boolean checkIfInZoneTowns(int x, int y)
-    {
-        for (Zone zone: getZoneTowns())
-            if (zone.checkIfInZone(x, y)) return true;
-        return false;
-    }
-	
 	public void closeDoor(L2PcInstance activeChar, int doorId)
 	{
 	    openCloseDoor(activeChar, doorId, false);
@@ -636,43 +620,9 @@ public class Castle
 		return _treasury;
 	}
 
-    public final Zone getZone()
-    {
-        if (_zone == null) _zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.CastleArea), getName());
-        return _zone;
-    }
-
-    public final Zone getZoneTown(int id)
-    {
-        for (Zone zone: getZoneTowns())
-            if (zone.getId() == id) return zone;
-        return null;
-    }
-
-    public final Zone getZoneTown(String name)
-    {
-        for (Zone zone: getZoneTowns())
-            if (zone.getName() == name) return zone;
-        return null;
-    }
-
-    public final List<Zone> getZoneTowns()
-    {
-        if (_zoneTown == null)
-        {
-            _zoneTown = new FastList<Zone>();
-            // Add towns that belong to castle
-            for (Zone zone: ZoneManager.getInstance().getZones(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Town)))
-                if (zone != null && zone.getTaxById() == getCastleId()) _zoneTown.add(zone);
-        }
-        return _zoneTown;
-    }
-
-
     /**
      * Manor specific code
      */
-        
     public void restoreManorData()
     {
 

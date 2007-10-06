@@ -30,9 +30,8 @@ import net.sf.l2j.util.Rnd;
  * Add 500k adena to the clan warehouse every 2 hours
  *
  */
-public class CastleUpdater implements Runnable {
-
-
+public class CastleUpdater implements Runnable
+{
 		private L2Clan _clan;
         private int _runCount = 0;
 		
@@ -51,7 +50,7 @@ public class CastleUpdater implements Runnable {
 		        {
                     if (_runCount % 2 == 0)
                     {
-                        Castle castle = CastleManager.getInstance().getCastle(_clan.getHasCastle());
+                        Castle castle = CastleManager.getInstance().getCastleById(_clan.getHasCastle());
 
                         int amount = castle.getTreasury();
                         if (amount > 0)

@@ -873,12 +873,12 @@ public final class Formulas
 				if (siegeModifier > 0) hpRegenMultiplier *= siegeModifier;
 			}
             
-            if (player.getIsInClanHall() == 2 && player.getClan() != null)
+            if (player.isInsideZone(L2Character.ZONE_CLANHALL) && player.getClan() != null)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
             	if (clanHallIndex > 0) 
             	{
-            		ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex);
+            		ClanHall clansHall = ClanHallManager.getInstance().getClanHallById(clanHallIndex);
             		if(clansHall != null)
             			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_HP) != null) 
             				hpRegenMultiplier *= 1+ clansHall.getFunction(ClanHall.FUNC_RESTORE_HP).getLvl()/100;
@@ -886,7 +886,7 @@ public final class Formulas
             }
 
 			// Mother Tree effect is calculated at last
-			if (player.getInMotherTreeZone()) hpRegenBonus += 2;
+			if (player.isInsideZone(L2Character.ZONE_MOTHERTREE)) hpRegenBonus += 2;
 
             // Calculate Movement bonus
             if (player.isSitting()) hpRegenMultiplier *= 1.5;      // Sitting
@@ -923,14 +923,14 @@ public final class Formulas
 				mpRegenMultiplier *= calcFestivalRegenModifier(player);
 
 			// Mother Tree effect is calculated at last
-			if (player.getInMotherTreeZone()) mpRegenBonus += 1;
+			if (player.isInsideZone(L2Character.ZONE_MOTHERTREE)) mpRegenBonus += 1;
             
-            if (player.getIsInClanHall() == 2 && player.getClan() != null)
+            if (player.isInsideZone(L2Character.ZONE_CLANHALL) && player.getClan() != null)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
             	if (clanHallIndex > 0)
             	{
-            		ClanHall clansHall = ClanHallManager.getInstance().getClanHall(clanHallIndex);
+            		ClanHall clansHall = ClanHallManager.getInstance().getClanHallById(clanHallIndex);
             		if(clansHall != null)
             			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_MP) != null) 
             				mpRegenMultiplier *= 1+ clansHall.getFunction(ClanHall.FUNC_RESTORE_MP).getLvl()/100;
@@ -1014,7 +1014,8 @@ public final class Formulas
 		if (activeChar == null || activeChar.getClan() == null) return 0;
 
 		Siege siege = SiegeManager.getInstance().getSiege(activeChar.getPosition().getX(),
-															activeChar.getPosition().getY());
+															activeChar.getPosition().getY(),
+															activeChar.getPosition().getZ());
 		if (siege == null || !siege.getIsInProgress()) return 0;
 
 		L2SiegeClan siegeClan = siege.getAttackerClan(activeChar.getClan().getClanId());

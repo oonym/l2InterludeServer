@@ -62,7 +62,7 @@ public final class BuyListSeed extends L2GameServerPacket
             writeH(item.getItem().getType1());          // item->type1
             writeD(item.getObjectId());                 // objectId
             writeD(item.getItemId());                   // item id
-            writeD(CastleManager.getInstance().getCastle(_castle).getSeedProduction(item.getItemId())); // items count
+            writeD(CastleManager.getInstance().getCastleById(_castle).getSeedProduction(item.getItemId())); // items count
             writeH(item.getItem().getType2());          // item->type2
             writeH(0x00);                               // unknown :)
         

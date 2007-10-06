@@ -501,7 +501,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 return;
             }
         }
-        if (SiegeManager.getInstance().checkIfInZone(player))
+        if (player.isInsideZone(L2PcInstance.ZONE_SIEGE))
         {
             player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_SIEGE));
             return;

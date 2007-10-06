@@ -51,7 +51,7 @@ public class SummonFriend implements ISkillHandler
         }
         
  		// Checks summoner not in arenas, siege zones, jail
-       	if (activePlayer.getInPvpZone())
+       	if (activePlayer.isInsideZone(L2Character.ZONE_PVP))
        	{
        		activePlayer.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
         	return;
@@ -139,7 +139,7 @@ public class SummonFriend implements ISkillHandler
                     }
                     
                     // Check for the target's jail status, arenas and siege zones
-                    if (targetChar.getInPvpZone())
+                    if (targetChar.isInsideZone(L2Character.ZONE_PVP))
                     {
                     	activeChar.sendPacket(new SystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
                         continue;

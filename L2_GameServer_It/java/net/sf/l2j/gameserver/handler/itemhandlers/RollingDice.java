@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import net.sf.l2j.gameserver.handler.IItemHandler;
-import net.sf.l2j.gameserver.instancemanager.TownManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
@@ -72,7 +71,7 @@ public class RollingDice implements IItemHandler
 			sm.addNumber(number);
 
 			activeChar.sendPacket(sm);
-            if (!TownManager.getInstance().checkIfInZone(activeChar))
+            if (activeChar.isInsideZone(L2PcInstance.ZONE_PEACE))
 			    Broadcast.toKnownPlayers(activeChar, sm);
 			else if (activeChar.isInParty())
 			    activeChar.getParty().broadcastToPartyMembers(activeChar,sm);

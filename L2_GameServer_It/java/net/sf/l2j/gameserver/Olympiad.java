@@ -841,7 +841,7 @@ public class Olympiad
     
     public boolean playerInStadia(L2PcInstance player)
     {
-        return OlympiadStadiaManager.getInstance().checkIfInZone(player);
+        return (OlympiadStadiaManager.getInstance().getStadium(player) != null);
     }
     
     public int[] getWaitingList()

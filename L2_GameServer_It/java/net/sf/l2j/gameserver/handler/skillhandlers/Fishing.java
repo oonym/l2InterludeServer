@@ -20,7 +20,6 @@ package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -59,13 +58,6 @@ public class Fishing implements ISkillHandler
 		{			
 			//You can't fish while you are on boat
         	player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_FISH_ON_BOAT));
-			if (!player.isGM())
-				return;
-		}
-		if (!ZoneManager.getInstance().checkIfInZoneFishing(player))
-		{
-            //You can't fish here
-			player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_FISH_HERE));
 			if (!player.isGM())
 				return;
 		}

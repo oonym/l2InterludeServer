@@ -180,12 +180,12 @@ public final class L2TeleporterInstance extends L2FolkInstance
         if (list != null)
         {
             //you cannot teleport to village that is in siege
-            if (SiegeManager.getInstance().checkIfInZone(list.getLocX(), list.getLocY()))
+            if (SiegeManager.getInstance().getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
             {
                 player.sendPacket(new SystemMessage(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE));
                 return;
             }
-            else if (TownManager.getInstance().townHasCastleInSeige(list.getLocX(), list.getLocY()))
+            else if (TownManager.getInstance().townHasCastleInSiege(list.getLocX(), list.getLocY()))
             {
                 player.sendPacket(new SystemMessage(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE));
                 return;

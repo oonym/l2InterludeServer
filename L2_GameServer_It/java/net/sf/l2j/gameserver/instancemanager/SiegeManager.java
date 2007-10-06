@@ -44,7 +44,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class SiegeManager
 {
-    protected static final Logger _log = Logger.getLogger(SiegeManager.class.getName());
+    private static final Logger _log = Logger.getLogger(SiegeManager.class.getName());
 
     // =========================================================
     private static SiegeManager _instance;
@@ -89,12 +89,6 @@ public class SiegeManager
         character.addSkill(SkillTable.getInstance().getInfo(246, 1), false);
         character.addSkill(SkillTable.getInstance().getInfo(247, 1), false);
     }
-
-    /** Return true if object is inside zone */
-    public final boolean checkIfInZone(L2Object obj) { return (getSiege(obj) != null); }
-
-    /** Return true if object is inside zone */
-    public final boolean checkIfInZone(int x, int y) { return (getSiege(x, y) != null); }
 
     /**
      * Return true if character summon<BR><BR>
@@ -287,12 +281,12 @@ public class SiegeManager
     
     public final int getFlagMaxCount() { return _flagMaxCount; }
 
-    public final Siege getSiege(L2Object activeObject) { return getSiege(activeObject.getPosition().getX(), activeObject.getPosition().getY()); }
+    public final Siege getSiege(L2Object activeObject) { return getSiege(activeObject.getX(), activeObject.getY(), activeObject.getZ()); }
 
-    public final Siege getSiege(int x, int y)
+    public final Siege getSiege(int x, int y, int z)
     {
         for (Castle castle: CastleManager.getInstance().getCastles())
-            if (castle.getSiege().checkIfInZone(x, y)) return castle.getSiege();
+            if (castle.getSiege().checkIfInZone(x, y, z)) return castle.getSiege();
         return null;
     }
     

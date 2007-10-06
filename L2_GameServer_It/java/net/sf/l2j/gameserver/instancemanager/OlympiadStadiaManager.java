@@ -17,14 +17,11 @@
  */
 package net.sf.l2j.gameserver.instancemanager;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.entity.OlympiadStadia;
-import net.sf.l2j.gameserver.model.entity.Zone;
-import net.sf.l2j.gameserver.model.entity.ZoneType;
+import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
 public class OlympiadStadiaManager
 {
@@ -38,7 +35,6 @@ public class OlympiadStadiaManager
         {
             System.out.println("Initializing OlympiadStadiaManager");
             _instance = new OlympiadStadiaManager();
-            _instance.load();
         }
         return _instance;
     }
@@ -47,7 +43,7 @@ public class OlympiadStadiaManager
     
     // =========================================================
     // Data Field
-    private List<OlympiadStadia> _olympiadStadias;
+    private FastList<L2OlympiadStadiumZone> _olympiadStadias;
     
     // =========================================================
     // Constructor
@@ -56,90 +52,30 @@ public class OlympiadStadiaManager
     }
 
     // =========================================================
-    // Method - Public
-    /** Return true if object is inside zone */
-    public final boolean checkIfInZone(L2Object obj) { return (getOlympiadStadia(obj) != null); }
-
-    /** Return true if object is inside zone */
-    public final boolean checkIfInZone(int x, int y) { return (getOlympiadStadia(x, y) != null); }
-
-    public void reload()
-    {
-        getOlympiadStadias().clear();
-        load();
-    }
-
-    // =========================================================
-    // Method - Private
-    private final void load()
-    {
-        for (Zone zone: ZoneManager.getInstance().getZones(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.OlympiadStadia)))
-            getOlympiadStadias().add(new OlympiadStadia(zone.getId()));
-    }
-
-    // =========================================================
     // Property - Public
-    public final OlympiadStadia getOlympiadStadia(int olympiadStadiaId)
+    
+    public void addStadium(L2OlympiadStadiumZone arena)
     {
-        int index = getOlympiadStadiaIndex(olympiadStadiaId);
-        if (index >= 0) return getOlympiadStadias().get(index);
+    	if (_olympiadStadias == null)
+    		_olympiadStadias = new FastList<L2OlympiadStadiumZone>();
+    	
+    	_olympiadStadias.add(arena);
+    }
+    
+    public final L2OlympiadStadiumZone getStadium(L2Character character)
+    {
+    	for (L2OlympiadStadiumZone temp : _olympiadStadias)
+    		if (temp.isCharacterInZone(character)) return temp;
+    	
+    	return null;
+    }
+    
+    @Deprecated
+    public final L2OlympiadStadiumZone getOlympiadStadiumById(int olympiadStadiumId)
+    {
+    	for (L2OlympiadStadiumZone temp : _olympiadStadias)
+    		if (temp.getStadiumId() == olympiadStadiumId) return temp;
         return null;
     }
 
-    public final OlympiadStadia getOlympiadStadia(L2Object activeObject) { return getOlympiadStadia(activeObject.getPosition().getX(), activeObject.getPosition().getY()); }
-
-    public final OlympiadStadia getOlympiadStadia(int x, int y)
-    {
-        int index = getOlympiadStadiaIndex(x, y);
-        if (index >= 0) return getOlympiadStadias().get(index);
-        return null;
-    }
-
-    public final OlympiadStadia getOlympiadStadia(String name)
-    {
-        int index = getOlympiadStadiaIndex(name);
-        if (index >= 0) return getOlympiadStadias().get(index);
-        return null;
-    }
-
-    public final int getOlympiadStadiaIndex(int olympiadStadiaId)
-    {
-        OlympiadStadia OlympiadStadia;
-        for (int i = 0; i < getOlympiadStadias().size(); i++)
-        {
-            OlympiadStadia = getOlympiadStadias().get(i);
-            if (OlympiadStadia != null && OlympiadStadia.getOlympiadStadiaId() == olympiadStadiaId) return i;
-        }
-        return -1;
-    }
-
-    public final int getOlympiadStadiaIndex(L2Object activeObject) { return getOlympiadStadiaIndex(activeObject.getPosition().getX(), activeObject.getPosition().getY()); }
-
-    public final int getOlympiadStadiaIndex(int x, int y)
-    {
-        OlympiadStadia OlympiadStadia;
-        for (int i = 0; i < getOlympiadStadias().size(); i++)
-        {
-            OlympiadStadia = getOlympiadStadias().get(i);
-            if (OlympiadStadia != null && OlympiadStadia.checkIfInZone(x, y)) return i;
-        }
-        return -1;
-    }
-
-    public final int getOlympiadStadiaIndex(String name)
-    {
-        OlympiadStadia OlympiadStadia;
-        for (int i = 0; i < getOlympiadStadias().size(); i++)
-        {
-            OlympiadStadia = getOlympiadStadias().get(i);
-            if (OlympiadStadia != null && OlympiadStadia.getName().equalsIgnoreCase(name.trim())) return i;
-        }
-        return -1;
-    }
-
-    public final List<OlympiadStadia> getOlympiadStadias()
-    {
-        if (_olympiadStadias == null) _olympiadStadias = new FastList<OlympiadStadia>();
-        return _olympiadStadias;
-    }
 }

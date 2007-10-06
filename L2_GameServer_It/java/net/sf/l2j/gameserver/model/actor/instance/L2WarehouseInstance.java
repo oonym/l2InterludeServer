@@ -143,7 +143,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 
         PcFreight freight = player.getFreight();
 
-        if (freight != null && getZone() != null)
+        if (freight != null)
         {
         	if (freight.getSize() > 0)
         	{
@@ -152,7 +152,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 	                freight.setActiveLocation(0);
 	        	} else
 	        	{
-	        		freight.setActiveLocation(getZone().getId());
+	        		freight.setActiveLocation(getWorldRegion().hashCode());
 	        	}
 	            player.setActiveWarehouse(freight);
 	            player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.FREIGHT));
@@ -206,21 +206,14 @@ public final class L2WarehouseInstance extends L2FolkInstance
                     + " - using freight.");
             return;
         }
-        if (getZone() == null)
-        {
-            // Something went wrong too!
-            if (Config.DEBUG)
-                _log.warning("Error retrieving the zone for char " + player.getName()
-                    + " - using freight.");
-            return;
-        }
+
         PcFreight freight = destChar.getFreight();
     	if (Config.ALT_GAME_FREIGHTS)
     	{
             freight.setActiveLocation(0);
     	} else
     	{
-    		freight.setActiveLocation(getZone().getId());
+    		freight.setActiveLocation(getWorldRegion().hashCode());
     	}
         player.setActiveWarehouse(freight);
         player.tempInvetoryDisable();

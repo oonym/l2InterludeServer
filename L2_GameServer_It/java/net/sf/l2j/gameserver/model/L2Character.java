@@ -46,7 +46,7 @@ import net.sf.l2j.gameserver.datatables.MapRegionTable.TeleportWhereType;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
+import net.sf.l2j.gameserver.instancemanager.TownManager;
 import net.sf.l2j.gameserver.model.L2Skill.SkillTargetType;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
@@ -64,8 +64,6 @@ import net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsyn
 import net.sf.l2j.gameserver.model.actor.stat.CharStat;
 import net.sf.l2j.gameserver.model.actor.status.CharStatus;
 import net.sf.l2j.gameserver.model.entity.Duel;
-import net.sf.l2j.gameserver.model.entity.Zone;
-import net.sf.l2j.gameserver.model.entity.ZoneType;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -169,6 +167,32 @@ public abstract class L2Character extends L2Object
 
 	/** FastMap(Integer, L2Skill) containing all skills of the L2Character */
 	protected final Map<Integer, L2Skill> _skills;
+	
+	/** Zone system */
+	public static final int ZONE_PVP = 1;
+	public static final int ZONE_PEACE = 2;
+	public static final int ZONE_SIEGE = 4;
+	public static final int ZONE_MOTHERTREE = 8;
+	public static final int ZONE_CLANHALL = 16;
+	public static final int ZONE_UNUSED = 32;
+	public static final int ZONE_NOLANDING = 64;
+	public static final int ZONE_WATER = 128;
+	public static final int ZONE_JAIL = 256;
+	public static final int ZONE_MOSTERTRACK = 512;
+	
+	private int _currentZones = 0;
+	
+	public boolean isInsideZone(int zone)
+	{
+		return ((_currentZones & zone) != 0);
+	}
+	public void setInsideZone(int zone, boolean state)
+	{
+		if (state)
+			_currentZones |= zone;
+		else
+			_currentZones ^= zone;
+	}
 
 	// =========================================================
 	// Constructor
@@ -444,6 +468,10 @@ public abstract class L2Character extends L2Object
 
 		setIsTeleporting(true);
 		setTarget(null);
+		
+		// Remove from world regions zones
+		getWorldRegion().removeFromZones(this);
+		
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 
         if (Config.RESPAWN_RANDOM_ENABLED && allowRandomOffset)
@@ -462,7 +490,7 @@ public abstract class L2Character extends L2Object
 
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
 		getPosition().setXYZ(x, y, z);
-
+		
 		decayMe();
 
 		if (!(this instanceof L2PcInstance))
@@ -1397,6 +1425,8 @@ public abstract class L2Character extends L2Object
 
 		// Notify L2Character AI
 		getAI().notifyEvent(CtrlEvent.EVT_DEAD, null);
+		
+		if (!(this instanceof L2PcInstance) && getWorldRegion() != null) getWorldRegion().removeFromZones(this);
 
 		// Notify Quest of character's death
 		for (QuestState qs: getNotifyQuestOfDeath())
@@ -3284,16 +3314,6 @@ public abstract class L2Character extends L2Object
 	}
 
 	/**
-	 * Get zone L2Character is currently located in
-	 */
-	public Zone getZone()
-	{
-		for (Zone zone: ZoneManager.getInstance().getZones(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.Town)))
-			if (zone.checkIfInZone(this))return zone;
-		return null;
-	}
-
-	/**
 	 * Return the X destination of the L2Character or the X position if not in movement.<BR><BR>
 	 */
 	public final int getClientX()
@@ -3540,12 +3560,19 @@ public abstract class L2Character extends L2Object
 		{
 			super.getPosition().setXYZ(m._xMoveFrom + (int)(elapsed * m._xSpeedTicks),m._yMoveFrom + (int)(elapsed * m._ySpeedTicks),super.getZ());
 			if (this instanceof L2PcInstance) ((L2PcInstance)this).revalidateZone(false);
+			else revalidateZone();
 		}
 
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
 
 		return false;
+	}
+	
+	public void revalidateZone()
+	{
+		if (getWorldRegion() == null) return;
+		getWorldRegion().revalidateZones(this);
 	}
 
 
@@ -4604,28 +4631,19 @@ public abstract class L2Character extends L2Object
 			}
 		}
 		// Right now only L2PcInstance has up-to-date zone status...
-		if (attacker instanceof L2PcInstance)
+		// TODO: ZONETODO: Are there things < L2Characters in peace zones that can be attacked? If not this could be cleaned up
+		
+		if (attacker instanceof L2Character && target instanceof L2Character)
 		{
-			if (target instanceof L2PcInstance)
-			{
-				return (((L2PcInstance)target).getInPeaceZone() || ((L2PcInstance)attacker).getInPeaceZone());
-			}
-			else return ( 
-					((L2PcInstance)attacker).getInPeaceZone() ||
-					ZoneManager.getInstance().checkIfInZonePeace(target)
-					);
+			return (((L2Character)target).isInsideZone(ZONE_PEACE) || ((L2Character)attacker).isInsideZone(ZONE_PEACE));
 		}
-		if (target instanceof L2PcInstance)
+		if (attacker instanceof L2Character)
 		{
-			return ( 
-					((L2PcInstance)target).getInPeaceZone() ||
-					ZoneManager.getInstance().checkIfInZonePeace(attacker)
-					);
+			return (TownManager.getInstance().getTown(target.getX(), target.getY(), target.getZ()) != null || ((L2Character)attacker).isInsideZone(ZONE_PEACE));
 		}
-		return ( 
-				ZoneManager.getInstance().checkIfInZonePeace(attacker) ||   
-				ZoneManager.getInstance().checkIfInZonePeace(target)        
-				);
+
+		return (TownManager.getInstance().getTown(target.getX(), target.getY(), target.getZ()) != null ||
+				TownManager.getInstance().getTown(attacker.getX(), attacker.getY(), attacker.getZ()) != null);
 	}
 
     /**

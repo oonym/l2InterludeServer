@@ -29,11 +29,10 @@ import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
-import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.Zone;
+import net.sf.l2j.gameserver.model.zone.type.L2ClanHallZone;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -72,7 +71,7 @@ public class AdminSiege implements IAdminCommandHandler
 		Castle castle = null;
 		ClanHall clanhall = null;
 		if (command.startsWith("admin_clanhall"))
-			clanhall = ClanHallManager.getInstance().getClanHall(Integer.parseInt(st.nextToken()));
+			clanhall = ClanHallManager.getInstance().getClanHallById(Integer.parseInt(st.nextToken()));
 		else if (st.hasMoreTokens())
 			castle = CastleManager.getInstance().getCastle(st.nextToken());
 		// Get castle
@@ -180,14 +179,10 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 			else if (command.equalsIgnoreCase("admin_clanhallteleportself"))
 			{
-				Zone zone = clanhall.getZone();
-				int[] coord;
+				L2ClanHallZone zone = clanhall.getZone();
 				if (zone != null)
 				{
-					coord = zone.getCoords().get(0);
-					int x = coord[0] + (coord[2] - coord[0])/2;
-					int y = coord[1] + (coord[3] - coord[1])/2;
-					activeChar.teleToLocation(new Location(x, y, coord[4]), true); 
+					activeChar.teleToLocation(zone.getSpawn(), true); 
 				}
 			}
 			else if (command.equalsIgnoreCase("admin_spawn_doors"))

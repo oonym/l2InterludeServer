@@ -44,7 +44,7 @@ public final class RequestSiegeAttackerList extends L2GameClientPacket
     @Override
 	protected void runImpl()
     {
-        Castle castle = CastleManager.getInstance().getCastle(_castleId);
+        Castle castle = CastleManager.getInstance().getCastleById(_castleId);
         if (castle == null) return;
         SiegeAttackerList sal = new SiegeAttackerList(castle);
         sendPacket(sal);

@@ -296,7 +296,7 @@ public class EnterWorld extends L2GameClientPacket
         if (Olympiad.getInstance().playerInStadia(activeChar))
         {
             activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-            activeChar.sendMessage("You have been teleported to the nearest town due to you being in an Olympiad Stadia");
+            activeChar.sendMessage("You have been teleported to the nearest town due to you being in an Olympiad Stadium");
         }
 
         if (DimensionalRiftManager.getInstance().checkIfInRiftZone(activeChar.getX(), activeChar.getY(), activeChar.getZ(), false))

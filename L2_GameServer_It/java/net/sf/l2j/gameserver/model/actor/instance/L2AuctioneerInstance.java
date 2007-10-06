@@ -169,13 +169,13 @@ public final class L2AuctioneerInstance extends L2FolkInstance
 	                    html.replace("%OWNER_PLEDGE_NAME%", a.getSellerClanName());
 	                    html.replace("%OWNER_PLEDGE_MASTER%", a.getSellerName());
 	                    html.replace("%AGIT_SIZE%", "30 ");
-	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHall(a.getItemId()).getLease()));
-	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHall(a.getItemId()).getLocation());
+	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLease()));
+	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLocation());
 	                    html.replace("%AGIT_AUCTION_END%", String.valueOf(format.format(a.getEndDate())));
 	                    html.replace("%AGIT_AUCTION_REMAIN%", String.valueOf((a.getEndDate()- System.currentTimeMillis())/3600000)+" hours "+String.valueOf((((a.getEndDate() - System.currentTimeMillis()) / 60000) % 60))+" minutes");
 	                    html.replace("%AGIT_AUCTION_MINBID%", String.valueOf(a.getStartingBid()));
 	                    html.replace("%AGIT_AUCTION_COUNT%", String.valueOf(a.getBidders().size()));
-	                    html.replace("%AGIT_AUCTION_DESC%", ClanHallManager.getInstance().getClanHall(a.getItemId()).getDesc());
+	                    html.replace("%AGIT_AUCTION_DESC%", ClanHallManager.getInstance().getClanHallById(a.getItemId()).getDesc());
 	                    html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_list");
 	                    html.replace("%AGIT_LINK_BIDLIST%", "bypass -h npc_"+getObjectId()+"_bidlist "+a.getId());
 	                    html.replace("%AGIT_LINK_RE%", "bypass -h npc_"+getObjectId()+"_bid1 "+a.getId());
@@ -284,7 +284,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                 		continue;
                 	}else i++;
                     items+="<tr>" +
-                            	"<td>"+ClanHallManager.getInstance().getClanHall(a.getItemId()).getLocation()+"</td>" +
+                            	"<td>"+ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLocation()+"</td>" +
                             	"<td><a action=\"bypass -h npc_"+getObjectId()+"_bidding "+a.getId()+"\">"+a.getItemName()+"</a></td>" +
                             	"<td>"+format.format(a.getEndDate())+"</td>" +
                             	"<td>"+a.getStartingBid()+"</td>" +
@@ -347,13 +347,13 @@ public final class L2AuctioneerInstance extends L2FolkInstance
 		                html.replace("%OWNER_PLEDGE_NAME%", a.getSellerClanName());
 		                html.replace("%OWNER_PLEDGE_MASTER%", a.getSellerName());
 		                html.replace("%AGIT_SIZE%", "30 ");
-		                html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHall(a.getItemId()).getLease()));
-		                html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHall(a.getItemId()).getLocation());
+		                html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLease()));
+		                html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLocation());
 		                html.replace("%AGIT_AUCTION_END%", String.valueOf(format.format(a.getEndDate())));
 		                html.replace("%AGIT_AUCTION_REMAIN%", String.valueOf((a.getEndDate()-System.currentTimeMillis()) / 3600000)+" hours "+String.valueOf((((a.getEndDate()-System.currentTimeMillis()) / 60000) % 60))+" minutes");
 		                html.replace("%AGIT_AUCTION_MINBID%", String.valueOf(a.getStartingBid()));
 		                html.replace("%AGIT_AUCTION_MYBID%", String.valueOf(a.getBidders().get(player.getClanId()).getBid()));
-		                html.replace("%AGIT_AUCTION_DESC%", ClanHallManager.getInstance().getClanHall(a.getItemId()).getDesc());
+		                html.replace("%AGIT_AUCTION_DESC%", ClanHallManager.getInstance().getClanHallById(a.getItemId()).getDesc());
 		                html.replace("%objectId%", String.valueOf(getObjectId()));
 		                html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_start");
                     }else{
@@ -374,13 +374,13 @@ public final class L2AuctioneerInstance extends L2FolkInstance
 	                    html.replace("%AGIT_OWNER_PLEDGE_NAME%", a.getSellerClanName());
 	                    html.replace("%OWNER_PLEDGE_MASTER%", a.getSellerName());
 	                    html.replace("%AGIT_SIZE%", "30 ");
-	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHall(a.getItemId()).getLease()));
-	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHall(a.getItemId()).getLocation());
+	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLease()));
+	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLocation());
 	                    html.replace("%AGIT_AUCTION_END%", String.valueOf(format.format(a.getEndDate())));
 	                    html.replace("%AGIT_AUCTION_REMAIN%", String.valueOf((a.getEndDate()-System.currentTimeMillis()) / 3600000)+" hours "+String.valueOf((((a.getEndDate()-System.currentTimeMillis()) / 60000) % 60))+" minutes");
 	                    html.replace("%AGIT_AUCTION_MINBID%", String.valueOf(a.getStartingBid()));
 	                    html.replace("%AGIT_AUCTION_BIDCOUNT%", String.valueOf(a.getBidders().size()));
-	                    html.replace("%AGIT_AUCTION_DESC%", ClanHallManager.getInstance().getClanHall(a.getItemId()).getDesc());
+	                    html.replace("%AGIT_AUCTION_DESC%", ClanHallManager.getInstance().getClanHallById(a.getItemId()).getDesc());
 	                    html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_start");
 	                    html.replace("%id%", String.valueOf(a.getId()));
 	                    html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -396,13 +396,13 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                     String filename = "data/html/auction/AgitInfo.htm";
                     NpcHtmlMessage html = new NpcHtmlMessage(1);
                     html.setFile(filename);
-                    if(ClanHallManager.getInstance().getClanHall(ItemId) != null){
-	                    html.replace("%AGIT_NAME%", ClanHallManager.getInstance().getClanHall(ItemId).getName());
+                    if(ClanHallManager.getInstance().getClanHallById(ItemId) != null){
+	                    html.replace("%AGIT_NAME%", ClanHallManager.getInstance().getClanHallById(ItemId).getName());
 	                    html.replace("%AGIT_OWNER_PLEDGE_NAME%", player.getClan().getName());
 	                    html.replace("%OWNER_PLEDGE_MASTER%", player.getClan().getLeaderName());
 	                    html.replace("%AGIT_SIZE%", "30 ");
-	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHall(ItemId).getLease()));
-	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHall(ItemId).getLocation());
+	                    html.replace("%AGIT_LEASE%", String.valueOf(ClanHallManager.getInstance().getClanHallById(ItemId).getLease()));
+	                    html.replace("%AGIT_LOCATION%", ClanHallManager.getInstance().getClanHallById(ItemId).getLocation());
 	                    html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_start");
 	                    html.replace("%objectId%", String.valueOf(getObjectId()));
                     }else

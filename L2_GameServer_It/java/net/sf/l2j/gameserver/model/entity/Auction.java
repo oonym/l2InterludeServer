@@ -419,7 +419,7 @@ public class Auction
 	        if (_sellerId > 0)
 	        {
 	            returnItem(_sellerClanName, 57, _highestBidderMaxBid, true);
-	            returnItem(_sellerClanName, 57, ClanHallManager.getInstance().getClanHall(_itemId).getLease(), false);
+	            returnItem(_sellerClanName, 57, ClanHallManager.getInstance().getClanHallById(_itemId).getLease(), false);
 	        }
 		    deleteAuctionFromDB();
 		    L2Clan Clan = ClanTable.getInstance().getClanByName(_bidders.get(_highestBidderId).getClanName());

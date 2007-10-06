@@ -685,6 +685,7 @@ public class L2CharacterAI extends AbstractAI
         		((L2PcInstance) _accessor.getActor()).explore();
         	((L2PcInstance) _accessor.getActor()).revalidateZone(true);
         }
+        else _accessor.getActor().revalidateZone();
 
         // Launch actions corresponding to the Event Think
         onEvtThink();

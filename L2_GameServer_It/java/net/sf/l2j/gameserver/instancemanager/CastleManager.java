@@ -20,7 +20,6 @@ package net.sf.l2j.gameserver.instancemanager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.L2DatabaseFactory;
@@ -32,8 +31,6 @@ import net.sf.l2j.gameserver.SevenSigns;
 
 public class CastleManager
 {
-    protected static Logger _log = Logger.getLogger(CastleManager.class.getName());
-
     // =========================================================
     private static CastleManager _instance;
     public static final CastleManager getInstance()
@@ -61,15 +58,10 @@ public class CastleManager
 
     // =========================================================
     // Method - Public
-    /** Return true if object is inside zone */
-    public final boolean checkIfInZone(L2Object obj) { return (getCastle(obj) != null); }
 
-    /** Return true if object is inside zone */
-    public final boolean checkIfInZone(int x, int y) { return (getCastle(x, y) != null); }
-
-    public final int findNearestCastleIndex(L2Object activeObject)
+    public final int findNearestCastleIndex(L2Object obj)
     {
-        int index = getCastleIndex(activeObject);
+        int index = getCastleIndex(obj);
         if (index < 0)
         {
             double closestDistance = 99999999;
@@ -79,7 +71,7 @@ public class CastleManager
             {
                 castle = getCastles().get(i);
                 if (castle == null) continue;
-                distance = castle.getZone().findDistanceToZone(activeObject, false);
+                distance = castle.getDistance(obj);
                 if (closestDistance > distance)
                 {
                     closestDistance = distance;
@@ -88,12 +80,6 @@ public class CastleManager
             }
         }
         return index;
-    }
-
-    public void reload()
-    {
-    	getCastles().clear();
-    	load();
     }
 
     // =========================================================
@@ -131,58 +117,48 @@ public class CastleManager
 
     // =========================================================
     // Property - Public
-    public final Castle getCastle(int castleId)
+    
+    public final Castle getCastleById(int castleId)
     {
-        int index = getCastleIndex(castleId);
-        if (index >= 0) return getCastles().get(index);
+    	for (Castle temp : getCastles())
+    	{
+    		if (temp.getCastleId() == castleId)
+    			return temp;
+    	}
         return null;
     }
-
-    public final Castle getCastle(L2Object activeObject) { return getCastle(activeObject.getX(), activeObject.getY()); }
-
-    public final Castle getCastle(int x, int y)
-    {
-        int index = getCastleIndex(x, y);
-        if (index >= 0) return getCastles().get(index);
-        return null;
-    }
-
-    public final Castle getCastle(String name)
-    {
-        int index = getCastleIndex(name);
-        if (index >= 0) return getCastles().get(index);
-        return null;
-    }
-
+    
     public final Castle getCastleByOwner(L2Clan clan)
     {
-        int index = getCastleIndexByOwner(clan);
-        if (index >= 0) return getCastles().get(index);
+    	for (Castle temp : getCastles())
+    	{
+    		if (temp.getOwnerId() == clan.getClanId())
+    			return temp;
+    	}
         return null;
     }
-
-    public final Castle getCastleByTown(int townId)
+    
+    public final Castle getCastle(String name)
     {
-        int index = getCastleIndexByTown(townId);
-        if (index >= 0) return getCastles().get(index);
+    	for (Castle temp : getCastles())
+    	{
+    		if (temp.getName().equalsIgnoreCase(name.trim()))
+    			return temp;
+    	}
         return null;
     }
-
-    public final Castle getCastleByTown(L2Object activeObject) { return getCastleByTown(activeObject.getPosition().getX(), activeObject.getPosition().getY()); }
-
-    public final Castle getCastleByTown(int x, int y)
+    
+    public final Castle getCastle(int x, int y, int z)
     {
-        int index = getCastleIndexByTown(x, y);
-        if (index >= 0) return getCastles().get(index);
+    	for (Castle temp : getCastles())
+    	{
+    		if (temp.checkIfInZone(x, y, z))
+    			return temp;
+    	}
         return null;
     }
 
-    public final Castle getCastleByTown(String name)
-    {
-        int index = getCastleIndexByTown(name);
-        if (index >= 0) return getCastles().get(index);
-        return null;
-    }
+    public final Castle getCastle(L2Object activeObject) { return getCastle(activeObject.getX(), activeObject.getY(), activeObject.getZ()); }
 
     public final int getCastleIndex(int castleId)
     {
@@ -195,74 +171,18 @@ public class CastleManager
         return -1;
     }
 
-    public final int getCastleIndex(L2Object activeObject) { return getCastleIndex(activeObject.getPosition().getX(), activeObject.getPosition().getY()); }
-
-    public final int getCastleIndex(int x, int y)
+    public final int getCastleIndex(L2Object activeObject)
     {
-        Castle castle;
-        for (int i = 0; i < getCastles().size(); i++)
-        {
-            castle = getCastles().get(i);
-            if (castle != null && castle.checkIfInZone(x, y)) return i;
-        }
-        return -1;
+    	return getCastleIndex(activeObject.getX(), activeObject.getY(), activeObject.getZ());
     }
 
-    public final int getCastleIndex(String name)
+    public final int getCastleIndex(int x, int y, int z)
     {
         Castle castle;
         for (int i = 0; i < getCastles().size(); i++)
         {
             castle = getCastles().get(i);
-            if (castle != null && castle.getName().equalsIgnoreCase(name.trim())) return i;
-        }
-        return -1;
-    }
-
-    public final int getCastleIndexByOwner(L2Clan clan)
-    {
-        if (clan == null) return -1;
-        
-        Castle castle;
-        for (int i = 0; i < getCastles().size(); i++)
-        {
-            castle = getCastles().get(i);
-            if (castle != null && castle.getOwnerId() == clan.getClanId()) return i;
-        }
-        return -1;
-    }
-
-    public final int getCastleIndexByTown(int townId)
-    {
-        Castle castle;
-        for (int i = 0; i < getCastles().size(); i++)
-        {
-            castle = getCastles().get(i);
-            if (castle != null && castle.getZoneTown(townId) != null) return i;
-        }
-        return -1;
-    }
-
-    public final int getCastleIndexByTown(L2Object activeObject) { return getCastleIndexByTown(activeObject.getX(), activeObject.getY()); }
-
-    public final int getCastleIndexByTown(int x, int y)
-    {
-        Castle castle;
-        for (int i = 0; i < getCastles().size(); i++)
-        {
-            castle = getCastles().get(i);
-            if (castle != null && castle.checkIfInZoneTowns(x, y)) return i;
-        }
-        return -1;
-    }
-
-    public final int getCastleIndexByTown(String name)
-    {
-        Castle castle;
-        for (int i = 0; i < getCastles().size(); i++)
-        {
-            castle = getCastles().get(i);
-            if (castle != null && castle.getZoneTown(name) != null) return i;
+            if (castle != null && castle.checkIfInZone(x, y, z)) return i;
         }
         return -1;
     }

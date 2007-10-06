@@ -31,9 +31,7 @@ import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
-import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
@@ -1287,7 +1285,7 @@ public abstract class L2Skill
             case TARGET_AURA:
             {
                 int radius = getSkillRadius();
-                boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar) != null);
+                boolean srcInArena = activeChar.isInsideZone(L2Character.ZONE_PVP);
 
                 L2PcInstance src = null;
                 if (activeChar instanceof L2PcInstance) src = (L2PcInstance)activeChar;
@@ -1310,7 +1308,7 @@ public abstract class L2Skill
                             	if(!src.checkPvpSkill(obj, this)) continue;
                             	if((src.getParty() != null && ((L2PcInstance) obj).getParty() != null) && src.getParty().getPartyLeaderOID() == ((L2PcInstance) obj).getParty().getPartyLeaderOID())
                                     continue;
-                                if(!srcInArena && ArenaManager.getInstance().getArena(obj) == null)
+                                if(!srcInArena && !((L2PcInstance)obj).isInsideZone(L2Character.ZONE_PVP))
                                 {
                                     if(src.getClanId() != 0 && src.getClanId() == ((L2PcInstance)obj).getClanId())
                                         continue;
@@ -1324,7 +1322,7 @@ public abstract class L2Skill
                                 if((src.getParty() != null && trg.getParty() != null) &&
                                     src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                                     continue;
-                                if(!srcInArena && ArenaManager.getInstance().getArena(obj) == null)
+                                if(!srcInArena && !((L2Summon)obj).isInsideZone(L2Character.ZONE_PVP))
                                 {
                                     if(src.getClanId() != 0 && src.getClanId() == trg.getClanId())
                                         continue;
@@ -1367,7 +1365,7 @@ public abstract class L2Skill
 
                 int radius = getSkillRadius();
 
-                boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar)!= null);
+                boolean srcInArena = activeChar.isInsideZone(L2Character.ZONE_PVP);
 
                 for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
                 {
@@ -1395,9 +1393,9 @@ public abstract class L2Skill
                                     src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                                     continue;
 
-                                if(trg.getInPeaceZone()) continue;
+                                if(trg.isInsideZone(L2Character.ZONE_PEACE)) continue;
                                 
-                                if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
+                                if(!srcInArena && !trg.isInsideZone(L2Character.ZONE_PVP))
                                 {
                                     if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                                         continue;
@@ -1421,7 +1419,7 @@ public abstract class L2Skill
                                         src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                                     continue;
 
-                                if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
+                                if(!srcInArena &&!trg.isInsideZone(L2Character.ZONE_PVP))
                                 {
                                 	if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                                 		continue;
@@ -1436,7 +1434,7 @@ public abstract class L2Skill
                                 		continue;
                                 }
                                 
-                            	if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
+                            	if (((L2Summon)obj).isInsideZone(L2Character.ZONE_PEACE)) continue;
                             }
                         }
                         else
@@ -1687,12 +1685,13 @@ public abstract class L2Skill
                             // check target is not in a active siege zone
                             Castle castle = null;
 
-                            if (targetPlayer != null) castle = CastleManager.getInstance().getCastle(
-                                                                                                     targetPlayer.getX(),
-                                                                                                     targetPlayer.getY());
+                            if (targetPlayer != null) castle = CastleManager.getInstance().getCastle(targetPlayer.getX(),
+                                                                                                     targetPlayer.getY(),
+                                                                                                     targetPlayer.getZ());
                             else if (targetPet != null)
                                 castle = CastleManager.getInstance().getCastle(targetPet.getX(),
-                                                                               targetPet.getY());
+                                                                               targetPet.getY(),
+                                                                               targetPet.getZ());
 
                             if (castle != null) if (castle.getSiege().getIsInProgress())
                             {
@@ -1764,7 +1763,7 @@ public abstract class L2Skill
                 if (onlyFirst == false) targetList.add(target);
                 else return new L2Character[] {target};
 
-                boolean srcInArena = (ArenaManager.getInstance().getArena(activeChar)!= null);
+                boolean srcInArena = activeChar.isInsideZone(L2Character.ZONE_PVP);
                 L2PcInstance src = null;
                 if (activeChar instanceof L2PcInstance)
                 	src = (L2PcInstance)activeChar;
@@ -1791,9 +1790,9 @@ public abstract class L2Skill
                         			src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                         		continue;
 
-                    		if(trg.getInPeaceZone()) continue;
+                    		if(trg.isInsideZone(L2Character.ZONE_PEACE)) continue;
                     		
-                        	if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
+                        	if(!srcInArena && !trg.isInsideZone(L2Character.ZONE_PVP))
                         	{
                         		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                         			continue;
@@ -1816,7 +1815,7 @@ public abstract class L2Skill
                         			src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
                         		continue;
 
-                        	if(!srcInArena && ArenaManager.getInstance().getArena(trg) == null)
+                        	if(!srcInArena && !trg.isInsideZone(L2Character.ZONE_PVP))
                         	{
                         		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
                         			continue;
@@ -1831,7 +1830,7 @@ public abstract class L2Skill
                         			continue;
                         	}
                         	
-                    		if(ZoneManager.getInstance().checkIfInZonePeace(obj)) continue;
+                        	if (((L2Summon)obj).isInsideZone(L2Character.ZONE_PEACE)) continue;
                         }
 
                         targetList.add((L2Character) obj);
@@ -1934,7 +1933,7 @@ public abstract class L2Skill
                     targetSummon = (L2Summon)target;
                     if (activeChar instanceof L2PcInstance && activeChar.getPet() != targetSummon && !targetSummon.isDead()
                             && (targetSummon.getOwner().getPvpFlag() != 0 || targetSummon.getOwner().getKarma() > 0)
-                            || (targetSummon.getOwner().getInPvpZone() == true && ((L2PcInstance)activeChar).getInPvpZone()== true))
+                            || (targetSummon.getOwner().isInsideZone(L2Character.ZONE_PVP) && ((L2PcInstance)activeChar).isInsideZone(L2Character.ZONE_PVP)))
                        return new L2Character[]{targetSummon};
                 }
                 return null;

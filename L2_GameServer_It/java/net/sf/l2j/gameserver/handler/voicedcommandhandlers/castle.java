@@ -37,9 +37,9 @@ public class castle implements IVoicedCommandHandler
     {
     	if(command.startsWith("open doors")&&target.equals("castle")&&(activeChar.isClanLeader())){
             L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
-            Castle castle = CastleManager.getInstance().getCastle(activeChar.getClan().getHasCastle());
+            Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
             if (door == null || castle == null) return false;
-            if (castle.checkIfInZone(door.getX(), door.getY()))
+            if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
 	        {
 	        	door.openMe();
 	        }
@@ -47,9 +47,9 @@ public class castle implements IVoicedCommandHandler
     	}
     	else if(command.startsWith("close doors")&&target.equals("castle")&&(activeChar.isClanLeader())){
             L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
-            Castle castle = CastleManager.getInstance().getCastle(activeChar.getClan().getHasCastle());
+            Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
             if (door == null || castle == null) return false;
-            if (castle.checkIfInZone(door.getX(), door.getY()))
+            if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
 	        {
 	        	door.closeMe();
 	        }

@@ -25,7 +25,6 @@ import javolution.util.FastList;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
-import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -808,10 +807,9 @@ public class Duel
 			if (isDuelistInPvp(true)) return DuelResultEnum.Canceled;
 
 			// is one of the players in a Siege, Peace or PvP zone?
-			SiegeManager tmpSM = SiegeManager.getInstance();
-			if (_playerA.getInPeaceZone() || _playerB.getInPeaceZone()
-					|| tmpSM.checkIfInZone(_playerA) || tmpSM.checkIfInZone(_playerB)
-					|| _playerA.getInPvpZone() || _playerB.getInPvpZone()) return DuelResultEnum.Canceled;
+			if (_playerA.isInsideZone(L2PcInstance.ZONE_PEACE) || _playerB.isInsideZone(L2PcInstance.ZONE_PEACE)
+					|| _playerA.isInsideZone(L2PcInstance.ZONE_SIEGE) || _playerB.isInsideZone(L2PcInstance.ZONE_SIEGE)
+					|| _playerA.isInsideZone(L2PcInstance.ZONE_PVP) || _playerB.isInsideZone(L2PcInstance.ZONE_PVP)) return DuelResultEnum.Canceled;
 		}
 
 		return DuelResultEnum.Continue;

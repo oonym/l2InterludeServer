@@ -41,6 +41,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
+import net.sf.l2j.gameserver.instancemanager.TownManager;
 import net.sf.l2j.gameserver.instancemanager.games.Lottery;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
@@ -63,6 +64,7 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.L2Event;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.QuestState;
+import net.sf.l2j.gameserver.model.zone.type.L2TownZone;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -794,7 +796,11 @@ public class L2NpcInstance extends L2Character
         // Get castle this NPC belongs to (excluding L2Attackable)
 		if (_castleIndex < 0)
 		{
-			_castleIndex = CastleManager.getInstance().getCastleIndexByTown(this);
+			L2TownZone town = TownManager.getInstance().getTown(getX(), getY(), getZ());
+			
+			if (town != null)
+				_castleIndex = CastleManager.getInstance().getCastleIndex(town.getTaxById());
+			
 			if (_castleIndex < 0)
 			{
 				_castleIndex = CastleManager.getInstance().findNearestCastleIndex(this);
@@ -2160,6 +2166,7 @@ public class L2NpcInstance extends L2Character
      */
     public void deleteMe()
     {
+    	if (getWorldRegion() != null) getWorldRegion().removeFromZones(this);
         //FIXME this is just a temp hack, we should find a better solution
         
         try { decayMe(); } catch (Throwable t) {_log.severe("deletedMe(): " + t); }

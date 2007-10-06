@@ -43,7 +43,7 @@ public final class RequestSiegeDefenderList extends L2GameClientPacket
     @Override
 	protected void runImpl()
     {
-        Castle castle = CastleManager.getInstance().getCastle(_castleId);
+        Castle castle = CastleManager.getInstance().getCastleById(_castleId);
         if (castle == null) return;
         SiegeDefenderList sdl = new SiegeDefenderList(castle);
         sendPacket(sdl);

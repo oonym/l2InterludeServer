@@ -30,16 +30,14 @@ import net.sf.l2j.gameserver.instancemanager.ArenaManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.TownManager;
-import net.sf.l2j.gameserver.instancemanager.ZoneManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.entity.Arena;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
-import net.sf.l2j.gameserver.model.entity.Zone;
-import net.sf.l2j.gameserver.model.entity.ZoneType;
+import net.sf.l2j.gameserver.model.zone.type.L2ArenaZone;
+import net.sf.l2j.gameserver.model.zone.type.L2ClanHallZone;
 
 /**
  * This class ...
@@ -239,28 +237,25 @@ public class MapRegionTable
             L2PcInstance player = ((L2PcInstance)activeChar);
 
             // If in Monster Derby Track
-            if (ZoneManager.getInstance().checkIfInZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.MonsterDerbyTrack), player))
+            if (player.isInsideZone(L2Character.ZONE_MOSTERTRACK))
                 return new Location(12661, 181687, -3560);
             
             Castle castle = null;
             ClanHall clanhall = null;
-            Zone zone = null;
 
             if (player.getClan() != null)
             {
             	// If teleport to clan hall
             	if (teleportWhere == TeleportWhereType.ClanHall)
                 {
+            		
             	    clanhall = ClanHallManager.getInstance().getClanHallByOwner(player.getClan());
             	    if (clanhall != null)
             	    {
-            	        zone = clanhall.getZone();
-            	        if (zone != null && !zone.getCoords().isEmpty())
+            	    	L2ClanHallZone zone = clanhall.getZone();
+            	        if (zone != null)
             	        {
-            	            coord = zone.getCoords().get(0);
-            	            int x = coord[0] + (coord[2] - coord[0])/2;
-            			    int y = coord[1] + (coord[3] - coord[1])/2;
-            	            return new Location(x, y, coord[4]); 
+            	            return zone.getSpawn(); 
             	        }
             	    }
                 }
@@ -277,12 +272,8 @@ public class MapRegionTable
             		// If is on caslte with siege and player's clan is defender
             		if (teleportWhere == TeleportWhereType.Castle || (teleportWhere == TeleportWhereType.Castle && castle.getSiege().getIsInProgress() && castle.getSiege().getDefenderClan(player.getClan()) != null))
             		{
-            			zone = ZoneManager.getInstance().getZone(ZoneType.getZoneTypeName(ZoneType.ZoneTypeEnum.CastleDefenderSpawn), castle.getName());
-            			if (zone != null && !zone.getCoords().isEmpty())
-            			{
-            				coord = zone.getCoords().get(0);
-            				return new Location(coord[0], coord[1], coord[4]); 
-            			}
+           				coord = castle.getZone().getSpawn();
+            			return new Location(coord[0], coord[1], coord[2]); 
             		}
             		
             		if (teleportWhere == TeleportWhereType.SiegeFlag && castle.getSiege().getIsInProgress())
@@ -312,18 +303,18 @@ public class MapRegionTable
             }
             
             // Checking if in arena
-            Arena arena = ArenaManager.getInstance().getArena(player);
-            if (arena != null && !arena.getSpawn().isEmpty())
+            L2ArenaZone arena = ArenaManager.getInstance().getArena(player);
+            if (arena != null)
             {
-                coord = arena.getSpawn().get(0);
-                if (coord != null) return new Location(coord[0], coord[1], coord[4]); 
+                coord = arena.getSpawnLoc();
+                return new Location(coord[0], coord[1], coord[2]); 
             }
         }
 
         // Get the nearest town
         // TODO: Micht: Maybe we should add some checks to prevent exception here.
-        coord = TownManager.getInstance().getClosestTown(activeChar).getSpawn().get(0);
+        coord = TownManager.getInstance().getClosestTown(activeChar).getSpawnLoc();
         
-        return new Location(coord[0], coord[1], coord[4]);
+        return new Location(coord[0], coord[1], coord[2]);
     }
 }
