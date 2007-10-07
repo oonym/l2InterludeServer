@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
@@ -2101,12 +2102,47 @@ public class L2Attackable extends L2NpcInstance
         _seedType = id;
         int count = 1;
 
-        int diff = (getLevel() - seederLvl);
+        Map<Integer, L2Skill> skills = getTemplate().getSkills();
+        
+        if (skills != null) 
+        {
+		    for (int skillId : skills.keySet())
+		    {
+		    	switch (skillId) {
+		    	case 4303: //Strong type x2
+		    		count *= 2;
+		    		break;
+		    	case 4304: //Strong type x3
+		    		count *= 3;
+		    		break;
+		    	case 4305: //Strong type x4
+		    		count *= 4;
+		    		break;
+		    	case 4306: //Strong type x5
+		    		count *= 5;
+		    		break;
+		    	case 4307: //Strong type x6
+		    		count *= 6;
+		    		break;
+		    	case 4308: //Strong type x7
+		    		count *= 7;
+		    		break;
+		    	case 4309: //Strong type x8
+		    		count *= 8;
+		    		break;
+		    	case 4310: //Strong type x9
+		    		count *= 9;
+		    		break;
+		    	}
+		    }
+        }
 
+        int diff = (getLevel() - (L2Manor.getInstance().getSeedLevel(_seedType) - 5));
+        
         // hi-lvl mobs bonus
         if (diff > 0)
         {
-            count += Rnd.nextInt(diff);
+            count += diff;
         }
 
         FastList<RewardItem> harvested = new FastList<RewardItem>();
