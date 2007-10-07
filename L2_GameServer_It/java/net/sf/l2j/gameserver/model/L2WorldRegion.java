@@ -140,6 +140,7 @@ public final class L2WorldRegion
         if (!isOn)
         {
             for(L2Object o: _visibleObjects)
+            {
                 if (o instanceof L2Attackable)
                 {
                     c++;
@@ -167,12 +168,14 @@ public final class L2WorldRegion
                     // it until the grid is made active.
                     //mob.getStatus().stopHpMpRegeneration();
                 }
+            }
             _log.fine(c+ " mobs were turned off");
         }
         else
         {
             for(L2Object o: _visibleObjects)
-                if (o instanceof L2Attackable)
+            {
+            	if (o instanceof L2Attackable)
                 {
                     c++;
                     // Start HP/MP/CP Regeneration task
@@ -181,6 +184,13 @@ public final class L2WorldRegion
                     // start the ai
                     //((L2AttackableAI) mob.getAI()).startAITask();
                 }
+            	else if (o instanceof L2NpcInstance)
+                {
+                    // Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it 
+                    // L2Monsterinstance/L2Attackable socials are handled by AI (TODO: check the instances)
+            		((L2NpcInstance)o).startRandomAnimationTimer();
+                }
+            }
             _log.fine(c+ " mobs were turned on");
         }
         

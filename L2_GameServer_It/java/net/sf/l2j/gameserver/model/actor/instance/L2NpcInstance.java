@@ -127,10 +127,10 @@ public class L2NpcInstance extends L2Character
 
     private int _isSpoiledBy = 0;
 
-    private RandomAnimationTask _rAniTask = null;
+    protected RandomAnimationTask _rAniTask = null;
     
     /** Task launching the function onRandomAnimation() */
-    private class RandomAnimationTask implements Runnable
+    protected class RandomAnimationTask implements Runnable
     {
         public void run()
         {
@@ -138,13 +138,19 @@ public class L2NpcInstance extends L2Character
             {
                 if(this != _rAniTask)
                     return; // Shouldn't happen, but who knows... just to make sure every active npc has only one timer.
-                if(isMob() && getAI().getIntention() != AI_INTENTION_ACTIVE)
-                    return; // Cancel further animation timers until intention is changed to ACTIVE again.
-
-                // Maybe settings are changed in meanwhile by server admin
-                // If this line is missing and MAX_ANIMATION is set to 0, there will be 0 seconds between the animations... :S
-                if(!hasRandomAnimation())
-                    return;
+                if(isMob())
+                {
+                	// Cancel further animation timers until intention is changed to ACTIVE again.
+                	if(getAI().getIntention() != AI_INTENTION_ACTIVE)
+                    	return; 
+                }
+                else
+                {
+                	if (!isInActiveRegion()) // NPCs in inactive region don't run this task 
+                		return;
+                	// update knownlist to remove playable which aren't in range any more
+                	getKnownList().updateKnownObjects(); 
+                }
 
                 if(!(isDead() || isStunned() || isSleeping() || isParalyzed()))
                     onRandomAnimation();
@@ -170,7 +176,10 @@ public class L2NpcInstance extends L2Character
      */
     public void startRandomAnimationTimer()
     {
-        int minWait =  isMob() ? Config.MIN_MONSTER_ANIMATION : Config.MIN_NPC_ANIMATION;
+        if (!hasRandomAnimation())
+            return;
+        
+    	int minWait =  isMob() ? Config.MIN_MONSTER_ANIMATION : Config.MIN_NPC_ANIMATION;
         int maxWait = isMob() ? Config.MAX_MONSTER_ANIMATION : Config.MAX_NPC_ANIMATION;
 
         // Calculate the delay before the next animation
@@ -260,9 +269,6 @@ public class L2NpcInstance extends L2Character
         // Set the name of the L2Character
         setName(template.name);
         
-        // Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it 
-        if (hasRandomAnimation() && !isMob()) // Mob socials are handled by AI
-            startRandomAnimationTimer();
     }
 
     @Override
@@ -2211,7 +2217,7 @@ public class L2NpcInstance extends L2Character
         }
     }
 
-    public boolean isMob()
+    public boolean isMob() // rather delete this check
     {
         return false; // This means we use MAX_NPC_ANIMATION instead of MAX_MONSTER_ANIMATION
     }

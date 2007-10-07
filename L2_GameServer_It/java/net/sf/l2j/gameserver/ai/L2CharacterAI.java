@@ -30,6 +30,7 @@ import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Universe;
+import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
@@ -134,10 +135,8 @@ public class L2CharacterAI extends AbstractAI
 
             // Also enable random animations for this L2Character if allowed
 			// This is only for mobs - town npcs are handled in their constructor
-            if ((_actor instanceof L2NpcInstance) && ((L2NpcInstance)_actor).hasRandomAnimation())
-            {
+            if (_actor instanceof L2Attackable)
                 ((L2NpcInstance)_actor).startRandomAnimationTimer();
-            }
 
             // Launch the Think Event
             onEvtThink();
