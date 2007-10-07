@@ -132,7 +132,7 @@ public class Castle
     {
         if (getOwnerId() <= 0) return;
         
-        if (_treasury + amount >= Integer.MAX_VALUE)
+        if (Integer.MAX_VALUE - amount < _treasury)
         	return;
         
         _treasury += amount; // Add to the current treasury total.  Use "-" to substract from treasury
