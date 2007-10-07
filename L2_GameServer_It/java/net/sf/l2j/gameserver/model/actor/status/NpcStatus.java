@@ -40,10 +40,10 @@ public class NpcStatus extends CharStatus
     @Override
 	public final void reduceHp(double value, L2Character attacker, boolean awake)
     {
-        if (attacker == null || getActiveChar().isDead()) return;
+        if (getActiveChar().isDead()) return;
 
         // Add attackers to npc's attacker list
-        getActiveChar().addAttackerToAttackByList(attacker);
+        if (attacker != null) getActiveChar().addAttackerToAttackByList(attacker);
 
         super.reduceHp(value, attacker, awake);
     }
