@@ -51,13 +51,17 @@ public class RequestBuyProcure extends L2GameClientPacket {
 	
 	protected void readImpl()
 	{
-	        _listId = readD();
-	        _count = readD();
-	        if(_count * 2 < 0) _count = 0;
+		_listId = readD();
+		_count = readD();
+		if(_count > 500) // protect server
+		{
+			_count = 0; 
+			return;
+		}
 
-	        _items = new int[_count * 2];
-	        for (int i = 0; i < _count; i++)
-	        {
+		_items = new int[_count * 2];
+		for (int i = 0; i < _count; i++)
+		{
 			long servise = readD();
 			int itemId   = readD(); _items[i * 2 + 0] = itemId;
 			long cnt      = readD(); 

@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2ManorManagerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -56,9 +57,7 @@ public class RequestBuySeed extends L2GameClientPacket
 	private static final String _C__C4_REQUESTBUYSEED = "[C] C4 RequestBuySeed";
 
 	private int _count;
-
 	private int _manorId;
-
 	private int[] _items; // size _count * 2
 	
     protected void readImpl()
@@ -66,8 +65,11 @@ public class RequestBuySeed extends L2GameClientPacket
 		_manorId = readD();
 		_count = readD();
 
-		if (_count * 8 < _buf.remaining())
+		if (_count > 500 || _count * 8 < _buf.remaining()) // check values
+		{
 			_count = 0;
+			return;
+		}
 
 		_items = new int[_count * 2];
 
@@ -95,6 +97,11 @@ public class RequestBuySeed extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
+		if (_count < 1) 
+		{
+			sendPacket(new ActionFailed());
+			return;
+		}
 
 		L2Object target = player.getTarget();
 
