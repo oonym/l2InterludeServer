@@ -29,33 +29,30 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.util.Rnd;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /** 
 * Thanks to L2Fortress and balancer.ru - kombat
 */ 
 public class DimensionalRift
 {
-	private byte _type;
-	private L2Party _party;
-	private FastList<Byte> _completedRooms = new FastList<Byte>();
+	protected byte _type;
+	protected L2Party _party;
+	protected FastList<Byte> _completedRooms = new FastList<Byte>();
 	private static final long seconds_5 = 5000L;
-	private static final int MILLISECONDS_IN_MINUTE = 60000;
-	private byte jumps_current = 0;
+	//private static final int MILLISECONDS_IN_MINUTE = 60000;
+	protected byte jumps_current = 0;
 	
 	private Timer teleporterTimer;
 	private TimerTask teleporterTimerTask;
 	private Timer spawnTimer;
 	private TimerTask spawnTimerTask;
 	
-	private byte _choosenRoom = -1;
+	protected byte _choosenRoom = -1;
 	private boolean _hasJumped = false;
-	private FastList<L2PcInstance> deadPlayers = new FastList<L2PcInstance>();
-	private FastList<L2PcInstance> revivedInWaitingRoom = new FastList<L2PcInstance>();
+	protected FastList<L2PcInstance> deadPlayers = new FastList<L2PcInstance>();
+	protected FastList<L2PcInstance> revivedInWaitingRoom = new FastList<L2PcInstance>();
 	private boolean isBossRoom = false;
 
-	private final static Log _log = LogFactory.getLog(DimensionalRift.class.getName());
+	//private final static Log _log = LogFactory.getLog(DimensionalRift.class.getName());
 	
 	public DimensionalRift(L2Party party, byte type, byte room)
 	{
@@ -80,7 +77,7 @@ public class DimensionalRift
 		return _choosenRoom;
 	}
 	
-	private void createTeleporterTimer(final boolean reasonTP)
+	protected void createTeleporterTimer(final boolean reasonTP)
 	{
 		if(teleporterTimerTask != null)
 		{
@@ -227,7 +224,7 @@ public class DimensionalRift
 		killRift();
 	}
 
-	private void teleportToNextRoom(L2PcInstance player)
+	protected void teleportToNextRoom(L2PcInstance player)
 	{
 		if(_choosenRoom == -1)
 		{				//Do not tp in the same room a second time
@@ -240,7 +237,7 @@ public class DimensionalRift
 		player.teleToLocation(coords[0], coords[1], coords[2]);
 	}
 
-	private void teleportToWaitingRoom(L2PcInstance player)
+	protected void teleportToWaitingRoom(L2PcInstance player)
 	{
 		DimensionalRiftManager.getInstance().teleportToWaitingRoom(player);
 	}
@@ -306,7 +303,7 @@ public class DimensionalRift
 		if(isBossRoom)
 			return (long)(time * Config.RIFT_BOSS_ROOM_TIME_MUTIPLY);
 		else
-			return (long)time;
+			return time;
 	}
 
 	public void memberDead(L2PcInstance player)
@@ -331,9 +328,9 @@ public class DimensionalRift
 
 		if(_party.getMemberCount() - revivedInWaitingRoom.size() < Config.RIFT_MIN_PARTY_SIZE)
 		{
-			int pcm = _party.getMemberCount();
-			int rev = revivedInWaitingRoom.size();
-			int min = Config.RIFT_MIN_PARTY_SIZE;
+			//int pcm = _party.getMemberCount();
+			//int rev = revivedInWaitingRoom.size();
+			//int min = Config.RIFT_MIN_PARTY_SIZE;
 			
 			for(L2PcInstance p : _party.getPartyMembers())
 				if(!revivedInWaitingRoom.contains(p))
