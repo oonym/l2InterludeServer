@@ -200,7 +200,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 		            }
 				}
 				
-				if (!filename.isEmpty()) {
+				if (filename.length()!=0) {
 		            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 					html.setFile(filename);
 					html.replace("%objectId%", String.valueOf(getObjectId()));
