@@ -66,16 +66,13 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		
 		public void run()
 		{
-			//_log.warning(activeChar.getName()+" request restartpoint "+requestedPointType);
 			try
 			{
 				Location loc = null;
 				Castle castle=null;
 				
-				if (activeChar.isInJail()) // to jail
-					loc = new Location(-114356, -249645, -2984);
-				
-				if (activeChar.isFestivalParticipant()) _requestedPointType = 4;
+				if (activeChar.isInJail()) _requestedPointType = 27;
+				else if (activeChar.isFestivalParticipant()) _requestedPointType = 4;
 				
 				switch (_requestedPointType)
 				{
@@ -141,6 +138,11 @@ public final class RequestRestartPoint extends L2GameClientPacket
 							return;
 						}
 						loc = new Location(activeChar.getX(), activeChar.getY(), activeChar.getZ()); // spawn them where they died
+						break;
+						
+					case 27: // to jail
+						if (!activeChar.isInJail()) return;
+						loc = new Location(-114356, -249645, -2984);
 						break;
 						
 					default:
