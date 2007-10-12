@@ -119,45 +119,52 @@ public class Continuous implements ISkillHandler
 		        	L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
 		        	if (weaponInst != null)
 		        	{
-		        		if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
-		                {
-		                    bss = true;
-		                    if (skill.getId() != 1020) // vitalize
-		                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
-		                }
-		                else if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT)
-		                {
-		                    sps = true;
-		                    if (skill.getId() != 1020) // vitalize
-		                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
-		                }
-		                else if (weaponInst.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT)
-		                {
-		                    ss = true;
-		                    if (skill.getId() != 1020) // vitalize
-		                    	weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-		                }		
+		        		if (skill.isMagic())
+		        		{
+			        		if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
+			                {
+			                    bss = true;
+			                    if (skill.getId() != 1020) // vitalize
+			                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+			                }
+			                else if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT)
+			                {
+			                    sps = true;
+			                    if (skill.getId() != 1020) // vitalize
+			                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+			                }
+		        		}
+		                else 
+		                	if (weaponInst.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT)
+			                {
+			                    ss = true;
+			                    if (skill.getId() != 1020) // vitalize
+			                    	weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+			                }		
 		        	}
 		        }
 		        else if (activeChar instanceof L2Summon)
 		        {
 		            L2Summon activeSummon = (L2Summon) activeChar;
-
-		            if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
-		            {
-		                bss = true;
-		                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
-		            }
-		            else if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_SPIRITSHOT)
-		            {
-		                sps = true;
-		                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
-		            }
-		            else if (activeSummon.getChargedSoulShot() == L2ItemInstance.CHARGED_SOULSHOT)
-		            {
-		                ss = true;
-		                activeSummon.setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
-		            }
+	        		if (skill.isMagic())
+	        		{
+			            if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
+			            {
+			                bss = true;
+			                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
+			            }
+			            else if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_SPIRITSHOT)
+			            {
+			                sps = true;
+			                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
+			            }
+	        		}
+		            else 
+		            	if (activeSummon.getChargedSoulShot() == L2ItemInstance.CHARGED_SOULSHOT)
+			            {
+			                ss = true;
+			                activeSummon.setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
+			            }
 		        }
 		        
 				boolean acted = Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, ss, sps, bss);
