@@ -57,10 +57,13 @@ public class CastleUpdater implements Runnable
                         {
                             // Move the current treasury amount to clan warehouse
                             warehouse.addItem("Castle", 57, amount, null, null);
-                            castle.addToTreasury(amount * -1);
+                            castle.addToTreasuryNoTax(amount * -1);
                         }
                     }
 
+                    // TODO: Check if those free items to clanWH are correct.  As far as I can find, 
+                    // castle owners normally earn these items via the manor system!  -- Fulminus
+                    
                     // Give clan 1 Dualsword Craft Stamp every 3 hour (8 per day)
                     // Give clan ~1 Secret Book of Giants daily (it's been confirmed that castle owners get these, but method is unknown)
                     if (_runCount % 3 == 0)
@@ -72,6 +75,7 @@ public class CastleUpdater implements Runnable
                     _runCount++;
                     if (_runCount == 7) _runCount = 1;
 
+                    // FIXME: Why are we rescheduling in this manner, instead of scheduling with fixed rate from the beginning? 
                     // re-run again in 1 hours
                     CastleUpdater cu = new CastleUpdater(_clan, _runCount);
                     ThreadPoolManager.getInstance().scheduleGeneral(cu, 3600000);
