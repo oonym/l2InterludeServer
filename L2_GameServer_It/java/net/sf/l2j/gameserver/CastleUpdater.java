@@ -56,8 +56,9 @@ public class CastleUpdater implements Runnable
                         if (amount > 0)
                         {
                             // Move the current treasury amount to clan warehouse
-                            warehouse.addItem("Castle", 57, amount, null, null);
-                            castle.addToTreasuryNoTax(amount * -1);
+                        	if (castle.addToTreasuryNoTax(amount * -1))
+                        		warehouse.addItem("Castle", 57, amount, null, null);
+                            
                         }
                     }
 

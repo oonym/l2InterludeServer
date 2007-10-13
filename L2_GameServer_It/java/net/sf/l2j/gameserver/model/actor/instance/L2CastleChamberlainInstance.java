@@ -149,7 +149,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					try {
 						amount = Integer.parseInt(st.nextToken());
 					} catch(NoSuchElementException e) {}
-					if (amount > 0 && getCastle().getTreasury() + amount < Integer.MAX_VALUE) {
+					if (amount > 0 && (long)(getCastle().getTreasury() + amount) < Integer.MAX_VALUE) {
 						if (player.reduceAdena("Castle", amount, this, true)) {
 							getCastle().addToTreasuryNoTax(amount);
 						} else {
@@ -164,8 +164,9 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 						if (getCastle().getTreasury() < amount) {
 							filename = "data/html/chamberlain/chamberlain-vault-no.htm";
 						} else {
-							player.addAdena("Castle", amount, this, true);
-							getCastle().addToTreasuryNoTax((-1)*amount);
+							if (getCastle().addToTreasuryNoTax((-1)*amount))
+								player.addAdena("Castle", amount, this, true);
+							
 						}
 					}
 				}

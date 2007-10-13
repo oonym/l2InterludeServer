@@ -128,14 +128,18 @@ public class Castle
     }
     
     /** Add amount to castle instance's treasury (warehouse), no tax paying. */
-    public void addToTreasuryNoTax(int amount)
+    public boolean addToTreasuryNoTax(int amount)
     {
-        if (getOwnerId() <= 0) return;
+        if (getOwnerId() <= 0) return false;
         
-        if (Integer.MAX_VALUE - amount < _treasury)
-        	return;
-        
-        _treasury += amount; // Add to the current treasury total.  Use "-" to substract from treasury
+        if (amount < 0) {
+        	amount *= -1;
+        	if (_treasury <= amount) return false;
+        	_treasury -= amount;
+        } else {
+        	if ((long)(_treasury + amount)>Integer.MAX_VALUE) _treasury = Integer.MAX_VALUE;
+        	else _treasury += amount; 
+        }
         
         java.sql.Connection con = null;
         try
@@ -149,6 +153,7 @@ public class Castle
         }
         catch (Exception e) {} 
         finally {try { con.close(); } catch (Exception e) {}}
+        return true;
     }
 	
 	/**
