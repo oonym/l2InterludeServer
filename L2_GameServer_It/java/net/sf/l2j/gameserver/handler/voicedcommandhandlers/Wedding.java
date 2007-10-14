@@ -11,6 +11,7 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IVoicedCommandHandler;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2World;
@@ -33,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Wedding implements IVoicedCommandHandler
 {
-    protected static final Log _log = LogFactory.getLog(Wedding.class);
+    static final Log _log = LogFactory.getLog(Wedding.class);
     private static String[] _voicedCommands = { "divorce", "engage", "gotolove" };
 
     /* (non-Javadoc)
@@ -266,7 +267,17 @@ public class Wedding implements IVoicedCommandHandler
             activeChar.sendMessage("Your partner is in dimensional rift.");
             return false;
         }
-        
+        else if (partner.inObserverMode())
+        {
+        	activeChar.sendMessage("Your partner is in the observation.");
+        }
+        else if(partner.getClan() != null  
+        		&& CastleManager.getInstance().getCastleByOwner(partner.getClan()) != null  
+        		&& CastleManager.getInstance().getCastleByOwner(partner.getClan()).getSiege().getIsInProgress()) 
+        { 
+        	activeChar.sendMessage("Your partner is in siege, you can't go to your partner."); 
+        	return false; 
+        } 
         
         else if(activeChar.isInJail())
         {
@@ -288,6 +299,17 @@ public class Wedding implements IVoicedCommandHandler
             activeChar.sendMessage("You are in a duel!");
             return false;
         }
+        else if (activeChar.inObserverMode())
+        {
+        	activeChar.sendMessage("You are in the observation.");
+        }
+        else if(activeChar.getClan() != null  
+        		&& CastleManager.getInstance().getCastleByOwner(activeChar.getClan()) != null  
+        		&& CastleManager.getInstance().getCastleByOwner(activeChar.getClan()).getSiege().getIsInProgress()) 
+        { 
+        	activeChar.sendMessage("You are in siege, you can't go to your partner."); 
+        	return false; 
+        } 
         else if (activeChar.isFestivalParticipant()) 
         {
             activeChar.sendMessage("You are in a festival.");
