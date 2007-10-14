@@ -38,22 +38,22 @@ public class CoupleManager
     private static final Log _log = LogFactory.getLog(CoupleManager.class.getName());
 
     // =========================================================
-    private static CoupleManager _Instance;
+    private static CoupleManager _instance;
     public static final CoupleManager getInstance()
     {
-        if (_Instance == null)
+        if (_instance == null)
         {
             _log.info("L2JMOD: Initializing CoupleManager");
-            _Instance = new CoupleManager();
-            _Instance.load();
+            _instance = new CoupleManager();
+            _instance.load();
         }
-        return _Instance;
+        return _instance;
     }
     // =========================================================
     
     // =========================================================
     // Data Field
-    private FastList<Couple> _Couples;
+    private FastList<Couple> _couples;
 
     
     // =========================================================
@@ -153,18 +153,18 @@ public class CoupleManager
 
     public final int getCoupleIndex(int coupleId)
     {
-        Couple couple;
-        for (int i = 0; i < getCouples().size(); i++)
+        int i=0;
+        for (Couple temp : getCouples())
         {
-            couple = getCouples().get(i);
-            if (couple != null && couple.getId() == coupleId) return i;
+        	if (temp != null && temp.getId() == coupleId) return i;
+        	i++;
         }
         return -1;
     }
 
     public final FastList<Couple> getCouples()
     {
-        if (_Couples == null) _Couples = new FastList<Couple>();
-        return _Couples;
+        if (_couples == null) _couples = new FastList<Couple>();
+        return _couples;
     }
 }
