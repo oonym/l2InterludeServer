@@ -109,7 +109,9 @@ public class L2Attackable extends L2NpcInstance
         @Override
 		public boolean equals(Object obj) 
         {
-            return this == obj || _attacker == _attacker;
+            if (this == obj) return true;
+            if (obj instanceof AggroInfo) return (((AggroInfo)obj)._attacker == _attacker);
+            return false;
         }
         
         /**
@@ -151,7 +153,9 @@ public class L2Attackable extends L2NpcInstance
         @Override
 		public boolean equals(Object obj) 
         {
-            return this == obj || _attacker == _attacker;
+            if (this == obj) return true;
+            if (obj instanceof RewardInfo) return (((RewardInfo)obj)._attacker == _attacker);
+            return false;
         }
         
         @Override
@@ -191,7 +195,9 @@ public class L2Attackable extends L2NpcInstance
         @Override
 		public boolean equals(Object obj) 
         {
-            return this == obj || _absorber == _absorber;
+            if (this == obj) return true;
+            if (obj instanceof AbsorberInfo) return (((AbsorberInfo)obj)._absorber == _absorber);
+            return false;
         }
         
         /**
