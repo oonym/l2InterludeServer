@@ -239,7 +239,8 @@ public final class Config
 
     /** Maximum number of clans in ally */
     public static int ALT_MAX_NUM_OF_CLANS_IN_ALLY;
-
+    /** Life Crystal needed to learn clan skill */
+    public static boolean LIFE_CRYSTAL_NEEDED;
     /** Spell Book needed to learn skill */
     public static boolean SP_BOOK_NEEDED;
     /** Spell Book needet to enchant skill */
@@ -1630,6 +1631,7 @@ public final class Config
                 ALT_GAME_FREIGHT_PRICE  = Integer.parseInt(altSettings.getProperty("AltGameFreightPrice", "1000"));
                 ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(altSettings.getProperty("AltGameSkillHitRate", "1."));
                 IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
+                LIFE_CRYSTAL_NEEDED     = Boolean.parseBoolean(altSettings.getProperty("LifeCrystalNeeded", "true"));                
                 SP_BOOK_NEEDED          = Boolean.parseBoolean(altSettings.getProperty("SpBookNeeded", "true"));
                 ES_SP_BOOK_NEEDED       = Boolean.parseBoolean(altSettings.getProperty("EnchantSkillSpBookNeeded","true"));
                 AUTO_LOOT               = altSettings.getProperty("AutoLoot").equalsIgnoreCase("True");
@@ -2308,6 +2310,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("AltGameSkillHitRate")) ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(pValue);
 
         else if (pName.equalsIgnoreCase("CraftingEnabled")) IS_CRAFTING_ENABLED = Boolean.valueOf(pValue);
+        else if (pName.equalsIgnoreCase("LifeCrystalNeeded")) LIFE_CRYSTAL_NEEDED = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("SpBookNeeded")) SP_BOOK_NEEDED = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AutoLoot")) AUTO_LOOT = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AutoLootHerbs")) AUTO_LOOT_HERBS = Boolean.valueOf(pValue);
