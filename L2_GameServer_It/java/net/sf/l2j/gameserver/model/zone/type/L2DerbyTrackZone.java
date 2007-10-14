@@ -39,7 +39,6 @@ public class L2DerbyTrackZone extends L2ZoneType
 		if (character instanceof L2PcInstance)
 		{
 			character.setInsideZone(L2Character.ZONE_MONSTERTRACK, true);
-			((L2PcInstance)character).sendMessage("FU");
 		}
 	}
 	
@@ -49,7 +48,6 @@ public class L2DerbyTrackZone extends L2ZoneType
 		if (character instanceof L2PcInstance)
 		{
 			character.setInsideZone(L2Character.ZONE_MONSTERTRACK, false);
-			((L2PcInstance)character).sendMessage("FU2");
 		}
 	}
 }
