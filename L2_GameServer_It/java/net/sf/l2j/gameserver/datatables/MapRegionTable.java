@@ -267,7 +267,7 @@ public class MapRegionTable
             L2PcInstance player = ((L2PcInstance)activeChar);
 
             // If in Monster Derby Track
-            if (player.isInsideZone(L2Character.ZONE_MOSTERTRACK))
+            if (player.isInsideZone(L2Character.ZONE_MONSTERTRACK))
                 return new Location(12661, 181687, -3560);
             
             Castle castle = null;

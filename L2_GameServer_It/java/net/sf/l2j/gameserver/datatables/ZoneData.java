@@ -44,6 +44,7 @@ import net.sf.l2j.gameserver.model.zone.type.L2BigheadZone;
 import net.sf.l2j.gameserver.model.zone.type.L2CastleZone;
 import net.sf.l2j.gameserver.model.zone.type.L2ClanHallZone;
 import net.sf.l2j.gameserver.model.zone.type.L2DamageZone;
+import net.sf.l2j.gameserver.model.zone.type.L2DerbyTrackZone;
 import net.sf.l2j.gameserver.model.zone.type.L2FishingZone;
 import net.sf.l2j.gameserver.model.zone.type.L2JailZone;
 import net.sf.l2j.gameserver.model.zone.type.L2MotherTreeZone;
@@ -161,6 +162,8 @@ public class ZoneData
 								temp = new L2NoLandingZone();
 							else if (zoneType.equals("JailZone"))
 								temp = new L2JailZone();
+							else if (zoneType.equals("DerbyTrackZone"))
+								temp = new L2DerbyTrackZone();
 							
 							
 							// Check for unknown type

@@ -178,7 +178,7 @@ public abstract class L2Character extends L2Object
 	public static final int ZONE_NOLANDING = 64;
 	public static final int ZONE_WATER = 128;
 	public static final int ZONE_JAIL = 256;
-	public static final int ZONE_MOSTERTRACK = 512;
+	public static final int ZONE_MONSTERTRACK = 512;
 	
 	private int _currentZones = 0;
 	
