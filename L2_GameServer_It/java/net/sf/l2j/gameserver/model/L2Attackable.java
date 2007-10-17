@@ -2155,7 +2155,7 @@ public class L2Attackable extends L2NpcInstance
 
         FastList<RewardItem> harvested = new FastList<RewardItem>();
 
-        harvested.add(new RewardItem(L2Manor.getInstance().getCropType(_seedType), count));
+        harvested.add(new RewardItem(L2Manor.getInstance().getCropType(_seedType), count*= Config.RATE_DROP_MANOR));
 
         _harvestItems = harvested.toArray(new RewardItem[harvested.size()]);
     }
