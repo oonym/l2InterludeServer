@@ -289,6 +289,7 @@ public class Siege
             _siegeGuardManager.unspawnSiegeGuard(); // Remove all spawned siege guard from this castle
             if (getCastle().getOwnerId() > 0) _siegeGuardManager.removeMercs();
             getCastle().spawnDoor(); // Respawn door to castle
+            getCastle().getZone().updateZoneStatusForCharactersInside();
         }
     }
 
@@ -434,6 +435,8 @@ public class Siege
             spawnSiegeGuard(); // Spawn siege guard
             MercTicketManager.getInstance().deleteTickets(getCastle().getCastleId()); // remove the tickets from the ground
             _defenderRespawnDelayPenalty = 0; // Reset respawn delay
+            
+            getCastle().getZone().updateZoneStatusForCharactersInside();
 
             // Schedule a task to prepare auto siege end
             _siegeEndDate = Calendar.getInstance();

@@ -3299,7 +3299,7 @@ public enum SystemMessageId
      * ID: 283<br>
      * Message: You have entered a combat zone.
      */
-    ENTERES_COMBAT_ZONE(283),
+    ENTERED_COMBAT_ZONE(283),
     
     /**
      * ID: 284<br>

@@ -81,7 +81,7 @@ public class L2CastleZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_SIEGE, true);
 			
 			if (character instanceof L2PcInstance)
-				((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERES_COMBAT_ZONE));
+				((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 	
@@ -104,6 +104,36 @@ public class L2CastleZone extends L2ZoneType
 		}
 	}
 	
+	public void updateZoneStatusForCharactersInside()
+	{
+		if (_castle.getSiege().getIsInProgress())
+		{
+			for (L2Character character : _characterList)
+			{
+				try	
+				{ 
+					onEnter(character); 
+				} 
+				catch (NullPointerException e) {}
+			}
+		}
+		else
+		{
+			for (L2Character character : _characterList)
+			{
+				try	
+				{ 
+					character.setInsideZone(L2Character.ZONE_PVP, false);
+					character.setInsideZone(L2Character.ZONE_SIEGE, false);
+					
+					if (character instanceof L2PcInstance)
+						((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+					
+				} 
+				catch (NullPointerException e) {}
+			}
+		}
+	}
 	
 	/**
 	 * Removes all foreigners from the castle
