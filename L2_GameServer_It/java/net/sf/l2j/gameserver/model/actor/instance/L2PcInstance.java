@@ -4087,10 +4087,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	 *
 	 */
 	@Override
-	public void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
 	{
 		// Kill the L2PcInstance
-		super.doDie(killer);
+		if (!super.doDie(killer))
+			return false;
 
 		if (killer != null)
 		{
@@ -4171,6 +4172,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		stopRentPet();
 		stopWaterTask();
+		return true;
 	}
 
 	private void onDieDropItem(L2Character killer)

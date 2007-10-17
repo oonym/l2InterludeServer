@@ -108,14 +108,17 @@ public final class L2BabyPetInstance extends L2PetInstance
 	}
 	
 	@Override
-	public synchronized void doDie(L2Character killer) {
-		super.doDie(killer);
+	public boolean doDie(L2Character killer) {
+		
+		if (!super.doDie(killer))
+			return false;
 		
 		if (_healingTask != null)
 		{
 			_healingTask.cancel(false);
 			_healingTask = null;
 		}
+		return true;
 	}
 	
 	@Override

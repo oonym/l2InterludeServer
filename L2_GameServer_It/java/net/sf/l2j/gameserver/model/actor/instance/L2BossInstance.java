@@ -60,11 +60,6 @@ public final class L2BossInstance extends L2MonsterInstance
     @Override
 	protected int getMaintenanceInterval() { return BOSS_MAINTENANCE_INTERVAL; }
 	
-    @Override
-	public void doDie(L2Character killer)
-    {
-        super.doDie(killer);
-    }
     /**
      * Used by Orfen to set 'teleported' flag, when hp goes to <50%
      * @param flag

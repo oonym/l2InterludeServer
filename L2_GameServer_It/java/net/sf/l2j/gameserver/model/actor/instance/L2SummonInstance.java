@@ -198,9 +198,12 @@ public class L2SummonInstance extends L2Summon
     }
 
     @Override
-	public synchronized void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
     {
-        if (Config.DEBUG)
+    	if (!super.doDie(killer))
+    		return false;
+    	
+    	if (Config.DEBUG)
             _log.warning("L2SummonInstance: " + getTemplate().name + " (" + getOwner().getName()
                 + ") has been killed.");
 
@@ -209,8 +212,8 @@ public class L2SummonInstance extends L2Summon
             _summonLifeTask.cancel(true);
             _summonLifeTask = null;
         }
-
-        super.doDie(killer);
+        return true;
+        
     }
 
     /*

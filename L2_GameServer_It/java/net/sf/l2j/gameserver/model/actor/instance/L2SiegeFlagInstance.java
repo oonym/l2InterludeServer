@@ -74,13 +74,14 @@ public class L2SiegeFlagInstance extends L2NpcInstance
 	}
 	
     @Override
-	public void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
     {
-        L2SiegeClan sc = _siege.getAttackerClan(_player.getClan());
+    	if (!super.doDie(killer))
+    		return false;
+    	L2SiegeClan sc = _siege.getAttackerClan(_player.getClan());
         if (sc != null)
         	sc.removeFlag(this);
-        
-        super.doDie(killer);
+        return true;
     }
 
     @Override

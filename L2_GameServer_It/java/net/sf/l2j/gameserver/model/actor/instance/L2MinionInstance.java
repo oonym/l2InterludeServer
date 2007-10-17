@@ -98,11 +98,12 @@ public final class L2MinionInstance extends L2MonsterInstance
      * @param killer The L2Character that killed this L2MinionInstance.<BR><BR>
      */
     @Override
-	public void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
     {
-        _master.notifyMinionDied(this);
-        
-        super.doDie(killer);
+    	if (!super.doDie(killer))
+    		return false;
+    	_master.notifyMinionDied(this);
+        return true;
     }
 	
 }

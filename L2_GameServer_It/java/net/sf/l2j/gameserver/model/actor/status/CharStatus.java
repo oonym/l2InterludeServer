@@ -200,29 +200,21 @@ public class CharStatus
 
         if (getActiveChar().isDead())
         {
-            if (getActiveChar() instanceof L2PcInstance)
+        	getActiveChar().abortAttack();
+            getActiveChar().abortCast();
+        	
+        	if (getActiveChar() instanceof L2PcInstance)
             {
                 if(((L2PcInstance)getActiveChar()).isInOlympiadMode())
                 {
-                    getActiveChar().abortAttack();
-                    getActiveChar().abortCast();
                     stopHpMpRegeneration();
                     return;
                 }
-            }
-            // killing is only possible one time
-            synchronized (getActiveChar())
-            {
-                if (getActiveChar().isKilledAlready()) return;
-                getActiveChar().setIsKilledAlready(true);
             }
 
             // first die (and calculate rewards), if currentHp < 0,
             // then overhit may be calculated
             if (Config.DEBUG) _log.fine("char is dead.");
-
-            getActiveChar().abortAttack();
-            getActiveChar().abortCast();
 
             // Start the doDie process
             getActiveChar().doDie(attacker);

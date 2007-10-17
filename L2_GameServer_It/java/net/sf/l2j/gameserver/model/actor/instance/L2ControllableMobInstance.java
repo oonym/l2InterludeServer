@@ -32,7 +32,6 @@ public class L2ControllableMobInstance extends L2MonsterInstance
 {
 	private boolean _isInvul;
 	private L2ControllableMobAI _aiBackup;	// to save ai, avoiding beeing detached
-	private boolean _killedAlready = false;
 	
 	protected class ControllableAIAcessor extends AIAccessor 
     {
@@ -112,15 +111,6 @@ public class L2ControllableMobInstance extends L2MonsterInstance
 		
 		if (isDead())
 		{
-			// killing is only possible one time
-			synchronized (this)
-			{
-				if (_killedAlready)
-					return;
-				
-				_killedAlready = true;
-			}
-			
 			// first die (and calculate rewards), if currentHp < 0,
 			// then overhit may be calculated
 			if (Config.DEBUG) _log.fine("char is dead.");
@@ -136,10 +126,13 @@ public class L2ControllableMobInstance extends L2MonsterInstance
 	}
 
 	@Override
-	public void doDie(L2Character killer) 
+	public boolean doDie(L2Character killer) 
     {
+		if (!super.doDie(killer))
+			return false;
+
 		removeAI();
-		super.doDie(killer);
+		return true;
 	}
 
 	@Override

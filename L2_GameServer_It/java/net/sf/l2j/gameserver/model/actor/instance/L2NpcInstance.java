@@ -2106,11 +2106,13 @@ public class L2NpcInstance extends L2Character
      * 
      */
     @Override
-	public void doDie(L2Character killer) 
+	public boolean doDie(L2Character killer) 
     {
-        DecayTaskManager.getInstance().addDecayTask(this);
+        if (!super.doDie(killer))
+        	return false;
         
-        super.doDie(killer);
+    	DecayTaskManager.getInstance().addDecayTask(this);
+    	return true;
     }
     
     /**

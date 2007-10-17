@@ -82,9 +82,12 @@ public abstract class L2PlayableInstance extends L2Character
     }
 
     @Override
-	public void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
     {
-        if (killer != null)
+    	if (!super.doDie(killer))
+    		return false;
+    	
+    	if (killer != null)
         {
             L2PcInstance player = null;
             if (killer instanceof L2PcInstance)
@@ -94,8 +97,7 @@ public abstract class L2PlayableInstance extends L2Character
 
             if (player != null) player.onKillUpdatePvPKarma(this);
         }
-
-        super.doDie(killer);
+    	return true;
     }
 
     public boolean checkIfPvP(L2Character target)

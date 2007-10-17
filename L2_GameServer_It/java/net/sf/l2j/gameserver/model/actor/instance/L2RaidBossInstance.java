@@ -67,16 +67,18 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 	protected int getMaintenanceInterval() { return RAIDBOSS_MAINTENANCE_INTERVAL; }
 	
     @Override
-	public void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
     {
-        if(killer instanceof L2PlayableInstance)
+    	if (!super.doDie(killer))
+    		return false;
+    	if(killer instanceof L2PlayableInstance)
         {
         	SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
         	broadcastPacket(msg);
         }
         
         RaidBossSpawnManager.getInstance().updateStatus(this, true);
-        super.doDie(killer);
+        return true;
     }
     
     /* Unused

@@ -197,15 +197,17 @@ public class L2MonsterInstance extends L2Attackable
     }
     
     @Override
-	public void doDie(L2Character killer) 
+	public boolean doDie(L2Character killer) 
     {
-        if (_minionMaintainTask != null)
+    	if (!super.doDie(killer))
+    		return false;
+    	
+    	if (_minionMaintainTask != null)
             _minionMaintainTask.cancel(true); // doesn't do it?
         
         if (this instanceof L2RaidBossInstance)
         	deleteSpawnedMinions();
-        
-        super.doDie(killer);
+        return true;
     }
     
     public List<L2MinionInstance> getSpawnedMinions()

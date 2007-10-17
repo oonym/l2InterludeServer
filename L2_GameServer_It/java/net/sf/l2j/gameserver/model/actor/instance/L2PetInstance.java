@@ -482,11 +482,14 @@ public class L2PetInstance extends L2Summon
     }
 	
 	@Override
-	public synchronized void doDie(L2Character killer) {
+	public boolean doDie(L2Character killer) 
+	{
+		if (!super.doDie(killer,true))
+			return false;
 		stopFeed();
 		DecayTaskManager.getInstance().addDecayTask(this,1200000);
-		super.doDie(killer,true);
 		deathPenalty();
+		return true;
 	}
 
     @Override

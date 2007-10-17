@@ -123,7 +123,14 @@ public class Blow implements ISkillHandler
 	        	    	   else
 	        	    	   {
 	        	    		   player.setCurrentHp(0);
-	        	    		   player.doDie(activeChar);
+	        	    		   if (player.isInOlympiadMode())
+	        	    		   {
+	        	    			   player.abortAttack();
+	        	    			   player.abortCast();
+	        	    			   player.getStatus().stopHpMpRegeneration();
+	        	    		   }
+	        	    		   else
+	        	    			   player.doDie(activeChar);
 	        	    	   }
 	        	       }
 	        	       else 

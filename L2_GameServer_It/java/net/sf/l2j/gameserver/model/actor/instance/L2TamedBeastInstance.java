@@ -129,9 +129,10 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     }
     
     @Override
-	public void doDie(L2Character killer)
+	public boolean doDie(L2Character killer)
     {
-    	super.doDie(killer);
+    	if (!super.doDie(killer))
+    		return false;
     	
     	getAI().stopFollow();
     	_buffTask.cancel(true);
@@ -145,6 +146,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     	_owner = null;
     	_foodSkillId = 0;
     	_remainingTime = 0;
+    	return true;
     }
     
     public L2PcInstance getOwner()

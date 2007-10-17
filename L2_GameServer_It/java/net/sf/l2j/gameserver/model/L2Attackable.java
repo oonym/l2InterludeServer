@@ -421,9 +421,13 @@ public class L2Attackable extends L2NpcInstance
      * 
      */
     @Override
-	public void doDie(L2Character killer) 
+	public boolean doDie(L2Character killer) 
     {
-        // Enhance soul crystals of the attacker if this L2Attackable had its soul absorbed
+    	// Kill the L2NpcInstance (the corpse disappeared after 7 seconds)
+        if (!super.doDie(killer))
+        	return false;
+    	
+    	// Enhance soul crystals of the attacker if this L2Attackable had its soul absorbed
         try {
             if (killer instanceof L2PcInstance)
             {
@@ -463,9 +467,7 @@ public class L2Attackable extends L2NpcInstance
         			setChampion(true);
         	}
         }
-
-        // Kill the L2NpcInstance (the corpse disappeared after 7 seconds)
-        super.doDie(killer);
+        return true;
         
     }
     
