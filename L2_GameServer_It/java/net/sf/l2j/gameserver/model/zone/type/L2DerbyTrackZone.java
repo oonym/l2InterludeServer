@@ -19,14 +19,13 @@ package net.sf.l2j.gameserver.model.zone.type;
 
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 
 /**
  * The Monster Derby Track Zone
  *
  * @author  durgus
  */
-public class L2DerbyTrackZone extends L2ZoneType
+public class L2DerbyTrackZone extends L2PeaceZone
 {
 	public L2DerbyTrackZone()
 	{
@@ -40,6 +39,7 @@ public class L2DerbyTrackZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_MONSTERTRACK, true);
 		}
+		super.onEnter(character);
 	}
 	
 	@Override
@@ -49,5 +49,6 @@ public class L2DerbyTrackZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_MONSTERTRACK, false);
 		}
+		super.onExit(character);
 	}
 }
