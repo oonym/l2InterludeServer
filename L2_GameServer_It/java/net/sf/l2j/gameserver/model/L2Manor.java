@@ -311,11 +311,11 @@ public class L2Manor
         }
         
         public int getSeedLimit() {
-        	return _limitSeeds;
+        	return _limitSeeds*Config.RATE_DROP_MANOR;
         }
         
         public int getCropLimit() {
-        	return _limitCrops;
+        	return _limitCrops*Config.RATE_DROP_MANOR;
         }
     }
     
