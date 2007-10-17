@@ -125,7 +125,7 @@ public class MultiSellChoose extends L2GameClientPacket
     	// now check if the player has sufficient items in the inventory to cover the ingredients' expences
     	for(MultiSellIngredient e : _ingredientsList)
     	{
-            if((double)e.getItemCount() * (double)_amount > Integer.MAX_VALUE )
+            if((double)(e.getItemCount() * _amount) > Integer.MAX_VALUE )
             {
             	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
                 _ingredientsList.clear();
@@ -160,7 +160,10 @@ public class MultiSellChoose extends L2GameClientPacket
 			{
 				// if it's a stackable item, just reduce the amount from the first (only) instance that is found in the inventory
 				if (itemToTake.isStackable())
-	                player.destroyItem("Multisell", itemToTake.getObjectId(), (e.getItemCount() * _amount), player.getTarget(), true);
+				{
+	                if (!player.destroyItem("Multisell", itemToTake.getObjectId(), (e.getItemCount() * _amount), player.getTarget(), true))
+	                	return;
+				}
 				else
 				{
 					// for non-stackable items, one of two scenaria are possible:
@@ -172,15 +175,13 @@ public class MultiSellChoose extends L2GameClientPacket
 					{
 						// loop through this list and remove (one by one) each item until the required amount is taken.
 						L2ItemInstance[] inventoryContents = inv.getAllItemsByItemId(e.getItemId(), e.getEnchantmentLevel());
-						synchronized (inventoryContents)
-	        			{
 			                for (int i = 0; i < (e.getItemCount() * _amount); i++)
 			                {
 			                	if (inventoryContents[i].isAugmented())
 			                		augmentation.add(inventoryContents[i].getAugmentation());
-								player.destroyItem("Multisell", inventoryContents[i].getObjectId(), 1, player.getTarget(), true);
-			                }
-	        			}
+								if (!player.destroyItem("Multisell", inventoryContents[i].getObjectId(), 1, player.getTarget(), true))
+							    	return;
+				            }
 					}
 					else	// b) enchantment is not maintained.  Get the instances with the LOWEST enchantment level
 					{
@@ -220,29 +221,32 @@ public class MultiSellChoose extends L2GameClientPacket
 	
 						// choice 1.  Small number of items exchanged.  No sorting.
 		                for (int i = 1; i <= (e.getItemCount() * _amount); i++)
-		                {
-		    				L2ItemInstance[] inventoryContents = inv.getAllItemsByItemId(e.getItemId());
-	
-		        			synchronized (inventoryContents)
-		        			{
-		        				itemToTake = inventoryContents[0];
-	        					// get item with the LOWEST enchantment level from the inventory...+0 is lowest by default...
-		        				if(itemToTake.getEnchantLevel() > 0)
-		        				{
-			        				for (int j=0; j<inventoryContents.length; j++)
-			        				{
-			        					if (inventoryContents[j].getEnchantLevel() < itemToTake.getEnchantLevel())
-			        					{
-			        						itemToTake = inventoryContents[j];
-			        						// nothing will have enchantment less than 0.  If a zero-enchanted item is found, just take it
-			        						if (itemToTake.getEnchantLevel() == 0)
-			        							break;
-			        					}
-			        				}
-		        				}
-		        			}
-							player.destroyItem("Multisell", itemToTake.getObjectId(), 1, player.getTarget(), true);
-		                }
+						{
+							L2ItemInstance[] inventoryContents = inv.getAllItemsByItemId(e.getItemId());
+
+							itemToTake = inventoryContents[0];
+							// get item with the LOWEST enchantment level
+							// from the inventory...+0 is lowest by
+							// default...
+							if (itemToTake.getEnchantLevel() > 0)
+							{
+								for (int j = 0; j < inventoryContents.length; j++)
+								{
+									if (inventoryContents[j].getEnchantLevel() < itemToTake
+											.getEnchantLevel())
+									{
+										itemToTake = inventoryContents[j];
+										// nothing will have enchantment
+										// less than 0. If a zero-enchanted
+										// item is found, just take it
+										if (itemToTake.getEnchantLevel() == 0)
+											break;
+									}
+								}
+							}
+							if (!player.destroyItem("Multisell", itemToTake.getObjectId(), 1, player.getTarget(), true))
+								return;
+						}
 					}
 				}
 			}
