@@ -77,8 +77,6 @@ public class Pdam implements ISkillHandler
         {
             L2Character target = (L2Character) targets[index];
             Formulas f = Formulas.getInstance();
-            if(target.reflectSkill(skill))
-            	target = activeChar;
             L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
             if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance
                 && target.isAlikeDead() && target.isFakeDeath())
@@ -124,25 +122,38 @@ public class Pdam implements ISkillHandler
 
                 if (skill.hasEffects())
                 {
-                    // activate attacked effects, if any
-                    target.stopEffect(skill.getId());
-                    if (target.getEffect(skill.getId()) != null)
-                        target.removeEffect(target.getEffect(skill.getId()));
-                    if (f.calcSkillSuccess(activeChar, target, skill, false, false, false))
-                    {
-                        skill.getEffects(activeChar, target);
-                        
-                        SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-                        sm.addSkillName(skill.getId());
-                        target.sendPacket(sm);
-                    }
-                    else
-                    {
-                        SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
-                        sm.addString(target.getName());
-                        sm.addSkillName(skill.getDisplayId());
-                        activeChar.sendPacket(sm);
-                    }
+                	if (target.reflectSkill(skill))
+					{
+						activeChar.stopEffect(skill.getId());
+						if (activeChar.getEffect(skill.getId()) != null)
+							activeChar.removeEffect(target.getEffect(skill.getId()));
+						skill.getEffects(null, activeChar);
+						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						sm.addSkillName(skill.getId());
+						activeChar.sendPacket(sm);
+					}
+                	else
+                	{
+                		// activate attacked effects, if any
+                        target.stopEffect(skill.getId());
+                        if (target.getEffect(skill.getId()) != null)
+                            target.removeEffect(target.getEffect(skill.getId()));
+                        if (f.calcSkillSuccess(activeChar, target, skill, false, false, false))
+                        {
+                            skill.getEffects(activeChar, target);
+                            
+                            SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+                            sm.addSkillName(skill.getId());
+                            target.sendPacket(sm);
+                        }
+                        else
+                        {
+                            SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
+                            sm.addString(target.getName());
+                            sm.addSkillName(skill.getDisplayId());
+                            activeChar.sendPacket(sm);
+                        }
+                	}
                 }
                 
                  // Success of lethal effect

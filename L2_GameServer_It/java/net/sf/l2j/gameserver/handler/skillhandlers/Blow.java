@@ -67,8 +67,19 @@ public class Blow implements ISkillHandler
 			//calculate chance based on DEX, Position and on self BUFF
 			if(((skill.getCondition() & L2Skill.COND_BEHIND) != 0) && _successChance == BEHIND || ((skill.getCondition() & L2Skill.COND_CRIT) != 0) && Formulas.getInstance().calcBlow(activeChar, target, _successChance))
 			{
-				if(target.reflectSkill(skill))
-					target = activeChar;
+				if (skill.hasEffects())
+				{
+					if (target.reflectSkill(skill))
+					{
+						activeChar.stopEffect(skill.getId());
+						if (activeChar.getEffect(skill.getId()) != null)
+							activeChar.removeEffect(target.getEffect(skill.getId()));
+						skill.getEffects(null, activeChar);
+						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						sm.addSkillName(skill.getId());
+						activeChar.sendPacket(sm);
+					}
+				}
 	            L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
 	            boolean soul = (weapon != null && weapon.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT && weapon.getItemType() == L2WeaponType.DAGGER);
 	            boolean shld = Formulas.getInstance().calcShldUse(activeChar, target);
