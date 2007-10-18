@@ -1664,10 +1664,10 @@ public final class Config
                 ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED  = Integer.parseInt(altSettings.getProperty("DaysBeforeAcceptNewClanWhenDismissed", "1"));
                 ALT_CREATE_ALLY_DAYS_WHEN_DISSOLVED  = Integer.parseInt(altSettings.getProperty("DaysBeforeCreateNewAllyWhenDissolved", "10"));
 
-                ALT_OLY_START_TIME                                  = Integer.parseInt(altSettings.getProperty("AltOlyStartTime", "20"));
+                ALT_OLY_START_TIME                                  = Integer.parseInt(altSettings.getProperty("AltOlyStartTime", "18"));
                 ALT_OLY_MIN                                         = Integer.parseInt(altSettings.getProperty("AltOlyMin","00"));
-                ALT_OLY_CPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyCPeriod","14100000"));
-                ALT_OLY_BATTLE                                      = Long.parseLong(altSettings.getProperty("AltOlyBattle","180000"));
+                ALT_OLY_CPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyCPeriod","21600000"));
+                ALT_OLY_BATTLE                                      = Long.parseLong(altSettings.getProperty("AltOlyBattle","360000"));
                 ALT_OLY_BWAIT                                       = Long.parseLong(altSettings.getProperty("AltOlyBWait","600000"));
                 ALT_OLY_IWAIT                                       = Long.parseLong(altSettings.getProperty("AltOlyIWait","300000"));
                 ALT_OLY_WPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyWPeriod","604800000"));

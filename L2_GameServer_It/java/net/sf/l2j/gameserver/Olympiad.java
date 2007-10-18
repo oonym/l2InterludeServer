@@ -89,10 +89,10 @@ public class Olympiad
     		"competitions_done desc";
     private static final String OLYMPIAD_DELETE_ALL = "DELETE from olympiad_nobles";
     
-    private static final int COMP_START = Config.ALT_OLY_START_TIME; // 8PM - 12AM
+    private static final int COMP_START = Config.ALT_OLY_START_TIME; // 6PM
     private static final int COMP_MIN = Config.ALT_OLY_MIN; // 00 mins
-    private static final long COMP_PERIOD = Config.ALT_OLY_CPERIOD; // 3hours 55mins :P
-    protected static final long BATTLE_PERIOD = Config.ALT_OLY_BATTLE; // 3mins
+    private static final long COMP_PERIOD = Config.ALT_OLY_CPERIOD; // 6 hours
+    protected static final long BATTLE_PERIOD = Config.ALT_OLY_BATTLE; // 6 mins
     protected static final long BATTLE_WAIT = Config.ALT_OLY_BWAIT; // 10mins
     protected static final long INITIAL_WAIT = Config.ALT_OLY_IWAIT;  // 5mins
     protected static final long WEEKLY_PERIOD = Config.ALT_OLY_WPERIOD; // 1 week
@@ -1185,11 +1185,11 @@ public class Olympiad
             }
     		
     		for (L2OlympiadGame instance : _olympiadInstances.values())
-    			instance.sendMessageToPlayers(false,20);
+    			instance.sendMessageToPlayers(false,30);
     		
-    		//Wait 20 seconds
+    		//Wait 30 seconds
     		try{
-    			wait(20000);
+    			wait(30000);
     		}catch (InterruptedException e){}
     		
     		for (L2OlympiadGame instance : _olympiadInstances.values())
@@ -1205,11 +1205,7 @@ public class Olympiad
             
             _battleStarted = true;
     		
-    		//Wait 2mins
-    		try{
-    			wait(60000);
-    		}catch (InterruptedException e){}
-            
+    		//Wait 1 min
     		for (int i=60;i>10;i-=10)
     		{
     			for (L2OlympiadGame instance : _olympiadInstances.values())
@@ -1248,7 +1244,7 @@ public class Olympiad
     			instance.makeCompetitionStart();
     		}
     			
-    		//Wait 3 mins (Battle)
+    		//Wait 6 mins (Battle)
     		try{
     			wait(BATTLE_PERIOD);
     		}catch (InterruptedException e){}

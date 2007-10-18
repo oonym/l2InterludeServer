@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.util.FloodProtector;
 
 /**
  * This class ...
@@ -297,6 +298,11 @@ public final class Say2 extends L2GameClientPacket
 			case HERO_VOICE:
 				if (activeChar.isHero())
 				{
+					if (!FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_HEROVOICE))
+					{
+						activeChar.sendMessage("Action failed. Heroes are only able to speak in the global channel once every 10 seconds.");
+						return;
+					}
 					for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 						if (!BlockList.isBlocked(player, activeChar))
 							player.sendPacket(cs);
