@@ -391,88 +391,9 @@ public class CharStat
 		// Get the base MAtk of the L2Character
 		double defence = _activeChar.getTemplate().baseMDef;
 
-		// Get the skill type to calculate its effect in function of base stats
-		// of the L2Character target
-		Stats stat = skill == null ? null : skill.getStat();
-
-		if (stat != null)
-		{
-			switch (stat)
-			{
-			case AGGRESSION:
-				defence += _activeChar.getTemplate().baseAggressionRes;
-				break;
-			case BLEED:
-				defence += _activeChar.getTemplate().baseBleedRes;
-				break;
-			case POISON:
-				defence += _activeChar.getTemplate().basePoisonRes;
-				break;
-			case STUN:
-				defence += _activeChar.getTemplate().baseStunRes;
-				break;
-			case ROOT:
-				defence += _activeChar.getTemplate().baseRootRes;
-				break;
-			case MOVEMENT:
-				defence += _activeChar.getTemplate().baseMovementRes;
-				break;
-			case CONFUSION:
-				defence += _activeChar.getTemplate().baseConfusionRes;
-				break;
-			case SLEEP:
-				defence += _activeChar.getTemplate().baseSleepRes;
-				break;
-			case FIRE:
-				defence += _activeChar.getTemplate().baseFireRes;
-				break;
-			case WIND:
-				defence += _activeChar.getTemplate().baseWindRes;
-				break;
-			case WATER:
-				defence += _activeChar.getTemplate().baseWaterRes;
-				break;
-			case EARTH:
-				defence += _activeChar.getTemplate().baseEarthRes;
-				break;
-			case HOLY:
-				defence += _activeChar.getTemplate().baseHolyRes;
-				break;
-			case DARK:
-				defence += _activeChar.getTemplate().baseDarkRes;
-				break;
-			}
-		}
-
 		// Calculate modifier for Raid Bosses
 		if (_activeChar.isRaid())
 			defence *= Config.RAID_DEFENCE_MULTIPLIER;
-
-		// Calculate the elemental Defence
-		if (skill != null)
-		{
-			switch (skill.getElement())
-			{
-			case L2Skill.ELEMENT_EARTH:
-				defence = calcStat(Stats.EARTH_RES, defence, target, skill);
-				break;
-			case L2Skill.ELEMENT_FIRE:
-				defence = calcStat(Stats.FIRE_RES, defence, target, skill);
-				break;
-			case L2Skill.ELEMENT_WATER:
-				defence = calcStat(Stats.WATER_RES, defence, target, skill);
-				break;
-			case L2Skill.ELEMENT_WIND:
-				defence = calcStat(Stats.WIND_RES, defence, target, skill);
-				break;
-			case L2Skill.ELEMENT_HOLY:
-				defence = calcStat(Stats.HOLY_RES, defence, target, skill);
-				break;
-			case L2Skill.ELEMENT_DARK:
-				defence = calcStat(Stats.DARK_RES, defence, target, skill);
-				break;
-			}
-		}
 
 		// Calculate modifiers Magic Attack
 		return (int) calcStat(Stats.MAGIC_DEFENCE, defence, target, skill);

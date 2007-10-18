@@ -1040,13 +1040,14 @@ public final class Formulas
 		//Multiplier should be removed, it's false ??
 		damage += 1.5*attacker.calcStat(Stats.CRITICAL_DAMAGE, damage+power, target, skill);
 		//damage *= (double)attacker.getLevel()/target.getLevel();
-		//True with skill ?
-		defence = target.calcStat(Stats.DAGGER_WPN_RES, defence, target, null);
+
+		// get the natural vulnerability for the template
 		if (target instanceof L2NpcInstance)
 		{
-			Integer resistDagger = ((L2NpcInstance) target).getTemplate().getResist(Stats.DAGGER_WPN_RES);
-			damage *= resistDagger.doubleValue() / 100;
+			damage *= ((L2NpcInstance) target).getTemplate().getVulnerability(Stats.DAGGER_WPN_VULN);
 		}
+		// get the vulnerability for the instance due to skills (buffs, passives, toggles, etc)
+		damage = target.calcStat(Stats.DAGGER_WPN_VULN, damage, target, null);
 		damage *= 70. / defence;
 		damage += Rnd.get() * attacker.getRandomDamage(target);
 		// Sami: Must be removed, after armor resistances are checked.
@@ -1113,69 +1114,48 @@ public final class Formulas
 		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;
 		
-		//		damage = damage * attacker.getSTR()*(1 - attacker.getLevel()/100)/60*1.15;
-		if (target instanceof L2NpcInstance)
-		{
-			Integer resistPAtk = ((L2NpcInstance) target).getTemplate().getResist(Stats.POWER_DEFENCE);
-			damage *= resistPAtk.doubleValue() / 100;
-		}
 		// defence modifier depending of the attacker weapon
 		L2Weapon weapon = attacker.getActiveWeaponItem();
+		Stats stat = null;
 		if (weapon != null)
 		{
 			switch (weapon.getItemType())
 			{
 				case BOW:
-					defence = target.calcStat(Stats.BOW_WPN_RES, defence, target, null);
-					if (target instanceof L2NpcInstance)
-					{
-						Integer resistBow = ((L2NpcInstance) target).getTemplate().getResist(
-																								Stats.BOW_WPN_RES);
-						damage *= resistBow.doubleValue() / 100;
-					}
+					stat = Stats.BOW_WPN_VULN;
 					break;
 				case BLUNT:
 				case BIGBLUNT:
-					defence = target.calcStat(Stats.BLUNT_WPN_RES, defence, target, null);
-					if (target instanceof L2NpcInstance)
-					{
-						Integer resistBlunt = ((L2NpcInstance) target).getTemplate().getResist(
-																								Stats.BLUNT_WPN_RES);
-						damage *= resistBlunt.doubleValue() / 100;
-					}
+					stat = Stats.BLUNT_WPN_VULN;
 					break;
 				case DAGGER:
-					defence = target.calcStat(Stats.DAGGER_WPN_RES, defence, target, null);
-					if (target instanceof L2NpcInstance)
-					{
-						Integer resistDagger = ((L2NpcInstance) target).getTemplate().getResist(
-																								Stats.DAGGER_WPN_RES);
-						damage *= resistDagger.doubleValue() / 100;
-					}
+					stat = Stats.DAGGER_WPN_VULN;
 					break;
 				case DUAL:
-					defence = target.calcStat(Stats.DUAL_WPN_RES, defence, target, null);
+					stat = Stats.DUAL_WPN_VULN;
 					break;
 				case DUALFIST:
-					defence = target.calcStat(Stats.DUALFIST_WPN_RES, defence, target, null);
+					stat = Stats.DUALFIST_WPN_VULN;
 					break;
 				case ETC:
-					defence = target.calcStat(Stats.ETC_WPN_RES, defence, target, null);
+					stat = Stats.ETC_WPN_VULN;
 					break;
 				case FIST:
-					defence = target.calcStat(Stats.FIST_WPN_RES, defence, target, null);
+					stat = Stats.FIST_WPN_VULN;
 					break;
 				case POLE:
-					defence = target.calcStat(Stats.POLE_WPN_RES, defence, target, null);
+					stat = Stats.POLE_WPN_VULN;
 					break;
 				case SWORD:
-					defence = target.calcStat(Stats.SWORD_WPN_RES, defence, target, null);
+					stat = Stats.SWORD_WPN_VULN;
 					break;
-				case BIGSWORD: //TODO: have a proper resitance for Big swords
-					defence = target.calcStat(Stats.SWORD_WPN_RES, defence, target, null);
+				case BIGSWORD: //TODO: have a proper resistance/vulnerability for Big swords
+					stat = Stats.SWORD_WPN_VULN;
 					break;
 			}
 		}
+		
+
 		if (crit) damage += attacker.getCriticalDmg(target, damage);
 		if (shld && !Config.ALT_GAME_SHIELD_BLOCKS)
 		{
@@ -1197,6 +1177,17 @@ public final class Formulas
 		//		else {
 		//if (skill == null)
 		damage = 70 * damage / defence;
+
+		if (stat != null)
+		{
+			// get the vulnerability due to skills (buffs, passives, toggles, etc)
+			damage = target.calcStat(stat, damage, target, null);
+			if (target instanceof L2NpcInstance)
+			{
+				// get the natural vulnerability for the template
+				damage *= ((L2NpcInstance) target).getTemplate().getVulnerability(stat);
+			}
+		}
 
 		damage += Rnd.nextDouble() * damage / 10;
 		//		damage += _rnd.nextDouble()* attacker.getRandomDamage(target);
@@ -1267,7 +1258,7 @@ public final class Formulas
 		if (bss) mAtk *= 4;
 		else if (ss) mAtk *= 2;
 
-		double damage = 91 * Math.sqrt(mAtk) / mDef * skill.getPower(attacker);
+		double damage = 91 * Math.sqrt(mAtk) / mDef * skill.getPower(attacker) * calcSkillVulnerability(target, skill);
 		
 		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;
@@ -1443,54 +1434,143 @@ public final class Formulas
 			return false; // these skills should have only 1/1000 chance on raid, now it's 0.
 
 		double defence = 0;
+		// TODO: CHECK/FIX THIS FORMULA UP!!
 		if (skill.isActive() && skill.isOffensive()) defence = target.getMDef(actor, skill);
-		double attack = 2 * actor.getMAtk(target, skill);
+		double attack = 2 * actor.getMAtk(target, skill) * calcSkillVulnerability(target, skill);
 		double d = attack - defence;
 		d /= attack + defence;
 		d += 0.5 * Rnd.nextGaussian();
 		return d > 0;
 	}
 
-	public int calcSkillResistance(SkillType type, L2Character target)
+	public double calcSkillVulnerability(L2Character target, L2Skill skill)
 	{
-		if (type == null) return 0;
-		switch (type)
+		double multiplier = 1;	// initialize...
+
+		// Get the skill type to calculate its effect in function of base stats
+		// of the L2Character target
+		if (skill != null)
 		{
-			case BLEED:
-				return (int) target.calcStat(Stats.BLEED_RES, 0, target, null);
-			case POISON:
-				return (int) target.calcStat(Stats.POISON_RES, 0, target, null);
-			case STUN:
-				return (int) target.calcStat(Stats.STUN_RES, 0, target, null);
-			case PARALYZE:
-				return (int) target.calcStat(Stats.PARALYZE_RES, 0, target, null);
-			case ROOT:
-				return (int) target.calcStat(Stats.ROOT_RES, 0, target, null);
-			case SLEEP:
-				return (int) target.calcStat(Stats.SLEEP_RES, 0, target, null);
-			case MUTE:
-			case FEAR:
-			case BETRAY:
-			case AGGREDUCE_CHAR:
-				return (int) target.calcStat(Stats.DERANGEMENT_RES, 0, target, null);
-			case CONFUSION:
-				return (int) target.calcStat(Stats.CONFUSION_RES, 0, target, null);
-			case DEBUFF:
-			case WEAKNESS:
-				return (int) target.calcStat(Stats.DEBUFF_RES, 0, target, null);
-			default:
-				return 0;
+			// first, get the natural template vulnerability values for the target
+			Stats stat = skill.getStat();
+			if (stat != null)
+			{
+				switch (stat)
+				{
+				case AGGRESSION:
+					multiplier *= target.getTemplate().baseAggressionVuln;
+					break;
+				case BLEED:
+					multiplier *= target.getTemplate().baseBleedVuln;
+					break;
+				case POISON:
+					multiplier *= target.getTemplate().basePoisonVuln;
+					break;
+				case STUN:
+					multiplier *= target.getTemplate().baseStunVuln;
+					break;
+				case ROOT:
+					multiplier *= target.getTemplate().baseRootVuln;
+					break;
+				case MOVEMENT:
+					multiplier *= target.getTemplate().baseMovementVuln;
+					break;
+				case CONFUSION:
+					multiplier *= target.getTemplate().baseConfusionVuln;
+					break;
+				case SLEEP:
+					multiplier *= target.getTemplate().baseSleepVuln;
+					break;
+				case FIRE:
+					multiplier *= target.getTemplate().baseFireVuln;
+					break;
+				case WIND:
+					multiplier *= target.getTemplate().baseWindVuln;
+					break;
+				case WATER:
+					multiplier *= target.getTemplate().baseWaterVuln;
+					break;
+				case EARTH:
+					multiplier *= target.getTemplate().baseEarthVuln;
+					break;
+				case HOLY:
+					multiplier *= target.getTemplate().baseHolyVuln;
+					break;
+				case DARK:
+					multiplier *= target.getTemplate().baseDarkVuln;
+					break;
+				}
+			}
+
+			// Next, calculate the elemental vulnerabilities
+			switch (skill.getElement())
+			{
+			case L2Skill.ELEMENT_EARTH:
+				multiplier = target.calcStat(Stats.EARTH_VULN, multiplier, target, skill);
+				break;
+			case L2Skill.ELEMENT_FIRE:
+				multiplier = target.calcStat(Stats.FIRE_VULN, multiplier, target, skill);
+				break;
+			case L2Skill.ELEMENT_WATER:
+				multiplier = target.calcStat(Stats.WATER_VULN, multiplier, target, skill);
+				break;
+			case L2Skill.ELEMENT_WIND:
+				multiplier = target.calcStat(Stats.WIND_VULN, multiplier, target, skill);
+				break;
+			case L2Skill.ELEMENT_HOLY:
+				multiplier = target.calcStat(Stats.HOLY_VULN, multiplier, target, skill);
+				break;
+			case L2Skill.ELEMENT_DARK:
+				multiplier = target.calcStat(Stats.DARK_VULN, multiplier, target, skill);
+				break;
+			}
+			
+			// Finally, calculate skilltype vulnerabilities
+			SkillType type = skill.getSkillType();
+			if (type != null)
+			{
+				switch (type)
+				{
+					case BLEED:
+						multiplier = target.calcStat(Stats.BLEED_VULN, multiplier, target, null);
+					case POISON:
+						multiplier = target.calcStat(Stats.POISON_VULN, multiplier, target, null);
+					case STUN:
+						multiplier = target.calcStat(Stats.STUN_VULN, multiplier, target, null);
+					case PARALYZE:
+						multiplier = target.calcStat(Stats.PARALYZE_VULN, multiplier, target, null);
+					case ROOT:
+						multiplier = target.calcStat(Stats.ROOT_VULN, multiplier, target, null);
+					case SLEEP:
+						multiplier = target.calcStat(Stats.SLEEP_VULN, multiplier, target, null);
+					case MUTE:
+					case FEAR:
+					case BETRAY:
+					case AGGREDUCE_CHAR:
+						multiplier = target.calcStat(Stats.DERANGEMENT_VULN, multiplier, target, null);
+					case CONFUSION:
+						multiplier = target.calcStat(Stats.CONFUSION_VULN, multiplier, target, null);
+					case DEBUFF:
+					case WEAKNESS:
+						multiplier = target.calcStat(Stats.DEBUFF_VULN, multiplier, target, null);
+					default:
+						;
+				}
+			}
 		}
+		return multiplier;
 	}
 
-	public int calcSkillStatModifier(SkillType type, L2Character target)
+	public double calcSkillStatModifier(SkillType type, L2Character target)
 	{
-		if (type == null) return 0;
+		double multiplier = 1;
+		if (type == null) return multiplier;
 		switch (type)
 		{
 			case STUN:
 			case BLEED:
-				return (int) (Math.sqrt(CONbonus[target.getCON()]) * 100 - 100);
+				multiplier = 2 - Math.sqrt(CONbonus[target.getCON()]);
+				break;
 			case POISON:
 			case SLEEP:
 			case DEBUFF:
@@ -1503,10 +1583,14 @@ public final class Formulas
 			case CONFUSION:
 			case AGGREDUCE_CHAR:
 			case PARALYZE:
-				return (int) (Math.sqrt(MENbonus[target.getMEN()]) * 100 - 100);
+				multiplier = 2 - Math.sqrt(MENbonus[target.getMEN()]);
+				break;
 			default:
-				return 0;
+				return multiplier;
 		}
+		if (multiplier < 0)
+			multiplier = 0;
+		return multiplier;
 	}
 
 	public boolean calcSkillSuccess(L2Character attacker, L2Character target, L2Skill skill, boolean ss,
@@ -1551,15 +1635,15 @@ public final class Formulas
 		// int lvlmodifier = (skill.getMagicLevel() - target.getLevel()) * lvlDepend;
 		int lvlmodifier = ((skill.getMagicLevel() > 0 ? skill.getMagicLevel() : attacker.getLevel()) - target.getLevel())
 			* lvlDepend;
-		int statmodifier = -calcSkillStatModifier(type, target);
-		int resmodifier = -calcSkillResistance(type, target);
+		double statmodifier = calcSkillStatModifier(type, target);
+		double resmodifier = calcSkillVulnerability(target, skill);
 
 		int ssmodifier = 100;
 		if (bss) ssmodifier = 200;
 		else if (sps) ssmodifier = 150;
 		else if (ss) ssmodifier = 150;
 
-		int rate = value + statmodifier + lvlmodifier + resmodifier;
+		int rate = (int) ((value * statmodifier + lvlmodifier) * resmodifier);
 		if (skill.isMagic())
 			rate += (int) (Math.pow((double) attacker.getMAtk(target, skill)
 				/ target.getMDef(attacker, skill), 0.2) * 100) - 100;
@@ -1646,7 +1730,7 @@ public final class Formulas
 		else if (ss) mAtk *= 2;
 
 		double damage = (Math.sqrt(mAtk) * skill.getPower(attacker) * (mp/97)) / mDef;
-				
+		damage *= calcSkillVulnerability(target, skill);		
     	return damage;
     }
     

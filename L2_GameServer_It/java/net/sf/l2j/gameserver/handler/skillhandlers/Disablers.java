@@ -450,7 +450,7 @@ public class Disablers implements ISkillHandler
                     	int landrate = 90;
                     	if((target.getLevel() - lvlmodifier)>0) landrate = 90-4*(target.getLevel()-lvlmodifier);
                     	
-                    	landrate *= (100 - activeChar.calcStat(Stats.CANCEL_RES, 0, target, null))/100;
+                    	landrate = (int) activeChar.calcStat(Stats.CANCEL_VULN, landrate, target, null);
                     	
                     	if(Rnd.get(100) < landrate)
                     	{
@@ -512,7 +512,7 @@ public class Disablers implements ISkillHandler
                             	int landrate = 90;
                             	if((target.getLevel() - lvlmodifier)>0) landrate = 90-4*(target.getLevel()-lvlmodifier);
                             	
-                            	landrate *= (100 - activeChar.calcStat(Stats.CANCEL_RES, 0, target, null))/100;
+                            	landrate = (int) activeChar.calcStat(Stats.CANCEL_VULN, landrate, target, null);
                             	
                             	if(Rnd.get(100) < landrate)
                             		negateEffect(target,SkillType.BUFF,-1);

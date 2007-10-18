@@ -94,7 +94,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	
 	private List<ClassId>             _teachInfo;
 	private Map<Integer, L2Skill> _skills;
-	private Map<Stats, Integer> _resists;
+	private Map<Stats, Double> _vulnerabilities;
 	// contains a list of quests for each event type (questStart, questAttack, questKill, etc)
 	private Map<Quest.QuestEventType, Quest[]> _questEvents;
 	
@@ -210,21 +210,21 @@ public final class L2NpcTemplate extends L2CharTemplate
 			_skills = new FastMap<Integer, L2Skill>();
 		_skills.put(skill.getId(), skill);
 	}
-    public void addResist(Stats id, int resist)
+    public void addVulnerability(Stats id, double vuln)
 	{
-		if (_resists == null)
-			_resists = new FastMap<Stats, Integer>();
-		_resists.put(id, new Integer(resist));
+		if (_vulnerabilities == null)
+			_vulnerabilities = new FastMap<Stats, Double>();
+		_vulnerabilities.put(id, new Double(vuln));
 	}
-    public int getResist(Stats id)
+    public double getVulnerability(Stats id)
 	{
-    	if(_resists == null || _resists.get(id) == null)
-    		return 0;
-		return _resists.get(id);
+    	if(_vulnerabilities == null || _vulnerabilities.get(id) == null)
+    		return 1;
+		return _vulnerabilities.get(id);
 	}
-    public int removeResist(Stats id)
+    public double removeVulnerability(Stats id)
 	{
-		return _resists.remove(id);
+		return _vulnerabilities.remove(id);
 	}
 	
 	/**

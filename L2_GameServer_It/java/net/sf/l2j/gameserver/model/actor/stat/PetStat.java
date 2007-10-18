@@ -169,27 +169,6 @@ public class PetStat extends SummonStat
 	public int getMDef(L2Character target, L2Skill skill)
     {
         double defence = getActiveChar().getPetData().getPetMDef();
-        Stats stat = skill == null? null : skill.getStat();
-        if (stat != null)
-        {
-            switch (stat)
-            {
-            case AGGRESSION: defence += getActiveChar().getTemplate().baseAggressionRes; break;
-            case BLEED:      defence += getActiveChar().getTemplate().baseBleedRes;      break;
-            case POISON:     defence += getActiveChar().getTemplate().basePoisonRes;     break;
-            case STUN:       defence += getActiveChar().getTemplate().baseStunRes;       break;
-            case ROOT:       defence += getActiveChar().getTemplate().baseRootRes;       break;
-            case MOVEMENT:   defence += getActiveChar().getTemplate().baseMovementRes;   break;
-            case CONFUSION:  defence += getActiveChar().getTemplate().baseConfusionRes;  break;
-            case SLEEP:      defence += getActiveChar().getTemplate().baseSleepRes;      break;
-            case FIRE:       defence += getActiveChar().getTemplate().baseFireRes;       break;
-            case WIND:       defence += getActiveChar().getTemplate().baseWindRes;       break;
-            case WATER:      defence += getActiveChar().getTemplate().baseWaterRes;      break;
-            case EARTH:      defence += getActiveChar().getTemplate().baseEarthRes;      break;
-            case HOLY:       defence += getActiveChar().getTemplate().baseHolyRes;       break;
-            case DARK:       defence += getActiveChar().getTemplate().baseDarkRes;       break;
-            }
-        }
         return (int)calcStat(Stats.MAGIC_DEFENCE, defence, target, skill);
     }
     
