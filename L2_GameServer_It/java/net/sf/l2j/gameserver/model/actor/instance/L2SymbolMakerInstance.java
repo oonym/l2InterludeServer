@@ -147,14 +147,7 @@ public class L2SymbolMakerInstance extends L2FolkInstance
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
-		String pom = "";
-        
-		if (val == 0)
-			pom = "" + npcId;
-		else 
-			pom = npcId + "-" + val;
-		
-		return "data/html/symbolmaker/" + pom + ".htm";
+		return "data/html/symbolmaker/SymbolMaker.htm";
 	}
 	
 	
