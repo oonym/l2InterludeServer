@@ -54,10 +54,50 @@ public class ItemsAutoDestroy
         return _instance;
     }
     
-    public void addItem (L2ItemInstance item)
+    public synchronized void addItem (L2ItemInstance item)
     {
         item.setDropTime(System.currentTimeMillis());
         _items.add(item);
+    }
+    
+    public synchronized void removeItems()
+    {
+    	if (Config.DEBUG)
+    		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items to check.");
+    	
+    	if (_items.isEmpty()) return;
+    	
+        long curtime = System.currentTimeMillis();
+        for (L2ItemInstance item : _items)
+        {
+            if (item == null || item.getDropTime()==0 || item.getLocation() != L2ItemInstance.ItemLocation.VOID)
+                _items.remove(item);
+            else
+            {
+            	if(item.getItemType() == L2EtcItemType.HERB )
+            	{
+            		if((curtime - item.getDropTime()) > Config.HERB_AUTO_DESTROY_TIME)
+            		{
+            			L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
+            			L2World.getInstance().removeObject(item);
+            			_items.remove(item);
+            			if (Config.SAVE_DROPPED_ITEM)
+                			ItemsOnGroundManager.getInstance().removeObject(item);
+            		}
+            	}
+            	else if ( (curtime - item.getDropTime()) > _sleep)
+                {
+                    L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
+                    L2World.getInstance().removeObject(item);
+                    _items.remove(item);
+                    if (Config.SAVE_DROPPED_ITEM)
+                    	ItemsOnGroundManager.getInstance().removeObject(item);
+                }
+            }
+        }
+
+    	if (Config.DEBUG)
+    		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items remaining.");
     }
     
     protected class CheckItemsForDestroy extends Thread
@@ -65,42 +105,7 @@ public class ItemsAutoDestroy
         @Override
 		public void run()
         {
-        	if (Config.DEBUG)
-        		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items to check.");
-        	
-        	if (_items.isEmpty()) return;
-        	
-            long curtime = System.currentTimeMillis();
-            for (L2ItemInstance item : _items)
-            {
-                if (item == null || item.getDropTime()==0 || item.getLocation() != L2ItemInstance.ItemLocation.VOID)
-                    _items.remove(item);
-                else
-                {
-                	if(item.getItemType() == L2EtcItemType.HERB )
-                	{
-                		if((curtime - item.getDropTime()) > Config.HERB_AUTO_DESTROY_TIME)
-                		{
-                			L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
-                			L2World.getInstance().removeObject(item);
-                			_items.remove(item);
-                			if (Config.SAVE_DROPPED_ITEM)
-                    			ItemsOnGroundManager.getInstance().removeObject(item);
-                		}
-                	}
-                	else if ( (curtime - item.getDropTime()) > _sleep)
-                    {
-                        L2World.getInstance().removeVisibleObject(item,item.getWorldRegion());
-                        L2World.getInstance().removeObject(item);
-                        _items.remove(item);
-                        if (Config.SAVE_DROPPED_ITEM)
-                        	ItemsOnGroundManager.getInstance().removeObject(item);
-                    }
-                }
-            }
-
-        	if (Config.DEBUG)
-        		_log.info("[ItemsAutoDestroy] : "+_items.size()+" items remaining.");
+        	removeItems();
         }    
     }
 }
