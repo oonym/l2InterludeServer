@@ -18,6 +18,7 @@
  */
 package net.sf.l2j.gameserver.skills.effects;
 
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -37,13 +38,15 @@ final class EffectParalyze extends L2Effect {
 	@Override
 	public void onStart() 
 	{
-       	 getEffected().setIsParalyzed(true);
+		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1); 
+		getEffected().setIsParalyzed(true);
 	}
 	
 	@Override
 	public void onExit() 
 	{
-		 getEffected().setIsParalyzed(false);
+		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1); 
+		getEffected().setIsParalyzed(false);
 	}
 	
     @Override
