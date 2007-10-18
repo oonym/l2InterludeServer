@@ -87,15 +87,17 @@ public final class Broadcast
 
         for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
         {
-            if (player == null) 
-                continue;
-            
-            player.sendPacket(mov);
-            if (mov instanceof CharInfo && character instanceof L2PcInstance) {
-            	int relation = ((L2PcInstance)character).getRelation(player);
-            	if (character.getKnownList().getKnownRelations().get(player.getObjectId()) != null && character.getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
-            		player.sendPacket(new RelationChanged((L2PcInstance)character, relation, player.isAutoAttackable(character)));
-            }
+           try 
+           {
+        	   player.sendPacket(mov);
+        	   if (mov instanceof CharInfo && character instanceof L2PcInstance) 
+        	   {
+        		   int relation = ((L2PcInstance)character).getRelation(player);
+        		   if (character.getKnownList().getKnownRelations().get(player.getObjectId()) != null && character.getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
+        			   player.sendPacket(new RelationChanged((L2PcInstance)character, relation, player.isAutoAttackable(character)));
+        	   }
+           } 
+           catch (NullPointerException e) { }
         }
     }
     
