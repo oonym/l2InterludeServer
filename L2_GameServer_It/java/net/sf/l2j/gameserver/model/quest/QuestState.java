@@ -362,7 +362,9 @@ public final class QuestState
 			if (cond > (old+1))
 			{
 				// set the most significant bit to 1 (indicates that there exist skipped states)
-				completedStateFlags = 0x80000000;
+				// also, ensure that the least significant bit is an 1 (the first step is never skipped, no matter
+				// what the cond says)
+				completedStateFlags = 0x80000001;
 				
 				// since no flag had been skipped until now, the least significant bits must all 
 				// be set to 1, up until "old" number of bits.
@@ -387,7 +389,9 @@ public final class QuestState
 				else
 				{
 					// set the most significant bit back to 1 again, to correctly indicate that this skips states.
-					completedStateFlags |= 0x80000000;
+					// also, ensure that the least significant bit is an 1 (the first step is never skipped, no matter
+					// what the cond says)
+					completedStateFlags |= 0x80000001;
 					set("__compltdStateFlags", String.valueOf(completedStateFlags));
 				}
 			}
