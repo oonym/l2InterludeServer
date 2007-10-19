@@ -44,14 +44,14 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         		if(player.isMounted())
         		{
         			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-        			sm.addString("Already Have a Pet or Mounted.");
+        			sm.addString("You Already Have a Pet or Are Mounted.");
         			player.sendPacket(sm);
         			return;
         		}
         		else
         		{
         			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-        			sm.addString("Summon your Strider.");
+        			sm.addString("Summon your Strider first.");
         			player.sendPacket(sm);
         			return;
         		}
@@ -63,7 +63,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         			if (player.getPet().getLevel() < 55)
         			{
         				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-                		sm.addString("Your Strider don't reach the required level.");
+                		sm.addString("Your Strider Has not reached the required level.");
                 		player.sendPacket(sm);
                 		return;                
         			}

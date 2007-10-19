@@ -172,7 +172,7 @@ public class TvTEvent
 				return "TvT Event: Event finish. No team won, cause of inactivity!";
 			}
 			
-			sysMsgToAllParticipants("TvT Event: Both teams are at a tie, next killing team win!");
+			sysMsgToAllParticipants("TvT Event: Both teams are at a tie, next team to get a kill wins!");
 		}
 
 		while (_teams[0].getPoints() == _teams[1].getPoints())
@@ -233,7 +233,7 @@ public class TvTEvent
 
 			NpcHtmlMessage npcHtmlMessage = new NpcHtmlMessage(0);
 
-			npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Your team won the event. Look in your inventar there should be the reward.</body></html>");
+			npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Your team won the event. Look in your inventory, there should be your reward.</body></html>");
 			playerInstance.sendPacket(npcHtmlMessage);
 		}
 		
@@ -425,7 +425,7 @@ public class TvTEvent
 			int playerLevel = playerInstance.getLevel();
 
 			if (playerInstance.isCursedWeaponEquiped())
-				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Cursed weapon orwners are not allowed to participate.</body></html>");
+				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Cursed weapon owners are not allowed to participate.</body></html>");
 			else if (playerInstance.getKarma() > 0)
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Chaotic players are not allowed to participate.</body></html>");
 			else if (playerLevel < Config.TVT_EVENT_MIN_LVL || playerLevel > Config.TVT_EVENT_MAX_LVL)

@@ -65,16 +65,16 @@ public class TvTManager implements Runnable
 
 			if (!TvTEvent.startFight())
 			{
-				Announcements.getInstance().announceToAll("TvT Event: Event canceled cause of registration lack.");
+				Announcements.getInstance().announceToAll("TvT Event: Event canceled due to lack of Participation.");
 				System.out.println("TvTEventEngine[TvTManager.run()]: Lack of registration, abort event.");
 				continue;
 			}
 			else
-				TvTEvent.sysMsgToAllParticipants("TvT Event: Teleport participants to team spot in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+				TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting participants to an arena in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 
 			waiter(Config.TVT_EVENT_RUNNING_TIME * 60); // in config given as minutes
 			Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());
-			TvTEvent.sysMsgToAllParticipants("TvT Event: Teleport back to registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+			TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting back to the registration npc in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 			TvTEvent.stopFight();
 		}
 	}
@@ -96,9 +96,9 @@ public class TvTManager implements Runnable
 				{
 				case 3600: // 1 hour left
 					if (TvTEvent.isParticipating())
-						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 / 60 + " hour(s) till registration close!");
+						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 / 60 + " hour(s) umtil registration is closed!");
 					else if (TvTEvent.isStarted())
-						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds / 60 / 60 + " hour(s) till event finish!");
+						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds / 60 / 60 + " hour(s) until event is finished!");
 
 					break;
 				case 1800: // 30 minutes left
@@ -110,23 +110,29 @@ public class TvTManager implements Runnable
 				case 120: // 2 minutes left
 				case 60: // 1 minute left															   
 					if (TvTEvent.isParticipating())
-						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 + " minute(s) till registration close!");
+						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 + " minute(s) until registration is closed!");
 					else if (TvTEvent.isStarted())
-						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds / 60 + " minute(s) till event finish!");
+						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds / 60 + " minute(s) until the event is finished!");
 
 					break;
 				case 30: // 30 seconds left
-				case 15: // 15 seconds left
-				case 10: // 10 seconds left
+				/**
+				 * case 15: // 15 seconds left
+				 * case 10: // 10 seconds left
+				*/
 				case 5: // 5 seconds left
-				case 4: // 4 seconds left
-				case 3: // 3 seconds left
-				case 2: // 2 seconds left
-				case 1: // 1 seconds left
+				
+				/**
+				 * 
+				 * case 4: // 4 seconds left
+				 * case 3: // 3 seconds left
+				 * case 2: // 2 seconds left
+				 * case 1: // 1 seconds left
+				*/
 					if (TvTEvent.isParticipating())
-						Announcements.getInstance().announceToAll("TvT Event: " + seconds + " second(s) till registration close!");
+						Announcements.getInstance().announceToAll("TvT Event: " + seconds + " second(s) until registration is closed!");
 					else if (TvTEvent.isStarted())
-						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds + " second(s) till event finish!");
+						TvTEvent.sysMsgToAllParticipants("TvT Event: " + seconds + " second(s) until the event is finished!");
 
 					break;
 				}
