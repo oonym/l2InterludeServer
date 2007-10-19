@@ -5040,7 +5040,6 @@ public final class L2PcInstance extends L2PlayableInstance
             sendPacket(iu);
 
             abortAttack();
-            refreshExpertisePenalty();
             broadcastUserInfo();
 
             // this can be 0 if the user pressed the right mousebutton twice very fast
@@ -5076,7 +5075,6 @@ public final class L2PcInstance extends L2PlayableInstance
             sendPacket(iu);
 
             abortAttack();
-            refreshExpertisePenalty();
             broadcastUserInfo();
 
             // this can be 0 if the user pressed the right mousebutton twice very fast

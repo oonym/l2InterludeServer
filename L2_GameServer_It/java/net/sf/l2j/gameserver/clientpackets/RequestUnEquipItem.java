@@ -108,8 +108,6 @@ public class RequestUnEquipItem extends L2GameClientPacket
 		activeChar.sendPacket(iu);
 		
 		activeChar.abortAttack();
-		
-		activeChar.refreshExpertisePenalty();
 		activeChar.broadcastUserInfo();
 		
 		// this can be 0 if the user pressed the right mousebutton twice very fast

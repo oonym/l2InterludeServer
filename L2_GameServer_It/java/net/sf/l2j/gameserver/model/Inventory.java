@@ -798,6 +798,8 @@ public abstract class Inventory extends ItemContainer
 		try
 		{
 			unEquipItemInBodySlot(slot); 
+			if (getOwner() instanceof L2PcInstance)
+				((L2PcInstance)getOwner()).refreshExpertisePenalty();
 		} finally {
 			removePaperdollListener(recorder);
 		}
@@ -823,7 +825,9 @@ public abstract class Inventory extends ItemContainer
 		Inventory.ChangeRecorder recorder = newRecorder(); 
 		try
 		{
-			unEquipItemInSlot(slot); 
+			unEquipItemInSlot(slot);
+			if (getOwner() instanceof L2PcInstance)
+				((L2PcInstance)getOwner()).refreshExpertisePenalty();
 		} finally {
 			removePaperdollListener(recorder);
 		}

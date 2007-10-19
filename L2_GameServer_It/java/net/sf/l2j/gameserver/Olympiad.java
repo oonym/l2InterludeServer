@@ -1516,7 +1516,6 @@ public class Olympiad
 						iu.addModifiedItem(unequiped[i]);
 					player.sendPacket(iu);
 					player.abortAttack();
-					player.refreshExpertisePenalty();
 					player.broadcastUserInfo();
 
 					// this can be 0 if the user pressed the right mousebutton twice very fast
