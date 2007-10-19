@@ -6861,7 +6861,7 @@ public final class L2PcInstance extends L2PlayableInstance
         */
         if (inObserverMode())
         {
-            sendMessage("Cant use magic in observer mode");
+        	sendPacket(new SystemMessage(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE));
             abortCast();
             sendPacket(new ActionFailed());
             return;

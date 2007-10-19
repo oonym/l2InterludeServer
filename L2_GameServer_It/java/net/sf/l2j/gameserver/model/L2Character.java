@@ -566,7 +566,7 @@ public abstract class L2Character extends L2Object
 		if (this instanceof L2PcInstance) {
 	        if (((L2PcInstance)this).inObserverMode())
 	        {
-	            ((L2PcInstance)this).sendMessage("Cant attack in observer mode");
+	            sendPacket(new SystemMessage(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE));
 	            sendPacket(new ActionFailed());
 	            return;
 	        }

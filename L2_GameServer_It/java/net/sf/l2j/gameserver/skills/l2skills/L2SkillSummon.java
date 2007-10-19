@@ -69,7 +69,9 @@ public class L2SkillSummon extends L2Skill {
 					return false;
 				}
 			} else {
-				if(player.getPet() != null)
+				if (player.inObserverMode()) 
+					return false;
+				if (player.getPet() != null)
 				{
 					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 					sm.addString("You already have a pet.");

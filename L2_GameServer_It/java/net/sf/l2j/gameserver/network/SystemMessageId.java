@@ -4714,8 +4714,13 @@ public enum SystemMessageId
 	 * ID: 1607<br>
 	 * Message: $s1 adena has been withdrawn to pay for purchasing fees.
 	 */
-	S1_ADENA_HAS_BEEN_WITHDRAWN_TO_PAY_FOR_PURCHASING_FEES(1607);
- 
+	S1_ADENA_HAS_BEEN_WITHDRAWN_TO_PAY_FOR_PURCHASING_FEES(1607),
+	
+	/**
+	 * ID: 781<br>
+	 * Message: Observers cannot participate.
+	 */
+	OBSERVERS_CANNOT_PARTICIPATE(781);
 
     private int _id;
     
