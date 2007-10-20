@@ -416,6 +416,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 
 	private boolean autoAttackCondition(L2Character target) 
     {
+		if (target == null || !(_actor instanceof L2Attackable)) return false;
 		L2Attackable me = (L2Attackable)_actor;
         
 		if (target instanceof L2FolkInstance

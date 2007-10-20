@@ -125,12 +125,12 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
     private boolean autoAttackCondition(L2Character target)
     {
         // Check if the target isn't another guard, folk or a door
-        if (target instanceof L2SiegeGuardInstance ||
+        if (target == null ||
+        	target instanceof L2SiegeGuardInstance ||
             target instanceof L2FolkInstance || 
-        	target instanceof L2DoorInstance) return false;
-
-        // Check if the target isn't dead
-        if (target.isAlikeDead()) return false;
+        	target instanceof L2DoorInstance ||
+        	target.isAlikeDead() ||
+        	target.isInvul()) return false;
 
         // Get the owner if the target is a summon
         if (target instanceof L2Summon)
@@ -140,9 +140,6 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         		target = owner;
         }
 
-        // Check if the target isn't invulnerable
-        if (target.isInvul()) return false;
-        
         // Check if the target is a L2PcInstance
         if (target instanceof L2PcInstance)
         {
