@@ -214,7 +214,7 @@ public class GeoPathFinding extends PathFinding
 			if (Math.abs(last_z - z) >  Math.abs(node_z -z))
 			{
 				last_z = node_z;
-				idx2 = idx;
+				idx2 = idx+2;
 			}
 			idx += 10; //short + 8 byte
 			nodes--;
