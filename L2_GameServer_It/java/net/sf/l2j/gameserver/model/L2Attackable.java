@@ -522,7 +522,7 @@ public class L2Attackable extends L2NpcInstance
                 		ddealer = info._attacker;
                 	
                 	// Check if ddealer isn't too far from this (killed monster)
-                	if (!Util.checkIfInRange(1600, this, ddealer, true)) continue;
+                	if (!Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, ddealer, true)) continue;
                 	
                 	// Calculate real damages (Summoners should get own damage plus summon's damage)                    
                 	reward = rewards.get(ddealer);
@@ -647,7 +647,7 @@ public class L2Attackable extends L2NpcInstance
                         // If the L2PcInstance is in the L2Attackable rewards add its damages to party damages
                         if (reward2 != null)
                         {
-                        	if (Util.checkIfInRange(1600, this, pl, true))
+                        	if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
                         	{
                         		partyDmg += reward2._dmg; // Add L2PcInstance damages to party damages
                         		rewardedMembers.add(pl);
@@ -659,7 +659,7 @@ public class L2Attackable extends L2NpcInstance
                         {
                         	// Add L2PcInstance of the party (that have attacked or not) to members that can be rewarded
                         	// and in range of the monster.
-                        	if (Util.checkIfInRange(1600, this, pl, true))
+                        	if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
                         	{
                         		rewardedMembers.add(pl);
                         		if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
@@ -671,7 +671,7 @@ public class L2Attackable extends L2NpcInstance
                         	reward2 = rewards.get(summon);
                         	if (reward2 != null) // Pets are only added if they have done damage
                             {
-                            	if (Util.checkIfInRange(1600, this, summon, true))
+                            	if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, summon, true))
                             	{
                             		partyDmg += reward2._dmg; // Add summon damages to party damages
                             		rewardedMembers.add(summon);

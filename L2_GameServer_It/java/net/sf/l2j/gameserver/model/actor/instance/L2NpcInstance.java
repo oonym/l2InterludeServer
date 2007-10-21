@@ -996,7 +996,7 @@ public class L2NpcInstance extends L2Character
                     L2Spawn spawn = SpawnTable.getInstance().getTemplate(Integer.parseInt(command.substring(12).trim()));
                     
                     if(spawn!=null) 
-                        player.sendPacket(new RadarControl(1,1,spawn.getLocx(),spawn.getLocy(),spawn.getLocz()));
+                        player.sendPacket(new RadarControl(0,1,spawn.getLocx(),spawn.getLocy(),spawn.getLocz()));
                 } catch (NumberFormatException nfe)
                 { 
                     player.sendMessage("Wrong command parameters");

@@ -123,7 +123,7 @@ public class L2Party {
 		for (L2PcInstance member : getPartyMembers())
 		{
 			if (member.getInventory().validateCapacityByItemId(ItemId) &&
-                    Util.checkIfInRange(1400, target, member, true)) availableMembers.add(member);
+                    Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true)) availableMembers.add(member);
 		}
 		if (availableMembers.size() > 0) return availableMembers.get(Rnd.get(availableMembers.size()));
 		else return null;
@@ -151,7 +151,7 @@ public class L2Party {
 			{ 
 				member = getPartyMembers().get(_itemLastLoot); 
 				if (member.getInventory().validateCapacityByItemId(ItemId) &&
-	                    Util.checkIfInRange(1400, target, member, true)) return member;
+	                    Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true)) return member;
 			} 
 			catch (Exception e)
 			{
@@ -530,7 +530,7 @@ public class L2Party {
         List<L2PcInstance> ToReward = new FastList<L2PcInstance>();
 		for(L2PcInstance member : membersList)
 		{
-            if (!Util.checkIfInRange(1400, target, member, true)) continue;
+            if (!Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true)) continue;
             ToReward.add(member);
 		}
         

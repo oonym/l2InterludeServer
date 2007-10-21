@@ -143,7 +143,8 @@ public final class Config
 
     /** Alternative game - use tiredness, instead of CP */
     public static boolean ALT_GAME_TIREDNESS;
-
+    public static int ALT_PARTY_RANGE;
+    public static int ALT_PARTY_RANGE2;
     /** Alternative shield defence */
     public static boolean ALT_GAME_SHIELD_BLOCKS;
 
@@ -1151,6 +1152,7 @@ public final class Config
     /** Alt Settings for devs */
     public static boolean ALT_DEV_NO_QUESTS;
     public static boolean ALT_DEV_NO_SPAWNS;
+	
 
     /**
      * This class initializes all global variables for configuration.<br>
@@ -1632,6 +1634,8 @@ public final class Config
                 ALLOW_CLASS_MASTERS     = Boolean.valueOf(altSettings.getProperty("AllowClassMasters", "False"));
                 ALT_GAME_FREIGHTS       = Boolean.parseBoolean(altSettings.getProperty("AltGameFreights", "false"));
                 ALT_GAME_FREIGHT_PRICE  = Integer.parseInt(altSettings.getProperty("AltGameFreightPrice", "1000"));
+                ALT_PARTY_RANGE 		= Integer.parseInt(altSettings.getProperty("AltPartyRange", "1600"));
+                ALT_PARTY_RANGE2  		= Integer.parseInt(altSettings.getProperty("AltPartyRange2", "1400"));
                 ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(altSettings.getProperty("AltGameSkillHitRate", "1."));
                 IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
                 LIFE_CRYSTAL_NEEDED     = Boolean.parseBoolean(altSettings.getProperty("LifeCrystalNeeded", "true"));                
@@ -2310,7 +2314,8 @@ public final class Config
         else if (pName.equalsIgnoreCase("AllowClassMasters")) ALLOW_CLASS_MASTERS = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltGameFreights")) ALT_GAME_FREIGHTS = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("AltGameFreightPrice")) ALT_GAME_FREIGHT_PRICE = Integer.parseInt(pValue);
-
+        else if (pName.equalsIgnoreCase("AltPartyRange")) ALT_PARTY_RANGE = Integer.parseInt(pValue);
+        else if (pName.equalsIgnoreCase("AltPartyRange2")) ALT_PARTY_RANGE2 = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("AltGameSkillHitRate")) ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(pValue);
 
         else if (pName.equalsIgnoreCase("CraftingEnabled")) IS_CRAFTING_ENABLED = Boolean.valueOf(pValue);
