@@ -1706,7 +1706,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (con < 1) return 31000;
 		if (con > 59) return 176000;
 		double baseLoad = Math.pow(1.029993928, con)*30495.627366;
-		return (int)calcStat(Stats.MAX_LOAD, baseLoad, this, null);
+		return (int)calcStat(Stats.MAX_LOAD, baseLoad*Config.ALT_WEIGHT_LIMIT, this, null);
 	}
 
 	public int getExpertisePenalty()
