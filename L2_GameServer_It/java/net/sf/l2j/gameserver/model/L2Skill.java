@@ -1599,8 +1599,17 @@ public abstract class L2Skill
                             		(player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget))
                             	  )
                             	) continue;
-                            if (targetType == SkillTargetType.TARGET_CORPSE_ALLY
-                                && !((L2PcInstance) newTarget).isDead()) continue;
+                            if (targetType == SkillTargetType.TARGET_CORPSE_ALLY)
+                            {
+                                if (!((L2PcInstance) newTarget).isDead()) 
+                                	continue;
+                            	if (getSkillType() == SkillType.RESURRECT)
+                            	{
+                            		// check target is not in a active siege zone
+                                 	if (((L2PcInstance) newTarget).isInsideZone(L2Character.ZONE_SIEGE))
+                                 		continue;
+                            	}
+                            }
 
                             if (!Util.checkIfInRange(radius, activeChar, newTarget, true)) continue;
 
@@ -1643,8 +1652,17 @@ public abstract class L2Skill
 
                             if (newTarget == null) continue;
 
-                            if (targetType == SkillTargetType.TARGET_CORPSE_CLAN && !newTarget.isDead())
-                                continue;
+                            if (targetType == SkillTargetType.TARGET_CORPSE_CLAN)
+                            {
+                            	if (!newTarget.isDead())
+                            		continue;
+                            	if (getSkillType() == SkillType.RESURRECT)
+                            	{
+                            		// check target is not in a active siege zone
+                                 	if (newTarget.isInsideZone(L2Character.ZONE_SIEGE))
+                                 		continue;
+                            	}
+                            }
                             if (player.isInDuel() && 
                               	  (
                               		player.getDuelId() != newTarget.getDuelId() ||
@@ -1684,26 +1702,15 @@ public abstract class L2Skill
                     {
                         boolean condGood = true;
 
-                        if (getId() == 1016) // Greater Resurrection
+                        if (getSkillType() == SkillType.RESURRECT)
                         {
                             // check target is not in a active siege zone
-                            Castle castle = null;
-
-                            if (targetPlayer != null) castle = CastleManager.getInstance().getCastle(targetPlayer.getX(),
-                                                                                                     targetPlayer.getY(),
-                                                                                                     targetPlayer.getZ());
-                            else if (targetPet != null)
-                                castle = CastleManager.getInstance().getCastle(targetPet.getX(),
-                                                                               targetPet.getY(),
-                                                                               targetPet.getZ());
-
-                            if (castle != null) if (castle.getSiege().getIsInProgress())
+                        	if (target.isInsideZone(L2Character.ZONE_SIEGE))
                             {
                                 condGood = false;
                                 player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_BE_RESURRECTED_DURING_SIEGE));
                             }
 
-                            // Can only res party memeber or own pet
                             if (targetPlayer != null)
                             {
                             	if (targetPlayer.isReviveRequested())
