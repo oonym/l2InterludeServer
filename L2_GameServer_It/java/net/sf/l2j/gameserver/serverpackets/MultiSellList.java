@@ -90,8 +90,11 @@ public class MultiSellList extends L2GameServerPacket
         	    
                 for(MultiSellIngredient i : ent.getIngredients())
                 {
-                	int typeE = ItemTable.getInstance().getTemplate(i.getItemId()).getType2();
-                    writeH(i.getItemId());      //ID
+                	int items = i.getItemId();
+                	int typeE = 65535;
+                	if (items != 65336)
+                		typeE = ItemTable.getInstance().getTemplate(i.getItemId()).getType2();
+                    writeH(items);      //ID
                     writeH(typeE);
                     writeD(i.getItemCount());	//Count
                     writeH(i.getEnchantmentLevel()); //Enchant Level
