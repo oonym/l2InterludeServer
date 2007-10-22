@@ -72,7 +72,12 @@ public class AdminPathNode implements IAdminCommandHandler
     			int gtx = (activeChar.getTarget().getX() - L2World.MAP_MIN_X) >> 4;
     			int gty = (activeChar.getTarget().getY() - L2World.MAP_MIN_Y) >> 4;
     			List<AbstractNodeLoc> path = GeoPathFinding.getInstance().findPath(gx, gy, (short)activeChar.getZ(), gtx, gty, (short)activeChar.getTarget().getZ());
-                for(AbstractNodeLoc a : path)
+                if (path == null) 
+                {
+                	activeChar.sendMessage("No Route!");
+                	return true; 
+                }
+    			for(AbstractNodeLoc a : path)
                 {
                 	activeChar.sendMessage("x:"+a.getX()+" y:"+a.getY()+" z:"+a.getZ());
                 }
