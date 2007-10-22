@@ -672,12 +672,7 @@ public class L2CharacterAI extends AbstractAI
     @Override
 	protected void onEvtArrived()
     {
-    	clientStoppedMoving();
-    	
-    	// If the Intention was AI_INTENTION_MOVE_TO, set the Intention to AI_INTENTION_ACTIVE
-        if (getIntention() == AI_INTENTION_MOVE_TO) setIntention(AI_INTENTION_ACTIVE);
-
-        // Launch an explore task if necessary
+    	// Launch an explore task if necessary
         if (_accessor.getActor() instanceof L2PcInstance)
         {
         	if (Config.ACTIVATE_POSITION_RECORDER)
@@ -685,6 +680,14 @@ public class L2CharacterAI extends AbstractAI
         	((L2PcInstance) _accessor.getActor()).revalidateZone(true);
         }
         else _accessor.getActor().revalidateZone();
+        
+    	if (_accessor.getActor().moveToNextRoutePoint()) 
+    		return;
+    	
+    	clientStoppedMoving();
+    	
+    	// If the Intention was AI_INTENTION_MOVE_TO, set the Intention to AI_INTENTION_ACTIVE
+        if (getIntention() == AI_INTENTION_MOVE_TO) setIntention(AI_INTENTION_ACTIVE);
 
         // Launch actions corresponding to the Event Think
         onEvtThink();

@@ -8913,13 +8913,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		int distPassed = (int)getStat().getMoveSpeed() * (gameTicks - m._moveTimestamp) / GameTimeController.TICKS_PER_SECOND;
 		double distFraction = (distPassed) / Math.sqrt(dx*dx + dy*dy + dz*dz);
 //		if (Config.DEVELOPER) System.out.println("Move Ticks:" + (gameTicks - m._moveTimestamp) + ", distPassed:" + distPassed + ", distFraction:" + distFraction);
-
+		
 		if (distFraction > 1)
 		{
 			// Set the position of the L2Character to the destination
 			super.setXYZ(m._xDestination, m._yDestination, m._zDestination);
-			// Cancel the move action
-			_move = null;
 		}
 		else
 		{
@@ -8929,10 +8927,10 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
-
+		
 		revalidateZone(false);
 
-		return (_move == null);
+		return (distFraction > 1);
 	}
 
 	public void setLastClientPosition(int x, int y, int z)

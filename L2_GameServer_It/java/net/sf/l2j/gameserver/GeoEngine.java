@@ -524,7 +524,7 @@ public class GeoEngine extends GeoData
             	}
             }
         }
-        return destiny;
+        return destiny; // should actually return correct z here instead of tz
     }
     
     private static byte sign(int x)

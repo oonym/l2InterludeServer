@@ -533,7 +533,7 @@ abstract class AbstractAI implements Ctrl
 
             if (pawn instanceof L2Character) {
             	if(_actor.isOnGeodataPath()) 
-            		msg = new CharMoveToLocation(_actor); // TODO: More testing with animation
+            		msg = new CharMoveToLocation(_actor);
             	else
             		msg = new MoveToPawn(_actor, (L2Character) pawn, offset);
             }
