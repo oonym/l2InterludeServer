@@ -133,9 +133,21 @@ public abstract class PathFinding
 	public List<AbstractNodeLoc> constructPath(Node node)
 	{
 		LinkedList<AbstractNodeLoc> path = new LinkedList<AbstractNodeLoc>();
+		int previousdirectionx = -1000;
+		int previousdirectiony = -1000;
+		int directionx;
+		int directiony;
 		while (node.getParent() != null)
 		{
-			path.addFirst(node.getLoc());
+			// only add a new route point if moving direction changes
+			directionx = node.getLoc().getNodeX() - node.getParent().getLoc().getNodeX();
+			directiony = node.getLoc().getNodeY() - node.getParent().getLoc().getNodeY();
+			if(directionx != previousdirectionx || directiony != previousdirectiony)
+			{
+				previousdirectionx = directionx;
+				previousdirectiony = directiony;
+				path.addFirst(node.getLoc());
+			}
 			node = node.getParent();
 		}
 		return path;

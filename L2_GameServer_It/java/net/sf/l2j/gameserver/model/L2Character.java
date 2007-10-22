@@ -3018,7 +3018,7 @@ public abstract class L2Character extends L2Object
 		public float _xSpeedTicks;
 		public float _ySpeedTicks;
 		public int onGeodataPathIndex;
-		//public List<AbstractNodeLoc> geoPath;
+		public List<AbstractNodeLoc> geoPath;
 	}
 
 
@@ -3846,31 +3846,33 @@ public abstract class L2Character extends L2Object
 			}
 			if(Config.GEODATA == 2 && originalDistance-distance > 100)
 			{
-				// Path calculation
-				// Note: Overrides previous movement check and currently with
-				// bad results.
-				int gx = (curX - L2World.MAP_MIN_X) >> 4;
-				int gy = (curY - L2World.MAP_MIN_Y) >> 4;
-				int gtx = (originalX - L2World.MAP_MIN_X) >> 4;
-				int gty = (originalY - L2World.MAP_MIN_Y) >> 4;
-				List<AbstractNodeLoc> path = GeoPathFinding.getInstance().findPath(gx, gy, (short)curZ, gtx, gty, (short)originalZ);
-				if (path == null) // break intention and follow
+				if (this instanceof L2PlayableInstance || getAI().getFollowTarget() != null)
 				{
-					getAI().stopFollow();
-					getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-					_log.warning("break, no path");
-					return;
+					// Path calculation
+					// Overrides previous movement check
+					int gx = (curX - L2World.MAP_MIN_X) >> 4;
+					int gy = (curY - L2World.MAP_MIN_Y) >> 4;
+					int gtx = (originalX - L2World.MAP_MIN_X) >> 4;
+					int gty = (originalY - L2World.MAP_MIN_Y) >> 4;
+					List<AbstractNodeLoc> path = GeoPathFinding.getInstance().findPath(gx, gy, (short)curZ, gtx, gty, (short)originalZ);
+					if (path == null) // break intention and follow
+					{
+						getAI().stopFollow();
+						getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+						_log.warning("break, no path");
+						return;
+					}
+					m.geoPath = path; // not used elsewhere yet
+					m.onGeodataPathIndex = 0; // on first segment
+					x = path.get(m.onGeodataPathIndex).getX();
+					y = path.get(m.onGeodataPathIndex).getY();
+					z = path.get(m.onGeodataPathIndex).getZ();
+					dx = (x - curX);
+					dy = (y - curY);
+					distance = Math.sqrt(dx*dx + dy*dy);
+					sin = dy/distance;
+					cos = dx/distance;
 				}
-				x = path.get(0).getX();
-				y = path.get(0).getY();
-				z = path.get(0).getZ();
-				dx = (x - curX);
-				dy = (y - curY);
-				distance = Math.sqrt(dx*dx + dy*dy);
-				sin = dy/distance;
-				cos = dx/distance;
-				//m.geoPath = path; // not used elsewhere yet
-				m.onGeodataPathIndex = 0; // on first segment
 			}
 		}
 
