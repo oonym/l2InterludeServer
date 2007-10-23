@@ -274,6 +274,13 @@ public abstract class L2Character extends L2Object
 	{
 		decayMe();
 	}
+	
+	@Override
+	public void onSpawn()
+	{
+		super.onSpawn();
+		this.revalidateZone();
+	}
 
 	public void onTeleported()
 	{

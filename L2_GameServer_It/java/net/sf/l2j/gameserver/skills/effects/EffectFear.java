@@ -22,14 +22,12 @@ package net.sf.l2j.gameserver.skills.effects;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import net.sf.l2j.gameserver.skills.Env;
-
-
 
 /**
  * @author littlecrow
@@ -79,13 +77,9 @@ final class EffectFear extends L2Effect {
     	// Fear skills cannot be used on Headquarters Flag.  
     	if(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062) return false;  
 
-    	if(getEffected() instanceof L2Summon) 
-    	{
-    		// doesn't affect siege golem or wild hog cannon
-    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SIEGE_GOLEM_ID) return false;
-    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.HOG_CANNON_ID) return false;
-    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SWOOP_CANNON_ID) return false;
-    	}
+    	if(getEffected() instanceof L2SiegeSummonInstance) 
+    		return false;
+
     	int posX = getEffected().getX();
 		int posY = getEffected().getY();
 		int posZ = getEffected().getZ();

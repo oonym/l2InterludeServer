@@ -77,7 +77,7 @@ public final class L2BossInstance extends L2MonsterInstance
     @Override
 	public void onSpawn()
     {
-    	super.onSpawn(); // ????? 
+    	super.onSpawn(); 
     }
     
     /**

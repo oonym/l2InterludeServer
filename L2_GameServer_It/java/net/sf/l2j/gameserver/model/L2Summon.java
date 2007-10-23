@@ -47,10 +47,6 @@ public abstract class L2Summon extends L2PlayableInstance
 {
     //private static Logger _log = Logger.getLogger(L2Summon.class.getName());
     
-	public static final int SIEGE_GOLEM_ID = 14737;
-	public static final int HOG_CANNON_ID = 14768;
-	public static final int SWOOP_CANNON_ID = 14839;
-	
 	protected int _pkKills;
     private byte _pvpFlag;
     private L2PcInstance _owner;

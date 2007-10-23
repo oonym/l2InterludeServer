@@ -71,7 +71,8 @@ public final class L2MinionInstance extends L2MonsterInstance
     @Override
     public void onSpawn()
     {
-        // Notify Leader that Minion has Spawned
+    	super.onSpawn();
+    	// Notify Leader that Minion has Spawned
         getLeader().notifyMinionSpawned(this);
         
         // check the region where this mob is, do not activate the AI if region is inactive.

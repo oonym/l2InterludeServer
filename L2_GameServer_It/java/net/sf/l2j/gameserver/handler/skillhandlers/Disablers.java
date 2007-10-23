@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -356,9 +357,7 @@ public class Disablers implements ISkillHandler
                 {
                 	if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, ss, sps, bss)
                 		// doesn't affect siege golem or wild hog cannon
-                		&& !(((L2Summon)target).getNpcId() == L2Summon.SIEGE_GOLEM_ID)
-                		&& !(((L2Summon)target).getNpcId() == L2Summon.HOG_CANNON_ID)
-                		&& !(((L2Summon)target).getNpcId() == L2Summon.SWOOP_CANNON_ID)
+                		&& !(target instanceof L2SiegeSummonInstance)
                 		)
                 	{
                 		L2PcInstance summonOwner = null;

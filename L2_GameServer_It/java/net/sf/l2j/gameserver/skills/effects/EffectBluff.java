@@ -21,9 +21,9 @@ package net.sf.l2j.gameserver.skills.effects;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Effect;
-import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -56,12 +56,9 @@ final class EffectBluff extends L2Effect {
     	// bluff now is a PVE PVP skill
     	if(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062 || getSkill().getId() != 358) return;
     	
-    	if(getEffected() instanceof L2Summon) 
+    	if(getEffected() instanceof L2SiegeSummonInstance) 
     	{
-    		// doesn't affect siege golem or wild hog cannon
-    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SIEGE_GOLEM_ID) return;
-    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.HOG_CANNON_ID) return;
-    		if (((L2Summon)getEffected()).getNpcId() == L2Summon.SWOOP_CANNON_ID) return;
+    		return;
     	}
         int posX = getEffected().getX();
         int posY = getEffected().getY();

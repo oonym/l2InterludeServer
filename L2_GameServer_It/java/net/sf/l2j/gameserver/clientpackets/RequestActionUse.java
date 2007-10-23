@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -162,11 +163,11 @@ public final class RequestActionUse extends L2GameClientPacket
 				{
 					if (target instanceof L2DoorInstance) 
 					{
-						if(((L2DoorInstance)target).isAttackable(activeChar) && pet.getNpcId() != L2Summon.SWOOP_CANNON_ID)
+						if(((L2DoorInstance)target).isAttackable(activeChar) && pet.getNpcId() != L2SiegeSummonInstance.SWOOP_CANNON_ID)
 							pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 					}
 					// siege golem AI doesn't support attacking other than doors at the moment
-					else if (pet.getNpcId() != L2Summon.SIEGE_GOLEM_ID)
+					else if (pet.getNpcId() != L2SiegeSummonInstance.SIEGE_GOLEM_ID)
 						pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 				}
 			}

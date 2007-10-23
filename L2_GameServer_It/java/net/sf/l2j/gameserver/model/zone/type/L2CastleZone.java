@@ -23,6 +23,7 @@ import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -102,6 +103,10 @@ public class L2CastleZone extends L2ZoneType
 					((L2PcInstance)character).startPvPFlag();
 			}
 		}
+		if (character instanceof L2SiegeSummonInstance)
+		{
+			((L2SiegeSummonInstance)character).unSummon(((L2SiegeSummonInstance)character).getOwner());
+		}
 	}
 	
 	public void updateZoneStatusForCharactersInside()
@@ -128,7 +133,10 @@ public class L2CastleZone extends L2ZoneType
 					
 					if (character instanceof L2PcInstance)
 						((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
-					
+					if (character instanceof L2SiegeSummonInstance)
+					{
+						((L2SiegeSummonInstance)character).unSummon(((L2SiegeSummonInstance)character).getOwner());
+					}
 				} 
 				catch (NullPointerException e) {}
 			}

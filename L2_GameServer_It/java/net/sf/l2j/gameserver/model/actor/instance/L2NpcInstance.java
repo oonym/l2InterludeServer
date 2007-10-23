@@ -2129,6 +2129,7 @@ public class L2NpcInstance extends L2Character
     @Override
 	public void onSpawn()
     {
+    	super.onSpawn();
     }
     
     /**

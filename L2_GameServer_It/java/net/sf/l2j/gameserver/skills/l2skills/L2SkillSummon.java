@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2CubicInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -159,8 +160,12 @@ public class L2SkillSummon extends L2Skill {
 			return;
 		}
 		
+		L2SummonInstance summon;
 		L2NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(_npcId);
-        L2SummonInstance summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
+		if (summonTemplate.type.equalsIgnoreCase("L2SiegeSummon"))
+			summon = new L2SiegeSummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);			
+		else 
+			summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
 		
         summon.setName(summonTemplate.name);
         summon.setTitle(activeChar.getName());
