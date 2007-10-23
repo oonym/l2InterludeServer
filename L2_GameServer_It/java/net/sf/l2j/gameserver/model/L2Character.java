@@ -3416,9 +3416,16 @@ public abstract class L2Character extends L2Object
 	public final boolean isOnGeodataPath()
 	{
 		if (_move == null) return false;
-		if (_move.onGeodataPathIndex == -1) return false;
-		if (_move.onGeodataPathIndex == _move.geoPath.size()-1)
-			return false;
+		try
+		{
+			if (_move.onGeodataPathIndex == -1) return false;
+			if (_move.onGeodataPathIndex == _move.geoPath.size()-1)
+				return false;
+		}
+		catch (NullPointerException e) 
+		{ 
+			return false; 
+		}
 		return true;
 	}
 
