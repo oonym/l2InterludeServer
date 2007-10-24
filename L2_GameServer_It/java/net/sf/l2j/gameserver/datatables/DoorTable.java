@@ -34,6 +34,7 @@ import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.entity.ClanHall;
+import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
 import net.sf.l2j.gameserver.templates.L2CharTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
@@ -250,6 +251,11 @@ public class DoorTable
             // Tower of Insolence (every 5 minutes)
             else if (doorInst.getDoorName().startsWith("aden_tower"))
                 doorInst.setAutoActionDelay(300000);
+    }
+    
+    public boolean checkIfDoorsBetween(AbstractNodeLoc start, AbstractNodeLoc end)
+    {
+    	return checkIfDoorsBetween(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
     }
     
     public boolean checkIfDoorsBetween(int x, int y, int z, int tx, int ty, int tz)

@@ -431,16 +431,24 @@ public class GeoEngine extends GeoData
     {
     	int dx = (tx - x);
         int dy = (ty - y);
-        //final double dz = (tz - z);
         final int distance2 = dx*dx+dy*dy;
-
-        if (distance2 > 36100) // 190*190*16 = 3040 world coord
-        {
-            //Avoid too long check
-            return startpoint;
-        }
+        
         if (distance2 == 0)
         	return startpoint;
+        if (distance2 > 36100) // 190*190*16 = 3040 world coord
+        {
+            // Avoid too long check
+        	// Currently we calculate a middle point
+        	// for wyvern users and otherwise for comfort
+        	double divider = Math.sqrt((double)30000/distance2);
+        	tx = x + (int)(divider * dx);
+        	ty = y + (int)(divider * dy);
+        	int dz = (tz - startpoint.getZ());
+        	tz = startpoint.getZ() + (int)(divider * dz);
+        	dx = (tx - x);
+        	dy = (ty - y);
+            //return startpoint;        	
+        }
      
         // Increment in Z coordinate when moving along X or Y axis 
         // and not straight to the target. This is done because
