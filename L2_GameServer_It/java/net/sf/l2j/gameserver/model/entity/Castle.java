@@ -137,7 +137,7 @@ public class Castle
         	if (_treasury < amount) return false;
         	_treasury -= amount;
         } else {
-        	if ((long)(_treasury + amount)>Integer.MAX_VALUE) _treasury = Integer.MAX_VALUE;
+        	if ((long)_treasury + amount > Integer.MAX_VALUE) _treasury = Integer.MAX_VALUE;
         	else _treasury += amount; 
         }
         

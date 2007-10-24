@@ -66,7 +66,7 @@ public class MultiSellChoose extends L2GameClientPacket
     @Override
 	public void runImpl()
     {
-    	if(_amount < 1 || _amount > 5000 || _amount > Integer.MAX_VALUE )
+    	if(_amount < 1 || _amount > 5000)
     		return;
 
         MultiSellListContainer list = L2Multisell.getInstance().getList(_listId);
@@ -126,7 +126,7 @@ public class MultiSellChoose extends L2GameClientPacket
     	// now check if the player has sufficient items in the inventory to cover the ingredients' expences
     	for(MultiSellIngredient e : _ingredientsList)
     	{
-            if((double)(e.getItemCount() * _amount) > Integer.MAX_VALUE )
+    		if((double)e.getItemCount() * _amount > Integer.MAX_VALUE )
             {
             	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
                 _ingredientsList.clear();

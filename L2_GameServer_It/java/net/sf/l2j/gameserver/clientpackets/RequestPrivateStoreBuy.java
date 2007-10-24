@@ -63,7 +63,8 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		for (int i = 0; i < _count ; i++)
 		{
 			int objectId = readD(); 
-			long count   = readD(); 
+			long count   = readD();
+			if (count > Integer.MAX_VALUE) count = Integer.MAX_VALUE;
 			int price    = readD(); 
 			
 			_items[i] = new ItemRequest(objectId, (int)count, price);

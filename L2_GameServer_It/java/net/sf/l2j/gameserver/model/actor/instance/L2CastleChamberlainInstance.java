@@ -149,7 +149,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					try {
 						amount = Integer.parseInt(st.nextToken());
 					} catch(NoSuchElementException e) {}
-					if (amount > 0 && (long)(getCastle().getTreasury() + amount) < Integer.MAX_VALUE) {
+					if (amount > 0 && (long)getCastle().getTreasury() + amount < Integer.MAX_VALUE) {
 						if (player.reduceAdena("Castle", amount, this, true)) {
 							getCastle().addToTreasuryNoTax(amount);
 						} else {

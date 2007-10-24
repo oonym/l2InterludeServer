@@ -75,8 +75,9 @@ public class RequestProcureCropList extends L2GameClientPacket
 			_items[i * 4 + 1] = itemId;
 			int manorId = readD();
 			_items[i * 4 + 2] = manorId;
-			int count = readD();
-			_items[i * 4 + 3] = count;
+			long count = readD();
+			if (count > Integer.MAX_VALUE) count = Integer.MAX_VALUE;
+			_items[i * 4 + 3] = (int)count;
 		}
 	}
 

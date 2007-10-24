@@ -123,6 +123,11 @@ public class PlayableStat extends CharStat
 
     public boolean addSp(int value)
     {
+    	if (value < 0) 
+    	{
+    		System.out.println("wrong usage");
+    		return false;
+    	}
     	int currentSp = getSp();
     	if (currentSp == Integer.MAX_VALUE)
     		return false;
