@@ -69,7 +69,16 @@ public abstract class PathFinding
 		int i = 0;
 		while (i < 800)//TODO! Add limit to cfg
 		{
-			Node node = to_visit.removeFirst();
+			Node node;
+			try 
+			{
+				 node = to_visit.removeFirst();
+			}
+			catch (Exception e) 
+			{ 
+				// No Path found
+				return null;
+			}
 			if (node.equals(end)) //path found!
 				return constructPath(node);
 			else

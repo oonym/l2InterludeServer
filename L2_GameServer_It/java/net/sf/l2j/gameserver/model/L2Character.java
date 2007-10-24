@@ -3909,6 +3909,19 @@ public abstract class L2Character extends L2Object
                 	x = m.geoPath.get(m.onGeodataPathIndex).getX();
                 	y = m.geoPath.get(m.onGeodataPathIndex).getY();
                 	z = m.geoPath.get(m.onGeodataPathIndex).getZ();
+
+                	// untested: final check if we can indeed reach first path node (path nodes sometimes aren't accurate enough)
+                	/*
+                	Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
+                	if (destiny.getX() != x || destiny.getY() != y)
+                	{
+                		m.geoPath = null;
+            			getAI().stopFollow();
+            			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+            			return;
+                	}
+                	*/
+
                 	dx = (x - curX);
                 	dy = (y - curY);
                 	distance = Math.sqrt(dx*dx + dy*dy);
