@@ -56,7 +56,10 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
             sendPacket(new ActionFailed());
             return;
         }
-        
+        if (player.getMountType() != 0)
+        {
+        	return;
+        }
         if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL 
         		|| player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL + 1
         		|| player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
