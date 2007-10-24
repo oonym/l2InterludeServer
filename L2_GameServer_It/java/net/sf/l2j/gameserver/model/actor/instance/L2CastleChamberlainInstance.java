@@ -21,9 +21,12 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
+import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
+import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.ExShowCropInfo;
@@ -137,6 +140,81 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
                 getCastle().getSiege().listRegisterClan(player);                                    // List current register clan
                 return;
             }
+			else if (actualCommand.equalsIgnoreCase("receive_report"))
+			{
+				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile("data/html/chamberlain/chamberlain-report.htm");
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				L2Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
+    			html.replace("%clanname%", clan.getName());
+    			html.replace("%clanleadername%", clan.getLeaderName());
+				html.replace("%castlename%", getCastle().getName());
+				{
+					int currentPeriod = SevenSigns.getInstance().getCurrentPeriod();
+					switch (currentPeriod)
+					{
+                    case SevenSigns.PERIOD_COMP_RECRUITING:
+                    	html.replace("%ss_event%", "Quest Event Initialization");
+                        break;
+                    case SevenSigns.PERIOD_COMPETITION:
+                    	html.replace("%ss_event%", "Competition (Quest Event)");
+                        break;
+                    case SevenSigns.PERIOD_COMP_RESULTS:
+                    	html.replace("%ss_event%", "Quest Event Results");
+                        break;
+                    case SevenSigns.PERIOD_SEAL_VALIDATION:
+                    	html.replace("%ss_event%", "Seal Validation");
+                        break;
+					}
+				}
+				{
+					int sealOwner1 = SevenSigns.getInstance().getSealOwner(1);
+					switch (sealOwner1)
+					{
+					case SevenSigns.CABAL_NULL:
+						html.replace("%ss_avarice%", "Not in Possession");
+						break;
+					case SevenSigns.CABAL_DAWN:
+						html.replace("%ss_avarice%", "Lords of Dawn");
+						break;
+					case SevenSigns.CABAL_DUSK:
+						html.replace("%ss_avarice%", "Revolutionaries of Dusk");
+						break;
+					}
+				}
+				{
+					int sealOwner2 = SevenSigns.getInstance().getSealOwner(2);
+					switch (sealOwner2)
+					{
+					case SevenSigns.CABAL_NULL:
+						html.replace("%ss_gnosis%", "Not in Possession");
+						break;
+					case SevenSigns.CABAL_DAWN:
+						html.replace("%ss_gnosis%", "Lords of Dawn");
+						break;
+					case SevenSigns.CABAL_DUSK:
+						html.replace("%ss_gnosis%", "Revolutionaries of Dusk");
+						break;
+					}
+				}
+				{
+					int sealOwner3 = SevenSigns.getInstance().getSealOwner(3);
+					switch (sealOwner3)
+					{
+					case SevenSigns.CABAL_NULL:
+						html.replace("%ss_strife%", "Not in Possession");
+						break;
+					case SevenSigns.CABAL_DAWN:
+						html.replace("%ss_strife%", "Lords of Dawn");
+						break;
+					case SevenSigns.CABAL_DUSK:
+						html.replace("%ss_strife%", "Revolutionaries of Dusk");
+						break;
+					}
+				}
+				player.sendPacket(html);
+				return;
+			}
 			else if (actualCommand.equalsIgnoreCase("manage_siege_defender"))
 			{
                 getCastle().getSiege().listRegisterClan(player);
