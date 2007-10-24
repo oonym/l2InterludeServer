@@ -3871,7 +3871,7 @@ public abstract class L2Character extends L2Object
 					return;
 				}
 			}
-			if(Config.GEODATA == 2 && (originalDistance-distance > 100 && distance < 1500)) // questionable distance comparison
+			if(Config.GEODATA == 2 && originalDistance-distance > 100 && distance < 2000) // questionable distance comparison
 			{
 				// Path calculation
 				// Overrides previous movement check
