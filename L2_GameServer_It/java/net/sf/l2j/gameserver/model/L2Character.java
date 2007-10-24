@@ -3871,7 +3871,7 @@ public abstract class L2Character extends L2Object
 					return;
 				}
 			}
-			if(Config.GEODATA == 2 && originalDistance-distance > 100) // questionable distance comparison
+			if(Config.GEODATA == 2 && (originalDistance-distance > 100 && distance < 1500)) // questionable distance comparison
 			{
 				// Path calculation
 				// Overrides previous movement check
@@ -3910,7 +3910,9 @@ public abstract class L2Character extends L2Object
                 	y = m.geoPath.get(m.onGeodataPathIndex).getY();
                 	z = m.geoPath.get(m.onGeodataPathIndex).getZ();
 
-                	// untested: final check if we can indeed reach first path node (path nodes sometimes aren't accurate enough)
+                	// not in use: final check if we can indeed reach first path node (path nodes sometimes aren't accurate enough)
+                	// but if the node is very far, then a shorter check (like 3 blocks) would be enough
+                	// something similar might be needed for end
                 	/*
                 	Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
                 	if (destiny.getX() != x || destiny.getY() != y)
