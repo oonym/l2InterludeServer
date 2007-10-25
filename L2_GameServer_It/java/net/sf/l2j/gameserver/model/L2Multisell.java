@@ -174,7 +174,6 @@ public class L2Multisell
     {
     	MultiSellEntry newEntry = L2Multisell.getInstance().new MultiSellEntry();
     	newEntry.setEntryId(templateEntry.getEntryId()*100000+enchantLevel);
-    	int adenaAmount = 0;
 
         for (MultiSellIngredient ing : templateEntry.getIngredients())
         {
@@ -182,16 +181,27 @@ public class L2Multisell
         	MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
 
         	// if taxes are to be applied, modify/add the adena count based on the template adena/ancient adena count
-        	if ( ing.getItemId() == 57 && ing.isTaxIngredient() )
+        	if ( applyTaxes && ((ing.getItemId() == 57) || (ing.getItemId() == 5575)) )
+        	if ( ing.getItemId() == 57)
         	{
-        		if (applyTaxes)
-        			adenaAmount += (int)Math.round(ing.getItemCount()*taxRate);
-        		continue;	// do not adena yet, as non-taxIngredient adena entries might occur next (order not guaranteed)
+        		int taxAmount = (int)Math.round(ing.getItemCount()*taxRate);
+        		if (newIngredient.isTaxIngredient())
+        		{
+        			if (taxAmount == 0)
+        				continue;
+        			newIngredient.setItemCount(taxAmount);
+        		}
+        		else
+        			newIngredient.setItemCount(ing.getItemCount()+taxAmount);
         	}
-        	else if ( ing.getItemId() == 57 )  // && !ing.isTaxIngredient()
+        	else    // ancient adena
         	{
-        		adenaAmount += (int)Math.round(ing.getItemCount()*taxRate);
-        		continue;	// do not adena yet, as taxIngredient adena entries might occur next (order not guaranteed)
+        		//add the ancient adena count normally
+        		newEntry.addIngredient(newIngredient);
+        		double taxableCount = ing.getItemCount()*5.0/6;
+        		if (taxRate==0)
+        			continue;
+        		newIngredient = L2Multisell.getInstance().new MultiSellIngredient(57, (int)Math.round(taxableCount*taxRate), false, false);
         	}
         	// if it is an armor/weapon, modify the enchantment level appropriately, if necessary
         	else if (maintainEnchantment)
@@ -204,11 +214,7 @@ public class L2Multisell
         	// finally, add this ingredient to the entry
         	newEntry.addIngredient(newIngredient);
         }
-        // now add the adena, if any.
-        if (adenaAmount > 0 )
-        {
-        	newEntry.addIngredient(L2Multisell.getInstance().new MultiSellIngredient(57,adenaAmount,0,false,false));
-        }
+        
         // Now modify the enchantment level of products, if necessary
         for (MultiSellIngredient ing : templateEntry.getProducts())
         {
