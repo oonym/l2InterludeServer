@@ -4119,7 +4119,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					//if (getKarma() > 0)
 						onDieDropItem(killer);  // Check if any item should be dropped
 
-					if (!isInsideZone(ZONE_PVP))
+					if (!(isInsideZone(ZONE_PVP) && !isInsideZone(ZONE_SIEGE)))
 					{
 						boolean isKillerPc = (killer instanceof L2PcInstance);
 		                if (isKillerPc && ((L2PcInstance)killer).getClan() != null
