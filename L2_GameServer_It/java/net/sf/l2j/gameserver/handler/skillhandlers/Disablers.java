@@ -457,7 +457,8 @@ public class Disablers implements ISkillHandler
                     		int maxfive = 5;
                     		for (L2Effect e : effects)
                     		{ 
-                    			if (e.getSkill().getId() != 4082 && e.getSkill().getId() != 4215 && e.getSkill().getId() != 4515) // Cannot cancel skills 4082, 4215, 4515
+                    			if (e.getSkill().getId() != 4082 && e.getSkill().getId() != 4215 && 
+                    					e.getSkill().getId() != 4515 && e.getSkill().getId() != 110 && e.getSkill().getId() != 111) // Cannot cancel skills 4082, 4215, 4515
                     			{
                     				if(e.getSkill().getSkillType() != SkillType.BUFF) //sleep, slow, surrenders etc
                     					e.exit();
