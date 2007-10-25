@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.base.Race;
 import net.sf.l2j.gameserver.skills.conditions.Condition;
 import net.sf.l2j.gameserver.skills.conditions.ConditionElementSeed;
+import net.sf.l2j.gameserver.skills.conditions.ConditionForceBuff;
 import net.sf.l2j.gameserver.skills.conditions.ConditionGameChance;
 import net.sf.l2j.gameserver.skills.conditions.ConditionGameTime;
 import net.sf.l2j.gameserver.skills.conditions.ConditionLogicAnd;
@@ -335,6 +336,7 @@ abstract class DocumentBase
     {
         Condition cond = null;
         int[] ElementSeeds = new int[5];
+        int[] forces = new int[2];
         NamedNodeMap attrs = n.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++)
         {
@@ -376,8 +378,8 @@ abstract class DocumentBase
             }
             else if ("front".equalsIgnoreCase(a.getNodeName()))
             {
-            	 boolean val = Boolean.valueOf(a.getNodeValue());
-            	 cond = joinAnd(cond, new ConditionPlayerState(CheckPlayerState.FRONT, val));
+                boolean val = Boolean.valueOf(a.getNodeValue());
+                cond = joinAnd(cond, new ConditionPlayerState(CheckPlayerState.FRONT, val));
             }
             else if ("hp".equalsIgnoreCase(a.getNodeName()))
             {
@@ -409,15 +411,30 @@ abstract class DocumentBase
             {
                 ElementSeeds[4] = Integer.decode(getValue(a.getNodeValue(), null));
             }
+            else if ("battle_force".equalsIgnoreCase(a.getNodeName()))
+            {
+                forces[0] = Integer.decode(getValue(a.getNodeValue(), null));
+            }
+            else if ("spell_force".equalsIgnoreCase(a.getNodeName()))
+            {
+                forces[1] = Integer.decode(getValue(a.getNodeValue(), null));
+            }
         }
 
         // Elemental seed condition processing
         for (int i = 0; i < ElementSeeds.length; i++)
+        {
             if (ElementSeeds[i] > 0)
             {
                 cond = joinAnd(cond, new ConditionElementSeed(ElementSeeds));
                 break;
             }
+        }
+
+        if(forces[0] + forces[1] > 0)
+        {
+            cond = joinAnd(cond, new ConditionForceBuff(forces));
+        }
 
         if (cond == null) _log.severe("Unrecognized <player> condition in " + _file);
         return cond;

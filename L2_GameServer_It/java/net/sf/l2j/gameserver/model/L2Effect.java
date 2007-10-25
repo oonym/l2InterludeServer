@@ -79,7 +79,9 @@ public abstract class L2Effect
         BETRAY,
         NOBLESSE_BLESSING,
         PETRIFICATION,
-        BLUFF
+        BLUFF,
+        BATTLE_FORCE,
+        SPELL_FORCE
     }
 
     private static final Func[] _emptyFunctionSet = new Func[0];

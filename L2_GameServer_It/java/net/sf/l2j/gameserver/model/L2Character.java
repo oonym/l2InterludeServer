@@ -1142,7 +1142,7 @@ public abstract class L2Character extends L2Object
 		if (isSkillDisabled(skill.getId()))
 		{
 			if (this instanceof L2PcInstance)
-            {
+			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
 				sm.addSkillName(skill.getId(),skill.getLevel());
 				sendPacket(sm);
@@ -1265,8 +1265,13 @@ public abstract class L2Character extends L2Object
 		// Get the delay under wich the cast can be aborted (base)
 		int skillInterruptTime = skill.getSkillInterruptTime();
 
+		boolean forceBuff = skill.getSkillType() == SkillType.FORCE_BUFF
+								&& (target instanceof L2PcInstance);
+
 		// Calculate the casting time of the skill (base + modifier of MAtkSpd)
-		skillTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillTime);
+		// Don't modify the skill time for FORCE_BUFF skills. The skill time for those skills represent the buff time.
+		if(!forceBuff)
+			skillTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillTime);
 
 		// Calculate the Interrupt Time of the skill (base + modifier) if the skill is a spell else 0
 		if (skill.isMagic())
@@ -1277,7 +1282,8 @@ public abstract class L2Character extends L2Object
 		// Calculate altered Cast Speed due to BSpS/SpS
 		L2ItemInstance weaponInst = getActiveWeaponInstance();
 
-		if ((weaponInst != null)&&(skill.isMagic())&&((skill.getTargetType())!=(SkillTargetType.TARGET_SELF))) {
+		if (weaponInst != null && skill.isMagic() && !forceBuff && skill.getTargetType() != SkillTargetType.TARGET_SELF)
+		{
 			if ((weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 					|| (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT))
 			{
@@ -1310,10 +1316,7 @@ public abstract class L2Character extends L2Object
 
 		// Init the reuse time of the skill
 		int reuseDelay = (int)(skill.getReuseDelay() * getStat().getMReuseRate(skill));
-        if (skill.isMagic())
-            reuseDelay *= 333.0 / getMAtkSpd();
-        else
-            reuseDelay *= 333.0 / getPAtkSpd();
+        reuseDelay *= 333.0 / (skill.isMagic() ? getMAtkSpd() : getPAtkSpd());
 
 		// Send a Server->Client packet MagicSkillUser with target, displayId, level, skillTime, reuseDelay
 		// to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
@@ -1346,11 +1349,17 @@ public abstract class L2Character extends L2Object
 			disableSkill(skill.getId(), reuseDelay);
 		}
 
+		// For force buff skills, start the effect as long as the player is casting.
+		if(forceBuff)
+		{
+			startForceBuff(target, skill);
+		}
+
 		// launch the magic in skillTime milliseconds
 		if (skillTime > 60)
 		{
 			// Send a Server->Client packet SetupGauge with the color of the gauge and the casting time
-			if (this instanceof L2PcInstance)
+			if (this instanceof L2PcInstance && !forceBuff)
 			{
 				SetupGauge sg = new SetupGauge(SetupGauge.BLUE, skillTime);
 				sendPacket(sg);
@@ -1393,6 +1402,15 @@ public abstract class L2Character extends L2Object
 	public void removeTimeStamp(int s) {/***/}
 
 	/**
+	* Starts a force buff on target.<br><br>
+	* 
+	* @param caster
+	* @param force type
+	* <BR><B>Overriden in :</B>  (L2PcInstance)
+	*/
+	public void startForceBuff(L2Character caster, L2Skill skill) {/***/}
+
+    /**
 	 * Kill the L2Character.<BR><BR>
 	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
@@ -3505,6 +3523,10 @@ public abstract class L2Character extends L2Object
 				_skillCast.cancel(true);
 				_skillCast = null;
 			}
+
+			if(getForceBuff() != null)
+				getForceBuff().delete();
+			
 			// cancels the skill hit scheduled task
 			enableAllSkills();                                      // re-enables the skills
 			if (this instanceof L2PcInstance) getAI().notifyEvent(CtrlEvent.EVT_FINISH_CASTING); // setting back previous intention
@@ -3562,7 +3584,7 @@ public abstract class L2Character extends L2Object
 			m._moveTimestamp = gameTicks;
 
 			// Set the position of the L2Character to the destination
-			if(this instanceof L2BoatInstance )
+			if (this instanceof L2BoatInstance)
 			{
 				super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
 				((L2BoatInstance)this).updatePeopleInTheBoat(m._xDestination, m._yDestination, m._zDestination);
@@ -4581,7 +4603,7 @@ public abstract class L2Character extends L2Object
                 target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, this);
                 getAI().clientStartAutoAttack();
 
-                // Manage attack or cast break of the target (calculating rate, sending message...)
+				// Manage attack or cast break of the target (calculating rate, sending message...)
 				if (!target.isRaid() && Formulas.getInstance().calcAtkBreak(target, damage))
 				{
 					target.breakAttack();
@@ -5114,14 +5136,20 @@ public abstract class L2Character extends L2Object
 	public void onMagicUseTimer(L2Object[] targets, L2Skill skill)
 	{
 		if (skill == null || targets == null || targets.length <= 0)
-        {
-            setAttackingChar(null);
-            setAttackingCharSkill(null);
-            getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
+		{
+			setAttackingChar(null);
+			setAttackingCharSkill(null);
+			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 
-            return;
-        }
-		
+			return;
+		}
+
+		if(getForceBuff() != null)
+		{
+			getForceBuff().delete();
+			return;
+		}
+
 		// Escaping from under skill's radius. First version, not perfect in AoE skills.
 		int escapeRange = 0;
 		if(skill.getEffectRange() > escapeRange) escapeRange = skill.getEffectRange();
@@ -5153,11 +5181,11 @@ public abstract class L2Character extends L2Object
 
 		// Check if player is using fake death.
 		// Potions can be used while faking death.
-        if (isAlikeDead() && !skill.isPotion())
+		if (isAlikeDead() && !skill.isPotion())
 		{
-            setAttackingChar(null);
-            setAttackingCharSkill(null);
-            getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
+			setAttackingChar(null);
+			setAttackingCharSkill(null);
+			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 
 			_castEndTime = 0;
 			_castInterruptTime = 0;
@@ -5174,7 +5202,7 @@ public abstract class L2Character extends L2Object
 			int level = getSkillLevel(skill.getId());
 
 			if (level < 1)
-                level = 1;
+				level = 1;
 
 			// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 			if (!skill.isPotion()) broadcastPacket(new MagicSkillLaunched(this, magicId, level, targets));
@@ -5194,7 +5222,7 @@ public abstract class L2Character extends L2Object
 					}
 
 					if (Config.DEBUG)
-                        _log.fine("msl: "+getName()+" "+magicId+" "+level+" "+target.getTitle());
+						_log.fine("msl: "+getName()+" "+magicId+" "+level+" "+target.getTitle());
 
 					if (this instanceof L2PcInstance && target instanceof L2Summon)
 					{
@@ -5242,9 +5270,9 @@ public abstract class L2Character extends L2Object
 			if (skill.getItemConsume() > 0)
 				consumeItem(skill.getItemConsumeId(), skill.getItemConsume());
 
-            _castEndTime = 0;
-            _castInterruptTime = 0;
-            _skillCast = null;
+			_castEndTime = 0;
+			_castInterruptTime = 0;
+			_skillCast = null;
 
 			// Launch the magic skill in order to calculate its effects
 			callSkill(skill, targets);
@@ -5902,4 +5930,11 @@ public abstract class L2Character extends L2Object
 	{
 	}
 
+	public ForceBuff getForceBuff()
+	{
+		return null;
+	}
+
+	public void setForceBuff(ForceBuff fb)
+	{}
 }

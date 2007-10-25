@@ -29,22 +29,23 @@ import net.sf.l2j.gameserver.skills.Env;
  * @author decad
  *
  */
-final class EffectBetray extends L2Effect {
-
+final class EffectBetray extends L2Effect
+{
     public EffectBetray(Env env, EffectTemplate template)
     {
         super(env, template);
     }
 
     @Override
-	public EffectType getEffectType()
+    public EffectType getEffectType()
     {
         return EffectType.BETRAY;
     }
     
     /** Notify started */
     @Override
-	public void onStart() {
+    public void onStart()
+    {
         if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
         {
             L2PcInstance targetOwner = null;
@@ -56,7 +57,7 @@ final class EffectBetray extends L2Effect {
         }
      /** Notify exited */
     @Override
-	public void onExit() 
+    public void onExit() 
     {
         if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
         {
@@ -66,9 +67,9 @@ final class EffectBetray extends L2Effect {
         getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
         }
     }
-    
+
     @Override
-	public boolean onActionTime()
+    public boolean onActionTime()
     {
         L2PcInstance targetOwner = null;
         targetOwner = ((L2Summon)getEffected()).getOwner();

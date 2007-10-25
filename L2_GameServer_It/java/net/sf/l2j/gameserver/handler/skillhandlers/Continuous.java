@@ -55,16 +55,17 @@ public class Continuous implements ISkillHandler
 		L2Skill.SkillType.POISON,
 		L2Skill.SkillType.BLEED,
 		L2Skill.SkillType.HOT,
-        L2Skill.SkillType.CPHOT,
-        L2Skill.SkillType.MPHOT,
+		L2Skill.SkillType.CPHOT,
+		L2Skill.SkillType.MPHOT,
 		//L2Skill.SkillType.MANAHEAL,
 		//L2Skill.SkillType.MANA_BY_LEVEL,
 		L2Skill.SkillType.FEAR,
 		L2Skill.SkillType.CONT,
 		L2Skill.SkillType.WEAKNESS,
 		L2Skill.SkillType.REFLECT,
-        L2Skill.SkillType.UNDEAD_DEFENSE,
-		L2Skill.SkillType.AGGDEBUFF
+		L2Skill.SkillType.UNDEAD_DEFENSE,
+		L2Skill.SkillType.AGGDEBUFF,
+		L2Skill.SkillType.FORCE_BUFF
 		};
 	
 	/* (non-Javadoc)

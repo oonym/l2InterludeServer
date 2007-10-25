@@ -82,6 +82,7 @@ import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.BlockList;
 import net.sf.l2j.gameserver.model.FishData;
+import net.sf.l2j.gameserver.model.ForceBuff;
 import net.sf.l2j.gameserver.model.Inventory;
 import net.sf.l2j.gameserver.model.ItemContainer;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -296,6 +297,24 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
 					cubic.doAction((L2Character)mainTarget);
 		}
+	}
+
+	/**
+	* Starts battle force / spell force on target.<br><br>
+	* 
+	* @param caster
+	* @param force type
+	*/
+	@Override
+	public void startForceBuff(L2Character target, L2Skill skill)
+	{
+		if(!(target instanceof L2PcInstance))return;
+
+		if(skill.getSkillType() != SkillType.FORCE_BUFF)
+			return;
+
+		if(_forceBuff == null)
+			_forceBuff = new ForceBuff(this, (L2PcInstance)target, skill);
 	}
 
 	private L2GameClient _client;
@@ -653,14 +672,17 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	// L2JMOD Wedding
 	private boolean _married = false;
-    private int _partnerId = 0;
-    private int _coupleId = 0;
-    private boolean _engagerequest = false;
-    private int _engageid = 0;
-    private boolean _marryrequest = false;
-    private boolean _marryaccepted = false;
+	private int _partnerId = 0;
+	private int _coupleId = 0;
+	private boolean _engagerequest = false;
+	private int _engageid = 0;
+	private boolean _marryrequest = false;
+	private boolean _marryaccepted = false;
 
-	/** Skill casting information (used to queue when several skills are cast in a short time) **/
+	// Current force buff this caster is casting to a target
+	protected ForceBuff _forceBuff;
+
+    /** Skill casting information (used to queue when several skills are cast in a short time) **/
     public class SkillDat
     {
         private L2Skill _skill;
@@ -4112,7 +4134,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (isCursedWeaponEquiped())
 			{
 				CursedWeaponsManager.getInstance().drop(_cursedWeaponEquipedId, killer);
-			} else
+			}
+			else
 			{
 				if (pk == null || !pk.isCursedWeaponEquiped())
 				{
@@ -4163,6 +4186,13 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			_cubics.clear();
 		}
+
+		if(_forceBuff != null)
+			_forceBuff.delete();
+
+		for(L2Character character : getKnownList().getKnownCharacters())
+			if(character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
+				character.abortCast();
 
 		if (isInParty() && getParty().isInDimensionalRift())
 			getParty().getDimensionalRift().getDeadMemberList().add(this);
@@ -9193,87 +9223,99 @@ public final class L2PcInstance extends L2PlayableInstance
 			setXYZ(_obsX, _obsY, _obsZ);
 
 		// Set the online Flag to True or False and update the characters table of the database with online status and lastAccess (called when login and logout)
-		try { setOnlineStatus(false); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		try { setOnlineStatus(false); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
 		// Stop the HP/MP/CP Regeneration task (scheduled tasks)
-		try { stopAllTimers(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		try { stopAllTimers(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
 		// Stop crafting, if in progress
-		try { RecipeController.getInstance().requestMakeItemAbort(this); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		try { RecipeController.getInstance().requestMakeItemAbort(this); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
 		// Cancel Attak or Cast
-		try { setTarget(null); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		try { setTarget(null); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 		
 		// Remove from world regions zones
 		if (getWorldRegion() != null) getWorldRegion().removeFromZones(this);
 
+		try
+		{
+			if(_forceBuff != null)
+			{
+				_forceBuff.delete();
+			}
+			for(L2Character character : getKnownList().getKnownCharacters())
+				if(character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
+					character.abortCast();
+		}
+		catch(Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
+
 		// Remove the L2PcInstance from the world
 		if (isVisible())
-			try { decayMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+			try { decayMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
-			// If a Party is in progress, leave it
-			if (isInParty()) try { leaveParty(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		// If a Party is in progress, leave it
+		if (isInParty()) try { leaveParty(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
-			// If the L2PcInstance has Pet, unsummon it
-			if (getPet() != null)
+		// If the L2PcInstance has Pet, unsummon it
+		if (getPet() != null)
+		{
+			try { getPet().unSummon(this); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }// returns pet to control item
+		}
+
+		if (getClanId() != 0 && getClan() != null)
+		{
+			// set the status for pledge member list to OFFLINE
+			try
 			{
-				try { getPet().unSummon(this); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }// returns pet to control item
-			}
+				L2ClanMember clanMember = getClan().getClanMember(getName());
+				if (clanMember != null) clanMember.setPlayerInstance(null);
+			} catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
+		}
 
-			if (getClanId() != 0 && getClan() != null)
-			{
-				// set the status for pledge member list to OFFLINE
-				try
-				{
-					L2ClanMember clanMember = getClan().getClanMember(getName());
-					if (clanMember != null) clanMember.setPlayerInstance(null);
-				} catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
-			}
+		if (getActiveRequester() != null)
+		{
+			// deals with sudden exit in the middle of transaction
+			setActiveRequester(null);
+		}
 
-			if (getActiveRequester() != null)
-			{
-				// deals with sudden exit in the middle of transaction
-				setActiveRequester(null);
-			}
+		// If the L2PcInstance is a GM, remove it from the GM List
+		if (isGM())
+		{
+			try { GmListTable.getInstance().deleteGm(this); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
+		}
 
-			// If the L2PcInstance is a GM, remove it from the GM List
-			if (isGM())
-			{
-				try { GmListTable.getInstance().deleteGm(this); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
-			}
+		// Update database with items in its inventory and remove them from the world
+		try { getInventory().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
-			// Update database with items in its inventory and remove them from the world
-			try { getInventory().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		// Update database with items in its warehouse and remove them from the world
+		try { clearWarehouse(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
+		if(Config.WAREHOUSE_CACHE)
+			WarehouseCacheManager.getInstance().remCacheTask(this);
 
-			// Update database with items in its warehouse and remove them from the world
-			try { clearWarehouse(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
-			if(Config.WAREHOUSE_CACHE)
-				WarehouseCacheManager.getInstance().remCacheTask(this);
+		// Update database with items in its freight and remove them from the world
+		try { getFreight().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
-			// Update database with items in its freight and remove them from the world
-			try { getFreight().deleteMe(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		// Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI
+		try { getKnownList().removeAllKnownObjects(); } catch (Throwable t) {_log.log(Level.SEVERE, "deleteMe()", t); }
 
-			// Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI
-			try { getKnownList().removeAllKnownObjects(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
+		// Close the connection with the client
+		closeNetConnection();
 
-			// Close the connection with the client
-			closeNetConnection();
+		// remove from flood protector
+		FloodProtector.getInstance().removePlayer(getObjectId());
 
-			// remove from flood protector
-			FloodProtector.getInstance().removePlayer(getObjectId());
+		if (getClanId() > 0)
+			getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
+			//ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
 
-			if (getClanId() > 0)
-				getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
-				//ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
+		for(L2PcInstance player : _snoopedPlayer)
+			player.removeSnooper(this);
 
-			for(L2PcInstance player : _snoopedPlayer)
-				player.removeSnooper(this);
+		for(L2PcInstance player : _snoopListener)
+			player.removeSnooped(this);
 
-			for(L2PcInstance player : _snoopListener)
-				player.removeSnooped(this);
-
-			// Remove L2Object object from _allObjects of L2World
-			L2World.getInstance().removeObject(this);
+		// Remove L2Object object from _allObjects of L2World
+		L2World.getInstance().removeObject(this);
 	}
 
 	private FishData _fish;
@@ -10083,6 +10125,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DID_S1_DMG);
 		sm.addNumber(damage);
 		sendPacket(sm);
+	}
 
-    }
+	@Override
+	public ForceBuff getForceBuff()
+	{
+		return _forceBuff;
+	}
+
+	@Override
+	public void setForceBuff(ForceBuff fb)
+	{
+		_forceBuff = fb;
+	}
 }

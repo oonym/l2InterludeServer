@@ -115,6 +115,7 @@ public abstract class L2Skill
         TARGET_UNLOCKABLE,
         TARGET_HOLY,
         TARGET_PARTY_MEMBER,
+        TARGET_PARTY_OTHER,
         TARGET_ENEMY_SUMMON,
         TARGET_OWNER_PET
     }
@@ -166,7 +167,7 @@ public abstract class L2Skill
     	AGGREDUCE_CHAR,
     	AGGDEBUFF,
 
-   	    // Fishing
+    	// Fishing
     	FISHING,
     	PUMPING,
     	REELING,
@@ -226,6 +227,7 @@ public abstract class L2Skill
     	UNDEAD_DEFENSE,
     	SEED (L2SkillSeed.class),
     	BEAST_FEED,
+    	FORCE_BUFF,
 
         // unimplemented
         NOTDONE;
@@ -446,6 +448,7 @@ public abstract class L2Skill
 
     private final boolean _isOffensive;
     private final int _numCharges;
+    private final int _forceId;
 
     private final boolean _isHeroSkill; // If true the skill is a Hero Skill
 
@@ -526,9 +529,10 @@ public abstract class L2Skill
         _mulCrossLearn = set.getFloat("mulCrossLearn", 2.f);
         _mulCrossLearnRace = set.getFloat("mulCrossLearnRace", 2.f);
         _mulCrossLearnProf = set.getFloat("mulCrossLearnProf", 3.f);
-        _minPledgeClass     = set.getInteger("minPledgeClass", 0);
+        _minPledgeClass = set.getInteger("minPledgeClass", 0);
         _isOffensive = set.getBool("offensive", isSkillTypeOffensive());
         _numCharges = set.getInteger("num_charges", getLevel());
+        _forceId = set.getInteger("forceId", 0);
 
         _isHeroSkill = HeroSkillTable.isHeroSkill(_id);
 
@@ -677,7 +681,7 @@ public abstract class L2Skill
 
     public final int getNegateId()
     {
-    	return _negateId;
+        return _negateId;
     }
 
     public final int getMagicLevel()
@@ -770,6 +774,11 @@ public abstract class L2Skill
     public void setDisplayId(int id)
     {
         _displayId = id;
+    }
+
+    public int getForceId()
+    {
+        return _forceId;
     }
 
     /**
@@ -878,7 +887,7 @@ public abstract class L2Skill
      */
     public final int getMpInitialConsume()
     {
-    	return _mpInitialConsume;
+        return _mpInitialConsume;
     }
 
     /**
@@ -934,17 +943,17 @@ public abstract class L2Skill
 
     public final int getNextDanceMpCost()
     {
-    	return _nextDanceCost;
+        return _nextDanceCost;
     }
 
     public final float getSSBoost()
     {
-    	return _sSBoost;
+        return _sSBoost;
     }
 
     public final int getAggroPoints()
     {
-    	return _aggroPoints;
+        return _aggroPoints;
     }
     
     public final boolean useSoulShot()
@@ -958,7 +967,7 @@ public abstract class L2Skill
     }
     public final boolean useFishShot()
     {
-    	return ((getSkillType() == SkillType.PUMPING) || (getSkillType() == SkillType.REELING) );
+        return ((getSkillType() == SkillType.PUMPING) || (getSkillType() == SkillType.REELING) );
     }
     public final int getWeaponsAllowed()
     {
@@ -1006,7 +1015,7 @@ public abstract class L2Skill
             case CONFUSION:
             case POISON:
             case DEBUFF:
-			case AGGDEBUFF:
+            case AGGDEBUFF:
             case STUN:
             case ROOT:
             case FEAR:
@@ -1063,7 +1072,7 @@ public abstract class L2Skill
             case POISON:
             case AGGDAMAGE:
             case DEBUFF:
-			case AGGDEBUFF:
+            case AGGDEBUFF:
             case STUN:
             case ROOT:
             case CONFUSION:
@@ -1224,17 +1233,20 @@ public abstract class L2Skill
             // The skill can only be used on the L2Character targeted, or on the caster itself
             case TARGET_ONE:
             {
+                boolean canTargetSelf = false;
+                switch(skillType)
+                {
+                    case BUFF: case HEAL: case HOT: case HEAL_PERCENT:
+                    case MANARECHARGE: case MANAHEAL: case NEGATE:
+                    case CANCEL: case REFLECT: case UNBLEED: case UNPOISON:
+                    case SEED: case COMBATPOINTHEAL: case MAGE_BANE: case WARRIOR_BANE:
+                    case BETRAY: case BALANCE_LIFE: case FORCE_BUFF:
+                        canTargetSelf = true;
+                        break;
+                }
+
                 // Check for null target or any other invalid target
-                if (target == null
-                    || target.isDead()
-                    || (target == activeChar && !(skillType == SkillType.BUFF
-                        || skillType == SkillType.HEAL || skillType == SkillType.HEAL_PERCENT
-                        || skillType == SkillType.HOT || skillType == SkillType.MANAHEAL
-                        || skillType == SkillType.MANARECHARGE || skillType == SkillType.NEGATE
-                        || skillType == SkillType.CANCEL || skillType == SkillType.REFLECT
-                        || skillType == SkillType.UNBLEED || skillType == SkillType.UNPOISON || skillType == SkillType.SEED
-                        || skillType == SkillType.COMBATPOINTHEAL || skillType == SkillType.MAGE_BANE | skillType == SkillType.WARRIOR_BANE
-                        || skillType == SkillType.BETRAY || skillType == SkillType.BALANCE_LIFE)))
+                if (target == null || target.isDead() || (target == activeChar && !canTargetSelf))
                 {
                     activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
                     return null;
@@ -1550,6 +1562,26 @@ public abstract class L2Skill
 							&& activeChar instanceof L2Summon
 							&& target instanceof L2PcInstance
 							&& activeChar == target.getPet()))
+				{
+					if (!target.isDead())
+					{
+						// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
+						return new L2Character[]{target};
+					}
+					else
+						return null;
+				}
+				else
+				{
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+					return null;
+				}
+			}
+			case TARGET_PARTY_OTHER:
+			{
+				if (target != null && target != activeChar
+					&& activeChar.getParty() != null && target.getParty() != null
+					&& activeChar.getParty().getPartyLeaderOID() == target.getParty().getPartyLeaderOID())
 				{
 					if (!target.isDead())
 					{

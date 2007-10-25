@@ -1,5 +1,4 @@
-/*
- * This program is free software; you can redistribute it and/or modify
+/* This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
@@ -21,9 +20,13 @@ package net.sf.l2j.gameserver.skills.effects;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.skills.Env;
 
-public class EffectMute extends L2Effect
+/**
+ * @author kombat
+ *
+ */
+public final class EffectSpellForce extends EffectForce
 {
-	public EffectMute(Env env, EffectTemplate template)
+	public EffectSpellForce(Env env, EffectTemplate template) 
 	{
 		super(env, template);
 	}
@@ -31,26 +34,6 @@ public class EffectMute extends L2Effect
 	@Override
 	public EffectType getEffectType()
 	{
-		return L2Effect.EffectType.MUTE;
-	}
-
-	@Override
-	public void onStart() {
-		getEffected().startMuted();
-	}
-	
-	@Override
-	public boolean onActionTime()
-	{
-		// Simply stop the effect
-		getEffected().stopMuted(this);
-		return false;
-	}
-
-
-	@Override
-	public void onExit()
-	{
-		getEffected().stopMuted(this);
+		return EffectType.SPELL_FORCE;
 	}
 }

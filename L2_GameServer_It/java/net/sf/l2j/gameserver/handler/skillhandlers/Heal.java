@@ -136,7 +136,7 @@ public class Heal implements ISkillHandler
             if (skill.getSkillType() == SkillType.HEAL_STATIC)
             	hp = skill.getPower();
             else if (skill.getSkillType() != SkillType.HEAL_PERCENT)
-				hp *= target.calcStat(Stats.HEAL_EFFECTIVNESS, 100, null, null) / 100;		
+				hp *= target.calcStat(Stats.HEAL_EFFECTIVNESS, 100, null, null) / 100;
             
 			target.setCurrentHp(hp + target.getCurrentHp()); 
 			target.setLastHealAmount((int)hp);            
