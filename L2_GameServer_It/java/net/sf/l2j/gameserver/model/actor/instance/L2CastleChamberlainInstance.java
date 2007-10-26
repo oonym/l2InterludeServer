@@ -234,11 +234,11 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					PcInventory s = player.getInventory();
 					if (s.getItemByItemId(circlet)==null)
 					{
-						buy = (Integer.parseInt(val)+1);
+						buy = (Integer.parseInt(val+"1"));
 					}
 					else
 					{
-						buy = (Integer.parseInt(val)+2);
+						buy = (Integer.parseInt(val+"2"));
 					}
 				}
 				L2TradeList list = TradeController.getInstance().getBuyList(buy);
