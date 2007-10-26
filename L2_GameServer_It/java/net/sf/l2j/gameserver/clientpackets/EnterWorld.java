@@ -40,6 +40,7 @@ import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
@@ -293,7 +294,13 @@ public class EnterWorld extends L2GameClientPacket
 
 		activeChar.onPlayerEnter();
         
-        if (Olympiad.getInstance().playerInStadia(activeChar))
+		if (!activeChar.isGM() && activeChar.isInsideZone(L2Character.ZONE_SIEGE))
+		{
+            activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+            activeChar.sendMessage("You have been teleported to the nearest town due to you being in siege zone");
+		}
+        
+		if (Olympiad.getInstance().playerInStadia(activeChar))
         {
             activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
             activeChar.sendMessage("You have been teleported to the nearest town due to you being in an Olympiad Stadium");
