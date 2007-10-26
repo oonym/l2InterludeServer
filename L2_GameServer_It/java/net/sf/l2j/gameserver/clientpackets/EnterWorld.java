@@ -294,12 +294,6 @@ public class EnterWorld extends L2GameClientPacket
 
 		activeChar.onPlayerEnter();
         
-		if (!activeChar.isGM() && activeChar.isInsideZone(L2Character.ZONE_SIEGE))
-		{
-            activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-            activeChar.sendMessage("You have been teleported to the nearest town due to you being in siege zone");
-		}
-        
 		if (Olympiad.getInstance().playerInStadia(activeChar))
         {
             activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
@@ -328,6 +322,13 @@ public class EnterWorld extends L2GameClientPacket
 				else if (siege.checkIsDefender(activeChar.getClan()))
 		    		activeChar.setSiegeState((byte)2);
 		    }
+		}
+		
+		if (!activeChar.isGM() && activeChar.getSiegeState() < 2 && activeChar.isInsideZone(L2Character.ZONE_SIEGE))
+		{
+            // Attacker or spectator logging in to a siege zone. Actually should be checked for inside castle only?
+			activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+            activeChar.sendMessage("You have been teleported to the nearest town due to you being in siege zone");
 		}
 		
 		RegionBBSManager.getInstance().changeCommunityBoard();
