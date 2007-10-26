@@ -21,14 +21,19 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SevenSigns;
+import net.sf.l2j.gameserver.TradeController;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
 import net.sf.l2j.gameserver.model.L2Clan;
+import net.sf.l2j.gameserver.model.L2TradeList;
+import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.BuyList;
 import net.sf.l2j.gameserver.serverpackets.ExShowCropInfo;
 import net.sf.l2j.gameserver.serverpackets.ExShowCropSetting;
 import net.sf.l2j.gameserver.serverpackets.ExShowManorDefaultInfo;
@@ -214,6 +219,41 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 				}
 				player.sendPacket(html);
 				return;
+			}
+			else if (actualCommand.equalsIgnoreCase("items"))
+			{
+				if (val == "") return;
+				player.tempInvetoryDisable();
+
+				if (Config.DEBUG) _log.fine("Showing chamberlain buylist");
+
+				int buy;
+				{
+					int castleId = getCastle().getCastleId();
+					int circlet = CastleManager.getInstance().getCircletByCastleId(castleId);
+					PcInventory s = player.getInventory();
+					if (s.getItemByItemId(circlet)==null)
+					{
+						buy = (Integer.parseInt(val)+1);
+					}
+					else
+					{
+						buy = (Integer.parseInt(val)+2);
+					}
+				}
+				L2TradeList list = TradeController.getInstance().getBuyList(buy);
+				if (list != null && list.getNpcId().equals(String.valueOf(getNpcId())))
+				{
+					BuyList bl = new BuyList(list, player.getAdena(), 0);
+					player.sendPacket(bl);
+				}
+				else
+				{
+					_log.warning("player: " + player.getName()
+							+ " attempting to buy from chamberlain that don't have buylist!");
+					_log.warning("buylist id:" + buy);
+				}
+				player.sendPacket(new ActionFailed());
 			}
 			else if (actualCommand.equalsIgnoreCase("manage_siege_defender"))
 			{
