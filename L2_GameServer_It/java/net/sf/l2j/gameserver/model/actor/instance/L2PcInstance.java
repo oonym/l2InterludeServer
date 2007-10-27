@@ -2312,6 +2312,13 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
+	 * Set _waitTypeSitting to given value
+	 */
+	public void setIsSitting(boolean state)
+	{
+		_waitTypeSitting = state;
+	}
+	/**
 	 * Sit down the L2PcInstance, set the AI Intention to AI_INTENTION_REST and send a Server->Client ChangeWaitType packet (broadcast)<BR><BR>
 	 */
 	public void sitDown()
@@ -2326,12 +2333,45 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			breakAttack();
 
-			_waitTypeSitting = true;
-			getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
 			broadcastPacket(new ChangeWaitType (this, ChangeWaitType.WT_SITTING));
+			// Schedule a sit down task to wait for the animation to finish
+			ThreadPoolManager.getInstance().scheduleGeneral(new SitDownTask(this), 2500);
+			setIsParalyzed(true);
 		}
 	}
-
+	/**
+	 * Sit down Task
+	 */
+	class SitDownTask implements Runnable
+	{
+		L2PcInstance _player;
+		SitDownTask(L2PcInstance player)
+		{
+			_player = player;
+		}
+		public void run()
+		{	
+			setIsSitting(true);
+			_player.setIsParalyzed(false);
+			_player.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
+		}
+	}
+	/**
+	 * Stand up Task
+	 */
+	class StandUpTask implements Runnable
+	{
+		L2PcInstance _player;
+		StandUpTask(L2PcInstance player)
+		{
+			_player = player;
+		}
+		public void run()
+		{
+			_player.setIsSitting(false);
+			_player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+		}
+	}
 	/**
 	 * Stand up the L2PcInstance, set the AI Intention to AI_INTENTION_IDLE and send a Server->Client ChangeWaitType packet (broadcast)<BR><BR>
 	 */
@@ -2349,9 +2389,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				stopEffects(L2Effect.EffectType.RELAXING);
 			}
 
-			_waitTypeSitting = false;
-			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 			broadcastPacket(new ChangeWaitType (this, ChangeWaitType.WT_STANDING));
+			// Schedule a stand up task to wait for the animation to finish
+			ThreadPoolManager.getInstance().scheduleGeneral(new StandUpTask(this), 2500);
 		}
 	}
 
