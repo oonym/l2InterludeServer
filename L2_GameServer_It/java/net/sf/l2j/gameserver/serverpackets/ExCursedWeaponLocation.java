@@ -46,16 +46,24 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x46);
 		
-		writeD(_cursedWeaponInfo.size());
-		for(CursedWeaponInfo w : _cursedWeaponInfo)
+		if(!_cursedWeaponInfo.isEmpty())
 		{
-			writeD(w.id);
-			writeD(w.unk);
+			writeD(_cursedWeaponInfo.size());
+			for(CursedWeaponInfo w : _cursedWeaponInfo)
+			{
+				writeD(w.id);
+				writeD(w.activated);
 			
-			writeD(w.pos.getX());
-			writeD(w.pos.getY());
-			writeD(w.pos.getZ());
+				writeD(w.pos.getX());
+				writeD(w.pos.getY());
+				writeD(w.pos.getZ());
+			}
 		}
+		else
+		{
+			writeD(0);
+			writeD(0);
+		} 
 	}
 
 	/**
@@ -71,13 +79,13 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 	{
 		public Point3D pos;
 		public int id;
-		public int unk;
+		public int activated; //0 - not activated ? 1 - activated 
 		
-		public CursedWeaponInfo(Point3D p, int ID)
+		public CursedWeaponInfo(Point3D p, int ID, int status)
 		{
 			pos = p;
 			id = ID;
-			unk = 1;
+			activated = status;
 		}
 		
 	}
