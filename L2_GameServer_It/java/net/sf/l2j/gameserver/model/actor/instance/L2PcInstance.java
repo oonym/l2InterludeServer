@@ -10034,6 +10034,7 @@ public final class L2PcInstance extends L2PlayableInstance
     }
 
 	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>().setShared(true);
+	private boolean _isRunningAnimation = false;
 
 	/**
 	 * Simple class containing all neccessary information to maintain
@@ -10137,5 +10138,20 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setForceBuff(ForceBuff fb)
 	{
 		_forceBuff = fb;
+	}
+	/**
+	 * Set _isRunningAnimation to given value
+	 */
+	public void setIsRunningAnimation(boolean state)
+	{
+		_isRunningAnimation = state;
+	}
+
+	/**
+	 * @return _isRunningAnimation
+	 */
+	public boolean isRunningAnimation()
+	{
+		return _isRunningAnimation;
 	}
 }
