@@ -243,6 +243,10 @@ public class L2Attackable extends L2NpcInstance
     {    	
     	return _aggroList;
     }
+
+	private boolean _isReturningToSpawnPoint              = false;
+    public final boolean isReturningToSpawnPoint() { return _isReturningToSpawnPoint; }
+	public final void setisReturningToSpawnPoint(boolean value) { _isReturningToSpawnPoint = value; }
     
     /** Table containing all Items that a Dwarf can Sweep on this L2Attackable */ 
     private RewardItem[] _sweepItems;
@@ -803,6 +807,14 @@ public class L2Attackable extends L2NpcInstance
 
     public void reduceHate(L2Character target, int amount) 
     {
+    	if (getAI() instanceof L2SiegeGuardAI)
+    	{
+    		// TODO: this just prevents error until siege guards are handled properly
+    		stopHating(target);
+        	setTarget(null);
+        	getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
+    		return;
+    	}
     	if (target == null) // whole aggrolist 
     	{
     		L2Character mostHated = getMostHated();

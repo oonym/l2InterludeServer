@@ -3846,9 +3846,10 @@ public abstract class L2Character extends L2Object
 
 		// Create and Init a MoveData object
 		MoveData m = new MoveData();
+
+		// GEODATA MOVEMENT CHECKS AND PATHFINDING
 		m.onGeodataPathIndex = -1; // Initialize not on geodata path
-		// GEODATA MOVEMENT CHECKS
-		if (Config.GEODATA > 0)
+		if (Config.GEODATA > 0 && !this.isFlying()) // currently flying characters not checked
 		{
 			double originalDistance = distance;
 			int originalX = x;
@@ -3857,7 +3858,12 @@ public abstract class L2Character extends L2Object
 			int gtx = (originalX - L2World.MAP_MIN_X) >> 4;
 			int gty = (originalY - L2World.MAP_MIN_Y) >> 4;
 
-			if (Config.GEODATA == 2 || this instanceof L2PlayableInstance || this instanceof L2RiftInvaderInstance)
+			// Movement checks:
+			// when geodata == 2, for all characters except mobs returning home (could be changed later to teleport if pathfinding fails)
+			// when geodata == 1, for l2playableinstance and l2riftinstance only
+			if ((Config.GEODATA == 2 &&	!(this instanceof L2Attackable && ((L2Attackable)this).isReturningToSpawnPoint())) 
+					|| this instanceof L2PlayableInstance 
+					|| this instanceof L2RiftInvaderInstance)
 			{
 				if (isOnGeodataPath())
 				{
@@ -3891,7 +3897,10 @@ public abstract class L2Character extends L2Object
 					return;
 				}
 			}
-			if(Config.GEODATA == 2 && originalDistance-distance > 100 && distance < 2000) // questionable distance comparison
+			// Pathfinding checks. Only when geodata setting is 2, the LoS check gives shorter result
+			// than the original movement was and the LoS gives a shorter distance than 2000
+			// This way of detecting need for pathfinding could be changed.
+			if(Config.GEODATA == 2 && originalDistance-distance > 100 && distance < 2000)
 			{
 				// Path calculation
 				// Overrides previous movement check
@@ -3901,54 +3910,69 @@ public abstract class L2Character extends L2Object
 					int gy = (curY - L2World.MAP_MIN_Y) >> 4;
 				
                 	m.geoPath = GeoPathFinding.getInstance().findPath(gx, gy, (short)curZ, gtx, gty, (short)originalZ);
-                	if (m.geoPath == null) // break intention and follow
+                	if (m.geoPath == null) // No path found
                 	{
-                		getAI().stopFollow();
-                		getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-                		// _log.warning("break, no path");
-                		return;
-                	}
-                	// check for doors in the route
-                	for (int i = 0; i < m.geoPath.size()-1; i++)
-                	{
-                		if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath.get(i),m.geoPath.get(i+1)))
+                		// Even though there's no path found (remember geonodes aren't perfect), 
+                		// the mob is attacking and right now we set it so that the mob will go
+                		// after target anyway, is dz is small enough.
+                		if (this instanceof L2PlayableInstance || Math.abs(z - curZ) > 140)
                 		{
-                			m.geoPath = null;
                 			getAI().stopFollow();
                 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
                 			return;
                 		}
+                		else
+                		{
+                			x = originalX;
+                			y = originalY;
+                			z = originalZ;
+                			distance = originalDistance;
+                		}
                 	}
-                	m.geoPath.get(m.geoPath.size()-1).getX();
-                	m.onGeodataPathIndex = 0; // on first segment
-                	m.geoPathGtx = gtx;
-                	m.geoPathGty = gty;
-                	m.geoPathAccurateTx = originalX;
-                	m.geoPathAccurateTy = originalY;
-				
-                	x = m.geoPath.get(m.onGeodataPathIndex).getX();
-                	y = m.geoPath.get(m.onGeodataPathIndex).getY();
-                	z = m.geoPath.get(m.onGeodataPathIndex).getZ();
-
-                	// not in use: final check if we can indeed reach first path node (path nodes sometimes aren't accurate enough)
-                	// but if the node is very far, then a shorter check (like 3 blocks) would be enough
-                	// something similar might be needed for end
-                	/*
-                	Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
-                	if (destiny.getX() != x || destiny.getY() != y)
+                	else
                 	{
-                		m.geoPath = null;
-            			getAI().stopFollow();
-            			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-            			return;
-                	}
-                	*/
+                		// check for doors in the route
+                		for (int i = 0; i < m.geoPath.size()-1; i++)
+                		{
+                			if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath.get(i),m.geoPath.get(i+1)))
+                			{
+                				m.geoPath = null;
+                				getAI().stopFollow();
+                				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+                				return;
+                			}
+                		}
+                		m.geoPath.get(m.geoPath.size()-1).getX();
+                		m.onGeodataPathIndex = 0; // on first segment
+                		m.geoPathGtx = gtx;
+                		m.geoPathGty = gty;
+                		m.geoPathAccurateTx = originalX;
+                		m.geoPathAccurateTy = originalY;
+				
+                		x = m.geoPath.get(m.onGeodataPathIndex).getX();
+                		y = m.geoPath.get(m.onGeodataPathIndex).getY();
+                		z = m.geoPath.get(m.onGeodataPathIndex).getZ();
 
-                	dx = (x - curX);
-                	dy = (y - curY);
-                	distance = Math.sqrt(dx*dx + dy*dy);
-                	sin = dy/distance;
-					cos = dx/distance;
+                		// not in use: final check if we can indeed reach first path node (path nodes sometimes aren't accurate enough)
+                		// but if the node is very far, then a shorter check (like 3 blocks) would be enough
+                		// something similar might be needed for end
+                		/*
+                		Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
+                		if (destiny.getX() != x || destiny.getY() != y)
+                		{
+                			m.geoPath = null;
+            				getAI().stopFollow();
+            				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+            				return;
+                		}
+                		*/
+
+                		dx = (x - curX);
+                		dy = (y - curY);
+                		distance = Math.sqrt(dx*dx + dy*dy);
+                		sin = dy/distance;
+                		cos = dx/distance;
+                	}
 				}
 			}	
 		}
