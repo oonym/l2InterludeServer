@@ -72,7 +72,7 @@ public class RequestSocialAction extends L2GameClientPacket
         	return;
         }
         
-		if (	activeChar.getPrivateStoreType()==0 && !activeChar.isRunningAnimation() &&
+		if (	activeChar.getPrivateStoreType()==0 &&
 				activeChar.getActiveRequester()==null &&
 				!activeChar.isAlikeDead() &&
 				(!activeChar.isAllSkillsDisabled() || activeChar.isInDuel()) &&
@@ -85,7 +85,6 @@ public class RequestSocialAction extends L2GameClientPacket
 			// Schedule a social task to wait for the animation to finish
 			ThreadPoolManager.getInstance().scheduleGeneral(new SocialTask(this), 2600);
 			activeChar.setIsParalyzed(true);
-			activeChar.setIsRunningAnimation(true);
 		}
 	}
 	class SocialTask implements Runnable
@@ -97,7 +96,6 @@ public class RequestSocialAction extends L2GameClientPacket
 		}
 		public void run()
 		{
-			_player.setIsRunningAnimation(false);
 			_player.setIsParalyzed(false);
 		}
 	}

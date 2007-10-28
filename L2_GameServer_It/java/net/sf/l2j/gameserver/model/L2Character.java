@@ -133,7 +133,7 @@ public abstract class L2Character extends L2Object
 	private List<L2Character> _attackByList;
 	private L2Character _attackingChar;
 	private L2Skill _attackingCharSkill;
-	private boolean _isAffraid                              = false; // Flee in a random direction
+	private boolean _isAfraid                              = false; // Flee in a random direction
 	private boolean _isConfused                             = false; // Attack anyone randomly
 	private boolean _isFakeDeath                            = false; // Fake death
 	private boolean _isFlying                               = false; //Is flying Wyvern?
@@ -1602,14 +1602,14 @@ public abstract class L2Character extends L2Object
 	 */
 	public void setAttackingCharSkill (L2Skill skill) { _attackingCharSkill = skill; }
 
-	public final boolean isAffraid() { return _isAffraid; }
-	public final void setIsAffraid(boolean value) { _isAffraid = value; }
+	public final boolean isAfraid() { return _isAfraid; }
+	public final void setIsAfraid(boolean value) { _isAfraid = value; }
 
 	/** Return True if the L2Character is dead or use fake death.  */
 	public final boolean isAlikeDead() { return isFakeDeath() || !(getCurrentHp() > 0.5); }
 
 	/** Return True if the L2Character can't use its skills (ex : stun, sleep...). */
-	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isStunned() || isSleeping() || isParalyzed(); }
+	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isStunned() || isSleeping() || isParalyzed() || isAfraid(); }
 
 	/** Return True if the L2Character can't attack (stun, sleep, attackEndTime, fakeDeath, paralyse). */
 	public boolean isAttackingDisabled() { return isStunned() || isSleeping() || _attackEndTime > GameTimeController.getGameTicks() || isFakeDeath() || isParalyzed(); }
@@ -1646,7 +1646,7 @@ public abstract class L2Character extends L2Object
 	public boolean isMovementDisabled() { return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImobilised() || isFakeDeath(); }
 
 	/** Return True if the L2Character can be controlled by the player (confused, affraid). */
-	public final boolean isOutOfControl() { return isConfused() || isAffraid(); }
+	public final boolean isOutOfControl() { return isConfused() || isAfraid(); }
 
 	public final boolean isOverloaded() { return _isOverloaded; }
 	/** Set the overloaded status of the L2Character is overloaded (if True, the L2PcInstance can't take more item). */
@@ -2322,7 +2322,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final void startFear()
 	{
-		setIsAffraid(true);
+		setIsAfraid(true);
 		getAI().notifyEvent(CtrlEvent.EVT_AFFRAID);
 		updateAbnormalEffect();
 	}
@@ -2546,7 +2546,7 @@ public abstract class L2Character extends L2Object
 		else
 			removeEffect(effect);
 
-		setIsAffraid(false);
+		setIsAfraid(false);
 		updateAbnormalEffect();
 	}
 
@@ -2795,7 +2795,7 @@ public abstract class L2Character extends L2Object
 		if (isSleeping()) ae |= ABNORMAL_EFFECT_SLEEP;
 		if (isConfused()) ae |= ABNORMAL_EFFECT_CONFUSED;
 		if (isMuted())    ae |= ABNORMAL_EFFECT_MUTED;
-		if (isAffraid())  ae |= ABNORMAL_EFFECT_AFFRAID;
+		if (isAfraid())  ae |= ABNORMAL_EFFECT_AFFRAID;
 		if (isPsychicalMuted()) ae |= ABNORMAL_EFFECT_MUTED;
 		return ae;
 	}

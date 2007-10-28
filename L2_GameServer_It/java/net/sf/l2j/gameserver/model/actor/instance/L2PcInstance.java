@@ -6917,6 +6917,7 @@ public final class L2PcInstance extends L2PlayableInstance
             sendPacket(new ActionFailed());
             return;
         }
+
         /*
         if (isWearingFormalWear() && !skill.isPotion())
         {
@@ -6963,7 +6964,8 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Check if it's ok to summon
         // siege golem (13), Wild Hog Cannon (299), Swoop Cannon (448)
-        if ((skill.getId() == 13 || skill.getId() == 299 || skill.getId() == 448) && !SiegeManager.getInstance().checkIfOkToSummon(this, false))
+        if ((skill.getId() == 13 || skill.getId() == 299 || skill.getId() == 448) 
+        		&& !SiegeManager.getInstance().checkIfOkToSummon(this, false))
 			return;
 
 
@@ -7034,14 +7036,6 @@ public final class L2PcInstance extends L2PlayableInstance
         		return;
         	}
         }
-        // GeoData Los Check here
-        if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
-        {
-            sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
-            sendPacket(new ActionFailed());
-            return;
-        }
-
 
         //************************************* Check skill availability *******************************************
 
@@ -7346,6 +7340,14 @@ public final class L2PcInstance extends L2PlayableInstance
         	sendPacket(new ActionFailed());
         	abortCast();
         	return;
+        }
+        
+        // GeoData Los Check here
+        if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
+        {
+            sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
+            sendPacket(new ActionFailed());
+            return;
         }
 
         // If all conditions are checked, create a new SkillDat object and set the player _currentSkill
@@ -10074,7 +10076,6 @@ public final class L2PcInstance extends L2PlayableInstance
     }
 
 	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>().setShared(true);
-	private boolean _isRunningAnimation = false;
 
 	/**
 	 * Simple class containing all neccessary information to maintain
@@ -10178,20 +10179,5 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setForceBuff(ForceBuff fb)
 	{
 		_forceBuff = fb;
-	}
-	/**
-	 * Set _isRunningAnimation to given value
-	 */
-	public void setIsRunningAnimation(boolean state)
-	{
-		_isRunningAnimation = state;
-	}
-
-	/**
-	 * @return _isRunningAnimation
-	 */
-	public boolean isRunningAnimation()
-	{
-		return _isRunningAnimation;
 	}
 }
