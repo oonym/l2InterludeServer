@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -82,11 +81,14 @@ public class RequestSocialAction extends L2GameClientPacket
 			
 			SocialAction atk = new SocialAction(activeChar.getObjectId(), _actionId);
 			activeChar.broadcastPacket(atk);
+			/*
 			// Schedule a social task to wait for the animation to finish
 			ThreadPoolManager.getInstance().scheduleGeneral(new SocialTask(this), 2600);
 			activeChar.setIsParalyzed(true);
+			*/
 		}
 	}
+	/*
 	class SocialTask implements Runnable
 	{
 		L2PcInstance _player;
@@ -99,6 +101,8 @@ public class RequestSocialAction extends L2GameClientPacket
 			_player.setIsParalyzed(false);
 		}
 	}
+	*/
+	
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
