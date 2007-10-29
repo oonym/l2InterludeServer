@@ -1527,6 +1527,11 @@ public final class Formulas
 			
 			// Finally, calculate skilltype vulnerabilities
 			SkillType type = skill.getSkillType();
+			
+			// For additional effects on PDAM and MDAM skills (like STUN, SHOCK, PARALYZE...)
+			if (type != null && (type == SkillType.PDAM || type == SkillType.MDAM))
+				type = skill.getEffectType();
+
 			if (type != null)
 			{
 				switch (type)
@@ -1557,6 +1562,7 @@ public final class Formulas
 						;
 				}
 			}
+			
 		}
 		return multiplier;
 	}
