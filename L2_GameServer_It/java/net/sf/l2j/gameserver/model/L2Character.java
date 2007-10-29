@@ -3914,8 +3914,10 @@ public abstract class L2Character extends L2Object
                 	{
                 		// Even though there's no path found (remember geonodes aren't perfect), 
                 		// the mob is attacking and right now we set it so that the mob will go
-                		// after target anyway, is dz is small enough.
-                		if (this instanceof L2PlayableInstance || Math.abs(z - curZ) > 140)
+                		// after target anyway, is dz is small enough. Summons will follow their masters no matter what.
+                		if (this instanceof L2PcInstance 
+                				|| (!(this instanceof L2PlayableInstance) && Math.abs(z - curZ) > 140)
+                				|| (this instanceof L2Summon && !((L2Summon)this).getFollowStatus())) 
                 		{
                 			getAI().stopFollow();
                 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
