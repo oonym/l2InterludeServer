@@ -45,11 +45,13 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionLogicOr;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerHp;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerHpPercentage;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerLevel;
+import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerMp;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerRace;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState;
 import net.sf.l2j.gameserver.skills.conditions.ConditionSkillStats;
 import net.sf.l2j.gameserver.skills.conditions.ConditionSlotItemId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetAggro;
+import net.sf.l2j.gameserver.skills.conditions.ConditionTargetClassIdRestriction;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetLevel;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetUsesWeaponKind;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingItemType;
@@ -391,6 +393,11 @@ abstract class DocumentBase
                 double rate = Double.parseDouble(getValue(a.getNodeValue(), null));
                 cond = joinAnd(cond, new ConditionPlayerHpPercentage(rate));
             }
+            else if ("mp".equalsIgnoreCase(a.getNodeName()))
+            {
+                int hp = Integer.decode(getValue(a.getNodeValue(), null));
+                cond = joinAnd(cond, new ConditionPlayerMp(hp));
+            }
             else if ("seed_fire".equalsIgnoreCase(a.getNodeName()))
             {
                 ElementSeeds[0] = Integer.decode(getValue(a.getNodeValue(), null));
@@ -456,6 +463,17 @@ abstract class DocumentBase
             {
                 int lvl = Integer.decode(getValue(a.getNodeValue(), template));
                 cond = joinAnd(cond, new ConditionTargetLevel(lvl));
+            }
+            else if ("class_id_restriction".equalsIgnoreCase(a.getNodeName()))
+            {
+            	FastList<Integer> array = new FastList<Integer>();
+            	StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
+            	while (st.hasMoreTokens())
+                {
+                    String item = st.nextToken().trim();
+                    array.add(Integer.decode(getValue(item, null)));
+                }
+            	cond = joinAnd(cond, new ConditionTargetClassIdRestriction(array));
             }
             else if ("using".equalsIgnoreCase(a.getNodeName()))
             {

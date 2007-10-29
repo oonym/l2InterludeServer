@@ -498,7 +498,7 @@ public abstract class L2Item
 
         for (L2Skill skill : _skills)
         {
-            if (!skill.checkCondition(caster, true)) 
+            if (!skill.checkCondition(caster, target, true)) 
                 continue; // Skill condition not met
             
             if (target.getEffect(skill.getId()) != null)

@@ -82,7 +82,10 @@ public class Manadam implements ISkillHandler
 				double damage = Formulas.getInstance().calcManaDam(activeChar, target, skill, ss, bss);
 				
 				double mp = ( damage > target.getCurrentMp() ? target.getCurrentMp() : damage);
-				target.setCurrentMp(target.getCurrentMp() - mp);
+				target.reduceCurrentMp(mp);
+				if (damage > 0)
+					if (target.isSleeping()) target.stopSleeping(null);
+
 				StatusUpdate sump = new StatusUpdate(target.getObjectId());
 				sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
 				// [L2J_JP EDIT START - TSL]

@@ -81,7 +81,7 @@ public class L2SkillSummon extends L2Skill {
 				}
 			}
 		}
-		return super.checkCondition(activeChar, false);
+		return super.checkCondition(activeChar, null, false);
 	}
 	
 	@Override

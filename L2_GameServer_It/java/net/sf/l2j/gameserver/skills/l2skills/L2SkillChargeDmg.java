@@ -46,7 +46,7 @@ public class L2SkillChargeDmg extends L2Skill
 	}
 
 	@Override
-	public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
+	public boolean checkCondition(L2Character activeChar, L2Object target, boolean itemOrWeapon)
 	{
 		if (activeChar instanceof L2PcInstance)
 		{
@@ -60,7 +60,7 @@ public class L2SkillChargeDmg extends L2Skill
 				return false;
 			}
 		}
-		return super.checkCondition(activeChar, itemOrWeapon);
+		return super.checkCondition(activeChar, target, itemOrWeapon);
 	}
 	
 	@Override

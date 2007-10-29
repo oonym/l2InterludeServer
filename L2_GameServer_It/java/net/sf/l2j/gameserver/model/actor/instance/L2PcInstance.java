@@ -7123,7 +7123,7 @@ public final class L2PcInstance extends L2PlayableInstance
         }
 
         // Check if all casting conditions are completed
-        if (!skill.checkCondition(this, false))
+        if (!skill.checkCondition(this, target, false))
         {
             // Send a Server->Client packet ActionFailed to the L2PcInstance
             sendPacket(new ActionFailed());

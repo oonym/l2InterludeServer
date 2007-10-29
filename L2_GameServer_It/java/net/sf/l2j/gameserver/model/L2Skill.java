@@ -31,7 +31,6 @@ import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
-import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2ArtefactInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
@@ -41,7 +40,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.model.base.ClassId;
-import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.EtcStatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -125,6 +123,7 @@ public abstract class L2Skill
     	// Damage
     	PDAM,
     	MDAM,
+    	CPDAM,
     	MANADAM,
     	DOT,
     	MDOT,
@@ -1067,6 +1066,7 @@ public abstract class L2Skill
         {
             case PDAM:
             case MDAM:
+            case CPDAM:
             case DOT:
             case BLEED:
             case POISON:
@@ -1151,7 +1151,7 @@ public abstract class L2Skill
         return false;
     }
 
-    public boolean checkCondition(L2Character activeChar, boolean itemOrWeapon)
+    public boolean checkCondition(L2Character activeChar, L2Object target, boolean itemOrWeapon)
     {
         if ((getCondition() & L2Skill.COND_SHIELD) != 0)
         {
@@ -1166,11 +1166,14 @@ public abstract class L2Skill
 
         Condition preCondition = _preCondition;
         if(itemOrWeapon) preCondition = _itemPreCondition;
-
         if (preCondition == null) return true;
+
         Env env = new Env();
         env.player = activeChar;
+        if (target instanceof L2Character) // TODO: object or char?
+        	env.target = (L2Character)target;
         env.skill = this;
+
         if (!preCondition.test(env))
         {
             String msg = preCondition.getMessage();

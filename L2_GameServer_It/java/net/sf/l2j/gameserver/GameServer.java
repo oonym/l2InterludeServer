@@ -154,6 +154,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Blow;
 import net.sf.l2j.gameserver.handler.skillhandlers.Charge;
 import net.sf.l2j.gameserver.handler.skillhandlers.CombatPointHeal;
 import net.sf.l2j.gameserver.handler.skillhandlers.Continuous;
+import net.sf.l2j.gameserver.handler.skillhandlers.CpDam;
 import net.sf.l2j.gameserver.handler.skillhandlers.Craft;
 import net.sf.l2j.gameserver.handler.skillhandlers.DeluxeKey;
 import net.sf.l2j.gameserver.handler.skillhandlers.Disablers;
@@ -466,6 +467,7 @@ public class GameServer
 		_skillHandler.registerSkillHandler(new Blow());
 		_skillHandler.registerSkillHandler(new Pdam());
 		_skillHandler.registerSkillHandler(new Mdam());
+		_skillHandler.registerSkillHandler(new CpDam());
 		_skillHandler.registerSkillHandler(new Manadam());
 		_skillHandler.registerSkillHandler(new Heal());
         _skillHandler.registerSkillHandler(new CombatPointHeal());
