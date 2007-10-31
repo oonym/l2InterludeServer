@@ -850,19 +850,18 @@ public class GeoEngine extends GeoData
 	            layers--;
 	            index += 2;
 	        }
-	        if (temph > zmax + 150 || temph < zmin - 150)        
+	        if (temph > zmax + 200 || temph < zmin - 200)        
 	        {
-	        	//Just log error - we trust GeoData and spawn NPC on nearlest GeoData Z
 	        	if(Config.DEBUG)
 	        		_log.warning("SpawnHeight Error - Couldnt find correct layer to spawn NPC - GeoData or Spawnlist Bug!: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+" SpawnId: "+spawnid+" at: "+geox+" : "+geoy);
-	        	return temph;
+	        	return (short)zmin;
 	        }
 	    }
-	    if (temph > zmax + 600 || temph < zmin - 600) 
+	    if (temph > zmax + 1000 || temph < zmin - 1000) 
 	    {
-	    	//Just log error - we trust GeoData and spawn NPC on Z given by GeoData
 	    	if(Config.DEBUG)
-	    		_log.warning("SpawnHeight Error - Spawnlist z value is wrong or GeoData error: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+" SpawnId: "+spawnid+" at: "+geox+" : "+geoy);	        
+	    		_log.warning("SpawnHeight Error - Spawnlist z value is wrong or GeoData error: zmin: "+zmin+" zmax: "+zmax+" value: "+temph+" SpawnId: "+spawnid+" at: "+geox+" : "+geoy);
+	    	return (short)zmin;
         }
 	    return temph;
 	}
