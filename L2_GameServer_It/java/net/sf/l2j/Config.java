@@ -260,13 +260,12 @@ public final class Config
     /** Alternative default level for privileges */
     public static int ALT_PRIVILEGES_DEFAULT_LEVEL;
 
-    /** Olympiad Compitition Starting time */
+    /** Olympiad Competition Starting time */
     public static int ALT_OLY_START_TIME;
-
-    /** Olympiad Compition Min */
+    /** Olympiad Minutes */
     public static int ALT_OLY_MIN;
 
-    /** Olympaid Comptetition Period */
+    /** Olympiad Competition Period */
     public static long ALT_OLY_CPERIOD;
 
     /** Olympiad Battle Period */
@@ -1684,7 +1683,7 @@ public final class Config
     	        ALT_MANOR_REFRESH_MIN                               = Integer.parseInt(altSettings.getProperty("AltManorRefreshMin","00"));
     	        ALT_MANOR_APPROVE_TIME                              = Integer.parseInt(altSettings.getProperty("AltManorApproveTime","6"));
     	        ALT_MANOR_APPROVE_MIN                               = Integer.parseInt(altSettings.getProperty("AltManorApproveMin","00"));
-    	        ALT_MANOR_MAINTENANCE_PERIOD                        = Integer.parseInt(altSettings.getProperty("AltManorMaintenancePreiod","360000"));
+    	        ALT_MANOR_MAINTENANCE_PERIOD                        = Integer.parseInt(altSettings.getProperty("AltManorMaintenancePeriod","360000"));
     	        ALT_MANOR_SAVE_ALL_ACTIONS                          = Boolean.parseBoolean(altSettings.getProperty("AltManorSaveAllActions","false"));
     	        ALT_MANOR_SAVE_PERIOD_RATE                          = Integer.parseInt(altSettings.getProperty("AltManorSavePeriodRate","2"));
 
