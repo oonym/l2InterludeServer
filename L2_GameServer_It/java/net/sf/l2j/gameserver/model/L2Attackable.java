@@ -464,7 +464,7 @@ public class L2Attackable extends L2NpcInstance
         if (Config.L2JMOD_CHAMPION_ENABLE)
         {
         	//Set champion on next spawn
-        	if (this instanceof L2MonsterInstance && Config.L2JMOD_CHAMPION_FREQUENCY > 0 && getLevel()>=Config.L2JMOD_CHAMP_MIN_LVL && getLevel()<=Config.L2JMOD_CHAMP_MAX_LVL) 
+        	if (!(this instanceof L2BossInstance) && this instanceof L2MonsterInstance && Config.L2JMOD_CHAMPION_FREQUENCY > 0 && getLevel()>=Config.L2JMOD_CHAMP_MIN_LVL && getLevel()<=Config.L2JMOD_CHAMP_MAX_LVL) 
         	{        
         		int random = Rnd.get(100);
         		if (random < Config.L2JMOD_CHAMPION_FREQUENCY) 
