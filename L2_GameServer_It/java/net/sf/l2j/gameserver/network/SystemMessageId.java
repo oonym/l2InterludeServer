@@ -24,6 +24,16 @@ package net.sf.l2j.gameserver.network;
 public enum SystemMessageId
 {
 	/** 
+	 * ID: 1051 <br>
+	 * Message: Payment for your clan hall has not been made please make payment tomorrow.
+	 */
+	PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW(1051),
+	/** 
+	 * ID: 1052 <br>
+	 * Message: Payment of Clan Hall is overdue the owner loose Clan Hall.
+	 */
+	THE_CLAN_HALL_FEE_IS_ONE_WEEK_OVERDUE_THEREFORE_THE_CLAN_HALL_OWNERSHIP_HAS_BEEN_REVOKED(1052),
+	/** 
 	 * ID: 85 <br>
 	 * Message: You may not attack this target in a peaceful zone.
 	 */

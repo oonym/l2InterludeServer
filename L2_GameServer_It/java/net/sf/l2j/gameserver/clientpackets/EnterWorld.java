@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.communitybbs.Manager.RegionBBSManager;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
+import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
 import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.PetitionManager;
@@ -46,6 +47,7 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.entity.ClanHall;
 import net.sf.l2j.gameserver.model.entity.Couple;
 import net.sf.l2j.gameserver.model.entity.Hero;
 import net.sf.l2j.gameserver.model.entity.L2Event;
@@ -322,6 +324,14 @@ public class EnterWorld extends L2GameClientPacket
 				else if (siege.checkIsDefender(activeChar.getClan()))
 		    		activeChar.setSiegeState((byte)2);
 		    }
+			// Add message at connexion if clanHall not paid.
+			// Possibly this is custom...
+			ClanHall clanHall = ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan());
+			if(clanHall != null){
+				if(!clanHall.getPaid()){
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW));
+				}
+			}
 		}
 		
 		if (!activeChar.isGM() && activeChar.getSiegeState() < 2 && activeChar.isInsideZone(L2Character.ZONE_SIEGE))

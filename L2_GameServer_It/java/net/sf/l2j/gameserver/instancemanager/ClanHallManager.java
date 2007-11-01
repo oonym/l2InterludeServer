@@ -86,16 +86,15 @@ public class ClanHallManager
             {
             	id = rs.getInt("id");
             	if(rs.getInt("ownerId") == 0)
-            		_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),0,rs.getInt("Grade")));
+            		_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),0,rs.getInt("Grade"),rs.getBoolean("paid")));
             	else{
-            		
             		if(ClanTable.getInstance().getClan(rs.getInt("ownerId")) != null)
             		{
-            			_clanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),rs.getLong("paidUntil"),rs.getInt("Grade")));
+            			_clanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),rs.getLong("paidUntil"),rs.getInt("Grade"),rs.getBoolean("paid")));
             			ClanTable.getInstance().getClan(rs.getInt("ownerId")).setHasHideout(id);
             		}else
             		{
-            			_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),rs.getLong("paidUntil"),rs.getInt("Grade")));
+            			_freeClanHall.put(id,new ClanHall(id,rs.getString("name"),rs.getInt("ownerId"),rs.getInt("lease"),rs.getString("desc"),rs.getString("location"),rs.getLong("paidUntil"),rs.getInt("Grade"),rs.getBoolean("paid")));
             			_freeClanHall.get(id).free();
             			AuctionManager.getInstance().initNPC(id);
             		}
