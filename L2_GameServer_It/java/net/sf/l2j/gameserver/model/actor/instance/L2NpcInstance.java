@@ -549,12 +549,13 @@ public class L2NpcInstance extends L2Character
      * 
      */
     @Override
-	public void onAction(L2PcInstance player)
+    public void onAction(L2PcInstance player)
     {
-    	if (player.isConfused()) {
-    		player.sendPacket(new ActionFailed());
-    		return;
-    	}
+        if (player.isOutOfControl())
+        {
+            player.sendPacket(new ActionFailed());
+            return;
+        }
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
         {

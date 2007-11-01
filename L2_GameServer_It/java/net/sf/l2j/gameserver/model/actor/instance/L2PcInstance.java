@@ -3379,7 +3379,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		// Check if the L2PcInstance is confused
-		if (player.isConfused())
+		if (player.isOutOfControl())
 		{
 			// Send a Server->Client packet ActionFailed to the player
 			player.sendPacket(new ActionFailed());

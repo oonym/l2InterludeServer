@@ -1609,7 +1609,7 @@ public abstract class L2Character extends L2Object
 	public final boolean isAlikeDead() { return isFakeDeath() || !(getCurrentHp() > 0.5); }
 
 	/** Return True if the L2Character can't use its skills (ex : stun, sleep...). */
-	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isStunned() || isSleeping() || isParalyzed() || isAfraid(); }
+	public final boolean isAllSkillsDisabled() { return _allSkillsDisabled || isStunned() || isSleeping() || isParalyzed(); }
 
 	/** Return True if the L2Character can't attack (stun, sleep, attackEndTime, fakeDeath, paralyse). */
 	public boolean isAttackingDisabled() { return isStunned() || isSleeping() || _attackEndTime > GameTimeController.getGameTicks() || isFakeDeath() || isParalyzed(); }
@@ -1645,7 +1645,7 @@ public abstract class L2Character extends L2Object
 	/** Return True if the L2Character can't move (stun, root, sleep, overload, paralyzed). */
 	public boolean isMovementDisabled() { return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImobilised() || isFakeDeath(); }
 
-	/** Return True if the L2Character can be controlled by the player (confused, affraid). */
+	/** Return True if the L2Character can be controlled by the player (confused, afraid). */
 	public final boolean isOutOfControl() { return isConfused() || isAfraid(); }
 
 	public final boolean isOverloaded() { return _isOverloaded; }
@@ -1979,7 +1979,7 @@ public abstract class L2Character extends L2Object
 
 	// XXX TEMP HACKS (get the proper mask for these effects)
 	public static final int ABNORMAL_EFFECT_CONFUSED   = 0x0020;
-	public static final int ABNORMAL_EFFECT_AFFRAID    = 0x0010;
+	public static final int ABNORMAL_EFFECT_AFRAID     = 0x0010;
 
 	// Method - Public
 	/**
@@ -2795,7 +2795,7 @@ public abstract class L2Character extends L2Object
 		if (isSleeping()) ae |= ABNORMAL_EFFECT_SLEEP;
 		if (isConfused()) ae |= ABNORMAL_EFFECT_CONFUSED;
 		if (isMuted())    ae |= ABNORMAL_EFFECT_MUTED;
-		if (isAfraid())  ae |= ABNORMAL_EFFECT_AFFRAID;
+		if (isAfraid())  ae |= ABNORMAL_EFFECT_AFRAID;
 		if (isPsychicalMuted()) ae |= ABNORMAL_EFFECT_MUTED;
 		return ae;
 	}

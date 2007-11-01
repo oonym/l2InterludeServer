@@ -117,7 +117,8 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			double dx = _targetX-_curX;
 			double dy = _targetY-_curY;
 			// Can't move if character is confused, or trying to move a huge distance
-			if (activeChar.isOutOfControl()||((dx*dx+dy*dy) > 98010000)) { // 9900*9900
+			if (activeChar.isOutOfControl() || ((dx*dx+dy*dy) > 98010000)) // 9900*9900
+			{
 				activeChar.sendPacket(new ActionFailed());
 				return;
 			}

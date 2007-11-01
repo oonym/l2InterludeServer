@@ -77,7 +77,7 @@ public final class AttackRequest extends L2GameClientPacket
 			{
 				//_log.config("Starting ForcedAttack");
 				target.onForcedAttack(activeChar);
-				//_log.config("Ending ForcedAttack");				
+				//_log.config("Ending ForcedAttack");
 			} 
 			else
 			{
