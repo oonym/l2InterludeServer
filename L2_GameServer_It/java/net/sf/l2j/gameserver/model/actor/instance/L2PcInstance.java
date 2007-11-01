@@ -76,7 +76,6 @@ import net.sf.l2j.gameserver.instancemanager.CoupleManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.instancemanager.DimensionalRiftManager;
 import net.sf.l2j.gameserver.instancemanager.DuelManager;
-import net.sf.l2j.gameserver.instancemanager.FishingZoneManager;
 import net.sf.l2j.gameserver.instancemanager.ItemsOnGroundManager;
 import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
@@ -9362,37 +9361,22 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	private FishData _fish;
 
-    public void startFishing()
+   /*  startFishing() was stripped of any pre-fishing related checks, namely the fishing zone check.
+    * Also worthy of note is the fact the code to find the hook landing position was also striped. The
+    * stripped code was moved into fishing.java. In my opinion it makes more sense for it to be there
+    * since all other skill related checks were also there. Last but not least, moving the zone check
+    * there, fixed a bug where baits would always be consumed no matter if fishing actualy took place.
+    * startFishing() now takes up 3 arguments, wich are acurately described as being the hook landing 
+    * coordinates.
+    */
+	public void startFishing(int _x, int _y, int _z)
     {
         stopMove(null);
-        int rnd = Rnd.get(50) + 150;
-        double angle = Util.convertHeadingToDegree(getHeading());
-        //this.sendMessage("Angel: "+angle+" Heading: "+getHeading());
-        double radian = Math.toRadians(angle - 90);
-        double sin = Math.sin(radian);
-        double cos = Math.cos(radian);
-        int x1 = -(int)(sin * rnd); //Somthing wrong with L2j Heding calculation o_0?
-        int y1 = (int)(cos * rnd); //Somthing wrong with L2j Heding calculation o_0?
-        int x = getX()+x1;
-        int y = getY()+y1;
-        int z = getZ()-30;
-        _fishx = x;
-        _fishy = y;
-        _fishz = z;
-        
-		if (!FishingZoneManager.getInstance().isInsideFishingZone(_fishx, _fishy, _fishz))
-		{
-            //You can't fish here
-			sendPacket(new SystemMessage(SystemMessageId.CANNOT_FISH_HERE));
-			if (!isGM())
-			{
-				EndFishing(false);
-				return;
-			}
-		}
-
         setIsImobilised(true);
         _fishing = true;
+        _fishx = _x;
+        _fishy = _y;
+        _fishz = _z;
         broadcastUserInfo();
         //Starts fishing
     	int lvl = GetRandomFishLvl();
@@ -9414,7 +9398,8 @@ public final class L2PcInstance extends L2PlayableInstance
         ExFishingStart efs = null;
         if (!GameTimeController.getInstance().isNowNight() && _lure.isNightLure())
         	_fish.setType(-1);
-    	efs = new ExFishingStart(this,_fish.getType(),x,y,z,_lure.isNightLure());
+		//sendMessage("Hook x,y: " + _x + "," + _y + " - Water Z, Player Z:" + _z + ", " + getZ()); //debug line, uncoment to show coordinates used in fishing.
+    	efs = new ExFishingStart(this,_fish.getType(),_x,_y,_z,_lure.isNightLure());
         broadcastPacket(efs);
         StartLookingForFishTask();
     }

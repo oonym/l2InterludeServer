@@ -101,4 +101,20 @@ public class ZoneNPoly extends L2ZoneForm
 
 		return Math.sqrt(shortestDist);
 	}
+	
+	/* getLowZ() / getHighZ() - These two functions were added to cope with the demand of the new
+	 * fishing algorithms, wich are now able to correctly place the hook in the water, thanks to getHighZ().
+	 * getLowZ() was added, considering potential future modifications.  
+	 */ 
+	@Override
+	public int getLowZ()
+	{
+		return _z1;
+	}
+		
+	@Override
+	public int getHighZ()
+	{
+		return _z2;
+	}
 }

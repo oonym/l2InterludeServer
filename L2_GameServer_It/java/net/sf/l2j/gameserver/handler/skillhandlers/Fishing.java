@@ -33,6 +33,10 @@ import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
+import net.sf.l2j.gameserver.instancemanager.FishingZoneManager;
+import net.sf.l2j.gameserver.model.zone.type.L2FishingZone;
+import net.sf.l2j.gameserver.util.Util;
+import net.sf.l2j.util.Rnd;
 
 public class Fishing implements ISkillHandler 
 { 
@@ -46,6 +50,49 @@ public class Fishing implements ISkillHandler
 
         L2PcInstance player = (L2PcInstance)activeChar;
 		
+        /* If fishing is disabled, there isn't much point in doing anything else, unless you are GM.
+         * so this got moved up here, before anything else.
+         */
+		if (!Config.ALLOWFISHING && !player.isGM()) 
+		{
+			player.sendMessage("Not Working Yet");
+			return;
+		}
+		
+		/* If fishing is enabled, here is the code that was striped from startFishing() in L2PcInstance.
+		 * Decide now where will the hook be cast...*/
+        int rnd = Rnd.get(200) + 200;
+        double angle = Util.convertHeadingToDegree(player.getHeading());
+        //this.sendMessage("Angel: "+angle+" Heading: "+getHeading());
+        double radian = Math.toRadians(angle - 90);
+        double sin = Math.sin(radian);
+        double cos = Math.cos(radian);
+        int x1 = -(int)(sin * rnd); //Somthing wrong with L2j Heding calculation o_0?
+        int y1 = (int)(cos * rnd); //Somthing wrong with L2j Heding calculation o_0?
+        int x = player.getX()+x1;
+        int y = player.getY()+y1;
+        int z = player.getZ()-30;
+
+        /* ...and if the spot is in a fishing zone. If it is, it will then position the hook on the water
+         * surface. If not, you have to be GM to proceed past here... in that case, the hook will be 
+         * positioned using the old Z lookup method.
+         */
+        L2FishingZone aimingTo = FishingZoneManager.getInstance().isInsideFishingZone(x, y, z);
+		if (aimingTo != null)
+		{
+	        z = aimingTo.getWaterZ();
+			//player.sendMessage("Hook x,y: " + x + "," + y + " - Water Z, Player Z:" + z + ", " + player.getZ()); //debug line, shows hook landing related coordinates. Uncoment if needed.
+		}
+		else
+		{
+            //You can't fish here
+			player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_FISH_HERE));
+			if (!player.isGM())
+			{
+				return;
+			}
+		}         		
+		 
 		if (player.isFishing())
 		{
 			if (player.GetFishCombat() != null) player.GetFishCombat().doDie(false);
@@ -61,7 +108,12 @@ public class Fishing implements ISkillHandler
 			if (!player.isGM())
 				return;
 		}
-		if (player.getZ() <= -3800)
+        
+        /* Of course since you can define fishing water volumes of any height, the function needs to be 
+         * changed to cope with that. Still, this is assuming that fishing zones water surfaces, are 
+         * always above "sea level".
+         */ 
+		if (player.getZ() <= -3800 || player.getZ() < (z - 32))
 		{
             //You can't fish in water
 			player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_FISH_UNDER_WATER));
@@ -83,33 +135,28 @@ public class Fishing implements ISkillHandler
 		L2ItemInstance lure = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 		if (lure == null)
 		{
-		    //Not enough bait
+		    //Bait not equiped.
 			player.sendPacket(new SystemMessage(SystemMessageId.BAIT_ON_HOOK_BEFORE_FISHING));
             return;
-		}
-		if (!Config.ALLOWFISHING && !player.isGM())
-		{
-			player.sendMessage("Not Working Yet");
-			return;
 		}		
 		player.SetLure(lure);
-		L2ItemInstance lure2 = player.getInventory().destroyItem("Consume", player.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND), 1, player, null);
+		L2ItemInstance lure2 = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 
-		if (lure2 == null || lure2.getCount() == 0)
+		if (lure2 == null || lure2.getCount() < 1) //Not enough bait.
 		{
 		    player.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_BAIT));
 			player.sendPacket(new ItemList(player,false));
 		}
-		else
-		{
+		else //Has enough bait, consume 1 and update inventory. Start fishing follows.
+		{   
+			lure2 = player.getInventory().destroyItem("Consume", player.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND), 1, player, null);
 			InventoryUpdate iu = new InventoryUpdate();
 			iu.addModifiedItem(lure2);
 			player.sendPacket(iu);
 		}
-		player.startFishing();		
 		
-		
-        
+		// If everything else checks out, actually cast the hook and start fishing... :P
+		player.startFishing(x, y, z);		
         
     } 
     
