@@ -17,21 +17,23 @@
  */
 package net.sf.l2j.gameserver;
 
+import java.util.logging.Logger;
+
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.ItemContainer;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.util.Rnd;
-
 
 /**
  *
  * Thorgrim - 2005
- * Add 500k adena to the clan warehouse every 2 hours
+ * Class managing periodical events with castle
  *
  */
 public class CastleUpdater implements Runnable
 {
+		protected static Logger _log = Logger.getLogger(CastleUpdater.class.getName());	
 		private L2Clan _clan;
         private int _runCount = 0;
 		
@@ -43,46 +45,28 @@ public class CastleUpdater implements Runnable
 		
 		public void run()
 		{
-		    try {
-                // Move current castle treasury to clan warehouse every 2 hour
-		    	ItemContainer warehouse = _clan.getWarehouse();
-		        if ((warehouse != null)&&(_clan.getHasCastle() > 0))
-		        {
-                    if (_runCount % 2 == 0)
-                    {
-                        Castle castle = CastleManager.getInstance().getCastleById(_clan.getHasCastle());
-
-                        int amount = castle.getTreasury();
-                        if (amount > 0)
-                        {
-                            // Move the current treasury amount to clan warehouse
-                        	if (castle.addToTreasuryNoTax(amount * -1))
-                        		warehouse.addItem("Castle", 57, amount, null, null);
-                            
-                        }
-                    }
-
-                    // TODO: Check if those free items to clanWH are correct.  As far as I can find, 
-                    // castle owners normally earn these items via the manor system!  -- Fulminus
-                    
-                    // Give clan 1 Dualsword Craft Stamp every 3 hour (8 per day)
-                    // Give clan ~1 Secret Book of Giants daily (it's been confirmed that castle owners get these, but method is unknown)
-                    if (_runCount % 3 == 0)
-                    {
-                    	warehouse.addItem("Castle", 5126, 1, null, null);
-                    	if (Rnd.get(100) < 25) warehouse.addItem("Castle", 6622, 1, null, null);
-                    }
-                    
+			try 
+			{
+				// Move current castle treasury to clan warehouse every 2 hour
+				ItemContainer warehouse = _clan.getWarehouse();
+				if ((warehouse != null) && (_clan.getHasCastle() > 0)) 
+				{
+					Castle castle = CastleManager.getInstance().getCastleById(_clan.getHasCastle());
+					if (!Config.ALT_MANOR_SAVE_ALL_ACTIONS) 
+					{
+						if (_runCount % Config.ALT_MANOR_SAVE_PERIOD_RATE == 0) 
+						{
+							castle.saveSeedData();
+							castle.saveCropData();
+							_log.info("Manor System: all data for " + castle.getName() + " saved");
+						}
+					}
                     _runCount++;
-                    if (_runCount == 7) _runCount = 1;
-
-                    // FIXME: Why are we rescheduling in this manner, instead of scheduling with fixed rate from the beginning? 
-                    // re-run again in 1 hours
-                    CastleUpdater cu = new CastleUpdater(_clan, _runCount);
-                    ThreadPoolManager.getInstance().scheduleGeneral(cu, 3600000);
-		        }
-		    } catch (Throwable e) {
-		        e.printStackTrace();
-		    }
+					CastleUpdater cu = new CastleUpdater(_clan, _runCount);
+					ThreadPoolManager.getInstance().scheduleGeneral(cu, 3600000);
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 }
