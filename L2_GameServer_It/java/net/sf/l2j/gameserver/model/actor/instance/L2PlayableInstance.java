@@ -39,6 +39,7 @@ public abstract class L2PlayableInstance extends L2Character
 {
 
 	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
+	private boolean _getCharmOfLuck = false; // Charm of Luck - During a Raid/Boss war, decreased chance for death penalty 
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
 	 *  
@@ -178,4 +179,25 @@ public abstract class L2PlayableInstance extends L2Character
     
 	public abstract boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference, boolean sendMessage);
 	public abstract boolean destroyItem(String process, int objectId, int count, L2Object reference, boolean sendMessage);
+	 
+	//Charm of Luck - During a Raid/Boss war, decreased chance for death penalty 
+	public final boolean getCharmOfLuck() { return _getCharmOfLuck; } 
+	public final void setCharmOfLuck(boolean value) { _getCharmOfLuck = value; } 
+	
+	public final void startCharmOfLuck() 
+	{ 
+		setCharmOfLuck(true); 
+		updateAbnormalEffect(); 
+	} 
+	
+	public final void stopCharmOfLuck(L2Effect effect) 
+	{ 
+		if (effect == null) 
+			stopEffects(L2Effect.EffectType.CHARM_OF_LUCK); 
+		else 
+			removeEffect(effect); 
+	              
+		setCharmOfLuck(false); 	
+		updateAbnormalEffect(); 
+	} 
 }

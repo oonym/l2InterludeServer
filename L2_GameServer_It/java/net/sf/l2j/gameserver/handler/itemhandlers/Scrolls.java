@@ -39,6 +39,7 @@ public class Scrolls implements IItemHandler
 {
 	private static final int[] ITEM_IDS = { 3926, 3927, 3928, 3929, 3930, 3931, 3932, 
 											3933, 3934, 3935, 4218, 5593, 5594, 5595, 6037,
+											5703, 5803, 5804, 5805, 5806, 5807, // lucky charm 
 											8515, 8516, 8517, 8518, 8519, 8520, // charm of courage
 											8594, 8595, 8596, 8597, 8598, 8599, // scrolls of recovery
 											8954, 8955, 8956,                   // primeval crystal
@@ -90,6 +91,25 @@ public class Scrolls implements IItemHandler
 		   		activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE));
           	return;
 		}
+		else if (itemId == 5703 || itemId >= 5803 && itemId <= 5807) 
+		{ 
+			if ((itemId == 5703 && activeChar.getExpertiseIndex()==0) ||     // Lucky Charm (No Grade) 
+					(itemId == 5803 && activeChar.getExpertiseIndex()==1) || // Lucky Charm (D Grade) 
+					(itemId == 5804 && activeChar.getExpertiseIndex()==2) || // Lucky Charm (C Grade) 
+					(itemId == 5805 && activeChar.getExpertiseIndex()==3) || // Lucky Charm (B Grade) 
+					(itemId == 5806 && activeChar.getExpertiseIndex()==4) || // Lucky Charm (A Grade) 
+					(itemId == 5807 && activeChar.getExpertiseIndex()==5))   // Lucky Charm (S Grade) 
+			{ 
+				if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false)) 
+					return; 
+				activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2168, activeChar.getExpertiseIndex()+1, 1, 0)); 
+				useScroll(activeChar, 2168, activeChar.getExpertiseIndex()+1); 
+				activeChar.setCharmOfLuck(true); 
+			} 
+			else 
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE)); 
+			return; 
+		} 
 	   	else if (itemId >= 8515 && itemId <= 8520) // Charm of Courage XML: 5041
 	   	{
 	   		if ((itemId == 8515 && activeChar.getExpertiseIndex()==0) || // Charm of Courage (No Grade)
