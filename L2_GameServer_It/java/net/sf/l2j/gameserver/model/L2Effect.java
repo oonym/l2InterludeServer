@@ -82,7 +82,8 @@ public abstract class L2Effect
         BLUFF,
         BATTLE_FORCE,
         SPELL_FORCE,
-        CHARM_OF_LUCK
+        CHARM_OF_LUCK,
+        INVINCIBLE
     }
 
     private static final Func[] _emptyFunctionSet = new Func[0];
