@@ -192,7 +192,6 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.gameserver.util.Broadcast;
 import net.sf.l2j.gameserver.util.FloodProtector;
-import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Point3D;
 import net.sf.l2j.util.Rnd;
 
