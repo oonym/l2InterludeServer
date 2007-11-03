@@ -1,3 +1,21 @@
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * [URL]http://www.gnu.org/copyleft/gpl.html[/URL]
+ */
 package net.sf.l2j.gameserver.model.entity;
 
 import net.sf.l2j.Config;
@@ -7,6 +25,7 @@ import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
@@ -144,7 +163,7 @@ public class TvTEvent
 					continue;
 
 				// implements Runnable and starts itself in constructor
-				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false);
+				new TvTEventTeleporter(playerInstance, team.getCoordinates(), false, false);
 			}
 		}
 
@@ -264,7 +283,7 @@ public class TvTEvent
 				if (playerInstance == null)
 					continue;
 
-				new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, false);
+				new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, false, false);
 			}
 		}
 
@@ -392,7 +411,7 @@ public class TvTEvent
 			return;
 
 		_teams[teamId].addPlayer(playerInstance);
-		new TvTEventTeleporter(playerInstance, _teams[teamId].getCoordinates(), true);
+		new TvTEventTeleporter(playerInstance, _teams[teamId].getCoordinates(), true, false);
 	}
 
 	/**
@@ -409,12 +428,13 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called on every bypass starting with "npc_"<br><br> 
+	 * Called on every bypass by npc of type L2TvTEventNpc<br>
+	 * Needs synchronization cause of the max player check<br><br>
 	 * 
 	 * @param command<br>
 	 * @param playerInstance<br>
 	 */
-	public static void onBypass(String command, L2PcInstance playerInstance)
+	public static synchronized void onBypass(String command, L2PcInstance playerInstance)
 	{
 		if (playerInstance == null || !isParticipating())
 			return;
@@ -428,6 +448,8 @@ public class TvTEvent
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Cursed weapon owners are not allowed to participate.</body></html>");
 			else if (playerInstance.getKarma() > 0)
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Chaotic players are not allowed to participate.</body></html>");
+			else if (_teams[0].getParticipatedPlayerCount() >= Config.TVT_EVENT_MAX_PLAYERS_IN_TEAMS && _teams[1].getParticipatedPlayerCount() >= Config.TVT_EVENT_MAX_PLAYERS_IN_TEAMS)
+				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Sorry the event is full!</body></html>");
 			else if (playerLevel < Config.TVT_EVENT_MIN_LVL || playerLevel > Config.TVT_EVENT_MAX_LVL)
 				npcHtmlMessage.setHtml("<html><head><title>TvT Event</title></head><body>Only players from level " + Config.TVT_EVENT_MIN_LVL + " to level " + Config.TVT_EVENT_MAX_LVL + " are allowed tro participate.</body></html>");
 			else if (_teams[0].getParticipatedPlayerCount() > 19 && _teams[1].getParticipatedPlayerCount() > 19)
@@ -460,6 +482,14 @@ public class TvTEvent
 	public static boolean onAction(String playerName, String targetPlayerName)
 	{
 		if (!isStarted())
+			return true;
+
+		L2PcInstance playerInstance = L2World.getInstance().getPlayer(playerName);
+
+		if (playerInstance == null)
+			return false;
+		
+		if (playerInstance.isGM())
 			return true;
 
 		byte playerTeamId = getParticipantTeamId(playerName);
@@ -549,7 +579,7 @@ public class TvTEvent
 			_teams[killerTeamId].increasePoints();
 
 		if (killedTeamId != -1)
-			new TvTEventTeleporter(killedPlayerInstance, _teams[killedTeamId].getCoordinates(), false);
+			new TvTEventTeleporter(killedPlayerInstance, _teams[killedTeamId].getCoordinates(), false, false);
 	}
 
 	/**
@@ -668,7 +698,7 @@ public class TvTEvent
 	}
 
 	/**
-	 * Returns the team id of a player, if playedr is not participant it returns -1<br><br>
+	 * Returns the team id of a player, if player is not participant it returns -1<br><br>
 	 *
 	 * @param playerName<br>
 	 * @return byte<br>
@@ -677,6 +707,18 @@ public class TvTEvent
 	{
 		return (byte)(_teams[0].containsPlayer(playerName) ? 0 : (_teams[1].containsPlayer(playerName) ? 1 : -1));
 	}
+	
+	/**
+	 * Returns the team coordinates in which the player is in, if player is not in a team return null<br><br>
+	 * 
+	 * @param playerName<br>
+	 * @return int[]<br>
+	 */
+	public static int[] getParticipantTeamCoordinates(String playerName)
+	{
+		return _teams[0].containsPlayer(playerName) ? _teams[0].getCoordinates() : (_teams[1].containsPlayer(playerName) ? _teams[1].getCoordinates() : null);
+	}
+	
 
 	/**
 	 * Is given player participant of the event?<br><br>

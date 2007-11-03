@@ -114,6 +114,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminSpawn;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTarget;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTeleport;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTest;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminTvTEvent;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminUnblockIp;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminZone;
 import net.sf.l2j.gameserver.handler.itemhandlers.BeastSoulShot;
@@ -550,6 +551,7 @@ public class GameServer
         _adminCommandHandler.registerAdminCommandHandler(new AdminGeodata());
         _adminCommandHandler.registerAdminCommandHandler(new AdminGeoEditor());
         _adminCommandHandler.registerAdminCommandHandler(new AdminManor());
+        _adminCommandHandler.registerAdminCommandHandler(new AdminTvTEvent());
         //_adminCommandHandler.registerAdminCommandHandler(new AdminRadar());
         _log.config("AdminCommandHandler: Loaded " + _adminCommandHandler.size() + " handlers.");
 
