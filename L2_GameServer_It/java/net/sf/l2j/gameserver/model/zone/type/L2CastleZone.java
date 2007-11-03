@@ -113,7 +113,7 @@ public class L2CastleZone extends L2ZoneType
 	{
 		if (_castle.getSiege().getIsInProgress())
 		{
-			for (L2Character character : _characterList)
+			for (L2Character character : _characterList.values())
 			{
 				try	
 				{ 
@@ -124,7 +124,7 @@ public class L2CastleZone extends L2ZoneType
 		}
 		else
 		{
-			for (L2Character character : _characterList)
+			for (L2Character character : _characterList.values())
 			{
 				try	
 				{ 
@@ -149,7 +149,7 @@ public class L2CastleZone extends L2ZoneType
 	 */
 	public void banishForeigners(int owningClanId)
 	{
-		for (L2Character temp : _characterList)
+		for (L2Character temp : _characterList.values())
 		{
 			if(!(temp instanceof L2PcInstance)) continue;
 			if (((L2PcInstance)temp).getClanId() == owningClanId) continue;
@@ -164,7 +164,7 @@ public class L2CastleZone extends L2ZoneType
 	 */
 	public void announceToPlayers(String message)
 	{
-		for (L2Character temp : _characterList)
+		for (L2Character temp : _characterList.values())
 		{
 			if (temp instanceof L2PcInstance)
 				((L2PcInstance)temp).sendMessage(message);
@@ -179,7 +179,7 @@ public class L2CastleZone extends L2ZoneType
 	{
 		FastList<L2PcInstance> players = new FastList<L2PcInstance>();
 		
-		for (L2Character temp : _characterList)
+		for (L2Character temp : _characterList.values())
 		{
 			if (temp instanceof L2PcInstance)
 				players.add((L2PcInstance)temp);

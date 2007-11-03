@@ -17,7 +17,7 @@
  */
 package net.sf.l2j.gameserver.model.zone;
 
-import javolution.util.FastList;
+import javolution.util.FastMap;
 
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public abstract class L2ZoneType
 {
 	protected L2ZoneForm _zone;
-	protected FastList<L2Character> _characterList;
+	protected FastMap<Integer, L2Character> _characterList;
 	
 	/** Parameters to affect specific characters */
 	private boolean _checkAffected;
@@ -45,7 +45,7 @@ public abstract class L2ZoneType
 	
 	protected L2ZoneType()
 	{
-		_characterList = new FastList<L2Character>();
+		_characterList = new FastMap<Integer, L2Character>().setShared(true);
 		
 		_checkAffected = false;
 		
@@ -256,18 +256,18 @@ public abstract class L2ZoneType
 		if (_zone.isInsideZone(character.getX(), character.getY(), character.getZ()))
 		{
 			// Was the character not yet inside this zone?
-			if (!_characterList.contains(character))
+			if (!_characterList.containsKey(character.getObjectId()))
 			{
-				_characterList.add(character);
+				_characterList.put(character.getObjectId(), character);
 				onEnter(character);
 			}
 		}
 		else
 		{
 			// Was the character inside this zone?
-			if (_characterList.contains(character))
+			if (_characterList.containsKey(character.getObjectId()))
 			{
-				_characterList.remove(character);
+				_characterList.remove(character.getObjectId());
 				onExit(character);
 			}
 		}
@@ -280,9 +280,9 @@ public abstract class L2ZoneType
 	 */
 	public void removeCharacter(L2Character character)
 	{
-		if (_characterList.contains(character))
+		if (_characterList.containsKey(character.getObjectId()))
 		{
-			_characterList.remove(character);
+			_characterList.remove(character.getObjectId());
 			onExit(character);
 		}
 	}
@@ -295,7 +295,7 @@ public abstract class L2ZoneType
 	 */
 	public boolean isCharacterInZone(L2Character character)
 	{
-		return _characterList.contains(character);
+		return _characterList.containsKey(character.getObjectId());
 	}
 	
 	protected abstract void onEnter(L2Character character);

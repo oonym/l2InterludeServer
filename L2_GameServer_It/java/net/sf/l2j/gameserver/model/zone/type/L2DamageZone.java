@@ -17,7 +17,7 @@
  */
 package net.sf.l2j.gameserver.model.zone.type;
 
-import javolution.util.FastList;
+import java.util.Collection;
 import java.util.concurrent.Future;
 
 import net.sf.l2j.gameserver.ThreadPoolManager;
@@ -71,9 +71,9 @@ public class L2DamageZone extends L2ZoneType
 		}
 	}
 	
-	protected FastList<L2Character> getCharacterList()
+	protected Collection<L2Character> getCharacterList()
 	{
-		return _characterList;
+		return _characterList.values();
 	}
 	
 	protected int getDamagePerSecond()
