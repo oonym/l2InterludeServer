@@ -51,7 +51,6 @@ public final class L2ChestInstance extends L2MonsterInstance
 		_isInteracted = false;
 		_specialDrop = false;
 		setMustRewardExpSp(true);
-		setHaveToDrop(true);
 	}
 
 	public synchronized boolean isInteracted() {

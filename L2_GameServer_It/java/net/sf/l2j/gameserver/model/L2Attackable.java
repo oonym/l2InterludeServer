@@ -272,9 +272,6 @@ public class L2Attackable extends L2NpcInstance
     /** The table containing all L2PcInstance that successfuly absorbed the soul of this L2Attackable */
     private FastMap<L2PcInstance, AbsorberInfo> _absorbersList = new FastMap<L2PcInstance, AbsorberInfo>().setShared(true);
 
-    /** Have this L2Attackable to drop somethink on DIE? **/
-    private boolean _haveToDrop;
-    
     /** Have this L2Attackable to reward Exp and SP on Die? **/
     private boolean _mustGiveExpSp;
     /**
@@ -292,7 +289,6 @@ public class L2Attackable extends L2NpcInstance
     {
         super(objectId, template);
         getKnownList(); // init knownlist
-        _haveToDrop = true;
         _mustGiveExpSp = true;
     }
 
@@ -399,12 +395,6 @@ public class L2Attackable extends L2NpcInstance
         super.reduceCurrentHp(damage, attacker, awake);
     }
     
-    public synchronized void setHaveToDrop(boolean value) {
-    	_haveToDrop = value;
-    }
-    
-    public synchronized boolean getHaveToDrop() { return _haveToDrop; }
-    
     public synchronized void setMustRewardExpSp(boolean value) {
     	_mustGiveExpSp = value;
     }
@@ -440,14 +430,6 @@ public class L2Attackable extends L2NpcInstance
         }
         catch (Exception e) { _log.log(Level.SEVERE, "", e); }
         
-        // Distribute Exp and SP rewards to L2PcInstance (including Summon owner) that hit the L2Attackable and to their Party members
-        if (getHaveToDrop() || getMustRewardExpSP())
-        {
-        	try { 
-        		calculateRewards(killer); 
-        	} catch (Exception e) 
-        		{ _log.log(Level.SEVERE, "", e); }
-        }
         // Notify the Quest Engine of the L2Attackable death if necessary
         try {
             if (killer instanceof L2PcInstance || killer instanceof L2Summon) 
@@ -488,251 +470,258 @@ public class L2Attackable extends L2NpcInstance
      * @param lastAttacker The L2Character that has killed the L2Attackable
      * 
      */
-    private void calculateRewards(L2Character lastAttacker)
+    @Override
+    protected void calculateRewards(L2Character lastAttacker)
     {
-    	if (getAggroListRP().isEmpty()) return;
-        if (getMustRewardExpSP()) {
-        
         // Creates an empty list of rewards
         FastMap<L2Character, RewardInfo> rewards = new FastMap<L2Character, RewardInfo>().setShared(true);
-        int rewardCount = 0;
-        
-        int damage;
-        L2Character attacker;
-        L2Character ddealer;
-        RewardInfo reward;
+
+        try 
+        {
+        	if (getAggroListRP().isEmpty()) return;
+        	
+        	// Manage Base, Quests and Sweep drops of the L2Attackable
+            doItemDrop(lastAttacker);
+            // Manage drop of Special Events created by GM for a defined period
+            doEventDrop(lastAttacker);
+        	
+        	if (!getMustRewardExpSP()) return; 
+
+        	int rewardCount = 0;
+        	int damage;
+        	L2Character attacker, ddealer;
+        	RewardInfo reward;
        	
-        // While Interating over This Map Removing Object is Not Allowed
-        synchronized (getAggroList())
-        {
-            // Go through the _aggroList of the L2Attackable
-            for (AggroInfo info : getAggroListRP().values())
-            {
-            	if (info == null) continue;
+        	// While Interating over This Map Removing Object is Not Allowed
+        	synchronized (getAggroList())
+        	{
+        		// Go through the _aggroList of the L2Attackable
+        		for (AggroInfo info : getAggroListRP().values())
+        		{
+        			if (info == null) continue;
 
-                // Get the L2Character corresponding to this attacker 
-                attacker = info._attacker;
+        			// Get the L2Character corresponding to this attacker 
+        			attacker = info._attacker;
                     
-                // Get damages done by this attacker
-                damage = info._damage;
+        			// Get damages done by this attacker
+        			damage = info._damage;
                 
-                // Prevent unwanted behavior
-                if (damage > 1)
-                {
-                	if ( (attacker instanceof L2SummonInstance) || 
-                		((attacker instanceof L2PetInstance) && ((L2PetInstance)attacker).getPetData().getOwnerExpTaken() > 0) )
-                		ddealer = ((L2Summon)attacker).getOwner();
-                	else
-                		ddealer = info._attacker;
+        			// Prevent unwanted behavior
+        			if (damage > 1)
+        			{
+        				if ( (attacker instanceof L2SummonInstance) || 
+        						((attacker instanceof L2PetInstance) && 
+        						((L2PetInstance)attacker).getPetData().getOwnerExpTaken() > 0) )
+        					ddealer = ((L2Summon)attacker).getOwner();
+        				else
+        					ddealer = info._attacker;
                 	
-                	// Check if ddealer isn't too far from this (killed monster)
-                	if (!Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, ddealer, true)) continue;
+        				// Check if ddealer isn't too far from this (killed monster)
+        				if (!Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, ddealer, true)) continue;
                 	
-                	// Calculate real damages (Summoners should get own damage plus summon's damage)                    
-                	reward = rewards.get(ddealer);
+        				// Calculate real damages (Summoners should get own damage plus summon's damage)                    
+        				reward = rewards.get(ddealer);
                         
-                	if (reward == null)
-                	{
-                		reward = new RewardInfo(ddealer, damage);
-                		rewardCount++;
-                	}
-                	else
-                	{
-                		reward.addDamage(damage);
-                	}
-                	rewards.put(ddealer, reward);
-                }
-            }
-        }       
-        if (!rewards.isEmpty())
-        {
-        	L2Party attackerParty;
-        	long exp;
-        	int levelDiff;
-        	int partyDmg;
-        	int partyLvl;
-        	float partyMul;
-        	float penalty;
-        	RewardInfo reward2;
-        	int sp;
-        	int[] tmp;
+        				if (reward == null)
+        				{
+        					reward = new RewardInfo(ddealer, damage);
+        					rewardCount++;
+        				}
+        				else
+        				{
+        					reward.addDamage(damage);
+        				}
+        				rewards.put(ddealer, reward);
+        			}
+        		}
+        	}       
+        	if (!rewards.isEmpty())
+        	{
+        		L2Party attackerParty;
+        		long exp;
+        		int levelDiff, partyDmg, partyLvl, sp;
+        		float partyMul, penalty;
+        		RewardInfo reward2;
+        		int[] tmp;
+        		
+        		for (FastMap.Entry<L2Character, RewardInfo> entry = rewards.head(), end = rewards.tail(); (entry = entry.getNext()) != end;)
+        		{
+        			if (entry == null) continue;
 
-        	for (FastMap.Entry<L2Character, RewardInfo> entry = rewards.head(), end = rewards.tail(); (entry = entry.getNext()) != end;)
-            {
-        		if (entry == null) continue;
+        			reward = entry.getValue();
+        			if(reward == null) continue;
+                
+        			// Penalty applied to the attacker's XP
+        			penalty = 0;
+                
+        			// Attacker to be rewarded
+        			attacker = reward._attacker;
+                
+        			// Total amount of damage done
+        			damage = reward._dmg;
+                
+        			// If the attacker is a Pet, get the party of the owner
+        			if (attacker instanceof L2PetInstance)
+        				attackerParty = ((L2PetInstance)attacker).getParty();
+        			else if (attacker instanceof L2PcInstance)
+        				attackerParty = ((L2PcInstance)attacker).getParty();
+        			else
+        				return;
+                
+        			// If this attacker is a L2PcInstance with a summoned L2SummonInstance, get Exp Penalty applied for the current summoned L2SummonInstance
+        			if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).getPet() instanceof L2SummonInstance)
+        			{
+        				penalty = ((L2SummonInstance)((L2PcInstance)attacker).getPet()).getExpPenalty();
+        			}
+                
+        			// We must avoid "over damage", if any
+        			if (damage > getMaxHp()) damage = getMaxHp();
+                
+        			// If there's NO party in progress
+        			if (attackerParty == null)
+        			{
+        				// Calculate Exp and SP rewards
+        				if (attacker.getKnownList().knowsObject(this))
+        				{
+        					// Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable
+        					// mob = 24, atk = 10, diff = -14 (full xp)
+        					// mob = 24, atk = 28, diff = 4 (some xp)
+        					// mob = 24, atk = 50, diff = 26 (no xp)
+        					levelDiff = attacker.getLevel() - getLevel();
+                        
+        					tmp = calculateExpAndSp(levelDiff, damage);
+        					exp = tmp[0];
+        					exp *= 1 - penalty;
+        					sp = tmp[1];
+        					
+        					if (Config.L2JMOD_CHAMPION_ENABLE && isChampion())
+        					{
+        						exp *= Config.L2JMOD_CHAMPION_REWARDS;
+        						sp *= Config.L2JMOD_CHAMPION_REWARDS;
+        					}
+                        
+        					// Check for an over-hit enabled strike
+        					if (attacker instanceof L2PcInstance)
+        					{
+        						L2PcInstance player = (L2PcInstance)attacker;
+        						if (isOverhit() && attacker == getOverhitAttacker())
+        						{
+        							player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
+        							exp += calculateOverhitExp(exp);
+        						}
+        					}
+                        
+        					// Distribute the Exp and SP between the L2PcInstance and its L2Summon
+        					if (!attacker.isDead())
+        						attacker.addExpAndSp(Math.round(attacker.calcStat(Stats.EXPSP_RATE, exp, null, null)), 
+        								(int)attacker.calcStat(Stats.EXPSP_RATE, sp, null, null));
+        				}
+        			}
+        			else
+        			{
+        				//share with party members
+        				partyDmg = 0;
+        				partyMul = 1.f;
+        				partyLvl = 0;
+                    
+        				// Get all L2Character that can be rewarded in the party
+        				List<L2PlayableInstance> rewardedMembers = new FastList<L2PlayableInstance>();
+        				
+        				// Go through all L2PcInstance in the party
+        				for (L2PcInstance pl : attackerParty.getPartyMembers())
+        				{
+        					if (pl == null || pl.isDead()) continue;
 
-                reward = entry.getValue();
-                if(reward == null) continue;
-                
-                // Penalty applied to the attacker's XP
-                penalty = 0;
-                
-                // Attacker to be rewarded
-                attacker = reward._attacker;
-                
-                // Total amount of damage done
-                damage = reward._dmg;
-                
-                // If the attacker is a Pet, get the party of the owner
-                if (attacker instanceof L2PetInstance)
-                    attackerParty = ((L2PetInstance)attacker).getParty();
-                else if (attacker instanceof L2PcInstance)
-                	attackerParty = ((L2PcInstance)attacker).getParty();
-                else
-                    return;
-                
-                // If this attacker is a L2PcInstance with a summoned L2SummonInstance, get Exp Penalty applied for the current summoned L2SummonInstance
-                if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).getPet() instanceof L2SummonInstance)
-                {
-                	penalty = ((L2SummonInstance)((L2PcInstance)attacker).getPet()).getExpPenalty();
-                }
-                
-                // We must avoid "over damage", if any
-                if (damage > getMaxHp()) damage = getMaxHp();
-                
-                // If there's NO party in progress
-                if (attackerParty == null)
-                {
-                    // Calculate Exp and SP rewards
-                    if (attacker.getKnownList().knowsObject(this))
-                    {
-                        // Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable
-                        // mob = 24, atk = 10, diff = -14 (full xp)
-                        // mob = 24, atk = 28, diff = 4 (some xp)
-                        // mob = 24, atk = 50, diff = 26 (no xp)
-                        levelDiff = attacker.getLevel() - getLevel();
+        					// Get the RewardInfo of this L2PcInstance from L2Attackable rewards
+        					reward2 = rewards.get(pl);
                         
-                        tmp = calculateExpAndSp(levelDiff, damage);
-                        exp = tmp[0];
-                        exp *= 1 - penalty;
-                        sp = tmp[1];
-			
-                        if (Config.L2JMOD_CHAMPION_ENABLE && isChampion())
-                        {
-	                        exp *= Config.L2JMOD_CHAMPION_REWARDS;
-	                        sp *= Config.L2JMOD_CHAMPION_REWARDS;
-	                    }
-                        
-                        // Check for an over-hit enabled strike
-                        if (attacker instanceof L2PcInstance)
-                        {
-                            L2PcInstance player = (L2PcInstance)attacker;
-                            if (isOverhit() && attacker == getOverhitAttacker())
-                            {
-                                player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
-                                exp += calculateOverhitExp(exp);
-                            }
-                        }
-                        
-                        // Distribute the Exp and SP between the L2PcInstance and its L2Summon
-                        if (!attacker.isDead())
-                        	attacker.addExpAndSp(Math.round(attacker.calcStat(Stats.EXPSP_RATE, exp, null, null)), 
-                                             (int)attacker.calcStat(Stats.EXPSP_RATE, sp, null, null));
-                    }
-                }
-                else
-                {
-                    //share with party members
-                	partyDmg = 0;
-                    partyMul = 1.f;
-                    partyLvl = 0;
+        					// If the L2PcInstance is in the L2Attackable rewards add its damages to party damages
+        					if (reward2 != null)
+        					{
+        						if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
+        						{
+        							partyDmg += reward2._dmg; // Add L2PcInstance damages to party damages
+        							rewardedMembers.add(pl);
+        							if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
+        						}
+        						rewards.remove(pl); // Remove the L2PcInstance from the L2Attackable rewards
+        					}
+        					else
+        					{
+        						// Add L2PcInstance of the party (that have attacked or not) to members that can be rewarded
+        						// and in range of the monster.
+        						if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
+        						{
+        							rewardedMembers.add(pl);
+        							if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
+        						}
+        					}
+        					L2PlayableInstance summon = pl.getPet();
+        					if (summon != null && summon instanceof L2PetInstance)
+        					{
+        						reward2 = rewards.get(summon);
+        						if (reward2 != null) // Pets are only added if they have done damage
+        						{
+        							if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, summon, true))
+        							{
+        								partyDmg += reward2._dmg; // Add summon damages to party damages
+        								rewardedMembers.add(summon);
+        								if (summon.getLevel() > partyLvl) 
+        									partyLvl = summon.getLevel();
+        							}
+        							rewards.remove(summon); // Remove the summon from the L2Attackable rewards
+        						}
+        					}
+        				}
                     
-                    // Get all L2Character that can be rewarded in the party
-                    List<L2PlayableInstance> rewardedMembers = new FastList<L2PlayableInstance>();
+        				// If the party didn't killed this L2Attackable alone
+        				if (partyDmg < getMaxHp()) partyMul = ((float)partyDmg / (float)getMaxHp());
                     
-                    // Go through all L2PcInstance in the party
-                    for (L2PcInstance pl : attackerParty.getPartyMembers())
-                    {
-                        if (pl == null || pl.isDead()) continue;
+        				// Avoid "over damage"
+        				if (partyDmg > getMaxHp()) partyDmg = getMaxHp();
+        				
+        				// Calculate the level difference between Party and L2Attackable
+        				levelDiff = partyLvl - getLevel();
+        				
+        				// Calculate Exp and SP rewards
+        				tmp = calculateExpAndSp(levelDiff, partyDmg);
+        				exp = tmp[0];
+        				sp = tmp[1];
+                    
+        				if (Config.L2JMOD_CHAMPION_ENABLE && isChampion())
+        				{
+        					exp *= Config.L2JMOD_CHAMPION_REWARDS;
+        					sp *= Config.L2JMOD_CHAMPION_REWARDS;
+        				}
 
-                        // Get the RewardInfo of this L2PcInstance from L2Attackable rewards
-                        reward2 = rewards.get(pl);
-                        
-                        // If the L2PcInstance is in the L2Attackable rewards add its damages to party damages
-                        if (reward2 != null)
-                        {
-                        	if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
-                        	{
-                        		partyDmg += reward2._dmg; // Add L2PcInstance damages to party damages
-                        		rewardedMembers.add(pl);
-                        		if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
-                        	}
-                        	rewards.remove(pl); // Remove the L2PcInstance from the L2Attackable rewards
-                        }
-                        else
-                        {
-                        	// Add L2PcInstance of the party (that have attacked or not) to members that can be rewarded
-                        	// and in range of the monster.
-                        	if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
-                        	{
-                        		rewardedMembers.add(pl);
-                        		if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
-                        	}
-                        }
-                        L2PlayableInstance summon = pl.getPet();
-                        if (summon != null && summon instanceof L2PetInstance)
-                        {
-                        	reward2 = rewards.get(summon);
-                        	if (reward2 != null) // Pets are only added if they have done damage
-                            {
-                            	if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, summon, true))
-                            	{
-                            		partyDmg += reward2._dmg; // Add summon damages to party damages
-                            		rewardedMembers.add(summon);
-                            		if (summon.getLevel() > partyLvl) partyLvl = summon.getLevel();
-                            	}
-                            	rewards.remove(summon); // Remove the summon from the L2Attackable rewards
-                            }
-                        }
-                    }
+        				exp *= partyMul;
+        				sp *= partyMul;
+                    	
+        				// Check for an over-hit enabled strike
+        				// (When in party, the over-hit exp bonus is given to the whole party and splitted proportionally through the party members)
+        				if (attacker instanceof L2PcInstance)
+        				{
+        					L2PcInstance player = (L2PcInstance)attacker;
+        					if (isOverhit() && attacker == getOverhitAttacker())
+        					{
+        						player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
+        						exp += calculateOverhitExp(exp);
+        					}
+        				}
                     
-                    // If the party didn't killed this L2Attackable alone
-                    if (partyDmg < getMaxHp()) partyMul = ((float)partyDmg / (float)getMaxHp());
-                    
-                    // Avoid "over damage"
-                    if (partyDmg > getMaxHp()) partyDmg = getMaxHp();
-                    
-                    // Calculate the level difference between Party and L2Attackable
-                    levelDiff = partyLvl - getLevel();
-                    
-                    // Calculate Exp and SP rewards
-                    tmp = calculateExpAndSp(levelDiff, partyDmg);
-                    exp = tmp[0];
-                    sp = tmp[1];
-                    
-                    if (Config.L2JMOD_CHAMPION_ENABLE && isChampion())
-                    {
-                    	exp *= Config.L2JMOD_CHAMPION_REWARDS;
-                     	sp *= Config.L2JMOD_CHAMPION_REWARDS;
-                    }
-
-                    exp *= partyMul;
-                    sp *= partyMul;
-                    
-                    // Check for an over-hit enabled strike
-                    // (When in party, the over-hit exp bonus is given to the whole party and splitted proportionally through the party members)
-                    if (attacker instanceof L2PcInstance)
-                    {
-                        L2PcInstance player = (L2PcInstance)attacker;
-                        if (isOverhit() && attacker == getOverhitAttacker())
-                        {
-                        	player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
-                            exp += calculateOverhitExp(exp);
-                        }
-                    }
-                    
-                    // Distribute Experience and SP rewards to L2PcInstance Party members in the known area of the last attacker
-                    if (partyDmg > 0) attackerParty.distributeXpAndSp(exp, sp, rewardedMembers, partyLvl);
-                }
-            }
-        }
+        				// Distribute Experience and SP rewards to L2PcInstance Party members in the known area of the last attacker
+        				if (partyDmg > 0) attackerParty.distributeXpAndSp(exp, sp, rewardedMembers, partyLvl);
+        			}
+        		}
+        	}
         
-        rewards = null;
+        	rewards = null;
+        	
+        } 
+        catch (Exception e) 
+        { 
+        	_log.log(Level.SEVERE, "", e); 
         }
-        // Manage Base, Quests and Sweep drops of the L2Attackable
-        if (getHaveToDrop()) doItemDrop(lastAttacker);
-        // Manage drop of Special Events created by GM for a defined period
-        doEventDrop(lastAttacker);
     }
     
     

@@ -50,7 +50,6 @@ import net.sf.l2j.gameserver.serverpackets.RelationChanged;
 import net.sf.l2j.gameserver.serverpackets.SiegeInfo;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
-import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class Siege
