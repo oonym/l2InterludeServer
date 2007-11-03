@@ -27,12 +27,9 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ExtractableItem;
 import net.sf.l2j.gameserver.model.L2ExtractableProductItem;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
-import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
-import net.sf.l2j.gameserver.serverpackets.ItemList;
-import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.util.Rnd;
 
@@ -82,8 +79,6 @@ public class ExtractableItems implements IItemHandler
 			return;
 		}
 
-		PcInventory inv = activeChar.getInventory();
-
 		if (createItemID > 0)
 		{
 			if (ItemTable.getInstance().createDummyItem(createItemID) == null)
@@ -94,12 +89,11 @@ public class ExtractableItems implements IItemHandler
 			}
 			if (ItemTable.getInstance().createDummyItem(createItemID)
 					.isStackable())
-				inv.addItem("Extract", createItemID, createAmount, activeChar,
-						null);
+				activeChar.addItem("Extract", createItemID, createAmount, item, false);
 			else
 			{
 				for (int i = 0; i < createAmount; i++)
-					inv.addItem("Extract", createItemID, 1, activeChar, item);
+					activeChar.addItem("Extract", createItemID, 1, item, false);
 			}
 			SystemMessage sm;
 
@@ -121,10 +115,6 @@ public class ExtractableItems implements IItemHandler
 
 		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar
 				.getTarget(), true);
-		activeChar.sendPacket(new ItemList(activeChar, false));
-		StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
-		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
-		activeChar.sendPacket(su);
 	}
     
     public int[] getItemIds()
