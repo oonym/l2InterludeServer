@@ -60,7 +60,7 @@ public class AdminRes implements IAdminCommandHandler
 		else if (command.startsWith("admin_res_monster "))
 			handleNonPlayerRes(activeChar, command.split(" ")[1]);
 		else if (command.equals("admin_res_monster"))
-			handleNonPlayerRes(activeChar);			
+			handleNonPlayerRes(activeChar);
 		
 		return true;
 	}
@@ -96,7 +96,8 @@ public class AdminRes implements IAdminCommandHandler
 			else
 			{
 				// Otherwise, check if the param was a radius.
-				try {
+				try
+				{
 					int radius = Integer.parseInt(resParam);
 					
 					for (L2PcInstance knownPlayer : activeChar.getKnownList().getKnownPlayersInRadius(radius))
@@ -167,13 +168,15 @@ public class AdminRes implements IAdminCommandHandler
 
 	private void doResurrect(L2Character targetChar)
 	{
+		if(!targetChar.isDead()) return;
+
 		// If the target is a player, then restore the XP lost on death.
-		if (targetChar instanceof L2PcInstance) 
+		if (targetChar instanceof L2PcInstance)
 			((L2PcInstance)targetChar).restoreExp(100.0);
 		
 		// If the target is an NPC, then abort it's auto decay and respawn.
 		else
-	    	DecayTaskManager.getInstance().cancelDecayTask(targetChar);
+			DecayTaskManager.getInstance().cancelDecayTask(targetChar);
 			
 		targetChar.doRevive();
 	}
