@@ -250,7 +250,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 			for (L2Skill skill: skills.values())
 			{
 	    		// if the skill is a debuff, check if the attacker has it already [  attacker.getEffect(L2Skill skill) ]
-				if ((skill.getSkillType() == L2Skill.SkillType.DEBUFF) && Rnd.get(3) < 1 && (attacker.getEffect(skill) != null))
+				if ((skill.getSkillType() == L2Skill.SkillType.DEBUFF) && Rnd.get(3) < 1 && (attacker.getFirstEffect(skill) != null))
 				{
 					sitCastAndFollow(skill, attacker);
 				}
@@ -416,7 +416,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
     				if (i==rand)
     					buffToGive = skill;
     				i++;
-    				if(owner.getEffect(skill) != null)
+    				if(owner.getFirstEffect(skill) != null)
     				{
     					totalBuffsOnOwner++;
     				}

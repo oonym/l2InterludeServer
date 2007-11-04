@@ -285,8 +285,8 @@ public class AdminEffects implements IAdminCommandHandler
 			try
 			{
 				int val = Integer.parseInt(st.nextToken());
-				boolean sendMessage = activeChar.getEffect(7029) != null;
-				activeChar.stopEffect(7029);
+				boolean sendMessage = activeChar.getFirstEffect(7029) != null;
+				activeChar.stopSkillEffects(7029);
 				if (val == 0 && sendMessage)
 				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.EFFECT_S1_DISAPPEARED).addSkillName(7029));

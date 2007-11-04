@@ -37,7 +37,7 @@ public class EtcStatusUpdate extends L2GameServerPacket
 	public EtcStatusUpdate(L2PcInstance activeChar)
 	{
 		 _activeChar = activeChar;
-		 _effect = (EffectCharge)_activeChar.getEffect(L2Effect.EffectType.CHARGE);
+		 _effect = (EffectCharge)_activeChar.getFirstEffect(L2Effect.EffectType.CHARGE);
 	}
 
 	/**

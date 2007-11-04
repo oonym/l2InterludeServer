@@ -61,17 +61,34 @@ public class L2ZoneManager
 	
 	public void revalidateZones(L2Character character)
 	{
-		for (FastList.Node<L2ZoneType> e = _zones.head(), end = _zones.tail(); (e = e.getNext()) != end;)
+		for (L2ZoneType e : _zones)
 		{
-			e.getValue().revalidateInZone(character);
+			if(e != null) e.revalidateInZone(character);
 		}
 	}
 	
 	public void removeCharacter(L2Character character)
 	{
-		for (FastList.Node<L2ZoneType> e = _zones.head(), end = _zones.tail(); (e = e.getNext()) != end;)
+		for (L2ZoneType e : _zones)
 		{
-			e.getValue().removeCharacter(character);
+			if(e != null) e.removeCharacter(character);
 		}
 	}
+	
+	public void onDeath(L2Character character)
+	{
+		for (L2ZoneType e : _zones)
+		{
+			if(e != null) e.onDieInside(character);
+		}
+	}
+
+	public void onRevive(L2Character character)
+	{
+		for (L2ZoneType e : _zones)
+		{
+			if(e != null) e.onReviveInside(character);
+		}
+	}
+
 }

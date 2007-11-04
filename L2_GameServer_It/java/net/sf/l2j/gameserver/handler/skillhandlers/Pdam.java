@@ -124,9 +124,7 @@ public class Pdam implements ISkillHandler
                 {
                 	if (target.reflectSkill(skill))
 					{
-						activeChar.stopEffect(skill.getId());
-						if (activeChar.getEffect(skill.getId()) != null)
-							activeChar.removeEffect(target.getEffect(skill.getId()));
+						activeChar.stopSkillEffects(skill.getId());
 						skill.getEffects(null, activeChar);
 						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(skill.getId());
@@ -135,9 +133,7 @@ public class Pdam implements ISkillHandler
                 	else
                 	{
                 		// activate attacked effects, if any
-                        target.stopEffect(skill.getId());
-                        if (target.getEffect(skill.getId()) != null)
-                            target.removeEffect(target.getEffect(skill.getId()));
+                        target.stopSkillEffects(skill.getId());
                         if (f.calcSkillSuccess(activeChar, target, skill, false, false, false))
                         {
                             skill.getEffects(activeChar, target);
@@ -252,7 +248,7 @@ public class Pdam implements ISkillHandler
             
             if (skill.getId() == 345 || skill.getId() == 346) // Sonic Rage or Raging Force
             {
-                EffectCharge effect = (EffectCharge)activeChar.getEffect(L2Effect.EffectType.CHARGE);
+                EffectCharge effect = (EffectCharge)activeChar.getFirstEffect(L2Effect.EffectType.CHARGE);
                 if (effect != null) 
                 {
                     int effectcharge = effect.getLevel();
@@ -289,7 +285,7 @@ public class Pdam implements ISkillHandler
                 }
             }            
             //self Effect :]
-            L2Effect effect = activeChar.getEffect(skill.getId());        
+            L2Effect effect = activeChar.getFirstEffect(skill.getId());        
             if (effect != null && effect.isSelfEffect())        
             {            
             	//Replace old effect with new one.            

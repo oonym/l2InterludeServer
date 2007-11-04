@@ -51,7 +51,7 @@ public class L2SkillChargeDmg extends L2Skill
 		if (activeChar instanceof L2PcInstance)
 		{
 			L2PcInstance player = (L2PcInstance)activeChar;
-			EffectCharge e = (EffectCharge)player.getEffect(chargeSkillId);
+			EffectCharge e = (EffectCharge)player.getFirstEffect(chargeSkillId);
 			if(e == null || e.numCharges < numCharges)
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
@@ -72,7 +72,7 @@ public class L2SkillChargeDmg extends L2Skill
         }
 		
 		// get the effect
-		EffectCharge effect = (EffectCharge) caster.getEffect(chargeSkillId);
+		EffectCharge effect = (EffectCharge) caster.getFirstEffect(chargeSkillId);
 		if (effect == null || effect.numCharges < numCharges)
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
@@ -125,7 +125,7 @@ public class L2SkillChargeDmg extends L2Skill
 			}
 		}
         // effect self :]
-        L2Effect seffect = caster.getEffect(getId());
+        L2Effect seffect = caster.getFirstEffect(getId());
         if (seffect != null && seffect.isSelfEffect())
         {             
             //Replace old effect with new one.

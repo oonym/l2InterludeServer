@@ -219,7 +219,7 @@ public class Continuous implements ISkillHandler
 			}
         }
         // self Effect :]
-        L2Effect effect = activeChar.getEffect(skill.getId());        
+        L2Effect effect = activeChar.getFirstEffect(skill.getId());        
         if (effect != null && effect.isSelfEffect())        
         {            
         	//Replace old effect with new one.            

@@ -31,6 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
+import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 /**
  * This class ...
  * 
@@ -89,7 +90,11 @@ public class Resurrect implements ISkillHandler
             	}
             	else cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
             }
-            else cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
+            else 
+            {
+            	DecayTaskManager.getInstance().cancelDecayTask(cha);
+            	cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
+            }
 	}
 	
 	

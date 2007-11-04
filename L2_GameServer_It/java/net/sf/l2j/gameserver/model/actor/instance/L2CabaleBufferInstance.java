@@ -133,7 +133,7 @@ public class L2CabaleBufferInstance extends L2NpcInstance
 
         	L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
         	
-            if (player.getEffect(skill) == null)
+            if (player.getFirstEffect(skill) == null)
             {
             	skill.getEffects(_caster, player);
             	

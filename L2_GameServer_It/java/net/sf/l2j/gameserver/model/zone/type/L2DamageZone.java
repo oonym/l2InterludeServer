@@ -100,4 +100,11 @@ public class L2DamageZone extends L2ZoneType
 			}
 		}
 	}
+	
+	@Override
+	protected void onDieInside(L2Character character) {}
+	
+	@Override
+	protected void onReviveInside(L2Character character) {}
+
 }

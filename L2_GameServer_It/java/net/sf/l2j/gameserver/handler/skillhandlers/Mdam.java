@@ -173,9 +173,7 @@ public class Mdam implements ISkillHandler
                 {
                 	if (target.reflectSkill(skill))
                 	{
-                		activeChar.stopEffect(skill.getId());
-    					if (activeChar.getEffect(skill.getId()) != null)
-    						activeChar.removeEffect(target.getEffect(skill.getId()));
+                		activeChar.stopSkillEffects(skill.getId());
     					skill.getEffects(null, activeChar);
     					SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(skill.getId());
@@ -184,9 +182,7 @@ public class Mdam implements ISkillHandler
                 	else
                 	{
                 		// activate attacked effects, if any
-                        target.stopEffect(skill.getId());
-                        if (target.getEffect(skill.getId()) != null)
-                            target.removeEffect(target.getEffect(skill.getId()));
+                        target.stopSkillEffects(skill.getId());
                         if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, ss, bss)) 
                             skill.getEffects(activeChar, target);
                         else
@@ -203,7 +199,7 @@ public class Mdam implements ISkillHandler
             }
         }
         // self Effect :]
-        L2Effect effect = activeChar.getEffect(skill.getId());        
+        L2Effect effect = activeChar.getFirstEffect(skill.getId());        
         if (effect != null && effect.isSelfEffect())        
         {            
         	//Replace old effect with new one.            

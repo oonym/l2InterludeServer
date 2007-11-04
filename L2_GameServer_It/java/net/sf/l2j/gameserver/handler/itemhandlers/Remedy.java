@@ -128,7 +128,7 @@ public class Remedy implements IItemHandler
                     e.exit();
             }
             activeChar.setIsImobilised(false);
-            if (activeChar.getEffect(L2Effect.EffectType.ROOT) == null) activeChar.stopRooting(null);
+            if (activeChar.getFirstEffect(L2Effect.EffectType.ROOT) == null) activeChar.stopRooting(null);
             MagicSkillUser MSU = new MagicSkillUser(playable, playable, 2042, 1, 0, 0);
             activeChar.sendPacket(MSU);
             activeChar.broadcastPacket(MSU);

@@ -151,7 +151,7 @@ public final class L2ChestInstance extends L2MonsterInstance
 
 		L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
 
-		if (player.getEffect(skill) == null)
+		if (player.getFirstEffect(skill) == null)
 		{
 			skill.getEffects(this, player);
 			broadcastPacket(new MagicSkillUser(this, player, skill.getId(), skillLevel,

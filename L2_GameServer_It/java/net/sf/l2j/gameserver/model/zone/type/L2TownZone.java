@@ -114,6 +114,13 @@ public class L2TownZone extends L2ZoneType
 		}
 	}
 	
+	@Override
+	protected void onDieInside(L2Character character) {}
+	
+	@Override
+	protected void onReviveInside(L2Character character) {}
+
+	
 	/**
 	 * Returns this town zones name
 	 * @return

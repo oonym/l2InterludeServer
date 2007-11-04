@@ -83,6 +83,13 @@ public final class L2WorldRegion
     	_zoneManager.registerNewZone(zone);
     }
     
+    public void removeZone(L2ZoneType zone)
+    {
+    	if (_zoneManager == null)
+    		return;
+    	_zoneManager.unregisterZone(zone);
+    }
+    
     public void revalidateZones(L2Character character)
     {
     	if (_zoneManager == null) return;
@@ -100,6 +107,26 @@ public final class L2WorldRegion
     	if (_zoneManager != null)
     	{
     		_zoneManager.removeCharacter(character);
+    	}
+    }
+    
+    public void onDeath(L2Character character)
+    {
+    	if (_zoneManager == null) return;
+    	
+    	if (_zoneManager != null)
+    	{
+    		_zoneManager.onDeath(character);
+    	}
+    }
+
+    public void onRevive(L2Character character)
+    {
+    	if (_zoneManager == null) return;
+    	
+    	if (_zoneManager != null)
+    	{
+    		_zoneManager.onRevive(character);
     	}
     }
     

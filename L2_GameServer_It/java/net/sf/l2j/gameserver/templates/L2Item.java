@@ -501,8 +501,8 @@ public abstract class L2Item
             if (!skill.checkCondition(caster, target, true)) 
                 continue; // Skill condition not met
             
-            if (target.getEffect(skill.getId()) != null)
-                target.removeEffect(target.getEffect(skill.getId()));
+            if (target.getFirstEffect(skill.getId()) != null)
+                target.removeEffect(target.getFirstEffect(skill.getId()));
             for (L2Effect e:skill.getEffects(caster, target))
                 effects.add(e);
         }

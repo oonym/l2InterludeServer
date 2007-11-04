@@ -56,4 +56,11 @@ public class L2JailZone extends L2ZoneType
 			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 		}
 	}
+	
+	@Override
+	protected void onDieInside(L2Character character) {}
+	
+	@Override
+	protected void onReviveInside(L2Character character) {}
+
 }

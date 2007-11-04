@@ -84,6 +84,12 @@ public class L2ArenaZone extends L2ZoneType
 		}
 	}
 	
+	@Override
+	protected void onDieInside(L2Character character) {}
+	
+	@Override
+	protected void onReviveInside(L2Character character) {}
+	
 	public final int[] getSpawnLoc()
     {
     	return _spawnLoc;

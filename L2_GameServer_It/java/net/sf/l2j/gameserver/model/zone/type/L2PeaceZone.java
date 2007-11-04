@@ -54,4 +54,12 @@ public class L2PeaceZone extends L2ZoneType
 			((L2PcInstance)character).sendMessage("You exited a peace zone!");
 		}*/
 	}
+	
+
+	@Override
+	protected void onDieInside(L2Character character) {}
+	
+	@Override
+	protected void onReviveInside(L2Character character) {}
+
 }

@@ -63,4 +63,11 @@ public class L2MotherTreeZone extends L2ZoneType
 			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.EXIT_SHADOW_MOTHER_TREE));
 		}
 	}
+	
+	@Override
+	protected void onDieInside(L2Character character) {}
+	
+	@Override
+	protected void onReviveInside(L2Character character) {}
+
 }

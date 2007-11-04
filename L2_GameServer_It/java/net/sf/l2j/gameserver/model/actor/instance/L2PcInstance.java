@@ -6939,7 +6939,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (skill.isToggle())
 		{
 			// Get effects of the skill
-            L2Effect effect = getEffect(skill);
+            L2Effect effect = getFirstEffect(skill);
 
 			if (effect != null)
 			{

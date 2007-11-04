@@ -328,8 +328,8 @@ public final class L2Weapon  extends L2Item
             if (!skill.checkCondition(caster, target, true)) 
                 continue; // Skill condition not met
             
-            if (target.getEffect(skill.getId()) != null)
-                target.getEffect(skill.getId()).exit();
+            if (target.getFirstEffect(skill.getId()) != null)
+                target.getFirstEffect(skill.getId()).exit();
             for (L2Effect e:skill.getEffects(caster, target))
                 effects.add(e);
         }
