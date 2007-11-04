@@ -5198,15 +5198,18 @@ public abstract class L2Character extends L2Object
 				{
 					if(!this.isInsideRadius(targets[i],escapeRange,true,false)) 
 						continue;
-					if(this instanceof L2PcInstance)
+					if(skill.isOffensive())
 					{
-						if(((L2Character)targets[i]).isInsidePeaceZone((L2PcInstance)this)) 
-							continue;
-					}
-					else
-					{
-						if(((L2Character)targets[i]).isInsidePeaceZone(this, targets[i])) 
-							continue;
+						if(this instanceof L2PcInstance)
+						{
+							if(((L2Character)targets[i]).isInsidePeaceZone((L2PcInstance)this)) 
+								continue;
+						}
+						else
+						{
+							if(((L2Character)targets[i]).isInsidePeaceZone(this, targets[i])) 
+								continue;
+						}
 					}
 					targetList.add((L2Character)targets[i]);
 				}
