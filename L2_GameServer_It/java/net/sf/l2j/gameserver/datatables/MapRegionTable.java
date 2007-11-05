@@ -171,7 +171,7 @@ public class MapRegionTable
         _pointsWithKarmas[15][0] = 147419;
         _pointsWithKarmas[15][1] = -64980;
         _pointsWithKarmas[15][2] =  -3457;
-        // Shuttgard
+        // Schuttgart
         _pointsWithKarmas[16][0] = 85184;
         _pointsWithKarmas[16][1] = -138560;
         _pointsWithKarmas[16][2] = -2256;

@@ -101,7 +101,7 @@ public class TownManager
 			case 15:
 				return getTown(13); // Goddard
 			case 16:
-				return getTown(17); //Shuttgart
+				return getTown(17); // Schuttgart
 		}
 
         return getTown(16); // Default to floran

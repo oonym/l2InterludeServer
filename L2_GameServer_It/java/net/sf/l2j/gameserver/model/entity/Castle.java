@@ -23,8 +23,10 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Map;
 
 import javolution.util.FastList;
+import javolution.util.FastMap;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.CastleUpdater;
@@ -84,18 +86,46 @@ public class Castle
 	private int _treasury                      = 0;
     private L2CastleZone _zone;
     private L2Clan _formerOwner				   = null;
+    private int _nbArtifact					   = 1;
+    private Map<Integer, Integer> _engrave	   = new FastMap<Integer, Integer>();
 
 	// =========================================================
 	// Constructor
 	public Castle(int castleId)
 	{
 		_castleId = castleId;
+		if(_castleId == 7 || castleId == 9) // Goddard and Schuttgart
+			_nbArtifact = 2;
         load();
 		loadDoor();
 	}
 
 	// =========================================================
 	// Method - Public
+	
+	public void Engrave(L2Clan clan, int objId) 
+	{
+		_engrave.put(objId, clan.getClanId());
+		if (_engrave.size() == _nbArtifact)
+		{
+			boolean rst = true;
+			for (int id : _engrave.values())
+			{
+				if (id != clan.getClanId())
+					rst = false;
+			}
+			if(rst)
+			{
+				_engrave.clear();
+				setOwner(clan);
+			}
+			else
+				getSiege().announceToPlayer("Clan " + clan.getName() + " has finished to engrave one of the rulers.", true);
+		}
+		else
+			getSiege().announceToPlayer("Clan " + clan.getName() + " has finished to engrave one of the rulers.", true);
+	}
+	
 	// This method add to the treasury
     /** Add amount to castle instance's treasury (warehouse). */
 	public void addToTreasury(int amount)
