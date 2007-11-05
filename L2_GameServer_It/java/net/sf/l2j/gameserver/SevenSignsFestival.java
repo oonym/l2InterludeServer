@@ -1293,10 +1293,12 @@ public class SevenSignsFestival implements SpawnListener
         // Remove any unused blood offerings from online players.
         for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayers())
         {
-            L2ItemInstance bloodOfferings = onlinePlayer.getInventory().getItemByItemId(FESTIVAL_OFFERING_ID);
+            try {
+            	L2ItemInstance bloodOfferings = onlinePlayer.getInventory().getItemByItemId(FESTIVAL_OFFERING_ID);
             
-            if (bloodOfferings != null) 
-                onlinePlayer.destroyItem("SevenSigns", bloodOfferings, null, false);
+            	if (bloodOfferings != null) 
+            		onlinePlayer.destroyItem("SevenSigns", bloodOfferings, null, false);
+            } catch (NullPointerException e) {}
         }
         
         _log.info("SevenSignsFestival: Reinitialized engine for next competition period.");
@@ -1608,7 +1610,11 @@ public class SevenSignsFestival implements SpawnListener
             
             // Record a string list of the party members involved.
             for (L2PcInstance partyMember : prevParticipants) 
-                partyMembers.add(partyMember.getName());
+            {
+                try {
+                	partyMembers.add(partyMember.getName());
+                } catch (NullPointerException e) {}
+            }
             
             // Update the highest scores and party list.
             currFestData.set("date", String.valueOf(System.currentTimeMillis()));
@@ -2059,8 +2065,9 @@ public class SevenSignsFestival implements SpawnListener
             // Teleport all players to arena and notify them.
             if (_participants.size() > 0) 
             {
-                for (L2PcInstance participant : _participants)
-                { 
+              try {
+            	 for (L2PcInstance participant : _participants)
+                 { 
                     _originalLocations.put(participant, new FestivalSpawn(participant.getX(), participant.getY(), participant.getZ(), participant.getHeading()));
                     
                     // Randomize the spawn point around the specific centerpoint for each player.
@@ -2090,7 +2097,11 @@ public class SevenSignsFestival implements SpawnListener
                     L2ItemInstance bloodOfferings = participant.getInventory().getItemByItemId(FESTIVAL_OFFERING_ID);
                     if (bloodOfferings != null)
                     	participant.destroyItem("SevenSigns", bloodOfferings, null, true);
-                }
+                 }
+              } catch (NullPointerException e) 
+              { 
+            	  // deleteMe handling should teleport party out in case of disconnect
+              }
             }
             
             L2NpcTemplate witchTemplate = NpcTable.getInstance().getTemplate(_witchSpawn._npcId);
@@ -2298,7 +2309,11 @@ public class SevenSignsFestival implements SpawnListener
                 CreatureSay cs = new CreatureSay(_witchInst.getObjectId(), 0, "Festival Witch", message);
                 
                 for (L2PcInstance participant : _participants)
-                    participant.sendPacket(cs);
+                {
+                	try {
+                		participant.sendPacket(cs);
+                	} catch (NullPointerException e) { }
+                }
             }
         }
         
@@ -2311,8 +2326,10 @@ public class SevenSignsFestival implements SpawnListener
             {
                 for (L2PcInstance participant : _participants)
                 {
-                    relocatePlayer(participant, false);
-                    participant.sendMessage("The festival has ended. Your party leader must now register your score before the next festival takes place.");
+                    try {
+                    	relocatePlayer(participant, false);
+                    	participant.sendMessage("The festival has ended. Your party leader must now register your score before the next festival takes place.");
+                    } catch (NullPointerException e) { }
                 }
                 
                 if (_cabal == SevenSigns.CABAL_DAWN)
@@ -2347,14 +2364,16 @@ public class SevenSignsFestival implements SpawnListener
                 
                 participant.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
                 participant.teleToLocation(origPosition._x, origPosition._y, origPosition._z, true);
+                participant.sendMessage("You have been removed from the festival arena.");
             }
             catch (Exception e) 
             {
                 // If an exception occurs, just move the player to the nearest town.
-                participant.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+                try {
+                	participant.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+                	participant.sendMessage("You have been removed from the festival arena.");
+                } catch (NullPointerException e2) {}
             }
-            
-            participant.sendMessage("You have been removed from the festival arena.");            
         }
     }
     
