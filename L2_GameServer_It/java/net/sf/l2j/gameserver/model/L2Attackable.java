@@ -26,11 +26,13 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ItemsAutoDestroy;
+import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlEvent;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.ai.L2AttackableAI;
 import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.ai.L2SiegeGuardAI;
+import net.sf.l2j.gameserver.clientpackets.Say2;
 import net.sf.l2j.gameserver.datatables.EventDroplist;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.EventDroplist.DateDrop;
@@ -51,6 +53,7 @@ import net.sf.l2j.gameserver.model.actor.knownlist.AttackableKnownList;
 import net.sf.l2j.gameserver.model.base.SoulCrystal;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -266,6 +269,10 @@ public class L2Attackable extends L2NpcInstance
     /** Stores the attacker who used the over-hit enabled skill on the L2Attackable */
     private L2Character _overhitAttacker;
     
+    /** First CommandChannel who attacked the L2Attackable and meet the requirements **/
+    private L2CommandChannel _firstCommandChannelAttacked = null;
+    private CommandChannelTimer _commandChannelTimer = null;
+    
     /** True if a Soul Crystal was successfuly used on the L2Attackable */
     private boolean _absorbed;
     
@@ -373,6 +380,20 @@ public class L2Attackable extends L2NpcInstance
             if((this.getEffect(L2Effect.EffectType.CONFUSION)!=null) && (attacker.getEffect(L2Effect.EffectType.CONFUSION)!=null))
                 return;
         */
+    	
+    	// CommandChannel
+        if (_commandChannelTimer == null && this.isRaid())
+        {
+        	if (attacker.isInParty() && attacker.getParty().isInCommandChannel() 
+        			&& attacker.getParty().getCommandChannel().meetRaidWarCondition(this))
+        	{
+        		_firstCommandChannelAttacked = attacker.getParty().getCommandChannel();
+        		_commandChannelTimer = new CommandChannelTimer(this, attacker.getParty().getCommandChannel());
+        		ThreadPoolManager.getInstance().scheduleGeneral(_commandChannelTimer, 300000); // 5 min
+        		_firstCommandChannelAttacked.broadcastToChannelMembers(new CreatureSay(0, Say2.PARTYROOM_ALL, "", "You have looting rights!"));
+        	}
+        }
+    	
         if (isEventMob) return;
         	
         // Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList
@@ -628,7 +649,13 @@ public class L2Attackable extends L2NpcInstance
         				List<L2PlayableInstance> rewardedMembers = new FastList<L2PlayableInstance>();
         				
         				// Go through all L2PcInstance in the party
-        				for (L2PcInstance pl : attackerParty.getPartyMembers())
+        				List<L2PcInstance> groupMembers;
+        				if (attackerParty.isInCommandChannel())
+        					groupMembers = attackerParty.getCommandChannel().getMembers();
+        				else
+        					groupMembers = attackerParty.getPartyMembers();
+        				
+        				for (L2PcInstance pl : groupMembers)
         				{
         					if (pl == null || pl.isDead()) continue;
 
@@ -642,7 +669,13 @@ public class L2Attackable extends L2NpcInstance
         						{
         							partyDmg += reward2._dmg; // Add L2PcInstance damages to party damages
         							rewardedMembers.add(pl);
-        							if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
+        							if (pl.getLevel() > partyLvl)
+        							{
+        								if(attackerParty.isInCommandChannel())
+        									partyLvl = attackerParty.getCommandChannel().getLevel();
+        								else
+        									partyLvl = pl.getLevel();
+        							}
         						}
         						rewards.remove(pl); // Remove the L2PcInstance from the L2Attackable rewards
         					}
@@ -653,7 +686,13 @@ public class L2Attackable extends L2NpcInstance
         						if (Util.checkIfInRange(Config.ALT_PARTY_RANGE, this, pl, true))
         						{
         							rewardedMembers.add(pl);
-        							if (pl.getLevel() > partyLvl) partyLvl = pl.getLevel();
+        							if (pl.getLevel() > partyLvl)
+        							{
+        								if(attackerParty.isInCommandChannel())
+        									partyLvl = attackerParty.getCommandChannel().getLevel();
+        								else
+        									partyLvl = pl.getLevel();
+        							}
         						}
         					}
         					L2PlayableInstance summon = pl.getPet();
@@ -2202,4 +2241,56 @@ public class L2Attackable extends L2NpcInstance
     {
         return true; // This means we use MAX_MONSTER_ANIMATION instead of MAX_NPC_ANIMATION
     }
+	protected void setCommandChannelTimer(CommandChannelTimer commandChannelTimer)
+	{
+		_commandChannelTimer = commandChannelTimer;
+	}
+	public CommandChannelTimer getCommandChannelTimer()
+	{
+		return _commandChannelTimer;
+	}
+	public L2CommandChannel getFirstCommandChannelAttacked()
+	{
+		return _firstCommandChannelAttacked;
+	}
+	public void setFirstCommandChannelAttacked(
+			L2CommandChannel firstCommandChannelAttacked)
+	{
+		_firstCommandChannelAttacked = firstCommandChannelAttacked;
+	}
+	
+	private class CommandChannelTimer implements Runnable
+	{
+		private L2Attackable _monster;
+		private L2CommandChannel _channel;
+		
+		public CommandChannelTimer(L2Attackable monster, L2CommandChannel channel)
+		{
+			_monster = monster;
+			_channel = channel;
+		}
+		
+		/**
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run()
+		{
+			_monster.setCommandChannelTimer(null);
+			_monster.setFirstCommandChannelAttacked(null);
+			for (L2Character player : _monster.getAggroListRP().keySet())
+			{
+				if (player.isInParty() && player.getParty().isInCommandChannel())
+				{
+					if (player.getParty().getCommandChannel().equals(_channel))
+					{
+						// if a player which is in first attacked CommandChannel, restart the timer ;)
+						_monster.setCommandChannelTimer(this);
+						_monster.setFirstCommandChannelAttacked(_channel);
+						ThreadPoolManager.getInstance().scheduleGeneral(this, 300000); // 5 min
+						break;
+					}
+				}
+			}
+		}
+	}
 }

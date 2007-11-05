@@ -7360,6 +7360,10 @@ public final class L2PcInstance extends L2PlayableInstance
     {
     	L2PcInstance looter = (L2PcInstance)L2World.getInstance().findObject(LooterId);
 
+    	// if L2PcInstance is in a CommandChannel
+    	if (isInParty() && getParty().isInCommandChannel() && looter != null)
+    		return getParty().getCommandChannel().getMembers().contains(looter);
+    	
     	if (isInParty() && looter != null)
             return getParty().getPartyMembers().contains(looter);
 

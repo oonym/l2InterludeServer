@@ -59,8 +59,8 @@ public final class Say2 extends L2GameClientPacket
 	public final static int TRADE = 8; //+
 	public final static int ALLIANCE = 9; //$
 	public final static int ANNOUNCEMENT = 10;
-	public final static int PARTYROOM_ALL = 15; //(yellow)
-	public final static int PARTYROOM_COMMANDER = 16; //(blue)
+	public final static int PARTYROOM_ALL = 16; //(Red)
+	public final static int PARTYROOM_COMMANDER = 15; //(Yellow)
 	public final static int HERO_VOICE = 17;
 	
 	private final static String[] CHAT_NAMES = {
@@ -292,8 +292,23 @@ public final class Say2 extends L2GameClientPacket
 				PetitionManager.getInstance().sendActivePetitionMessage(activeChar, _text);
 				break;
 			case PARTYROOM_ALL:
+				if (activeChar.isInParty())
+				{
+					if (activeChar.getParty().isInCommandChannel() && activeChar.getParty().isLeader(activeChar))
+					{
+						activeChar.getParty().getCommandChannel().broadcastToChannelMembers(cs);
+					}
+				}
+				break;
 			case PARTYROOM_COMMANDER:
-				//PartyCommandManager.getInstance().sendChannelMessage(activeChar, _text);
+				if (activeChar.isInParty())
+				{
+					if (activeChar.getParty().isInCommandChannel() && 
+							activeChar.getParty().getCommandChannel().getChannelLeader().equals(activeChar))
+					{
+						activeChar.getParty().getCommandChannel().broadcastToChannelMembers(cs);
+					}
+				}
 				break;
 			case HERO_VOICE:
 				if (activeChar.isHero())

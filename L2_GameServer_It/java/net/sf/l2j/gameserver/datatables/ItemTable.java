@@ -34,12 +34,15 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.Item;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
+import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2PetDataTable;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.L2ItemInstance.ItemLocation;
+import net.sf.l2j.gameserver.model.actor.instance.L2BossInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 import net.sf.l2j.gameserver.skills.SkillsEngine;
 import net.sf.l2j.gameserver.templates.L2Armor;
 import net.sf.l2j.gameserver.templates.L2ArmorType;
@@ -671,8 +674,29 @@ public class ItemTable
 		
         if (process.equalsIgnoreCase("loot") && !Config.AUTO_LOOT)
         {
-            item.setOwnerId(actor.getObjectId());
-            ScheduledFuture itemLootShedule  = ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), 15000);
+        	ScheduledFuture itemLootShedule;
+        	long delay = 0;
+        	// if in CommandChannel and was killing a World/RaidBoss
+            if (reference != null && reference instanceof L2BossInstance || reference instanceof L2RaidBossInstance)
+            {
+            	if(((L2Attackable)reference).getFirstCommandChannelAttacked() != null 
+            			&& ((L2Attackable)reference).getFirstCommandChannelAttacked().meetRaidWarCondition(reference))
+            	{
+            		item.setOwnerId(((L2Attackable)reference).getFirstCommandChannelAttacked().getChannelLeader().getObjectId());
+            		delay = 300000;
+            	}
+            	else
+            	{
+	        		delay = 15000;
+	        		item.setOwnerId(actor.getObjectId());
+            	}
+            }
+            else
+            {
+            	item.setOwnerId(actor.getObjectId());
+	        	delay = 15000;
+            }
+            itemLootShedule  = ThreadPoolManager.getInstance().scheduleGeneral(new resetOwner(item), delay);
             item.setItemLootShedule(itemLootShedule);
         }
         

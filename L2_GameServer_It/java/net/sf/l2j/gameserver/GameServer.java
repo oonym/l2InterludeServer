@@ -180,6 +180,9 @@ import net.sf.l2j.gameserver.handler.skillhandlers.SummonTreasureKey;
 import net.sf.l2j.gameserver.handler.skillhandlers.Sweep;
 import net.sf.l2j.gameserver.handler.skillhandlers.TakeCastle;
 import net.sf.l2j.gameserver.handler.skillhandlers.Unlock;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelDelete;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelLeave;
+import net.sf.l2j.gameserver.handler.usercommandhandlers.ChannelListUpdate;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanPenalty;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.ClanWarsList;
 import net.sf.l2j.gameserver.handler.usercommandhandlers.DisMount;
@@ -567,6 +570,9 @@ public class GameServer
         _userCommandHandler.registerUserCommandHandler(new PartyInfo());
 		_userCommandHandler.registerUserCommandHandler(new Time());
 		_userCommandHandler.registerUserCommandHandler(new OlympiadStat());
+		_userCommandHandler.registerUserCommandHandler(new ChannelLeave());
+		_userCommandHandler.registerUserCommandHandler(new ChannelDelete());
+		_userCommandHandler.registerUserCommandHandler(new ChannelListUpdate());
 
         _log.config("UserCommandHandler: Loaded " + _userCommandHandler.size() + " handlers.");
 
