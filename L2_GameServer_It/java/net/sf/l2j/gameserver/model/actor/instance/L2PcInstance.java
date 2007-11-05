@@ -2330,7 +2330,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (!_waitTypeSitting && !isAttackingDisabled() && !isOutOfControl() && !isImobilised())
 		{
 			breakAttack();
-
+			setIsSitting(true);
 			broadcastPacket(new ChangeWaitType (this, ChangeWaitType.WT_SITTING));
 			// Schedule a sit down task to wait for the animation to finish
 			ThreadPoolManager.getInstance().scheduleGeneral(new SitDownTask(this), 2500);
@@ -2349,7 +2349,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		public void run()
 		{	
-			setIsSitting(true);
 			_player.setIsParalyzed(false);
 			_player.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
 		}

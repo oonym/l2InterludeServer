@@ -470,34 +470,6 @@ abstract class AbstractAI implements Ctrl
     }
 
     /**
-     * Sit Down the actor server side AND client side by sending Server->Client packet ChangeWaitType <I>(broadcast)</I>.<BR><BR>
-     *
-     * <FONT COLOR=#FF0000><B> <U>Caution</U> : Low level function, used by AI subclasses</B></FONT><BR><BR>
-     *
-     */
-    protected void clientSitDown()
-    {
-        if (_actor instanceof L2PcInstance)
-        {
-            ((L2PcInstance)_actor).sitDown();
-        }
-    }
-
-    /**
-     * Stand up the actor server side AND client side by sending Server->Client packet ChangeWaitType <I>(broadcast)</I>.<BR><BR>
-     *
-     * <FONT COLOR=#FF0000><B> <U>Caution</U> : Low level function, used by AI subclasses</B></FONT><BR><BR>
-     *
-     */
-    protected void clientStandUp()
-    {
-        if (_actor instanceof L2PcInstance)
-        {
-            ((L2PcInstance)_actor).standUp();
-        }
-    }
-
-    /**
      * Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn <I>(broadcast)</I>.<BR><BR>
      *
      * <FONT COLOR=#FF0000><B> <U>Caution</U> : Low level function, used by AI subclasses</B></FONT><BR><BR>

@@ -99,8 +99,6 @@ public class L2CharacterAI extends AbstractAI
         // Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
         clientStopAutoAttack();
 
-        // Stand up the actor server side AND client side by sending Server->Client packet ChangeWaitType (broadcast)
-        clientStandUp();
     }
 
     /**

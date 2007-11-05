@@ -163,7 +163,6 @@ public class L2PlayerAI extends L2CharacterAI
                 setAttackTarget(null);
             }
             clientStopMoving(null);
-            clientSitDown();
         }
     }
 
