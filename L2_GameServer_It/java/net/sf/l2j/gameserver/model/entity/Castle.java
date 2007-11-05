@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.Map;
 
+import net.sf.l2j.Config;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.L2DatabaseFactory;
@@ -267,7 +268,13 @@ public class Castle
 			if (oldOwner != null)
 			{
 				if (_formerOwner == null)
-                    _formerOwner = oldOwner;
+				{
+					_formerOwner = oldOwner;
+					if (Config.REMOVE_CASTLE_CIRCLETS)
+					{
+						CastleManager.getInstance().removeCirclet(_formerOwner,getCastleId());
+					}
+				}
 				oldOwner.setHasCastle(0);												// Unset has castle flag for old owner
         		new Announcements().announceToAll(oldOwner.getName() + " has lost " + getName() + " castle!");
 			}							
@@ -286,6 +293,10 @@ public class Castle
 		if (clan != null)
 		{	
 			_formerOwner = clan;
+			if (Config.REMOVE_CASTLE_CIRCLETS)
+			{
+				CastleManager.getInstance().removeCirclet(_formerOwner,getCastleId());
+			}
 			clan.setHasCastle(0);
 			new Announcements().announceToAll(clan.getName() + " has lost " +getName() + " castle");
 			clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
@@ -621,7 +632,7 @@ public class Castle
 	}
 	
 	// =========================================================
-	// Proeprty
+	// Property
 	public final int getCastleId()
 	{
 		return _castleId;

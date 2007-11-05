@@ -32,6 +32,7 @@ import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -367,7 +368,10 @@ public class L2Clan
 			}
 		}
 		exMember.saveApprenticeAndSponsor(0, 0);
-		
+		if (Config.REMOVE_CASTLE_CIRCLETS)
+		{
+			CastleManager.getInstance().removeCirclet(exMember,getHasCastle());
+		}      
 		if (exMember.isOnline())
 		{
 			L2PcInstance player = exMember.getPlayerInstance();
