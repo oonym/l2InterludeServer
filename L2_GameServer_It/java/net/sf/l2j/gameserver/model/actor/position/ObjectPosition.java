@@ -163,5 +163,10 @@ public class ObjectPosition
     public final void setWorldPosition(Point3D newPosition) { setWorldPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ()); }
     
     public final L2WorldRegion getWorldRegion() { return _worldRegion; }
-    public final void setWorldRegion(L2WorldRegion value) { _worldRegion = value; }
+    public final void setWorldRegion(L2WorldRegion value) 
+    { 
+    	if(_worldRegion != null && getActiveObject() instanceof L2Character) // remove from old region zones 
+    		_worldRegion.removeFromZones((L2Character)getActiveObject());
+    	_worldRegion = value; 
+    }
 }
