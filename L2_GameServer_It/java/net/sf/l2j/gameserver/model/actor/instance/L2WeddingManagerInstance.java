@@ -170,14 +170,21 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                 	{
                 		Inventory inv3 = player.getInventory();
                 		L2ItemInstance item3 = inv3.getPaperdollItem(10);
-                		String strItem = Integer.toString(item3.getItemId());
-                		String frmWear = Integer.toString(6408);
-                		player.sendMessage(strItem);
-                		if(strItem.equals(frmWear))
+                		if(null==item3)
                 		{
-                			player.setIsWearingFormalWear(true);
-                		}else{
                 			player.setIsWearingFormalWear(false);
+                		}
+                		else
+                		{
+	                		String strItem = Integer.toString(item3.getItemId());
+	                		String frmWear = Integer.toString(6408);
+	                		player.sendMessage(strItem);
+	                		if(strItem.equals(frmWear))
+	                		{
+	                			player.setIsWearingFormalWear(true);
+	                		}else{
+	                			player.setIsWearingFormalWear(false);
+	                		}
                 		}
                 	}
                     if(Config.L2JMOD_WEDDING_FORMALWEAR && !player.isWearingFormalWear())
@@ -200,14 +207,23 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                 	{
                 		Inventory inv3 = player.getInventory();
                 		L2ItemInstance item3 = inv3.getPaperdollItem(10);
-                		String strItem = Integer.toString(item3.getItemId());
-                		String frmWear = Integer.toString(6408);
-                		player.sendMessage(strItem);
-                		if(strItem.equals(frmWear))
+                		
+                		if (null==item3)
                 		{
-                			player.setIsWearingFormalWear(true);
-                		}else{
                 			player.setIsWearingFormalWear(false);
+                		}
+                		else
+                		{
+	                		String frmWear = Integer.toString(6408);
+	                		String strItem = null;
+	               			strItem = Integer.toString(item3.getItemId());
+	                		
+	                		if(null != strItem && strItem.equals(frmWear))
+	                		{
+	                			player.setIsWearingFormalWear(true);
+	                		}else{
+	                			player.setIsWearingFormalWear(false);
+	                		}
                 		}
                 	}
                     if(Config.L2JMOD_WEDDING_FORMALWEAR && !player.isWearingFormalWear())
