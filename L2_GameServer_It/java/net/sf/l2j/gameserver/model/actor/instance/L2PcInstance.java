@@ -1435,6 +1435,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		_siegeState = siegeState;
 	}
+	/**
+	 * Get the siege state of the L2PcInstance.<BR><BR>
+	 * 1 = attacker, 2 = defender, 0 = not involved
+	 */
 	public byte getSiegeState()
 	{
 		return _siegeState;

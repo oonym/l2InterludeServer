@@ -17,9 +17,11 @@
  */
 package net.sf.l2j.gameserver.model.zone.type;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
+
 
 /**
  * A Town zone
@@ -91,14 +93,18 @@ public class L2TownZone extends L2ZoneType
 	@Override
 	protected void onEnter(L2Character character)
 	{
-		if (!_noPeace) character.setInsideZone(L2Character.ZONE_PEACE, true);
-		
 		if (character instanceof L2PcInstance)
 		{
+			// PVP possible during siege, now for siege participants only
+			// Could also check if this town is in siege, or if any siege is going on
+			if (((L2PcInstance)character).getSiegeState() != 0 && Config.ZONE_TOWN == 1) 
+				return;
+
 			//((L2PcInstance)character).sendMessage("You entered "+_townName);
-			
-			//TODO: check for town pvp zone during siege (Config.ZONE_TOWN != 0 && getCastle().checkIfInZoneTowns(x, y)
 		}
+		
+		if (!_noPeace && Config.ZONE_TOWN != 2) character.setInsideZone(L2Character.ZONE_PEACE, true);
+		
 	}
 	
 	@Override
@@ -106,12 +112,9 @@ public class L2TownZone extends L2ZoneType
 	{
 		if (!_noPeace) character.setInsideZone(L2Character.ZONE_PEACE, false);
 		
-		if (character instanceof L2PcInstance)
-		{
+		// if (character instanceof L2PcInstance)
 			//((L2PcInstance)character).sendMessage("You left "+_townName);
-			
-			// TODO: check for town pvp zone during siege
-		}
+
 	}
 	
 	@Override
