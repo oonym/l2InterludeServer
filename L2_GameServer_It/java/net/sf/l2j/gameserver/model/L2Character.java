@@ -3797,7 +3797,7 @@ public abstract class L2Character extends L2Object
 	 * @param offset The size of the interaction area of the L2Character targeted
 	 *
 	 */
-	protected void moveToLocation(int x, int y, int z, int offset)
+	protected synchronized void moveToLocation(int x, int y, int z, int offset)
 	{
 		// Get the Move Speed of the L2Charcater
 		float speed = getStat().getMoveSpeed();
@@ -3901,22 +3901,6 @@ public abstract class L2Character extends L2Object
 				z = destiny.getZ();
 				distance = Math.sqrt((x - curX)*(x - curX) + (y - curY)*(y - curY));
 				
-				// If no distance to go through, the movement is canceled
-				if (distance < 1)
-				{
-					sin = 0;
-					cos = 1;
-					distance = 0;
-					x = curX;
-					y = curY;
-
-					if (Config.DEBUG) _log.fine("already in range, no movement needed.");
-
-					// Notify the AI that the L2Character is arrived at destination
-					getAI().notifyEvent(CtrlEvent.EVT_ARRIVED, null);
-
-					return;
-				}
 			}
 			// Pathfinding checks. Only when geodata setting is 2, the LoS check gives shorter result
 			// than the original movement was and the LoS gives a shorter distance than 2000
@@ -3940,7 +3924,6 @@ public abstract class L2Character extends L2Object
                 				|| (!(this instanceof L2PlayableInstance) && Math.abs(z - curZ) > 140)
                 				|| (this instanceof L2Summon && !((L2Summon)this).getFollowStatus())) 
                 		{
-                			getAI().stopFollow();
                 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
                 			return;
                 		}
@@ -3960,7 +3943,6 @@ public abstract class L2Character extends L2Object
                 			if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath.get(i),m.geoPath.get(i+1)))
                 			{
                 				m.geoPath = null;
-                				getAI().stopFollow();
                 				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
                 				return;
                 			}
@@ -3997,7 +3979,25 @@ public abstract class L2Character extends L2Object
                 		cos = dx/distance;
                 	}
 				}
-			}	
+			}
+			// If no distance to go through, the movement is canceled
+			if (distance < 1 && (Config.GEODATA == 2 
+					|| this instanceof L2PlayableInstance 
+					|| this instanceof L2RiftInvaderInstance))
+			{
+				sin = 0;
+				cos = 1;
+				distance = 0;
+				x = curX;
+				y = curY;
+
+				if (Config.DEBUG) _log.fine("already in range, no movement needed.");
+
+				// Notify the AI that the L2Character is arrived at destination
+				getAI().notifyEvent(CtrlEvent.EVT_ARRIVED, null);
+				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE); //needed?
+				return;
+			}
 		}
 
 		// Caclulate the Nb of ticks between the current position and the destination
