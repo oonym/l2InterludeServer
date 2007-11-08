@@ -223,9 +223,16 @@ public class GeoEngine extends GeoData
         // it might not work when distance is small and path vertical
         else if (distance2 < 82)
         {
-        	if(dz*dz > 40000) // 200 too deep/high. This value should be in sync with NLOS
-        		return false;
-        	else return true;
+        	// 200 too deep/high. This value should be in sync with NLOS
+        	if(dz*dz > 40000) 
+        	{ 
+        		short region = getRegionOffset(x,y);
+        		// geodata is loaded for region and mobs should have correct Z coordinate...
+        		// so there would likely be a floor in between the two
+        		if (_geodata.get(region) != null) 	
+        			return false;
+        	}
+        	return true;
         }
 
         // Increment in Z coordinate when moving along X or Y axis 
@@ -336,9 +343,16 @@ public class GeoEngine extends GeoData
         // it might not work when distance is small and path vertical
         else if (distance2 < 82)
         {
-        	if(dz*dz > 40000) // 200 too deep/high. This value should be in sync with NLOS
-        		return false;
-        	else return true;
+        	// 200 too deep/high. This value should be in sync with NLOS
+        	if(dz*dz > 40000) 
+        	{ 
+        		short region = getRegionOffset(x,y);
+        		// geodata is loaded for region and mobs should have correct Z coordinate...
+        		// so there would likely be a floor in between the two
+        		if (_geodata.get(region) != null) 	
+        			return false;
+        	}
+        	return true;
         }
 
         // Increment in Z coordinate when moving along X or Y axis 
