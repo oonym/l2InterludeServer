@@ -191,7 +191,7 @@ public abstract class L2Character extends L2Object
 	{
 		if (state)
 			_currentZones |= zone;
-		else
+		else if (isInsideZone(zone)) // zone overlap possible
 			_currentZones ^= zone;
 	}
 
