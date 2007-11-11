@@ -3915,7 +3915,7 @@ public abstract class L2Character extends L2Object
 					int gy = (curY - L2World.MAP_MIN_Y) >> 4;
 				
                 	m.geoPath = GeoPathFinding.getInstance().findPath(gx, gy, (short)curZ, gtx, gty, (short)originalZ);
-                	if (m.geoPath == null) // No path found
+                	if (m.geoPath == null || m.geoPath.size() < 2) // No path found
                 	{
                 		// Even though there's no path found (remember geonodes aren't perfect), 
                 		// the mob is attacking and right now we set it so that the mob will go
@@ -3937,17 +3937,6 @@ public abstract class L2Character extends L2Object
                 	}
                 	else
                 	{
-                		// check for doors in the route
-                		for (int i = 0; i < m.geoPath.size()-1; i++)
-                		{
-                			if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath.get(i),m.geoPath.get(i+1)))
-                			{
-                				m.geoPath = null;
-                				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-                				return;
-                			}
-                		}
-                		m.geoPath.get(m.geoPath.size()-1).getX();
                 		m.onGeodataPathIndex = 0; // on first segment
                 		m.geoPathGtx = gtx;
                 		m.geoPathGty = gty;
@@ -3957,6 +3946,23 @@ public abstract class L2Character extends L2Object
                 		x = m.geoPath.get(m.onGeodataPathIndex).getX();
                 		y = m.geoPath.get(m.onGeodataPathIndex).getY();
                 		z = m.geoPath.get(m.onGeodataPathIndex).getZ();
+                		
+                		// check for doors in the route
+                		if (DoorTable.getInstance().checkIfDoorsBetween(curX, curY, curZ, x, y, z))
+            			{
+            				m.geoPath = null;
+            				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+            				return;
+            			}
+                		for (int i = 0; i < m.geoPath.size()-1; i++)
+                		{
+                			if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath.get(i),m.geoPath.get(i+1)))
+                			{
+                				m.geoPath = null;
+                				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+                				return;
+                			}
+                		}
 
                 		// not in use: final check if we can indeed reach first path node (path nodes sometimes aren't accurate enough)
                 		// but if the node is very far, then a shorter check (like 3 blocks) would be enough

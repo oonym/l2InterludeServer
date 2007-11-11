@@ -72,14 +72,12 @@ public class GeoPathFinding extends PathFinding
 	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gty, short tz)
 	{
 		Node start = readNode(gx,gy,z);
-		//_log.warning("startx"+start.getLoc().getNodeX());
-		//_log.warning("starty"+start.getLoc().getNodeY());
-		//_log.warning("startx"+start.getLoc().getX());
-		//_log.warning("starty"+start.getLoc().getY());
 		Node end = readNode(gtx,gty,tz);
-		//_log.warning("end"+end.getLoc().getNodeX());
-		//_log.warning("end"+end.getLoc().getNodeY());
-		if(start == null || end == null) return null;
+		if (start == null || end == null) 
+			return null;
+		if (start == end) 
+			return null;
+		
 		//return searchAStar(start, end);
 		return searchByClosest(start, end);
 	}
