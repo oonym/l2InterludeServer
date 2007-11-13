@@ -59,7 +59,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 			activeChar.setTitle(_title);
 			SystemMessage sm = new SystemMessage(SystemMessageId.TITLE_CHANGED);
 			activeChar.sendPacket(sm);
-			activeChar.broadcastUserInfo();
+			activeChar.broadcastTitleInfo();
 		}
 		//Can the player change/give a title?
 		else if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_GIVE_TITLE) == L2Clan.CP_CL_GIVE_TITLE) 
@@ -82,7 +82,7 @@ public class RequestGiveNickName extends L2GameClientPacket
     				member.setTitle(_title);
     				SystemMessage sm = new SystemMessage(SystemMessageId.TITLE_CHANGED);
     				member.sendPacket(sm);
-					member.broadcastUserInfo();
+					member.broadcastTitleInfo();
 					sm = null;
                 }
                 else
