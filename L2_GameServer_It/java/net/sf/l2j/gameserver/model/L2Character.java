@@ -573,7 +573,8 @@ public abstract class L2Character extends L2Object
 		if (isAttackingDisabled())
             return;
 
-		if (this instanceof L2PcInstance) {
+		if (this instanceof L2PcInstance) 
+		{
 	        if (((L2PcInstance)this).inObserverMode())
 	        {
 	            sendPacket(new SystemMessage(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE));
@@ -584,13 +585,13 @@ public abstract class L2Character extends L2Object
 	        if (target instanceof L2PcInstance)
 	        {
 		        if (((L2PcInstance)target).isCursedWeaponEquiped() && ((L2PcInstance)this).getLevel()<=20){
-		        	((L2PcInstance)this).sendMessage("Cant attack a cursed Player under twenty");
+		        	((L2PcInstance)this).sendMessage("Can't attack a cursed player when under level 21.");
 		        	sendPacket(new ActionFailed());
 		        	return;
 		        }
 
 		        if (((L2PcInstance)this).isCursedWeaponEquiped() && ((L2PcInstance)target).getLevel()<=20){
-		        	((L2PcInstance)this).sendMessage("Cant attack a newbie player with Zarike");
+		        	((L2PcInstance)this).sendMessage("Can't attack a newbie player using a cursed weapon.");
 		        	sendPacket(new ActionFailed());
 		        	return;
 		        }
@@ -710,11 +711,11 @@ public abstract class L2Character extends L2Object
             wasSSCharged = (weaponInst != null && weaponInst.getChargedSoulshot() != L2ItemInstance.CHARGED_NONE);
 
 		// Get the Attack Speed of the L2Character (delay (in milliseconds) before next attack)
-		int sAtk = calculateAttackSpeed(target, weaponInst);
+		int timeAtk = calculateTimeBetweenAttacks(target, weaponItem);
 		// the hit is calculated to happen halfway to the animation - might need further tuning e.g. in bow case
-		int sAtkHitMoment = sAtk/2;
+		int timeToHit = timeAtk/2;
 		_attackEndTime = GameTimeController.getGameTicks();
-		_attackEndTime += (sAtk / GameTimeController.MILLIS_IN_TICK);
+		_attackEndTime += (timeAtk / GameTimeController.MILLIS_IN_TICK);
 		_attackEndTime -= 1;
 
         int ssGrade = 0;
@@ -731,20 +732,19 @@ public abstract class L2Character extends L2Object
 		setAttackingBodypart();
 
 		// Get the Attack Reuse Delay of the L2Weapon
-		int reuse = (weaponItem == null) ? 0 : weaponItem.getAttackReuseDelay();
-		reuse *= getStat().getReuseModifier(target);
+		int reuse = calculateReuseTime(target, weaponItem);
 
 		// Select the type of attack to start
 		if (weaponItem == null)
-			hitted = doAttackHitSimple(attack, target, sAtkHitMoment);
+			hitted = doAttackHitSimple(attack, target, timeToHit);
 		else if (weaponItem.getItemType() == L2WeaponType.BOW)
-			hitted = doAttackHitByBow(attack, target, sAtk, reuse);
+			hitted = doAttackHitByBow(attack, target, timeAtk, reuse);
 		else if (weaponItem.getItemType() == L2WeaponType.POLE)
-			hitted = doAttackHitByPole(attack, sAtkHitMoment);
+			hitted = doAttackHitByPole(attack, timeToHit);
 		else if (isUsingDualWeapon())
-			hitted = doAttackHitByDual(attack, target, sAtkHitMoment);
+			hitted = doAttackHitByDual(attack, target, timeToHit);
 		else
-			hitted = doAttackHitSimple(attack, target, sAtkHitMoment);
+			hitted = doAttackHitSimple(attack, target, timeToHit);
 
         // Flag the attacker if it's a L2PcInstance outside a PvP area
         L2PcInstance player = null;
@@ -799,7 +799,7 @@ public abstract class L2Character extends L2Object
 			broadcastPacket(attack);
 
 		// Notify AI with EVT_READY_TO_ACT
-		ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), sAtk+reuse);
+		ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), timeAtk+reuse);
 	}
 
 	/**
@@ -849,9 +849,6 @@ public abstract class L2Character extends L2Object
 			// Calculate physical damages
 			damage1 = (int)Formulas.getInstance().calcPhysDam(this, target, null, shld1, crit1, false, attack.soulshot);
 		}
-
-		// Double check the bow re-use delay
-		if (reuse == 0) reuse = 1500;
 
 		// Check if the L2Character is a L2PcInstance
 		if (this instanceof L2PcInstance)
@@ -4924,32 +4921,50 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Return the Attack Speed of the L2Character (delay (in milliseconds) before next attack).<BR><BR>
 	 */
-	public int calculateAttackSpeed(L2Character target, @SuppressWarnings("unused") L2ItemInstance weaponInst)
+	public int calculateTimeBetweenAttacks(L2Character target, L2Weapon weapon)
 	{
 		double atkSpd = 0;
-        if (this instanceof L2Summon)
-        {
-            atkSpd = getPAtkSpd();
-        } else
-        {
-    		L2Weapon weapon = getActiveWeaponItem();
-    		if (weapon !=null)
-    		{
-    			switch (weapon.getItemType())
-    			{
-    				case DAGGER:
-    					atkSpd = getStat().getPAtkSpd();
-    					atkSpd /= 1.15;
-    					break;
-    				default:
-    					atkSpd = getStat().getPAtkSpd();
-				}
+		if (weapon !=null)
+		{
+			switch (weapon.getItemType())
+			{
+			case BOW:
+				atkSpd = getStat().getPAtkSpd();
+				return (int)(1500*345/atkSpd);
+			case DAGGER:
+				atkSpd = getStat().getPAtkSpd();
+				//atkSpd /= 1.15;
+				break;
+			default:
+				atkSpd = getStat().getPAtkSpd();
 			}
-        }
+		}
+		else
+			atkSpd = getPAtkSpd();
 
 		return Formulas.getInstance().calcPAtkSpd(this, target, atkSpd);
 	}
-
+	
+	public int calculateReuseTime(L2Character target, L2Weapon weapon)
+	{
+		if (weapon == null) return 0;
+		
+		int reuse = weapon.getAttackReuseDelay();
+		// only bows should continue for now
+		if (reuse == 0) return 0; 
+		// else if (reuse < 10) reuse = 1500;
+		
+		reuse *= getStat().getReuseModifier(target);
+		double atkSpd = getStat().getPAtkSpd();
+		switch (weapon.getItemType())
+		{
+			case BOW:
+				return (int)(reuse*345/atkSpd);
+			default:
+				return (int)(reuse*312/atkSpd);
+		}
+	}
+	
 	/**
 	 * Return True if the L2Character use a dual weapon.<BR><BR>
 	 */
