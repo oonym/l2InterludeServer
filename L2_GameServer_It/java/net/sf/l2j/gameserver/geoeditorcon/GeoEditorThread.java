@@ -18,123 +18,239 @@
  */
 package net.sf.l2j.gameserver.geoeditorcon;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.concurrent.TimeUnit;
+import java.net.SocketException;
+import java.util.logging.Logger;
 
-import net.sf.l2j.gameserver.model.L2World;
+import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
- *
- * @author  Luno
+ * @author Luno, Dezmond
  */
 public class GeoEditorThread extends Thread
 {
-	//How many times per second send packet
-	private int _ticks = 2;
-	
-	private boolean _working = true;
-	
-	private int    _port;
-	private String _hostname;
-	
-	private Socket _geSocket;
-	
-	private BufferedOutputStream _out;
-    @SuppressWarnings("unused")
-	private BufferedInputStream _in;
-	
-	private GeoEditorConnector _geCon;
-	
-	public GeoEditorThread(GeoEditorConnector ge)
-	{
+	private static Logger _log = Logger.getLogger(GeoEditorThread.class
+			.getName());
 
-		_port = 2109;
-		_hostname = "194.187.183.201";
-		
-		_geCon = ge;
+	private boolean _working = false;
+
+	private int _mode = 0; // 0 - don't send coords, 1 - send each
+
+	// validateposition from client, 2 - send in
+	// intervals of _sendDelay ms.
+	private int _sendDelay = 1000; // default - once in second
+
+	private Socket _geSocket;
+
+	private OutputStream _out;
+
+	private FastList<L2PcInstance> _gms;
+
+	public GeoEditorThread(Socket ge)
+	{
+		_geSocket = ge;
+		_working = true;
+		_gms = new FastList<L2PcInstance>();
 	}
+
+	public void interrupt()
+	{
+		try
+		{
+			_geSocket.close();
+		} catch (Exception e)
+		{
+		}
+		super.interrupt();
+	}
+
 	@Override
 	public void run()
 	{
 		try
 		{
-			_geCon.sendMessage("... connecting to GeoEditor.");
-			_geSocket = new Socket(_hostname, _port);
-			_geCon.sendMessage("Connection established.");
-			
-			_in  = new BufferedInputStream(_geSocket.getInputStream());
-			_out = new BufferedOutputStream(_geSocket.getOutputStream());
-			
-			while(_working)
+			_out = _geSocket.getOutputStream();
+			int timer = 0;
+
+			while (_working)
 			{
+				if (!isConnected())
+					_working = false;
+
+				if (_mode == 2 && timer > _sendDelay)
+				{
+					for (L2PcInstance gm : _gms)
+						if (!gm.getClient().getConnection().isClosed())
+							sendGmPosition(gm);
+						else
+							_gms.remove(gm);
+					timer = 0;
+				}
+
 				try
 				{
-					TimeUnit.MILLISECONDS.sleep(1000 / _ticks);
-				}catch(Exception e){}
-				for(L2PcInstance gm: _geCon.getGMs())
-					sendGmPosition(gm);
+					sleep(100);
+					if (_mode == 2)
+						timer += 100;
+				} catch (Exception e)
+				{
+				}
 			}
-			_geCon.stoppedConnection();
-			_geCon.sendMessage("Connection with GeoEditor broken.");
-		}
-		catch (UnknownHostException e)
+		} catch (SocketException e)
 		{
-			_geCon.stoppedConnection();
-			_geCon.sendMessage("Couldn't connect to GeoEditor.");
-		}
-		catch (IOException e)
+			_log.warning("GeoEditor disconnected. " + e.getMessage());
+		} catch (Exception e)
 		{
-			_geCon.stoppedConnection();
-			_geCon.sendMessage("Connection with GeoEditor broken.");
-		}
-		finally
+			e.printStackTrace();
+		} finally
 		{
-			try { _geSocket.close(); } catch (Exception e) {}
+			try
+			{
+				_geSocket.close();
+			} catch (Exception e)
+			{
+			}
+			_working = false;
 		}
 	}
-	private void sendGmPosition(L2PcInstance _gm) throws IOException
+
+	public void sendGmPosition(int gx, int gy, short z)
 	{
-    	int gx = (_gm.getX() - L2World.MAP_MIN_X) >> 4;
-    	int gy = (_gm.getY() - L2World.MAP_MIN_Y) >> 4;
-    	
-    	byte bx = (byte)((gx >> 3) % 256);
-    	byte by = (byte)((gy >> 3) % 256);
-    	
-    	byte cx = (byte)(gx % 8);
-    	byte cy = (byte)(gy % 8);
-    	
-    	short z = (short)(_gm.getZ());
-    	
-    	 // 6 bytes
-    	_out.write(bx);
-    	_out.write(by);
-    	_out.write(cx);
-    	_out.write(cy);
-    	sendShort(z);
-    	_out.flush();
+		if (!isConnected())
+			return;
+		try
+		{
+			synchronized (_out)
+			{
+				writeC(0x0b); // length 11 bytes!
+				writeC(0x01); // Cmd = save cell;
+				writeD(gx); // Global coord X;
+				writeD(gy); // Global coord Y;
+				writeH(z); // Coord Z;
+				_out.flush();
+			}
+		} catch (SocketException e)
+		{
+			_log.warning("GeoEditor disconnected. " + e.getMessage());
+			_working = false;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			try
+			{
+				_geSocket.close();
+			} catch (Exception ex)
+			{
+			}
+			_working = false;
+		}
 	}
-	private  void sendShort(short v) throws IOException
+
+	public void sendGmPosition(L2PcInstance _gm)
 	{
-		_out.write(v >> 8);
-		_out.write( v & 0xFFFF);
+		sendGmPosition(_gm.getX(), _gm.getY(), (short) _gm.getZ());
 	}
-	
-	public void stopRecording()
+
+	public void sendPing()
 	{
-		_working = false;
+		if (!isConnected())
+			return;
+		try
+		{
+			synchronized (_out)
+			{
+				writeC(0x01); // length 1 byte!
+				writeC(0x02); // Cmd = ping (dummy packet for connection
+								// test);
+				_out.flush();
+			}
+		} catch (SocketException e)
+		{
+			_log.warning("GeoEditor disconnected. " + e.getMessage());
+			_working = false;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			try
+			{
+				_geSocket.close();
+			} catch (Exception ex)
+			{
+			}
+			_working = false;
+		}
 	}
-	public void setTicks(int t)
+
+	private void writeD(int value) throws IOException
 	{
-		_ticks = t;
-		if(t < 1)
-			t = 1;
-		else if( t > 5)
-			t = 5;
+		_out.write(value & 0xff);
+		_out.write(value >> 8 & 0xff);
+		_out.write(value >> 16 & 0xff);
+		_out.write(value >> 24 & 0xff);
+	}
+
+	private void writeH(int value) throws IOException
+	{
+		_out.write(value & 0xff);
+		_out.write(value >> 8 & 0xff);
+	}
+
+	private void writeC(int value) throws IOException
+	{
+		_out.write(value & 0xff);
+	}
+
+	public void setMode(int value)
+	{
+		_mode = value;
+	}
+
+	public void setTimer(int value)
+	{
+		if (value < 500)
+			_sendDelay = 500; // maximum - 2 times per second!
+		else if (value > 60000)
+			_sendDelay = 60000; // Minimum - 1 time per minute.
+		else
+			_sendDelay = value;
+	}
+
+	public void addGM(L2PcInstance gm)
+	{
+		if (!_gms.contains(gm))
+			_gms.add(gm);
+	}
+
+	public void removeGM(L2PcInstance gm)
+	{
+		if (_gms.contains(gm))
+			_gms.remove(gm);
+	}
+
+	public boolean isSend(L2PcInstance gm)
+	{
+		if (_mode == 1 && _gms.contains(gm))
+			return true;
+		return false;
+	}
+
+	private boolean isConnected()
+	{
+		return _geSocket.isConnected() && !_geSocket.isClosed();
+	}
+
+	public boolean isWorking()
+	{
+		sendPing();
+		return _working;
+	}
+
+	public int getMode()
+	{
+		return _mode;
 	}
 }

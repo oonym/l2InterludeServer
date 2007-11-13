@@ -17,24 +17,25 @@
  */
 package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
+import java.util.StringTokenizer;
+
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.geoeditorcon.GeoEditorConnector;
+import net.sf.l2j.gameserver.geoeditorcon.GeoEditorListener;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.GMAudit;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
- *
- * @author  Luno
+ * @author  Luno, Dezmond
  */
 public class AdminGeoEditor implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS = 
 		{
-			"admin_geoeditor_connect",
-			"admin_geoeditor_join",
-			"admin_geoeditor_leave"
+			"admin_ge_status",
+			"admin_ge_mode",
+			"admin_ge_join",
+			"admin_ge_leave"
 		};
 	
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
@@ -48,23 +49,68 @@ public class AdminGeoEditor implements IAdminCommandHandler
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
-        GeoEditorConnector ge = GeoEditorConnector.getInstance();
-        
-        if(command.startsWith("admin_geoeditor_connect"))
+        if (!Config.ACCEPT_GEOEDITOR_CONN)
         {
-        	try
+        	activeChar.sendMessage("Server do not accepts geoeditor connections now.");
+        	return true;
+        }
+        if(command.startsWith("admin_ge_status"))
+        {
+        	activeChar.sendMessage(GeoEditorListener.getInstance().getStatus());
+        }
+        else if(command.startsWith("admin_ge_mode"))
+        {
+        	if (GeoEditorListener.getInstance().getThread() == null)
         	{
-        		int ticks = Integer.parseInt(command.substring(24));
-        		ge.connect(activeChar, ticks);
-        	}catch(Exception e){activeChar.sendMessage("Usage: //geoeditor_connect <number>"); }
+        		activeChar.sendMessage("Geoeditor not connected.");
+        		return true;
+        	}
+			try
+			{
+				String val = command.substring("admin_ge_mode".length());
+				StringTokenizer st = new StringTokenizer(val);
+
+				if (st.countTokens() < 1)
+	        	{
+	        		activeChar.sendMessage("Usage: //ge_mode X");
+	        		activeChar.sendMessage("Mode 0: Don't send coordinates to geoeditor.");
+	        		activeChar.sendMessage("Mode 1: Send coordinates at ValidatePosition from clients.");
+	        		activeChar.sendMessage("Mode 2: Send coordinates each second.");
+	        		return true;
+	        	}
+				int m;
+				m = Integer.parseInt(st.nextToken());
+				GeoEditorListener.getInstance().getThread().setMode(m);
+				activeChar.sendMessage("Geoeditor connection mode set to "+m+".");
+			} catch (Exception e)
+			{
+        		activeChar.sendMessage("Usage: //ge_mode X");
+        		activeChar.sendMessage("Mode 0: Don't send coordinates to geoeditor.");
+        		activeChar.sendMessage("Mode 1: Send coordinates at ValidatePosition from clients.");
+        		activeChar.sendMessage("Mode 2: Send coordinates each second.");
+				e.printStackTrace();
+			}
+    		return true;
         }
-        else if(command.equals("admin_geoeditor_join"))
+        else if(command.equals("admin_ge_join"))
         {
-        	ge.join(activeChar);
+        	if (GeoEditorListener.getInstance().getThread() == null)
+        	{
+        		activeChar.sendMessage("Geoeditor not connected.");
+        		return true;
+        	}
+       		GeoEditorListener.getInstance().getThread().addGM(activeChar);
+    		activeChar.sendMessage("You added to list for geoeditor.");
         }
-        else if(command.equals("admin_geoeditor_leave"))
+        else if(command.equals("admin_ge_leave"))
         {
-        	ge.leave(activeChar);
+        	if (GeoEditorListener.getInstance().getThread() == null)
+        	{
+        		activeChar.sendMessage("Geoeditor not connected.");
+        		return true;
+        	}
+       		GeoEditorListener.getInstance().getThread().removeGM(activeChar);
+    		activeChar.sendMessage("You removed from list for geoeditor.");
         }
         return true;
 	}

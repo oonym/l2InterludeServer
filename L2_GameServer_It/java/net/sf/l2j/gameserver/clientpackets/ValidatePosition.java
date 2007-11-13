@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.TaskPriority;
 import net.sf.l2j.gameserver.Universe;
+import net.sf.l2j.gameserver.geoeditorcon.GeoEditorListener;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PartyMemberPosition;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
@@ -175,6 +176,10 @@ public class ValidatePosition extends L2GameClientPacket
 		
 		if (Config.ALLOW_WATER)
 			activeChar.checkWaterState();
+
+		if (Config.ACCEPT_GEOEDITOR_CONN)
+            if (GeoEditorListener.getInstance().getThread() != null  && GeoEditorListener.getInstance().getThread().isWorking()  && GeoEditorListener.getInstance().getThread().isSend(activeChar))
+            	GeoEditorListener.getInstance().getThread().sendGmPosition(_x,_y,(short)_z);
     }
     
     /* (non-Javadoc)

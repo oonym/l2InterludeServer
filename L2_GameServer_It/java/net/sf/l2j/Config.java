@@ -1148,6 +1148,7 @@ public final class Config
     public static int GEODATA;
     /** Force loading GeoData to psychical memory */
     public static boolean FORCE_GEODATA;
+    public static boolean ACCEPT_GEOEDITOR_CONN;
 
     /** Max amount of buffs */
     public static byte BUFFS_MAX_AMOUNT;
@@ -1334,6 +1335,7 @@ public final class Config
 
                 GEODATA                         = Integer.parseInt(optionsSettings.getProperty("GeoData", "0"));
                 FORCE_GEODATA                   = Boolean.parseBoolean(optionsSettings.getProperty("ForceGeoData", "True"));
+                ACCEPT_GEOEDITOR_CONN           = Boolean.parseBoolean(optionsSettings.getProperty("AcceptGeoeditorConn", "False"));
 
                 // ---------------------------------------------------
                 // Configuration values not found in config files
