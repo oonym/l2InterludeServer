@@ -1220,7 +1220,14 @@ public final class Formulas
 			//Skill Race : Bug
 			if (raceId == 4301) damage *= attacker.getPAtkInsects(target);
 		}
-
+        if (shld)
+        {
+            if (100 - Config.ALT_PERFECT_SHLD_BLOCK < Rnd.get(100)) 
+            {
+                damage = 1;
+                target.sendPacket(new SystemMessage(SystemMessageId.YOUR_EXCELLENT_SHIELD_DEFENSE_WAS_A_SUCCESS));
+            }
+        }
 		if (damage > 0 && damage < 1)
 		{
 			damage = 1;
