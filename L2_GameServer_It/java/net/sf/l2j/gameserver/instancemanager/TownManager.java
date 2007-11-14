@@ -102,6 +102,8 @@ public class TownManager
 				return getTown(13); // Goddard
 			case 16:
 				return getTown(17); // Schuttgart
+			case 18:
+				return getTown(19); //Primeval Isle
 		}
 
         return getTown(16); // Default to floran

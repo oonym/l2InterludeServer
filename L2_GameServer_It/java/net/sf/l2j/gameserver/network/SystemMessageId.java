@@ -1892,7 +1892,13 @@ public enum SystemMessageId
      * Message: Current Location: $s1, $s2, $s3 (Near the Town of Schuttgart)
      */
     LOC_SCHUTTGART_S1_S2_S3(1714),
-	
+    
+    /**
+     * ID: 1924<br>
+     * Message: Current Location: $s1, $s2, $s3 (near the Primeval Isle)
+     */
+    LOC_PRIMEVAL_ISLE_S1_S2_S3(1924),
+    
 	/**
 	 * ID: 562<br>
 	 * Message: You may not crystallize this item. Your crystallization skill level is too low.

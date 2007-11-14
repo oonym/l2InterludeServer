@@ -106,7 +106,7 @@ public class MapRegionTable
 			try { con.close(); } catch (Exception e) {}
 		}
         
-        _pointsWithKarmas = new int[17][3];
+        _pointsWithKarmas = new int[19][3];
         //Talking Island
         _pointsWithKarmas[0][0] = -79077;
         _pointsWithKarmas[0][1] = 240355;
@@ -175,6 +175,10 @@ public class MapRegionTable
         _pointsWithKarmas[16][0] = 85184;
         _pointsWithKarmas[16][1] = -138560;
         _pointsWithKarmas[16][2] = -2256;
+        // Primeval Isle
+        //_pointsWithKarmas[18][0] = 10468;
+        //_pointsWithKarmas[18][1] = -24569;
+        //_pointsWithKarmas[18][2] = -3645;
 	}
 	
 	public final int getMapRegion(int posX, int posY)
@@ -251,6 +255,7 @@ public class MapRegionTable
             case 14: nearestTown = "Rune Township"; break;
             case 15: nearestTown = "Town of Goddard"; break;
             case 16: nearestTown = "Town of Shuttgart"; break;  ////TODO@ (Check mapregion table)[Luno]
+            case 18: nearestTown = "Primeval Isle";break;
             default: nearestTown = "Town of Aden"; break;
            
         }
