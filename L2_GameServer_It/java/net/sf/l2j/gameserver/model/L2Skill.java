@@ -183,6 +183,7 @@ public abstract class L2Skill
     	DELUXE_KEY_UNLOCK,
     	SOW,
         HARVEST,
+        GET_PLAYER,
 
     	// Creation
     	COMMON_CRAFT,

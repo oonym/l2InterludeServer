@@ -163,6 +163,7 @@ import net.sf.l2j.gameserver.handler.skillhandlers.Disablers;
 import net.sf.l2j.gameserver.handler.skillhandlers.DrainSoul;
 import net.sf.l2j.gameserver.handler.skillhandlers.Fishing;
 import net.sf.l2j.gameserver.handler.skillhandlers.FishingSkill;
+import net.sf.l2j.gameserver.handler.skillhandlers.GetPlayer;
 import net.sf.l2j.gameserver.handler.skillhandlers.Harvest;
 import net.sf.l2j.gameserver.handler.skillhandlers.Heal;
 import net.sf.l2j.gameserver.handler.skillhandlers.ManaHeal;
@@ -501,6 +502,7 @@ public class GameServer
         _skillHandler.registerSkillHandler(new Sow());
         _skillHandler.registerSkillHandler(new Harvest());
         _skillHandler.registerSkillHandler(new Signets());
+        _skillHandler.registerSkillHandler(new GetPlayer());
         _log.config("SkillHandler: Loaded " + _skillHandler.size() + " handlers.");
 
 		_adminCommandHandler = AdminCommandHandler.getInstance();
