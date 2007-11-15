@@ -18,12 +18,15 @@
  */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
+import net.sf.l2j.util.Rnd;
 
 /*
  * Mobs can teleport players to them
@@ -38,10 +41,15 @@ public class GetPlayer implements ISkillHandler
         if (activeChar.isAlikeDead()) return;
         for (L2Object target : targets)
         {
-        	if (target instanceof L2PcInstance && !((L2PcInstance)target).isAlikeDead())
-        		((L2PcInstance)target).teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), true);
+        	if (target instanceof L2PcInstance)
+        	{
+        		L2PcInstance trg = (L2PcInstance)target;
+        		if (trg.isAlikeDead()) continue;
+        		//trg.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), true);
+        		trg.setXYZ(activeChar.getX()+Rnd.get(-10,10), activeChar.getY()+Rnd.get(-10,10), activeChar.getZ());
+        		trg.sendPacket(new ValidateLocation(activeChar));
+        	}        		
         }
-        
     }
 
     public SkillType[] getSkillIds()
