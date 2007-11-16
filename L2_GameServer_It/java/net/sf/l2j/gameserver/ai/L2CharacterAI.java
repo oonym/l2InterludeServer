@@ -266,7 +266,7 @@ public class L2CharacterAI extends AbstractAI
         setCastTarget((L2Character) target);
 
         // Stop actions client-side to cast the skill
-        if (skill.getSkillTime() > 50)
+        if (skill.getHitTime() > 50)
         {
             // Abort the attack of the L2Character and send Server->Client ActionFailed packet
             _actor.abortAttack();

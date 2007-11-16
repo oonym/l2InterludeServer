@@ -398,9 +398,9 @@ public abstract class L2Skill
     private final int _effectRange;
 
     // all times in milliseconds
-    private final int _skillTime;
-    private final int _skillInterruptTime;
     private final int _hitTime;
+    private final int _skillInterruptTime;
+    private final int _coolTime;
     private final int _reuseDelay;
     private final int _buffDuration;
 
@@ -493,9 +493,10 @@ public abstract class L2Skill
 
         _castRange = set.getInteger("castRange", 0);
         _effectRange = set.getInteger("effectRange", -1);
-        _skillTime = set.getInteger("skillTime", 0);
-        _skillInterruptTime = set.getInteger("skillTime", _skillTime / 2);
+        
         _hitTime = set.getInteger("hitTime", 0);
+        _coolTime = set.getInteger("coolTime", 0);
+        _skillInterruptTime = set.getInteger("hitTime", _hitTime / 2);
         _reuseDelay = set.getInteger("reuseDelay", 0);
         _buffDuration = set.getInteger("buffDuration", 0);
 
@@ -744,14 +745,6 @@ public abstract class L2Skill
     }
 
     /**
-     * @return Returns the hitTime.
-     */
-    public final int getHitTime()
-    {
-        return Math.round(Config.ALT_GAME_SKILL_HIT_RATE * _hitTime);
-    }
-
-    /**
      * @return Returns the hpConsume.
      */
     public final int getHpConsume()
@@ -907,11 +900,26 @@ public abstract class L2Skill
         return _reuseDelay;
     }
 
+    @Deprecated
     public final int getSkillTime()
     {
-        return _skillTime;
+        return _hitTime;
     }
 
+    public final int getHitTime()
+    {
+        return _hitTime;
+    }
+    
+    /**
+     * @return Returns the coolTime.
+     */
+    public final int getCoolTime()
+    {
+        return _coolTime;
+    }
+
+    
     public final int getSkillInterruptTime()
     {
         return _skillInterruptTime;

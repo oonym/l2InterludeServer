@@ -1644,7 +1644,6 @@ public final class Config
                 ALT_GAME_FREIGHT_PRICE  = Integer.parseInt(altSettings.getProperty("AltGameFreightPrice", "1000"));
                 ALT_PARTY_RANGE 		= Integer.parseInt(altSettings.getProperty("AltPartyRange", "1600"));
                 ALT_PARTY_RANGE2  		= Integer.parseInt(altSettings.getProperty("AltPartyRange2", "1400"));
-                ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(altSettings.getProperty("AltGameSkillHitRate", "1."));
                 REMOVE_CASTLE_CIRCLETS  = Boolean.parseBoolean(altSettings.getProperty("RemoveCastleCirclets", "true"));
                 IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
                 LIFE_CRYSTAL_NEEDED     = Boolean.parseBoolean(altSettings.getProperty("LifeCrystalNeeded", "true"));                
@@ -2327,7 +2326,6 @@ public final class Config
         else if (pName.equalsIgnoreCase("AltGameFreightPrice")) ALT_GAME_FREIGHT_PRICE = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("AltPartyRange")) ALT_PARTY_RANGE = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("AltPartyRange2")) ALT_PARTY_RANGE2 = Integer.parseInt(pValue);
-        else if (pName.equalsIgnoreCase("AltGameSkillHitRate")) ALT_GAME_SKILL_HIT_RATE = Float.parseFloat(pValue);
 
         else if (pName.equalsIgnoreCase("CraftingEnabled")) IS_CRAFTING_ENABLED = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("LifeCrystalNeeded")) LIFE_CRYSTAL_NEEDED = Boolean.valueOf(pValue);

@@ -119,9 +119,9 @@ public class ScrollOfEscape implements IItemHandler
         activeChar.disableAllSkills();
 
         L2Skill skill = SkillTable.getInstance().getInfo(escapeSkill, 1);
-        MagicSkillUser msu = new MagicSkillUser(activeChar, escapeSkill, 1, skill.getSkillTime(), 0);
+        MagicSkillUser msu = new MagicSkillUser(activeChar, escapeSkill, 1, skill.getHitTime(), 0);
         activeChar.broadcastPacket(msu);
-        SetupGauge sg = new SetupGauge(0, skill.getSkillTime());
+        SetupGauge sg = new SetupGauge(0, skill.getHitTime());
         activeChar.sendPacket(sg);
         //End SoE Animation section
         
@@ -131,8 +131,8 @@ public class ScrollOfEscape implements IItemHandler
 
         EscapeFinalizer ef = new EscapeFinalizer(activeChar, itemId);
         // continue execution later
-        activeChar.setSkillCast(ThreadPoolManager.getInstance().scheduleEffect(ef, skill.getSkillTime()));
-        activeChar.setSkillCastEndTime(10+GameTimeController.getGameTicks()+skill.getSkillTime()/GameTimeController.MILLIS_IN_TICK);
+        activeChar.setSkillCast(ThreadPoolManager.getInstance().scheduleEffect(ef, skill.getHitTime()));
+        activeChar.setSkillCastEndTime(10+GameTimeController.getGameTicks()+skill.getHitTime()/GameTimeController.MILLIS_IN_TICK);
     }
     
     static class EscapeFinalizer implements Runnable

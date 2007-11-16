@@ -1258,7 +1258,8 @@ public abstract class L2Character extends L2Object
             level = 1;
 
 		// Get the casting time of the skill (base)
-		int skillTime = skill.getSkillTime();
+		int hitTime = skill.getHitTime();
+		int coolTime = skill.getCoolTime();
 
 		// Get the delay under wich the cast can be aborted (base)
 		int skillInterruptTime = skill.getSkillInterruptTime();
@@ -1269,8 +1270,12 @@ public abstract class L2Character extends L2Object
 		// Calculate the casting time of the skill (base + modifier of MAtkSpd)
 		// Don't modify the skill time for FORCE_BUFF skills. The skill time for those skills represent the buff time.
 		if(!forceBuff)
-			skillTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillTime);
-
+		{
+			hitTime = Formulas.getInstance().calcMAtkSpd(this, skill, hitTime);
+			if (coolTime > 0) 
+				coolTime = Formulas.getInstance().calcMAtkSpd(this, skill, coolTime);
+		}
+			
 		// Calculate the Interrupt Time of the skill (base + modifier) if the skill is a spell else 0
 		if (skill.isMagic())
 			skillInterruptTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillInterruptTime);
@@ -1286,7 +1291,8 @@ public abstract class L2Character extends L2Object
 					|| (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT))
 			{
 				//Only takes 70% of the time to cast a BSpS/SpS cast
-				skillTime = (int)(0.70 * skillTime);
+				hitTime = (int)(0.70 * hitTime);
+				coolTime = (int)(0.70 * coolTime);
 				skillInterruptTime = (int)(0.70 * skillInterruptTime);
 
 				//Because the following are magic skills that do not actively 'eat' BSpS/SpS,
@@ -1308,8 +1314,8 @@ public abstract class L2Character extends L2Object
 			}
 		}
 
-		// Set the _castEndTime and _castInterruptTim
-		_castEndTime = 10 + GameTimeController.getGameTicks() + skillTime / GameTimeController.MILLIS_IN_TICK;
+		// Set the _castEndTime and _castInterruptTim. +10 ticks for lag situations, will be reseted in onMagicFinalizer
+		_castEndTime = 10 + GameTimeController.getGameTicks() + (coolTime + hitTime) / GameTimeController.MILLIS_IN_TICK;
 		_castInterruptTime = GameTimeController.getGameTicks() + skillInterruptTime / GameTimeController.MILLIS_IN_TICK;
 
 		// Init the reuse time of the skill
@@ -1318,7 +1324,7 @@ public abstract class L2Character extends L2Object
 
 		// Send a Server->Client packet MagicSkillUser with target, displayId, level, skillTime, reuseDelay
 		// to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
-		broadcastPacket(new MagicSkillUser(this, target, displayId, level, skillTime, reuseDelay));
+		broadcastPacket(new MagicSkillUser(this, target, displayId, level, hitTime, reuseDelay));
 
 		// Send a system message USE_S1 to the L2Character
 		if (this instanceof L2PcInstance && magicId != 1312)
@@ -1353,13 +1359,13 @@ public abstract class L2Character extends L2Object
 			startForceBuff(target, skill);
 		}
 
-		// launch the magic in skillTime milliseconds
-		if (skillTime > 60)
+		// launch the magic in hitTime milliseconds
+		if (hitTime > 210)
 		{
 			// Send a Server->Client packet SetupGauge with the color of the gauge and the casting time
 			if (this instanceof L2PcInstance && !forceBuff)
 			{
-				SetupGauge sg = new SetupGauge(SetupGauge.BLUE, skillTime);
+				SetupGauge sg = new SetupGauge(SetupGauge.BLUE, hitTime);
 				sendPacket(sg);
 			}
 
@@ -1372,14 +1378,15 @@ public abstract class L2Character extends L2Object
 				_skillCast = null;
 			}
 
-			// Create a task MagicUseTask with Medium priority to launch the MagicSkill at the end of the casting time
-			// Note: for client animation reasons even a bit before
-			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill), skillTime-50);
+			// Create a task MagicUseTask to launch the MagicSkill at the end of the casting time (hitTime)
+			// For client animation reasons (party buffs especially) 200 ms before! 
+			if (getForceBuff() != null)
+				_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 2), hitTime);
+			else
+				_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 1), hitTime-200);
 		}
 		else
-		{
-			onMagicUseTimer(targets, skill);
-		}
+			onMagicLaunchedTimer(targets, skill, coolTime, true);
 	}
 
 	/**
@@ -1819,25 +1826,40 @@ public abstract class L2Character extends L2Object
 		}
 	}
 
-	/** Task lauching the function onMagicUseTimer() */
+	/** Task lauching the magic skill phases */
 	class MagicUseTask implements Runnable
 	{
 		L2Object[] _targets;
 		L2Skill _skill;
+		int _coolTime;
+		int _phase;
 
-		public MagicUseTask(L2Object[] targets, L2Skill skill)
+		public MagicUseTask(L2Object[] targets, L2Skill skill, int coolTime, int phase)
 		{
 			_targets = targets;
 			_skill = skill;
+			_coolTime = coolTime;
+			_phase = phase;
 		}
 
 		public void run()
 		{
 			try
 			{
-				enableAllSkills();
-				onMagicUseTimer(_targets, _skill);
-				_skillCast = null;
+				switch (_phase)
+				{
+					case 1:
+						onMagicLaunchedTimer(_targets, _skill, _coolTime, false);
+						break;
+					case 2:
+						onMagicHitTimer(_targets, _skill, _coolTime, false);
+						break;
+					case 3:
+						onMagicFinalizer(_targets, _skill);
+						break;
+					default:
+						break;
+				}
 			}
 			catch (Throwable e)
 			{
@@ -5199,20 +5221,16 @@ public abstract class L2Character extends L2Object
 	 * @param skill The L2Skill to use
 	 *
 	 */
-	public void onMagicUseTimer(L2Object[] targets, L2Skill skill)
+	public void onMagicLaunchedTimer(L2Object[] targets, L2Skill skill, int coolTime, boolean instant)
 	{
 		if (skill == null || targets == null || targets.length <= 0)
 		{
+			_skillCast = null;
+			enableAllSkills();
+			
 			setAttackingChar(null);
 			setAttackingCharSkill(null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
-
-			return;
-		}
-
-		if(getForceBuff() != null)
-		{
-			getForceBuff().delete();
 			return;
 		}
 
@@ -5263,6 +5281,9 @@ public abstract class L2Character extends L2Object
 		// Potions can be used while faking death.
 		if (isAlikeDead() && !skill.isPotion())
 		{
+			_skillCast = null;
+			enableAllSkills();
+			
 			setAttackingChar(null);
 			setAttackingCharSkill(null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
@@ -5272,7 +5293,7 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 
-		// Check if a cast is in progress
+		// Ensure that a cast is in progress
 		if (isCastingNow())
 		{
 			// Get the display identifier of the skill
@@ -5287,33 +5308,64 @@ public abstract class L2Character extends L2Object
 			// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 			if (!skill.isPotion()) broadcastPacket(new MagicSkillLaunched(this, magicId, level, targets));
 			
+			if (instant)
+				onMagicHitTimer(targets, skill, coolTime, true);
+			else 
+				_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 2), 200);
+		}
+	}
+	
+	/*
+	 * Runs in the end of skill casting 
+	 */
+	public void onMagicHitTimer(L2Object[] targets, L2Skill skill, int coolTime, boolean instant)
+	{
+		
+		if (skill == null || targets == null || targets.length <= 0)
+		{
+			_skillCast = null;
+			enableAllSkills();
+			
+			setAttackingChar(null);
+			setAttackingCharSkill(null);
+			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
+			return;
+		}
+		if(getForceBuff() != null)
+		{
+			_skillCast = null;
+			enableAllSkills();
+			
+			getForceBuff().delete();
+			return;
+		}
+		
+		try {
+			
 			// Go through targets table
 			for (int i = 0;i < targets.length;i++)
 			{
-				if (targets[i] instanceof L2PlayableInstance)
+			  if (targets[i] instanceof L2PlayableInstance)
+			  {
+				L2Character target = (L2Character) targets[i];
+
+				if (skill.getSkillType() == L2Skill.SkillType.BUFF || skill.getSkillType() == L2Skill.SkillType.SEED)
 				{
-					L2Character target = (L2Character) targets[i];
-
-					if (skill.getSkillType() == L2Skill.SkillType.BUFF || skill.getSkillType() == L2Skill.SkillType.SEED)
-					{
-						SystemMessage smsg = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-						smsg.addString(skill.getName());
-						target.sendPacket(smsg);
-					}
-
-					if (Config.DEBUG)
-						_log.fine("msl: "+getName()+" "+magicId+" "+level+" "+target.getTitle());
-
-					if (this instanceof L2PcInstance && target instanceof L2Summon)
-					{
-						if (equals(((L2Summon)target).getOwner()))
-							sendPacket(new PetInfo((L2Summon)target));
-						else
-							sendPacket(new NpcInfo((L2Summon)target, this));
-						// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
-						((L2Summon)target).updateEffectIcons(true);
-					}
+					SystemMessage smsg = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+					smsg.addString(skill.getName());
+					target.sendPacket(smsg);
 				}
+
+				if (this instanceof L2PcInstance && target instanceof L2Summon)
+				{
+					if (equals(((L2Summon)target).getOwner()))
+						sendPacket(new PetInfo((L2Summon)target));
+					else
+						sendPacket(new NpcInfo((L2Summon)target, this));
+					// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
+					((L2Summon)target).updateEffectIcons(true);
+				}
+			  }
 			}
 
 			StatusUpdate su = new StatusUpdate(getObjectId());
@@ -5323,24 +5375,24 @@ public abstract class L2Character extends L2Object
 			double mpConsume = getStat().getMpConsume(skill);
 			if (mpConsume > 0)
 			{
-				getStatus().reduceMp(calcStat(Stats.MP_CONSUME_RATE,mpConsume,null,null));
-				su.addAttribute(StatusUpdate.CUR_MP, (int) getCurrentMp());
-				isSendStatus = true;
+			  getStatus().reduceMp(calcStat(Stats.MP_CONSUME_RATE,mpConsume,null,null));
+			  su.addAttribute(StatusUpdate.CUR_MP, (int) getCurrentMp());
+			  isSendStatus = true;
 			}
 
 			// Consume HP if necessary and Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 			if (skill.getHpConsume() > 0)
 			{
-				double consumeHp;
+			  double consumeHp;
 
-				consumeHp = calcStat(Stats.HP_CONSUME_RATE,skill.getHpConsume(),null,null);
-				if(consumeHp+1 >= getCurrentHp())
-					consumeHp = getCurrentHp()-1.0;
+			  consumeHp = calcStat(Stats.HP_CONSUME_RATE,skill.getHpConsume(),null,null);
+			  if(consumeHp+1 >= getCurrentHp())
+				consumeHp = getCurrentHp()-1.0;
 
-				getStatus().reduceHp(consumeHp, this);
+			  getStatus().reduceHp(consumeHp, this);
 
-				su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
-				isSendStatus = true;
+			  su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
+			  isSendStatus = true;
 			}
 
 			// Send a Server->Client packet StatusUpdate with MP modification to the L2PcInstance
@@ -5350,56 +5402,67 @@ public abstract class L2Character extends L2Object
 			if (skill.getItemConsume() > 0)
 				consumeItem(skill.getItemConsumeId(), skill.getItemConsume());
 
-			_castEndTime = 0;
-			_castInterruptTime = 0;
-			_skillCast = null;
-
 			// Launch the magic skill in order to calculate its effects
 			callSkill(skill, targets);
-
-			//if the skill has changed the character's state to something other than STATE_CASTING
-			//then just leave it that way, otherwise switch back to STATE_IDLE.
-			//if(isCastingNow())
-			//  getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
-
-			// If the skill type is PDAM or DRAIN_SOUL, notify the AI of the target with AI_INTENTION_ATTACK
-			if (skill.getSkillType() == SkillType.PDAM || skill.getSkillType() == SkillType.DRAIN_SOUL)
-			{
-				if ((getTarget() != null) && (getTarget() instanceof L2Character))
-					getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, getTarget());
-			}
-
-            if (skill.isOffensive() && !(skill.getSkillType() == SkillType.UNLOCK) && !(skill.getSkillType() == SkillType.DELUXE_KEY_UNLOCK))
-                getAI().clientStartAutoAttack();
-
-            // Notify the AI of the L2Character with EVT_FINISH_CASTING
-			getAI().notifyEvent(CtrlEvent.EVT_FINISH_CASTING);
-
-            /*
-             * If character is a player, then wipe their current cast state and
-             * check if a skill is queued.
-             *
-             * If there is a queued skill, launch it and wipe the queue.
-             */
-            if (this instanceof L2PcInstance)
-            {
-                L2PcInstance currPlayer = (L2PcInstance)this;
-                SkillDat queuedSkill = currPlayer.getQueuedSkill();
-
-                currPlayer.setCurrentSkill(null, false, false);
-
-                if (queuedSkill != null)
-                {
-                    currPlayer.setQueuedSkill(null, false, false);
-
-                    // DON'T USE : Recursive call to useMagic() method
-                    // currPlayer.useMagic(queuedSkill.getSkill(), queuedSkill.isCtrlPressed(), queuedSkill.isShiftPressed());
-                    ThreadPoolManager.getInstance().executeTask(new QueuedMagicUseTask(currPlayer, queuedSkill.getSkill(), queuedSkill.isCtrlPressed(), queuedSkill.isShiftPressed()) );
-                }
-            }
-		}
+		} 
+		catch (NullPointerException e) {} 
+		
+		if (instant)
+			onMagicFinalizer(targets, skill);
+		else 
+			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 3), coolTime);
 	}
+	/*
+	 * Runs after skill hitTime+coolTime 
+	 */
+	public void onMagicFinalizer(L2Object[] targets, L2Skill skill)
+	{
+		_skillCast = null;
+		_castEndTime = 0;
+		_castInterruptTime = 0;
+		enableAllSkills();
+		
+		//if the skill has changed the character's state to something other than STATE_CASTING
+		//then just leave it that way, otherwise switch back to STATE_IDLE.
+		//if(isCastingNow())
+		//  getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
 
+		// If the skill type is PDAM or DRAIN_SOUL, notify the AI of the target with AI_INTENTION_ATTACK
+		if (skill.getSkillType() == SkillType.PDAM || skill.getSkillType() == SkillType.BLOW || skill.getSkillType() == SkillType.DRAIN_SOUL)
+		{
+			if ((getTarget() != null) && (getTarget() instanceof L2Character))
+				getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, getTarget());
+		}
+
+        if (skill.isOffensive() && !(skill.getSkillType() == SkillType.UNLOCK) && !(skill.getSkillType() == SkillType.DELUXE_KEY_UNLOCK))
+            getAI().clientStartAutoAttack();
+
+        // Notify the AI of the L2Character with EVT_FINISH_CASTING
+		getAI().notifyEvent(CtrlEvent.EVT_FINISH_CASTING);
+
+        /*
+         * If character is a player, then wipe their current cast state and
+         * check if a skill is queued.
+         *
+         * If there is a queued skill, launch it and wipe the queue.
+         */
+        if (this instanceof L2PcInstance)
+        {
+            L2PcInstance currPlayer = (L2PcInstance)this;
+            SkillDat queuedSkill = currPlayer.getQueuedSkill();
+
+            currPlayer.setCurrentSkill(null, false, false);
+
+            if (queuedSkill != null)
+            {
+                currPlayer.setQueuedSkill(null, false, false);
+
+                // DON'T USE : Recursive call to useMagic() method
+                // currPlayer.useMagic(queuedSkill.getSkill(), queuedSkill.isCtrlPressed(), queuedSkill.isShiftPressed());
+                ThreadPoolManager.getInstance().executeTask(new QueuedMagicUseTask(currPlayer, queuedSkill.getSkill(), queuedSkill.isCtrlPressed(), queuedSkill.isShiftPressed()) );
+            }
+        }
+	}
 
 	/**
 	 * Reduce the item number of the L2Character.<BR><BR>

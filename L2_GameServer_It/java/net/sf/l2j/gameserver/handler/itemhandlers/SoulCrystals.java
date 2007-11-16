@@ -84,7 +84,7 @@ public class SoulCrystals implements IItemHandler
         
         // Continue execution later
         CrystalFinalizer cf = new CrystalFinalizer(activeChar, target, crystalId);
-        ThreadPoolManager.getInstance().scheduleEffect(cf, skill.getSkillTime());
+        ThreadPoolManager.getInstance().scheduleEffect(cf, skill.getHitTime());
 		
 	}
 

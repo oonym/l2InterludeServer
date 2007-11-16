@@ -185,7 +185,6 @@ public class Blow implements ISkillHandler
             if (effect != null && effect.isSelfEffect())                   
             	effect.exit();            
             skill.getEffectsSelf(activeChar);
-			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target, null);
         }
 	}
 	
