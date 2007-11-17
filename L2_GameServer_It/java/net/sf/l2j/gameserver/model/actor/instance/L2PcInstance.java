@@ -1716,7 +1716,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		_karma = karma;
-		updateKarma();
+		broadcastKarma();
 	}
 
 	/**
@@ -1791,6 +1791,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 
 				sendPacket(new EtcStatusUpdate(this));
+				Broadcast.toKnownPlayers(this, new CharInfo(this));
 			}
 		}
 	}
@@ -5351,17 +5352,13 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Update Stats of the L2PcInstance client side by sending Server->Client packet UserInfo/StatusUpdate to this L2PcInstance and CharInfo/StatusUpdate to all L2PcInstance in its _KnownPlayers (broadcast).<BR><BR>
 	 */
-	@Override
-	public void updateStats()
+	public void updateAndBroadcastStatus(int broadcastType)
 	{
-		super.updateStats();
 		refreshOverloaded();
 		refreshExpertisePenalty();
 		// Send a Server->Client packet UserInfo to this L2PcInstance and CharInfo to all L2PcInstance in its _KnownPlayers (broadcast)
-		broadcastUserInfo();
-
-		// Send a Server->Client StatusUpdate packet with Karma to the L2PcInstance and to all L2PcInstance in its _KnownPlayers (broadcast)
-		updateKarma();
+		if (broadcastType == 1) this.sendPacket(new UserInfo(this));
+		if (broadcastType == 2) broadcastUserInfo();
 	}
 
 	/**
@@ -5378,7 +5375,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Send a Server->Client StatusUpdate packet with Karma to the L2PcInstance and all L2PcInstance to inform (broadcast).<BR><BR>
 	 */
-	public void updateKarma()
+	public void broadcastKarma()
 	{
 		sendPacket(new UserInfo(this));
 		for (L2PcInstance player : getKnownList().getKnownPlayers().values()) {
@@ -8617,7 +8614,9 @@ public final class L2PcInstance extends L2PlayableInstance
         	setCurrentMp(getMaxMp());
         if (getCurrentCp() > getMaxCp())
         	setCurrentCp(getMaxCp());
-        updateStats();
+        broadcastUserInfo();
+        refreshOverloaded();
+		refreshExpertisePenalty();
 
         // Clear resurrect xp calculation
         setExpBeforeDeath(0);

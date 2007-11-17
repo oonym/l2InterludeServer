@@ -120,6 +120,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 				iu.addModifiedItem(unequiped[i]);
 			}
 			activeChar.sendPacket(iu);
+			activeChar.broadcastUserInfo();
 		}
 
 		if (L2PetDataTable.isPetItem(itemId))
@@ -168,8 +169,6 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
 		activeChar.sendPacket(su);
-
-		activeChar.broadcastUserInfo();
 
 		L2World world = L2World.getInstance();
 		world.removeObject(removedItem);

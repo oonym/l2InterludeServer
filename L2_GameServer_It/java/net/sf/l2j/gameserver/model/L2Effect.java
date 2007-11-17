@@ -126,7 +126,7 @@ public abstract class L2Effect
     // abnormal effect mask
     private int _abnormalEffect;
     
-    private boolean _preventExitUpdate;
+    public boolean preventExitUpdate;
     
     public final class EffectTask implements Runnable
     {
@@ -301,7 +301,6 @@ public abstract class L2Effect
         _currentTask = new EffectTask(duration, -1);
         _currentFuture = ThreadPoolManager.getInstance().scheduleEffect(_currentTask, duration);
         if (_state == EffectState.ACTING) _effected.addEffect(this);
-        updateEffects(_effected);
     }
 
     private synchronized void startEffectTaskAtFixedRate(int delay, int rate)
@@ -311,7 +310,6 @@ public abstract class L2Effect
         _currentFuture = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(_currentTask, delay,
                                                                                    rate);
         if (_state == EffectState.ACTING) _effected.addEffect(this);
-        updateEffects(_effected);
     }
 
     /**
@@ -329,7 +327,7 @@ public abstract class L2Effect
     
     public final void exit(boolean preventUpdate)
     {
-    	_preventExitUpdate = preventUpdate;
+    	preventExitUpdate = preventUpdate;
     	_state = EffectState.FINISHING;
     	scheduleEffect();
     }
@@ -352,11 +350,6 @@ public abstract class L2Effect
             _currentTask = null;
 
             _effected.removeEffect(this);
-
-            if (!_preventExitUpdate)
-            {
-            	_effected.updateStats();
-            }
         }
     }
 
@@ -457,11 +450,6 @@ public abstract class L2Effect
             stopEffectTask();
 
         }
-    }
-
-    public void updateEffects(L2Character effectedChar)
-    {
-        effectedChar.updateStats();
     }
 
     public Func[] getStatFuncs()

@@ -163,7 +163,6 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         		_log.fine("Learned skill " + _skillId + " for " + _requiredSp + " SP.");
             
         	player.getStat().removeExpAndSp(_requiredExp, _requiredSp);
-        	player.updateStats();
             
         	StatusUpdate su = new StatusUpdate(player.getObjectId());
         	su.addAttribute(StatusUpdate.SP, player.getSp());

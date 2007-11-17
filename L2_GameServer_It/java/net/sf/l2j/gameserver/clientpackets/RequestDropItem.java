@@ -176,7 +176,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		
 		if (Config.DEBUG) _log.fine("dropping " + _objectId + " item("+_count+") at: " + _x + " " + _y + " " + _z);
 
-		activeChar.broadcastUserInfo();
+		// activeChar.broadcastUserInfo();
 
 		if (activeChar.isGM())
 		{

@@ -46,7 +46,8 @@ import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2ManorManagerInstance extends L2MerchantInstance {
-	private static Logger _log = Logger.getLogger(L2ManorManagerInstance.class.getName());
+	
+	//private static Logger _log = Logger.getLogger(L2ManorManagerInstance.class.getName());
 
     public L2ManorManagerInstance(int objectId, L2NpcTemplate template)
     {

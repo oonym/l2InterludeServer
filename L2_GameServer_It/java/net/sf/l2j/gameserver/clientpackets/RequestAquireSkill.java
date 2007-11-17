@@ -314,7 +314,6 @@ public class RequestAquireSkill extends L2GameClientPacket
 			_log.fine("Learned skill " + _id + " for " + _requiredSp + " SP.");
 
 		player.setSp(player.getSp() - _requiredSp);
-		player.updateStats();
 
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.SP, player.getSp());

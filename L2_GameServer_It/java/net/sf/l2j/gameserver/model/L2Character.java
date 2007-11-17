@@ -2464,8 +2464,8 @@ public abstract class L2Character extends L2Object
 			}
 		}
 
-		updateStats();
-	}
+		if (this instanceof L2PcInstance) ((L2PcInstance)this).updateAndBroadcastStatus(2);
+ 	}
 
 	/**
 	 * Stop a specified/all Confused abnormal L2Effect.<BR><BR>
@@ -3213,7 +3213,7 @@ public abstract class L2Character extends L2Object
 		_calculators[stat].addFunc(f);
 
 	}
-
+	
 
 	/**
 	 * Add a list of Funcs to the Calculator set of the L2Character.<BR><BR>
@@ -3234,9 +3234,15 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void addStatFuncs(Func[] funcs)
 	{
+		
+		FastList<Stats> modifiedStats = new FastList<Stats>();
+		
 		for (Func f : funcs)
+		{
+			modifiedStats.add(f.stat);
 			addStatFunc(f);
-		if (funcs.length > 0) updateStats();
+		}
+		broadcastModifiedStats(modifiedStats);
 	}
 
 
@@ -3311,11 +3317,18 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void removeStatFuncs(Func[] funcs)
 	{
+		
+		FastList<Stats> modifiedStats = new FastList<Stats>();
+		
 		for (Func f : funcs)
+		{
+			modifiedStats.add(f.stat);
 			removeStatFunc(f);
-		if (funcs.length > 0) updateStats();
+		}
+		
+		broadcastModifiedStats(modifiedStats);
+		
 	}
-
 
 	/**
 	 * Remove all Func objects with the selected owner from the Calculator set of the L2Character.<BR><BR>
@@ -3343,13 +3356,17 @@ public abstract class L2Character extends L2Object
 	public final synchronized void removeStatsOwner(Object owner)
 	{
 
+		FastList<Stats> modifiedStats = null;
 		// Go through the Calculator set
 		for (int i=0; i < _calculators.length; i++)
 		{
 			if (_calculators[i] != null)
 			{
 				// Delete all Func objects of the selected owner
-				_calculators[i].removeOwner(owner);
+				if (modifiedStats != null)
+					modifiedStats.addAll(_calculators[i].removeOwner(owner));
+				else
+					modifiedStats = _calculators[i].removeOwner(owner);
 
 				if (_calculators[i].size() == 0)
 					_calculators[i] = null;
@@ -3369,6 +3386,89 @@ public abstract class L2Character extends L2Object
 			if (i >= Stats.NUM_STATS)
 				_calculators = NPC_STD_CALCULATOR;
 		}
+		
+		if (owner instanceof L2Effect && !((L2Effect)owner).preventExitUpdate)
+				broadcastModifiedStats(modifiedStats);
+		
+	}
+	
+	private void broadcastModifiedStats(FastList<Stats> stats)
+	{
+		if (stats == null || stats.isEmpty()) return;
+		
+		boolean broadcastFull = false;
+		boolean otherStats = false;
+		StatusUpdate su = null;
+		
+		for (Stats stat : stats)
+		{
+			if (stat==Stats.POWER_ATTACK_SPEED) 
+			{
+				if (su == null) su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.ATK_SPD, (int)getCurrentHp());
+			}
+			else if (stat==Stats.MAGIC_ATTACK_SPEED) 
+			{
+				if (su == null) su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.CAST_SPD, (int)getCurrentMp());
+			}
+			else if (stat==Stats.MAX_HP) 
+			{
+				if (su == null) su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
+			}
+			else if (stat==Stats.MAX_CP) 
+			{
+				if (su == null) su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.MAX_CP, getMaxCp());
+			}
+			else if (stat==Stats.MAX_MP) 
+			{
+				if (su == null) su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.MAX_MP, getMaxMp());
+			}
+			else if (stat==Stats.RUN_SPEED)
+			{
+				broadcastFull = true;
+			}
+			else
+				otherStats = true;
+		}
+		
+		if (this instanceof L2PcInstance)
+		{
+			if (broadcastFull)
+				((L2PcInstance)this).updateAndBroadcastStatus(2);
+			else
+			{
+				((L2PcInstance)this).updateAndBroadcastStatus(otherStats ? 1 : 0);
+				if (su != null) broadcastPacket(su);
+			}
+		}
+		else if (this instanceof L2NpcInstance)
+		{
+			if (broadcastFull)
+			{
+				for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+					if (player != null)
+						player.sendPacket(new NpcInfo((L2NpcInstance)this, player));
+			}
+			else if (su != null) 
+				broadcastPacket(su);
+		}
+		else if (this instanceof L2Summon)
+		{
+			if (broadcastFull)
+			{
+				for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+					if (player != null)
+						player.sendPacket(new NpcInfo((L2Summon)this, player));
+			}
+			else if (su != null) 
+				broadcastPacket(su);
+		} 
+		else if (su != null) 
+			broadcastPacket(su);
 	}
 
 	/**
@@ -5358,10 +5458,9 @@ public abstract class L2Character extends L2Object
 
 				if (this instanceof L2PcInstance && target instanceof L2Summon)
 				{
-					if (equals(((L2Summon)target).getOwner()))
-						sendPacket(new PetInfo((L2Summon)target));
-					else
-						sendPacket(new NpcInfo((L2Summon)target, this));
+					((L2Summon)target).getOwner().sendPacket(new PetInfo((L2Summon)target));
+					sendPacket(new NpcInfo((L2Summon)target, this));
+
 					// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
 					((L2Summon)target).updateEffectIcons(true);
 				}
@@ -5831,13 +5930,6 @@ public abstract class L2Character extends L2Object
 	public final void setSkillCastEndTime(int newSkillCastEndTime)
 	{
 		_castEndTime = newSkillCastEndTime;
-	}
-
-	/**
-	 * Not Implemented.<BR><BR>
-	 */
-	public void updateStats()
-	{
 	}
 
 	private Future _PvPRegTask;

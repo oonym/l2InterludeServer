@@ -17,14 +17,12 @@
  */
 package net.sf.l2j.gameserver.model.actor.status;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;
@@ -50,7 +48,6 @@ public class CharStatus
     private double _currentCp               = 0; //Current CP of the L2Character
     private double _currentHp               = 0; //Current HP of the L2Character
     private double _currentMp               = 0; //Current MP of the L2Character
-    private List<Double> _hpStatusWatch     = new FastList<Double>();
 
     /** Array containing all clients that need to be notified about hp/mp updates of the L2Character */
     private Set<L2Character> _StatusListener;
@@ -66,14 +63,6 @@ public class CharStatus
     public CharStatus(L2Character activeChar)
     {
         _activeChar = activeChar;
-    }
-
-    // =========================================================
-    // Method - Public
-    /** Add the decimal value of a percent (current hp/max hp) when a status update should kick in */
-    public final void addHpStatusWatch(double percenAsDecimal)
-    {
-        _hpStatusWatch.add(percenAsDecimal);
     }
 
     /**
@@ -388,16 +377,6 @@ public class CharStatus
 
                 // Start the HP/MP/CP Regeneration task with Medium priority
                 startHpMpRegeneration();
-            }
-
-            if (_hpStatusWatch.size() > 0)
-            {
-                maxHp = getCurrentHp() / maxHp; // Reused maxHp var as percentOfMaxHp so that we don't have to waste memory
-                for (Double d: _hpStatusWatch)
-                {
-                    if (maxHp < d) continue;
-                    getActiveChar().updateStats();
-                }
             }
         }
 
