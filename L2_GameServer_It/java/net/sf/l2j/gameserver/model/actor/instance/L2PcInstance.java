@@ -210,8 +210,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String DELETE_SKILL_FROM_CHAR = "DELETE FROM character_skills WHERE skill_id=? AND char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SKILLS = "DELETE FROM character_skills WHERE char_obj_id=? AND class_index=?";
 
-	private static final String ADD_SKILL_SAVE = "INSERT INTO character_skills_save (char_obj_id,skill_id,skill_level,effect_count,effect_cur_time,reuse_delay,restore_type,class_index) VALUES (?,?,?,?,?,?,?,?)";
-	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=?";
+	private static final String ADD_SKILL_SAVE = "INSERT INTO character_skills_save (char_obj_id,skill_id,skill_level,effect_count,effect_cur_time,reuse_delay,restore_type,class_index,buff_index) VALUES (?,?,?,?,?,?,?,?,?)";
+	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=? ORDER BY buff_index ASC";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
     private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=? WHERE obj_id=?";
@@ -6125,6 +6125,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(2, getClassIndex());
 			statement.execute();
 			statement.close();
+			
+			int buff_index = 0;
 
 			// Store all effect data along with calulated remaining
 			// reuse delays for matching skills. 'restore_type'= 0.
@@ -6133,6 +6135,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (effect != null && effect.getInUse() && !effect.getSkill().isToggle())
 				{
 					int skillId = effect.getSkill().getId();
+					buff_index++;
 
 					statement = con.prepareStatement(ADD_SKILL_SAVE);
 					statement.setInt(1, getObjectId());
@@ -6152,6 +6155,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 					statement.setInt(7, 0);
 					statement.setInt(8, getClassIndex());
+					statement.setInt(9, buff_index);
 					statement.execute();
 					statement.close();
 				}
@@ -6163,6 +6167,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				if (t.hasNotPassed())
 				{
+					buff_index++;
 					statement = con.prepareStatement(ADD_SKILL_SAVE);
 					statement.setInt (1, getObjectId());
 					statement.setInt (2, t.getSkill());
@@ -6172,6 +6177,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					statement.setLong(6, t.getReuse());
 					statement.setInt (7, 1);
 					statement.setInt (8, getClassIndex());
+					statement.setInt(9, buff_index);
 					statement.execute();
 					statement.close();
 				}
