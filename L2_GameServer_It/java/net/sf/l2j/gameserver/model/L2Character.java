@@ -5506,7 +5506,7 @@ public abstract class L2Character extends L2Object
 		} 
 		catch (NullPointerException e) {} 
 		
-		if (instant)
+		if (instant || coolTime == 0)
 			onMagicFinalizer(targets, skill);
 		else 
 			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 3), coolTime);
