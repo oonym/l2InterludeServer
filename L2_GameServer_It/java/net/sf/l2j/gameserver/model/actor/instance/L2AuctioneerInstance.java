@@ -575,7 +575,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
             case 8: nearestTown = "GIRAN"; break;
             case 14: nearestTown = "RUNE"; break;
             case 15: nearestTown = "GODARD"; break;
-            case 16: nearestTown = "SCHTGART"; break;
+            case 16: nearestTown = "SCHUTTGART"; break;
             default: nearestTown = "ADEN"; break;
         }
         
