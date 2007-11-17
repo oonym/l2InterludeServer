@@ -81,8 +81,8 @@ abstract class AbstractAI implements Ctrl
                     stopFollow();
                     return;
                 }
-
-                moveToPawn(_followTarget, _range);
+                if(!_actor.isInsideRadius(_followTarget, _range, true, false))
+                	moveToPawn(_followTarget, _range);
             }
             catch (Throwable t)
             {
@@ -615,7 +615,12 @@ abstract class AbstractAI implements Ctrl
     // Client has already arrived to target, no need to force StopMove packet
     protected void clientStoppedMoving()
     {
-    	_clientMovingToPawnOffset = 0;
+    	if (_clientMovingToPawnOffset > 0) // movetoPawn needs to be stopped
+    	{	
+    		_clientMovingToPawnOffset = 0;
+    		StopMove msg = new StopMove(_actor);
+            _actor.broadcastPacket(msg);
+    	}
     	_clientMoving = false;
     }
     
