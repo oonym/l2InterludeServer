@@ -3412,21 +3412,24 @@ public abstract class L2Character extends L2Object
 				if (su == null) su = new StatusUpdate(getObjectId());
 				su.addAttribute(StatusUpdate.CAST_SPD, (int)getCurrentMp());
 			}
-			else if (stat==Stats.MAX_HP) 
-			{
-				if (su == null) su = new StatusUpdate(getObjectId());
-				su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
-			}
+			//else if (stat==Stats.MAX_HP) // TODO: self only and add more stats...
+			//{
+			//	if (su == null) su = new StatusUpdate(getObjectId());
+			//	su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
+			//}
 			else if (stat==Stats.MAX_CP) 
 			{
-				if (su == null) su = new StatusUpdate(getObjectId());
-				su.addAttribute(StatusUpdate.MAX_CP, getMaxCp());
+				if (this instanceof L2PcInstance)
+				{
+					if (su == null) su = new StatusUpdate(getObjectId());
+					su.addAttribute(StatusUpdate.MAX_CP, getMaxCp());
+				}
 			}
-			else if (stat==Stats.MAX_MP) 
-			{
-				if (su == null) su = new StatusUpdate(getObjectId());
-				su.addAttribute(StatusUpdate.MAX_MP, getMaxMp());
-			}
+			//else if (stat==Stats.MAX_MP) 
+			//{
+			//	if (su == null) su = new StatusUpdate(getObjectId());
+			//	su.addAttribute(StatusUpdate.MAX_MP, getMaxMp());
+			//}
 			else if (stat==Stats.RUN_SPEED)
 			{
 				broadcastFull = true;
@@ -3441,8 +3444,18 @@ public abstract class L2Character extends L2Object
 				((L2PcInstance)this).updateAndBroadcastStatus(2);
 			else
 			{
-				((L2PcInstance)this).updateAndBroadcastStatus(otherStats ? 1 : 0);
-				if (su != null) broadcastPacket(su);
+				if (otherStats)
+				{
+					((L2PcInstance)this).updateAndBroadcastStatus(1);
+					if (su != null)
+					{
+						for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+						{
+							try { player.sendPacket(su); } catch (NullPointerException e) {}
+						}
+					}
+				}
+				else if (su != null) broadcastPacket(su);
 			}
 		}
 		else if (this instanceof L2NpcInstance)
