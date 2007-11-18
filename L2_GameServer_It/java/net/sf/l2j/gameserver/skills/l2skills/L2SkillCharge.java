@@ -29,12 +29,9 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillCharge extends L2Skill {
 
-	final int numCharges;
-	
 	public L2SkillCharge(StatsSet set) 
 	{
 		super(set);
-		numCharges = set.getInteger("num_charges", getLevel());
 	}
 
 	@Override
@@ -47,7 +44,7 @@ public class L2SkillCharge extends L2Skill {
 		EffectCharge effect = (EffectCharge) caster.getFirstEffect(this);
 		if (effect != null) 
 		{
-			if (effect.numCharges < numCharges)
+			if (effect.numCharges < getNumCharges())
 			{
 				effect.numCharges++;
 				if (caster instanceof L2PcInstance)

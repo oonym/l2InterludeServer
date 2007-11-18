@@ -52,6 +52,7 @@ import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.skills.funcs.FuncTemplate;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillCharge;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillChargeDmg;
+import net.sf.l2j.gameserver.skills.l2skills.L2SkillChargeEffect;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillCreateItem;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillDefault;
 import net.sf.l2j.gameserver.skills.l2skills.L2SkillDrain;
@@ -144,7 +145,7 @@ public abstract class L2Skill
     	MUTE,
     	PARALYZE,
     	WEAKNESS,
-
+    	
     	// hp, mp, cp
     	HEAL,
     	HOT,
@@ -213,8 +214,9 @@ public abstract class L2Skill
 
     	RESURRECT,
     	CHARGE(L2SkillCharge.class),
-    	MHOT,
+    	CHARGE_EFFECT(L2SkillChargeEffect.class),
     	CHARGEDAM(L2SkillChargeDmg.class),
+    	MHOT,
     	DETECT_WEAKNESS,
     	LUCK,
     	RECALL,
@@ -1053,6 +1055,12 @@ public abstract class L2Skill
         return _isHeroSkill;
     }
 
+    public final int getNumCharges()
+    {
+        return _numCharges;
+    }
+
+    
     public final int getBaseCritRate()
     {
     	return _baseCritRate;

@@ -34,14 +34,11 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 public class L2SkillChargeDmg extends L2Skill 
 {
 
-	final int numCharges;
 	final int chargeSkillId;
 	
 	public L2SkillChargeDmg(StatsSet set)
     {
 		super(set);
-		
-		numCharges = set.getInteger("num_charges", getLevel());
 		chargeSkillId = set.getInteger("charge_skill_id");
 	}
 
@@ -52,7 +49,7 @@ public class L2SkillChargeDmg extends L2Skill
 		{
 			L2PcInstance player = (L2PcInstance)activeChar;
 			EffectCharge e = (EffectCharge)player.getFirstEffect(chargeSkillId);
-			if(e == null || e.numCharges < numCharges)
+			if(e == null || e.numCharges < getNumCharges())
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 				sm.addSkillName(getId());
@@ -73,7 +70,7 @@ public class L2SkillChargeDmg extends L2Skill
 		
 		// get the effect
 		EffectCharge effect = (EffectCharge) caster.getFirstEffect(chargeSkillId);
-		if (effect == null || effect.numCharges < numCharges)
+		if (effect == null || effect.numCharges < getNumCharges())
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 			sm.addSkillName(getId());
@@ -81,9 +78,9 @@ public class L2SkillChargeDmg extends L2Skill
 			return;
 		}
         double modifier = 0;
-        modifier = (effect.numCharges-numCharges)*0.33;		
+        modifier = (effect.numCharges-getNumCharges())*0.33;		
 		if (getTargetType() != SkillTargetType.TARGET_AREA && getTargetType() != SkillTargetType.TARGET_MULTIFACE)
-			effect.numCharges -= numCharges;
+			effect.numCharges -= getNumCharges();
 		if (caster instanceof L2PcInstance)
 			caster.sendPacket(new EtcStatusUpdate((L2PcInstance)caster));
         if (effect.numCharges == 0)

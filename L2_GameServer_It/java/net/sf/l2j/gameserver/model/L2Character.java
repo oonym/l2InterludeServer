@@ -97,6 +97,7 @@ import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.skills.Calculator;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.skills.Stats;
+import net.sf.l2j.gameserver.skills.effects.EffectCharge;
 import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.templates.L2CharTemplate;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -2954,6 +2955,19 @@ public abstract class L2Character extends L2Object
             }
         }
         return eventNotInUse;
+	}
+	
+	public EffectCharge getChargeEffect()
+	{
+	    L2Effect[] effects = getAllEffects();
+	    for (L2Effect e : effects)
+	    {
+	        if (e.getSkill().getSkillType() == L2Skill.SkillType.CHARGE)
+	        {
+	            return (EffectCharge)e;    
+	        }
+	    }
+	    return null;
 	}
 	// =========================================================
 

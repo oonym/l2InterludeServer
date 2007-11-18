@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
-import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -83,7 +82,7 @@ public class EnergyStone implements IItemHandler
             	return;
             }
      
-            _effect = getChargeEffect(activeChar);
+            _effect = activeChar.getChargeEffect();
         
             if (_effect == null)
             {
@@ -124,18 +123,6 @@ public class EnergyStone implements IItemHandler
         }
     }
     
-    private EffectCharge getChargeEffect(L2PcInstance activeChar)
-    {
-    L2Effect[] effects = activeChar.getAllEffects();
-    for (L2Effect e : effects)
-    {
-        if (e.getSkill().getSkillType() == L2Skill.SkillType.CHARGE)
-        {
-            return (EffectCharge)e;    
-        }
-    }
-    return null;
-    }
     private L2SkillCharge getChargeSkill(L2PcInstance activeChar)
     {     
     L2Skill[] skills = activeChar.getAllSkills();
