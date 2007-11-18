@@ -1841,10 +1841,10 @@ public final class L2PcInstance extends L2PlayableInstance
             L2Skill effectSkill = currenteffect.getSkill();
 
             // Ignore all buff skills that are party related (ie. songs, dances) while still remaining weapon dependant on cast though.
-            if (!(effectSkill.getTargetType() == SkillTargetType.TARGET_PARTY && effectSkill.getSkillType() == SkillType.BUFF))
+            if (!effectSkill.isOffensive() && !(effectSkill.getTargetType() == SkillTargetType.TARGET_PARTY && effectSkill.getSkillType() == SkillType.BUFF))
             {
                 // Check to rest to assure current effect meets weapon requirements.
-                if (!effectSkill.getWeaponDependancy(this))
+            	if (!effectSkill.getWeaponDependancy(this))
                 {
                     sendMessage(effectSkill.getName() + " cannot be used with this weapon.");
 
