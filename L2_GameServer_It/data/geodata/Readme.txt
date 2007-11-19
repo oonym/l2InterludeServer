@@ -6,12 +6,12 @@
 #                                            #
 #                                            #
 #         To make geodata  working           #
-#           unrar all files into             #
+#          unpack all files into             #
 #        /gameserver/data/geodata            #
 #                 folder                     #
 #                                            #
-#           Link to geodata  files:          #
-# http://www.l2jserver.com/geodata/geodata   #
+#       Current link to geodata files:       #
+#         http://geodata.devcod.com/         #
 #                                            #
 ##############################################
 

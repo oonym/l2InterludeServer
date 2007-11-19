@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
