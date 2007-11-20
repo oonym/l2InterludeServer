@@ -86,7 +86,6 @@ public class Spoil implements ISkillHandler
 					activeChar.sendPacket(sm);
 				}				
 				target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
-				activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 			}
 		}
     } 

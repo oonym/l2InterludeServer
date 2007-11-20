@@ -5554,7 +5554,8 @@ public abstract class L2Character extends L2Object
 		//  getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
 
 		// If the skill type is PDAM or DRAIN_SOUL, notify the AI of the target with AI_INTENTION_ATTACK
-		if (skill.getSkillType() == SkillType.PDAM || skill.getSkillType() == SkillType.BLOW || skill.getSkillType() == SkillType.DRAIN_SOUL)
+		if (skill.getSkillType() == SkillType.PDAM || skill.getSkillType() == SkillType.BLOW 
+				|| skill.getSkillType() == SkillType.DRAIN_SOUL || skill.getSkillType() == SkillType.SPOIL)
 		{
 			if ((getTarget() != null) && (getTarget() instanceof L2Character))
 				getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, getTarget());
