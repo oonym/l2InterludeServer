@@ -30,8 +30,8 @@ import net.sf.l2j.gameserver.skills.effects.EffectSpellForce;
  */
 public class ConditionForceBuff extends Condition
 {
-	private static int BATTLE_FORCE = 426;
-	private static int SPELL_FORCE = 427;
+	private static int BATTLE_FORCE = 5104;
+	private static int SPELL_FORCE = 5105;
 
 	private int _battleForces;
 	private int _spellForces;
