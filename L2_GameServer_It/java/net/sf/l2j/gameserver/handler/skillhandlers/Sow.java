@@ -108,7 +108,6 @@ public class Sow implements ISkillHandler {
 	    		_activeChar.getParty().broadcastToPartyMembers(sm);
 	    	}
 	        //TODO: Mob should not agro on player, this way doesn't work really nice
-	        _activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, _target);
 	        _target.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
     	}
 
