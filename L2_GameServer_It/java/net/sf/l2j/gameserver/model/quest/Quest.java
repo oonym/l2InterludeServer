@@ -96,9 +96,30 @@ public abstract class Quest
 		{
 			_allEventsS.put(name, this);
 		}
+		init_LoadGlobalData();
+	}
+	/**
+	 * The function init_LoadGlobalData is, by default, called by the constructor of all quests.
+	 * Children of this class can implement this function in order to define what variables
+	 * to load and what structures to save them in.  By default, nothing is loaded.
+	 */
+	protected void init_LoadGlobalData()
+	{
+		;
 	}
 	
-    public static enum QuestEventType 
+	/**
+	 * The function saveGlobalData is, by default, called at shutdown, for all quests, by the QuestManager.
+	 * Children of this class can implement this function in order to convert their structures 
+	 * into <var, value> tuples and make calls to save them to the database, if needed.
+	 * By default, nothing is saved.
+	 */
+	public void saveGlobalData()
+	{
+		;
+	}
+
+	public static enum QuestEventType 
     {
     	NPC_FIRST_TALK(false),  // control the first dialog shown by NPCs when they are clicked (some quests must override the default npc action)
         QUEST_START(true),	// onTalk action from start npcs
@@ -373,7 +394,7 @@ public abstract class Quest
 	 * Add state of quests, drops and variables for quests in the HashMap _quest of L2PcInstance
 	 * @param player : Player who is entering the world
 	 */
-	public static void playerEnter(L2PcInstance player) {
+	public final static void playerEnter(L2PcInstance player) {
 
         java.sql.Connection con = null;
         try
@@ -469,6 +490,110 @@ public abstract class Quest
 	}
 
 
+	/**
+	 * Insert (or Update) in the database variables that need to stay persistant for this quest after a reboot.
+	 * This function is for storage of values that do not related to a specific player but are
+	 * global for all characters.  For example, if we need to disable a quest-gatekeeper until 
+	 * a certain time (as is done with some grand-boss gatekeepers), we can save that time in the DB.  
+	 * @param var : String designating the name of the variable for the quest
+	 * @param value : String designating the value of the variable for the quest
+	 */
+	public final void saveGlobalQuestVar(String var, String value)
+	{
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+            statement = con.prepareStatement("REPLACE INTO quest_global_data (quest_name,var,value) VALUES (?,?,?)");
+            statement.setString(1, getName());
+            statement.setString(2, var);
+            statement.setString(3, value);
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+			_log.log(Level.WARNING, "could not insert global quest variable:", e);
+        } finally {
+            try { con.close(); } catch (Exception e) {}
+        }				
+	}
+	
+	/**
+	 * Read from the database a previously saved variable for this quest.
+	 * Due to performance considerations, this function should best be used only when the quest is first loaded.
+	 * Subclasses of this class can define structures into which these loaded values can be saved.
+	 * However, on-demand usage of this function throughout the script is not prohibited, only not recommended. 
+	 * Values read from this function were entered by calls to "saveGlobalQuestVar"
+	 * @param var : String designating the name of the variable for the quest
+	 * @return String : String representing the loaded value for the passed var, or an empty string if the var was invalid
+	 */
+	public final String loadGlobalQuestVar(String var)
+	{
+		String result = "";
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+            statement = con.prepareStatement("SELECT value FROM quest_global_data WHERE quest_name = ? AND var = ?");
+            statement.setString(1, getName());
+            statement.setString(2, var);
+			ResultSet rs = statement.executeQuery();
+			if (rs.first())
+				result =  rs.getString(0);
+			rs.close();
+            statement.close();
+        } catch (Exception e) {
+			_log.log(Level.WARNING, "could not load global quest variable:", e);
+        } finally {
+            try { con.close(); } catch (Exception e) {}
+        }	
+        return result;
+	}
+
+	/**
+	 * Permanently delete from the database a global quest variable that was previously saved for this quest.
+	 * @param var : String designating the name of the variable for the quest
+	 */
+	public final void deleteGlobalQuestVar(String var)
+	{
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+            statement = con.prepareStatement("DELETE FROM quest_global_data WHERE quest_name = ? AND var = ?");
+            statement.setString(1, getName());
+            statement.setString(2, var);
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+			_log.log(Level.WARNING, "could not delete global quest variable:", e);
+        } finally {
+            try { con.close(); } catch (Exception e) {}
+        }	
+	}
+
+	/**
+	 * Permanently delete from the database all global quest variables that was previously saved for this quest.
+	 */
+	public final void deleteAllGlobalQuestVars()
+	{
+        java.sql.Connection con = null;
+        try
+        {
+            con = L2DatabaseFactory.getInstance().getConnection();
+            PreparedStatement statement;
+            statement = con.prepareStatement("DELETE FROM quest_global_data WHERE quest_name = ?");
+            statement.setString(1, getName());
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+			_log.log(Level.WARNING, "could not delete global quest variables:", e);
+        } finally {
+            try { con.close(); } catch (Exception e) {}
+        }	
+	}	
 	/**
 	 * Insert in the database the quest for the player.
 	 * @param qs : QuestState pointing out the state of the quest
@@ -612,7 +737,7 @@ public abstract class Quest
      * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.<BR><BR>
      * @param npcId : id of the NPC to register
      * @param eventType : type of event being registered 
-     * @return int : npcId
+     * @return L2NpcTemplate : Npc Template corresponding to the npcId, or null if the id is invalid
      */
 	public L2NpcTemplate addEventId(int npcId, QuestEventType eventType)
 	{

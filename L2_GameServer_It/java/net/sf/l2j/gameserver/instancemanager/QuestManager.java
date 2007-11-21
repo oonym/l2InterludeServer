@@ -59,6 +59,7 @@ public class QuestManager
     // Method - Public
     public final boolean reload(String questFolder)
     {
+    	getQuest(questFolder).saveGlobalData();
     	return QuestJython.reloadQuest(questFolder);
     }
     
@@ -75,6 +76,7 @@ public class QuestManager
     	{
     		return false;
     	}
+    	q.saveGlobalData();
     	return QuestJython.reloadQuest(q.getName());
     }
     
@@ -84,6 +86,11 @@ public class QuestManager
     {
         QuestJython.init();
         System.out.println("Loaded: " + getQuests().size() + " quests");
+    }
+    public final void save()
+    {
+    	for(Quest q:_quests)
+    		q.saveGlobalData();
     }
 
     // =========================================================
