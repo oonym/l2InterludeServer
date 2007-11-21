@@ -1865,6 +1865,7 @@ public abstract class L2Character extends L2Object
 			catch (Throwable e)
 			{
 				_log.log(Level.SEVERE, "", e);
+				enableAllSkills();
 			}
 		}
 	}
@@ -4040,6 +4041,15 @@ public abstract class L2Character extends L2Object
 						_move.onGeodataPathIndex = -1; // Set not on geodata path
 				}
 				
+				if (curX < L2World.MAP_MIN_X || curX > L2World.MAP_MAX_X || curY < L2World.MAP_MIN_Y  || curY > L2World.MAP_MAX_Y)
+				{
+					// Temporary fix for character outside world region errors
+					_log.warning("Character "+this.getName()+" outside world area, in coordinates x:"+curX+" y:"+curY);
+					getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+					if (this instanceof L2PcInstance) ((L2PcInstance)this).deleteMe();
+					else this.onDecay();
+        			return;
+				}
 				Location destiny = GeoData.getInstance().moveCheck(curX, curY, curZ, x, y, z);
 				// location different if destination wasn't reached (or just z coord is different)
 				x = destiny.getX();
@@ -5404,9 +5414,10 @@ public abstract class L2Character extends L2Object
 			else targets = targetList.toArray(new L2Character[targetList.size()]);
 		}
 
+		// Ensure that a cast is in progress
 		// Check if player is using fake death.
 		// Potions can be used while faking death.
-		if (isAlikeDead() && !skill.isPotion())
+		if (!isCastingNow() || (isAlikeDead() && !skill.isPotion()))
 		{
 			_skillCast = null;
 			enableAllSkills();
@@ -5420,26 +5431,24 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 
-		// Ensure that a cast is in progress
-		if (isCastingNow())
-		{
-			// Get the display identifier of the skill
-			int magicId = skill.getDisplayId();
+		
+		// Get the display identifier of the skill
+		int magicId = skill.getDisplayId();
 
-			// Get the level of the skill
-			int level = getSkillLevel(skill.getId());
+		// Get the level of the skill
+		int level = getSkillLevel(skill.getId());
 
-			if (level < 1)
-				level = 1;
+		if (level < 1)
+			level = 1;
 
-			// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
-			if (!skill.isPotion()) broadcastPacket(new MagicSkillLaunched(this, magicId, level, targets));
+		// Send a Server->Client packet MagicSkillLaunched to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
+		if (!skill.isPotion()) broadcastPacket(new MagicSkillLaunched(this, magicId, level, targets));
 			
-			if (instant)
-				onMagicHitTimer(targets, skill, coolTime, true);
-			else 
-				_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 2), 200);
-		}
+		if (instant)
+			onMagicHitTimer(targets, skill, coolTime, true);
+		else 
+			_skillCast = ThreadPoolManager.getInstance().scheduleEffect(new MagicUseTask(targets, skill, coolTime, 2), 200);
+		
 	}
 	
 	/*
