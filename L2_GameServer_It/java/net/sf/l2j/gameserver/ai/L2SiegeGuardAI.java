@@ -167,7 +167,8 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
     {
         if (Config.DEBUG)
             _log.info("L2SiegeAI.changeIntention(" + intention + ", " + arg0 + ", " + arg1 + ")");
-
+        ((L2Attackable)_actor).setisReturningToSpawnPoint(false);
+        
         if (intention == AI_INTENTION_IDLE /*|| intention == AI_INTENTION_ACTIVE*/) // active becomes idle if only a summon is present
         {
             // Check if actor is not dead
