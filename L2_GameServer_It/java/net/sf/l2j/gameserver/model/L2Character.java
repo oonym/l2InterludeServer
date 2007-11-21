@@ -3420,12 +3420,12 @@ public abstract class L2Character extends L2Object
 			if (stat==Stats.POWER_ATTACK_SPEED) 
 			{
 				if (su == null) su = new StatusUpdate(getObjectId());
-				su.addAttribute(StatusUpdate.ATK_SPD, (int)getCurrentHp());
+				su.addAttribute(StatusUpdate.ATK_SPD, getPAtkSpd());
 			}
 			else if (stat==Stats.MAGIC_ATTACK_SPEED) 
 			{
 				if (su == null) su = new StatusUpdate(getObjectId());
-				su.addAttribute(StatusUpdate.CAST_SPD, (int)getCurrentMp());
+				su.addAttribute(StatusUpdate.CAST_SPD, getMAtkSpd());
 			}
 			//else if (stat==Stats.MAX_HP) // TODO: self only and add more stats...
 			//{
