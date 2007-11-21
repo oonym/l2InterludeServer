@@ -216,7 +216,7 @@ public final class L2World
      * Return a table containing all GMs.<BR><BR>
      * 
      */
-    public L2PcInstance[] getAllGMs()
+    public FastList<L2PcInstance> getAllGMs()
     {
         return GmListTable.getInstance().getAllGms(true);
     }
