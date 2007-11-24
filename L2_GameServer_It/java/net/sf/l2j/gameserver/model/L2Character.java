@@ -1262,9 +1262,6 @@ public abstract class L2Character extends L2Object
 		int hitTime = skill.getHitTime();
 		int coolTime = skill.getCoolTime();
 
-		// Get the delay under wich the cast can be aborted (base)
-		int skillInterruptTime = skill.getSkillInterruptTime();
-
 		boolean forceBuff = skill.getSkillType() == SkillType.FORCE_BUFF
 								&& (target instanceof L2PcInstance);
 
@@ -1277,12 +1274,6 @@ public abstract class L2Character extends L2Object
 				coolTime = Formulas.getInstance().calcMAtkSpd(this, skill, coolTime);
 		}
 			
-		// Calculate the Interrupt Time of the skill (base + modifier) if the skill is a spell else 0
-		if (skill.isMagic())
-			skillInterruptTime = Formulas.getInstance().calcMAtkSpd(this, skill, skillInterruptTime);
-		else
-			skillInterruptTime = 0;
-
 		// Calculate altered Cast Speed due to BSpS/SpS
 		L2ItemInstance weaponInst = getActiveWeaponInstance();
 
@@ -1294,7 +1285,6 @@ public abstract class L2Character extends L2Object
 				//Only takes 70% of the time to cast a BSpS/SpS cast
 				hitTime = (int)(0.70 * hitTime);
 				coolTime = (int)(0.70 * coolTime);
-				skillInterruptTime = (int)(0.70 * skillInterruptTime);
 
 				//Because the following are magic skills that do not actively 'eat' BSpS/SpS,
 				//I must 'eat' them here so players don't take advantage of infinite speed increase
@@ -1317,7 +1307,7 @@ public abstract class L2Character extends L2Object
 
 		// Set the _castEndTime and _castInterruptTim. +10 ticks for lag situations, will be reseted in onMagicFinalizer
 		_castEndTime = 10 + GameTimeController.getGameTicks() + (coolTime + hitTime) / GameTimeController.MILLIS_IN_TICK;
-		_castInterruptTime = GameTimeController.getGameTicks() + skillInterruptTime / GameTimeController.MILLIS_IN_TICK;
+		_castInterruptTime = -2 + GameTimeController.getGameTicks() + hitTime / GameTimeController.MILLIS_IN_TICK;
 
 		// Init the reuse time of the skill
 		int reuseDelay = (int)(skill.getReuseDelay() * getStat().getMReuseRate(skill));
@@ -5968,6 +5958,8 @@ public abstract class L2Character extends L2Object
 	public final void setSkillCastEndTime(int newSkillCastEndTime)
 	{
 		_castEndTime = newSkillCastEndTime;
+		// for interrupt -12 ticks; first removing the extra second and then -200 ms
+		_castInterruptTime = newSkillCastEndTime-12; 
 	}
 
 	private Future _PvPRegTask;
