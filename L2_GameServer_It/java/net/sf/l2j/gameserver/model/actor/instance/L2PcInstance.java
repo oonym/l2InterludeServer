@@ -1821,7 +1821,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			_expertisePenalty = newPenalty;
 
 			if (newPenalty > 0)
-				super.addSkill(SkillTable.getInstance().getInfo(4267, newPenalty));
+				super.addSkill(SkillTable.getInstance().getInfo(4267, 1)); // level used to be newPenalty
 			else
                 super.removeSkill(getKnownSkill(4267));
 
