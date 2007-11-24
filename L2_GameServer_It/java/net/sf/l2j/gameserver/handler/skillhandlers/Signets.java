@@ -47,7 +47,7 @@ public class Signets implements ISkillHandler {
         L2WorldRegion region = activeChar.getWorldRegion();
         L2DynamicZone zone = new L2DynamicZone(region, activeChar, skill);
 		zone.setZone(new ZoneCylinder(activeChar.getX(),activeChar.getY(), activeChar.getZ()-200,
-				activeChar.getZ()+200, skill.getEffectRange()));
+				activeChar.getZ()+200, skill.getSkillRadius()));
 
         region.addZone(zone);
         for(L2Character c : activeChar.getKnownList().getKnownCharacters())
