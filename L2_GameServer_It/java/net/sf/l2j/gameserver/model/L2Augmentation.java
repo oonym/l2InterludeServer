@@ -181,7 +181,11 @@ public final class L2Augmentation
 		_boni.applyBoni(player);
 	
 		// add the skill if any
-		if (_skill != null) player.addSkill(_skill);
+		if (_skill != null)
+		{
+			player.addSkill(_skill);
+			player.sendSkillList();
+		}
 	}
 	
 	/**
@@ -193,6 +197,10 @@ public final class L2Augmentation
 		_boni.removeBoni(player);
 		
 		// remove the skill if any
-		if (_skill != null) player.removeSkill(_skill);
+		if (_skill != null)
+		{
+			player.removeSkill(_skill);
+			player.sendSkillList();
+		}
 	}
 }

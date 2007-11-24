@@ -53,22 +53,7 @@ public final class RequestSkillList extends L2GameClientPacket
         if (cha == null)
             return;
 
-		SkillList response = new SkillList();
-		L2Skill[] skills = cha.getAllSkills();
-		
-		for (int i = 0; i < skills.length; i++)
-		{
-			L2Skill s = skills[i];
-            
-            if (s == null) 
-                continue;
-			if (s.getId() > 9000)
-				continue; // fake skills to change base stats
-            
-			response.addSkill(s.getId(), s.getLevel(), s.isPassive());
-		}
-		
-		sendPacket(response);
+        cha.sendSkillList(); 
 	}
 
 	/* (non-Javadoc)

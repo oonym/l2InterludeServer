@@ -37,6 +37,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2VillageMasterInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExStorageMaxCount;
 import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
+import net.sf.l2j.gameserver.serverpackets.PledgeSkillList;
 import net.sf.l2j.gameserver.serverpackets.ShortCutRegister;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
@@ -294,8 +295,12 @@ public class RequestAquireSkill extends L2GameClientPacket
             player.sendPacket(sm);
             sm = null;
             
-            player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
+            player.getClan().broadcastToOnlineMembers(new PledgeSkillList(player.getClan()));
             
+            for(L2PcInstance member: player.getClan().getOnlineMembers("")) 
+            {
+            	member.sendSkillList();
+            }
             ((L2VillageMasterInstance)trainer).showPledgeSkillList(player); //Maybe we shoud add a check here...
             
             return;

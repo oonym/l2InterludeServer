@@ -1466,6 +1466,11 @@ public class Olympiad
 					for(L2Skill skill: player.getClan().getAllSkills())
 						player.removeSkill(skill,false);
 				}
+				//Abort casting if player casting  
+				if (player.isCastingNow())
+				{
+					player.abortCast();  
+				}  
 
 				//Remove Hero Skills
 				if (player.isHero())
@@ -1545,7 +1550,7 @@ public class Olympiad
 				Map<Integer, Integer> activeSoulShots = player.getAutoSoulShot();
 				for (int itemId : activeSoulShots.values())
 					player.removeAutoSoulShot(itemId);
-
+				player.sendSkillList(); 
     		  } catch (Exception e) {}
     		}
             
@@ -1703,6 +1708,7 @@ public class Olympiad
 					for(L2Skill skill: HeroSkillTable.GetHeroSkills())
 						player.addSkill(skill,false);
 				}
+				player.sendSkillList();
     		  } catch (Exception e) {}
     		}
     	}
