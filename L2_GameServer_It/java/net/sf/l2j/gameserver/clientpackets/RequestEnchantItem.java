@@ -217,6 +217,11 @@ public final class RequestEnchantItem extends L2GameClientPacket
             		activeChar.sendPacket(new SystemMessage(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION));
             		return;
             	}
+            	if (item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY && item.getLocation() != L2ItemInstance.ItemLocation.PAPERDOLL)
+            	{
+            		activeChar.sendPacket(new SystemMessage(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION));
+            		return;
+            	}
             	if (item.getEnchantLevel() == 0)
             	{
             		sm = new SystemMessage(SystemMessageId.S1_SUCCESSFULLY_ENCHANTED);
