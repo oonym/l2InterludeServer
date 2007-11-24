@@ -858,38 +858,34 @@ public class L2NpcInstance extends L2Character
             }
             else if (command.equalsIgnoreCase("TerritoryStatus"))
             {
-                NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-                html.setFile("data/html/territorystatus.htm");
-                html.replace("%objectId%", String.valueOf(getObjectId()));
-                html.replace("%npcname%", getName());
-                
-                if (getIsInTown())
-                {
-                    html.replace("%castlename%", getCastle().getName());
-                    html.replace("%taxpercent%", "" + getCastle().getTaxPercent());
-                    
-                    if (getCastle().getOwnerId() > 0)
-                    {
-                        L2Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
-                        html.replace("%clanname%", clan.getName());
-                        html.replace("%clanleadername%", clan.getLeaderName());
-                    }
-                    else
-                    {
-                        html.replace("%clanname%", "NPC");
-                        html.replace("%clanleadername%", "NPC");
-                    }
-                }
-                else
-                {
-                    html.replace("%castlename%", "Open");
-                    html.replace("%taxpercent%", "0");
-                    
-                    html.replace("%clanname%", "No");
-                    html.replace("%clanleadername%", getName());
-                }
-                
-                player.sendPacket(html);
+            	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId()); 
+            	{ 
+            		if (getCastle().getOwnerId() > 0) 
+            		{ 
+            			html.setFile("data/html/territorystatus.htm"); 
+            			L2Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId()); 
+            			html.replace("%clanname%", clan.getName()); 
+            			html.replace("%clanleadername%", clan.getLeaderName()); 
+            		} 
+            		else 
+            		{ 
+            			html.setFile("data/html/territorynoclan.htm"); 
+            		} 
+            	} 
+            	html.replace("%castlename%", getCastle().getName()); 
+            	html.replace("%taxpercent%", "" + getCastle().getTaxPercent()); 
+            	html.replace("%objectId%", String.valueOf(getObjectId())); 
+            	{ 
+            		if (getCastle().getCastleId() > 6) 
+            		{ 
+            			html.replace("%territory%", "The Kingdom of Elmore"); 
+            		} 
+            		else 
+            		{ 
+            			html.replace("%territory%", "The Kingdom of Aden"); 
+            		} 
+            	} 
+            	player.sendPacket(html); 
             }
             else if (command.startsWith("Quest"))
             {
