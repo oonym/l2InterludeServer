@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.network.L2GameClient;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 
 import com.l2jserver.mmocore.network.ReceivablePacket;
@@ -67,7 +68,12 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 			else
 			{
 				getClient().packetsSentInSec++;
-				if (getClient().packetsSentInSec > 12) return;
+				if (getClient().packetsSentInSec > 12) 
+				{
+					if (getClient().packetsSentInSec < 100)
+						sendPacket(new ActionFailed()); 
+					return;
+				}
 			}
 			
 			runImpl();
