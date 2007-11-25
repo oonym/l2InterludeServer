@@ -72,6 +72,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final int     factionRange;
     public final int     absorbLevel;
     public final AbsorbCrystalType absorbType;
+    public Race race;
     
     public static enum AbsorbCrystalType
     {
@@ -79,12 +80,36 @@ public final class L2NpcTemplate extends L2CharTemplate
         FULL_PARTY,
         PARTY_ONE_RANDOM
     }
+    
+    public static enum Race 
+	{ 
+    	UNDEAD, 
+    	MAGICCREATURE, 
+    	BEAST, 
+    	ANIMAL, 
+    	PLANT, 
+    	HUMANOID, 
+    	SPIRIT, 
+    	ANGEL, 
+    	DEMON, 
+    	DRAGON, 
+    	GIANT, 
+    	BUG, 
+    	FAIRIE, 
+    	HUMAN, 
+    	ELVE, 
+    	DARKELVE, 
+    	ORC, 
+    	DWARVE, 
+    	OTHER, 
+    	NONLIVING, 
+    	SIEGEWEAPON, 
+    	DEFENDINGARMY, 
+    	MERCENARIE, 
+    	UNKNOWN 
+	}
     	
 	private final StatsSet _npcStatsSet;
-
-	/** fixed skills*/
-	public int     race;
-	
 	
 	/** The table containing all Item that can be dropped by L2NpcInstance using this L2NpcTemplate*/
 	private final FastList<L2DropCategory> _categories = new FastList<L2DropCategory>();
@@ -130,13 +155,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 		factionRange  = set.getInteger("factionRange");
         absorbLevel  = set.getInteger("absorb_level", 0);
     	absorbType = AbsorbCrystalType.valueOf(set.getString("absorb_type"));
-        
-		//String r = set.getString("race", null);
-		//if (r == null)
-		//	race = null;
-		//else
-		//	race = r.intern();
-		race = 0;
+    	race = null;
 		_npcStatsSet = set;
 		_teachInfo = null;
 	}
@@ -321,8 +340,91 @@ public final class L2NpcTemplate extends L2CharTemplate
 	{
 		return _npcStatsSet;
 	}
-	public void setRace(int newrace)
+	
+	public void setRace(int raceId)
 	{
-	    race = newrace;
+		switch (raceId)
+		{
+			case 1:
+				race = L2NpcTemplate.Race.UNDEAD;
+				break;
+			case 2:
+				race = L2NpcTemplate.Race.MAGICCREATURE;
+				break;
+			case 3:
+				race = L2NpcTemplate.Race.BEAST;
+				break;
+			case 4:
+				race = L2NpcTemplate.Race.ANIMAL;
+				break;
+			case 5:
+				race = L2NpcTemplate.Race.PLANT;
+				break;
+			case 6:
+				race = L2NpcTemplate.Race.HUMANOID;
+				break;
+			case 7:
+				race = L2NpcTemplate.Race.SPIRIT;
+				break;
+			case 8:
+				race = L2NpcTemplate.Race.ANGEL;
+				break;
+			case 9:
+				race = L2NpcTemplate.Race.DEMON;
+				break;
+			case 10:
+				race = L2NpcTemplate.Race.DRAGON;
+				break;
+			case 11:
+				race = L2NpcTemplate.Race.GIANT;
+				break;
+			case 12:
+				race = L2NpcTemplate.Race.BUG;
+				break;
+			case 13:
+				race = L2NpcTemplate.Race.FAIRIE;
+				break;
+			case 14:
+				race = L2NpcTemplate.Race.HUMAN;
+				break;
+			case 15:
+				race = L2NpcTemplate.Race.ELVE;
+				break;
+			case 16:
+				race = L2NpcTemplate.Race.DARKELVE;
+				break;
+			case 17:
+				race = L2NpcTemplate.Race.ORC;
+				break;
+			case 18:
+				race = L2NpcTemplate.Race.DWARVE;
+				break;
+			case 19:
+				race = L2NpcTemplate.Race.OTHER;
+				break;
+			case 20:
+				race = L2NpcTemplate.Race.NONLIVING;
+				break;
+			case 21:
+				race = L2NpcTemplate.Race.SIEGEWEAPON;
+				break;
+			case 22:
+				race = L2NpcTemplate.Race.DEFENDINGARMY;
+				break;
+			case 23:
+				race = L2NpcTemplate.Race.MERCENARIE;
+				break;
+			default:
+				race = L2NpcTemplate.Race.UNKNOWN;
+				break;
+		}
+	}
+	
+	public L2NpcTemplate.Race getRace()
+	{
+		if (race == null)
+			race = L2NpcTemplate.Race.UNKNOWN;
+		
+		return race;
 	}
 }

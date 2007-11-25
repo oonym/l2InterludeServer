@@ -53,6 +53,7 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionSlotItemId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetAggro;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetClassIdRestriction;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetLevel;
+import net.sf.l2j.gameserver.skills.conditions.ConditionTargetRaceId;
 import net.sf.l2j.gameserver.skills.conditions.ConditionTargetUsesWeaponKind;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingItemType;
 import net.sf.l2j.gameserver.skills.conditions.ConditionUsingSkill;
@@ -474,6 +475,17 @@ abstract class DocumentBase
                     array.add(Integer.decode(getValue(item, null)));
                 }
             	cond = joinAnd(cond, new ConditionTargetClassIdRestriction(array));
+            }
+            else if ("race_id".equalsIgnoreCase(a.getNodeName()))
+            {
+            	FastList<Integer> array = new FastList<Integer>();
+            	StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
+            	while (st.hasMoreTokens())
+            	{
+            		String item = st.nextToken().trim();
+            		array.add(Integer.decode(getValue(item, null)));
+            	}
+            	cond = joinAnd(cond, new ConditionTargetRaceId(array));
             }
             else if ("using".equalsIgnoreCase(a.getNodeName()))
             {

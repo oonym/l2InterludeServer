@@ -44,6 +44,7 @@ import net.sf.l2j.gameserver.skills.conditions.ConditionUsingItemType;
 import net.sf.l2j.gameserver.skills.conditions.ConditionPlayerState.CheckPlayerState;
 import net.sf.l2j.gameserver.skills.funcs.Func;
 import net.sf.l2j.gameserver.templates.L2Armor;
+import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.L2PcTemplate;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
@@ -1200,25 +1201,36 @@ public final class Formulas
 
 		if (attacker instanceof L2NpcInstance)
 		{
-			int raceId = ((L2NpcInstance) attacker).getTemplate().race;
 			//Skill Race : Undead
-			if (raceId == 4290) damage /= attacker.getPDefUndead(target);
+			if (((L2NpcInstance) attacker).getTemplate().getRace() == L2NpcTemplate.Race.UNDEAD)
+				damage /= attacker.getPDefUndead(target);
 		}
 		if (target instanceof L2NpcInstance)
 		{
-			int raceId = ((L2NpcInstance) target).getTemplate().race;
-			//Skill Race : Undead
-			if (raceId == 4290) damage *= attacker.getPAtkUndead(target);
-			//Skill Race : Beast
-			if (raceId == 4292) damage *= attacker.getPAtkMonsters(target);
-			//Skill Race : Animal
-			if (raceId == 4293) damage *= attacker.getPAtkAnimals(target);
-			//Skill Race : Plant
-			if (raceId == 4294) damage *= attacker.getPAtkPlants(target);
-			//Skill Race : Dragon
-			if (raceId == 4299) damage *= attacker.getPAtkDragons(target);
-			//Skill Race : Bug
-			if (raceId == 4301) damage *= attacker.getPAtkInsects(target);
+			switch (((L2NpcInstance) target).getTemplate().getRace())
+			{
+				case UNDEAD:
+					damage *= attacker.getPAtkUndead(target);
+					break;
+				case BEAST:
+					damage *= attacker.getPAtkMonsters(target);
+					break;
+				case ANIMAL:
+					damage *= attacker.getPAtkAnimals(target);
+					break;
+				case PLANT:
+					damage *= attacker.getPAtkPlants(target);
+					break;
+				case DRAGON:
+					damage *= attacker.getPAtkDragons(target);
+					break;
+				case BUG:
+					damage *= attacker.getPAtkInsects(target);
+					break;
+				default:
+					// nothing
+					break;
+			}
 		}
         if (shld)
         {
