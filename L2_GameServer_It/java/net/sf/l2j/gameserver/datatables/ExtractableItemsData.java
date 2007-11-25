@@ -102,6 +102,17 @@ public class ExtractableItemsData
             	ok = true;
 
             	String[] lineSplit2 = lineSplit[i+1].split(",");
+
+            	if (lineSplit2.length != 3)
+            	{
+               		System.out.println("Extractable items data: Error in line " + lineCount + " -> wrong seperator!");
+               		System.out.println("		" + line);
+            		ok = false;
+            	}
+            	
+            	if (!ok)
+            		continue;
+
             	int production = 0,
     				amount = 0,
     				chance = 0;
