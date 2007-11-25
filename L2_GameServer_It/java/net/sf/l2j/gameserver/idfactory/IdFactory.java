@@ -28,14 +28,14 @@ import net.sf.l2j.L2DatabaseFactory;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.7 $ $Date: 2005/04/11 10:06:12 $
  */
 public abstract class IdFactory
 {
 	private static Logger _log = Logger.getLogger(IdFactory.class.getName());
 
-	protected static final String[] ID_UPDATES = 
+	protected static final String[] ID_UPDATES =
 	{
 		"UPDATE items                 SET owner_id = ?    WHERE owner_id = ?",
 		"UPDATE items                 SET object_id = ?   WHERE object_id = ?",
@@ -64,7 +64,7 @@ public abstract class IdFactory
         "UPDATE clanhall             SET ownerId = ?       WHERE ownerId = ?"
 	};
 
-    protected static final String[] ID_CHECKS = 
+    protected static final String[] ID_CHECKS =
 	{
 		"SELECT owner_id    FROM items                 WHERE object_id >= ?   AND object_id < ?",
 		"SELECT object_id   FROM items                 WHERE object_id >= ?   AND object_id < ?",
@@ -87,13 +87,13 @@ public abstract class IdFactory
 		"SELECT item_obj_id FROM pets                  WHERE item_obj_id >= ? AND item_obj_id < ?",
 		"SELECT object_id   FROM itemsonground        WHERE object_id >= ?   AND object_id < ?"
 	};
-	
+
     protected boolean _initialized;
-	
+
     public static final int FIRST_OID            = 0x10000000;
     public static final int LAST_OID             = 0x7FFFFFFF;
     public static final int FREE_OBJECT_ID_SIZE  = LAST_OID - FIRST_OID;
-    
+
     protected static IdFactory _instance = null;
 
 	protected IdFactory()
@@ -101,7 +101,7 @@ public abstract class IdFactory
         setAllCharacterOffline();
         cleanUpDB();
     }
-    
+
     static
     {
         switch (Config.IDFACTORY_TYPE)
@@ -130,7 +130,7 @@ public abstract class IdFactory
             Statement s2 = con2.createStatement();
             s2.executeUpdate("update characters set online=0");
             _log.info("Updated characters online status.");
-            
+
             s2.close();
         }
         catch (SQLException e)
@@ -147,7 +147,7 @@ public abstract class IdFactory
             }
         }
     }
-    
+
     /**
      * Cleans up Database
      */
@@ -226,7 +226,7 @@ public abstract class IdFactory
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-            
+
             //create a temporary table
             Statement s = con.createStatement();
             try
@@ -238,32 +238,32 @@ public abstract class IdFactory
             }
             s.executeUpdate("delete from itemsonground where object_id in (select object_id from items)");
             s.executeUpdate("create table temporaryObjectTable" + " (object_id int NOT NULL PRIMARY KEY)");
-            
+
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select obj_id from characters");
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select object_id from items");
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select clan_id from clan_data");
 //            s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select crest_id from clan_data where crest_id > 0");
             s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select object_id from itemsonground");
-            
+
             ResultSet result = s.executeQuery("select count(object_id) from temporaryObjectTable");
-            
+
             result.next();
             int size = result.getInt(1);
             int[] tmp_obj_ids = new int[size];
             // System.out.println("tmp table size: " + tmp_obj_ids.length);
             result.close();
-            
+
             result = s.executeQuery("select object_id from temporaryObjectTable ORDER BY object_id");
-            
+
             int idx = 0;
             while (result.next())
             {
                 tmp_obj_ids[idx++] = result.getInt(1);
             }
-            
+
             result.close();
             s.close();
-            
+
             return tmp_obj_ids;
         }
         finally
@@ -275,7 +275,7 @@ public abstract class IdFactory
 	public boolean isInitialized() {
 		return _initialized;
 	}
-	
+
 	public static IdFactory getInstance()
 	{
         return _instance;
@@ -283,12 +283,12 @@ public abstract class IdFactory
 
 
 	public abstract int getNextId();
-	
+
 	/**
 	 * return a used Object ID back to the pool
 	 * @param object ID
 	 */
 	public abstract void releaseId(int id);
-    
+
     public abstract int size();
 }

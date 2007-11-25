@@ -34,7 +34,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * Admin Command Handler for Mammon NPCs
- * 
+ *
  * @author Tempy
  */
 public class AdminMammon implements IAdminCommandHandler
@@ -136,7 +136,7 @@ public class AdminMammon implements IAdminCommandHandler
 				Matcher regexp = pattern.matcher(params[1]);
 				if (regexp.matches())
 					npcId = Integer.parseInt(params[1]);
-				else 
+				else
 				{
 					params[1] = params[1].replace('_', ' ');
 					npcId = NpcTable.getInstance().getTemplateByName(params[1]).npcId;

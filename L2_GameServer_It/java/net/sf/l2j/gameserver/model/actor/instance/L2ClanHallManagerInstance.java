@@ -60,7 +60,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-    
+
     @Override
 	public void onBypassFeedback(L2PcInstance player, String command)
     {
@@ -75,7 +75,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
             String actualCommand = st.nextToken(); // Get actual command
             String val = "";
             if (st.countTokens() >= 1) {val = st.nextToken();}
-     
+
             if (actualCommand.equalsIgnoreCase("banish_foreigner"))
             {
                 getClanHall().banishForeigners();
@@ -170,7 +170,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 	                    html.replace("%mp_regen%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP).getLvl()) + "%");
 	                else
 	                    html.replace("%mp_regen", "0");
-	                sendHtmlMessage(player, html);         
+	                sendHtmlMessage(player, html);
                 }
             }
             else if (actualCommand.equalsIgnoreCase("manage"))
@@ -187,7 +187,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                         	}
                             val = st.nextToken();
                             if (val.equalsIgnoreCase("hp"))
-                            {  
+                            {
                                 if (st.countTokens() >= 1)
                                 {
                                     int fee;
@@ -246,7 +246,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                                 }
                             }
                             else if (val.equalsIgnoreCase("mp"))
-                            {  
+                            {
                                 if (st.countTokens() >= 1)
                                 {
                                     int fee;
@@ -281,7 +281,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                                 }
                             }
                             else if (val.equalsIgnoreCase("exp"))
-                            {  
+                            {
                                 if (st.countTokens() >= 1)
                                 {
                                     int fee;
@@ -363,7 +363,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                         	}
                             val = st.nextToken();
                             if (val.equalsIgnoreCase("item"))
-                            {  
+                            {
                                 if (st.countTokens() >= 1)
                                 {
                                 	if(getClanHall().getOwnerId() == 0){
@@ -396,7 +396,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                                 }
                             }
                             else if (val.equalsIgnoreCase("tele"))
-                            {  
+                            {
                                 if (st.countTokens() >= 1)
                                 {
                                     int fee;
@@ -422,7 +422,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                                 }
                             }
                             else if (val.equalsIgnoreCase("support"))
-                            {  
+                            {
                                 if (st.countTokens() >= 1)
                                 {
                                     int fee;
@@ -489,7 +489,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
                         if (getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE) != null){
                             html.replace("%item%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLvl()));
                             html.replace("%itemPrice%", String.valueOf(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getLease()));
-                            html.replace("%itemDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getEndTime()));                       
+                            html.replace("%itemDate%",format.format(getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE).getEndTime()));
                         }else{
                             html.replace("%item%", "0");
                             html.replace("%itemPrice%", "0");
@@ -638,7 +638,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
         }
         super.onBypassFeedback(player, command);
     }
-	
+
 	/**
 	 * this is called when a player interacts with this NPC
 	 * @param player
@@ -655,7 +655,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
         	showMessageWindow(player);
         }
     }
-    
+
     private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)
     {
         html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -663,17 +663,17 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
         html.replace("%npcId%", String.valueOf(getNpcId()));
         player.sendPacket(html);
     }
-    
+
     private void showMessageWindow(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
         String filename = "data/html/clanHallManager/chamberlain-no.htm";
-        
+
         int condition = validateCondition(player);
         if (condition == COND_OWNER)
-            filename = "data/html/clanHallManager/chamberlain.htm";// Owner message window 
+            filename = "data/html/clanHallManager/chamberlain.htm";// Owner message window
         if (condition == COND_OWNER_FALSE)
-            filename = "data/html/clanHallManager/chamberlain-of.htm";   
+            filename = "data/html/clanHallManager/chamberlain-of.htm";
         NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
         html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -683,34 +683,34 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
     }
 
     protected int validateCondition(L2PcInstance player)
-    {   
+    {
         if (getClanHall() == null) return COND_ALL_FALSE;
     	if (player.isGM()) return COND_OWNER;
         if (player.getClan() != null)
-        {                                     
-            if (getClanHall().getOwnerId() == player.getClanId())                                          
+        {
+            if (getClanHall().getOwnerId() == player.getClanId())
                 return COND_OWNER;
             else
             	return COND_OWNER_FALSE;
         }
         return COND_ALL_FALSE;
     }
-    
+
     /** Return the L2ClanHall this L2NpcInstance belongs to. */
     public final ClanHall getClanHall()
     {
         if (_clanHallId < 0)
         {
         	ClanHall temp = ClanHallManager.getInstance().getNearbyClanHall(getX(), getY(), 500);
-        	
+
         	if (temp != null)
         		_clanHallId = temp.getId();
-        	
+
             if (_clanHallId < 0) return null;
         }
         return ClanHallManager.getInstance().getClanHallById(_clanHallId);
     }
-    
+
     private void showVaultWindowDeposit(L2PcInstance player)
     {
         player.sendPacket(new ActionFailed());
@@ -724,7 +724,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
         player.setActiveWarehouse(player.getClan().getWarehouse());
         player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN)); //Or Clan Hall ??
     }
-    
+
     private void doTeleport(L2PcInstance player, int val)
     {
        if(Config.DEBUG)

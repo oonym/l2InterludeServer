@@ -43,6 +43,7 @@ public class EtcStatusUpdate extends L2GameServerPacket
 	/**
 	 * @see net.sf.l2j.gameserver.serverpackets.L2GameServerPacket#writeImpl()
 	 */
+	@Override
 	protected void writeImpl()
 	{
 		writeC(0xF3); // several icons to a separate line (0 = disabled)

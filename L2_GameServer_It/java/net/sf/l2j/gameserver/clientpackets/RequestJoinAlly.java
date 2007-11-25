@@ -27,17 +27,17 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestJoinAlly extends L2GameClientPacket
 {
-	
+
 	private static final String _C__82_REQUESTJOINALLY = "[C] 82 RequestJoinAlly";
 	//private static Logger _log = Logger.getLogger(RequestJoinAlly.class.getName());
 
 	private int _id;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -67,12 +67,12 @@ public final class RequestJoinAlly extends L2GameClientPacket
         if (!clan.checkAllyJoinCondition(activeChar, target))
         {
         	return;
-        } 
+        }
         if (!activeChar.getRequest().setRequest(target, this))
         {
         	return;
-        } 
-		
+        }
+
 		SystemMessage sm = new SystemMessage(SystemMessageId.S2_ALLIANCE_LEADER_OF_S1_REQUESTED_ALLIANCE);
 		sm.addString(activeChar.getClan().getAllyName());
 		sm.addString(activeChar.getName());
@@ -82,8 +82,8 @@ public final class RequestJoinAlly extends L2GameClientPacket
 		target.sendPacket(aja);
 	    return;
 	}
-	
-	
+
+
 	@Override
 	public String getType()
 	{

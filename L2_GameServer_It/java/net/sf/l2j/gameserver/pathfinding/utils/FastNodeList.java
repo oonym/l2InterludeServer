@@ -27,7 +27,7 @@ public class FastNodeList
 {
 	private Node[] _list;
 	private int _size;
-	
+
 	public FastNodeList(int size)
 	{
 		_list = new Node[size];

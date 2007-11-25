@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * 0x53 WareHouseDepositList  dh (h dddhh dhhh d)
- * 
+ *
  * @version $Revision: 1.4.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
 public class WareHouseDepositList extends L2GameServerPacket
@@ -49,10 +49,10 @@ public class WareHouseDepositList extends L2GameServerPacket
 		_whType = type;
 		_playerAdena = _activeChar.getAdena();
 		_items = new FastList<L2ItemInstance>();
-		
+
 		for (L2ItemInstance temp : _activeChar.getInventory().getAvailableItems(true))
 			_items.add(temp);
-		
+
 		// augmented and shadow items can be stored in private wh
 		if (_whType == PRIVATE)
 		{
@@ -63,21 +63,21 @@ public class WareHouseDepositList extends L2GameServerPacket
 			}
 		}
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x41);
-		/* 0x01-Private Warehouse  
-        * 0x02-Clan Warehouse  
-        * 0x03-Castle Warehouse  
-        * 0x04-Warehouse */  
-        writeH(_whType);        
-		writeD(_playerAdena); 
+		/* 0x01-Private Warehouse
+        * 0x02-Clan Warehouse
+        * 0x03-Castle Warehouse
+        * 0x04-Warehouse */
+        writeH(_whType);
+		writeD(_playerAdena);
 		int count = _items.size();
 		if (Config.DEBUG) _log.fine("count:"+count);
 		writeH(count);
-		
+
 		for (L2ItemInstance item : _items)
 		{
 			writeH(item.getItem().getType1()); // item type1 //unconfirmed, works
@@ -99,7 +99,7 @@ public class WareHouseDepositList extends L2GameServerPacket
 			else writeQ(0x00);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

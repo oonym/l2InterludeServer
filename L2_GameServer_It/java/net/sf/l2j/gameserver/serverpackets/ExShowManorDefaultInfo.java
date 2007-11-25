@@ -27,26 +27,26 @@ import net.sf.l2j.gameserver.model.L2Manor;
  * ch cd [ddddcdcd]
  * c  - id
  * h  - sub id
- * 
+ *
  * c
  * d  - size
- * 
+ *
  * [
  * d  - level
  * d  - seed price
  * d  - seed level
  * d  - crop price
- * c 
+ * c
  * d  - reward 1 id
  * c
  * d  - reward 2 id
  * ]
- * 
+ *
  * @author l3x
  */
 public class ExShowManorDefaultInfo extends L2GameServerPacket {
 	private static final String _S__FE_1C_EXSHOWSEEDINFO = "[S] FE:1E ExShowManorDefaultInfo";
-    
+
 	private FastList<Integer> _crops = null;
 
     public ExShowManorDefaultInfo() {

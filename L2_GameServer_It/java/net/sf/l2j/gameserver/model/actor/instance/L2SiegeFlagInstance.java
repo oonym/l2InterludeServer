@@ -32,7 +32,7 @@ public class L2SiegeFlagInstance extends L2NpcInstance
 {
     private L2PcInstance _player;
     private Siege _siege;
-    
+
 	public L2SiegeFlagInstance(L2PcInstance player, int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -63,16 +63,16 @@ public class L2SiegeFlagInstance extends L2NpcInstance
     }
 
 	@Override
-	public boolean isAutoAttackable(L2Character attacker) 
+	public boolean isAutoAttackable(L2Character attacker)
 	{
 		// Attackable during siege by attacker only
-		return (attacker != null 
-		        && attacker instanceof L2PcInstance 
+		return (attacker != null
+		        && attacker instanceof L2PcInstance
 		        && getCastle() != null
 		        && getCastle().getCastleId() > 0
 		        && getCastle().getSiege().getIsInProgress());
 	}
-	
+
     @Override
 	public boolean doDie(L2Character killer)
     {
@@ -89,38 +89,38 @@ public class L2SiegeFlagInstance extends L2NpcInstance
 	{
 		onAction(player);
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
         if (player == null)
             return;
-        
+
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
-			
+
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
 			player.sendPacket(my);
-			
+
             StatusUpdate su = new StatusUpdate(getObjectId());
             su.addAttribute(StatusUpdate.CUR_HP, (int)getCurrentHp() );
             su.addAttribute(StatusUpdate.MAX_HP, getMaxHp() );
             player.sendPacket(su);
-			
+
 			player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
 			player.sendPacket(my);
-			
+
 			if (
                     isAutoAttackable(player) &&                 // Object is attackable
                     Math.abs(player.getZ() - getZ()) < 100      // Less then max height difference
 			    )
                 player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-            else 
+            else
                 player.sendPacket(new ActionFailed());
 		}
 	}

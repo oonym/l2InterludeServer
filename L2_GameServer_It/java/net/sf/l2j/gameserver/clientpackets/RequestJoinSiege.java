@@ -25,7 +25,7 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * 
+ *
  * @author KenM
  */
 public final class RequestJoinSiege extends L2GameClientPacket
@@ -36,7 +36,7 @@ public final class RequestJoinSiege extends L2GameClientPacket
     private int _castleId;
     private int _isAttacker;
     private int _isJoining;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -51,7 +51,7 @@ public final class RequestJoinSiege extends L2GameClientPacket
         L2PcInstance activeChar = getClient().getActiveChar();
         if(activeChar == null) return;
         if (!activeChar.isClanLeader()) return;
-        
+
         Castle castle = CastleManager.getInstance().getCastleById(_castleId);
         if (castle == null) return;
 
@@ -72,8 +72,8 @@ public final class RequestJoinSiege extends L2GameClientPacket
 
         castle.getSiege().listRegisterClan(activeChar);
     }
-    
-    
+
+
     @Override
 	public String getType()
     {

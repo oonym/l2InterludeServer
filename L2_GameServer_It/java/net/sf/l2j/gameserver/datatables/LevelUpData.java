@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 
 /**
  * This class ...
- * 
+ *
  * @author NightMarez
  * @version $Revision: 1.3.2.4.2.3 $ $Date: 2005/03/27 15:29:18 $
  */
@@ -48,13 +48,13 @@ public class LevelUpData
     private static final String CP_ADD = "defaultcpadd";
     private static final String CP_BASE = "defaultcpbase";
     private static final String CLASS_ID = "classid";
-    
+
     private static Logger _log = Logger.getLogger(LevelUpData.class.getName());
-	
+
 	private static LevelUpData _instance;
-	
+
 	private Map<Integer, L2LvlupData> _lvlTable;
-	
+
 	public static LevelUpData getInstance()
 	{
 		if (_instance == null)
@@ -63,7 +63,7 @@ public class LevelUpData
 		}
 		return _instance;
 	}
-	
+
 	private LevelUpData()
 	{
 		_lvlTable = new FastMap<Integer, L2LvlupData>();
@@ -74,7 +74,7 @@ public class LevelUpData
 			PreparedStatement statement = con.prepareStatement(SELECT_ALL);
 			ResultSet rset = statement.executeQuery();
 			L2LvlupData lvlDat;
-			
+
 			while (rset.next())
 			{
 				lvlDat = new L2LvlupData();
@@ -89,10 +89,10 @@ public class LevelUpData
 				lvlDat.setClassMpBase(rset.getFloat(MP_BASE));
 				lvlDat.setClassMpAdd(rset.getFloat(MP_ADD));
 				lvlDat.setClassMpModifier(rset.getFloat(MP_MOD));
-				
+
 				_lvlTable.put(new Integer(lvlDat.getClassid()), lvlDat);
 			}
-			
+
 			rset.close();
 			statement.close();
 
@@ -101,8 +101,8 @@ public class LevelUpData
 		catch (Exception e)
 		{
 			_log.warning("error while creating Lvl up data table "+e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}

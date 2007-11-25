@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 
 /**
- * 
+ *
  *
  * sample
  * 0000: 84 6d 06 00 00 36 05 00 00 42 4d 36 05 00 00 00    .m...6...BM6....
@@ -28,11 +28,11 @@ package net.sf.l2j.gameserver.serverpackets;
  * 0020: 00 00 00 01 00 08 00 00 00 00 00 00 01 00 00 c4    ................
  * 0030: ...
  * 0530: 10 91 00 00 00 60 9b d1 01 e4 6e ee 52 97 dd       .....`....n.R..
- * 
- * 
- *  
- * format   dd x...x 
- * 
+ *
+ *
+ *
+ * format   dd x...x
+ *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:57 $
  */
 public class PledgeCrest extends L2GameServerPacket
@@ -41,14 +41,14 @@ public class PledgeCrest extends L2GameServerPacket
 	private int _crestId;
 	private int _crestSize;
 	private byte[] _data;
-	
+
 	public PledgeCrest(int crestId,byte[] data)
 	{
 		_crestId = crestId;
         _data = data;
         _crestSize = _data.length;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -58,7 +58,7 @@ public class PledgeCrest extends L2GameServerPacket
 		writeB(_data);
 		_data = null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

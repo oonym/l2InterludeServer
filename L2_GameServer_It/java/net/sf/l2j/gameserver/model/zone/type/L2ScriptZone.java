@@ -38,15 +38,15 @@ public class L2ScriptZone extends L2ZoneType
 	protected void onEnter(L2Character character)
 	{
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
 

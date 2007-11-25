@@ -31,12 +31,12 @@ import net.sf.l2j.gameserver.skills.Env;
 public final class ConditionUsingItemType extends Condition {
 
 	private final int _mask;
-	
+
 	public ConditionUsingItemType(int mask)
 	{
 		_mask = mask;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env)
 	{

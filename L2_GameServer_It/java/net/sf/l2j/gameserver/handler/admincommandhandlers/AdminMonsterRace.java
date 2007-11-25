@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands: - invul = turns invulnerability
  * on/off
- * 
+ *
  * @version $Revision: 1.1.6.4 $ $Date: 2007/07/31 10:06:00 $
  */
 public class AdminMonsterRace implements IAdminCommandHandler
@@ -78,7 +78,7 @@ public class AdminMonsterRace implements IAdminCommandHandler
          * 0 15322 to start race
          * 13765 -1 in middle of race
          * -1 0 to end the race
-         * 
+         *
          * 8003 to 8027
          */
 

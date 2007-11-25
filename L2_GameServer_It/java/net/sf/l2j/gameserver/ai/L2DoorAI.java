@@ -38,7 +38,7 @@ public class L2DoorAI extends L2CharacterAI {
 	{
 		super(accessor);
 	}
-	
+
 	// rather stupid AI... well,  it's for doors :D
 	@Override
 	protected void onIntentionIdle() {}
@@ -75,10 +75,10 @@ public class L2DoorAI extends L2CharacterAI {
         ThreadPoolManager.getInstance().executeTask(new onEventAttackedDoorTask(me, attacker));
 	}
     @Override
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	protected void onEvtAggression(L2Character target, int aggro) {}
     @Override
-	@SuppressWarnings("unused") 
+	@SuppressWarnings("unused")
 	protected void onEvtStunned(L2Character attacker) {}
     @Override
 	@SuppressWarnings("unused")
@@ -105,7 +105,7 @@ public class L2DoorAI extends L2CharacterAI {
 	protected void onEvtCancel() {}
 	@Override
 	protected void onEvtDead() {}
-	
+
 	private class onEventAttackedDoorTask implements Runnable
 	{
 		private L2DoorInstance _door;
@@ -123,14 +123,14 @@ public class L2DoorAI extends L2CharacterAI {
 		public void run()
 		{
 			_door.getKnownList().updateKnownObjects();
-	        
+
 			for (L2SiegeGuardInstance guard : _door.getKnownSiegeGuards()) {
-	            if (_actor.isInsideRadius(guard, guard.getFactionRange(), false, true) 
+	            if (_actor.isInsideRadius(guard, guard.getFactionRange(), false, true)
 	                    && Math.abs(_attacker.getZ()-guard.getZ()) < 200)
 	            {
 	                guard.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attacker, 15);
 	            }
-			}		
+			}
 		}
 	}
 

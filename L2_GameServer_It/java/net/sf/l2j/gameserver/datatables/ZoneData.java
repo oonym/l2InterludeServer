@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
@@ -65,10 +64,10 @@ import org.w3c.dom.Node;
 public class ZoneData
 {
 	private static final Logger _log = Logger.getLogger(ZoneData.class.getName());
-	
+
 	// =========================================================
 	private static ZoneData _instance;
-	
+
 	public static final ZoneData getInstance()
 	{
 		if (_instance == null)
@@ -77,7 +76,7 @@ public class ZoneData
 		}
 		return _instance;
 	}
-	
+
 	// =========================================================
 	// Data Field
 
@@ -86,32 +85,32 @@ public class ZoneData
 	public ZoneData()
 	{
 		_log.info("Loading zones...");
-		
+
 		load();
 	}
-	
+
 
 	// =========================================================
 	// Method - Private
-	
+
 	private final void load()
 	{
 		java.sql.Connection con = null;
 		int zoneCount = 0;
-		
+
 		// Get the world regions
 		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
-		
+
 		// Load the zone xml
 		try
 		{
 			// Get a sql connection here
 			con = L2DatabaseFactory.getInstance().getConnection();
-			
+
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
-			
+
 			File file = new File(Config.DATAPACK_ROOT+"/data/zones/zone.xml");
 			if (!file.exists())
 			{
@@ -119,9 +118,9 @@ public class ZoneData
 					_log.info("The zone.xml file is missing.");
 				return;
 			}
-			
+
 			Document doc = factory.newDocumentBuilder().parse(file);
-			
+
 			for (Node n=doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
 				if ("list".equalsIgnoreCase(n.getNodeName()))
@@ -134,10 +133,10 @@ public class ZoneData
 							int zoneId = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
 							String zoneType = attrs.getNamedItem("type").getNodeValue();
 							String zoneShape = attrs.getNamedItem("shape").getNodeValue();
-							
+
 							// Create the zone
 							L2ZoneType temp = null;
-							
+
 							if (zoneType.equals("FishingZone"))
 								 temp = new L2FishingZone();
 							else if (zoneType.equals("ClanHallZone"))
@@ -164,20 +163,20 @@ public class ZoneData
 								temp = new L2JailZone();
 							else if (zoneType.equals("DerbyTrackZone"))
 								temp = new L2DerbyTrackZone();
-							
-							
+
+
 							// Check for unknown type
 							if (temp == null)
 							{
 								_log.warning("ZoneData: No such zone type: "+zoneType);
 								continue;
 							}
-							
+
 							// Get the zone shape from sql
 							try
 							{
 								PreparedStatement statement = null;
-								
+
 								// Set the correct query
 								if (zoneShape.equals("Cuboid"))
 									statement = con.prepareStatement("SELECT x1,x2,y1,y2,z1,z2 FROM zone_cuboid WHERE id=?");
@@ -185,10 +184,10 @@ public class ZoneData
 									statement = con.prepareStatement("SELECT x,y,z1,z2,rad FROM zone_cylinder WHERE id=?");
 								else if (zoneShape.equals("NPoly"))
 									statement = con.prepareStatement("SELECT x,y FROM zone_npoly WHERE id=? ORDER BY 'order' ASC ");
-								
+
 								statement.setInt(1, zoneId);
 								ResultSet rset = statement.executeQuery();
-								
+
 								if (rset.next())
 								{
 									// Create this zone
@@ -207,21 +206,21 @@ public class ZoneData
 										// First x, y is zmin & zmax
 										int z1 = rset.getInt("x"),z2 = rset.getInt("y");
 										FastList<Integer> flx = new FastList<Integer>(), fly = new FastList<Integer>();
-										
+
 										// Load the rest
 										while (rset.next())
 										{
 											flx.add(rset.getInt("x"));
 											fly.add(rset.getInt("y"));
 										}
-										
+
 										// Create arrays
 										int[] aX = new int[flx.size()];
 										int[] aY = new int[fly.size()];
-										
+
 										// This runs only at server startup so dont complain :>
 										for (int i=0; i < flx.size(); i++) { aX[i] = flx.get(i); aY[i] = fly.get(i); }
-										
+
 										// Create the zone
 										temp.setZone(new ZoneNPoly(aX, aY, z1, z2));
 									}
@@ -247,8 +246,8 @@ public class ZoneData
 							{
 								_log.warning("ZoneData: Failed to load zone coordinates: " + e);
 							}
-							
-							
+
+
 							// Check for aditional parameters
 							for (Node cd=d.getFirstChild(); cd != null; cd = cd.getNextSibling())
 							{
@@ -257,18 +256,18 @@ public class ZoneData
 									attrs = cd.getAttributes();
 									String name = attrs.getNamedItem("name").getNodeValue();
                             		String val = attrs.getNamedItem("val").getNodeValue();
-                            		
+
                             		temp.setParameter(name, val);
 								}
 							}
-							
+
 							// Skip checks for fishing zones & add to fishing zone manager
 							if (temp instanceof L2FishingZone)
 							{
 								FishingZoneManager.getInstance().addFishingZone((L2FishingZone)temp);
 								continue;
 							}
-							
+
 							// Register the zone into any world region it intersects with...
 							// currently 11136 test for each zone :>
 							int ax,ay,bx,by;
@@ -280,7 +279,7 @@ public class ZoneData
 									bx = ((x+1)-L2World.OFFSET_X) << L2World.SHIFT_BY;
 									ay = (y-L2World.OFFSET_Y) << L2World.SHIFT_BY;
 									by = ((y+1)-L2World.OFFSET_Y) << L2World.SHIFT_BY;
-									
+
 									if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
 									{
 										if (Config.DEBUG)
@@ -291,7 +290,7 @@ public class ZoneData
 									}
 								}
 							}
-							
+
 							// Special managers for arenas, towns...
 							if (temp instanceof L2ArenaZone)
 								ArenaManager.getInstance().addArena((L2ArenaZone)temp);
@@ -299,7 +298,7 @@ public class ZoneData
 								TownManager.getInstance().addTown((L2TownZone)temp);
 							else if (temp instanceof L2OlympiadStadiumZone)
 								OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone)temp);
-							
+
 							// Increase the counter
 							zoneCount++;
 						}
@@ -322,7 +321,7 @@ public class ZoneData
 			{
 			}
 		}
-		
+
 		_log.info("Done: loaded "+zoneCount+" zones.");
 	}
 }

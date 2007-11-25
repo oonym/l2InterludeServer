@@ -42,7 +42,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
     {
         super(objectId, template);
     }
-    
+
     @Override
 	public void onAction(L2PcInstance player)
     {
@@ -52,12 +52,12 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 
         showMessageWindow(player);
     }
-    
+
     private void showMessageWindow(L2PcInstance player)
     {
         String filename = "data/html/mods/Wedding_start.htm";
         String replace = String.valueOf(Config.L2JMOD_WEDDING_PRICE);
-        
+
         NpcHtmlMessage html = new NpcHtmlMessage(1);
         html.setFile(filename);
         html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -65,14 +65,14 @@ public class L2WeddingManagerInstance extends L2NpcInstance
         html.replace("%npcname%", getName());
         player.sendPacket(html);
     }
-    
+
     @Override
 	public void onBypassFeedback(L2PcInstance player, String command)
     {
         // standard msg
         String filename = "data/html/mods/Wedding_start.htm";
         String replace = "";
-              
+
         // if player has no partner
         if(player.getPartnerId()==0){
             filename = "data/html/mods/Wedding_nopartner.htm";
@@ -110,24 +110,24 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                     player.setMarryAccepted(true);
                     Couple couple = CoupleManager.getInstance().getCouple(player.getCoupleId());
                     couple.marry();
-                    
+
                     //messages to the couple
                     player.sendMessage("Congratulations you are married!");
                     player.setMarried(true);
                     player.setMaryRequest(false);
-                    ptarget.sendMessage("Congratulations you are married!"); 
+                    ptarget.sendMessage("Congratulations you are married!");
                     ptarget.setMarried(true);
                     ptarget.setMaryRequest(false);
-                    
+
                     //wedding march
                     MagicSkillUser MSU = new MagicSkillUser(player, player, 2230, 1, 1, 0);
                     player.broadcastPacket(MSU);
                     MSU = new MagicSkillUser(ptarget, ptarget, 2230, 1, 1, 0);
                     ptarget.broadcastPacket(MSU);
-                    
+
                     // fireworks
                     L2Skill skill = SkillTable.getInstance().getInfo(2025,1);
-                    if (skill != null) 
+                    if (skill != null)
                     {
                         MSU = new MagicSkillUser(player, player, 2025, 1, 1, 0);
                         player.sendPacket(MSU);
@@ -140,16 +140,16 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                         ptarget.useMagic(skill, false, false);
 
                     }
-                    
-                    Announcements.getInstance().announceToAll("Congratulations to "+player.getName()+" and "+ptarget.getName()+"! They have been married.");            
-                    
+
+                    Announcements.getInstance().announceToAll("Congratulations to "+player.getName()+" and "+ptarget.getName()+"! They have been married.");
+
                     MSU = null;
-                    
+
                     filename = "data/html/mods/Wedding_accepted.htm";
                     replace = ptarget.getName();
                     sendHtmlMessage(ptarget, filename, replace);
                     return;
-                }                
+                }
                 else if (command.startsWith("DeclineWedding"))
                 {
                     player.setMaryRequest(false);
@@ -199,7 +199,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                     replace = ptarget.getName();
                     sendHtmlMessage(player, filename, replace);
                     return;
-                }  
+                }
                 else if (command.startsWith("AskWedding"))
                 {
                     // check for formalwear
@@ -207,7 +207,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                 	{
                 		Inventory inv3 = player.getInventory();
                 		L2ItemInstance item3 = inv3.getPaperdollItem(10);
-                		
+
                 		if (null==item3)
                 		{
                 			player.setIsWearingFormalWear(false);
@@ -217,7 +217,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 	                		String frmWear = Integer.toString(6408);
 	                		String strItem = null;
 	               			strItem = Integer.toString(item3.getItemId());
-	                		
+
 	                		if(null != strItem && strItem.equals(frmWear))
 	                		{
 	                			player.setIsWearingFormalWear(true);
@@ -245,15 +245,15 @@ public class L2WeddingManagerInstance extends L2NpcInstance
                         ptarget.setMaryRequest(true);
                         replace = ptarget.getName();
                         filename = "data/html/mods/Wedding_requested.htm";
-                        player.getInventory().reduceAdena("Wedding", Config.L2JMOD_WEDDING_PRICE, player, player.getLastFolkNPC());                       
+                        player.getInventory().reduceAdena("Wedding", Config.L2JMOD_WEDDING_PRICE, player, player.getLastFolkNPC());
                         sendHtmlMessage(player, filename, replace);
                         return;
-                    }                    
-                } 
+                    }
+                }
             }
-        }                
+        }
         sendHtmlMessage(player, filename, replace);
-    } 
+    }
 
     private void sendHtmlMessage(L2PcInstance player, String filename, String replace)
     {

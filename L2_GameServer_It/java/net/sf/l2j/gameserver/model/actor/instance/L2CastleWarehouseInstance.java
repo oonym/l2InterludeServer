@@ -16,11 +16,11 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class L2CastleWarehouseInstance extends L2FolkInstance{
 	private static Logger _log = Logger.getLogger(L2WarehouseInstance.class.getName());
-	
+
 	protected static final int COND_ALL_FALSE = 0;
 	protected static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	protected static final int COND_OWNER = 2;
-	
+
     /**
      * @param template
      */
@@ -37,7 +37,7 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
     private void showRetrieveWindow(L2PcInstance player) {
         player.sendPacket(new ActionFailed());
         player.setActiveWarehouse(player.getWarehouse());
-        
+
         if (player.getActiveWarehouse().getSize() == 0) {
         	player.sendPacket(new SystemMessage(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH));
         	return;
@@ -114,40 +114,40 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
             super.onBypassFeedback(player, command);
         }
     }
-    
+
     @Override
     public void showChatWindow(L2PcInstance player, int val) {
         player.sendPacket( new ActionFailed() );
         String filename = "data/html/castlewarehouse/castlewarehouse-no.htm";
-        
+
         int condition = validateCondition(player);
         if (condition > COND_ALL_FALSE) {
             if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
                 filename = "data/html/castlewarehouse/castlewarehouse-busy.htm";			// Busy because of siege
             else if (condition == COND_OWNER) {												// Clan owns castle
-            	if (val == 0) 
-            		filename = "data/html/castlewarehouse/castlewarehouse.htm";				
+            	if (val == 0)
+            		filename = "data/html/castlewarehouse/castlewarehouse.htm";
             	else
             		filename = "data/html/castlewarehouse/castlewarehouse-" + val + ".htm";
             }
-                
+
         }
-        
+
         NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
         html.setFile(filename);
         html.replace("%objectId%", String.valueOf(getObjectId()));
         html.replace("%npcname%", getName());
         player.sendPacket(html);
     }
-    
-    protected int validateCondition(L2PcInstance player) {   
+
+    protected int validateCondition(L2PcInstance player) {
         if (player.isGM()) return COND_OWNER;
         if (getCastle() != null && getCastle().getCastleId() > 0) {
             if (player.getClan() != null) {
                 if (getCastle().getSiege().getIsInProgress())
                     return COND_BUSY_BECAUSE_OF_SIEGE;                                      // Busy because of siege
                 else if (getCastle().getOwnerId() == player.getClanId())                    // Clan owns castle
-                    return COND_OWNER;  
+                    return COND_OWNER;
             }
         }
         return COND_ALL_FALSE;

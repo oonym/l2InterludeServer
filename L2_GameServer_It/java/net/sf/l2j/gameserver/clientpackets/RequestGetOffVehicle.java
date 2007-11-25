@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.GetOffVehicle;
 public final class RequestGetOffVehicle extends L2GameClientPacket
 {
 	 private int _id, _x, _y, _z;
-	 
+
 	@Override
 	protected void readImpl()
 	{
@@ -40,10 +40,10 @@ public final class RequestGetOffVehicle extends L2GameClientPacket
 		_y  = readD();
 		_z  = readD();
 	}
-	
+
 	@Override
 	protected void runImpl()
-	{	
+	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if(activeChar == null)
 			return;

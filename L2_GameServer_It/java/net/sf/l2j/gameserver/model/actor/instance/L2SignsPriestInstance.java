@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * Dawn/Dusk Seven Signs Priest Instance
- * 
+ *
  * @author Tempy
  */
 public class L2SignsPriestInstance extends L2FolkInstance
@@ -69,7 +69,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
             int ancientAdenaAmount = ancientAdena == null ? 0 : ancientAdena.getCount();
             int val = Integer.parseInt(command.substring(11, 12).trim());
 
-            if (command.length() > 12) // SevenSigns x[x] x [x..x] 
+            if (command.length() > 12) // SevenSigns x[x] x [x..x]
                 val = Integer.parseInt(command.substring(11, 13).trim());
 
             if (command.length() > 13)
@@ -182,7 +182,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
                                 /*
                                  * If the player is trying to join the Lords of Dawn, check if they are
                                  * carrying a Lord's certificate.
-                                 * 
+                                 *
                                  * If not then try to take the required amount of adena instead.
                                  */
                                 if (cabal == SevenSigns.CABAL_DAWN)

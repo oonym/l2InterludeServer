@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.serverpackets.CharSelectInfo;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.2 $ $Date: 2005/03/27 15:29:29 $
  */
 public final class CharacterRestore extends L2GameClientPacket
@@ -32,7 +32,7 @@ public final class CharacterRestore extends L2GameClientPacket
 
 	// cd
     private int _charSlot;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -42,7 +42,7 @@ public final class CharacterRestore extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-	    try 
+	    try
 	    {
 		getClient().markRestoredChar(_charSlot);
 	    } catch (Exception e){}

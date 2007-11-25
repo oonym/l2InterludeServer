@@ -21,9 +21,9 @@ package net.sf.l2j.gameserver.serverpackets;
 import java.util.Vector;
 
 /**
- * 
  *
- * sample 
+ *
+ * sample
  * 0000: 6d 0c 00 00 00 00 00 00 00 03 00 00 00 f3 03 00    m...............
  * 0010: 00 00 00 00 00 01 00 00 00 f4 03 00 00 00 00 00    ................
  * 0020: 00 01 00 00 00 10 04 00 00 00 00 00 00 01 00 00    ................
@@ -34,9 +34,9 @@ import java.util.Vector;
  * 0070: 00 01 00 00 00 01 00 00 00 c2 00 00 00 01 00 00    ................
  * 0080: 00 01 00 00 00 d6 00 00 00 01 00 00 00 01 00 00    ................
  * 0090: 00 f4 00 00 00
- * 
+ *
  * format   d (ddd)
- * 
+ *
  * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/27 15:29:39 $
  */
 public class SkillList extends L2GameServerPacket

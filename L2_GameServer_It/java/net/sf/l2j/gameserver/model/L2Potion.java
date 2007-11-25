@@ -26,9 +26,9 @@ import net.sf.l2j.gameserver.ThreadPoolManager;
 
 
 /**
- * 
+ *
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
 public class L2Potion extends L2Object
@@ -37,7 +37,7 @@ public class L2Potion extends L2Object
 
 
 	private L2Character _target;
-	
+
 	private Future _potionhpRegTask;
 	private Future _potionmpRegTask;
 	protected int _milliseconds;
@@ -46,17 +46,17 @@ public class L2Potion extends L2Object
 	private int _potion;
     protected Object _mpLock = new Object();
     protected Object _hpLock = new Object();
-	
-	
+
+
 	class PotionHpHealing implements Runnable
 	{
 		L2Character _instance;
-				
+
 		public PotionHpHealing(L2Character instance)
 		{
 			_instance = instance;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -83,8 +83,8 @@ public class L2Potion extends L2Object
 			}
 		}
 	}
-	
-	
+
+
 	public L2Potion(int objectId)
 	{
 		super(objectId);
@@ -114,7 +114,7 @@ public class L2Potion extends L2Object
 
 		switch (_potion)
 		{
-			case (1540): 
+			case (1540):
 				double nowHp = activeChar.getCurrentHp();
 				nowHp+=435;
 				if (nowHp>= activeChar.getMaxHp())
@@ -123,7 +123,7 @@ public class L2Potion extends L2Object
 				}
 				activeChar.setCurrentHp(nowHp);
 				break;
-			case (728):	
+			case (728):
 				double nowMp = activeChar.getMaxMp();
 				nowMp+=435;
 				if (nowMp>= activeChar.getMaxMp())
@@ -137,19 +137,19 @@ public class L2Potion extends L2Object
 				_duration = 15;
 				_effect = 1.5;
 				startPotionMpRegeneration(activeChar);
-				break;	
+				break;
 		}
 	}
-	
+
 	class PotionMpHealing implements Runnable
 	{
 		L2Character _instance;
-		
+
 		public PotionMpHealing(L2Character instance)
 		{
 			_instance = instance;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -167,7 +167,7 @@ public class L2Potion extends L2Object
 						_instance.setCurrentMp(nowMp);
 						_duration=(_duration-(_milliseconds/1000));
 						setCurrentMpPotion2();
-						
+
 					}
 				}
 			}
@@ -177,7 +177,7 @@ public class L2Potion extends L2Object
 			}
 		}
 	}
-	
+
 	private void startPotionMpRegeneration(L2Character activeChar)
 	{
 		_potionmpRegTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(
@@ -203,7 +203,7 @@ public class L2Potion extends L2Object
 			stopPotionMpRegeneration();
 		}
 	}
-	
+
 	public void setCurrentMpPotion1(L2Character activeChar, int item)
 	{
 		_potion = item;
@@ -211,7 +211,7 @@ public class L2Potion extends L2Object
 
 		switch (_potion)
 		{
-			
+
 		}
 	}
 

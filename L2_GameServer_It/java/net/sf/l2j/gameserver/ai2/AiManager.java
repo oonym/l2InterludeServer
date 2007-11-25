@@ -47,7 +47,7 @@ public class AiManager
 	private Map<Integer, AiInstance> _aiMap;
 	private ThreadPoolManager _tpm;
 	private Map<String,String> _paramcache;
-	
+
 	public static AiManager getInstance()
 	{
 		if(_instance == null)
@@ -56,7 +56,7 @@ public class AiManager
 		}
 		return _instance;
 	}
-	
+
 	private AiManager()
 	{
 		_aiList = new FastList<AiInstance>();
@@ -65,7 +65,7 @@ public class AiManager
 		_paramcache = new FastMap<String, String>();
 		load();
 	}
-	
+
 	public void load()
 	{
 		try
@@ -141,7 +141,7 @@ public class AiManager
 							newAi.addHandler(handler);
 							_aiList.add(newAi);
 						}
-						
+
 					}
 					catch(ClassCastException e)
 					{
@@ -184,20 +184,20 @@ public class AiManager
 			}
 		}
 	}
-	
+
 	public void executeEventHandler(QueueEventRunner runner)
 	{
 		_tpm.executeAi(runner);
 	}
-	
+
 	/**
 	 * @param instance
 	 */
 	public void addAiInstance(AiInstance instance)
 	{
-		_aiList.add(instance);		
+		_aiList.add(instance);
 	}
-	
+
 	/**
 	 * @param npcId
 	 * @return
@@ -206,7 +206,7 @@ public class AiManager
 	{
 		return _aiMap.get(npcId);
 	}
-	
+
 	public String getParameter(String who, String paramsType, String param1, String param2)
 	{
 		String key = who+":"+paramsType+":"+param1+":"+param2;
@@ -218,18 +218,18 @@ public class AiManager
 		_paramcache.put(key, result);
 		return null;
 	}
-	
+
 	private class Intersection
 	{
 		public AiInstance ai;
 		public Set<Integer> ids;
-		
+
 		public Intersection(AiInstance instance)
 		{
 			ai = instance;
 			ids = new FastSet<Integer>();
 		}
-		
+
 		public boolean isEmpty()
 		{
 			return ids.isEmpty();

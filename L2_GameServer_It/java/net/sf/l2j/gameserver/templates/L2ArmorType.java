@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.templates;
 
 /**
  * Description of Armor Type
- * 
+ *
  */
 
 public enum L2ArmorType {
@@ -29,10 +29,10 @@ public enum L2ArmorType {
 	HEAVY     ( 3, "Heavy"),
 	MAGIC     ( 4, "Magic"),
     PET       ( 5, "Pet");
-	
+
 	final int _id;
 	final String _name;
-	
+
 	/**
 	 * Constructor of the L2ArmorType.
 	 * @param id : int designating the ID of the ArmorType
@@ -43,7 +43,7 @@ public enum L2ArmorType {
 		_id = id;
 		_name = name;
 	}
-	
+
 	/**
 	 * Returns the ID of the ArmorType after applying a mask.
 	 * @return int : ID of the ArmorType after mask
@@ -51,7 +51,7 @@ public enum L2ArmorType {
 	public int mask() {
 		return 1<<(_id+16);
 	}
-	
+
 	/**
 	 * Returns the name of the ArmorType
 	 * @return String

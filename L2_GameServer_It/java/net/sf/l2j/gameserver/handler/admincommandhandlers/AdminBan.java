@@ -40,9 +40,9 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * This class handles following admin commands:
  * - ban account_name = changes account access level to -100 and logs him off. If no account is specified, target's account is used.
  * - unban account_name = changes account access level to 0.
- * - jail charname [penalty_time] = jails character. Time specified in minutes. For ever if no time is specified. 
+ * - jail charname [penalty_time] = jails character. Time specified in minutes. For ever if no time is specified.
  * - unjail charname = Unjails player, teleport him to Floran.
- * 
+ *
  * @version $Revision: 1.1.6.3 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminBan implements IAdminCommandHandler {
@@ -130,7 +130,7 @@ public class AdminBan implements IAdminCommandHandler {
 				else
 					jailOfflinePlayer(activeChar, player, delay);
 			}
-			catch (NoSuchElementException nsee) 
+			catch (NoSuchElementException nsee)
 			{
 				activeChar.sendMessage("Usage: //jail <charname> [penalty_minutes]");
 			}
@@ -138,7 +138,7 @@ public class AdminBan implements IAdminCommandHandler {
 			{
 				if (Config.DEBUG)
 					e.printStackTrace();
-			}            
+			}
 		}
 		else if (command.startsWith("admin_unjail"))
 		{
@@ -155,7 +155,7 @@ public class AdminBan implements IAdminCommandHandler {
 				else
 					unjailOfflinePlayer(activeChar, player);
 			}
-			catch (NoSuchElementException nsee) 
+			catch (NoSuchElementException nsee)
 			{
 				activeChar.sendMessage("Specify a character name.");
 			}
@@ -163,7 +163,7 @@ public class AdminBan implements IAdminCommandHandler {
 			{
 				if (Config.DEBUG)
 					e.printStackTrace();
-			}            
+			}
 		}
 		GMAudit.auditGMAction(activeChar.getName(), command, player, "");
 		return true;
@@ -232,7 +232,7 @@ public class AdminBan implements IAdminCommandHandler {
 			if (Config.DEBUG) se.printStackTrace();
 		} finally
 		{
-			try 
+			try
 			{
 				con.close();
 			}

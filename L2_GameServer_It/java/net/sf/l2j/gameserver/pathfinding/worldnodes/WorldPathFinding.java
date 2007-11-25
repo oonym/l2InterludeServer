@@ -38,14 +38,14 @@ public class WorldPathFinding extends PathFinding
     @SuppressWarnings("unused")
 	private static Map<Short, ByteBuffer> _pathNodes = new FastMap<Short, ByteBuffer>();
 	private static Map<Short, IntBuffer> _pathNodesIndex = new FastMap<Short, IntBuffer>();
-	
+
 	public static WorldPathFinding getInstance()
 	{
 		if (_instance == null)
 			_instance = new WorldPathFinding();
 		return _instance;
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#PathNodesExist(short)
 	 */
@@ -64,7 +64,7 @@ public class WorldPathFinding extends PathFinding
 	{
 		return null;
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
 	 */
@@ -74,7 +74,7 @@ public class WorldPathFinding extends PathFinding
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	//Private
 
 	private WorldPathFinding()

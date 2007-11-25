@@ -34,7 +34,7 @@ public class ExShowSlideshowKamael extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x5b);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -45,5 +45,5 @@ public class ExShowSlideshowKamael extends L2GameServerPacket
 	{
 		return _S__FE_5B_EXSHOWSLIDESHOWKAMAEL;
 	}
-	
+
 }

@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.serverpackets.ShowMiniMap;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:30:07 $
  */
 
@@ -46,7 +46,7 @@ public class WorldMap implements IItemHandler
 		activeChar.sendPacket(new ShowMiniMap(item.getItemId()));
 		return;
 	}
-	
+
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

@@ -37,7 +37,7 @@ public class ObjectPosition
     private int _heading    = 0;
     private Point3D _worldPosition;
     private L2WorldRegion _worldRegion;         // Object localization : Used for items/chars that are seen in the world
-    
+
     // =========================================================
     // Constructor
     public ObjectPosition(L2Object activeObject)
@@ -45,7 +45,7 @@ public class ObjectPosition
         _activeObject = activeObject;
         setWorldRegion(L2World.getInstance().getRegion(getWorldPosition()));
     }
-    
+
     // =========================================================
     // Method - Public
     /**
@@ -53,16 +53,16 @@ public class ObjectPosition
      *
      * <B><U> Assert </U> :</B><BR><BR>
      * <li> _worldRegion != null</li><BR><BR>
-     * 
+     *
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Update position during and after movement, or after teleport </li><BR>
      */
     public final void setXYZ(int x, int y, int z)
     {
         if (Config.ASSERT) assert getWorldRegion() != null;
-        
+
         setWorldPosition(x, y ,z);
-               
+
         try
         {
             if (L2World.getInstance().getRegion(getWorldPosition()) != getWorldRegion())
@@ -84,13 +84,13 @@ public class ObjectPosition
 
     /**
      * Set the x,y,z position of the L2Object and make it invisible.<BR><BR>
-     * 
+     *
      * <B><U> Concept</U> :</B><BR><BR>
      * A L2Object is invisble if <B>_hidden</B>=true or <B>_worldregion</B>==null <BR><BR>
-     * 
+     *
      * <B><U> Assert </U> :</B><BR><BR>
      * <li> _worldregion==null <I>(L2Object is invisible)</I></li><BR><BR>
-     *  
+     *
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Create a Door</li>
      * <li> Restore L2PcInstance</li><BR>
@@ -110,7 +110,7 @@ public class ObjectPosition
     /**
      * checks if current object changed its region, if so, update referencies
      */
-    public void updateWorldRegion() 
+    public void updateWorldRegion()
     {
         if (!getActiveObject().isVisible()) return;
 
@@ -125,7 +125,7 @@ public class ObjectPosition
             getWorldRegion().addVisibleObject(getActiveObject());
         }
     }
-    
+
     // =========================================================
     // Method - Private
 
@@ -135,18 +135,18 @@ public class ObjectPosition
     {
         return _activeObject;
     }
-    
+
     public final int getHeading() { return _heading; }
     public final void setHeading(int value) { _heading = value; }
 
     /** Return the x position of the L2Object. */
     public final int getX() { return getWorldPosition().getX(); }
     public final void setX(int value) { getWorldPosition().setX(value); }
-    
+
     /** Return the y position of the L2Object. */
     public final int getY() { return getWorldPosition().getY(); }
     public final void setY(int value) { getWorldPosition().setY(value); }
-    
+
     /** Return the z position of the L2Object. */
     public final int getZ() { return getWorldPosition().getZ(); }
     public final void setZ(int value) { getWorldPosition().setZ(value); }
@@ -161,12 +161,12 @@ public class ObjectPosition
         getWorldPosition().setXYZ(x,y,z);
     }
     public final void setWorldPosition(Point3D newPosition) { setWorldPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ()); }
-    
+
     public final L2WorldRegion getWorldRegion() { return _worldRegion; }
-    public final void setWorldRegion(L2WorldRegion value) 
-    { 
-    	if(_worldRegion != null && getActiveObject() instanceof L2Character) // remove from old region zones 
+    public final void setWorldRegion(L2WorldRegion value)
+    {
+    	if(_worldRegion != null && getActiveObject() instanceof L2Character) // remove from old region zones
     		_worldRegion.removeFromZones((L2Character)getActiveObject());
-    	_worldRegion = value; 
+    	_worldRegion = value;
     }
 }

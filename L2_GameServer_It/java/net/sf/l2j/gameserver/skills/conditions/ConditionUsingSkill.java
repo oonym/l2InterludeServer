@@ -30,12 +30,12 @@ import net.sf.l2j.gameserver.skills.Env;
 public final class ConditionUsingSkill extends Condition {
 
 	private final int _skillId;
-	
+
 	public ConditionUsingSkill(int skillId)
 	{
 		_skillId = skillId;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env)
 	{

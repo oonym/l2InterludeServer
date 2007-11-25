@@ -18,7 +18,7 @@
  */
 package net.sf.l2j.gameserver.ai;
 
-/** 
+/**
  * This class contains an enum of each possibles evenements that can happen on an AI character.
  */
 
@@ -45,7 +45,7 @@ public enum CtrlEvent {
 	 * attack attempt has finished. */
 	EVT_READY_TO_ACT,
 	/** User's command, like using a combat magic or changing weapon, etc.
-	 * The command is not intended to change final goal */ 
+	 * The command is not intended to change final goal */
 	EVT_USER_CMD,
 	/** The actor arrived to assigned location, or it's a time to modify
 	 * movement destination (follow, interact, random move and others intentions). */
@@ -61,7 +61,7 @@ public enum CtrlEvent {
 	 * For example, the actor was putted into a stun, so it's current attack
 	 * or movement has to be canceled. But after the stun state expired, the
 	 * actor may try to attack again. Another usage for CANCEL is a user's
-	 * attempt to cancel a cast/bow attack and so on. 
+	 * attempt to cancel a cast/bow attack and so on.
 	 */
 	EVT_CANCEL,
 	/** The character is dead */

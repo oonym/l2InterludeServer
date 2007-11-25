@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PledgeShowMemberListAdd extends L2GameServerPacket
@@ -34,7 +34,7 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
     private int _classId;
     private int _isOnline;
     private int _pledgeType;
-	
+
 	public PledgeShowMemberListAdd(L2PcInstance player)
 	{
         _name = player.getName();
@@ -43,7 +43,7 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
         _isOnline = (player.isOnline() == 1 ? player.getObjectId() : 0);
         _pledgeType = player.getPledgeType();
 	}
-    
+
     public PledgeShowMemberListAdd(L2ClanMember cm)
     {
         try
@@ -58,7 +58,7 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
         {
         }
     }
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -66,10 +66,10 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		writeS(_name);
 		writeD(_lvl);
 		writeD(_classId);
-		writeD(0); 
+		writeD(0);
 		writeD(1);
 		writeD(_isOnline); // 1=online 0=offline
-		writeD(_pledgeType); 
+		writeD(_pledgeType);
 	}
 
 	/* (non-Javadoc)

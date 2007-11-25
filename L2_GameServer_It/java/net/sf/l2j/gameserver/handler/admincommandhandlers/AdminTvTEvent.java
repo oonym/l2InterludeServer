@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.model.entity.TvTEventTeleporter;
 
 /**
  * @author FBIagent
- * 
+ *
  * The class handles administrator commands for the TvT Engine which was first implemented by FBIagent
  */
 public class AdminTvTEvent implements IAdminCommandHandler
@@ -44,7 +44,7 @@ public class AdminTvTEvent implements IAdminCommandHandler
 			if (!(checkLevel(adminInstance.getAccessLevel()) && adminInstance.isGM()))
 				return false;
 		}
-		
+
 		GMAudit.auditGMAction(adminInstance.getName(), command, (adminInstance.getTarget() != null ? adminInstance.getTarget().getName() : "no-target"), "");
 
 		if (command.equals("admin_tvt_add"))
@@ -80,7 +80,7 @@ public class AdminTvTEvent implements IAdminCommandHandler
 		return ADMIN_COMMANDS;
 	}
 
-	private boolean checkLevel(int level) 
+	private boolean checkLevel(int level)
 	{
 		return level >= REQUIRED_LEVEL;
 	}
@@ -103,7 +103,7 @@ public class AdminTvTEvent implements IAdminCommandHandler
 			// we don't need to check return value of TvTEvent.getParticipantTeamCoordinates() for null, TvTEvent.addParticipant() returned true so target is in event
 			new TvTEventTeleporter(playerInstance, TvTEvent.getParticipantTeamCoordinates(playerInstance.getName()), true, false);
 	}
-	
+
 	private void remove(L2PcInstance adminInstance, L2PcInstance playerInstance)
 	{
 		if (!TvTEvent.removeParticipant(playerInstance.getName()))

@@ -1,7 +1,7 @@
 /*
  * $Header$
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -36,7 +36,7 @@ public final class HennaInfo extends L2GameServerPacket
 	public HennaInfo(L2PcInstance player)
 	{
 		_activeChar = player;
-		
+
 		int j = 0;
 		for (int i = 0; i < 3; i++)
 		{
@@ -62,9 +62,9 @@ public final class HennaInfo extends L2GameServerPacket
 		writeC(_activeChar.getHennaStatMEN());	//equip MEM
 		writeC(_activeChar.getHennaStatDEX());	//equip DEX
 		writeC(_activeChar.getHennaStatWIT());	//equip WIT
-		
+
 		writeD(3); // slots?
-		
+
 		writeD(_count); //size
 		for (int i = 0; i < _count; i++)
 		{

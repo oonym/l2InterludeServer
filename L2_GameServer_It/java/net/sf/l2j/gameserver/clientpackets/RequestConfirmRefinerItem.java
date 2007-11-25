@@ -32,10 +32,10 @@ import net.sf.l2j.gameserver.templates.L2Item;
 public class RequestConfirmRefinerItem extends L2GameClientPacket
 {
 	private static final String _C__D0_2A_REQUESTCONFIRMREFINERITEM = "[C] D0:2A RequestConfirmRefinerItem";
-	
+
 	private static final int GEMSTONE_D = 2130;
 	private static final int GEMSTONE_C = 2131;
-	
+
 	private int _targetItemObjId;
 	private int _refinerItemObjId;
 
@@ -60,9 +60,9 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
 		L2ItemInstance refinerItem = (L2ItemInstance)L2World.getInstance().findObject(_refinerItemObjId);
-		
+
 		if (targetItem == null || refinerItem == null) return;
-		
+
 		int itemGrade = targetItem.getItem().getItemGrade();
 		int refinerItemId = refinerItem.getItem().getItemId();
 
@@ -72,7 +72,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;
 		}
-		
+
 		int gemstoneCount=0;
 		int gemstoneItemId=0;
 		int lifeStoneLevel = getLifeStoneLevel(refinerItemId);
@@ -119,12 +119,12 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 				sm.addString("Gemstone C");
 				break;
 		}
-		
+
 		activeChar.sendPacket(new ExConfirmVariationRefiner(_refinerItemObjId, refinerItemId, gemstoneItemId, gemstoneCount));
-		
+
 		activeChar.sendPacket(sm);
 	}
-	
+
 	private int getLifeStoneGrade(int itemId)
 	{
 		itemId -= 8723;
@@ -133,7 +133,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 		if (itemId < 30) return 2; // high grade
 		return 3; // top grade
 	}
-	
+
 	private int getLifeStoneLevel(int itemId)
 	{
 		itemId -= 10 * getLifeStoneGrade(itemId);

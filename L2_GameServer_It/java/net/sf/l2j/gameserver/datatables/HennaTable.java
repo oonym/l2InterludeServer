@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision$ $Date$
  */
 public class HennaTable
@@ -59,7 +59,7 @@ public class HennaTable
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void restoreHennaData()
 	{
@@ -78,7 +78,7 @@ public class HennaTable
 				_log.severe("error while creating henna table " + e);
 				e.printStackTrace();
 			}
-			 
+
 		} finally {
 			try { con.close(); } catch (Exception e) {}
 		}
@@ -89,9 +89,9 @@ public class HennaTable
 	{
 		while (HennaData.next())
 		{
-			StatsSet hennaDat = new StatsSet(); 
+			StatsSet hennaDat = new StatsSet();
 			int id = HennaData.getInt("symbol_id");
-			
+
 			hennaDat.set("symbol_id", id);
 			//hennaDat.set("symbol_name", HennaData.getString("symbol_name"));
 			hennaDat.set("dye", HennaData.getInt("dye_id"));
@@ -104,24 +104,24 @@ public class HennaTable
 			hennaDat.set("stat_MEM", HennaData.getInt("stat_MEM"));
 			hennaDat.set("stat_DEX", HennaData.getInt("stat_DEX"));
 			hennaDat.set("stat_WIT", HennaData.getInt("stat_WIT"));
-			
-			
+
+
 			L2Henna template = new L2Henna(hennaDat);
 			_henna.put(id, template);
 		}
 		_log.config("HennaTable: Loaded " + _henna.size() + " Templates.");
 	}
-    
+
 
 	public boolean isInitialized()
 	{
 		return _initialized;
 	}
-    
+
 
 	public L2Henna getTemplate(int id)
 	{
 		return _henna.get(id);
 	}
-	
+
 	}

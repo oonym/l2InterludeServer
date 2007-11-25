@@ -40,8 +40,8 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * @author  l3x
  */
 public class Seed implements IItemHandler {
-	
-	private static int[] _itemIds = { 
+
+	private static int[] _itemIds = {
 									5016,5017,5018,5019,5020,5021,5022,5023,5024,5025,
 									5026,5027,5028,5029,5030,5031,5032,5033,5034,5035,
 									5036,5037,5038,5039,5040,5041,5042,5043,5044,5045,
@@ -69,29 +69,29 @@ public class Seed implements IItemHandler {
 									8263,8264,8265,8266,8267,8268,8269,8270,8271,8272,
 									8521,8522,8523,8524,8525,8526
     };
-		
-    
+
+
     private int _seedId;
     private L2MonsterInstance _target;
     private L2PcInstance _activeChar;
-    
+
     public void useItem(L2PlayableInstance playable, L2ItemInstance item) {
         if (!(playable instanceof L2PcInstance))
             return;
-        
+
         if (CastleManorManager.getInstance().isDisabled())
         	return;
 
         _activeChar = (L2PcInstance)playable;
-        
+
         if(!(_activeChar.getTarget() instanceof L2NpcInstance)) {
             _activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
             _activeChar.sendPacket(new ActionFailed());
             return;
         }
-        
+
         L2NpcInstance target = (L2NpcInstance) _activeChar.getTarget();
-        
+
         if ( !(target instanceof L2MonsterInstance)  ||
         		(target instanceof L2ChestInstance)  ||
         		(target instanceof L2BossInstance)   ||
@@ -100,9 +100,9 @@ public class Seed implements IItemHandler {
         	_activeChar.sendPacket(new ActionFailed());
         	return;
         }
-        
+
         _target = (L2MonsterInstance) target;
-        
+
         if(_target == null || _target.isDead()) {
         	_activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
         	_activeChar.sendPacket(new ActionFailed());
@@ -113,9 +113,9 @@ public class Seed implements IItemHandler {
         	_activeChar.sendPacket(new ActionFailed());
         	return;
         }
-        
+
         _seedId = item.getItemId();
-            
+
         if(areaValid(MapRegionTable.getInstance().getAreaCastle(_activeChar))) {
         	//TODO: get right skill level
         	_target.setSeeded(_seedId, _activeChar);
@@ -129,7 +129,7 @@ public class Seed implements IItemHandler {
     private boolean areaValid(int castleId) {
 		return (L2Manor.getInstance().getCastleIdForSeed(_seedId) == castleId);
     }
-    
+
     public int[] getItemIds() {
         return _itemIds;
     }

@@ -38,9 +38,6 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.util.Util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 @SuppressWarnings("unused")
 public class RequestBuyProcure extends L2GameClientPacket {
 	private static final String _C__C3_REQUESTBUYPROCURE = "[C] C3 RequestBuyProcure";
@@ -48,14 +45,15 @@ public class RequestBuyProcure extends L2GameClientPacket {
 	private int _count;
 	private int[] _items;
 	private List<CropProcure> _procureList = new FastList<CropProcure>();
-	
+
+	@Override
 	protected void readImpl()
 	{
 		_listId = readD();
 		_count = readD();
 		if(_count > 500) // protect server
 		{
-			_count = 0; 
+			_count = 0;
 			return;
 		}
 
@@ -64,7 +62,7 @@ public class RequestBuyProcure extends L2GameClientPacket {
 		{
 			long servise = readD();
 			int itemId   = readD(); _items[i * 2 + 0] = itemId;
-			long cnt      = readD(); 
+			long cnt      = readD();
 			if (cnt > Integer.MAX_VALUE || cnt < 1)
 			{
 				_count=0; _items = null;
@@ -73,7 +71,8 @@ public class RequestBuyProcure extends L2GameClientPacket {
 			_items[i * 2 + 1] = (int)cnt;
 		}
 	}
-    
+
+	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
@@ -82,7 +81,7 @@ public class RequestBuyProcure extends L2GameClientPacket {
 
 		// Alt game - Karma punishment
         if (!Config.ALT_GAME_KARMA_PLAYER_CAN_SHOP && player.getKarma() > 0) return;
-    
+
 		L2Object target = player.getTarget();
 
         if(_count < 1)
@@ -93,7 +92,7 @@ public class RequestBuyProcure extends L2GameClientPacket {
 
         long subTotal = 0;
         int tax = 0;
-    
+
     	// Check for buylist validity and calculates summary values
         int slots = 0;
         int weight = 0;
@@ -112,7 +111,7 @@ public class RequestBuyProcure extends L2GameClientPacket {
 				sendPacket(sm);
 				return;
 			}
-			
+
 			L2Item template = ItemTable.getInstance().getTemplate(L2Manor.getInstance().getRewardItem(
 					itemId,manor.getCastle().getCrop(itemId,CastleManorManager.PERIOD_CURRENT).getReward()));
 	        weight += count * template.getWeight();
@@ -127,13 +126,13 @@ public class RequestBuyProcure extends L2GameClientPacket {
 			return;
 		}
 
-    
+
 		if (!player.getInventory().validateCapacity(slots))
 		{
 			sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
 			return;
 		}
-        
+
 		// Proceed the purchase
 		InventoryUpdate playerIU = new InventoryUpdate();
 		_procureList =  manor.getCastle().getCropProcure(CastleManorManager.PERIOD_CURRENT);
@@ -143,12 +142,12 @@ public class RequestBuyProcure extends L2GameClientPacket {
 			int itemId = _items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
 			if (count < 0) count = 0;
-                        
+
 			int rewradItemId=L2Manor.getInstance().getRewardItem(
 					itemId,manor.getCastle().getCrop(itemId, CastleManorManager.PERIOD_CURRENT).getReward());
-			
+
 			int rewradItemCount = 1; //L2Manor.getInstance().getRewardAmount(itemId, manor.getCastle().getCropReward(itemId));
-            
+
 			rewradItemCount = count / rewradItemCount;
 
 			// Add item to Inventory and adjust update packet
@@ -171,15 +170,16 @@ public class RequestBuyProcure extends L2GameClientPacket {
 
 			//manor.getCastle().setCropAmount(itemId, manor.getCastle().getCrop(itemId, CastleManorManager.PERIOD_CURRENT).getAmount() - count);
 		}
-                
+
 		// Send update packets
 		player.sendPacket(playerIU);
-        
+
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
 	}
 
+	@Override
 	public String getType()
 	{
 		return _C__C3_REQUESTBUYPROCURE;

@@ -27,12 +27,12 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
- * 
+ *
  *
  */
 public class stats implements IVoicedCommandHandler
 {
-    private static final String[] VOICED_COMMANDS = { "stats" }; 
+    private static final String[] VOICED_COMMANDS = { "stats" };
 
     public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
@@ -43,7 +43,7 @@ public class stats implements IVoicedCommandHandler
                 NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
                 TextBuilder replyMSG = new TextBuilder("<html><body>");
-                
+
                 replyMSG.append("<center><font color=\"LEVEL\">[ L2J EVENT ENGINE ]</font></center><br>");
                 replyMSG.append("<br>Statistics for player <font color=\"LEVEL\">" + pc.getName() + "</font><br>");
                 replyMSG.append("Total kills <font color=\"FF0000\">" + pc.kills.size() + "</font><br>");
@@ -55,15 +55,15 @@ public class stats implements IVoicedCommandHandler
                 replyMSG.append("</body></html>");
 
                 adminReply.setHtml(replyMSG.toString());
-                activeChar.sendPacket(adminReply); 
+                activeChar.sendPacket(adminReply);
             }
-            
+
 
         }
     	return true;
     }
 
- 
+
     public String[] getVoicedCommandList()
     {
         return VOICED_COMMANDS;

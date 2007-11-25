@@ -19,9 +19,9 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- *  
- * format  (c) dd  
- * 
+ *
+ * format  (c) dd
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:40 $
  */
 public class SetSummonRemainTime extends L2GameServerPacket
@@ -35,7 +35,7 @@ public class SetSummonRemainTime extends L2GameServerPacket
 		_remainingTime = remainingTime;
 		_maxTime = maxTime;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -43,7 +43,7 @@ public class SetSummonRemainTime extends L2GameServerPacket
 		writeD(_maxTime);
 		writeD(_remainingTime);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

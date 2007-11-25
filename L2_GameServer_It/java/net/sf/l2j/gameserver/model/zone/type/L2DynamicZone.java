@@ -38,16 +38,16 @@ public class L2DynamicZone extends L2ZoneType
 	private L2Character _owner;
 	private Future _task;
 	private L2Skill _skill;
-	
+
 	protected void setTask(Future task) { _task = task; }
-	
+
 	public L2DynamicZone(L2WorldRegion region, L2Character owner, L2Skill skill)
 	{
 		super();
 		_region = region;
 		_owner = owner;
 		_skill = skill;
-		
+
 		Runnable r = new Runnable()
 		{
 			public void run()
@@ -67,7 +67,7 @@ public class L2DynamicZone extends L2ZoneType
 			_skill.getEffects(_owner, character);
 		} catch (NullPointerException e) {}
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -82,7 +82,7 @@ public class L2DynamicZone extends L2ZoneType
 		}
 		character.stopSkillEffects(_skill.getId());
 	}
-	
+
 	protected void remove()
 	{
 		if (_task == null) return;
@@ -97,22 +97,22 @@ public class L2DynamicZone extends L2ZoneType
 			} catch (NullPointerException e) {}
 		}
 		_owner.stopSkillEffects(_skill.getId());
-			
-	}   
-	
+
+	}
+
 	@Override
-	protected void onDieInside(L2Character character) 
+	protected void onDieInside(L2Character character)
 	{
 		if(character == _owner)
 			remove();
 		else
 			character.stopSkillEffects(_skill.getId());
 	}
-	
+
 	@Override
-	protected void onReviveInside(L2Character character) 
+	protected void onReviveInside(L2Character character)
 	{
 		_skill.getEffects(_owner, character);
 	}
-	
+
 }

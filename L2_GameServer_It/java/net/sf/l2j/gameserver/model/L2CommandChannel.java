@@ -37,14 +37,14 @@ public class L2CommandChannel
 	private List<L2Party> _partys = null;
 	private L2PcInstance _commandLeader = null;
 	private int _channelLvl;
-	
+
 	/**
 	 * Creates a New Command Channel and Add the Leaders party to the CC
-	 * 
+	 *
 	 * @param CommandChannelLeader
-	 *  
+	 *
 	 */
-	public L2CommandChannel(L2PcInstance leader) 
+	public L2CommandChannel(L2PcInstance leader)
 	{
 		_commandLeader = leader;
 		_partys = new FastList<L2Party>();
@@ -53,7 +53,7 @@ public class L2CommandChannel
 		leader.getParty().setCommandChannel(this);
 		leader.getParty().broadcastToPartyMembers(new ExOpenMPCC());
 	}
-	
+
 	/**
 	 * Adds a Party to the Command Channel
 	 * @param Party
@@ -66,7 +66,7 @@ public class L2CommandChannel
 		party.setCommandChannel(this);
 		party.broadcastToPartyMembers(new ExOpenMPCC());
 	}
-	
+
 	/**
 	 * Removes a Party from the Command Channel
 	 * @param Party
@@ -89,9 +89,9 @@ public class L2CommandChannel
 			disbandChannel();
 		}
 	}
-	
+
 	/**
-	 * disbands the whole Command Channel 
+	 * disbands the whole Command Channel
 	 */
 	public void disbandChannel()
 	{
@@ -102,9 +102,9 @@ public class L2CommandChannel
 		}
 		_partys = null;
 	}
-	
+
 	/**
-	 * @return overall membercount of the Command Channel 
+	 * @return overall membercount of the Command Channel
 	 */
 	public int getMemberCount()
 	{
@@ -116,12 +116,12 @@ public class L2CommandChannel
 		}
 		return count;
 	}
-	
+
 	/**
-	 * Broadcast packet to every channelmember 
+	 * Broadcast packet to every channelmember
 	 * @param L2GameServerPacket
 	 */
-	public void broadcastToChannelMembers(L2GameServerPacket gsp) 
+	public void broadcastToChannelMembers(L2GameServerPacket gsp)
 	{
 		if (!_partys.isEmpty())
 		{
@@ -132,18 +132,18 @@ public class L2CommandChannel
 			}
 		}
 	}
-	
-	
+
+
 	/**
-	 * @return list of Parties in Command Channel  
+	 * @return list of Parties in Command Channel
 	 */
 	public List<L2Party> getPartys()
 	{
 		return _partys;
 	}
-	
+
 	/**
-	 * @return list of all Members in Command Channel  
+	 * @return list of all Members in Command Channel
 	 */
 	public List<L2PcInstance> getMembers()
 	{
@@ -154,36 +154,36 @@ public class L2CommandChannel
 		}
 		return members;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return Level of CC
 	 */
 	public int getLevel() { return _channelLvl; }
-	
+
 	/**
-	 * @param sets the leader of the Command Channel 
+	 * @param sets the leader of the Command Channel
 	 */
 	public void setChannelLeader(L2PcInstance leader)
 	{
 		_commandLeader = leader;
 	}
-	
+
 	/**
-	 * @return the leader of the Command Channel  
+	 * @return the leader of the Command Channel
 	 */
 	public L2PcInstance getChannelLeader()
 	{
 		return _commandLeader;
 	}
-	
+
 	/**
 	 * Queen Ant, Core, Orfen, Zaken: MemberCount > 36<br>
 	 * Baium: MemberCount > 56<br>
 	 * Antharas: MemberCount > 225<br>
 	 * Valakas: MemberCount > 99<br>
 	 * normal RaidBoss: MemberCount > 18
-	 * 
+	 *
 	 * @param obj
 	 * @return true if proper condition for RaidWar
 	 */
@@ -195,7 +195,7 @@ public class L2CommandChannel
 		switch(npcId)
 		{
 	    	case 29001: // Queen Ant
-	    	case 29006: // Core	
+	    	case 29006: // Core
 	    	case 29014: // Orfen
 	    	case 29022: // Zaken
 	    		return (getMemberCount() > 36);

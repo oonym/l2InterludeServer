@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.model.L2TradeList;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.4.13 $ $Date: 2005/04/06 16:13:38 $
  */
 public class TradeController
@@ -214,7 +214,7 @@ public class TradeController
 				 */
 				try
 				{
-					int time=0; 
+					int time=0;
 					long savetimer=0;
 					long currentMillis = System.currentTimeMillis();
 					PreparedStatement statement2 = con.prepareStatement("SELECT DISTINCT time, savetimer FROM merchant_buylists WHERE time <> 0 ORDER BY time");
@@ -233,7 +233,7 @@ public class TradeController
 				{
 					_log.warning("TradeController: Could not restore Timer for Item count.");
 					e.printStackTrace();
-				} 
+				}
 			} catch (Exception e)
 			{
 				// problem with initializing spawn, go to next one
@@ -342,7 +342,7 @@ public class TradeController
 				for (L2ItemInstance Item :list.getItems())
 				{
 					if (Item.getCount()<Item.getInitCount()) //needed?
-					{	
+					{
 						statement = con.prepareStatement("UPDATE merchant_buylists SET currentCount=? WHERE item_id=? AND shop_id=?");
 						statement.setInt(1, Item.getCount());
 						statement.setInt(2, Item.getItemId());

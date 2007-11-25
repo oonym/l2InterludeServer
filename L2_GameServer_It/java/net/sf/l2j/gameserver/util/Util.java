@@ -8,7 +8,7 @@
  * Revision 1  21/10/2005 23:17:40  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -38,7 +38,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * General Utility functions related to Gameserver
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 public final class Util
@@ -47,7 +47,7 @@ public final class Util
     {
     	ThreadPoolManager.getInstance().scheduleGeneral(new IllegalPlayerAction(actor,message, punishment), 5000);
     }
-    
+
     public static String getRelativePath(File base,File file)
     {
         return file.toURI().getPath().substring(base.toURI().getPath().length());
@@ -85,11 +85,11 @@ public final class Util
         if (obj1 == null || obj2 == null) return 1000000;
         return calculateDistance(obj1.getPosition().getX(), obj1.getPosition().getY(), obj1.getPosition().getZ(), obj2.getPosition().getX(), obj2.getPosition().getY(), obj2.getPosition().getZ(), includeZAxis);
     }
-    
+
     /**
      * Capitalizes the first letter of a string, and returns the result.<BR>
      * (Based on ucfirst() function of PHP)
-     * 
+     *
      * @param String str
      * @return String containing the modified string.
      */
@@ -102,36 +102,36 @@ public final class Util
 
         return str;
     }
-    
+
      /**
      * Capitalizes the first letter of every "word" in a string.<BR>
      * (Based on ucwords() function of PHP)
-     * 
+     *
      * @param String str
      * @return String containing the modified string.
      */
-    public static String capitalizeWords(String str) 
+    public static String capitalizeWords(String str)
     {
         char[] charArray = str.toCharArray();
         String result = "";
-       
+
         // Capitalize the first letter in the given string!
         charArray[0] = Character.toUpperCase(charArray[0]);
-       
-        for (int i = 0; i < charArray.length; i++) 
+
+        for (int i = 0; i < charArray.length; i++)
         {
-            if (Character.isWhitespace(charArray[i])) 
+            if (Character.isWhitespace(charArray[i]))
                 charArray[i + 1] = Character.toUpperCase(charArray[i + 1]);
 
             result += Character.toString(charArray[i]);
         }
-       
+
         return result;
     }
-    
+
     // Micht: Removed this because UNUSED
     /*
-    public static boolean checkIfInRange(int range, int x1, int y1, int x2, int y2) 
+    public static boolean checkIfInRange(int range, int x1, int y1, int x2, int y2)
     {
         return checkIfInRange(range, x1, y1, 0, x2, y2, 0, false);
     }
@@ -152,7 +152,7 @@ public final class Util
     public static boolean checkIfInRange(int range, L2Object obj1, L2Object obj2, boolean includeZAxis)
     {
         if (obj1 == null || obj2 == null) return false;
-        
+
         return checkIfInRange(range, obj1.getPosition().getX(), obj1.getPosition().getY(), obj1.getPosition().getZ(), obj2.getPosition().getX(), obj2.getPosition().getY(), obj2.getPosition().getZ(), includeZAxis);
     }
     */
@@ -160,13 +160,13 @@ public final class Util
     {
         if (obj1 == null || obj2 == null) return false;
         if (range == -1) return true; // not limited
-        
+
         int rad = 0;
         if(obj1 instanceof L2Character)
         	rad += ((L2Character)obj1).getTemplate().collisionRadius;
         if(obj2 instanceof L2Character)
         	rad += ((L2Character)obj2).getTemplate().collisionRadius;
-        
+
         double dx = obj1.getX() - obj2.getX();
         double dy = obj1.getY() - obj2.getY();
 
@@ -174,13 +174,13 @@ public final class Util
         {
         	double dz = obj1.getZ() - obj2.getZ();
         	double d = dx*dx + dy*dy +dz*dz;
-        	
+
             return d <= range*range + 2*range*rad + rad*rad;
         }
         else
         {
         	double d = dx*dx + dy*dy;
-        	
+
             return d <= range*range + 2*range*rad +rad*rad;
         }
     }
@@ -189,10 +189,10 @@ public final class Util
     	if (heading == 0) return 360;
         return 9.0 * (heading / 1610.0); // = 360.0 * (heading / 64400.0)
     }
-    
+
     /**
      * Returns the number of "words" in a given string.
-     * 
+     *
      * @param String str
      * @return int numWords
      */
@@ -200,11 +200,11 @@ public final class Util
     {
         return str.trim().split(" ").length;
     }
-    
+
     /**
      * Returns a delimited string for an given array of string elements.<BR>
      * (Based on implode() in PHP)
-     * 
+     *
      * @param String[] strArray
      * @param String strDelim
      * @return String implodedString
@@ -212,17 +212,17 @@ public final class Util
     public static String implodeString(String[] strArray, String strDelim)
     {
         String result = "";
-        
+
         for (String strValue : strArray)
             result += strValue + strDelim;
-            
+
         return result;
     }
-    
+
     /**
      * Returns a delimited string for an given collection of string elements.<BR>
      * (Based on implode() in PHP)
-     * 
+     *
      * @param Collection&lt;String&gt; strCollection
      * @param String strDelim
      * @return String implodedString
@@ -231,12 +231,12 @@ public final class Util
     {
         return implodeString(strCollection.toArray(new String[strCollection.size()]), strDelim);
     }
-    
+
     /**
-     * Returns the rounded value of val to specified number of digits 
+     * Returns the rounded value of val to specified number of digits
      * after the decimal point.<BR>
-     * (Based on round() in PHP) 
-     * 
+     * (Based on round() in PHP)
+     *
      * @param float val
      * @param int numPlaces
      * @return float roundedVal
@@ -245,9 +245,9 @@ public final class Util
     {
         if (numPlaces <= 1)
             return Math.round(val);
-        
+
         float exponent = (float) Math.pow(10, numPlaces);
-        
+
         return (Math.round(val * exponent) / exponent);
     }
 
@@ -265,7 +265,7 @@ public final class Util
 		}
 		return result;
 	}
-	
+
 	/**
      * Return amount of adena formatted with "," delimiter
      * @param amount
@@ -287,5 +287,5 @@ public final class Util
     	}
     	return s;
     }
-	
+
 }

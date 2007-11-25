@@ -19,16 +19,16 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: (ch)ddd
- * 
+ *
  */
 public class ExVariationResult extends L2GameServerPacket
 {
 	private static final String _S__FE_55_EXVARIATIONRESULT = "[S] FE:55 ExVariationResult";
-	
+
 	private int _stat12;
 	private int _stat34;
 	private int _unk3;
-	
+
 	public ExVariationResult(int unk1, int unk2, int unk3)
 	{
 		_stat12 = unk1;

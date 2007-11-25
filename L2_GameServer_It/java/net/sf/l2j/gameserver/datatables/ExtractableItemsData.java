@@ -18,9 +18,9 @@
  */
 
 /**
- * 
+ *
  * @author FBIagent
- * 
+ *
  */
 
 package net.sf.l2j.gameserver.datatables;
@@ -37,21 +37,21 @@ public class ExtractableItemsData
 {
 	//          Map<itemid, L2ExtractableItem>
 	private FastMap<Integer, L2ExtractableItem> _items;
-	
+
 	private static ExtractableItemsData _instance = null;
-	
+
 	public static ExtractableItemsData getInstance()
 	{
 		if (_instance == null)
 			_instance = new ExtractableItemsData();
-			
+
 		return _instance;
 	}
-	
+
 	public ExtractableItemsData()
 	{
 		_items = new FastMap<Integer,L2ExtractableItem>();
-		
+
 		Scanner s;
 
 		try
@@ -63,20 +63,20 @@ public class ExtractableItemsData
 			System.out.println("Extractable items data: Can not find './data/extractable_items.csv'");
 			return;
 		}
-		
+
 		int lineCount = 0;
-		
+
         while (s.hasNextLine())
-        {        	
+        {
         	lineCount++;
-        	
+
     		String line = s.nextLine();
-    		
+
     		if (line.startsWith("#"))
     			continue;
     		else if (line.equals(""))
     			continue;
-    		
+
             String[] lineSplit = line.split(";");
             boolean ok = true;
             int itemID = 0;
@@ -89,14 +89,14 @@ public class ExtractableItemsData
             {
            		System.out.println("Extractable items data: Error in line " + lineCount + " -> invalid item id or wrong seperator after item id!");
            		System.out.println("		" + line);
-            	ok = false;            	
+            	ok = false;
             }
-            
+
             if (!ok)
             	continue;
-            
-            FastList<L2ExtractableProductItem> product_temp = new FastList<L2ExtractableProductItem>(); 
-                        
+
+            FastList<L2ExtractableProductItem> product_temp = new FastList<L2ExtractableProductItem>();
+
             for (int i=0;i<lineSplit.length-1;i++)
             {
             	ok = true;

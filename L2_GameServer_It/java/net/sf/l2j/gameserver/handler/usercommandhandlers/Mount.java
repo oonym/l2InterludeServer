@@ -29,23 +29,23 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
- * Support for /mount command.  
+ * Support for /mount command.
  * @author Tempy
  */
 public class Mount implements IUserCommandHandler
 {
-    private static final int[] COMMAND_IDS = { 61 }; 
-	
+    private static final int[] COMMAND_IDS = { 61 };
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
     public synchronized boolean useUserCommand(int id, L2PcInstance activeChar)
     {
         if (id != COMMAND_IDS[0]) return false;
-        
+
         L2Summon pet = activeChar.getPet();
 
-        if (pet != null && pet.isMountable() && !activeChar.isMounted()) 
+        if (pet != null && pet.isMountable() && !activeChar.isMounted())
         {
             if (activeChar.isDead())
             {
@@ -54,7 +54,7 @@ public class Mount implements IUserCommandHandler
                 activeChar.sendPacket(msg);
             }
             else if (pet.isDead())
-            {   
+            {
                 // A dead strider cannot be ridden.
                 SystemMessage msg = new SystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
                 activeChar.sendPacket(msg);
@@ -69,8 +69,8 @@ public class Mount implements IUserCommandHandler
             {
                 // A pet cannot be ridden while player is in battle.
                 SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
-                activeChar.sendPacket(msg);                        
-            }                   
+                activeChar.sendPacket(msg);
+            }
             else if (activeChar.isSitting() || activeChar.isMoving())
             {
                 // A strider can be ridden only when player is standing.
@@ -100,7 +100,7 @@ public class Mount implements IUserCommandHandler
             activeChar.setMountType(0);
             activeChar.setMountObjectID(0);
         }
-        
+
         return true;
     }
 

@@ -15,7 +15,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-/* 
+/*
 	coded by Balancer
 	ported to L2JRU by Mr
 	balancer@balancer.ru
@@ -39,14 +39,14 @@ public class Territory
 	private static Logger _log = Logger.getLogger(TradeController.class.getName());
 	private static final Territory _instance = new Territory();
 	private static Map<Integer,L2Territory> _territory;
-	
+
 	public static Territory getInstance()
 	{
 		return _instance;
 	}
-	
-	private Territory()	
-	{	
+
+	private Territory()
+	{
 		// load all data at server start
 		reload_data();
 	}

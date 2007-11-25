@@ -83,9 +83,9 @@ public class QuestTimer
 
         getQuest().removeQuestTimer(this);
     }
-    
+
     // public method to compare if this timer matches with the key attributes passed.
-    // a quest and a name are required.  
+    // a quest and a name are required.
     // null npc or player act as wildcards for the match
     public boolean isMatch(Quest quest, String name, L2NpcInstance npc, L2PcInstance player)
     {
@@ -107,22 +107,22 @@ public class QuestTimer
     {
     	return _quest;
     }
-    
+
     public final String getName()
     {
         return _name;
     }
-    
+
     public final L2NpcInstance getNpc()
     {
     	return _npc;
     }
-    
+
     public final L2PcInstance getPlayer()
     {
     	return _player;
     }
-    
+
     @Override
 	public final String toString()
     {

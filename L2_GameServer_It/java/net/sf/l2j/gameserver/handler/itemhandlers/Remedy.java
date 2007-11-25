@@ -31,14 +31,14 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.4 $ $Date: 2005/04/06 16:13:51 $
  */
 
 public class Remedy implements IItemHandler
 {
 	private static int[] ITEM_IDS = { 1831, 1832, 1833, 1834, 3889 };
-	
+
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
@@ -48,13 +48,13 @@ public class Remedy implements IItemHandler
 			activeChar = ((L2PetInstance)playable).getOwner();
 		else
 			return;
-		
+
 		if (activeChar.isInOlympiadMode())
         {
             activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
             return;
         }
-		
+
 	    int itemId = item.getItemId();
 	    if (itemId == 1831) // antidote
 		{
@@ -91,7 +91,7 @@ public class Remedy implements IItemHandler
 		else if (itemId == 1833) // bandage
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			for (L2Effect e : effects) 
+			for (L2Effect e : effects)
 			{
 				 if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED && e.getSkill().getLevel() <= 3)
 				 {
@@ -107,9 +107,9 @@ public class Remedy implements IItemHandler
 		else if (itemId == 1834) // emergency dressing
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			for (L2Effect e : effects) 
+			for (L2Effect e : effects)
 			{
-				if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED && e.getSkill().getLevel() <= 7) 
+				if (e.getSkill().getSkillType() == L2Skill.SkillType.BLEED && e.getSkill().getLevel() <= 7)
 				{
 					e.exit();
 					break;

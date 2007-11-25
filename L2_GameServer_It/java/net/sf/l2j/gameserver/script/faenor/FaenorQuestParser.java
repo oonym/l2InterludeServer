@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
- * 
+ *
  * http://www.gnu.org/copyleft/gpl.html
  */
 package net.sf.l2j.gameserver.script.faenor;
@@ -35,9 +35,9 @@ public class FaenorQuestParser extends FaenorParser
 	public void parseScript(Node questNode, @SuppressWarnings("unused") BSFManager context)
     {
         if (DEBUG) System.out.println("Parsing Quest.");
-        
+
         String questID = attribute(questNode, "ID");
-        
+
         for (Node node = questNode.getFirstChild(); node != null; node = node.getNextSibling()) {
             if (isNodeName(node, "DROPLIST"))
             {
@@ -57,11 +57,11 @@ public class FaenorQuestParser extends FaenorParser
             }
         }
     }
-    
+
     private void parseQuestDropList(Node dropList, String questID) throws NullPointerException
     {
         if (DEBUG) System.out.println("Parsing Droplist.");
-        
+
         for (Node node = dropList.getFirstChild(); node != null; node = node.getNextSibling()) {
             if (isNodeName(node, "DROP"))
             {
@@ -69,11 +69,11 @@ public class FaenorQuestParser extends FaenorParser
             }
         }
     }
-    
+
     private void parseQuestDrop(Node drop, String questID)// throws NullPointerException
     {
         if (DEBUG) System.out.println("Parsing Drop.");
-        
+
         int npcID;
         int itemID;
         int min;
@@ -88,17 +88,17 @@ public class FaenorQuestParser extends FaenorParser
             max = getInt(attribute(drop, "Max"));
             chance = getInt(attribute(drop, "Chance"));
             states = (attribute(drop, "States")).split(",");
-        } 
+        }
         catch (NullPointerException e)
         {
             throw new NullPointerException("Incorrect Drop Data");
         }
-        
+
         if (DEBUG) System.out.println("Adding Drop to NpcID: "+npcID);
-        
+
         _bridge.addQuestDrop(npcID, itemID, min, max, chance, questID, states);
     }
-    
+
     static class FaenorQuestParserFactory extends ParserFactory
     {
         @Override

@@ -27,9 +27,9 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class handles commands for GMs to respond to petitions.
- * 
+ *
  * @author Tempy
- * 
+ *
  */
 public class AdminPetition implements IAdminCommandHandler
 {
@@ -46,7 +46,7 @@ public class AdminPetition implements IAdminCommandHandler
 
 		int petitionId = -1;
 
-		try 
+		try
 		{
 			petitionId = Integer.parseInt(command.split(" ")[1]);
 		}

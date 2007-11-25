@@ -51,7 +51,7 @@ public class PostBBSManager extends BaseBBSManager
 		_postByTopic = new FastMap<Topic,Post>();
 	}
 	public Post getGPosttByTopic(Topic t)
-	{		
+	{
 		Post post = null;
 		post = _postByTopic.get(t);
 		if(post == null)
@@ -66,12 +66,12 @@ public class PostBBSManager extends BaseBBSManager
 	 */
 	public void delPostByTopic(Topic t)
 	{
-		_postByTopic.remove(t);		
+		_postByTopic.remove(t);
 	}
 	public void addPostByTopic(Post p,Topic t)
 	{
 		if(_postByTopic.get(t) == null)
-		{		
+		{
 			_postByTopic.put(t,p);
 		}
 	}
@@ -80,7 +80,7 @@ public class PostBBSManager extends BaseBBSManager
 	 * @return
 	 */
 	private Post load(Topic t)
-	{		
+	{
 		Post p;
 		p = new Post(t);
 		return p;
@@ -111,8 +111,8 @@ public class PostBBSManager extends BaseBBSManager
 			else
 			{
 				ind = Integer.parseInt(index);
-			}			
-				
+			}
+
 			showPost((TopicBBSManager.getInstance().getTopicByID(idp)),ForumsBBSManager.getInstance().getForumByID(idf),activeChar,ind);
 		}
 		else if(command.startsWith("_bbsposts;edit;"))
@@ -130,8 +130,8 @@ public class PostBBSManager extends BaseBBSManager
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the command: "+command+" is not implemented yet</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
-			activeChar.sendPacket(new ShowBoard(null,"103"));  
-		}		
+			activeChar.sendPacket(new ShowBoard(null,"103"));
+		}
 	}
 	/**
 	 * @param topic
@@ -140,15 +140,15 @@ public class PostBBSManager extends BaseBBSManager
 	 * @param idp
 	 */
 	private void showEditPost(Topic topic, Forum forum, L2PcInstance activeChar, int idp)
-	{		
+	{
 		Post p = getGPosttByTopic(topic);
 		if((forum == null)||(topic == null)||(p == null))
-		{			
+		{
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>Error, this forum, topic or post does not exit !</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
-			activeChar.sendPacket(new ShowBoard(null,"103"));  
-		}	
+			activeChar.sendPacket(new ShowBoard(null,"103"));
+		}
 		else
 		{
 			showHtmlEditPost(topic,activeChar,forum,p);
@@ -163,13 +163,13 @@ public class PostBBSManager extends BaseBBSManager
 	 * @param idf
 	 */
 	private void showPost(Topic topic, Forum forum, L2PcInstance activeChar, int ind)
-	{	
+	{
 		if((forum == null)||(topic == null))
-		{			
+		{
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>Error, this forum is not implemented yet</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
-			activeChar.sendPacket(new ShowBoard(null,"103"));  
+			activeChar.sendPacket(new ShowBoard(null,"103"));
 		}
 		else if(forum.getType() == Forum.MEMO)
 		{
@@ -180,7 +180,7 @@ public class PostBBSManager extends BaseBBSManager
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the forum: "+forum.getName()+" is not implemented yet</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
-			activeChar.sendPacket(new ShowBoard(null,"103"));  
+			activeChar.sendPacket(new ShowBoard(null,"103"));
 		}
 	}
 	/**
@@ -190,11 +190,11 @@ public class PostBBSManager extends BaseBBSManager
 	 * @param p
 	 */
 	private void showHtmlEditPost(Topic topic, L2PcInstance activeChar, Forum forum, Post p)
-	{		
+	{
         TextBuilder html = new TextBuilder("<html>");
 		html.append("<body><br><br>");
 		html.append("<table border=0 width=610><tr><td width=10></td><td width=600 align=left>");
-		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">"+forum.getName()+" Form</a>");		
+		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">"+forum.getName()+" Form</a>");
 		html.append("</td></tr>");
 		html.append("</table>");
 		html.append("<img src=\"L2UI.squareblank\" width=\"1\" height=\"10\">");
@@ -233,21 +233,21 @@ public class PostBBSManager extends BaseBBSManager
 		html.append("</center>");
 		html.append("</body>");
 		html.append("</html>");
-		send1001(html.toString(),activeChar);    	  	    
+		send1001(html.toString(),activeChar);
     	send1002(activeChar,p.getCPost(0).postTxt,topic.getName(),DateFormat.getInstance().format(new Date(topic.getDate())));
 	}
-	
+
 	/**
 	 * @param topic
 	 * @param activeChar
-	 * @param forum 
+	 * @param forum
 	 */
 	private void showMemoPost(Topic topic, L2PcInstance activeChar, Forum forum)
 	{
-		//		
+		//
 		Post p = getGPosttByTopic(topic);
 		Locale locale = Locale.getDefault();
-		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);	
+		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);
         TextBuilder html = new TextBuilder("<html><body><br><br>");
 		html.append("<table border=0 width=610><tr><td width=10></td><td width=600 align=left>");
 		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">Memo Form</a>");
@@ -301,7 +301,7 @@ public class PostBBSManager extends BaseBBSManager
 		html.append("</tr></table>");
 		html.append("</td>");
 		html.append("</tr>");
-		html.append("</table>"); 
+		html.append("</table>");
 		html.append("<br>");
 		html.append("<br>");
 		html.append("<br></center>");
@@ -320,14 +320,14 @@ public class PostBBSManager extends BaseBBSManager
 		int idf = Integer.parseInt(st.nextToken());
 		int idt = Integer.parseInt(st.nextToken());
 		int idp = Integer.parseInt(st.nextToken());
-		
+
 		Forum f = ForumsBBSManager.getInstance().getForumByID(idf);
 		if(f == null)
 		{
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the forum: "+idf+" does not exist !</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
-			activeChar.sendPacket(new ShowBoard(null,"103"));				
+			activeChar.sendPacket(new ShowBoard(null,"103"));
 		}
 		else
 		{
@@ -337,7 +337,7 @@ public class PostBBSManager extends BaseBBSManager
 				ShowBoard sb = new ShowBoard("<html><body><br><br><center>the topic: "+idt+" does not exist !</center><br><br></body></html>","101");
 				activeChar.sendPacket(sb);
 				activeChar.sendPacket(new ShowBoard(null,"102"));
-				activeChar.sendPacket(new ShowBoard(null,"103"));				
+				activeChar.sendPacket(new ShowBoard(null,"103"));
 			}
 			else
 			{
@@ -357,11 +357,11 @@ public class PostBBSManager extends BaseBBSManager
 				else
 				{
 					p.getCPost(idp).postTxt = ar4;
-					p.updatetxt(idp);						
+					p.updatetxt(idp);
 					parsecmd("_bbsposts;read;"+ f.getID() +";"+ t.getID(),activeChar);
 				}
 			}
 		}
 	}
 }
-	
+

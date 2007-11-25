@@ -18,9 +18,9 @@
  */
 
 /**
- * 
+ *
  * @author FBIagent
- * 
+ *
  */
 
 package net.sf.l2j.gameserver.handler.itemhandlers;
@@ -53,12 +53,12 @@ public class SummonItems implements IItemHandler
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
-		
+
 		if (!TvTEvent.onItemSummon(playable.getName()))
 			return;
 
 		L2PcInstance activeChar = (L2PcInstance)playable;
-		
+
 		if ( !FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_ITEMPETSUMMON) ) return;
 
 		if(activeChar.isSitting())
@@ -67,55 +67,55 @@ public class SummonItems implements IItemHandler
 			return;
 		}
 
-		if (activeChar.inObserverMode()) 
+		if (activeChar.inObserverMode())
 			return;
 
 		if (activeChar.isInOlympiadMode())
         {
             activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
             return;
-        }		
+        }
 
 		L2SummonItem sitem = SummonItemsData.getInstance().getSummonItem(item.getItemId());
-		
+
 		if ((activeChar.getPet() != null || activeChar.isMounted()) && sitem.isPetSummon())
 		{
             activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ALREADY_HAVE_A_PET));
 			return;
 		}
-		
+
 		if (activeChar.isAttackingNow())
 		{
             activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
 			return;
 		}
-        
+
         if (activeChar.isCursedWeaponEquiped() && sitem.isPetSummon())
         {
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE));
         	return;
         }
-		
+
         int npcID = sitem.getNpcId();
-        
+
         if (npcID == 0)
         	return;
-        
+
 		L2NpcTemplate npcTemplate = NpcTable.getInstance().getTemplate(npcID);
-		
+
         if (npcTemplate == null)
             return;
-        
+
         switch (sitem.getType())
         {
         case 0: // static summons (like christmas tree)
             try
             {
                 L2Spawn spawn = new L2Spawn(npcTemplate);
-                
+
                 if (spawn == null)
                 	return;
-                
+
                 spawn.setId(IdFactory.getInstance().getNextId());
                 spawn.setLocx(activeChar.getX());
                 spawn.setLocy(activeChar.getY());
@@ -137,7 +137,7 @@ public class SummonItems implements IItemHandler
     			break;
 
     		petSummon.setTitle(activeChar.getName());
-    		
+
     		if (!petSummon.isRespawned())
     		{
     			petSummon.setCurrentHp(petSummon.getMaxHp());
@@ -147,9 +147,9 @@ public class SummonItems implements IItemHandler
     		}
 
     		petSummon.setRunning();
-    		
+
     		if (!petSummon.isRespawned())
-    			petSummon.store();		
+    			petSummon.store();
 
             activeChar.setPet(petSummon);
 
@@ -162,7 +162,7 @@ public class SummonItems implements IItemHandler
     		item.setEnchantLevel(petSummon.getLevel());
 
     		ThreadPoolManager.getInstance().scheduleGeneral(new PetSummonFinalizer(activeChar, petSummon), 900);
-    		
+
     		if (petSummon.getCurrentFed() <= 0)
     			ThreadPoolManager.getInstance().scheduleGeneral(new PetSummonFeedWait(activeChar, petSummon), 60000);
     		else
@@ -178,18 +178,18 @@ public class SummonItems implements IItemHandler
             activeChar.setMountObjectID(item.getObjectId());
         }
 	}
-	
+
 	static class PetSummonFeedWait implements Runnable
 	{
 		private L2PcInstance _activeChar;
 		private L2PetInstance _petSummon;
-		
+
 		PetSummonFeedWait(L2PcInstance activeChar, L2PetInstance petSummon)
 		{
 			_activeChar = activeChar;
 			_petSummon = petSummon;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -204,18 +204,18 @@ public class SummonItems implements IItemHandler
 			}
 		}
 	}
-	
+
 	static class PetSummonFinalizer implements Runnable
 	{
 		private L2PcInstance _activeChar;
 		private L2PetInstance _petSummon;
-		
+
 		PetSummonFinalizer(L2PcInstance activeChar, L2PetInstance petSummon)
 		{
 			_activeChar = activeChar;
 			_petSummon = petSummon;
 		}
-		
+
 		public void run()
 		{
 			try
@@ -229,7 +229,7 @@ public class SummonItems implements IItemHandler
 			}
 		}
 	}
-	
+
 	public int[] getItemIds()
     {
     	return SummonItemsData.getInstance().itemIDs();

@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.templates.L2Item;
  * This class handles following admin commands:
  * - itemcreate = show menu
  * - create_item <id> [num] = creates num items with respective id, if num is not specified, assumes 1.
- * 
+ *
  * @version $Revision: 1.2.2.2.2.3 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminCreateItem implements IAdminCommandHandler
@@ -51,13 +51,13 @@ public class AdminCreateItem implements IAdminCommandHandler
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
 		}
-		
+
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target"), "");
 
 		if (command.equals("admin_itemcreate"))
 		{
 			AdminHelpPage.showHelpPage(activeChar, "itemcreation.htm");
-		}		
+		}
 		else if (command.startsWith("admin_create_item"))
 		{
 			try
@@ -113,7 +113,7 @@ public class AdminCreateItem implements IAdminCommandHandler
 				return;
 			}
 		}
-		
+
 		activeChar.getInventory().addItem("Admin", id, num, activeChar, null);
 
 		ItemList il = new ItemList(activeChar, true);

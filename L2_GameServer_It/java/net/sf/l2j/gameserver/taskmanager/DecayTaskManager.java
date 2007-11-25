@@ -34,22 +34,22 @@ public class DecayTaskManager
 {
     protected static final Logger _log = Logger.getLogger(DecayTaskManager.class.getName());
 	protected Map<L2Character,Long> _decayTasks = new FastMap<L2Character,Long>().setShared(true);
-	
+
     private static DecayTaskManager _instance;
-    
+
     public DecayTaskManager()
     {
     	ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new DecayScheduler(),10000,5000);
     }
-    
+
     public static DecayTaskManager getInstance()
     {
         if(_instance == null)
             _instance = new DecayTaskManager();
-        
+
         return _instance;
     }
-    
+
     public void addDecayTask(L2Character actor)
     {
         _decayTasks.put(actor,System.currentTimeMillis());
@@ -59,7 +59,7 @@ public class DecayTaskManager
     {
         _decayTasks.put(actor,System.currentTimeMillis()+interval);
     }
-    
+
     public void cancelDecayTask(L2Character actor)
     {
     	try
@@ -68,19 +68,19 @@ public class DecayTaskManager
     	}
     	catch(NoSuchElementException e){}
     }
-    
+
     private class DecayScheduler implements Runnable
     {
     	protected DecayScheduler()
     	{
     		// Do nothing
     	}
-    	
+
         public void run()
         {
             Long current = System.currentTimeMillis();
             int delay;
-            try 
+            try
             {
             	if (_decayTasks != null)
             		for(L2Character actor : _decayTasks.keySet())
@@ -94,7 +94,7 @@ public class DecayTaskManager
             			}
             		}
             } catch (Throwable e) {
-				// TODO: Find out the reason for exception. Unless caught here, mob decay would stop. 
+				// TODO: Find out the reason for exception. Unless caught here, mob decay would stop.
             	_log.warning(e.toString());
 			}
         }
@@ -106,14 +106,14 @@ public class DecayTaskManager
         String ret = "============= DecayTask Manager Report ============\r\n";
         ret += "Tasks count: "+_decayTasks.size()+"\r\n";
         ret += "Tasks dump:\r\n";
-        
+
         Long current = System.currentTimeMillis();
         for( L2Character actor : _decayTasks.keySet())
         {
             ret += "Class/Name: "+actor.getClass().getSimpleName()+"/"+actor.getName()
             +" decay timer: "+(current - _decayTasks.get(actor))+"\r\n";
         }
-        
+
         return ret;
     }
 }

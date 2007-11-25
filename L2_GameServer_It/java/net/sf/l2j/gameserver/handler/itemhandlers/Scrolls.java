@@ -31,15 +31,15 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
 * This class ...
-* 
+*
 * @version $Revision: 1.1.6.4 $ $Date: 2005/04/06 18:25:18 $
 */
 
 public class Scrolls implements IItemHandler
 {
-	private static final int[] ITEM_IDS = { 3926, 3927, 3928, 3929, 3930, 3931, 3932, 
+	private static final int[] ITEM_IDS = { 3926, 3927, 3928, 3929, 3930, 3931, 3932,
 											3933, 3934, 3935, 4218, 5593, 5594, 5595, 6037,
-											5703, 5803, 5804, 5805, 5806, 5807, // lucky charm 
+											5703, 5803, 5804, 5805, 5806, 5807, // lucky charm
 											8515, 8516, 8517, 8518, 8519, 8520, // charm of courage
 											8594, 8595, 8596, 8597, 8598, 8599, // scrolls of recovery
 											8954, 8955, 8956,                   // primeval crystal
@@ -69,7 +69,7 @@ public class Scrolls implements IItemHandler
 		}
 
 		int itemId = item.getItemId();
-	   
+
 		if (itemId >= 8594 && itemId <= 8599) //Scrolls of recovery XML: 2286
 		{
 			if (activeChar.getKarma() > 0) return; // Chaotic can not use it
@@ -91,25 +91,25 @@ public class Scrolls implements IItemHandler
 		   		activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE));
           	return;
 		}
-		else if (itemId == 5703 || itemId >= 5803 && itemId <= 5807) 
-		{ 
-			if ((itemId == 5703 && activeChar.getExpertiseIndex()==0) ||     // Lucky Charm (No Grade) 
-					(itemId == 5803 && activeChar.getExpertiseIndex()==1) || // Lucky Charm (D Grade) 
-					(itemId == 5804 && activeChar.getExpertiseIndex()==2) || // Lucky Charm (C Grade) 
-					(itemId == 5805 && activeChar.getExpertiseIndex()==3) || // Lucky Charm (B Grade) 
-					(itemId == 5806 && activeChar.getExpertiseIndex()==4) || // Lucky Charm (A Grade) 
-					(itemId == 5807 && activeChar.getExpertiseIndex()==5))   // Lucky Charm (S Grade) 
-			{ 
-				if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false)) 
-					return; 
-				activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2168, activeChar.getExpertiseIndex()+1, 1, 0)); 
-				useScroll(activeChar, 2168, activeChar.getExpertiseIndex()+1); 
-				activeChar.setCharmOfLuck(true); 
-			} 
-			else 
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE)); 
-			return; 
-		} 
+		else if (itemId == 5703 || itemId >= 5803 && itemId <= 5807)
+		{
+			if ((itemId == 5703 && activeChar.getExpertiseIndex()==0) ||     // Lucky Charm (No Grade)
+					(itemId == 5803 && activeChar.getExpertiseIndex()==1) || // Lucky Charm (D Grade)
+					(itemId == 5804 && activeChar.getExpertiseIndex()==2) || // Lucky Charm (C Grade)
+					(itemId == 5805 && activeChar.getExpertiseIndex()==3) || // Lucky Charm (B Grade)
+					(itemId == 5806 && activeChar.getExpertiseIndex()==4) || // Lucky Charm (A Grade)
+					(itemId == 5807 && activeChar.getExpertiseIndex()==5))   // Lucky Charm (S Grade)
+			{
+				if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false))
+					return;
+				activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2168, activeChar.getExpertiseIndex()+1, 1, 0));
+				useScroll(activeChar, 2168, activeChar.getExpertiseIndex()+1);
+				activeChar.setCharmOfLuck(true);
+			}
+			else
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE));
+			return;
+		}
 	   	else if (itemId >= 8515 && itemId <= 8520) // Charm of Courage XML: 5041
 	   	{
 	   		if ((itemId == 8515 && activeChar.getExpertiseIndex()==0) || // Charm of Courage (No Grade)
@@ -138,17 +138,17 @@ public class Scrolls implements IItemHandler
 			{
 				case 8954: // Blue Primeval Crystal XML: 2306
 					activeChar.sendPacket(new MagicSkillUser(playable, playable, 2306, 1, 1, 0));
-					activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2306, 1, 1, 0)); 
+					activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2306, 1, 1, 0));
 					activeChar.addExpAndSp(0, 50000);
 					break;
 				case 8955: // Green Primeval Crystal XML: 2306
 					activeChar.sendPacket(new MagicSkillUser(playable, playable, 2306, 2, 1, 0));
-					activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2306, 2, 1, 0)); 
+					activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2306, 2, 1, 0));
 					activeChar.addExpAndSp(0, 100000);
 					break;
 				case 8956: // Red Primeval Crystal XML: 2306
 					activeChar.sendPacket(new MagicSkillUser(playable, playable, 2306, 3, 1, 0));
-					activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2306, 3, 1, 0)); 
+					activeChar.broadcastPacket(new MagicSkillUser(playable, playable, 2306, 3, 1, 0));
 					activeChar.addExpAndSp(0, 200000);
 					break;
 				default:
@@ -156,7 +156,7 @@ public class Scrolls implements IItemHandler
 			}
 	   		return;
 	   	}
-	   
+
 		// for the rest, there are no extra conditions
 		if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false))
 			return;
@@ -253,24 +253,24 @@ public class Scrolls implements IItemHandler
          	case 9152: // Scroll of Enpower - For Event XML:2056
          		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2056, 1, 1, 0));
          		useScroll(activeChar, 2056, 1);
-         		break;      
+         		break;
          	case 9153: // Scroll of Might - For Event XML:2057
          		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2057, 1, 1, 0));
          		useScroll(activeChar, 2057, 1);
-         		break;      
+         		break;
          	case 9154: // Scroll of Wind Walk - For Event XML:2058
          		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2058, 1, 1, 0));
          		useScroll(activeChar, 2058, 1);
-         		break;      
+         		break;
          	case 9155: // Scroll of Shield - For Event XML:2059
          		activeChar.broadcastPacket(new MagicSkillUser(playable, activeChar, 2059, 1, 1, 0));
          		useScroll(activeChar, 2059, 1);
-         		break;    		
+         		break;
          	default:
          		break;
 		}
    	}
-   
+
 	public void useScroll(L2PcInstance activeChar, int magicId,int level)
 	{
 		L2Skill skill = SkillTable.getInstance().getInfo(magicId,level);

@@ -52,7 +52,7 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.2.2.5 $ $Date: 2005/03/27 15:29:32 $
  */
 public class L2DoorInstance extends L2Character
@@ -62,7 +62,7 @@ public class L2DoorInstance extends L2Character
     /** The castle index in the array of L2Castle this L2NpcInstance belongs to */
     private int _castleIndex = -2;
     private int _mapRegion = -1;
-    
+
     // when door is closed, the dimensions are
     private int _rangeXMin = 0;
     private int _rangeYMin = 0;
@@ -75,13 +75,13 @@ public class L2DoorInstance extends L2Character
     protected final String _name;
     private int _open;
     private boolean _unlockable;
-    
+
     private ClanHall _clanHall;
-    
+
     protected int _autoActionDelay = -1;
     private ScheduledFuture _autoActionTask;
-    
-    
+
+
     /** This class may be created only by L2Character and only for AI */
     public class AIAccessor extends L2Character.AIAccessor
     {
@@ -104,7 +104,7 @@ public class L2DoorInstance extends L2Character
 		@SuppressWarnings("unused")
         public void doCast(L2Skill skill) {}
     }
-    
+
     @Override
 	public L2CharacterAI getAI() {
         if (_ai == null)
@@ -117,12 +117,12 @@ public class L2DoorInstance extends L2Character
         }
         return _ai;
     }
-    
+
     @Override
 	public boolean hasAI() {
         return (_ai != null);
     }
-    
+
     class CloseTask implements Runnable
     {
         public void run()
@@ -130,16 +130,16 @@ public class L2DoorInstance extends L2Character
             try
             {
                 onClose();
-            } 
-            catch (Throwable e) 
+            }
+            catch (Throwable e)
             {
                 log.log(Level.SEVERE, "", e);
             }
         }
-    }   
-    
+    }
+
     /**
-     * Manages the auto open and closing of a door. 
+     * Manages the auto open and closing of a door.
      */
     class AutoOpenClose implements Runnable
     {
@@ -147,7 +147,7 @@ public class L2DoorInstance extends L2Character
         {
             try {
                 String doorAction;
-                
+
                 if (getOpen() == 1) {
                     doorAction = "opened";
                     openMe();
@@ -156,7 +156,7 @@ public class L2DoorInstance extends L2Character
                     doorAction = "closed";
                     closeMe();
                 }
-                
+
                 if (Config.DEBUG)
                     log.info("Auto " + doorAction + " door ID " + _doorId + " (" + _name + ") for " + (_autoActionDelay / 60000) + " minute(s).");
             }
@@ -186,7 +186,7 @@ public class L2DoorInstance extends L2Character
     		setKnownList(new DoorKnownList(this));
     	return (DoorKnownList)super.getKnownList();
     }
-    
+
     @Override
 	public final DoorStat getStat()
     {
@@ -194,7 +194,7 @@ public class L2DoorInstance extends L2Character
     		setStat(new DoorStat(this));
     	return (DoorStat)super.getStat();
     }
-    
+
     @Override
 	public final DoorStatus getStatus()
     {
@@ -202,18 +202,18 @@ public class L2DoorInstance extends L2Character
     		setStatus(new DoorStatus(this));
     	return (DoorStatus)super.getStatus();
     }
-    
-    public final boolean isUnlockable() 
+
+    public final boolean isUnlockable()
     {
         return _unlockable;
     }
-    
+
     @Override
-	public final int getLevel() 
+	public final int getLevel()
     {
         return 1;
     }
-    
+
     /**
      * @return Returns the doorId.
      */
@@ -236,20 +236,20 @@ public class L2DoorInstance extends L2Character
     {
         _open = open;
     }
-    
+
     /**
-     * Sets the delay in milliseconds for automatic opening/closing 
+     * Sets the delay in milliseconds for automatic opening/closing
      * of this door instance.
      * <BR>
      * <B>Note:</B> A value of -1 cancels the auto open/close task.
-     * 
+     *
      * @param int actionDelay
      */
     public void setAutoActionDelay(int actionDelay)
     {
         if (_autoActionDelay == actionDelay)
             return;
-        
+
         if (actionDelay > -1) {
             AutoOpenClose ao = new AutoOpenClose();
             ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(ao, actionDelay, actionDelay);
@@ -258,11 +258,11 @@ public class L2DoorInstance extends L2Character
             if (_autoActionTask != null)
                 _autoActionTask.cancel(false);
         }
-        
+
         _autoActionDelay = actionDelay;
     }
-    
-    public int getDamage() 
+
+    public int getDamage()
     {
         int dmg = 6 - (int)Math.ceil(getCurrentHp() / getMaxHp() * 6);
         if (dmg > 6)
@@ -287,11 +287,11 @@ public class L2DoorInstance extends L2Character
 	return _clanHall;
     }
 
-    public boolean isEnemyOf(@SuppressWarnings("unused") L2Character cha) 
+    public boolean isEnemyOf(@SuppressWarnings("unused") L2Character cha)
     {
         return true;
     }
-    
+
     @Override
 	public boolean isAutoAttackable(L2Character attacker)
     {
@@ -299,8 +299,8 @@ public class L2DoorInstance extends L2Character
             return true;
 
         // Attackable during siege by attacker only
-        return (attacker != null 
-                && attacker instanceof L2PcInstance 
+        return (attacker != null
+                && attacker instanceof L2PcInstance
                 && getCastle() != null
                 && getCastle().getCastleId() > 0
                 && getCastle().getSiege().getIsInProgress()
@@ -312,10 +312,10 @@ public class L2DoorInstance extends L2Character
         return isAutoAttackable(attacker);
     }
 
-    
+
     @Override
 	public void updateAbnormalEffect() {}
-    
+
     public int getDistanceToWatchObject(L2Object object)
     {
         if (!(object instanceof L2PcInstance))
@@ -325,66 +325,66 @@ public class L2DoorInstance extends L2Character
 
     /**
      * Return the distance after which the object must be remove from _knownObject according to the type of the object.<BR><BR>
-     *   
+     *
      * <B><U> Values </U> :</B><BR><BR>
      * <li> object is a L2PcInstance : 4000</li>
      * <li> object is not a L2PcInstance : 0 </li><BR><BR>
-     * 
+     *
      */
-    public int getDistanceToForgetObject(L2Object object) 
+    public int getDistanceToForgetObject(L2Object object)
      {
         if (!(object instanceof L2PcInstance))
             return 0;
-        
+
         return 4000;
     }
 
     /**
      * Return null.<BR><BR>
-     */ 
+     */
     @Override
-	public L2ItemInstance getActiveWeaponInstance() 
-    {
-        return null;
-    }
-    
-    @Override
-	public L2Weapon getActiveWeaponItem() 
+	public L2ItemInstance getActiveWeaponInstance()
     {
         return null;
     }
 
     @Override
-	public L2ItemInstance getSecondaryWeaponInstance() 
+	public L2Weapon getActiveWeaponItem()
     {
         return null;
     }
 
     @Override
-	public L2Weapon getSecondaryWeaponItem() 
+	public L2ItemInstance getSecondaryWeaponInstance()
     {
         return null;
     }
 
     @Override
-	public void onAction(L2PcInstance player) 
+	public L2Weapon getSecondaryWeaponItem()
+    {
+        return null;
+    }
+
+    @Override
+	public void onAction(L2PcInstance player)
     {
         if (player == null)
             return;
-        
+
         if (this != player.getTarget())
         {
             player.setTarget(this);
-            
+
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel());
             player.sendPacket(my);
-            
+
 //            if (isAutoAttackable(player))
-//            {   
+//            {
                 DoorStatusUpdate su = new DoorStatusUpdate(this);
                 player.sendPacket(su);
 //            }
-            
+
             // correct location
             player.sendPacket(new ValidateLocation(this));
         }
@@ -410,23 +410,23 @@ public class L2DoorInstance extends L2Character
         		} else
                 {
         		    //need find serverpacket which ask open/close gate. now auto
-                    	    //if (getOpen() == 1) player.sendPacket(new SystemMessage(1140));                  
-                    	    //else player.sendPacket(new SystemMessage(1141));                  
+                    	    //if (getOpen() == 1) player.sendPacket(new SystemMessage(1140));
+                    	    //else player.sendPacket(new SystemMessage(1141));
         		    if (getOpen() == 1) openMe();
         		    else closeMe();
         		    player.sendPacket(new ActionFailed());
             	}
-    	    } else 
+    	    } else
                 player.sendPacket(new ActionFailed());
         }
     }
 
     @Override
-	public void onActionShift(L2GameClient client) 
+	public void onActionShift(L2GameClient client)
     {
         L2PcInstance player = client.getActiveChar();
         if (player == null) return;
-        
+
         if (player.getAccessLevel() >= Config.GM_ACCESSLEVEL)
         {
             player.setTarget(this);
@@ -472,7 +472,7 @@ public class L2DoorInstance extends L2Character
     @Override
 	public void broadcastStatusUpdate()
     {
-        Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values(); 
+        Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
         if (knownPlayers == null || knownPlayers.isEmpty())
             return;
 
@@ -480,7 +480,7 @@ public class L2DoorInstance extends L2Character
         for (L2PcInstance player : knownPlayers)
             player.sendPacket(su);
     }
-    
+
     public void onOpen()
     {
     	ThreadPoolManager.getInstance().scheduleGeneral(new CloseTask(), 60000);
@@ -490,18 +490,18 @@ public class L2DoorInstance extends L2Character
     {
         closeMe();
     }
-    
-    public final void closeMe() 
+
+    public final void closeMe()
     {
         setOpen(1);
         broadcastStatusUpdate();
-    }   
+    }
 
     public final void openMe()
     {
         setOpen(0);
         broadcastStatusUpdate();
-    } 
+    }
 
     @Override
 	public String toString()
@@ -513,37 +513,37 @@ public class L2DoorInstance extends L2Character
     {
         return _name;
     }
-    
+
     public int getXMin()
     {
     	return _rangeXMin;
     }
-    
+
     public int getYMin()
     {
     	return _rangeYMin;
     }
-    
+
     public int getZMin()
     {
     	return _rangeZMin;
     }
-    
+
     public int getXMax()
     {
     	return _rangeXMax;
     }
-    
+
     public int getYMax()
     {
     	return _rangeYMax;
     }
-    
+
     public int getZMax()
     {
     	return _rangeZMax;
     }
-    
+
     public void setRange(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax)
     {
     	_rangeXMin = xMin;
@@ -554,7 +554,7 @@ public class L2DoorInstance extends L2Character
     	_rangeYMax = yMax;
     	_rangeZMax = zMax;
     }
-    
+
     public int getMapRegion()
     {
     	return _mapRegion;
@@ -564,16 +564,16 @@ public class L2DoorInstance extends L2Character
     {
     	_mapRegion = region;
     }
-    
+
     public Collection<L2SiegeGuardInstance> getKnownSiegeGuards()
     {
         FastList<L2SiegeGuardInstance> result = new FastList<L2SiegeGuardInstance>();
-        
-        for (L2Object obj : getKnownList().getKnownObjects().values())  
-        {  
+
+        for (L2Object obj : getKnownList().getKnownObjects().values())
+        {
             if (obj instanceof L2SiegeGuardInstance) result.add((L2SiegeGuardInstance) obj);
         }
-        
+
         return result;
     }
 }

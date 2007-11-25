@@ -35,24 +35,24 @@ import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 /**
  * This class handles following admin commands:
  * - res = resurrects target L2Character
- * 
+ *
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
-public class AdminRes implements IAdminCommandHandler 
+public class AdminRes implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
 	private static final String[] ADMIN_COMMANDS = {"admin_res", "admin_res_monster"};
 	private static final int REQUIRED_LEVEL = Config.GM_RES;
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
+
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) 
+			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
-		
+
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-		
+
 		if (command.startsWith("admin_res "))
 			handleRes(activeChar, command.split(" ")[1]);
 		else if (command.equals("admin_res"))
@@ -61,34 +61,34 @@ public class AdminRes implements IAdminCommandHandler
 			handleNonPlayerRes(activeChar, command.split(" ")[1]);
 		else if (command.equals("admin_res_monster"))
 			handleNonPlayerRes(activeChar);
-		
+
 		return true;
 	}
-	
-	public String[] getAdminCommandList() 
+
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private boolean checkLevel(int level) 
+
+	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}
-	
+
 	private void handleRes(L2PcInstance activeChar)
 	{
 		handleRes(activeChar, null);
 	}
-	
-	private void handleRes(L2PcInstance activeChar, String resParam) 
+
+	private void handleRes(L2PcInstance activeChar, String resParam)
 	{
 		L2Object obj = activeChar.getTarget();
-		
+
 		if (resParam != null)
 		{
 			// Check if a player name was specified as a param.
 			L2PcInstance plyr = L2World.getInstance().getPlayer(resParam);
-			
+
 			if (plyr != null)
 			{
 				obj = plyr;
@@ -99,10 +99,10 @@ public class AdminRes implements IAdminCommandHandler
 				try
 				{
 					int radius = Integer.parseInt(resParam);
-					
+
 					for (L2PcInstance knownPlayer : activeChar.getKnownList().getKnownPlayersInRadius(radius))
 						doResurrect(knownPlayer);
-					
+
 					activeChar.sendMessage("Resurrected all players within a " + radius + " unit radius.");
 					return;
 				}
@@ -112,43 +112,43 @@ public class AdminRes implements IAdminCommandHandler
 				}
 			}
 		}
-		
+
 		if (obj == null)
 			obj = activeChar;
-		
+
         if (obj instanceof L2ControllableMobInstance)
         {
             activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
             return;
         }
-        
+
 		doResurrect((L2Character)obj);
-		
-		if (Config.DEBUG) 
+
+		if (Config.DEBUG)
 			_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") resurrected character "+ obj.getObjectId());
 	}
-	
+
 	private void handleNonPlayerRes(L2PcInstance activeChar)
 	{
 		handleNonPlayerRes(activeChar, "");
 	}
-	
+
 	private void handleNonPlayerRes(L2PcInstance activeChar, String radiusStr)
 	{
 		L2Object obj = activeChar.getTarget();
-		
+
 		try {
 			int radius = 0;
-			
+
 			if (!radiusStr.equals(""))
 			{
 				radius = Integer.parseInt(radiusStr);
-				
+
 				for (L2Character knownChar : activeChar.getKnownList().getKnownCharactersInRadius(radius))
 					if (!(knownChar instanceof L2PcInstance)
 					        && !(knownChar instanceof L2ControllableMobInstance))
 							doResurrect(knownChar);
-				
+
 				activeChar.sendMessage("Resurrected all non-players within a " + radius + " unit radius.");
 			}
 		}
@@ -156,7 +156,7 @@ public class AdminRes implements IAdminCommandHandler
 			activeChar.sendMessage("Enter a valid radius.");
 			return;
 		}
-		
+
 		if (obj == null || obj instanceof L2PcInstance || obj instanceof L2ControllableMobInstance)
         {
 		    activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
@@ -173,11 +173,11 @@ public class AdminRes implements IAdminCommandHandler
 		// If the target is a player, then restore the XP lost on death.
 		if (targetChar instanceof L2PcInstance)
 			((L2PcInstance)targetChar).restoreExp(100.0);
-		
+
 		// If the target is an NPC, then abort it's auto decay and respawn.
 		else
 			DecayTaskManager.getInstance().cancelDecayTask(targetChar);
-			
+
 		targetChar.doRevive();
 	}
 }

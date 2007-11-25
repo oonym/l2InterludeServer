@@ -37,12 +37,12 @@ import com.l2jserver.mmocore.network.ReceivablePacket;
 public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFactory<L2LoginClient>, IAcceptFilter
 {
 	private ThreadPoolExecutor _generalPacketsThreadPool;
-	
+
 	public SelectorHelper()
 	{
 		_generalPacketsThreadPool = new ThreadPoolExecutor(4, 6, 15L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	}
-	
+
 	/**
 	 * @see com.l2jserver.mmocore.network.IMMOExecutor#execute(com.l2jserver.mmocore.network.ReceivablePacket)
 	 */

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.idfactory.BitSetIDFactory;
+import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
@@ -46,7 +47,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 	static Logger _log = Logger.getLogger(RequestExSetPledgeCrestLarge.class.getName());
 	private int _size;
 	private byte[] _data;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -67,54 +68,54 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null) return;
-		
+
 		L2Clan clan = activeChar.getClan();
 		if (clan == null) return;
-		
+
 		if (_data == null)
 		{
 			CrestCache.getInstance().removePledgeCrestLarge(clan.getCrestId());
-			
+
             clan.setHasCrestLarge(false);
             activeChar.sendMessage("The insignia has been removed.");
-            
+
             for (L2PcInstance member : clan.getOnlineMembers(""))
                 member.broadcastUserInfo();
-            
+
             return;
 		}
-		
+
 		if (_data.length > 2176)
         {
         	activeChar.sendMessage("The insignia file size is greater than 2176 bytes.");
         	return;
         }
-		
+
 		if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_REGISTER_CREST) == L2Clan.CP_CL_REGISTER_CREST)
-		{	
+		{
 			if(clan.getHasCastle() == 0 && clan.getHasHideout() == 0)
 			{
 				activeChar.sendMessage("Only a clan that owns a clan hall or a castle can get their emblem displayed on clan related items"); //there is a system message for that but didnt found the id
 				return;
 			}
-			
+
 			CrestCache crestCache = CrestCache.getInstance();
-            
-			int newId = BitSetIDFactory.getInstance().getNextId();
-            
+
+			int newId = IdFactory.getInstance().getNextId();
+
             if (!crestCache.savePledgeCrestLarge(newId,_data))
             {
                 _log.log(Level.INFO, "Error loading large crest of clan:" + clan.getName());
                 return;
             }
-            
+
             if (clan.hasCrestLarge())
             {
                 crestCache.removePledgeCrestLarge(clan.getCrestLargeId());
             }
-            
+
             java.sql.Connection con = null;
-            
+
             try
             {
                 con = L2DatabaseFactory.getInstance().getConnection();
@@ -132,15 +133,15 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
             {
                 try { con.close(); } catch (Exception e) {}
             }
-            
+
             clan.setCrestLargeId(newId);
             clan.setHasCrestLarge(true);
-            
+
             activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED));
-            
+
             for (L2PcInstance member : clan.getOnlineMembers(""))
                 member.broadcastUserInfo();
-            
+
 		}
 	}
 
@@ -152,5 +153,5 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 	{
 		return _C__D0_11_REQUESTEXSETPLEDGECRESTLARGE;
 	}
-	
+
 }

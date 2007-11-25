@@ -24,12 +24,12 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * 
+ *
  *
  */
 public class set implements IVoicedCommandHandler
 {
-    private static final String[] VOICED_COMMANDS = { "set name", "set home", "set group" }; 
+    private static final String[] VOICED_COMMANDS = { "set name", "set home", "set group" };
 
     public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
@@ -43,15 +43,15 @@ public class set implements IVoicedCommandHandler
     	            sm.addString("Your clan privileges have been set to " + n + " by " + activeChar.getName());
     	            activeChar.sendPacket(sm);
     			}
-    			 
+
     		}
-    		
+
      	}
-    	
+
     	return true;
     }
 
- 
+
     public String[] getVoicedCommandList()
     {
         return VOICED_COMMANDS;

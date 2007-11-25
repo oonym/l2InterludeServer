@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
- * 
+ *
  * http://www.gnu.org/copyleft/gpl.html
  */
 package net.sf.l2j.gameserver.script;
@@ -28,15 +28,15 @@ import java.util.Date;
  */
 public class DateRange
 {
-	
+
     private Date _startDate, _endDate;
-    
+
     public DateRange(Date from, Date to)
     {
         _startDate   = from;
         _endDate     = to;
     }
-    
+
     public static DateRange parse(String dateRange, DateFormat format)
     {
         String[] date = dateRange.split("-");
@@ -46,9 +46,9 @@ public class DateRange
             {
                 Date start  = format.parse(date[0]);
                 Date end    = format.parse(date[1]);
-                
+
                 return new DateRange(start, end);
-            } 
+            }
             catch (ParseException e)
             {
                 System.err.println("Invalid Date Format.");
@@ -57,12 +57,12 @@ public class DateRange
         }
         return new DateRange(null, null);
     }
-    
+
     public boolean isValid()
     {
         return _startDate == null || _endDate == null;
     }
-    
+
     public boolean isWithinRange(Date date)
     {
         return date.after(_startDate) && date.before(_endDate);

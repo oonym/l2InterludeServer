@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.model;
 
 /**
  * This class ...
- * 
+ *
  * @author NightMarez
  * @version $Revision: 1.2.2.1.2.1 $ $Date: 2005/03/27 15:29:32 $
  */

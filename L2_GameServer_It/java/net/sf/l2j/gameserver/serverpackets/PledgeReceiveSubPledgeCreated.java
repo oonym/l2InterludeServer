@@ -27,7 +27,7 @@ public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 {
 	private static final String _S__FE_3F_PLEDGERECEIVESUBPLEDGECREATED = "[S] FE:3F PledgeReceiveSubPledgeCreated";
 	private SubPledge _subPledge;
-	
+
 	/**
 	 * @param member
 	 */

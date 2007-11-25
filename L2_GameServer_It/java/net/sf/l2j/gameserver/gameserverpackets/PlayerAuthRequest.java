@@ -37,7 +37,7 @@ public class PlayerAuthRequest extends GameServerBasePacket
 		writeD(key.loginOkID1);
 		writeD(key.loginOkID2);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
 	 */
@@ -46,5 +46,5 @@ public class PlayerAuthRequest extends GameServerBasePacket
 	{
 		return getBytes();
 	}
-	
+
 }

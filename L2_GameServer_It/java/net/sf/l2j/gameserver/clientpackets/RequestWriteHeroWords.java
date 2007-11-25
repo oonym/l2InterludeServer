@@ -48,7 +48,7 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -59,5 +59,5 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	{
 		return _C__FE_0C_REQUESTWRITEHEROWORDS;
 	}
-	
+
 }

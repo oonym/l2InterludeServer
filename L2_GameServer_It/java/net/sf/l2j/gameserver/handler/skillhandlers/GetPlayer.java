@@ -47,7 +47,7 @@ public class GetPlayer implements ISkillHandler
         		//trg.teleToLocation(activeChar.getX(), activeChar.getY(), activeChar.getZ(), true);
         		trg.setXYZ(activeChar.getX()+Rnd.get(-10,10), activeChar.getY()+Rnd.get(-10,10), activeChar.getZ());
         		trg.sendPacket(new ValidateLocation(trg));
-        	}        		
+        	}
         }
     }
 

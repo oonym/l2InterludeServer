@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class AdminGeodata implements IAdminCommandHandler
 {
 	//private static Logger _log = Logger.getLogger(AdminKill.class.getName());
-	private static final String[] ADMIN_COMMANDS = 
+	private static final String[] ADMIN_COMMANDS =
 		{
 		"admin_geo_z",
 		"admin_geo_type",
@@ -42,24 +42,24 @@ public class AdminGeodata implements IAdminCommandHandler
 		"admin_geo_unload"
 		};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
+
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
         if (!Config.ALT_PRIVILEGES_ADMIN)
-            if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) 
+            if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
             	return false;
-        
+
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
         if (Config.GEODATA < 1)
         {
-        	activeChar.sendMessage("Geo Engine is Turned Off!");        			
+        	activeChar.sendMessage("Geo Engine is Turned Off!");
         	return true;
         }
-        
-        if (command.equals("admin_geo_z"))                    
-        	activeChar.sendMessage("GeoEngine: Geo_Z = "+GeoData.getInstance().getHeight(activeChar.getX(),activeChar.getY(),activeChar.getZ())+ " Loc_Z = "+activeChar.getZ());            
+
+        if (command.equals("admin_geo_z"))
+        	activeChar.sendMessage("GeoEngine: Geo_Z = "+GeoData.getInstance().getHeight(activeChar.getX(),activeChar.getY(),activeChar.getZ())+ " Loc_Z = "+activeChar.getZ());
         else if (command.equals("admin_geo_type"))
         {
             short type = GeoData.getInstance().getType(activeChar.getX(),activeChar.getY());
@@ -70,26 +70,26 @@ public class AdminGeodata implements IAdminCommandHandler
         else if (command.equals("admin_geo_nswe"))
         {
             String result = "";
-            short nswe = GeoData.getInstance().getNSWE(activeChar.getX(),activeChar.getY(),activeChar.getZ());            
+            short nswe = GeoData.getInstance().getNSWE(activeChar.getX(),activeChar.getY(),activeChar.getZ());
             if ((nswe & 8) == 0) result += " N";
             if ((nswe & 4) == 0) result += " S";
             if ((nswe & 2) == 0) result += " W";
             if ((nswe & 1) == 0) result += " E";
-            activeChar.sendMessage("GeoEngine: Geo_NSWE -> "+nswe+ "->"+result);            
+            activeChar.sendMessage("GeoEngine: Geo_NSWE -> "+nswe+ "->"+result);
         }
         else if (command.equals("admin_geo_los"))
         {
             if (activeChar.getTarget() != null)
             {
-                if(GeoData.getInstance().canSeeTargetDebug(activeChar,activeChar.getTarget()))                
-                    activeChar.sendMessage("GeoEngine: Can See Target");                
-                else 
+                if(GeoData.getInstance().canSeeTargetDebug(activeChar,activeChar.getTarget()))
+                    activeChar.sendMessage("GeoEngine: Can See Target");
+                else
                 	activeChar.sendMessage("GeoEngine: Can't See Target");
-                
+
             }
-            else            
-                activeChar.sendMessage("None Target!");            
-        }   
+            else
+                activeChar.sendMessage("None Target!");
+        }
         else if(command.equals("admin_geo_position"))
         {
         	activeChar.sendMessage("GeoEngine: Your current position: ");
@@ -108,7 +108,7 @@ public class AdminGeodata implements IAdminCommandHandler
         			byte rx = Byte.parseByte(v[0]);
         			byte ry = Byte.parseByte(v[1]);
         			boolean result = GeoData.loadGeodataFile(rx, ry);
-        			
+
         			if(result)
         				activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] loaded succesfuly");
         			else
@@ -128,7 +128,7 @@ public class AdminGeodata implements IAdminCommandHandler
         		{
         			byte rx = Byte.parseByte(v[0]);
         			byte ry = Byte.parseByte(v[1]);
-        			
+
         			GeoData.unloadGeodata(rx, ry);
         			activeChar.sendMessage("GeoEngine: File for region ["+rx+","+ry+"] unloaded.");
         		}
@@ -149,13 +149,13 @@ public class AdminGeodata implements IAdminCommandHandler
         }
 		return true;
 	}
-	
-	public String[] getAdminCommandList() 
+
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private boolean checkLevel(int level) 
+
+	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}

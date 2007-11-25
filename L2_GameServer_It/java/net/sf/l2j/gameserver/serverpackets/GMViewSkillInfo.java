@@ -27,7 +27,7 @@ public class GMViewSkillInfo extends L2GameServerPacket
 	private static final String _S__91_GMViewSkillInfo = "[S] 91 GMViewSkillInfo";
 	private L2PcInstance _activeChar;
 	private L2Skill[] _skills;
-	
+
 	public GMViewSkillInfo (L2PcInstance cha)
 	{
 		_activeChar = cha;
@@ -42,7 +42,7 @@ public class GMViewSkillInfo extends L2GameServerPacket
 		writeC(0x91);
 		writeS(_activeChar.getName());
 		writeD(_skills.length);
-		
+
 		for (int i = 0; i < _skills.length; i++)
 		{
 			L2Skill skill = _skills[i];
@@ -52,7 +52,7 @@ public class GMViewSkillInfo extends L2GameServerPacket
             writeC(0x00); //c5
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

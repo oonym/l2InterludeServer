@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.3.2.6 $ $Date: 2005/03/27 15:29:57 $
  */
 public class PrivateStoreListSell extends L2GameServerPacket
@@ -36,7 +36,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 	private int _playerAdena;
 	private boolean _packageSale;
 	private TradeList.TradeItem[] _items;
-	
+
 	// player's private shop
 	public PrivateStoreListSell(L2PcInstance player, L2PcInstance storePlayer)
 	{
@@ -46,7 +46,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 		_items = _storePlayer.getSellList().getItems();
 		_packageSale = _storePlayer.getSellList().isPackaged();
 	}
-	
+
 	// lease shop
 	@Deprecated public PrivateStoreListSell(L2PcInstance player, L2MerchantInstance storeMerchant)
 	{
@@ -55,7 +55,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 		_items = _storePlayer.getSellList().getItems();
 		_packageSale = _storePlayer.getSellList().isPackaged();
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -63,7 +63,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 		writeD(_storePlayer.getObjectId());
 		writeD(_packageSale ? 1 : 0);
 		writeD(_playerAdena);
-		
+
 		writeD(_items.length);
 		for (TradeList.TradeItem item : _items)
 		{
@@ -79,7 +79,7 @@ public class PrivateStoreListSell extends L2GameServerPacket
 			writeD(item.getItem().getReferencePrice()); //store price
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

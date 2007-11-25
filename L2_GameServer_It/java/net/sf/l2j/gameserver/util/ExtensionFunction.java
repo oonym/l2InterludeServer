@@ -5,7 +5,7 @@
  * $Date: $
  * $Revision: $
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -28,7 +28,7 @@ package net.sf.l2j.gameserver.util;
 /**
  * This interface can be implemented by extensions to register simple functions with the DynamicExtension handler
  * It's in the responsibility of the extensions to interpret the get and set functions
- * 
+ *
  * @version $Revision: $ $Date: $
  * @author  Galun
  */

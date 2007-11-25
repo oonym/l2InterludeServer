@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * Format: (ch)ddddddd
  * d: Number of Inventory Slots
  * d: Number of Warehouse Slots
- * d: Number of Freight Slots (unconfirmed) (200 for a low level dwarf) 
+ * d: Number of Freight Slots (unconfirmed) (200 for a low level dwarf)
  * d: Private Sell Store Slots (unconfirmed) (4 for a low level dwarf)
  * d: Private Buy Store Slots (unconfirmed) (5 for a low level dwarf)
  * d: Dwarven Recipe Book Slots
@@ -43,16 +43,16 @@ public class ExStorageMaxCount extends L2GameServerPacket
 	private int _privateBuy;
 	private int _receipeD;
 	private int _recipe;
-	
+
 	public ExStorageMaxCount(L2PcInstance character)
 	{
-		_activeChar = character;		
+		_activeChar = character;
 		_inventory = _activeChar.GetInventoryLimit();
         _warehouse = _activeChar.GetWareHouseLimit();
 		_privateSell = _activeChar.GetPrivateSellStoreLimit();
 		_privateBuy = _activeChar.GetPrivateBuyStoreLimit();
-		_freight = _activeChar.GetFreightLimit();  
-		_receipeD = _activeChar.GetDwarfRecipeLimit();  
+		_freight = _activeChar.GetFreightLimit();
+		_receipeD = _activeChar.GetDwarfRecipeLimit();
 		_recipe = _activeChar.GetCommonRecipeLimit();
 	}
 
@@ -64,7 +64,7 @@ public class ExStorageMaxCount extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x2e);
-		
+
 		writeD(_inventory);
 		writeD(_warehouse);
 		writeD(_freight);
@@ -72,7 +72,7 @@ public class ExStorageMaxCount extends L2GameServerPacket
 		writeD(_privateBuy);
 		writeD(_receipeD);
 		writeD(_recipe);
-				
+
 	}
 
 	/* (non-Javadoc)
@@ -83,5 +83,5 @@ public class ExStorageMaxCount extends L2GameServerPacket
 	{
 		return _S__FE_2E_EXSTORAGEMAXCOUNT;
 	}
-	
+
 }

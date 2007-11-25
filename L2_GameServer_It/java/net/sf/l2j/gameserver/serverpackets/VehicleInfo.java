@@ -44,11 +44,11 @@ public class VehicleInfo  extends L2GameServerPacket
 	{
 		writeC(0x59);
 		writeD(_boat.getObjectId());
-		writeD(_boat.getX()); 
-		writeD(_boat.getY()); 
-        writeD(_boat.getZ()); 
-        writeD(_boat.getPosition().getHeading()); 
-		
+		writeD(_boat.getX());
+		writeD(_boat.getY());
+        writeD(_boat.getZ());
+        writeD(_boat.getPosition().getHeading());
+
 	}
 
 	/* (non-Javadoc)

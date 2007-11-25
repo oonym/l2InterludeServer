@@ -34,7 +34,7 @@ import net.sf.l2j.util.Point3D;
 public final class RequestCursedWeaponLocation extends L2GameClientPacket
 {
 	private static final String _C__D0_23_REQUESTCURSEDWEAPONLOCATION = "[C] D0:23 RequestCursedWeaponLocation";
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -51,18 +51,18 @@ public final class RequestCursedWeaponLocation extends L2GameClientPacket
 		L2Character activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		
+
 		List<CursedWeaponInfo> list = new FastList<CursedWeaponInfo>();
 		for (CursedWeapon cw : CursedWeaponsManager.getInstance().getCursedWeapons())
 		{
 			if (!cw.isActive()) continue;
-			
+
 			Point3D pos = cw.getWorldPosition();
-			
+
 			if (pos != null)
 				list.add(new CursedWeaponInfo(pos, cw.getItemId(), cw.isActivated() ? 1 : 0));
 		}
-		
+
 
 		//send the ExCursedWeaponLocation
 		if (!list.isEmpty())

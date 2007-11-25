@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.6.2 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PlaySound extends L2GameServerPacket
@@ -33,7 +33,7 @@ public class PlaySound extends L2GameServerPacket
     private int _unknown5;
     private int _unknown6;
     private int _unknown7;
-    
+
     public PlaySound(String soundFile)
     {
         _unknown1   = 0;
@@ -55,8 +55,8 @@ public class PlaySound extends L2GameServerPacket
         _unknown6   = unknown6;
         _unknown7   = unknown7;
     }
-    
-    
+
+
     @Override
 	protected final void writeImpl()
     {
@@ -69,7 +69,7 @@ public class PlaySound extends L2GameServerPacket
         writeD(_unknown6);              //y
         writeD(_unknown7);				//z
     }
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */

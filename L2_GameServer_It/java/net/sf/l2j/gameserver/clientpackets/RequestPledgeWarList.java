@@ -24,15 +24,15 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveWarList;
 /**
  * Format: (ch) dd
  * @author  -Wooden-
- * 
+ *
  */
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
     private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
     private int _unk1;
     private int _tab;
-    
-    
+
+
     @Override
 	protected void readImpl()
     {
@@ -52,7 +52,7 @@ public final class RequestPledgeWarList extends L2GameClientPacket
         if(activeChar == null)
         	return;
         if (activeChar.getClan() == null) return;
-        
+
         //do we need powers to do that??
         activeChar.sendPacket(new PledgeReceiveWarList(activeChar.getClan(),_tab));
     }
@@ -65,5 +65,5 @@ public final class RequestPledgeWarList extends L2GameClientPacket
     {
         return _C__D0_1E_REQUESTPLEDGEWARLIST;
     }
-    
+
 }

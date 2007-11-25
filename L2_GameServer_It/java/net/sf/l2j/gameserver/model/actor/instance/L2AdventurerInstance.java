@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: $ $Date: $
  * @author  LBaldi
  */
@@ -71,7 +71,7 @@ public class L2AdventurerInstance extends L2FolkInstance
             String filename = "data/html/adventurer_guildsman/raid_info/info.htm";
             if (bossLevel != 0) { filename = "data/html/adventurer_guildsman/raid_info/level" + bossLevel + ".htm"; }
             showChatWindow(player, bossLevel, filename);
-        }        
+        }
         else if (command.equalsIgnoreCase("questlist"))
         {
             player.sendPacket(new ExQuestInfo());
@@ -93,7 +93,7 @@ public class L2AdventurerInstance extends L2FolkInstance
         return "data/html/adventurer_guildsman/" + pom + ".htm";
     }
     private void showChatWindow(L2PcInstance player, int bossLevel, String filename)
-    {   
+    {
         showChatWindow(player, filename);
     }
 }

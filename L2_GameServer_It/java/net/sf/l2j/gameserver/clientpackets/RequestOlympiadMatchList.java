@@ -28,19 +28,19 @@ package net.sf.l2j.gameserver.clientpackets;
 public final class RequestOlympiadMatchList extends L2GameClientPacket
 {
 	private static final String _C__D0_13_REQUESTOLYMPIADMATCHLIST = "[C] D0:13 RequestOlympiadMatchList";
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
 		// trigger packet
 	}
-	
+
 	@Override
 	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -51,5 +51,5 @@ public final class RequestOlympiadMatchList extends L2GameClientPacket
 	{
 		return _C__D0_13_REQUESTOLYMPIADMATCHLIST;
 	}
-	
+
 }

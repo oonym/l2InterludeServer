@@ -40,7 +40,7 @@ public class InitLS extends ServerBasePacket
     	writeD(publickey.length);
     	writeB(publickey);
     }
-	
+
 	@Override
 	public byte[] getContent()
 	{

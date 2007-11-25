@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestMagicSkillUse extends L2GameClientPacket
@@ -39,7 +39,7 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
 	private int _magicId;
 	private boolean _ctrlPressed;
 	private boolean _shiftPressed;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -59,16 +59,16 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
 
 		// Get the level of the used skill
 		int level = activeChar.getSkillLevel(_magicId);
-		if (level <= 0) 
+		if (level <= 0)
 		{
 			activeChar.sendPacket(new ActionFailed());
-			return; 
+			return;
 		}
 
 		if (activeChar.isOutOfControl())
 		{
 			activeChar.sendPacket(new ActionFailed());
-			return; 
+			return;
 		}
 
 		// Get the L2Skill template corresponding to the skillID received from the client

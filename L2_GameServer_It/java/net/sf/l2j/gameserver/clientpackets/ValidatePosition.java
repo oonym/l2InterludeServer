@@ -31,25 +31,25 @@ import net.sf.l2j.gameserver.serverpackets.ValidateLocationInVehicle;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.13.4.7 $ $Date: 2005/03/27 15:29:30 $
  */
 public class ValidatePosition extends L2GameClientPacket
 {
     private static Logger _log = Logger.getLogger(ValidatePosition.class.getName());
     private static final String _C__48_VALIDATEPOSITION = "[C] 48 ValidatePosition";
-    
+
     /** urgent messages, execute immediatly */
     public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
-    
+
     private int _x;
     private int _y;
     private int _z;
     private int _heading;
     @SuppressWarnings("unused")
     private int _data;
-    
-    
+
+
     @Override
 	protected void readImpl()
     {
@@ -59,13 +59,13 @@ public class ValidatePosition extends L2GameClientPacket
         _heading  = readD();
         _data  = readD();
     }
-    
+
     @Override
 	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar == null || activeChar.isTeleporting()) return;
-        
+
         if (Config.COORD_SYNCHRONIZE > 0)
         {
             activeChar.setClientX(_x);
@@ -75,15 +75,15 @@ public class ValidatePosition extends L2GameClientPacket
             int realX = activeChar.getX();
             int realY = activeChar.getY();
             // int realZ = activeChar.getZ();
-            
+
             double dx = _x - realX;
             double dy = _y - realY;
             double diffSq = (dx*dx + dy*dy);
 
             /*
-            if (Config.DEVELOPER && false) 
+            if (Config.DEVELOPER && false)
             {
-            	int dxs = (_x - activeChar._lastClientPosition.x); 
+            	int dxs = (_x - activeChar._lastClientPosition.x);
             	int dys = (_y - activeChar._lastClientPosition.y);
             	int dist = (int)Math.sqrt(dxs*dxs + dys*dys);
             	int heading = dist > 0 ? (int)(Math.atan2(-dys/dist, -dxs/dist) * 10430.378350470452724949566316381) + 32768 : 0;
@@ -105,7 +105,7 @@ public class ValidatePosition extends L2GameClientPacket
                     	activeChar.setXYZ(_x, _y, _z);
                     activeChar.setHeading(_heading);
                 }
-                else if ((Config.COORD_SYNCHRONIZE & 2) == 2 
+                else if ((Config.COORD_SYNCHRONIZE & 2) == 2
                         && diffSq > 10000) // more than can be considered to be result of latency
                 {
                     if (Config.DEVELOPER) System.out.println(activeChar.getName() + ": Synchronizing position Server --> Client");
@@ -131,31 +131,31 @@ public class ValidatePosition extends L2GameClientPacket
             int realX = activeChar.getX();
             int realY = activeChar.getY();
             int realZ = activeChar.getZ();
-            
+
             double dx = _x - realX;
             double dy = _y - realY;
             double diffSq = (dx*dx + dy*dy);
             if (diffSq < 250000)
                 activeChar.setXYZ(realX,realY,_z);
             int realHeading = activeChar.getHeading();
-        
+
             //activeChar.setHeading(_heading);
-            
+
             //TODO: do we need to validate?
-            /*double dx = (_x - realX); 
-             double dy = (_y - realY); 
+            /*double dx = (_x - realX);
+             double dy = (_y - realY);
              double dist = Math.sqrt(dx*dx + dy*dy);
              if ((dist < 500)&&(dist > 2)) //check it wasnt teleportation, and char isn't there yet
              activeChar.sendPacket(new CharMoveToLocation(activeChar));*/
-            
+
             if (Config.DEBUG) {
                 _log.fine("client pos: "+ _x + " "+ _y + " "+ _z +" head "+ _heading);
                 _log.fine("server pos: "+ realX + " "+realY+ " "+realZ +" head "+realHeading);
             }
-            
+
             if (Config.ACTIVATE_POSITION_RECORDER && !activeChar.isFlying() && Universe.getInstance().shouldLog(activeChar.getObjectId()))
                 Universe.getInstance().registerHeight(realX, realY, _z);
-            
+
             if (Config.DEVELOPER)
             {
                 if (diffSq > 1000000) {
@@ -173,7 +173,7 @@ public class ValidatePosition extends L2GameClientPacket
         }
 		if(activeChar.getParty() != null)
 			activeChar.getParty().broadcastToPartyMembers(activeChar,new PartyMemberPosition(activeChar));
-		
+
 		if (Config.ALLOW_WATER)
 			activeChar.checkWaterState();
 
@@ -181,7 +181,7 @@ public class ValidatePosition extends L2GameClientPacket
             if (GeoEditorListener.getInstance().getThread() != null  && GeoEditorListener.getInstance().getThread().isWorking()  && GeoEditorListener.getInstance().getThread().isSend(activeChar))
             	GeoEditorListener.getInstance().getThread().sendGmPosition(_x,_y,(short)_z);
     }
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
@@ -190,7 +190,7 @@ public class ValidatePosition extends L2GameClientPacket
     {
         return _C__48_VALIDATEPOSITION;
     }
-    
+
     @Deprecated
     public boolean equal(ValidatePosition pos)
     {

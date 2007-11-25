@@ -41,10 +41,10 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 	public ReceivablePacket<L2LoginClient> handlePacket(ByteBuffer buf, L2LoginClient client)
 	{
 		int opcode = buf.get() & 0xFF;
-		
+
 		ReceivablePacket<L2LoginClient> packet = null;
 		LoginClientState state = client.getState();
-		
+
 		switch (state)
 		{
 			case CONNECTED:
@@ -84,7 +84,7 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 		}
 		return packet;
 	}
-	
+
 	private void debugOpcode(int opcode, LoginClientState state)
 	{
 		System.out.println("Unknown Opcode: "+opcode+" for state: "+state.name());

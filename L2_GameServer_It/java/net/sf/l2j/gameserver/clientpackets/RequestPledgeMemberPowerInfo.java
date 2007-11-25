@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceivePowerInfo;
 /**
  * Format: (ch) dS
  * @author  -Wooden-
- * 
+ *
  */
 public final class RequestPledgeMemberPowerInfo extends L2GameClientPacket
 {
@@ -34,8 +34,8 @@ public final class RequestPledgeMemberPowerInfo extends L2GameClientPacket
     @SuppressWarnings("unused")
     private int _unk1;
     private String _player;
-    
-    
+
+
     @Override
 	protected void readImpl()
     {
@@ -72,5 +72,5 @@ public final class RequestPledgeMemberPowerInfo extends L2GameClientPacket
     {
         return _C__D0_1B_REQUESTPLEDGEMEMBERPOWERINFO;
     }
-    
+
 }

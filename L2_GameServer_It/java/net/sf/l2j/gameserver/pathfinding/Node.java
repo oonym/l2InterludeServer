@@ -22,14 +22,14 @@ package net.sf.l2j.gameserver.pathfinding;
  * @author -Nemesiss-
  */
 public class Node
-{	
-	private final AbstractNodeLoc _loc;	
+{
+	private final AbstractNodeLoc _loc;
 	private final int _neighborsIdx;
 	private Node[] _neighbors;
 	private Node _parent;
 	private short _cost;
-	
-	
+
+
 	public Node(AbstractNodeLoc Loc, int Neighbors_idx)
 	{
 		_loc = Loc;
@@ -40,12 +40,12 @@ public class Node
 	{
 		_parent = p;
 	}
-	
+
 	public void setCost(int cost)
 	{
 		_cost = (short)cost;
 	}
-	
+
 	public void attacheNeighbors()
 	{
 		if(_loc == null) _neighbors = null;
@@ -66,7 +66,7 @@ public class Node
 	{
 		return _loc;
 	}
-	
+
 	public short getCost()
 	{
 		return _cost;

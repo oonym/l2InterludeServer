@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.CharSelected;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
 public class CharacterSelected extends L2GameClientPacket
@@ -85,7 +85,7 @@ public class CharacterSelected extends L2GameClientPacket
 					{
 						_log.fine("selected slot:" + _charSlot);
 					}
-					
+
 					//load up character from disk
 					L2PcInstance cha = getClient().loadCharFromDisk(_charSlot);
 					if (cha == null)
@@ -99,10 +99,10 @@ public class CharacterSelected extends L2GameClientPacket
 						cha.closeNetConnection();
 						return;
 					}
-					
+
 					cha.setClient(getClient());
 					getClient().setActiveChar(cha);
-					
+
 					getClient().setState(GameClientState.IN_GAME);
 					CharSelected cs = new CharSelected(cha, getClient().getSessionId().playOkID1);
 					sendPacket(cs);
@@ -176,7 +176,7 @@ public class CharacterSelected extends L2GameClientPacket
 						byte[] data = bais.toByteArray();
 						if (data.length != 0)
 						{
-							//connection.sendPacket(data);	
+							//connection.sendPacket(data);
 						}
 						else
 						{
@@ -210,5 +210,5 @@ public class CharacterSelected extends L2GameClientPacket
 	public String getType()
 	{
 		return _C__0D_CHARACTERSELECTED;
-	}	
+	}
 }

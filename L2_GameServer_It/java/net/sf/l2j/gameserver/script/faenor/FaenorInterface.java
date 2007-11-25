@@ -45,7 +45,7 @@ import org.apache.bsf.BSFManager;
 public class FaenorInterface implements EngineInterface
 {
     private static FaenorInterface _instance;
-    
+
     public static FaenorInterface getInstance()
     {
         if (_instance == null)
@@ -54,7 +54,7 @@ public class FaenorInterface implements EngineInterface
         }
         return _instance;
     }
-    
+
     public FaenorInterface()
     {
     }
@@ -69,9 +69,9 @@ public class FaenorInterface implements EngineInterface
     }
 
     /**
-     * 
+     *
      * Adds a new Quest Drop to an NPC
-     * 
+     *
      * @see net.sf.l2j.gameserver.script.EngineInterface#addQuestDrop(int)
      */
     public void addQuestDrop(int npcID, int itemID, int min, int max, int chance, String questID, String[] states)
@@ -92,9 +92,9 @@ public class FaenorInterface implements EngineInterface
     }
 
     /**
-     * 
+     *
      * Adds a new Drop to an NPC
-     * 
+     *
      * @see net.sf.l2j.gameserver.script.EngineInterface#addQuestDrop(int)
      */
     public void addDrop(int npcID, int itemID, int min, int max, boolean sweep, int chance) throws NullPointerException
@@ -113,11 +113,11 @@ public class FaenorInterface implements EngineInterface
 
         addDrop(npc, drop, sweep);
     }
-    
+
 	/**
 	 * Adds a new drop to an NPC.  If the drop is sweep, it adds it to the NPC's Sweep category
-	 * If the drop is non-sweep, it creates a new category for this drop. 
-	 *  
+	 * If the drop is non-sweep, it creates a new category for this drop.
+	 *
 	 * @param npc
 	 * @param drop
 	 * @param sweep
@@ -142,9 +142,9 @@ public class FaenorInterface implements EngineInterface
     }
 
 	/**
-	 * Adds a new drop to an NPC, in the specified category.  If the category does not exist, 
-	 * it is created.  
-	 *  
+	 * Adds a new drop to an NPC, in the specified category.  If the category does not exist,
+	 * it is created.
+	 *
 	 * @param npc
 	 * @param drop
 	 * @param sweep
@@ -176,17 +176,17 @@ public class FaenorInterface implements EngineInterface
         }
         return questDrops;
     }
-    
+
     public void addEventDrop(int[] items, int[] count, double chance, DateRange range)
     {
         EventDroplist.getInstance().addGlobalDrop(items, count, (int)(chance * L2DropData.MAX_CHANCE), range);
     }
-    
+
     public void onPlayerLogin(String[] message, DateRange validDateRange)
     {
         Announcements.getInstance().addEventAnnouncement(validDateRange, message);
     }
-    
+
     public void addPetData(BSFManager context, int petID, int levelStart, int levelEnd, Map<String, String> stats)
 		throws BSFException
     {
@@ -197,7 +197,7 @@ public class FaenorInterface implements EngineInterface
             petData[level - 1]  = new L2PetData();
             petData[level - 1].setPetID(petID);
             petData[level - 1].setPetLevel(level);
-            
+
 	        context.declareBean("level", new Double(level), Double.TYPE);
             for (String stat : stats.keySet())
             {

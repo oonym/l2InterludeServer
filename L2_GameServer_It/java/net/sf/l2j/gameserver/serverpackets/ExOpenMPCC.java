@@ -20,9 +20,9 @@ package net.sf.l2j.gameserver.serverpackets;
 /**
  *
  * @author  chris_00
- * 
+ *
  * opens the CommandChannel Information window
- * 
+ *
  */
 public class ExOpenMPCC extends L2GameServerPacket
 {
@@ -37,7 +37,7 @@ public class ExOpenMPCC extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x25);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -48,5 +48,5 @@ public class ExOpenMPCC extends L2GameServerPacket
 	{
 		return _S__FE_25_EXOPENMPCC;
 	}
-	
+
 }

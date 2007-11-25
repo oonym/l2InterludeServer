@@ -24,15 +24,15 @@ import net.sf.l2j.gameserver.serverpackets.PrivateStoreManageListSell;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPrivateStoreManageSell extends L2GameClientPacket
 {
 	private static final String _C__73_REQUESTPRIVATESTOREMANAGESELL = "[C] 73 RequestPrivateStoreManageSell";
 	//private static Logger _log = Logger.getLogger(RequestPrivateStoreManage.class.getName());
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -43,14 +43,14 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null) return;
-        
+
         // Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
         if (player.isAlikeDead())
         {
             sendPacket(new ActionFailed());
             return;
         }
-        
+
         if (player.isInOlympiadMode())
         {
             sendPacket(new ActionFailed());
@@ -60,7 +60,7 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
         {
         	return;
         }
-        if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL 
+        if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL
         		|| player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL + 1
         		|| player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
         	player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);

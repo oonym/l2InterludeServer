@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestSellItem extends L2GameClientPacket
@@ -48,24 +48,24 @@ public final class RequestSellItem extends L2GameClientPacket
 	private int _listId;
 	private int _count;
 	private int[] _items; // count*3
-	
+
 	/**
 	 * packet type id 0x1e
-	 * 
+	 *
 	 * sample
-	 * 
+	 *
 	 * 1e
 	 * 00 00 00 00		// list id
 	 * 02 00 00 00		// number of items
-	 * 
+	 *
 	 * 71 72 00 10		// object id
 	 * ea 05 00 00		// item id
 	 * 01 00 00 00		// item count
-	 * 
+	 *
 	 * 76 4b 00 10		// object id
 	 * 2e 0a 00 00		// item id
 	 * 01 00 00 00		// item count
-	 * 
+	 *
 	 * format:		cdd (ddd)
 	 * @param decrypt
 	 */
@@ -84,7 +84,7 @@ public final class RequestSellItem extends L2GameClientPacket
 		{
 			int objectId = readD(); _items[i * 3 + 0] = objectId;
 			int itemId   = readD(); _items[i * 3 + 1] = itemId;
-			long cnt      = readD(); 
+			long cnt      = readD();
 			if (cnt > Integer.MAX_VALUE || cnt <= 0)
 			{
 			    _count = 0; _items = null;
@@ -111,7 +111,7 @@ public final class RequestSellItem extends L2GameClientPacket
 
         boolean ok = true;
         String htmlFolder = "";
- 
+
         if (target != null)
         {
         	if (target instanceof L2MerchantInstance)
@@ -137,7 +137,7 @@ public final class RequestSellItem extends L2GameClientPacket
 				return;
 			}
 		}
-		
+
 		long totalPrice = 0;
 		// Proceed the sell
 		for (int i = 0; i < _count; i++)
@@ -167,7 +167,7 @@ public final class RequestSellItem extends L2GameClientPacket
             }
 
 			item = player.getInventory().destroyItem("Sell", objectId, count, player, null);
-			
+
 /* TODO: Disabled until Leaseholders are rewritten ;-)
 			int price = item.getReferencePrice()*(int)count/2;
 			L2ItemInstance li = null;

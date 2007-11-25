@@ -120,7 +120,7 @@ final class DocumentItem extends DocumentBase
 
         _currentItem.id = itemId;
         _currentItem.name = itemName;
-        
+
         Item item;
         if ((item = _itemData.get(_currentItem.id)) == null)
         {

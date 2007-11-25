@@ -25,12 +25,12 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * 
+ *
  *
  */
 public class Loc implements IUserCommandHandler
 {
-    private static final int[] COMMAND_IDS = { 0 }; 
+    private static final int[] COMMAND_IDS = { 0 };
 
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)

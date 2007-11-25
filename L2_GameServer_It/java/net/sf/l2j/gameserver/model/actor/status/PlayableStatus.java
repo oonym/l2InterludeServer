@@ -24,7 +24,7 @@ public class PlayableStatus extends CharStatus
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public PlayableStatus(L2PlayableInstance activeChar)

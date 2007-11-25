@@ -33,7 +33,7 @@ public class WorldObjectTree<T extends L2Object> extends L2ObjectMap<T>
 	private final ReentrantReadWriteLock _rwl = new ReentrantReadWriteLock();
     private final Lock _r = _rwl.readLock();
     private final Lock _w = _rwl.writeLock();
-    
+
 	/**
 	 * @see net.sf.l2j.util.L2ObjectMap#size()
 	 */

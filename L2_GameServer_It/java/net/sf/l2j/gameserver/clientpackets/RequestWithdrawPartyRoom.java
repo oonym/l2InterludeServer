@@ -31,8 +31,8 @@ public final class RequestWithdrawPartyRoom extends L2GameClientPacket
 	private static final String _C__D0_02_REQUESTWITHDRAWPARTYROOM = "[C] D0:02 RequestWithdrawPartyRoom";
 	private int _data1;
 	private int _data2;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{

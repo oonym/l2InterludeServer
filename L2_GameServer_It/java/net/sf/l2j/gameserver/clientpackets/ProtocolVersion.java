@@ -25,14 +25,14 @@ import net.sf.l2j.gameserver.serverpackets.KeyPacket;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.2.8.2.8 $ $Date: 2005/04/02 10:43:04 $
  */
 public final class ProtocolVersion extends L2GameClientPacket
 {
 	private static final String _C__00_PROTOCOLVERSION = "[C] 00 ProtocolVersion";
 	static Logger _log = Logger.getLogger(ProtocolVersion.class.getName());
-    
+
     private int _version;
 
 	@Override
@@ -40,7 +40,7 @@ public final class ProtocolVersion extends L2GameClientPacket
 	{
 		_version  = readD();
 	}
-	
+
 	@Override
 	protected void runImpl()
 	{
@@ -59,16 +59,16 @@ public final class ProtocolVersion extends L2GameClientPacket
         }
         else
         {
-        	if (Config.DEBUG) 
+        	if (Config.DEBUG)
         	{
         		_log.fine("Client Protocol Revision is ok: "+_version);
         	}
-        	
+
         	KeyPacket pk = new KeyPacket(getClient().enableCrypt());
         	getClient().sendPacket(pk);
         }
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

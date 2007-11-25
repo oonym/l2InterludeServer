@@ -184,7 +184,7 @@ public class L2MerchantInstance extends L2FolkInstance
             L2Multisell.getInstance().SeparateAndSend(val, player, false, getCastle().getTaxRate());
         }
         else if (actualCommand.equalsIgnoreCase("Exc_Multisell"))
-        { 
+        {
             if (st.countTokens() < 1) return;
 
             int val = Integer.parseInt(st.nextToken());
@@ -222,7 +222,7 @@ public class L2MerchantInstance extends L2FolkInstance
         if (player == null || player.getPet() != null || player.isMounted() || player.isRentedPet())
             return;
         if(!player.disarmWeapons()) return;
-        
+
         int petId;
         double price = 1;
         int cost[] = {1800, 7200, 720000, 6480000};

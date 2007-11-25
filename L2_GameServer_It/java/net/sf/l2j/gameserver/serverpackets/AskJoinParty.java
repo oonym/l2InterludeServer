@@ -24,14 +24,14 @@ package net.sf.l2j.gameserver.serverpackets;
  *
  * sample
  * <p>
- * 4b 
- * c1 b2 e0 4a 
+ * 4b
+ * c1 b2 e0 4a
  * 00 00 00 00
  * <p>
- * 
+ *
  * format
  * cdd
- * 
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class AskJoinParty extends L2GameServerPacket
@@ -44,14 +44,14 @@ public class AskJoinParty extends L2GameServerPacket
 
 	/**
 	 * @param int objectId of the target
-	 * @param int 
+	 * @param int
 	 */
 	public AskJoinParty(String requestorName, int itemDistribution)
 	{
 		_requestorName = requestorName;
 		_itemDistribution = itemDistribution;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -59,7 +59,7 @@ public class AskJoinParty extends L2GameServerPacket
 		writeS(_requestorName);
 		writeD(_itemDistribution);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

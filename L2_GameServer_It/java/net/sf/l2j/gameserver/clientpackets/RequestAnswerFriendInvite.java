@@ -28,21 +28,21 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  *  sample
- *  5F 
+ *  5F
  *  01 00 00 00
- * 
+ *
  *  format  cdd
- * 
- * 
+ *
+ *
  * @version $Revision: 1.7.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestAnswerFriendInvite extends L2GameClientPacket
 {
 	private static final String _C__5F_REQUESTANSWERFRIENDINVITE = "[C] 5F RequestAnswerFriendInvite";
 	private static Logger _log = Logger.getLogger(RequestAnswerFriendInvite.class.getName());
-	
+
 	private int _response;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -59,10 +59,10 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
     		if (requestor == null)
     		    return;
 
-    		if (_response == 1) 
+    		if (_response == 1)
             {
         		java.sql.Connection con = null;
-        		try 
+        		try
         		{
         		    con = L2DatabaseFactory.getInstance().getConnection();
         		    PreparedStatement statement = con.prepareStatement("INSERT INTO character_friends (char_id, friend_id, friend_name) VALUES (?, ?, ?), (?, ?, ?)");
@@ -76,18 +76,18 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
         		    statement.close();
         			SystemMessage msg = new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
         			requestor.sendPacket(msg);
-                    
+
         			//Player added to your friendlist
             		msg = new SystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS);
         			msg.addString(player.getName());
             		requestor.sendPacket(msg);
-                    
+
         			//has joined as friend.
             		msg = new SystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND);
         			msg.addString(requestor.getName());
             		player.sendPacket(msg);
             		msg = null;
-        		} 
+        		}
         		catch (Exception e)
         		{
         		    _log.warning("could not add friend objectid: "+ e);
@@ -96,13 +96,13 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
         		{
         		    try { con.close(); } catch (Exception e) {}
         		}
-    		} else 
+    		} else
             {
     			SystemMessage msg = new SystemMessage(SystemMessageId.FAILED_TO_INVITE_A_FRIEND);
     			requestor.sendPacket(msg);
     			msg = null;
     		}
-    		
+
     		player.setActiveRequester(null);
     		requestor.onTransactionResponse();
         }

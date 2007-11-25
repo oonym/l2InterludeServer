@@ -39,8 +39,8 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
     {
         if (command.startsWith("RideWyvern"))
         {
-        	if(player.getPet() == null) 
-        	{   
+        	if(player.getPet() == null)
+        	{
         		if(player.isMounted())
         		{
         			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
@@ -55,7 +55,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         			player.sendPacket(sm);
         			return;
         		}
-        	}            
+        	}
         	else if ((player.getPet().getNpcId()==12526) || (player.getPet().getNpcId()==12527) || (player.getPet().getNpcId()==12528))
             {
         		if (player.getInventory().getItemByItemId(1460) != null && player.getInventory().getItemByItemId(1460).getCount() >= 10)
@@ -65,7 +65,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
                 		sm.addString("Your Strider Has not reached the required level.");
                 		player.sendPacket(sm);
-                		return;                
+                		return;
         			}
         			else
         			{
@@ -113,7 +113,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
     {
         player.sendPacket( new ActionFailed() );
         String filename = "data/html/wyvernmanager/wyvernmanager-no.htm";
-        
+
         int condition = validateCondition(player);
         if (condition > COND_ALL_FALSE)
         {
@@ -125,5 +125,5 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         html.replace("%objectId%", String.valueOf(getObjectId()));
         html.replace("%npcname%", getName());
         player.sendPacket(html);
-    } 
+    }
 }

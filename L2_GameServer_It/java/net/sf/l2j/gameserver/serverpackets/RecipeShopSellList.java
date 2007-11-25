@@ -29,22 +29,22 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class RecipeShopSellList extends L2GameServerPacket
 {
-    
+
     private static final String _S__D9_RecipeShopSellList = "[S] d9 RecipeShopSellList";
     @SuppressWarnings("unused")
     private L2PcInstance _buyer,_manufacturer;
-    
+
     public RecipeShopSellList(L2PcInstance buyer,L2PcInstance manufacturer)
     {
         _buyer = buyer;
         _manufacturer = manufacturer;
     }
-	
+
 	@Override
 	protected final void writeImpl()
     {
         L2ManufactureList createList = _manufacturer.getCreateList();
-        
+
         if (createList != null)
         {
             //dddd d(ddd)
@@ -67,7 +67,7 @@ public class RecipeShopSellList extends L2GameServerPacket
             }
         }
     }
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */

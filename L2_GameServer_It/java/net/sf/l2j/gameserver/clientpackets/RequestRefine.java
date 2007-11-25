@@ -40,7 +40,7 @@ public final class RequestRefine extends L2GameClientPacket
 	private int _refinerItemObjId;
 	private int _gemstoneItemObjId;
 	private int _gemstoneCount;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -62,7 +62,7 @@ public final class RequestRefine extends L2GameClientPacket
 		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
 		L2ItemInstance refinerItem = (L2ItemInstance)L2World.getInstance().findObject(_refinerItemObjId);
 		L2ItemInstance gemstoneItem = (L2ItemInstance)L2World.getInstance().findObject(_gemstoneItemObjId);
-		
+
 		if (targetItem == null || refinerItem == null || gemstoneItem == null ||
 				targetItem.getOwnerId() != activeChar.getObjectId() ||
 				refinerItem.getOwnerId() != activeChar.getObjectId() ||
@@ -73,10 +73,10 @@ public final class RequestRefine extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS));
 			return;
 		}
-		
+
 		// unequip item
 		if (targetItem.isEquipped()) activeChar.disarmWeapons();
-		
+
 		if (TryAugmentItem(activeChar, targetItem, refinerItem, gemstoneItem))
 		{
 			int stat12 = 0x0000FFFF&targetItem.getAugmentation().getAugmentationId();
@@ -90,7 +90,7 @@ public final class RequestRefine extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS));
 		}
 	}
-	
+
 	boolean TryAugmentItem(L2PcInstance player, L2ItemInstance targetItem,L2ItemInstance refinerItem, L2ItemInstance gemstoneItem)
 	{
 		if (targetItem.isAugmented() || targetItem.isWear()) return false;
@@ -116,18 +116,18 @@ public final class RequestRefine extends L2GameClientPacket
 		int itemType = targetItem.getItem().getType2();
 		int lifeStoneId = refinerItem.getItemId();
 		int gemstoneItemId = gemstoneItem.getItemId();
-		
+
 		// is the refiner Item a life stone?
 		if (lifeStoneId < 8723 || lifeStoneId > 8762) return false;
-		
+
 		// must be a weapon, must be > d grade
 		// TODO: can do better? : currently: using isdestroyable() as a check for hero / cursed weapons
 		if (itemGrade < L2Item.CRYSTAL_C || itemType != L2Item.TYPE2_WEAPON || !targetItem.isDestroyable()) return false;
-		
+
 		// player must be able to use augmentation
 		if (player.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_NONE || player.isDead()
 				|| player.isParalyzed() || player.isFishing() || player.isSitting()) return false;
-		
+
 		int modifyGemstoneCount = _gemstoneCount;
 		int lifeStoneLevel = getLifeStoneLevel(lifeStoneId);
 		int lifeStoneGrade = getLifeStoneGrade(lifeStoneId);
@@ -150,7 +150,7 @@ public final class RequestRefine extends L2GameClientPacket
 				modifyGemstoneCount = 25;
 				break;
 		}
-		
+
 		// check if the lifestone is appropriate for this player
 		switch (lifeStoneLevel)
 		{
@@ -191,7 +191,7 @@ public final class RequestRefine extends L2GameClientPacket
 		// consume the life stone
 		if (!player.destroyItem("RequestRefine", refinerItem, null, false))
 			return false;
-		
+
 		// Prepare inventory update
 		InventoryUpdate iu = new InventoryUpdate();
 
@@ -205,7 +205,7 @@ public final class RequestRefine extends L2GameClientPacket
 			player.destroyItem("RequestRefine", _gemstoneItemObjId, modifyGemstoneCount, null, false);
 			iu.addModifiedItem(gemstoneItem);
 		}
-		
+
 		// generate augmentation
 		targetItem.setAugmentation(AugmentationData.getInstance().generateRandomAugmentation(targetItem, lifeStoneLevel, lifeStoneGrade));
 
@@ -213,10 +213,10 @@ public final class RequestRefine extends L2GameClientPacket
 		iu.addModifiedItem(targetItem);
 		iu.addRemovedItem(refinerItem);
 		player.sendPacket(iu);
-		
+
 		return true;
 	}
-	
+
 	private int getLifeStoneGrade(int itemId)
 	{
 		itemId -= 8723;
@@ -225,7 +225,7 @@ public final class RequestRefine extends L2GameClientPacket
 		if (itemId < 30) return 2; // high grade
 		return 3; // top grade
 	}
-	
+
 	private int getLifeStoneLevel(int itemId)
 	{
 		itemId -= 10 * getLifeStoneGrade(itemId);

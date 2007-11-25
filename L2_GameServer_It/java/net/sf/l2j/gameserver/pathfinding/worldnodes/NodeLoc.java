@@ -28,14 +28,14 @@ public class NodeLoc extends AbstractNodeLoc
 	private final int _x;
 	private final int _y;
 	private final short _z;
-	
+
 	public NodeLoc(int x, int y, short z)
 	{
 		_x = x;
 		_y = y;
 		_z = z;
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc#getX()
 	 */
@@ -50,7 +50,7 @@ public class NodeLoc extends AbstractNodeLoc
 	 */
 	@Override
 	public int getY()
-	{		
+	{
 		return _y;
 	}
 
@@ -59,7 +59,7 @@ public class NodeLoc extends AbstractNodeLoc
 	 */
 	@Override
 	public short getZ()
-	{		
+	{
 		return _z;
 	}
 
@@ -82,5 +82,5 @@ public class NodeLoc extends AbstractNodeLoc
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 }

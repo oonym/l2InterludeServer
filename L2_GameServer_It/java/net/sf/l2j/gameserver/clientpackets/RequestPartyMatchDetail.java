@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.serverpackets.PartyMatchDetail;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
  */
 
@@ -36,8 +36,8 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket
 	private int _objectId;
     @SuppressWarnings("unused")
 	private int _unk1;
-    
-    
+
+
 	@Override
 	protected void readImpl()
 	{

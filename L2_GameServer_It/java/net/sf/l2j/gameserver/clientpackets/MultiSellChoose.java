@@ -181,7 +181,7 @@ public class MultiSellChoose extends L2GameClientPacket
 			if(e.getItemId()!=65336)
 			{
 				L2ItemInstance itemToTake = inv.getItemByItemId(e.getItemId());		// initialize and initial guess for the item to take.
-				if (itemToTake == null) 
+				if (itemToTake == null)
 				{ //this is a cheat, transaction will be aborted and if any items already tanken will not be returned back to inventory!
 					_log.severe("Character: " + player.getName() + " is trying to cheat in multisell, merchatnt id:" + merchant.getNpcId());
 					return;
@@ -200,7 +200,7 @@ public class MultiSellChoose extends L2GameClientPacket
 						// for non-stackable items, one of two scenaria are possible:
 						// a) list maintains enchantment: get the instances that exactly match the requested enchantment level
 						// b) list does not maintain enchantment: get the instances with the LOWEST enchantment level
-		
+
 						// a) if enchantment is maintained, then get a list of items that exactly match this enchantment
 						if (maintainEnchantment)
 						{
@@ -249,12 +249,12 @@ public class MultiSellChoose extends L2GameClientPacket
 							 * If, in the future, it becomes necessary that we optimize, the above discussion should make it clear
 							 * what optimization exactly is necessary (based on the comments under "IDEALLY").
 							 */
-		
+
 							// choice 1.  Small number of items exchanged.  No sorting.
 			                for (int i = 1; i <= (e.getItemCount() * _amount); i++)
 							{
 								L2ItemInstance[] inventoryContents = inv.getAllItemsByItemId(e.getItemId());
-	
+
 								itemToTake = inventoryContents[0];
 								// get item with the LOWEST enchantment level  from the inventory...
 								// +0 is lowest by default...
@@ -279,7 +279,7 @@ public class MultiSellChoose extends L2GameClientPacket
 					}
 				}
 			}
-			else 
+			else
 			{
 				int repCost = player.getClan().getReputationScore() - e.getItemCount();
 				player.getClan().setReputationScore(repCost, true);
@@ -287,7 +287,7 @@ public class MultiSellChoose extends L2GameClientPacket
 				smsg.addNumber(e.getItemCount());
 				player.sendPacket(smsg);
 				player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
-			}  	
+			}
         }
     	// Generate the appropriate items
     	for(MultiSellIngredient e : entry.getProducts())
@@ -379,7 +379,7 @@ public class MultiSellChoose extends L2GameClientPacket
                 	if (merchant != null && merchant.getIsInTown())
                 		taxRate = merchant.getCastle().getTaxRate();
         		}
-       			
+
                	_transactionTax = (int)Math.round(newIngredient.getItemCount()*taxRate);
                	totalAdenaCount += _transactionTax;
         		continue;	// do not yet add this adena amount to the list as non-taxIngredient adena might be entered later (order not guaranteed)

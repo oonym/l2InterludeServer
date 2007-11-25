@@ -29,10 +29,10 @@ public class PcAppearance
 	/** true if  the player is invisible */
 	private boolean _invisible = false;
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
-	private int _nameColor = 0xFFFFFF;	
+	private int _nameColor = 0xFFFFFF;
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
 	private int _titleColor = 0xFFFF77;
-    
+
     // =========================================================
     // Constructor
     public PcAppearance(byte Face, byte HColor, byte HStyle, boolean Sex)
@@ -45,7 +45,7 @@ public class PcAppearance
 
     // =========================================================
     // Method - Public
-    
+
     // =========================================================
     // Method - Private
 
@@ -74,17 +74,17 @@ public class PcAppearance
      * @param boolean isfemale
      */
     public final void setSex(boolean isfemale) { _sex = isfemale; }
-    
+
     public void setInvisible()
 	{
 		_invisible = true;
 	}
-	
+
 	public void setVisible()
 	{
 		_invisible = false;
 	}
-	
+
 	public boolean getInvisible()
 	{
 		return _invisible;
@@ -93,27 +93,27 @@ public class PcAppearance
 	{
 		return _nameColor;
 	}
-	
+
 	public void setNameColor(int nameColor)
 	{
 		_nameColor = nameColor;
 	}
-	
+
 	public void setNameColor(int red, int green, int blue)
 	{
 		_nameColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);
 	}
-	
+
 	public int getTitleColor()
 	{
 		return _titleColor;
 	}
-	
+
 	public void setTitleColor(int titleColor)
 	{
 		_titleColor = titleColor;
 	}
-	
+
 	public void setTitleColor(int red, int green, int blue)
 	{
 		_titleColor = (red & 0xFF) + ((green & 0xFF) << 8) + ((blue & 0xFF) << 16);

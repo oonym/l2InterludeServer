@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 
 /**
  * Encodes and decodes to and from Base64 notation.
- * 
+ *
  * The source is based on the work of Robert Harder
  *
  * <p>
@@ -107,7 +107,7 @@ public class Base64
         ALPHABET = __bytes;
     } // end static
 
-    /** 
+    /**
      * Translates a Base64 value to either its 6-bit reconstruction value
      * or a negative number indicating some other meaning.
      **/
@@ -164,7 +164,7 @@ public class Base64
     //     * @since 1.3
     //     */
     //    private static byte[] encode3to4( byte[] threeBytes )
-    //    {   
+    //    {
     //        return encode3to4( threeBytes, 3 );
     //    }   // end encodeToBytes
 
@@ -182,7 +182,7 @@ public class Base64
     //     * @since 1.3
     //     */
     //    private static byte[] encode3to4( byte[] threeBytes, int numSigBytes )
-    //    {  
+    //    {
     //        byte[] dest = new byte[4];
     //        encode3to4( threeBytes, 0, numSigBytes, dest, 0 );
     //        return dest;
@@ -212,7 +212,7 @@ public class Base64
      * Encodes up to three bytes of the array <var>source</var>
      * and writes the resulting four Base64 bytes to <var>destination</var>.
      * The source and destination arrays can be manipulated
-     * anywhere along their length by specifying 
+     * anywhere along their length by specifying
      * <var>srcOffset</var> and <var>destOffset</var>.
      * This method does not check to make sure your arrays
      * are large enough to accomodate <var>srcOffset</var> + 3 for
@@ -232,7 +232,7 @@ public class Base64
     static byte[] encode3to4(byte[] source, int srcOffset, int numSigBytes, byte[] destination,
                              int destOffset)
     {
-        //           1         2         3  
+        //           1         2         3
         // 01234567890123456789012345678901 Bit position
         // --------000000001111111122222222 Array position from threeBytes
         // --------|    ||    ||    ||    | Six bit groups to index ALPHABET
@@ -535,7 +535,7 @@ public class Base64
         int len43 = len * 4 / 3;
         byte[] outBuff = new byte[(len43) // Main 4:3
             + ((len % 3) > 0 ? 4 : 0) // Account for padding
-            + (breakLines ? (len43 / MAX_LINE_LENGTH) : 0)]; // New lines      
+            + (breakLines ? (len43 / MAX_LINE_LENGTH) : 0)]; // New lines
         int d = 0;
         int e = 0;
         int len2 = len - 2;
@@ -588,10 +588,10 @@ public class Base64
     //        byte[] outBuff1 = new byte[3];
     //        int    count    = decode4to3( fourBytes, 0, outBuff1, 0 );
     //        byte[] outBuff2 = new byte[ count ];
-    //        
+    //
     //        for( int i = 0; i < count; i++ )
     //            outBuff2[i] = outBuff1[i];
-    //        
+    //
     //        return outBuff2;
     //    }
 
@@ -600,15 +600,15 @@ public class Base64
      * and writes the resulting bytes (up to three of them)
      * to <var>destination</var>.
      * The source and destination arrays can be manipulated
-     * anywhere along their length by specifying 
+     * anywhere along their length by specifying
      * <var>srcOffset</var> and <var>destOffset</var>.
      * This method does not check to make sure your arrays
      * are large enough to accomodate <var>srcOffset</var> + 4 for
      * the <var>source</var> array or <var>destOffset</var> + 3 for
      * the <var>destination</var> array.
-     * This method returns the actual number of bytes that 
+     * This method returns the actual number of bytes that
      * were converted from the Base64 encoding.
-     * 
+     *
      *
      * @param source the array to convert
      * @param srcOffset the index where conversion begins
@@ -731,7 +731,7 @@ public class Base64
             {
                 System.err.println("Bad Base64 input character at " + i + ": " + source[i] + "(decimal)");
                 return null;
-            } // end else: 
+            } // end else:
         } // each input character
 
         byte[] out = new byte[outBuffPosn];
@@ -1034,7 +1034,7 @@ public class Base64
                     {
                         // Must have broken out from above.
                         throw new java.io.IOException("Improperly padded Base64 input.");
-                    } // end 
+                    } // end
 
                 } // end else: decode
             } // end else: get data
@@ -1233,7 +1233,7 @@ public class Base64
         } // end write
 
         /**
-         * Calls {@link #write} repeatedly until <var>len</var> 
+         * Calls {@link #write} repeatedly until <var>len</var>
          * bytes are written.
          *
          * @param theBytes array from which to read bytes
@@ -1279,8 +1279,8 @@ public class Base64
 
         } // end flush
 
-        /** 
-         * Flushes and closes (I think, in the superclass) the stream. 
+        /**
+         * Flushes and closes (I think, in the superclass) the stream.
          *
          * @since 1.3
          */

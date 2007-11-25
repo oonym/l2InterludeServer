@@ -38,25 +38,25 @@ public class EffectTargetMe extends L2Effect
     {
         return EffectType.TARGET_ME;
     }
-    
+
     /** Notify started */
     @Override
 	public void onStart() {
-    	//Should only work on PC?  
+    	//Should only work on PC?
     	if (getEffected() instanceof L2PcInstance)
     	{
     		getEffected().setTarget(getEffector());
     		MyTargetSelected my = new MyTargetSelected(getEffector().getObjectId(), 0);
     		getEffected().sendPacket(my);
-    	} 
+    	}
     }
-    
+
     /** Notify exited */
     @Override
 	public void onExit() {
         //nothing
     }
-    
+
     @Override
 	public boolean onActionTime()
     {

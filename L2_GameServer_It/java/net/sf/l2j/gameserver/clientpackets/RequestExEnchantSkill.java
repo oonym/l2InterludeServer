@@ -55,13 +55,13 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 	private int _skillId;
 	@SuppressWarnings("unused")
 	private int _skillLvl;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
 		_skillId = readD();
-		_skillLvl = readD(); 
+		_skillLvl = readD();
 	}
 
 	/* (non-Javadoc)
@@ -75,46 +75,46 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
         if (player == null)
         	return;
-        
+
         L2FolkInstance trainer = player.getLastFolkNPC();
         if (trainer == null)
         	return;
-        
+
         int npcid = trainer.getNpcId();
-        
+
         if ((trainer == null || !player.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM())
             return;
-        
+
         if (player.getSkillLevel(_skillId) >= _skillLvl)// already knows the skill with this level
             return;
-        
+
         if (player.getClassId().getId() < 88) // requires to have 3rd class quest completed
     		return;
-        
+
         if (player.getLevel() < 76) return;
-        
+
         L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLvl);
-        
+
         int counts = 0;
         int _requiredSp = 10000000;
         int _requiredExp = 100000;
         byte _rate = 0;
         int _baseLvl = 1;
-        
+
         L2EnchantSkillLearn[] skills = SkillTreeTable.getInstance().getAvailableEnchantSkills(player);
-            
+
         for (L2EnchantSkillLearn s : skills)
         {
         	L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
         	if (sk == null || sk != skill || !sk.getCanLearn(player.getClassId())
-        			|| !sk.canTeachBy(npcid)) continue;        	
+        			|| !sk.canTeachBy(npcid)) continue;
         	counts++;
         	_requiredSp = s.getSpCost();
         	_requiredExp = s.getExp();
         	_rate = s.getRate(player);
         	_baseLvl = s.getBaseLevel();
         }
-            
+
         if (counts == 0 && !Config.ALT_GAME_SKILL_LEARN)
         {
         	player.sendMessage("You are trying to learn skill that u can't..");
@@ -122,19 +122,19 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         			+ " tried to learn skill that he can't!!!", IllegalPlayerAction.PUNISH_KICK);
         	return;
         }
-            
+
         if (player.getSp() >= _requiredSp)
         {
         	if (player.getExp() >= _requiredExp)
         	{
-        		if (Config.ES_SP_BOOK_NEEDED && (_skillLvl == 101 || _skillLvl == 141)) // only first lvl requires book 
+        		if (Config.ES_SP_BOOK_NEEDED && (_skillLvl == 101 || _skillLvl == 141)) // only first lvl requires book
             	{
             		int spbId = 6622;
-                      
+
             		L2ItemInstance spb = player.getInventory().getItemByItemId(spbId);
-                           
+
             		if (spb == null)// Haven't spellbook
-            		{            			
+            		{
             			player.sendPacket(new SystemMessage(SystemMessageId.YOU_DONT_HAVE_ALL_OF_THE_ITEMS_NEEDED_TO_ENCHANT_THAT_SKILL));
             			return;
             		}
@@ -158,12 +158,12 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         if (Rnd.get(100) <= _rate)
         {
         	player.addSkill(skill, true);
-            
-        	if (Config.DEBUG) 
+
+        	if (Config.DEBUG)
         		_log.fine("Learned skill " + _skillId + " for " + _requiredSp + " SP.");
-            
+
         	player.getStat().removeExpAndSp(_requiredExp, _requiredSp);
-            
+
         	StatusUpdate su = new StatusUpdate(player.getObjectId());
         	su.addAttribute(StatusUpdate.SP, player.getSp());
         	player.sendPacket(su);
@@ -181,7 +181,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         	player.sendPacket(sm);
         }
         else
-        {        	
+        {
         	if (skill.getLevel() > 100)
         	{
         		_skillLvl = _baseLvl;
@@ -193,17 +193,17 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         	player.sendPacket(sm);
         }
         trainer.showEnchantSkillList(player, player.getClassId());
-            
+
         // update all the shortcuts to this skill
         L2ShortCut[] allShortCuts = player.getAllShortCuts();
-            
-        for (L2ShortCut sc : allShortCuts)          
-        {               
+
+        for (L2ShortCut sc : allShortCuts)
+        {
         	if (sc.getId() == _skillId && sc.getType() == L2ShortCut.TYPE_SKILL)
         	{
         		L2ShortCut newsc = new L2ShortCut(sc.getSlot(), sc.getPage(), sc.getType(), sc.getId(), _skillLvl, 1);
-        		player.sendPacket(new ShortCutRegister(newsc));                 
-        		player.registerShortCut(newsc);                 
+        		player.sendPacket(new ShortCutRegister(newsc));
+        		player.registerShortCut(newsc);
         	}
         }
 	}
@@ -216,5 +216,5 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 	{
 		return _C__D0_07_REQUESTEXENCHANTSKILL;
 	}
-	
+
 }

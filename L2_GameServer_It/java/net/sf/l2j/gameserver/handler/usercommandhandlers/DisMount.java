@@ -26,13 +26,13 @@ import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.util.Broadcast;
 
 /**
- * Support for /dismount command.  
+ * Support for /dismount command.
  * @author Micht
  */
 public class DisMount implements IUserCommandHandler
 {
-    private static final int[] COMMAND_IDS = { 62 }; 
-	
+    private static final int[] COMMAND_IDS = { 62 };
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
@@ -52,7 +52,7 @@ public class DisMount implements IUserCommandHandler
             activeChar.setMountType(0);
             activeChar.setMountObjectID(0);
         }
-        
+
         return true;
     }
 

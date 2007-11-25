@@ -70,6 +70,7 @@ public class GeoEditorListener extends Thread
 		return "Geoeditor not connected.";
 	}
 
+	@Override
 	public void run()
 	{
 		Socket connection = null;

@@ -29,17 +29,17 @@ public final class RequestBlock extends L2GameClientPacket
 {
    private static final String _C__A0_REQUESTBLOCK = "[C] A0 RequestBlock";
    private static Logger _log = Logger.getLogger(L2PcInstance.class.getName());
-   
+
    private final static int BLOCK = 0;
    private final static int UNBLOCK = 1;
    private final static int BLOCKLIST = 2;
    private final static int ALLBLOCK = 3;
    private final static int ALLUNBLOCK = 4;
-   
+
    private String _name;
    private Integer _type;
    private L2PcInstance _target;
-   
+
    @Override
 protected void readImpl()
    {
@@ -51,15 +51,15 @@ protected void readImpl()
            _target = L2World.getInstance().getPlayer(_name);
        }
    }
-   
+
    @Override
 protected void runImpl()
    {
        L2PcInstance activeChar = getClient().getActiveChar();
-       
+
        if (activeChar == null)
     	    return;
-       
+
        switch (_type)
        {
            case BLOCK:
@@ -70,7 +70,7 @@ protected void runImpl()
                    activeChar.sendPacket(new SystemMessage(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST));
                    return;
                }
-               
+
                if (_target.isGM())
                {
                    // Cannot block a GM character.
@@ -96,7 +96,7 @@ protected void runImpl()
                _log.info("Unknown 0x0a block type: " + _type);
        }
    }
-   
+
    @Override
 public String getType()
    {

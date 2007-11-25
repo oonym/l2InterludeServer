@@ -8,7 +8,7 @@
  * Revision 1  25/07/2005 17:15:21  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -43,7 +43,7 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -52,7 +52,7 @@ public class AdminTest implements IAdminCommandHandler
     private static final int REQUIRED_LEVEL = Config.GM_TEST;
     private static final String[] ADMIN_COMMANDS =
     {
-        "admin_test", "admin_stats", "admin_skill_test", 
+        "admin_test", "admin_stats", "admin_skill_test",
         "admin_st", "admin_mp", "admin_known"
     };
 
@@ -63,7 +63,7 @@ public class AdminTest implements IAdminCommandHandler
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
-        
+
         if (command.equals("admin_stats"))
         {
             for (String line : ThreadPoolManager.getInstance().getStats())
@@ -88,7 +88,7 @@ public class AdminTest implements IAdminCommandHandler
             {
                 activeChar.sendMessage("Command format is //skill_test <ID>");
             }
-        }        
+        }
         else if (command.startsWith("admin_test uni flush"))
         {
             Universe.getInstance().flush();
@@ -123,7 +123,7 @@ public class AdminTest implements IAdminCommandHandler
         }
         return true;
     }
-    
+
     /**
      * @param activeChar
      * @param id
@@ -141,7 +141,7 @@ public class AdminTest implements IAdminCommandHandler
             player = (L2Character)target;
         }
         player.broadcastPacket(new MagicSkillUser(activeChar, player, id, 1, 1, 1));
-        
+
     }
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()

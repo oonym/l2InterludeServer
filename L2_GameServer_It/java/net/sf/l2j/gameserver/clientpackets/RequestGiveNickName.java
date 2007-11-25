@@ -28,17 +28,17 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public class RequestGiveNickName extends L2GameClientPacket
 {
 	private static final String _C__55_REQUESTGIVENICKNAME = "[C] 55 RequestGiveNickName";
 	static Logger _log = Logger.getLogger(RequestGiveNickName.class.getName());
-	
+
 	private String _target;
 	private String _title;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -52,7 +52,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		    return;
-		
+
 		// Noblesse can bestow a title to themselves
 		if (activeChar.isNoble() && _target.matches(activeChar.getName()))
 		{
@@ -62,8 +62,8 @@ public class RequestGiveNickName extends L2GameClientPacket
 			activeChar.broadcastTitleInfo();
 		}
 		//Can the player change/give a title?
-		else if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_GIVE_TITLE) == L2Clan.CP_CL_GIVE_TITLE) 
-		{	
+		else if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_GIVE_TITLE) == L2Clan.CP_CL_GIVE_TITLE)
+		{
 			if (activeChar.getClan().getLevel() < 3)
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
@@ -71,7 +71,7 @@ public class RequestGiveNickName extends L2GameClientPacket
                 sm = null;
 				return;
 			}
-			
+
 			L2ClanMember member1 = activeChar.getClan().getClanMember(_target);
             if (member1 != null)
             {

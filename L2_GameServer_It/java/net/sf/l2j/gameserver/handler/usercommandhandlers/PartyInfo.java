@@ -25,34 +25,34 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * Support for /partyinfo command  
+ * Support for /partyinfo command
  * Added by Tempy - 28 Jul 05
  */
 public class PartyInfo implements IUserCommandHandler
 {
-    private static final int[] COMMAND_IDS = { 81 }; 
-	
+    private static final int[] COMMAND_IDS = { 81 };
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
     public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
         if (id != COMMAND_IDS[0]) return false;
-        
+
     	if (!activeChar.isInParty())
     	{
     		SystemMessage sm = SystemMessage.sendString("You are not in a party.");
     		activeChar.sendPacket(sm);
-    		return false;	
+    		return false;
     	}
-    	
+
         L2Party playerParty = activeChar.getParty();
     	int memberCount = playerParty.getMemberCount();
     	int lootDistribution = playerParty.getLootDistribution();
     	String partyLeader = playerParty.getPartyMembers().get(0).getName();
-    	
+
         activeChar.sendPacket(new SystemMessage(SystemMessageId.PARTY_INFORMATION));
-        
+
     		switch (lootDistribution) {
     		case L2Party.ITEM_LOOTER:
     			activeChar.sendPacket(new SystemMessage(SystemMessageId.LOOTING_FINDERS_KEEPERS));
@@ -70,12 +70,12 @@ public class PartyInfo implements IUserCommandHandler
                 activeChar.sendPacket(new SystemMessage(SystemMessageId.LOOTING_RANDOM_INCLUDE_SPOIL));
     			break;
     		}
-    	
-        SystemMessage sm = new SystemMessage(SystemMessageId.PARTY_LEADER_S1);                
+
+        SystemMessage sm = new SystemMessage(SystemMessageId.PARTY_LEADER_S1);
     	sm.addString(partyLeader);
     	activeChar.sendPacket(sm);
-    	
-    	sm = new SystemMessage(SystemMessageId.S1_S2);                
+
+    	sm = new SystemMessage(SystemMessageId.S1_S2);
     	sm.addString("Members: " + memberCount + "/9");
 
     	activeChar.sendPacket(new SystemMessage(SystemMessageId.WAR_LIST));

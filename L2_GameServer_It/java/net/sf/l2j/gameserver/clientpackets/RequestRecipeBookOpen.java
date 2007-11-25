@@ -23,13 +23,13 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.RecipeController;
 
-public final class RequestRecipeBookOpen extends L2GameClientPacket 
+public final class RequestRecipeBookOpen extends L2GameClientPacket
 {
     private static final String _C__AC_REQUESTRECIPEBOOKOPEN = "[C] AC RequestRecipeBookOpen";
 	private static Logger _log = Logger.getLogger(RequestRecipeBookOpen.class.getName());
-    
+
     private boolean _isDwarvenCraft;
-    
+
 	@Override
 	protected void readImpl()
 	{
@@ -45,21 +45,21 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
 	{
 	    if (getClient().getActiveChar() == null)
 	        return;
-        
+
         if (getClient().getActiveChar().getPrivateStoreType() != 0)
         {
             getClient().getActiveChar().sendMessage("Cannot use recipe book while trading");
             return;
         }
-        
+
         RecipeController.getInstance().requestBookOpen(getClient().getActiveChar(), _isDwarvenCraft);
 	}
-	
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
     @Override
-	public String getType() 
+	public String getType()
     {
         return _C__AC_REQUESTRECIPEBOOKOPEN;
     }

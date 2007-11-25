@@ -22,12 +22,12 @@ package net.sf.l2j.gameserver.clientpackets;
  * Format: (ch)
  * just a trigger
  * @author  -Wooden-
- * 
+ *
  */
 public final class RequestExFishRanking extends L2GameClientPacket
 {
     private static final String _C__D0_1F_REQUESTEXFISHRANKING = "[C] D0:1F RequestExFishRanking";
-    
+
     @Override
 	protected void readImpl()
     {
@@ -51,5 +51,5 @@ public final class RequestExFishRanking extends L2GameClientPacket
     {
         return _C__D0_1F_REQUESTEXFISHRANKING;
     }
-    
+
 }

@@ -38,7 +38,7 @@ public final class LambdaStats extends Lambda {
 	}
 
 	private final StatsType _stat;
-	
+
 	public LambdaStats(StatsType stat)
 	{
 		_stat = stat;

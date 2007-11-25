@@ -47,7 +47,7 @@ public class GetOffVehicle extends L2GameServerPacket
 		_x = x;
 		_y = y;
 		_z = z;
-		
+
 		if (_activeChar != null)
 		{
 			_activeChar.setInBoat(false);

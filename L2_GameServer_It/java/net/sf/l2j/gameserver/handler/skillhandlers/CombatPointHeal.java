@@ -28,19 +28,19 @@ import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.2.2.1 $ $Date: 2005/03/02 15:38:36 $
  */
 
 public class CombatPointHeal implements ISkillHandler
 {
     //private static Logger _log = Logger.getLogger(CombatPointHeal.class.getName());
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
      */
 	private static final SkillType[] SKILL_IDS = {SkillType.COMBATPOINTHEAL};
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
      */
@@ -49,25 +49,25 @@ public class CombatPointHeal implements ISkillHandler
 //      L2Character activeChar = actChar;
 
         L2Character target = null;
-        
+
         for(int index = 0;index < targets.length;index++)
         {
             target = (L2Character)targets[index];
-            
-            double cp = skill.getPower(); 
+
+            double cp = skill.getPower();
             //int cLev = activeChar.getLevel();
             //hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
-            SystemMessage sm = new SystemMessage(SystemMessageId.S1_CP_WILL_BE_RESTORED); 
-            sm.addNumber((int)cp); 
-            target.sendPacket(sm);            
-            target.setCurrentCp(cp+target.getCurrentCp()); 
-            StatusUpdate sump = new StatusUpdate(target.getObjectId()); 
-            sump.addAttribute(StatusUpdate.CUR_CP, (int)target.getCurrentCp()); 
-            target.sendPacket(sump);  
+            SystemMessage sm = new SystemMessage(SystemMessageId.S1_CP_WILL_BE_RESTORED);
+            sm.addNumber((int)cp);
+            target.sendPacket(sm);
+            target.setCurrentCp(cp+target.getCurrentCp());
+            StatusUpdate sump = new StatusUpdate(target.getObjectId());
+            sump.addAttribute(StatusUpdate.CUR_CP, (int)target.getCurrentCp());
+            target.sendPacket(sump);
         }
     }
-    
-    
+
+
     public SkillType[] getSkillIds()
     {
         return SKILL_IDS;

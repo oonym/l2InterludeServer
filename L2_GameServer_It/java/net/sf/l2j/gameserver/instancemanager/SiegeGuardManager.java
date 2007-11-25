@@ -31,9 +31,9 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class SiegeGuardManager {
-	
+
 	private static Logger _log = Logger.getLogger(SiegeGuardManager.class.getName());
-	
+
     // =========================================================
     // Data Field
     private Castle _castle;
@@ -83,8 +83,8 @@ public class SiegeGuardManager {
     }
 
     /**
-     * Remove a single mercenary, identified by the npcId and location.  
-     * Presumably, this is used when a castle lord picks up a previously dropped ticket 
+     * Remove a single mercenary, identified by the npcId and location.
+     * Presumably, this is used when a castle lord picks up a previously dropped ticket
      */
     public void removeMerc(int npcId, int x, int y, int z)
     {
@@ -109,7 +109,7 @@ public class SiegeGuardManager {
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     /**
      * Remove mercs.<BR><BR>
      */
@@ -133,7 +133,7 @@ public class SiegeGuardManager {
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     /**
      * Spawn guards.<BR><BR>
      */
@@ -197,7 +197,7 @@ public class SiegeGuardManager {
                     spawn1.setHeading(rs.getInt("heading"));
                     spawn1.setRespawnDelay(rs.getInt("respawnDelay"));
                     spawn1.setLocation(0);
-                    
+
                     _siegeGuardSpawn.add(spawn1);
                 }
                 else
@@ -258,7 +258,7 @@ public class SiegeGuardManager {
     {
         return _castle;
     }
-    
+
     public final List<L2Spawn> getSiegeGuardSpawn()
     {
         return _siegeGuardSpawn;

@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- * 
+ *
  * @author Nightmare
  * @version $Revision: 1.5.2.6.2.7 $ $Date: 2005/03/27 15:29:18 $
  */
@@ -105,8 +105,8 @@ public class SpawnTable
                         spawnDat.setHeading(rset.getInt("heading"));
                         spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
                         int loc_id = rset.getInt("loc_id");
-                        spawnDat.setLocation(loc_id);                             
-                        
+                        spawnDat.setLocation(loc_id);
+
                         switch(rset.getInt("periodOfDay")) {
                             case 0: // default
                                 _npcSpawnCount += spawnDat.init();
@@ -118,9 +118,9 @@ public class SpawnTable
                             case 2: // Night
                                 DayNightSpawnManager.getInstance().addNightCreature(spawnDat);
                                 _npcSpawnCount++;
-                                break;     
+                                break;
                         }
-                        
+
                         _spawntable.put(spawnDat.getId(), spawnDat);
                         if (spawnDat.getId() > _highestId) _highestId = spawnDat.getId();
                     }
@@ -155,7 +155,7 @@ public class SpawnTable
         if (Config.DEBUG)
             _log.fine("SpawnTable: Spawning completed, total number of NPCs in the world: "
                 + _npcSpawnCount);
-        
+
     }
 
     public L2Spawn getTemplate(int id)
@@ -244,13 +244,13 @@ public class SpawnTable
 
     //just wrapper
     public void reloadAll()
-    { 
+    {
         fillSpawnTable();
     }
 
     /**
      * Get all the spawn of a NPC<BR><BR>
-     * 
+     *
      * @param npcId : ID of the NPC to find.
      * @return
      */

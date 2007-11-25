@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.templates;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision$ $Date$
  */
 public class L2Henna
@@ -37,24 +37,24 @@ public class L2Henna
 	public final int statMEM;
 	public final int statDEX;
 	public final int statWIT;
-	
+
 	public L2Henna(StatsSet set)
 	{
-		
+
 		symbolId          = set.getInteger("symbol_id");
 		symbolName		   = ""; //set.getString("symbol_name");
 		dye                = set.getInteger("dye");
 		price              = set.getInteger("price");
-		amount			   = set.getInteger("amount");   
+		amount			   = set.getInteger("amount");
 		statINT           = set.getInteger("stat_INT");
 		statSTR           = set.getInteger("stat_STR");
 		statCON           = set.getInteger("stat_CON");
 		statMEM           = set.getInteger("stat_MEM");
 		statDEX	       = set.getInteger("stat_DEX");
 		statWIT           = set.getInteger("stat_WIT");
-		
+
 	}
-	
+
 	public int getSymbolId()
 	{
 		return symbolId;

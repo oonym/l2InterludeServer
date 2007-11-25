@@ -51,7 +51,7 @@ public class PcKnownList extends PlayableKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public PcKnownList(L2PcInstance activeChar)
@@ -164,8 +164,8 @@ public class PcKnownList extends PlayableKnownList
                 		getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
                 	getActiveChar().sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
                 	/*if(otherPlayer.getBoat().GetVehicleDeparture() == null)
-                	{                	
-                		
+                	{
+
                 		int xboat = otherPlayer.getBoat().getX();
                 		int yboat= otherPlayer.getBoat().getY();
                 		double modifier = Math.PI/2;
@@ -176,7 +176,7 @@ public class PcKnownList extends PlayableKnownList
                 		if(yboat < 0)
                 		{
                 			modifier = -modifier;
-                		}                		
+                		}
                 		double angleboat = modifier - Math.atan(xboat/yboat);
                 		int xp = otherPlayer.getX();
                 		int yp = otherPlayer.getY();
@@ -188,14 +188,14 @@ public class PcKnownList extends PlayableKnownList
                 		if(yboat < 0)
                 		{
                 			modifier = -modifier;
-                		}                		
+                		}
                 		double anglep = modifier - Math.atan(yp/xp);
-                		
+
                 		double finx = Math.cos(anglep - angleboat)*Math.sqrt(xp *xp +yp*yp ) + Math.cos(angleboat)*Math.sqrt(xboat *xboat +yboat*yboat );
                 		double finy = Math.sin(anglep - angleboat)*Math.sqrt(xp *xp +yp*yp ) + Math.sin(angleboat)*Math.sqrt(xboat *xboat +yboat*yboat );
                 		//otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getX() - otherPlayer.getInBoatPosition().x,otherPlayer.getBoat().getY() - otherPlayer.getInBoatPosition().y,otherPlayer.getBoat().getZ()- otherPlayer.getInBoatPosition().z);
                 		otherPlayer.getPosition().setWorldPosition((int)finx,(int)finy,otherPlayer.getBoat().getZ()- otherPlayer.getInBoatPosition().z);
-                		
+
                 	}*/
                 }
                 else
@@ -235,11 +235,11 @@ public class PcKnownList extends PlayableKnownList
     {
             if (!super.removeKnownObject(object)) return false;
         // Send Server-Client Packet DeleteObject to the L2PcInstance
-        getActiveChar().sendPacket(new DeleteObject(object));       	       
+        getActiveChar().sendPacket(new DeleteObject(object));
        if (Config.CHECK_KNOWN && object instanceof L2NpcInstance) getActiveChar().sendMessage("Removed NPC: "+((L2NpcInstance)object).getName());
         return true;
     }
-    
+
     // =========================================================
     // Method - Private
 
@@ -249,23 +249,23 @@ public class PcKnownList extends PlayableKnownList
 	public final L2PcInstance getActiveChar() { return (L2PcInstance)super.getActiveChar(); }
 
     @Override
-	public int getDistanceToForgetObject(L2Object object) 
-    { 
-    	// when knownlist grows, the distance to forget should be at least  
+	public int getDistanceToForgetObject(L2Object object)
+    {
+    	// when knownlist grows, the distance to forget should be at least
     	// the same as the previous watch range, or it becomes possible that
     	// extra charinfo packets are being sent (watch-forget-watch-forget)
-    	int knownlistSize = getKnownObjects().size(); 
+    	int knownlistSize = getKnownObjects().size();
         if (knownlistSize <= 25) return 4200;
         if (knownlistSize <= 35) return 3600;
         if (knownlistSize <= 70) return 2910;
         else return 2310;
     }
- 
+
     @Override
-	public int getDistanceToWatchObject(L2Object object) 
-    { 
-        int knownlistSize = getKnownObjects().size(); 
- 
+	public int getDistanceToWatchObject(L2Object object)
+    {
+        int knownlistSize = getKnownObjects().size();
+
         if (knownlistSize <= 25) return 3500; // empty field
         if (knownlistSize <= 35) return 2900;
         if (knownlistSize <= 70) return 2300;

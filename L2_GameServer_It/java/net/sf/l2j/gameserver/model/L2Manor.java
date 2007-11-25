@@ -40,43 +40,43 @@ public class L2Manor
 {
 	private static Logger _log = Logger.getLogger(L2Manor.class.getName());
     private static L2Manor _instance;
-    
+
     private static FastMap<Integer,SeedData> _seeds;
-    
+
     public L2Manor() {
 		_seeds = new FastMap<Integer, SeedData>().setShared(true);
 		parseData();
 	}
-    
+
     public static L2Manor getInstance() {
 		if (_instance == null) {
 			_instance = new L2Manor();
 		}
 		return _instance;
 	}
-    
+
     public FastList<Integer> getAllCrops() {
     	FastList<Integer> crops = new FastList<Integer>();
-    	
+
     	for (SeedData seed: _seeds.values()) {
     		if (!crops.contains(seed.getCrop()) && seed.getCrop() != 0 && !crops.contains(seed.getCrop())) {
     			crops.add(seed.getCrop());
     		}
     	}
-    	
+
     	return crops;
     }
-    
+
     public int getSeedBasicPrice (int seedId) {
     	L2Item seedItem = ItemTable.getInstance().getTemplate(seedId);
-    	
+
     	if (seedItem != null) {
     		return seedItem.getReferencePrice();
     	} else {
     		return 0;
     	}
     }
-    
+
     public int getSeedBasicPriceByCrop (int cropId) {
     	for (SeedData seed: _seeds.values()) {
     		if (seed.getCrop() == cropId)
@@ -84,16 +84,16 @@ public class L2Manor
     	}
     	return 0;
     }
-    
+
     public int getCropBasicPrice (int cropId) {
     	L2Item cropItem = ItemTable.getInstance().getTemplate(cropId);
-    	
+
     	if (cropItem != null)
     		return cropItem.getReferencePrice();
     	else
     		return 0;
     }
-    
+
     public int getMatureCrop (int cropId) {
     	for (SeedData seed: _seeds.values()) {
     		if (seed.getCrop() == cropId)
@@ -101,7 +101,7 @@ public class L2Manor
     	}
     	return 0;
     }
-    
+
     /**
      * Returns price which lord pays to buy one seed
      * @param seedId
@@ -109,10 +109,10 @@ public class L2Manor
      */
     public int getSeedBuyPrice (int seedId) {
     	int buyPrice = getSeedBasicPrice(seedId) / 10;
-    	return (buyPrice > 0?buyPrice:1); 
+    	return (buyPrice > 0?buyPrice:1);
     }
-    
-    public int getSeedMinLevel(int seedId) 
+
+    public int getSeedMinLevel(int seedId)
     {
 		SeedData seed = _seeds.get(seedId);
 
@@ -128,7 +128,7 @@ public class L2Manor
 			return seed.getLevel() + 5;
 		return -1;
 	}
-	
+
 	public int getSeedLevelByCrop (int cropId) {
 		for (SeedData seed: _seeds.values()) {
     		if (seed.getCrop() == cropId) {
@@ -137,7 +137,7 @@ public class L2Manor
     	}
     	return 0;
 	}
-    
+
     public int getSeedLevel(int seedId) {
 		SeedData seed = _seeds.get(seedId);
 
@@ -146,7 +146,7 @@ public class L2Manor
 		}
 		return -1;
 	}
-    
+
     public boolean isAlternative(int seedId) {
     	for (SeedData seed: _seeds.values()) {
     		if (seed.getId() == seedId) {
@@ -155,7 +155,7 @@ public class L2Manor
     	}
     	return false;
     }
-    
+
     public int getCropType(int seedId) {
 		SeedData seed = _seeds.get(seedId);
 
@@ -163,7 +163,7 @@ public class L2Manor
 			return seed.getCrop();
 		return -1;
 	}
-    
+
     public synchronized int getRewardItem(int cropId, int type) {
 		for (SeedData seed : _seeds.values()) {
 			if (seed.getCrop() == cropId) {
@@ -175,19 +175,19 @@ public class L2Manor
 		}
 		return -1;
 	}
-    
+
     public synchronized int getRewardItemBySeed (int seedId, int type) {
     	SeedData seed = _seeds.get(seedId);
-		
+
 		if (seed != null) {
 			return seed.getReward(type);
 		}
 		return 0;
     }
-   
+
     /**
 	 * Return all crops which can be purchased by given castle
-	 * 
+	 *
 	 * @param castleId
 	 * @return
 	 */
@@ -205,7 +205,7 @@ public class L2Manor
     /**
      * Return list of seed ids, which belongs to castle with given id
      * @param castleId - id of the castle
-     * @return seedIds - list of seed ids 
+     * @return seedIds - list of seed ids
      */
     public FastList<Integer> getSeedsForCastle(int castleId) {
 		FastList<Integer> seedsID = new FastList<Integer>();
@@ -218,7 +218,7 @@ public class L2Manor
 
 		return seedsID;
 	}
-    
+
     /**
      * Returns castle id where seed can be sowned<br>
      * @param seedId
@@ -226,22 +226,22 @@ public class L2Manor
      */
     public int getCastleIdForSeed(int seedId) {
 		SeedData seed = _seeds.get(seedId);
-		
+
 		if (seed != null) {
 			return seed.getManorId();
 		}
 		return 0;
-	}    
-    
+	}
+
     public int getSeedSaleLimit(int seedId) {
     	SeedData seed = _seeds.get(seedId);
-    	
+
     	if (seed != null) {
     		return seed.getSeedLimit();
     	}
     	return 0;
     }
-    
+
     public int getCropPuchaseLimit(int cropId) {
     	for (SeedData seed : _seeds.values()) {
     		if (seed.getCrop() == cropId){
@@ -250,9 +250,9 @@ public class L2Manor
     	}
     	return 0;
     }
-    
-    
-    
+
+
+
     private class SeedData {
         private int _id;
         private int _level;      // seed level
@@ -264,13 +264,13 @@ public class L2Manor
         private int _isAlternative;
         private int _limitSeeds;
         private int _limitCrops;
-        
+
         public SeedData(int level ,int crop, int mature) {
         	this._level = level;
             this._crop = crop;
             this._mature = mature;
         }
-        
+
         public void setData(int id, int t1, int t2, int manorId, int isAlt, int lim1, int lim2) {
             this._id = id;
             _type1 = t1;
@@ -280,46 +280,46 @@ public class L2Manor
             _limitSeeds = lim1;
             _limitCrops = lim2;
         }
-        
+
         public int getManorId () {
         	return _manorId;
         }
-        
+
         public int getId() {
         	return _id;
         }
 
-        
+
         public int getCrop() {
         	return _crop;
         }
-        
+
         public int getMature() {
         	return _mature;
         }
-        
+
         public int getReward(int type) {
         	return (type == 1?_type1:_type2);
         }
-        
+
         public int getLevel() {
         	return _level;
         }
-        
+
         public boolean isAlternative() {
         	return (_isAlternative == 1);
         }
-        
+
         public int getSeedLimit() {
         	return _limitSeeds*Config.RATE_DROP_MANOR;
         }
-        
+
         public int getCropLimit() {
         	return _limitCrops*Config.RATE_DROP_MANOR;
         }
     }
-    
-    
+
+
     private void parseData() {
 		LineNumberReader lnr = null;
 		try {
@@ -362,10 +362,10 @@ public class L2Manor
         int isAlt      = Integer.parseInt(st.nextToken());		// alternative seed
         int limitSeeds = Integer.parseInt(st.nextToken());		// limit for seeds
         int limitCrops = Integer.parseInt(st.nextToken());		// limit for crops
-        
+
         SeedData seed = new SeedData(level, cropId, matureId);
         seed.setData(seedId, type1R, type2R, manorId, isAlt, limitSeeds, limitCrops);
-        
+
         return seed;
     }
 }

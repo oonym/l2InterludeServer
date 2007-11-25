@@ -46,7 +46,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  * <p>
  *  dddddSdddddddddddddddddddddddddddffffdddSdddccccccc (h)<p>
  *  dddddSdddddddddddddddddddddddddddffffdddSdddddccccccch
- *  dddddSddddddddddddddddddddddddddddffffdddSdddddccccccch (h) c (dchd) ddc dcc c cddd d 
+ *  dddddSddddddddddddddddddddddddddddffffdddSdddddccccccch (h) c (dchd) ddc dcc c cddd d
  *  dddddSdddddddddddddddhhhhhhhhhhhhhhhhhhhhhhhhddddddddddddddffffdddSdddddccccccch [h] c (ddhd) ddc c ddc cddd d d dd d d d
 
  * @version $Revision: 1.7.2.6.2.11 $ $Date: 2005/04/11 10:05:54 $
@@ -84,12 +84,12 @@ public class CharInfo extends L2GameServerPacket
     	_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
     	_maxCp = _activeChar.getMaxCp();
     }
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		boolean gmSeeInvis = false;
-		
+
 		if (_activeChar.getAppearance().getInvisible())
 		{
 			if (getClient().getActiveChar().isGM())
@@ -97,17 +97,17 @@ public class CharInfo extends L2GameServerPacket
 			else
 				return;
 		}
-		
+
 		if (_activeChar.getPoly().isMorphed())
 		{
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(_activeChar.getPoly().getPolyId());
-			
+
 			if (template != null)
 			{
 				writeC(0x16);
 				writeD(_activeChar.getObjectId());
 				writeD(_activeChar.getPoly().getPolyId()+1000000);  // npctype id
-				writeD(_activeChar.getKarma() > 0 ? 1 : 0); 
+				writeD(_activeChar.getKarma() > 0 ? 1 : 0);
 				writeD(_x);
 				writeD(_y);
 				writeD(_z);
@@ -134,7 +134,7 @@ public class CharInfo extends L2GameServerPacket
 				writeC(_activeChar.isRunning() ? 1 : 0);
 				writeC(_activeChar.isInCombat() ? 1 : 0);
 				writeC(_activeChar.isAlikeDead() ? 1 : 0);
-				
+
 				if (gmSeeInvis)
 				{
 					writeC(0);
@@ -143,9 +143,9 @@ public class CharInfo extends L2GameServerPacket
 				{
 					writeC(_activeChar.getAppearance().getInvisible()? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
 				}
-				
+
 				writeS(_activeChar.getName());
-				
+
 				if (gmSeeInvis)
 				{
 					writeS("Invisible");
@@ -154,11 +154,11 @@ public class CharInfo extends L2GameServerPacket
 				{
 					writeS(_activeChar.getTitle());
 				}
-				
+
 				writeD(0);
 				writeD(0);
 				writeD(0000);  // hmm karma ??
-				
+
 				if (gmSeeInvis)
 				{
 					writeD( (_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH) );
@@ -167,7 +167,7 @@ public class CharInfo extends L2GameServerPacket
 				{
 					writeD(_activeChar.getAbnormalEffect());  // C2
 				}
-				
+
 				writeD(0);  // C2
 				writeD(0);  // C2
 				writeD(0);  // C2
@@ -180,7 +180,7 @@ public class CharInfo extends L2GameServerPacket
 		}
 		else
 		{
-			writeC(0x03);		
+			writeC(0x03);
 			writeD(_x);
 			writeD(_y);
 			writeD(_z);
@@ -189,12 +189,12 @@ public class CharInfo extends L2GameServerPacket
 			writeS(_activeChar.getName());
 			writeD(_activeChar.getRace().ordinal());
 			writeD(_activeChar.getAppearance().getSex()? 1 : 0);
-			        
+
 			if (_activeChar.getClassIndex() == 0)
 				writeD(_activeChar.getClassId().getId());
-			else 
+			else
 				writeD(_activeChar.getBaseClass());
-			
+
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND));
@@ -207,7 +207,7 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LRHAND));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HAIR));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_FACE));
-			
+
 			// c6 new h's
 			writeH(0x00);
 			writeH(0x00);
@@ -231,16 +231,16 @@ public class CharInfo extends L2GameServerPacket
 			writeH(0x00);
 			writeH(0x00);
 			writeH(0x00);
-			
+
 			writeD(_activeChar.getPvpFlag());
 			writeD(_activeChar.getKarma());
-	
+
 			writeD(_mAtkSpd);
 			writeD(_pAtkSpd);
-			
+
 			writeD(_activeChar.getPvpFlag());
 			writeD(_activeChar.getKarma());
-	
+
 			writeD(_runSpd);
 			writeD(_walkSpd);
 			writeD(_swimRunSpd/*0x32*/);  // swimspeed
@@ -253,11 +253,11 @@ public class CharInfo extends L2GameServerPacket
 			writeF(_activeChar.getAttackSpeedMultiplier()); // _activeChar.getAttackSpeedMultiplier()
 			writeF(_activeChar.getBaseTemplate().collisionRadius);
 			writeF(_activeChar.getBaseTemplate().collisionHeight);
-	
+
 			writeD(_activeChar.getAppearance().getHairStyle());
 			writeD(_activeChar.getAppearance().getHairColor());
 			writeD(_activeChar.getAppearance().getFace());
-			
+
 			if (gmSeeInvis)
 			{
 				writeS("Invisible");
@@ -266,7 +266,7 @@ public class CharInfo extends L2GameServerPacket
 			{
 				writeS(_activeChar.getTitle());
 			}
-			
+
 			writeD(_activeChar.getClanId());
 			writeD(_activeChar.getClanCrestId());
 			writeD(_activeChar.getAllyId());
@@ -274,12 +274,12 @@ public class CharInfo extends L2GameServerPacket
 	        // In UserInfo leader rights and siege flags, but here found nothing??
 	        // Therefore RelationChanged packet with that info is required
 	        writeD(0);
-			
+
 			writeC(_activeChar.isSitting() ? 0 : 1);	// standing = 1  sitting = 0
 			writeC(_activeChar.isRunning() ? 1 : 0);	// running = 1   walking = 0
 			writeC(_activeChar.isInCombat() ? 1 : 0);
 			writeC(_activeChar.isAlikeDead() ? 1 : 0);
-			
+
 			if (gmSeeInvis)
 			{
 				writeC(0);
@@ -288,16 +288,16 @@ public class CharInfo extends L2GameServerPacket
 			{
 				writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0);	// invisible = 1  visible =0
 			}
-			
+
 			writeC(_activeChar.getMountType());	// 1 on strider   2 on wyvern   0 no mount
 			writeC(_activeChar.getPrivateStoreType());   //  1 - sellshop
-			
+
 			writeH(_activeChar.getCubics().size());
 			for (int id : _activeChar.getCubics().keySet())
 				writeH(id);
-			
+
 			writeC(0x00);	// find party members
-			
+
 			if (gmSeeInvis)
 			{
 				writeD( (_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH) );
@@ -306,49 +306,49 @@ public class CharInfo extends L2GameServerPacket
 			{
 				writeD(_activeChar.getAbnormalEffect());
 			}
-			
+
 			writeC(_activeChar.getRecomLeft());                       //Changed by Thorgrim
 			writeH(_activeChar.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
 			writeD(_activeChar.getClassId().getId());
-			
+
 			writeD(_maxCp);
 			writeD((int) _activeChar.getCurrentCp());
 	        writeC(_activeChar.isMounted() ? 0 : _activeChar.getEnchantEffect());
-			
+
 	        if(_activeChar.getTeam()==1)
 	        	writeC(0x01); //team circle around feet 1= Blue, 2 = red
 	        else if(_activeChar.getTeam()==2)
 	        	writeC(0x02); //team circle around feet 1= Blue, 2 = red
 	        else
 	        	writeC(0x00); //team circle around feet 1= Blue, 2 = red
-	        
-			writeD(_activeChar.getClanCrestLargeId()); 
-			writeC(_activeChar.isNoble() ? 1 : 0); // Symbol on char menu ctrl+I  
+
+			writeD(_activeChar.getClanCrestLargeId());
+			writeC(_activeChar.isNoble() ? 1 : 0); // Symbol on char menu ctrl+I
 			writeC((_activeChar.isHero() || (_activeChar.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura
-			
+
 			writeC(_activeChar.isFishing() ? 1 : 0); //0x01: Fishing Mode (Cant be undone by setting back to 0)
-			writeD(_activeChar.GetFishx());  
+			writeD(_activeChar.GetFishx());
 			writeD(_activeChar.GetFishy());
 			writeD(_activeChar.GetFishz());
-			
+
 	        writeD(_activeChar.getAppearance().getNameColor());
-	        
+
 	        writeD(0x00); // isRunning() as in UserInfo?
-	        
-	        writeD(_activeChar.getPledgeClass()); 
+
+	        writeD(_activeChar.getPledgeClass());
 	        writeD(0x00); // ??
-	        
+
 	        writeD(_activeChar.getAppearance().getTitleColor());
-	        
+
 	        //writeD(0x00); // ??
-	        
+
 	        if (_activeChar.isCursedWeaponEquiped())
 	        	writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
 	        else
 	        	writeD(0x00);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

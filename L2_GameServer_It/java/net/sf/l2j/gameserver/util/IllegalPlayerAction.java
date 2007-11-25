@@ -8,7 +8,7 @@
  * Revision 1  21/10/2005 23:32:02  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -38,7 +38,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 public final class IllegalPlayerAction implements Runnable
@@ -48,18 +48,18 @@ public final class IllegalPlayerAction implements Runnable
     String _message;
     int _punishment;
     L2PcInstance _actor;
-    
+
     public static final int PUNISH_BROADCAST = 1;
     public static final int PUNISH_KICK = 2;
     public static final int PUNISH_KICKBAN = 3;
     public static final int PUNISH_JAIL = 4;
-    
+
     public IllegalPlayerAction(L2PcInstance actor, String message, int punishment)
     {
         _message        = message;
         _punishment     = punishment;
         _actor          = actor;
-        
+
         switch(punishment)
         {
             case PUNISH_KICK:
@@ -74,7 +74,7 @@ public final class IllegalPlayerAction implements Runnable
             	break;
         }
     }
-    
+
     public void run()
     {
 		LogRecord record = new LogRecord(Level.INFO, "AUDIT:" + _message);

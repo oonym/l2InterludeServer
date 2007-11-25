@@ -32,7 +32,7 @@ public class PetStat extends SummonStat
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public PetStat(L2PetInstance activeChar)
@@ -65,7 +65,7 @@ public class PetStat extends SummonStat
 
         SystemMessage sm = new SystemMessage(SystemMessageId.PET_EARNED_S1_EXP);
         sm.addNumber((int)addToExp);
-                
+
         getActiveChar().getOwner().sendPacket(sm);
 
         return true;
@@ -93,7 +93,7 @@ public class PetStat extends SummonStat
         getActiveChar().getOwner().sendPacket(new PetInfo(getActiveChar()));
         // The PetInfo packet wipes the PartySpelled (list of active  spells' icons).  Re-add them
         getActiveChar().updateEffectIcons(true);
-        
+
         if (getActiveChar().getControlItem() != null)
         	getActiveChar().getControlItem().setEnchantLevel(getLevel());
 
@@ -102,7 +102,7 @@ public class PetStat extends SummonStat
 
     @Override
 	public final long getExpForLevel(int level) { return L2PetDataTable.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp(); }
-    
+
     // =========================================================
     // Method - Private
 
@@ -132,10 +132,10 @@ public class PetStat extends SummonStat
 
     @Override
 	public int getMaxHp() { return (int)calcStat(Stats.MAX_HP, getActiveChar().getPetData().getPetMaxHP(), null, null); }
-    
+
     @Override
 	public int getMaxMp() { return (int)calcStat(Stats.MAX_MP, getActiveChar().getPetData().getPetMaxMP(), null, null); }
-    
+
     @Override
 	public int getMAtk(L2Character target, L2Skill skill)
     {
@@ -164,14 +164,14 @@ public class PetStat extends SummonStat
         if (skill != null) attack += skill.getPower();
         return (int)calcStat(Stats.MAGIC_ATTACK, attack, target, skill);
     }
-    
+
     @Override
 	public int getMDef(L2Character target, L2Skill skill)
     {
         double defence = getActiveChar().getPetData().getPetMDef();
         return (int)calcStat(Stats.MAGIC_DEFENCE, defence, target, skill);
     }
-    
+
     @Override
 	public int getPAtk(L2Character target) { return (int)calcStat(Stats.POWER_ATTACK, getActiveChar().getPetData().getPetPAtk(), target, null); }
     @Override

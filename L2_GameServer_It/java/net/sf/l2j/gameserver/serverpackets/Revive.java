@@ -23,9 +23,9 @@ import net.sf.l2j.gameserver.model.L2Object;
 /**
  * sample
  * 0000: 0c  9b da 12 40                                     ....@
- *  
- * format  d 
- * 
+ *
+ * format  d
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:40 $
  */
 public class Revive extends L2GameServerPacket
@@ -37,14 +37,14 @@ public class Revive extends L2GameServerPacket
 	{
 		_objectId = obj.getObjectId();
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x07);
 		writeD(_objectId);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands:
  * - character_disconnect = disconnects target player
- * 
+ *
  * @version $Revision: 1.2.4.4 $ $Date: 2005/04/11 10:06:00 $
  */
 public class AdminDisconnect implements IAdminCommandHandler {
@@ -44,23 +44,23 @@ public class AdminDisconnect implements IAdminCommandHandler {
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
 
 		if (command.equals("admin_character_disconnect"))
-		{ 
-			disconnectCharacter(activeChar);			
-		}		
+		{
+			disconnectCharacter(activeChar);
+		}
 
 		String target = (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target");
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
-	
+
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean checkLevel(int level) {
 		return (level >= REQUIRED_LEVEL);
 	}
-	
+
 	private void disconnectCharacter(L2PcInstance activeChar)
 	{
 		L2Object target = activeChar.getTarget();
@@ -70,25 +70,25 @@ public class AdminDisconnect implements IAdminCommandHandler {
 		} else {
 			return;
 		}
-		
+
 		if (player.getObjectId() == activeChar.getObjectId())
-		{		
+		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString("You cannot logout your character.");
 			activeChar.sendPacket(sm);
 		}
 		else
-		{				
+		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Character " + player.getName() + " disconnected from server.");
 			activeChar.sendPacket(sm);
-			
+
 			//Logout Character
 			LeaveWorld ql = new LeaveWorld();
 			player.sendPacket(ql);
-			
+
 			RegionBBSManager.getInstance().changeCommunityBoard();
-			
+
 			player.closeNetConnection();
 		}
 	}

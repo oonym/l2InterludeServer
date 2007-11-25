@@ -52,7 +52,7 @@ public class Manadam implements ISkillHandler
         boolean bss = false;
 
         L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-        
+
         if (weaponInst != null)
         {
             if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -69,10 +69,10 @@ public class Manadam implements ISkillHandler
 		for (int index = 0; index < targets.length; index++)
 		{
 			target = (L2Character) targets[index];
-			
+
             if(target.reflectSkill(skill))
             	target = activeChar;
-            
+
 			boolean acted = Formulas.getInstance().calcMagicAffected(activeChar, target, skill);
 			if (target.isInvul() || !acted)
 			{
@@ -80,7 +80,7 @@ public class Manadam implements ISkillHandler
 			} else
 			{
 				double damage = Formulas.getInstance().calcManaDam(activeChar, target, skill, ss, bss);
-				
+
 				double mp = ( damage > target.getCurrentMp() ? target.getCurrentMp() : damage);
 				target.reduceCurrentMp(mp);
 				if (damage > 0)

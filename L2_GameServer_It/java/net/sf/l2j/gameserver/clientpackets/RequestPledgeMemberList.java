@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeShowMemberListAll;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPledgeMemberList extends L2GameClientPacket
@@ -43,7 +43,7 @@ public final class RequestPledgeMemberList extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null) return;
-		
+
 		L2Clan clan = activeChar.getClan();
 		if (clan != null)
 		{

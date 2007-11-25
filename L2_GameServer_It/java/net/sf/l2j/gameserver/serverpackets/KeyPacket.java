@@ -20,20 +20,20 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public final class KeyPacket extends L2GameServerPacket
 {
 	private static final String _S__01_KEYPACKET = "[S] 01 KeyPacket";
-	
+
 	private byte[] _key;
-	
+
 	public KeyPacket(byte[] key)
 	{
 		_key = key;
 	}
-	
+
 	@Override
 	public void writeImpl()
 	{
@@ -43,7 +43,7 @@ public final class KeyPacket extends L2GameServerPacket
 		writeD(0x01);
 		writeD(0x01);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.L2GameServerPacket#getType()
 	 */

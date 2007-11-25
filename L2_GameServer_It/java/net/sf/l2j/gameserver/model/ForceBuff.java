@@ -16,15 +16,15 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
- 
+
 package net.sf.l2j.gameserver.model;
 
 import java.util.concurrent.Future;
 
+import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.skills.effects.EffectForce;
-import net.sf.l2j.gameserver.ThreadPoolManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 public class ForceBuff
 {
 	static final Log _log = LogFactory.getLog(ForceBuff.class.getName());
-	
+
 	protected L2PcInstance _caster;
 	private L2PcInstance _target;
 	private L2Skill _skill;
@@ -101,7 +101,7 @@ public class ForceBuff
 		}
 
 		_caster.setForceBuff(null);
-		
+
 		if(!_applied) return;
 
 		int toDeleteId = getForce().getId();

@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public class EffectPsychicalMute extends L2Effect {
 
-    
+
     public EffectPsychicalMute(Env env, EffectTemplate template) {
         super(env, template);
     }
@@ -41,7 +41,7 @@ public class EffectPsychicalMute extends L2Effect {
 	public void onStart() {
         getEffected().startPsychicalMuted();
     }
-    
+
     @Override
 	public boolean onActionTime() {
         // Simply stop the effect

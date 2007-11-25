@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.serverpackets.ShortCutRegister;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.4.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestShortCutReg extends L2GameClientPacket
@@ -36,8 +36,8 @@ public final class RequestShortCutReg extends L2GameClientPacket
 	private int _slot;
 	private int _page;
 	private int _unk;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -82,7 +82,7 @@ public final class RequestShortCutReg extends L2GameClientPacket
 				break;
 			}
 		}
-		
+
 	}
 
 	/* (non-Javadoc)

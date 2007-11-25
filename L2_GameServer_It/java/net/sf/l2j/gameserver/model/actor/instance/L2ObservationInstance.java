@@ -64,7 +64,7 @@ public final class L2ObservationInstance extends L2FolkInstance
             {
             	doObserve(player, val);
             }
-            else player.sendPacket(new SystemMessage(SystemMessageId.ONLY_VIEW_SIEGE)); 
+            else player.sendPacket(new SystemMessage(SystemMessageId.ONLY_VIEW_SIEGE));
         }
         else if (command.startsWith("observe"))
         {

@@ -48,7 +48,7 @@ import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.4.3 $ $Date: 2005/03/27 15:30:09 $
  */
 public class LoginController
@@ -114,7 +114,7 @@ public class LoginController
 		_log.info("Cached 10 KeyPairs for RSA communication");
 
 		testCipher((RSAPrivateKey) _keyPairs[0]._pair.getPrivate());
-		
+
 		// Store keys for blowfish communication
 		generateBlowFishKeys();
 	}
@@ -188,14 +188,14 @@ public class LoginController
 	{
 		return _loginServerClients.containsKey(account);
 	}
-	
+
 	public L2LoginClient getAuthedClient(String account)
 	{
 		return _loginServerClients.get(account);
 	}
 
 	public static enum AuthLoginResult { INVALID_PASSWORD, ACCOUNT_BANNED, ALREADY_ON_LS, ALREADY_ON_GS, AUTH_SUCCESS };
-	
+
 	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException
 	{
 		AuthLoginResult ret = AuthLoginResult.INVALID_PASSWORD;
@@ -208,7 +208,7 @@ public class LoginController
 			{
 				// account isnt on any GS verify LS itself
 				ret = AuthLoginResult.ALREADY_ON_LS;
-				
+
 				// dont allow 2 simultaneous login
 				synchronized (_loginServerClients)
 				{
@@ -216,7 +216,7 @@ public class LoginController
 					{
 						_loginServerClients.put(account, client);
 						ret = AuthLoginResult.AUTH_SUCCESS;
-						
+
 						// remove him from the non-authed list
 						removeLoginClient(client);
 					}
@@ -235,7 +235,7 @@ public class LoginController
 
 	/**
 	 * Adds the address to the ban list of the login server, with the given duration.
-	 * 
+	 *
 	 * @param address The Address to be banned.
 	 * @param expiration Timestamp in miliseconds when this ban expires
 	 * @throws UnknownHostException if the address is invalid.
@@ -248,7 +248,7 @@ public class LoginController
 
 	/**
 	 * Adds the address to the ban list of the login server, with the given duration.
-	 * 
+	 *
 	 * @param address The Address to be banned.
 	 * @param duration is miliseconds
 	 */
@@ -256,7 +256,7 @@ public class LoginController
 	{
 		_bannedIps.put(address, new BanInfo(address,  System.currentTimeMillis() + duration));
 	}
-	
+
 	public boolean isBannedAddress(InetAddress address)
 	{
 		BanInfo bi = _bannedIps.get(address);
@@ -274,7 +274,7 @@ public class LoginController
 		}
 		return false;
 	}
-	
+
 	public Map<InetAddress, BanInfo> getBannedIps()
 	{
 		return _bannedIps;
@@ -341,7 +341,7 @@ public class LoginController
 		}
 		return false;
 	}
-	
+
 	public GameServerInfo getAccountOnGameServer(String account)
 	{
 		Collection<GameServerInfo> serverList = GameServerTable.getInstance().getRegisteredGameServers().values();
@@ -381,7 +381,7 @@ public class LoginController
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isLoginPossible(L2LoginClient client, int serverId)
@@ -391,7 +391,7 @@ public class LoginController
 		if (gsi != null && gsi.isAuthed())
 		{
 			boolean loginOk = (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= Config.GM_MIN;
-			
+
 			if (loginOk && client.getLastServer() != serverId)
 			{
 				java.sql.Connection con = null;
@@ -399,7 +399,7 @@ public class LoginController
 				try
 				{
 					con = L2DatabaseFactory.getInstance().getConnection();
-				
+
 					String stmt = "UPDATE accounts SET lastServer = ? WHERE login = ?";
 					statement = con.prepareStatement(stmt);
 					statement.setInt(1, serverId);
@@ -524,13 +524,13 @@ public class LoginController
 		InetAddress address = client.getConnection().getSocketChannel().socket().getInetAddress();
 		// log it anyway
 		Log.add("'" + (user == null ? "null" : user) + "' " + (address == null ? "null" : address.getHostAddress()), "logins_ip");
-		
+
 		// player disconnected meanwhile
 		if (address == null)
 		{
 			return false;
 		}
-		
+
 		java.sql.Connection con = null;
 		try
 		{
@@ -591,7 +591,7 @@ public class LoginController
 					client.setAccessLevel(access);
 					return false;
 				}
-				
+
 				// check password hash
 				ok = true;
 				for (int i = 0; i < expected.length; i++)
@@ -603,7 +603,7 @@ public class LoginController
 					}
 				}
 			}
-			
+
 			if (ok)
 			{
 				client.setAccessLevel(access);
@@ -711,7 +711,7 @@ public class LoginController
 		private long _lastAttempTime;
 		private String _lastPassword;
 
-		public FailedLoginAttempt(InetAddress address, String lastPassword) 
+		public FailedLoginAttempt(InetAddress address, String lastPassword)
 		{
 			//_ipAddress = address;
 			_count = 1;
@@ -802,7 +802,7 @@ public class LoginController
 						}
 					}
 				}
-				
+
 				try
 				{
 					Thread.sleep(2*LOGIN_TIMEOUT);

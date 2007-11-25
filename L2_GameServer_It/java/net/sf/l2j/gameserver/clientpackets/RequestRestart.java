@@ -39,15 +39,15 @@ import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.11.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestRestart extends L2GameClientPacket
 {
     private static final String _C__46_REQUESTRESTART = "[C] 46 RequestRestart";
     private static Logger _log = Logger.getLogger(RequestRestart.class.getName());
-    
-    
+
+
     @Override
 	protected void readImpl()
     {
@@ -112,32 +112,32 @@ public final class RequestRestart extends L2GameClientPacket
                                                           SystemMessage.sendString(player.getName()
                                                               + " has been removed from the upcoming festival."));
         }
-        if (player.isFlying()) 
-        { 
+        if (player.isFlying())
+        {
         	player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
         }
-        
+
         L2GameClient client = getClient();
-        
+
         // detach the client from the char so that the connection isnt closed in the deleteMe
         player.setClient(null);
 
         TvTEvent.onLogout(player);
         RegionBBSManager.getInstance().changeCommunityBoard();
-        
+
         // removing player from the world
         player.deleteMe();
         L2GameClient.saveCharToDisk(client.getActiveChar());
-        
-        
+
+
         getClient().setActiveChar(null);
-        
+
         // return the client to the authed status
         client.setState(GameClientState.AUTHED);
-        
+
         RestartResponse response = new RestartResponse();
         sendPacket(response);
-        
+
         // send char list
         CharSelectInfo cl = new CharSelectInfo(client.getAccountName(),
         									   client.getSessionId().playOkID1);

@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.PartyMemberPosition;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class CannotMoveAnymore extends L2GameClientPacket
@@ -82,7 +82,7 @@ public final class CannotMoveAnymore extends L2GameClientPacket
 		// StopMove smwl = new StopMove(player);
 		// getClient().getActiveChar().sendPacket(smwl);
 		// getClient().getActiveChar().broadcastPacket(smwl);
-		//		
+		//
 		// StopRotation sr = new StopRotation(getClient().getActiveChar(),
 		// _heading);
 		// getClient().getActiveChar().sendPacket(sr);
@@ -91,7 +91,7 @@ public final class CannotMoveAnymore extends L2GameClientPacket
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

@@ -80,7 +80,7 @@ public class DuelManager
 	public void addDuel(L2PcInstance playerA, L2PcInstance playerB, int partyDuel)
 	{
 		if (playerA == null || playerB == null) return;
-		
+
 		// return if a player has PvPFlag
 		String engagedInPvP = "The duel was canceled because a duelist engaged in PvP combat.";
 		if (partyDuel == 1)
@@ -124,19 +124,19 @@ public class DuelManager
 		Duel duel = new Duel(playerA, playerB, partyDuel, getNextDuelId());
 		_duels.add(duel);
 	}
-	
+
 	public void removeDuel(Duel duel)
 	{
 		_duels.remove(duel);
 	}
-	
+
 	public void doSurrender(L2PcInstance player)
 	{
 		if (player == null || !player.isInDuel()) return;
 		Duel duel = getDuel(player.getDuelId());
 		duel.doSurrender(player);
 	}
-	
+
 	/**
 	 * Updates player states.
 	 * @param player - the dieing player
@@ -147,7 +147,7 @@ public class DuelManager
 		Duel duel = getDuel(player.getDuelId());
 		if (duel != null) duel.onPlayerDefeat(player);
 	}
-	
+
 	/**
 	 * Registers a debuff which will be removed if the duel ends
 	 * @param player
@@ -159,7 +159,7 @@ public class DuelManager
 		Duel duel = getDuel(player.getDuelId());
 		if (duel != null) duel.onBuff(player, buff);
 	}
-	
+
 	/**
 	 * Removes player from duel.
 	 * @param player - the removed player
@@ -170,7 +170,7 @@ public class DuelManager
 		Duel duel = getDuel(player.getDuelId());
 		if (duel != null) duel.onRemoveFromParty(player);
 	}
-	
+
 	/**
 	 * Broadcasts a packet to the team opposing the given player.
 	 * @param player

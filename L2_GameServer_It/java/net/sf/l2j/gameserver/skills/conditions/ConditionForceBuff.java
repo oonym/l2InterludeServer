@@ -55,7 +55,7 @@ public class ConditionForceBuff extends Condition
 		if (neededBattle > 0)
 		{
 			L2Effect battleForce = env.player.getFirstEffect(BATTLE_FORCE);
-			if (!(battleForce instanceof EffectBattleForce) || 
+			if (!(battleForce instanceof EffectBattleForce) ||
 			  ((EffectBattleForce)battleForce).forces < neededBattle)
 				return false;
 		}
@@ -63,7 +63,7 @@ public class ConditionForceBuff extends Condition
 		if (neededSpell > 0)
 		{
 			L2Effect spellForce = env.player.getFirstEffect(SPELL_FORCE);
-			if (!(spellForce instanceof EffectSpellForce) || 
+			if (!(spellForce instanceof EffectSpellForce) ||
 			  ((EffectSpellForce)spellForce).forces < neededSpell)
 				return false;
 		}

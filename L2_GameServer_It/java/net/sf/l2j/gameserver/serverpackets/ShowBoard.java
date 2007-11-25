@@ -24,14 +24,14 @@ public class ShowBoard extends L2GameServerPacket
 {
 	private static final String _S__6E_SHOWBOARD = "[S] 6e ShowBoard";
 
-	private String _htmlCode;	
+	private String _htmlCode;
 	private String _id;
 	private List<String> _arg;
 
 	public ShowBoard(String htmlCode, String id)
 	{
 		_id = id;
-		_htmlCode = htmlCode; // html code must not exceed 8192 bytes 
+		_htmlCode = htmlCode; // html code must not exceed 8192 bytes
 	}
 
 	public ShowBoard(List<String> arg)
@@ -83,7 +83,7 @@ public class ShowBoard extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x6e);
-		writeC(0x01); //c4 1 to show community 00 to hide 
+		writeC(0x01); //c4 1 to show community 00 to hide
 		writeS("bypass _bbshome"); // top
 		writeS("bypass _bbsgetfav"); // favorite
 		writeS("bypass _bbsloc"); // region
@@ -91,7 +91,7 @@ public class ShowBoard extends L2GameServerPacket
 		writeS("bypass _bbsmemo"); // memo
 		writeS("bypass _bbsmail"); // mail
 		writeS("bypass _bbsfriends"); // friends
-		writeS("bypass bbs_add_fav"); // add fav.	
+		writeS("bypass bbs_add_fav"); // add fav.
 		if (!_id.equals("1002"))
 		{
 			// getBytes is a very costy operation, and should only be called once

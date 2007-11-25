@@ -37,7 +37,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.4 $ $Date: 2005/03/27 15:30:07 $
  */
 
@@ -45,7 +45,7 @@ public class Potions implements IItemHandler
 {
 	protected static final Logger _log = Logger.getLogger(Potions.class.getName());
 	private int _herbstask = 0;
-	
+
 	/** Task for Herbs */
 	private class HerbTask implements Runnable
 	{
@@ -80,7 +80,7 @@ public class Potions implements IItemHandler
 				8622, 8623, 8624, 8625, 8626, 8627,
 				//elixir of Strength
 				8628, 8629, 8630, 8631, 8632, 8633,
-				//elixir of cp 
+				//elixir of cp
 				8634, 8635, 8636, 8637, 8638, 8639};
 
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -93,7 +93,7 @@ public class Potions implements IItemHandler
 			activeChar = ((L2PetInstance) playable).getOwner();
 		else
 			return;
-		
+
 		if (!TvTEvent.onPotionUse(playable.getName()))
 		{
 			playable.sendPacket(new ActionFailed());
@@ -124,7 +124,7 @@ public class Potions implements IItemHandler
 			case 728: // mana_potion, xml: 2005
 				res = usePotion(activeChar, 2005, 1);
 				break;
-				
+
 			// HEALING AND SPEED POTIONS
 			case 65: // red_potion, xml: 2001
 				res = usePotion(activeChar, 2001, 1);
@@ -169,7 +169,7 @@ public class Potions implements IItemHandler
 				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2038, 1);
 				break;
-			case 5591: 
+			case 5591:
 			case 5592: // CP and Greater CP
 				if (!isEffectReplaceable(activeChar, L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME, itemId)) return;
 				res = usePotion(activeChar, 2166, (itemId == 5591) ? 1 : 2);
@@ -180,16 +180,16 @@ public class Potions implements IItemHandler
 			case 6036: // Greater Magic Haste Potion, xml: 2169
 				res = usePotion(activeChar, 2169, 2);
 				break;
-			
+
 			// ELIXIR
-			case 8622: 
-			case 8623: 
+			case 8622:
+			case 8623:
 			case 8624:
-			case 8625: 
-			case 8626: 
+			case 8625:
+			case 8626:
 			case 8627:
 				// elixir of Life
-				if ( 
+				if (
 					(itemId == 8622 && activeChar.getExpertiseIndex()==0) ||
 					(itemId == 8623 && activeChar.getExpertiseIndex()==1) ||
 					(itemId == 8624 && activeChar.getExpertiseIndex()==2) ||
@@ -206,14 +206,14 @@ public class Potions implements IItemHandler
 					return;
 				}
 				break;
-			case 8628: 
-			case 8629: 
-			case 8630: 
-			case 8631: 
-			case 8632: 
+			case 8628:
+			case 8629:
+			case 8630:
+			case 8631:
+			case 8632:
 			case 8633:
 				// elixir of Strength
-				if ( 
+				if (
 					(itemId == 8628 && activeChar.getExpertiseIndex()==0) ||
 					(itemId == 8629 && activeChar.getExpertiseIndex()==1) ||
 					(itemId == 8630 && activeChar.getExpertiseIndex()==2) ||
@@ -231,13 +231,13 @@ public class Potions implements IItemHandler
 				}
 				break;
 			case 8634:
-			case 8635: 
-			case 8636: 
-			case 8637: 
-			case 8638: 
+			case 8635:
+			case 8636:
+			case 8637:
+			case 8638:
 			case 8639:
 				// elixir of cp
-				if ( 
+				if (
 					(itemId == 8634 && activeChar.getExpertiseIndex()==0) ||
 					(itemId == 8635 && activeChar.getExpertiseIndex()==1) ||
 					(itemId == 8636 && activeChar.getExpertiseIndex()==2) ||
@@ -268,7 +268,7 @@ public class Potions implements IItemHandler
 			case 6655: // Amulet Slay Valakas
 				res = usePotion(activeChar, 2232, 1);
 				break;
-			
+
 			// HERBS
 			case 8600: // Herb of Life
 				res = usePotion(activeChar, 2278, 1);
@@ -319,7 +319,7 @@ public class Potions implements IItemHandler
 				res = usePotion(activeChar, 2278, 3);// Superior Herb of Life
 				res = usePotion(activeChar, 2279, 3);// Superior Herb of Mana
 				break;
-			
+
 			// FISHERMAN POTIONS
 			case 8193: // Fisherman's Potion - Green
 				if (activeChar.getSkillLevel(1315) <= 3) {
@@ -393,15 +393,15 @@ public class Potions implements IItemHandler
 				break;
 			default:
 		}
-		
+
 		if (res)
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 	}
-	
+
 	private boolean isEffectReplaceable(L2PcInstance activeChar, Enum effectType, int itemId)
 	{
 		L2Effect[] effects = activeChar.getAllEffects();
-		
+
 		if (effects == null) return true;
 
 		for (L2Effect e : effects)
@@ -426,8 +426,8 @@ public class Potions implements IItemHandler
 		{
 			_herbstask += 100;
 			ThreadPoolManager.getInstance().scheduleAi(new HerbTask(activeChar, magicId, level), _herbstask);
-		} 
-		else 
+		}
+		else
 		{
 			if (magicId>2277 && magicId<2285 && _herbstask>=100) _herbstask -= 100;
 			L2Skill skill = SkillTable.getInstance().getInfo(magicId, level);

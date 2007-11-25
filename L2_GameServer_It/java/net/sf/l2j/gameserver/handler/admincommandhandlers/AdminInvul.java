@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 /**
  * This class handles following admin commands:
  * - invul = turns invulnerability on/off
- * 
+ *
  * @version $Revision: 1.2.4.4 $ $Date: 2007/07/31 10:06:02 $
  */
 public class AdminInvul implements IAdminCommandHandler {
@@ -42,7 +42,7 @@ public class AdminInvul implements IAdminCommandHandler {
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
 
         GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
-        
+
 		if (command.equals("admin_invul")) handleInvul(activeChar);
         if (command.equals("admin_setinvul")){
            L2Object target = activeChar.getTarget();
@@ -52,15 +52,15 @@ public class AdminInvul implements IAdminCommandHandler {
         }
 		return true;
 	}
-	
+
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean checkLevel(int level) {
 		return (level >= REQUIRED_LEVEL);
 	}
-	
+
 	private void handleInvul(L2PcInstance activeChar) {
 		String text;
 		if (activeChar.isInvul())
@@ -73,7 +73,7 @@ public class AdminInvul implements IAdminCommandHandler {
 		{
 			activeChar.setIsInvul(true);
 			text = activeChar.getName() + " is now invulnerable";
-			if (Config.DEBUG) 
+			if (Config.DEBUG)
 				_log.fine("GM: Gm activated invul mode for character "+activeChar.getName()+"("+activeChar.getObjectId()+")");
 		}
     	activeChar.sendMessage(text);

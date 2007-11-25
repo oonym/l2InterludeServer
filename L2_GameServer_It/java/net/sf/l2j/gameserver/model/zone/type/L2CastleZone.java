@@ -18,7 +18,6 @@
 package net.sf.l2j.gameserver.model.zone.type;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.L2Character;
@@ -39,21 +38,21 @@ public class L2CastleZone extends L2ZoneType
 	private int _castleId;
 	private Castle _castle;
 	private int[] _spawnLoc;
-	
+
 	public L2CastleZone()
 	{
 		super();
-		
+
 		_spawnLoc = new int[3];
 	}
-	
+
 	@Override
 	public void setParameter(String name, String value)
 	{
 		if (name.equals("castleId"))
 		{
 			_castleId = Integer.parseInt(value);
-			
+
 			// Register self to the correct castle
 			_castle = CastleManager.getInstance().getCastleById(_castleId);
 			_castle.setZone(this);
@@ -80,12 +79,12 @@ public class L2CastleZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_PVP, true);
 			character.setInsideZone(L2Character.ZONE_SIEGE, true);
-			
+
 			if (character instanceof L2PcInstance)
 				((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -93,11 +92,11 @@ public class L2CastleZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_PVP, false);
 			character.setInsideZone(L2Character.ZONE_SIEGE, false);
-			
+
 			if (character instanceof L2PcInstance)
 			{
 				((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
-			
+
 				// Set pvp flag
 				if (((L2PcInstance)character).getPvpFlag() == 0)
 					((L2PcInstance)character).startPvPFlag();
@@ -108,10 +107,10 @@ public class L2CastleZone extends L2ZoneType
 			((L2SiegeSummonInstance)character).unSummon(((L2SiegeSummonInstance)character).getOwner());
 		}
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
 
@@ -121,10 +120,10 @@ public class L2CastleZone extends L2ZoneType
 		{
 			for (L2Character character : _characterList.values())
 			{
-				try	
-				{ 
-					onEnter(character); 
-				} 
+				try
+				{
+					onEnter(character);
+				}
 				catch (NullPointerException e) {}
 			}
 		}
@@ -132,23 +131,23 @@ public class L2CastleZone extends L2ZoneType
 		{
 			for (L2Character character : _characterList.values())
 			{
-				try	
-				{ 
+				try
+				{
 					character.setInsideZone(L2Character.ZONE_PVP, false);
 					character.setInsideZone(L2Character.ZONE_SIEGE, false);
-					
+
 					if (character instanceof L2PcInstance)
 						((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 					if (character instanceof L2SiegeSummonInstance)
 					{
 						((L2SiegeSummonInstance)character).unSummon(((L2SiegeSummonInstance)character).getOwner());
 					}
-				} 
+				}
 				catch (NullPointerException e) {}
 			}
 		}
 	}
-	
+
 	/**
 	 * Removes all foreigners from the castle
 	 * @param owningClanId
@@ -159,11 +158,11 @@ public class L2CastleZone extends L2ZoneType
 		{
 			if(!(temp instanceof L2PcInstance)) continue;
 			if (((L2PcInstance)temp).getClanId() == owningClanId) continue;
-			
-			((L2PcInstance)temp).teleToLocation(MapRegionTable.TeleportWhereType.Town); 
+
+			((L2PcInstance)temp).teleToLocation(MapRegionTable.TeleportWhereType.Town);
 		}
 	}
-	
+
 	/**
 	 * Sends a message to all players in this zone
 	 * @param message
@@ -176,7 +175,7 @@ public class L2CastleZone extends L2ZoneType
 				((L2PcInstance)temp).sendMessage(message);
 		}
 	}
-	
+
 	/**
 	 * Returns all players within this zone
 	 * @return
@@ -184,16 +183,16 @@ public class L2CastleZone extends L2ZoneType
 	public FastList<L2PcInstance> getAllPlayers()
 	{
 		FastList<L2PcInstance> players = new FastList<L2PcInstance>();
-		
+
 		for (L2Character temp : _characterList.values())
 		{
 			if (temp instanceof L2PcInstance)
 				players.add((L2PcInstance)temp);
 		}
-		
+
 		return players;
 	}
-	
+
 	/**
 	 * Get the castles defender spawn
 	 * @return

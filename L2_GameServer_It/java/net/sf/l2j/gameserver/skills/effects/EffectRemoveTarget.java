@@ -36,7 +36,7 @@ public class EffectRemoveTarget extends L2Effect
     {
         return EffectType.REMOVE_TARGET;
     }
-    
+
     /** Notify started */
     @Override
 	public void onStart() {
@@ -44,16 +44,16 @@ public class EffectRemoveTarget extends L2Effect
         getEffected().abortAttack();
         getEffected().abortCast();
     }
-    
+
     /** Notify exited */
     @Override
 	public void onExit() {
         //nothing
     }
-    
+
     @Override
 	public boolean onActionTime()
-    {        
+    {
     	//nothing
         return false;
     }

@@ -301,7 +301,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	* Starts battle force / spell force on target.<br><br>
-	* 
+	*
 	* @param caster
 	* @param force type
 	*/
@@ -354,7 +354,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/** The PvP Flag state of the L2PcInstance (0=White, 1=Purple) */
 	private byte _pvpFlag;
-	
+
 	/** The Siege state of the L2PcInstance */
 	private byte _siegeState = 0;
 
@@ -790,16 +790,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			result |= RelationChanged.RELATION_PVP_FLAG;
 		if (getKarma() > 0)
 			result |= RelationChanged.RELATION_HAS_KARMA;
-		
+
 		if (isClanLeader())
 			result |= RelationChanged.RELATION_LEADER;
-		
+
 		if (getSiegeState() != 0)
 		{
 			result |= RelationChanged.RELATION_INSIEGE;
 			if (getSiegeState() != target.getSiegeState())
 				result |= RelationChanged.RELATION_ENEMY;
-			else 
+			else
 				result |= RelationChanged.RELATION_ALLY;
 			if (getSiegeState() == 1)
 				result |= RelationChanged.RELATION_ATTACKER;
@@ -808,7 +808,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getClan() != null && target.getClan() != null)
 		{
 			if (target.getPledgeType() != L2Clan.SUBUNIT_ACADEMY
-				&& target.getClan().isAtWarWith(getClan().getClanId())) 
+				&& target.getClan().isAtWarWith(getClan().getClanId()))
 			{
 				result |= RelationChanged.RELATION_1SIDED_WAR;
 				if (getClan().isAtWarWith(target.getClan().getClanId()))
@@ -1429,7 +1429,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _macroses;
 	}
-	
+
 	/**
 	 * Set the siege state of the L2PcInstance.<BR><BR>
 	 * 1 = attacker, 2 = defender, 0 = not involved
@@ -1446,7 +1446,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _siegeState;
 	}
-	
+
 	/**
 	 * Set the PvP Flag of the L2PcInstance.<BR><BR>
 	 */
@@ -1459,12 +1459,12 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _pvpFlag;
 	}
-	
+
     public void revalidateZone(boolean force)
     {
     	// Cannot validate if not in  a world region (happens during teleport)
     	if (getWorldRegion() == null) return;
-    	
+
     	// This function is called very often from movement code
     	if (force) _zoneValidateCounter = 4;
     	else
@@ -2356,7 +2356,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			_player = player;
 		}
 		public void run()
-		{	
+		{
 			_player.setIsParalyzed(false);
 			_player.getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
 		}
@@ -3918,13 +3918,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Can't target and attack festival monsters if not participant
 			if((newTarget instanceof L2FestivalMonsterInstance) && !isFestivalParticipant())
 				newTarget = null;
-			
+
 			// Can't target and attack rift invaders if not in the same room
 			else if(isInParty() && getParty().isInDimensionalRift())
 			{
 				byte riftType = getParty().getDimensionalRift().getType();
 				byte riftRoom = getParty().getDimensionalRift().getCurrentRoom();
-				
+
 				if (newTarget != null && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(newTarget.getX(), newTarget.getY(), newTarget.getZ()))
 					newTarget = null;
 			}
@@ -4253,7 +4253,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		if (isInParty() && getParty().isInDimensionalRift())
 			getParty().getDimensionalRift().getDeadMemberList().add(this);
-		
+
 		// calculate death penalty buff
 		calculateDeathPenaltyBuffLevel(killer);
 
@@ -5119,7 +5119,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Remove augementation boni on unequip
             if (wpn.isAugmented())
             	wpn.getAugmentation().removeBoni(this);
-        	
+
             L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
             InventoryUpdate iu = new InventoryUpdate();
             for (int i = 0; i < unequiped.length; i++)
@@ -6127,7 +6127,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(2, getClassIndex());
 			statement.execute();
 			statement.close();
-			
+
 			int buff_index = 0;
 
 			// Store all effect data along with calulated remaining
@@ -6983,7 +6983,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Check if it's ok to summon
         // siege golem (13), Wild Hog Cannon (299), Swoop Cannon (448)
-        if ((skill.getId() == 13 || skill.getId() == 299 || skill.getId() == 448) 
+        if ((skill.getId() == 13 || skill.getId() == 299 || skill.getId() == 448)
         		&& !SiegeManager.getInstance().checkIfOkToSummon(this, false))
 			return;
 
@@ -7200,7 +7200,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (isInOlympiadMode() && !isOlympiadStart()){
 				// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
 				sendPacket(new ActionFailed());
-				return;	
+				return;
 			}
 
             // Check if the target is attackable
@@ -7360,7 +7360,7 @@ public final class L2PcInstance extends L2PlayableInstance
         	abortCast();
         	return;
         }
-        
+
         // GeoData Los Check here
         if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
         {
@@ -7384,7 +7384,7 @@ public final class L2PcInstance extends L2PlayableInstance
     	// if L2PcInstance is in a CommandChannel
     	if (isInParty() && getParty().isInCommandChannel() && looter != null)
     		return getParty().getCommandChannel().getMembers().contains(looter);
-    	
+
     	if (isInParty() && looter != null)
             return getParty().getPartyMembers().contains(looter);
 
@@ -7899,7 +7899,7 @@ public final class L2PcInstance extends L2PlayableInstance
     {
         if (getPet() != null)
             getPet().unSummon(this);
-        
+
         if (getCubics().size() > 0)
         {
             for (L2CubicInstance cubic : getCubics().values())
@@ -7910,7 +7910,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
             getCubics().clear();
         }
-        
+
     	_olympiadGameId = id;
         _obsX = getX();
         if (isSitting())

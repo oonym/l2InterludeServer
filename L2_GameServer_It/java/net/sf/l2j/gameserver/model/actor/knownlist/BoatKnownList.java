@@ -37,12 +37,12 @@ public class BoatKnownList extends CharKnownList
 	{
 		super(activeChar);
 		// TODO Auto-generated constructor stub
-	}    
+	}
 	@Override
 	public int getDistanceToForgetObject(L2Object object)
     {
         if (!(object instanceof L2PcInstance))
-            return 0;       
+            return 0;
         return 8000;
     }
 

@@ -40,7 +40,7 @@ public final class FuncTemplate {
 	public final Stats stat;
 	public final int order;
 	public final Lambda lambda;
-	
+
 	public FuncTemplate(Condition pAttachCond, Condition pApplayCond, String pFunc, Stats pStat, int pOrder, Lambda pLambda)
 	{
 		attachCond = pAttachCond;
@@ -65,7 +65,7 @@ public final class FuncTemplate {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public Func getFunc(Env env, Object owner)
 	{
 		if (attachCond != null && !attachCond.test(env))
@@ -85,6 +85,6 @@ public final class FuncTemplate {
 			e.printStackTrace();
 			return null;
 		}
-	
+
 	}
 }

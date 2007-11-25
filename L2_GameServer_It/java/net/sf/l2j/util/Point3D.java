@@ -8,7 +8,7 @@
  * Revision 1  19/07/2005 21:33:07  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -32,7 +32,7 @@ import java.io.Serializable;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 public class Point3D implements Serializable

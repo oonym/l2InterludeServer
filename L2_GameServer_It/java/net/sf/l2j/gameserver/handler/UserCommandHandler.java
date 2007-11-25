@@ -32,11 +32,11 @@ import net.sf.l2j.Config;
 public class UserCommandHandler
 {
 	private static Logger _log = Logger.getLogger(UserCommandHandler.class.getName());
-	
+
 	private static UserCommandHandler _instance;
-	
+
 	private Map<Integer, IUserCommandHandler> _datatable;
-	
+
 	public static UserCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -45,12 +45,12 @@ public class UserCommandHandler
 		}
 		return _instance;
 	}
-	
+
 	private UserCommandHandler()
 	{
 		_datatable = new FastMap<Integer, IUserCommandHandler>();
 	}
-	
+
 	public void registerUserCommandHandler(IUserCommandHandler handler)
 	{
 		int[] ids = handler.getUserCommandList();
@@ -60,7 +60,7 @@ public class UserCommandHandler
 			_datatable.put(new Integer(ids[i]), handler);
 		}
 	}
-	
+
 	public IUserCommandHandler getUserCommandHandler(int userCommand)
 	{
 		if (Config.DEBUG) _log.fine("getting handler for user command: "+userCommand);

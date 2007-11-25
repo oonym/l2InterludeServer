@@ -34,7 +34,7 @@ import net.sf.l2j.gameserver.skills.Stats;
 
 /**
  * This cl contains all generic data of a L2Spawn object.<BR><BR>
- * 
+ *
  * <B><U> Data</U> :</B><BR><BR>
  * <li>npcId, type, name, sex</li>
  * <li>rewardExp, rewardSp</li>
@@ -46,7 +46,7 @@ import net.sf.l2j.gameserver.skills.Stats;
  * <li>_teachInfo</li>
  * <li>_skills</li>
  * <li>_questsStart</li><BR><BR>
- * 
+ *
  * @version $Revision: 1.1.2.4 $ $Date: 2005/04/02 15:57:51 $
  */
 public final class L2NpcTemplate extends L2CharTemplate

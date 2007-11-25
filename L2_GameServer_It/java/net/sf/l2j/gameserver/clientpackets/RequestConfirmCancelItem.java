@@ -53,14 +53,14 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemId);
-		
+
 		if (activeChar == null || item == null) return;
 		if (!item.isAugmented())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM));
 			return;
 		}
-		
+
 		int price=0;
 		switch (item.getItem().getItemGrade())
 		{
@@ -93,7 +93,7 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 			default:
 				return;
 		}
-		
+
 		activeChar.sendPacket(new ExConfirmCancelItem(_itemId, price));
 	}
 

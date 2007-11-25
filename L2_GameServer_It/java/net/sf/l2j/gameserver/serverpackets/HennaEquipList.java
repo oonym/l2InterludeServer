@@ -1,7 +1,7 @@
 /*
  * $Header$
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -27,17 +27,17 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class HennaEquipList extends L2GameServerPacket
 {
     private static final String _S__E2_HennaEquipList = "[S] E2 HennaEquipList";
-    
+
     private L2PcInstance _player;
     private L2HennaInstance[] _hennaEquipList;
-    
+
     public HennaEquipList(L2PcInstance player,L2HennaInstance[] hennaEquipList)
     {
-        _player = player;  
+        _player = player;
         _hennaEquipList = hennaEquipList;
     }
-    
-    
+
+
     @Override
 	protected final void writeImpl()
     {
@@ -46,10 +46,10 @@ public class HennaEquipList extends L2GameServerPacket
         writeD(3);     //available equip slot
         //writeD(10);    // total amount of symbol available which depends on difference classes
         writeD(_hennaEquipList.length);
-        
+
         for (int i = 0; i < _hennaEquipList.length; i++)
         {
-            /* 
+            /*
              * Player must have at least one dye in inventory
              * to be able to see the henna that can be applied with it.
              */
@@ -71,7 +71,7 @@ public class HennaEquipList extends L2GameServerPacket
             }
         }
     }
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
      */

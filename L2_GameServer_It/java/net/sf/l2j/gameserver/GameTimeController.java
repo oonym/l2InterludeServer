@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.8 $ $Date: 2005/04/06 16:13:24 $
  */
 public class GameTimeController
@@ -90,12 +90,12 @@ public class GameTimeController
 
 	/**
 	 * Add a L2Character to movingObjects of GameTimeController.<BR><BR>
-	 * 
+	 *
 	 * <B><U> Concept</U> :</B><BR><BR>
 	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR><BR>
-	 * 
+	 *
 	 * @param cha The L2Character to add to movingObjects of GameTimeController
-	 * 
+	 *
 	 */
 	public synchronized void registerMovingObject(L2Character cha)
 	{
@@ -105,15 +105,15 @@ public class GameTimeController
 
 	/**
 	 * Move all L2Characters contained in movingObjects of GameTimeController.<BR><BR>
-	 * 
+	 *
 	 * <B><U> Concept</U> :</B><BR><BR>
 	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR><BR>
-	 * 
+	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
 	 * <li>Update the position of each L2Character </li>
 	 * <li>If movement is finished, the L2Character is removed from movingObjects </li>
 	 * <li>Create a task to update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object then notify AI with EVT_ARRIVED </li><BR><BR>
-	 * 
+	 *
 	 */
 	protected synchronized void moveObjects()
 	{
@@ -142,7 +142,7 @@ public class GameTimeController
 			}
 		}
 
-		// Create a task to update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object 
+		// Create a task to update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object
 		// then notify AI with EVT_ARRIVED
 		// TODO: maybe a general TP is needed for that kinda stuff (all knownlist updates should be done in a TP anyway).
 		if (ended != null)
@@ -172,13 +172,13 @@ public class GameTimeController
 		public void run()
 		{
 			try
-			{				
+			{
 				for (;;)
 				{
-					int _oldTicks=_gameTicks; // save old ticks value to avoid moving objects 2x in same tick	
+					int _oldTicks=_gameTicks; // save old ticks value to avoid moving objects 2x in same tick
 					long runtime = System.currentTimeMillis() - _gameStartTime; // from server boot to now
 
-					_gameTicks = (int) (runtime / MILLIS_IN_TICK); // new ticks value (ticks now) 
+					_gameTicks = (int) (runtime / MILLIS_IN_TICK); // new ticks value (ticks now)
 
 					if (_oldTicks != _gameTicks) moveObjects(); // XXX: if this makes objects go slower, remove it
 					// but I think it can't make that effect. is it better to call moveObjects() twice in same
@@ -187,7 +187,7 @@ public class GameTimeController
 
 					runtime = (System.currentTimeMillis() - _gameStartTime) - runtime;
 
-					// calculate sleep time... time needed to next tick minus time it takes to call moveObjects() 
+					// calculate sleep time... time needed to next tick minus time it takes to call moveObjects()
 					int sleepTime = 1 + MILLIS_IN_TICK - ((int) runtime) % MILLIS_IN_TICK;
 
 					//_log.finest("TICK: "+_gameTicks);
@@ -250,10 +250,10 @@ public class GameTimeController
 		{
 			int h = (getGameTime() / 60) % 24; // Time in hour
 			boolean tempIsNight = (h < 6);
-            
+
 			if (tempIsNight != _isNight) { // If diff day/night state
                 _isNight = tempIsNight; // Set current day/night varible to value of temp varible
-                
+
                 DayNightSpawnManager.getInstance().notifyChangeMode();
             }
 		}

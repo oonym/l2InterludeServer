@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.5.2.5 $ $Date: 2005/04/06 16:13:51 $
  */
 
@@ -52,23 +52,23 @@ public class Recipes implements IItemHandler
 		if (!(playable instanceof L2PcInstance))
 			return;
 		L2PcInstance activeChar = (L2PcInstance)playable;
-        L2RecipeList rp = RecipeController.getInstance().getRecipeByItemId(item.getItemId()); 
-     	if (activeChar.hasRecipeList(rp.getId())) 
+        L2RecipeList rp = RecipeController.getInstance().getRecipeByItemId(item.getItemId());
+     	if (activeChar.hasRecipeList(rp.getId()))
         {
-     		SystemMessage sm = new SystemMessage(SystemMessageId.RECIPE_ALREADY_REGISTERED); 
-     	 	activeChar.sendPacket(sm); 
+     		SystemMessage sm = new SystemMessage(SystemMessageId.RECIPE_ALREADY_REGISTERED);
+     	 	activeChar.sendPacket(sm);
         }
         else
         {
-        	if (rp.isDwarvenRecipe()) 
+        	if (rp.isDwarvenRecipe())
         	{
-        		if (activeChar.hasDwarvenCraft()) 
-        		{ 
+        		if (activeChar.hasDwarvenCraft())
+        		{
 			    if (rp.getLevel()>activeChar.getDwarvenCraft())
 			    {
 				//can't add recipe, becouse create item level too low
-        			SystemMessage sm = new SystemMessage(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER); 
-        			activeChar.sendPacket(sm); 
+        			SystemMessage sm = new SystemMessage(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
+        			activeChar.sendPacket(sm);
 			    }
 			    else if (activeChar.getDwarvenRecipeBook().length >= activeChar.GetDwarfRecipeLimit())
 				{
@@ -79,28 +79,28 @@ public class Recipes implements IItemHandler
 				}
 				else
 			    {
-        			activeChar.registerDwarvenRecipeList(rp); 
-        			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); 
-        			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2); 
-        			sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Dwarven RecipeBook"); 
-        			activeChar.sendPacket(sm); 
+        			activeChar.registerDwarvenRecipeList(rp);
+        			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
+        			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+        			sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Dwarven RecipeBook");
+        			activeChar.sendPacket(sm);
 			    }
-        		} 
-        		else 
-        		{ 
-        			SystemMessage sm = new SystemMessage(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT); 
-        			activeChar.sendPacket(sm); 
-        		} 
-        	} 
-        	else 
-        	{ 
-        		if (activeChar.hasCommonCraft()) 
-        		{ 
+        		}
+        		else
+        		{
+        			SystemMessage sm = new SystemMessage(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT);
+        			activeChar.sendPacket(sm);
+        		}
+        	}
+        	else
+        	{
+        		if (activeChar.hasCommonCraft())
+        		{
 			    if (rp.getLevel()>activeChar.getCommonCraft())
 			    {
 				//can't add recipe, becouse create item level too low
-        			SystemMessage sm = new SystemMessage(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER); 
-        			activeChar.sendPacket(sm); 
+        			SystemMessage sm = new SystemMessage(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
+        			activeChar.sendPacket(sm);
 			    }
 			    else if (activeChar.getCommonRecipeBook().length >= activeChar.GetCommonRecipeLimit())
 				{
@@ -111,18 +111,18 @@ public class Recipes implements IItemHandler
 				}
 				else
 			    {
-        			activeChar.registerCommonRecipeList(rp); 
-        			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); 
-        			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2); 
-        			sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Common RecipeBook"); 
-        			activeChar.sendPacket(sm); 
+        			activeChar.registerCommonRecipeList(rp);
+        			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
+        			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+        			sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Common RecipeBook");
+        			activeChar.sendPacket(sm);
 			    }
-        		} 
-        		else 
-        		{ 
-        			SystemMessage sm = new SystemMessage(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT); 
-        			activeChar.sendPacket(sm); 
-        		} 
+        		}
+        		else
+        		{
+        			SystemMessage sm = new SystemMessage(SystemMessageId.CANT_REGISTER_NO_ABILITY_TO_CRAFT);
+        			activeChar.sendPacket(sm);
+        		}
         	}
         }
     }

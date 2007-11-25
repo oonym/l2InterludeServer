@@ -36,10 +36,10 @@ public enum L2EtcItemType {
     SEED       (10, "Seed"),
     SHOT       (11, "Shot"),
     HERB	   (12, "Herb");
-	
+
 	final int _id;
 	final String _name;
-	
+
 	/**
 	 * Constructor of the L2EtcItemType.
 	 * @param id : int designating the ID of the EtcItemType
@@ -50,7 +50,7 @@ public enum L2EtcItemType {
 		_id = id;
 		_name = name;
 	}
-	
+
 	/**
 	 * Returns the ID of the item after applying the mask.
 	 * @return int : ID of the item
@@ -58,7 +58,7 @@ public enum L2EtcItemType {
 	public int mask() {
 		return 1 << (_id+21);
 	}
-	
+
     /**
      * Returns the name of the EtcItemType
      * @return String

@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
- * 
+ *
  * http://www.gnu.org/copyleft/gpl.html
  */
 package net.sf.l2j.gameserver.script.faenor;
@@ -38,25 +38,25 @@ public class FaenorEventParser extends FaenorParser
 {
     static Logger _log = Logger.getLogger(FaenorEventParser.class.getName());
     private DateRange _eventDates = null;
-    
+
     @Override
 	public void parseScript(Node eventNode, @SuppressWarnings("unused") BSFManager context)
     {
         String ID = attribute(eventNode, "ID");
-        
+
         if (DEBUG) _log.fine("Parsing Event \""+ID+"\"");
-        
+
         _eventDates = DateRange.parse(attribute(eventNode, "Active"), DATE_FORMAT);
-        
+
         Date currentDate = new Date();
         if (_eventDates.getEndDate().before(currentDate))
         {
             _log.warning("Event ID: (" + ID + ") has passed... Ignored.");
             return;
         }
-        
+
         for (Node node = eventNode.getFirstChild(); node != null; node = node.getNextSibling()) {
-            
+
             if (isNodeName(node, "DropList"))
             {
                 parseEventDropList(node);
@@ -64,7 +64,7 @@ public class FaenorEventParser extends FaenorParser
             else if (isNodeName(node, "Message"))
             {
                 parseEventMessage(node);
-            } 
+            }
         }
     }
 
@@ -76,12 +76,12 @@ public class FaenorEventParser extends FaenorParser
         {
             String type         = attribute(sysMsg, "Type");
             String[] message    = attribute(sysMsg, "Msg").split("\n");
-            
+
             if (type.equalsIgnoreCase("OnJoin"))
             {
                 _bridge.onPlayerLogin(message, _eventDates);
             }
-        } 
+        }
         catch (Exception e)
         {
             _log.warning("Error in event parser.");
@@ -92,7 +92,7 @@ public class FaenorEventParser extends FaenorParser
     private void parseEventDropList(Node dropList)
     {
         if (DEBUG) _log.fine("Parsing Droplist.");
-        
+
         for (Node node = dropList.getFirstChild(); node != null; node = node.getNextSibling()) {
             if (isNodeName(node, "AllDrop"))
             {
@@ -104,13 +104,13 @@ public class FaenorEventParser extends FaenorParser
     private void parseEventDrop(Node drop)
     {
         if (DEBUG) _log.fine("Parsing Drop.");
-        
+
         try
         {
             int[] items         = IntList.parse(attribute(drop, "Items"));
             int[] count         = IntList.parse(attribute(drop, "Count"));
             double chance       = getPercent(attribute(drop, "Chance"));
-            
+
             _bridge.addEventDrop(items, count, chance, _eventDates);
         }
         catch (Exception e)
@@ -118,7 +118,7 @@ public class FaenorEventParser extends FaenorParser
             System.err.println("ERROR(parseEventDrop):" + e.getMessage());
         }
     }
-    
+
     static class FaenorEventParserFactory extends ParserFactory
     {
         @Override

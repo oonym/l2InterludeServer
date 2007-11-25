@@ -35,11 +35,11 @@ import net.sf.l2j.gameserver.instancemanager.CastleManorManager.SeedProduction;
  * d - price
  * ]
  * @author l3x
- * 
+ *
  */
 public class RequestSetSeed extends L2GameClientPacket {
 	private static final String _C__D0_0A_REQUESTSETSEED = "[C] D0:0A RequestSetSeed";
-	
+
 	private int _size;
 
 	private int _manorId;

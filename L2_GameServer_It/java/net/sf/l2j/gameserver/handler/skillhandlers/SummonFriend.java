@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Util;
 /**
  * @authors BiTi, Sami
- * 
+ *
  */
 public class SummonFriend implements ISkillHandler
 {
@@ -43,36 +43,36 @@ public class SummonFriend implements ISkillHandler
 	{
  		if (!(activeChar instanceof L2PcInstance)) return; // currently not implemented for others
  		L2PcInstance activePlayer = (L2PcInstance)activeChar;
- 		
+
  		if (activePlayer.isInOlympiadMode())
  		{
  			activePlayer.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
  			return;
         }
-        
+
  		// Checks summoner not in arenas, siege zones, jail
        	if (activePlayer.isInsideZone(L2Character.ZONE_PVP))
        	{
        		activePlayer.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
         	return;
         }
-       	
+
         // check for summoner not in raid areas
         L2Object[] objects = L2World.getInstance().getVisibleObjects(activeChar, 5000);
-        
+
         if (objects != null)
         {
         	for (L2Object object : objects)
         	{
-        		if (object instanceof L2RaidBossInstance) 
+        		if (object instanceof L2RaidBossInstance)
         		{
         			activePlayer.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION));
                     return;
         		}
         	}
         }
-        
-		try 
+
+		try
         {
 			for (int index = 0; index < targets.length; index++)
 			{
@@ -80,15 +80,15 @@ public class SummonFriend implements ISkillHandler
 					continue;
 
 				L2Character target = (L2Character)targets[index];
-				
+
 				if (activeChar == target) continue;
 
                 if (target instanceof L2PcInstance)
                 {
                     L2PcInstance targetChar = (L2PcInstance)target;
-                    
+
                     // CHECK TARGET CONDITIONS
-                	
+
                     //This message naturally doesn't bring up a box...
                     //$s1 wishes to summon you from $s2. Do you accept?
     				//SystemMessage sm2 = new SystemMessage(SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT);
@@ -96,11 +96,11 @@ public class SummonFriend implements ISkillHandler
                 	//String nearestTown = MapRegionTable.getInstance().getClosestTownName(activeChar);
                 	//sm2.addString(nearestTown);
                 	//targetChar.sendPacket(sm2);
-                    
-                    // is in same party (not necessary any more) 
+
+                    // is in same party (not necessary any more)
                     // if (!(targetChar.getParty() != null && targetChar.getParty().getPartyMembers().contains(activeChar)))
                     //	continue;
-                    
+
                     if (targetChar.isAlikeDead())
                     {
                     	SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_DEAD_AT_THE_MOMENT_AND_CANNOT_BE_SUMMONED);
@@ -108,7 +108,7 @@ public class SummonFriend implements ISkillHandler
                     	activeChar.sendPacket(sm);
                     	continue;
                     }
-                    
+
                     if (targetChar.isInStoreMode())
                     {
                     	SystemMessage sm = new SystemMessage(SystemMessageId.S1_CURRENTLY_TRADING_OR_OPERATING_PRIVATE_STORE_AND_CANNOT_BE_SUMMONED);
@@ -118,33 +118,33 @@ public class SummonFriend implements ISkillHandler
                     }
 
                     // Target cannot be in combat (or dead, but that's checked by TARGET_PARTY)
-                    if (targetChar.isRooted() || targetChar.isInCombat()) 
+                    if (targetChar.isRooted() || targetChar.isInCombat())
                     {
                     	SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_ENGAGED_IN_COMBAT_AND_CANNOT_BE_SUMMONED);
                     	sm.addString(targetChar.getName());
                     	activeChar.sendPacket(sm);
                     	continue;
                     }
-                    
+
                     // Check for the the target's festival status
                     if (targetChar.isInOlympiadMode()) {
                         activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_PLAYERS_WHO_ARE_IN_OLYMPIAD));
                         continue;
                     }
-                    
+
                     // Check for the the target's festival status
                     if (targetChar.isFestivalParticipant()) {
                     	activeChar.sendPacket(new SystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
                         continue;
                     }
-                    
+
                     // Check for the target's jail status, arenas and siege zones
                     if (targetChar.isInsideZone(L2Character.ZONE_PVP))
                     {
                     	activeChar.sendPacket(new SystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
                         continue;
                     }
-                    
+
                     // Requires a Summoning Crystal
                     if (targetChar.getInventory().getItemByItemId(8615) == null)
                     {
@@ -152,17 +152,17 @@ public class SummonFriend implements ISkillHandler
                     	targetChar.sendMessage("You cannot be summoned while you haven't got a Summoning Crystal");
                     	continue;
                     }
-                    
+
                     if (!Util.checkIfInRange(0, activeChar, target, false))
                     {
                     	targetChar.getInventory().destroyItemByItemId("Consume", 8615, 1, targetChar, activeChar);
                     	targetChar.sendPacket(SystemMessage.sendString("You are summoned to a party member."));
-                    	
+
                     	targetChar.teleToLocation(activeChar.getX(),activeChar.getY(),activeChar.getZ(), true);
                     }
                     else
                     {
-                	
+
                     }
                 }
 			}

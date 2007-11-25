@@ -44,12 +44,12 @@ import net.sf.l2j.gameserver.model.entity.Castle;
  * S = ClanLeaderName<BR>
  * d = ClanCrestID<BR>
  * d = signed time (seconds)<BR>
- * d = Type -> Owner = 0x01 || Waiting = 0x02 || Accepted = 0x03<BR> 
+ * d = Type -> Owner = 0x01 || Waiting = 0x02 || Accepted = 0x03<BR>
  * d = AllyID<BR>
  * S = AllyName<BR>
  * S = AllyLeaderName<BR>
  * d = AllyCrestID<BR>
- * 
+ *
  * @author KenM
  */
 public class SiegeDefenderList extends L2GameServerPacket
@@ -60,7 +60,7 @@ public class SiegeDefenderList extends L2GameServerPacket
 
 	public SiegeDefenderList(Castle castle)
 	{
-		_castle = castle;   
+		_castle = castle;
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class SiegeDefenderList extends L2GameServerPacket
 			}
 			for(L2SiegeClan siegeclan : _castle.getSiege().getDefenderWaitingClans())
 			{
-				clan = ClanTable.getInstance().getClan(siegeclan.getClanId());  
+				clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
 				writeD(clan.getClanId());
 				writeS(clan.getName());
 				writeS(clan.getLeaderName());

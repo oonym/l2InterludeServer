@@ -42,11 +42,11 @@ public class TownManager
     }
     // =========================================================
 
-    
+
     // =========================================================
     // Data Field
     private FastList<L2TownZone> _towns;
-    
+
     // =========================================================
     // Constructor
     public TownManager()
@@ -55,15 +55,15 @@ public class TownManager
 
     // =========================================================
     // Property - Public
-    
+
     public void addTown(L2TownZone arena)
     {
     	if (_towns == null)
     		_towns = new FastList<L2TownZone>();
-    	
+
     	_towns.add(arena);
     }
-    
+
     public final L2TownZone getClosestTown(L2Object activeObject)
     {
         switch (MapRegionTable.getInstance().getMapRegion(activeObject.getPosition().getX(), activeObject.getPosition().getY()))
@@ -108,13 +108,13 @@ public class TownManager
 
         return getTown(16); // Default to floran
     }
-    
+
     public final boolean townHasCastleInSiege(int townId)
     {
     	//int[] castleidarray = {0,0,0,0,0,0,0,1,2,3,4,0,5,0,0,6,0};
     	int[] castleidarray = {0,0,0,0,0,0,0,1,2,3,4,0,5,7,8,6,0,9};
     	int castleIndex= castleidarray[townId] ;
-     
+
     	if ( castleIndex > 0 )
         {
            	Castle castle = CastleManager.getInstance().getCastles().get(CastleManager.getInstance().getCastleIndex(castleIndex));
@@ -128,7 +128,7 @@ public class TownManager
     {
         int curtown= (MapRegionTable.getInstance().getMapRegion(x, y));
         //int[] castleidarray = {0,0,0,0,0,1,0,2,3,4,5,0,0,6,0,0,0,0};
-        int[] castleidarray = {0,0,0,0,0,1,0,2,3,4,5,0,0,6,8,7,9,0}; 
+        int[] castleidarray = {0,0,0,0,0,1,0,2,3,4,5,0,0,6,8,7,9,0};
         //find an instance of the castle for this town.
         int castleIndex = castleidarray[curtown];
         if ( castleIndex > 0 )
@@ -146,7 +146,7 @@ public class TownManager
         	if (temp.getTownId() == townId) return temp;
         return null;
     }
-    
+
     /**
      * Returns the town at that position (if any)
      * @param x

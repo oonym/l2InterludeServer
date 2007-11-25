@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class handles following admin commands: polymorph
- * 
+ *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2007/07/31 10:05:56 $
  */
 public class AdminPolymorph implements IAdminCommandHandler

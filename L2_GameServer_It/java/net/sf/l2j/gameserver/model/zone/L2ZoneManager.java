@@ -18,7 +18,6 @@
 package net.sf.l2j.gameserver.model.zone;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.model.L2Character;
 
 /**
@@ -29,7 +28,7 @@ import net.sf.l2j.gameserver.model.L2Character;
 public class L2ZoneManager
 {
 	private FastList<L2ZoneType> _zones;
-	
+
 	/**
 	 * The Constructor creates an initial zone list
 	 * use registerNewZone() / unregisterZone() to
@@ -40,7 +39,7 @@ public class L2ZoneManager
 	{
 		_zones = new FastList<L2ZoneType>();
 	}
-	
+
 	/**
 	 * Register a new zone object into the manager
 	 * @param zone
@@ -49,7 +48,7 @@ public class L2ZoneManager
 	{
 		_zones.add(zone);
 	}
-	
+
 	/**
 	 * Unregister a given zone from the manager (e.g. dynamic zones)
 	 * @param zone
@@ -58,7 +57,7 @@ public class L2ZoneManager
 	{
 		_zones.remove(zone);
 	}
-	
+
 	public void revalidateZones(L2Character character)
 	{
 		for (L2ZoneType e : _zones)
@@ -66,7 +65,7 @@ public class L2ZoneManager
 			if(e != null) e.revalidateInZone(character);
 		}
 	}
-	
+
 	public void removeCharacter(L2Character character)
 	{
 		for (L2ZoneType e : _zones)
@@ -74,7 +73,7 @@ public class L2ZoneManager
 			if(e != null) e.removeCharacter(character);
 		}
 	}
-	
+
 	public void onDeath(L2Character character)
 	{
 		for (L2ZoneType e : _zones)

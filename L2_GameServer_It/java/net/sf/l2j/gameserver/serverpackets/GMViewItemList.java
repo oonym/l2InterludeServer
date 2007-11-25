@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 
 /**
- * 
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class GMViewItemList extends L2GameServerPacket
@@ -42,7 +42,7 @@ public class GMViewItemList extends L2GameServerPacket
 		_playerName = cha.getName();
 		_cha = cha;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -51,19 +51,19 @@ public class GMViewItemList extends L2GameServerPacket
 		writeD(_cha.GetInventoryLimit()); // inventory limit
 		writeH(0x01); // show window ??
 		writeH(_items.length);
-		
+
 		for (L2ItemInstance temp : _items)
 		{
 			if (temp == null || temp.getItem() == null)
 				continue;
 
 			writeH(temp.getItem().getType1());
-			
+
 			writeD(temp.getObjectId());
 			writeD(temp.getItemId());
 			writeD(temp.getCount());
 			writeH(temp.getItem().getType2());
-			writeH(temp.getCustomType1()); 
+			writeH(temp.getCustomType1());
 			writeH(temp.isEquipped() ? 0x01 : 0x00);
 			writeD(temp.getItem().getBodyPart());
 			writeH(temp.getEnchantLevel());
@@ -75,7 +75,7 @@ public class GMViewItemList extends L2GameServerPacket
 			writeD(-1); // C6
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

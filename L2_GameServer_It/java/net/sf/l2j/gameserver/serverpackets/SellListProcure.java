@@ -33,13 +33,13 @@ public class SellListProcure extends L2GameServerPacket
 {
     private static final String _S__E9_SELLLISTPROCURE = "[S] E9 SellListProcure";
     //private static Logger _log = Logger.getLogger(SellListProcure.class.getName());
-    
+
     private final L2PcInstance _activeChar;
     private int _money;
     private Map<L2ItemInstance,Integer> _sellList = new FastMap<L2ItemInstance,Integer>();
     private List<CropProcure> _procureList = new FastList<CropProcure>();
     private int _castle;
-    
+
     public SellListProcure(L2PcInstance player, int castleId)
     {
         _money = player.getAdena();
@@ -55,7 +55,7 @@ public class SellListProcure extends L2GameServerPacket
             }
         }
     }
-    
+
     @Override
 	protected final void writeImpl()
     {
@@ -63,7 +63,7 @@ public class SellListProcure extends L2GameServerPacket
         writeD(_money);         // money
         writeD(0x00);           // lease ?
         writeH(_sellList.size());         // list size
-        
+
         for(L2ItemInstance item : _sellList.keySet())
         {
             writeH(item.getItem().getType1());
@@ -75,7 +75,7 @@ public class SellListProcure extends L2GameServerPacket
             writeD(0);  // price, u shouldnt get any adena for crops, only raw materials
         }
     }
-    
+
     @Override
 	public String getType()
     {

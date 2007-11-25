@@ -31,12 +31,12 @@ import net.sf.l2j.gameserver.skills.Env;
 public abstract class ConditionInventory extends Condition implements ConditionListener {
 
 	protected final int _slot;
-	
+
 	public ConditionInventory(int slot)
 	{
 		_slot = slot;
 	}
-	
+
 	@Override
 	public abstract boolean testImpl(Env env);
 }

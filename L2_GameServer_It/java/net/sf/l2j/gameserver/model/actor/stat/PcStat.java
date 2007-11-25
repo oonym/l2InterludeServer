@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 import net.sf.l2j.gameserver.model.base.Experience;
@@ -43,7 +44,7 @@ public class PcStat extends PlayableStat
 
     private int _oldMaxHp;      // stats watch
     private int _oldMaxMp;      // stats watch
-    
+
     // =========================================================
     // Constructor
     public PcStat(L2PcInstance activeChar)
@@ -57,9 +58,9 @@ public class PcStat extends PlayableStat
 	public boolean addExp(long value)
     {
     	L2PcInstance activeChar = getActiveChar();
-    	
+
         // Set new karma
-        if (!activeChar.isCursedWeaponEquiped() && activeChar.getKarma() > 0 && (activeChar.isGM() || !activeChar.isInsideZone(L2PcInstance.ZONE_PVP)))
+        if (!activeChar.isCursedWeaponEquiped() && activeChar.getKarma() > 0 && (activeChar.isGM() || !activeChar.isInsideZone(L2Character.ZONE_PVP)))
         {
             int karmaLost = activeChar.calculateKarmaLost(value);
             if (karmaLost > 0) activeChar.setKarma(activeChar.getKarma() - karmaLost);
@@ -67,9 +68,9 @@ public class PcStat extends PlayableStat
         //Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
         if (getActiveChar().isGM() && getActiveChar().getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && getActiveChar().isInParty())
               return false;
-        
+
 		if (!super.addExp(value)) return false;
-		
+
 		/* Micht : Use of UserInfo for C5
         StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
         su.addAttribute(StatusUpdate.EXP, getExp());
@@ -102,9 +103,9 @@ public class PcStat extends PlayableStat
     	L2PcInstance activeChar = getActiveChar();
     	if (activeChar.isGM() && activeChar.getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && activeChar.isInParty())
     	     return false;
-    	
+
     	// if this player has a pet that takes from the owner's Exp, give the pet Exp now
-    	
+
     	if (activeChar.getPet() instanceof L2PetInstance )
     	{
     		L2PetInstance pet = (L2PetInstance) activeChar.getPet();
@@ -120,7 +121,7 @@ public class PcStat extends PlayableStat
     		addToExp = (long)(addToExp*(1-ratioTakenByPet));
     		addToSp = (int)(addToSp*(1-ratioTakenByPet));
     	}
-    	    	
+
     	if ( !super.addExpAndSp(addToExp, addToSp) ) return false;
 
         // Send a Server->Client System Message to the L2PcInstance
@@ -131,7 +132,7 @@ public class PcStat extends PlayableStat
 
         return true;
     }
-    
+
     @Override
 	public boolean removeExpAndSp(long addToExp, int addToSp)
     {
@@ -153,7 +154,7 @@ public class PcStat extends PlayableStat
 		if (getLevel() + value > Experience.MAX_LEVEL - 1) return false;
 
         boolean levelIncreased = super.addLevel(value);
-        
+
         if (levelIncreased)
         {
 			/**
@@ -173,11 +174,11 @@ public class PcStat extends PlayableStat
 					{
 						con = L2DatabaseFactory.getInstance().getConnection();
 						PreparedStatement statement;
-						
+
 						statement = con.prepareStatement("SELECT value FROM account_data WHERE (account_name=?) AND (var='newbie_char')");
 						statement.setString(1, getActiveChar().getAccountName());
 						ResultSet rset = statement.executeQuery();
-						
+
 						if (!rset.next())
 						{
 							PreparedStatement statement1;
@@ -186,7 +187,7 @@ public class PcStat extends PlayableStat
 							statement1.setInt(2, getActiveChar().getObjectId());
 							statement1.executeUpdate();
 							statement1.close();
-                            
+
 							getActiveChar().setNewbie(true);
 							if (Config.DEBUG) _log.info("New newbie character: " + getActiveChar().getCharId());
 						};
@@ -202,14 +203,14 @@ public class PcStat extends PlayableStat
 						try { con.close(); } catch (Exception e) {}
 					}
 	        	};
-	
+
 	        	if (getActiveChar().getLevel() >= 25 && getActiveChar().isNewbie())
 	        	{
 	        		getActiveChar().setNewbie(false);
 					if (Config.DEBUG) _log.info("Newbie character ended: " + getActiveChar().getCharId());
 	        	};
         	};
-        	
+
         	getActiveChar().setCurrentCp(getMaxCp());
             getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15));
             getActiveChar().sendPacket(new SystemMessage(SystemMessageId.YOU_INCREASED_YOUR_LEVEL));

@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.datatables.HeroSkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
@@ -145,7 +144,7 @@ public abstract class L2Skill
     	MUTE,
     	PARALYZE,
     	WEAKNESS,
-    	
+
     	// hp, mp, cp
     	HEAL,
     	HOT,
@@ -386,14 +385,14 @@ public abstract class L2Skill
     private final int _itemConsumeIdOT;
     // how many times to consume an item
     private final int _itemConsumeSteps;
-    // for summon spells: 
+    // for summon spells:
     // a) What is the total lifetime of summons (in millisecs)
     private final int _summonTotalLifeTime;
-    // b) how much lifetime is lost per second of idleness (non-fighting) 
+    // b) how much lifetime is lost per second of idleness (non-fighting)
     private final int _summonTimeLostIdle;
-    // c) how much time is lost per second of activity (fighting) 
+    // c) how much time is lost per second of activity (fighting)
     private final int _summonTimeLostActive;
-    
+
     // item consume time in milliseconds
     private final int _itemConsumeTime;
     private final int _castRange;
@@ -462,8 +461,8 @@ public abstract class L2Skill
     private final boolean _isDance;      // If true then casting more dances will cost more MP
     private final int _nextDanceCost;
     private final float _sSBoost;	//If true skill will have SoulShot boost (power*2)
-    private final int _aggroPoints; 
-    
+    private final int _aggroPoints;
+
     protected Condition _preCondition;
     protected Condition _itemPreCondition;
     protected FuncTemplate[] _funcTemplates;
@@ -549,7 +548,7 @@ public abstract class L2Skill
         _nextDanceCost = set.getInteger("nextDanceCost", 0);
         _sSBoost = set.getFloat("SSBoost", 0.f);
         _aggroPoints = set.getInteger("aggroPoints", 0);
-        
+
         String canLearn = set.getString("canLearn", null);
         if (canLearn == null)
         {
@@ -912,7 +911,7 @@ public abstract class L2Skill
     {
         return _hitTime;
     }
-    
+
     /**
      * @return Returns the coolTime.
      */

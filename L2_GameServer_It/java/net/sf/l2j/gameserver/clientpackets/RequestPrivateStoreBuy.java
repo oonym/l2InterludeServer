@@ -59,14 +59,14 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
         }
 		_items = new ItemRequest[_count];
 
-		
+
 		for (int i = 0; i < _count ; i++)
 		{
-			int objectId = readD(); 
+			int objectId = readD();
 			long count   = readD();
 			if (count > Integer.MAX_VALUE) count = Integer.MAX_VALUE;
-			int price    = readD(); 
-			
+			int price    = readD();
+
 			_items[i] = new ItemRequest(objectId, (int)count, price);
 		}
 	}
@@ -76,23 +76,23 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null) return;
-		
+
 		L2Object object = L2World.getInstance().findObject(_storePlayerId);
 		if (object == null || !(object instanceof L2PcInstance)) return;
-		
+
 		L2PcInstance storePlayer = (L2PcInstance)object;
 		if (!(storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL || storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)) return;
-		
+
 		TradeList storeList = storePlayer.getSellList();
 		if (storeList == null) return;
-        
+
         if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
         {
         	player.sendMessage("Transactions are disable for your Access Level");
             sendPacket(new ActionFailed());
             return;
         }
-        
+
         // FIXME: this check should be (and most probabliy is) done in the TradeList mechanics
 		long priceTotal = 0;
         for(ItemRequest ir : _items)
@@ -118,7 +118,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			}
 			priceTotal += ir.getPrice() * ir.getCount();
         }
-        
+
         // FIXME: this check should be (and most probabliy is) done in the TradeList mechanics
 		if(priceTotal < 0 || priceTotal > Integer.MAX_VALUE)
         {
@@ -126,14 +126,14 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
             Util.handleIllegalPlayerAction(getClient().getActiveChar(),msgErr,Config.DEFAULT_PUNISH);
             return;
         }
-        
+
         if (player.getAdena() < priceTotal)
 		{
 			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			sendPacket(new ActionFailed());
 			return;
 		}
-        
+
         if (storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
         {
         	if (storeList.getItemCount() > _count)
@@ -143,7 +143,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
         		return;
         	}
         }
-        
+
         if (!storeList.PrivateStoreBuy(player, _items, (int) priceTotal))
         {
             sendPacket(new ActionFailed());

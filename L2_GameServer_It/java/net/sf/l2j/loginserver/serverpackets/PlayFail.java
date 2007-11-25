@@ -20,7 +20,7 @@ package net.sf.l2j.loginserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.1 $ $Date: 2005/03/27 15:30:11 $
  */
 public final class PlayFail extends L2LoginServerPacket
@@ -32,28 +32,28 @@ public final class PlayFail extends L2LoginServerPacket
 		REASON3						(0x03),
 		REASON4						(0x04),
 		REASON_TOO_MANY_PLAYERS		(0x0f);
-		
+
 		private final int _code;
-		
+
 		PlayFailReason(int code)
 		{
 			_code = code;
 		}
-		
+
 		public final int getCode()
 		{
 			return _code;
 		}
 	}
-	
+
 	private final PlayFailReason _reason;
-	
-	
-	public PlayFail(PlayFailReason reason) 
+
+
+	public PlayFail(PlayFailReason reason)
 	{
 		_reason = reason;
 	}
-	
+
 	/**
 	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
 	 */

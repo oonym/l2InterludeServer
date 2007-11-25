@@ -43,11 +43,11 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 	public GMViewWarehouseWithdrawList(L2PcInstance cha)
 	{
 		_activeChar  = cha;
-        
+
 		_items = _activeChar.getWarehouse().getItems();
 		_playerName = _activeChar.getName();
         _money = _activeChar.getAdena();
-        
+
         if (Config.DEBUG)
         {
 	        for (L2ItemInstance item : _items)
@@ -55,7 +55,7 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 	                     " type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
         }
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -65,17 +65,17 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 	        writeS(_playerName);
 	        writeD(_money);
 	        writeH(_items.length);
-			
+
 	        for (L2ItemInstance item : _items)
 			{
 	        	writeH(item.getItem().getType1()); // item type1 //unconfirmed, works
-	            
+
 	        	writeD(item.getObjectId()); //unconfirmed, works
 	            writeD(item.getItemId()); //unconfirmed, works
 	            writeD(item.getCount()); //unconfirmed, works
 	            writeH(item.getItem().getType2()); // item type2 //unconfirmed, works
 	            writeH(0x00);  // ?
-	            
+
 	            switch (item.getItem().getType2())
 	            {
 	                case L2Item.TYPE2_WEAPON:
@@ -84,7 +84,7 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 			            writeH(((L2Weapon)item.getItem()).getSoulShotCount());  // ?
 			            writeH(((L2Weapon)item.getItem()).getSpiritShotCount());  // ?
 			            break;
-	                case L2Item.TYPE2_SHIELD_ARMOR: 
+	                case L2Item.TYPE2_SHIELD_ARMOR:
 	                case L2Item.TYPE2_ACCESSORY:
 			            writeD(item.getItem().getBodyPart()); // ?
 			            writeH(item.getEnchantLevel()); // enchant level -confirmed
@@ -110,7 +110,7 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

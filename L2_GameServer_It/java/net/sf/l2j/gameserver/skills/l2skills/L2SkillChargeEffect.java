@@ -28,16 +28,16 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
-public class L2SkillChargeEffect extends L2Skill 
+public class L2SkillChargeEffect extends L2Skill
 {
 	final int chargeSkillId;
-	
+
 	public L2SkillChargeEffect(StatsSet set)
 	{
 		super(set);
 		chargeSkillId = set.getInteger("charge_skill_id");
 	}
-	
+
 	@Override
 	public boolean checkCondition(L2Character activeChar, L2Object target, boolean itemOrWeapon)
 	{
@@ -56,6 +56,7 @@ public class L2SkillChargeEffect extends L2Skill
 		return super.checkCondition(activeChar, target, itemOrWeapon);
 	}
 
+	@Override
 	public void useSkill(L2Character activeChar, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead()) return;

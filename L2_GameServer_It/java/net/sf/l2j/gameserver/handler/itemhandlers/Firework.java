@@ -16,7 +16,7 @@
  *
  * [URL]http://www.gnu.org/copyleft/gpl.html[/URL]
  */
-package net.sf.l2j.gameserver.handler.itemhandlers; 
+package net.sf.l2j.gameserver.handler.itemhandlers;
 
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.IItemHandler;
@@ -29,23 +29,23 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.FloodProtector;
 
-/** 
- * This class ... 
- * 
- * @version $Revision: 1.0.0.0.0.0 $ $Date: 2005/09/02 19:41:13 $ 
- */ 
+/**
+ * This class ...
+ *
+ * @version $Revision: 1.0.0.0.0.0 $ $Date: 2005/09/02 19:41:13 $
+ */
 
-public class Firework implements IItemHandler 
+public class Firework implements IItemHandler
 {
     //Modified by Baghak (Prograsso): Added Firework support
     private static final int[] ITEM_IDS = { 6403, 6406, 6407 };
-    
+
     public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
     	if(!(playable instanceof L2PcInstance)) return; // prevent Class cast exception
         L2PcInstance activeChar = (L2PcInstance)playable;
         int itemId = item.getItemId();
-        
+
         if (!FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_FIREWORK))
         {
         	SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);

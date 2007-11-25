@@ -23,7 +23,7 @@ public class SummonStatus extends PlayableStatus
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public SummonStatus(L2Summon activeChar)

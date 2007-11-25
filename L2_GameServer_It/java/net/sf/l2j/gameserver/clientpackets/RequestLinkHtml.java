@@ -38,26 +38,26 @@ public final class RequestLinkHtml extends L2GameClientPacket
 	{
 		_link = readS();
 	}
-	
+
 	@Override
 	public void runImpl()
 	{
 		L2PcInstance actor = getClient().getActiveChar();
 		if(actor == null)
 			return;
-		
+
 		if(_link.contains("..") || !_link.contains(".htm"))
 		{
 			_log.warning("[RequestLinkHtml] hack? link contains prohibited characters: '"+_link+"', skipped");
 			return;
 		}
-		
+
 		NpcHtmlMessage msg = new NpcHtmlMessage(0);
 		msg.setFile(_link);
-		
+
 		sendPacket(msg);
 	}
-	
+
 	@Override
 	public String getType()
 	{

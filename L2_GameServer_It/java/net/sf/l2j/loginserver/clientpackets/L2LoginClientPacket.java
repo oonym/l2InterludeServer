@@ -30,7 +30,7 @@ import com.l2jserver.mmocore.network.ReceivablePacket;
 public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient>
 {
 	private static Logger _log = Logger.getLogger(L2LoginClientPacket.class.getName());
-	
+
 	/**
 	 * @see com.l2jserver.mmocore.network.ReceivablePacket#read()
 	 */
@@ -48,6 +48,6 @@ public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient
 			return false;
 		}
 	}
-	
+
 	protected abstract boolean readImpl();
 }

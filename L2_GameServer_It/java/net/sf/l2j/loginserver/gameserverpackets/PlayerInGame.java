@@ -30,7 +30,7 @@ import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 public class PlayerInGame extends ClientBasePacket
 {
 	private List<String> _accounts;
-	
+
 	/**
 	 * @param decrypt
 	 */
@@ -52,5 +52,5 @@ public class PlayerInGame extends ClientBasePacket
 	{
 		return _accounts;
 	}
-	
+
 }

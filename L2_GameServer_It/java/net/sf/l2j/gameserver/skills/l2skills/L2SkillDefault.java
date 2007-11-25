@@ -38,5 +38,5 @@ public class L2SkillDefault extends L2Skill {
 		sm.addString("Skill not implemented.  Skill ID: " + getId() + " " + getSkillType());
 		caster.sendPacket(sm);
 	}
-	
+
 }

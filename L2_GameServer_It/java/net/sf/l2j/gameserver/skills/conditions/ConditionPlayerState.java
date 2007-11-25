@@ -31,16 +31,16 @@ import net.sf.l2j.gameserver.skills.Env;
 public class ConditionPlayerState extends Condition {
 
 	public enum CheckPlayerState { RESTING, MOVING, RUNNING, FLYING, BEHIND, FRONT }
-	
-	private final CheckPlayerState _check; 
+
+	private final CheckPlayerState _check;
 	private final boolean _required;
-	
+
 	public ConditionPlayerState(CheckPlayerState check, boolean required)
 	{
 		_check = check;
 		_required = required;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env) {
 		switch (_check)

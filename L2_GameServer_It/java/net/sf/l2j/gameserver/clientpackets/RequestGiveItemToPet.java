@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/29 23:15:33 $
  */
 public final class RequestGiveItemToPet extends L2GameClientPacket
@@ -38,7 +38,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 
 	private int _objectId;
 	private int _amount;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -49,7 +49,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar(); 
+		L2PcInstance player = getClient().getActiveChar();
         if (player == null || player.getPet() == null || !(player.getPet() instanceof L2PetInstance)) return;
 
         // Alt game - Karma punishment
@@ -61,7 +61,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
             return;
         }
 
-        L2PetInstance pet = (L2PetInstance)player.getPet(); 
+        L2PetInstance pet = (L2PetInstance)player.getPet();
 		if (pet.isDead())
 		{
 			sendPacket(new SystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
@@ -72,7 +72,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		{
 			return;
 		}
-		
+
 		if (player.transferItem("Transfer", _objectId, _amount, pet.getInventory(), pet) == null)
 		{
 			_log.warning("Invalid item transfer request: " + pet.getName() + "(pet) --> " + player.getName());

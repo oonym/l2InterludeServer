@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.6.2.2.2.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class TradeDone extends L2GameClientPacket
@@ -38,7 +38,7 @@ public final class TradeDone extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(TradeDone.class.getName());
 
 	private int _response;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -81,7 +81,7 @@ public final class TradeDone extends L2GameClientPacket
 		}
 		else player.cancelActiveTrade();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

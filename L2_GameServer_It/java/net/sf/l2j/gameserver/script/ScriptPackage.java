@@ -37,7 +37,7 @@ public class ScriptPackage
     private List<ScriptDocument> _scriptFiles;
     private List<String> _otherFiles;
     private String _name;
-    
+
     public ScriptPackage(ZipFile pack)
     {
         _scriptFiles = new FastList<ScriptDocument>();
@@ -45,7 +45,7 @@ public class ScriptPackage
         _name = pack.getName();
         addFiles(pack);
     }
-    
+
     /**
      * @return Returns the otherFiles.
      */
@@ -61,7 +61,7 @@ public class ScriptPackage
     {
         return _scriptFiles;
     }
-    
+
     /**
      * @param scriptFiles The scriptFiles to set.
      */
@@ -73,7 +73,7 @@ public class ScriptPackage
             if (entry.getName().endsWith(".xml"))
             {
                 try {
-                    ScriptDocument newScript = new ScriptDocument(entry.getName(), pack.getInputStream(entry)); 
+                    ScriptDocument newScript = new ScriptDocument(entry.getName(), pack.getInputStream(entry));
                     _scriptFiles.add(newScript);
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
@@ -81,7 +81,7 @@ public class ScriptPackage
                 }
             }
             else if (!entry.isDirectory())
-            {   
+            {
                 _otherFiles.add(entry.getName());
             }
         }
@@ -93,15 +93,15 @@ public class ScriptPackage
     {
         return _name;
     }
-    
+
     @Override
 	public String toString()
     {
         if (getScriptFiles().isEmpty() && getOtherFiles().isEmpty())
             return "Empty Package.";
-        
+
         String out = "Package Name: "+getName()+"\n";
-        
+
         if (!getScriptFiles().isEmpty())
         {
             out += "Xml Script Files...\n";
@@ -110,7 +110,7 @@ public class ScriptPackage
                 out += script.getName()+"\n";
             }
         }
-        
+
         if (!getOtherFiles().isEmpty())
         {
             out += "Other Files...\n";

@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * 0x42 WarehouseWithdrawalList  dh (h dddhh dhhh d)
- * 
+ *
  * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/29 23:15:10 $
  */
 public class WareHouseWithdrawalList extends L2GameServerPacket
@@ -46,7 +46,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 	{
 		_activeChar = player;
 		_whType = type;
-		
+
 		_playerAdena = _activeChar.getAdena();
 		if (_activeChar.getActiveWarehouse() == null)
 		{
@@ -55,25 +55,25 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
             return;
 		}
 		else _items = _activeChar.getActiveWarehouse().getItems();
-		
+
 		if (Config.DEBUG)
 			for (L2ItemInstance item : _items)
 				_log.fine("item:" + item.getItem().getName() +
 						" type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x42);
-		/* 0x01-Private Warehouse  
-	    * 0x02-Clan Warehouse  
-	    * 0x03-Castle Warehouse  
-	    * 0x04-Warehouse */  
+		/* 0x01-Private Warehouse
+	    * 0x02-Clan Warehouse
+	    * 0x03-Castle Warehouse
+	    * 0x04-Warehouse */
 	    writeH(_whType);
 		writeD(_playerAdena);
 		writeH(_items.length);
-		
+
 		for (L2ItemInstance item : _items)
 		{
 			writeH(item.getItem().getType1()); // item type1 //unconfirmed, works
@@ -86,7 +86,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 			writeH(item.getEnchantLevel());	// enchant level -confirmed
 			writeH(0x00);	// ?
 			writeH(0x00);	// ?
-			writeD(item.getObjectId()); // item id - confimed		
+			writeD(item.getObjectId()); // item id - confimed
 			if (item.isAugmented())
 			{
 				writeD(0x0000FFFF&item.getAugmentation().getAugmentationId());
@@ -95,7 +95,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 			else writeQ(0x00);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author -Wooden-
- * 
+ *
  */
 public class PledgeShowMemberListUpdate extends L2GameServerPacket
 {
@@ -38,14 +38,14 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 	private int _objectId;
 	private int _isOnline;
 
-	
+
 	public PledgeShowMemberListUpdate(L2PcInstance player)
 	{
 		_activeChar = player;
 		_pledgeType = player.getPledgeType();
-		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY) 
+		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY)
 			_hasSponsor = _activeChar.getSponsor() != 0 ? 1 : 0;
-		else 
+		else
 			_hasSponsor = 0;
 		_name = _activeChar.getName();
 		_level = _activeChar.getLevel();
@@ -53,7 +53,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 		_objectId = _activeChar.getObjectId();
 		_isOnline = _activeChar.isOnline();
 	}
-	
+
 	public PledgeShowMemberListUpdate(L2ClanMember player)
 	{
 		_activeChar = player.getPlayerInstance();
@@ -66,13 +66,13 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 		else
 			_isOnline=0;
 		_pledgeType = player.getPledgeType();
-		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY) 
+		if (_pledgeType == L2Clan.SUBUNIT_ACADEMY)
 			_hasSponsor = _activeChar.getSponsor() != 0 ? 1 : 0;
-		else 
+		else
 			_hasSponsor = 0;
-	 	}	
+	 	}
 
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -80,11 +80,11 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 		writeS(_name);
 		writeD(_level);
 		writeD(_classId);
-		writeD(0); 
+		writeD(0);
 		writeD(_objectId);
 		writeD(_isOnline); // 1=online 0=offline
 		writeD(_pledgeType);
-		writeD(_hasSponsor); 
+		writeD(_hasSponsor);
 	}
 
 	/* (non-Javadoc)

@@ -32,22 +32,22 @@ public class GeoData
 {
 	private static Logger _log = Logger.getLogger(GeoData.class.getName());
 	private static GeoData _instance;
-	
+
 	public static GeoData getInstance()
     {
         if(_instance == null)
-        {        	
+        {
         	if (Config.GEODATA > 0)
         		_instance = GeoEngine.getInstance();
         	else
         	{
         		_instance = new GeoData();
         		_log.info("Geodata Engine: Disabled.");
-        	}        		
+        	}
         }
         return _instance;
     }
-    
+
     // Public Methods
     /**
      * @param x
@@ -100,7 +100,7 @@ public class GeoData
     	//If geo is off do simple check :]
     	//Don't allow casting on players on different dungeon lvls etc
         return (Math.abs(target.getZ() - cha.getZ()) < 1000);
-    }    
+    }
     /**
      * @param cha
      * @param target
@@ -116,7 +116,7 @@ public class GeoData
      * @param z
      * @return Geo NSWE (0-15)
      */
-    public short getNSWE(int x, int y, int z)  
+    public short getNSWE(int x, int y, int z)
     {
         return 15;
     }
@@ -132,7 +132,7 @@ public class GeoData
     public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
     {
         return new Location(tx,ty,tz);
-    }    
+    }
     /**
      * @param gm
      * @param comment
@@ -143,7 +143,7 @@ public class GeoData
     }
     public static void unloadGeodata(byte rx, byte ry)
 	{
-    	
+
 	}
     @Deprecated //TODO: cleanup?
     public static boolean loadGeodataFile(byte rx, byte ry)

@@ -27,12 +27,12 @@ import net.sf.l2j.gameserver.skills.Env;
 
 
 class EffectRelax extends L2Effect
-{		
+{
 	public EffectRelax(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
-	
+
 	@Override
 	public EffectType getEffectType()
 	{
@@ -42,7 +42,7 @@ class EffectRelax extends L2Effect
 	/** Notify started */
 	@Override
 	public void onStart() {
-        
+
         if(getEffected() instanceof L2PcInstance)
         {
         	setRelax(true);
@@ -52,7 +52,7 @@ class EffectRelax extends L2Effect
         	getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_REST);
 		super.onStart();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Effect#onExit()
 	 */
@@ -68,13 +68,13 @@ class EffectRelax extends L2Effect
         boolean retval = true;
 		if(getEffected().isDead())
             retval = false;
-        
+
 		if(getEffected() instanceof L2PcInstance)
 		{
 			if(!((L2PcInstance)getEffected()).isSitting())
 				retval = false;
 		}
-		
+
 		if (getEffected().getCurrentHp()+1 > getEffected().getMaxHp()) {
 			if(getSkill().isToggle())
 			{
@@ -86,9 +86,9 @@ class EffectRelax extends L2Effect
                 retval = false;
 			}
 		}
-		
+
 		double manaDam = calc();
-		
+
 		if(manaDam > getEffected().getCurrentMp())
 		{
 			if(getSkill().isToggle())
@@ -100,15 +100,15 @@ class EffectRelax extends L2Effect
                 retval = false;
 			}
 		}
-		
+
         if (!retval)
             setRelax(retval);
         else
             getEffected().reduceCurrentMp(manaDam);
-        
+
         return retval;
 	}
-    
+
     private void setRelax(boolean val)
     {
         if(getEffected() instanceof L2PcInstance)

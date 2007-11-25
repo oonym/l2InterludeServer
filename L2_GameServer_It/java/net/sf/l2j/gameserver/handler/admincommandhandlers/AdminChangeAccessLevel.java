@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * This class handles following admin commands: 
+ * This class handles following admin commands:
  * - changelvl = change a character's access level
  *  Can be used for character ban (as opposed to regular //ban that affects accounts)
  *  or to grant mod/GM privileges ingame
@@ -69,9 +69,9 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 
 	/**
 	 * If no character name is specified, tries to change GM's target access level. Else
-	 * if a character name is provided, will try to reach it either from L2World or from 
+	 * if a character name is provided, will try to reach it either from L2World or from
 	 * a database connection.
-	 * 
+	 *
 	 * @param command
 	 * @param activeChar
 	 */
@@ -125,7 +125,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 				}
 				finally
 				{
-					try 
+					try
 					{
 						con.close();
 					}

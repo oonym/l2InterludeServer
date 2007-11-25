@@ -33,15 +33,15 @@ public class L2DamageZone extends L2ZoneType
 {
 	private int _damagePerSec;
 	private Future _task;
-	
+
 	public L2DamageZone()
 	{
 		super();
-		
+
 		// Setup default damage
 		_damagePerSec = 100;
 	}
-	
+
 	@Override
 	public void setParameter(String name, String value)
 	{
@@ -60,7 +60,7 @@ public class L2DamageZone extends L2ZoneType
 			_task = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new ApplyDamage(this), 10, 1000);
 		}
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -70,17 +70,17 @@ public class L2DamageZone extends L2ZoneType
 			_task = null;
 		}
 	}
-	
+
 	protected Collection<L2Character> getCharacterList()
 	{
 		return _characterList.values();
 	}
-	
+
 	protected int getDamagePerSecond()
 	{
 		return _damagePerSec;
 	}
-	
+
 	class ApplyDamage implements Runnable
 	{
 		private L2DamageZone _dmgZone;
@@ -88,7 +88,7 @@ public class L2DamageZone extends L2ZoneType
 		{
 			_dmgZone = zone;
 		}
-		
+
 		public void run()
 		{
 			for (L2Character temp : _dmgZone.getCharacterList())
@@ -100,10 +100,10 @@ public class L2DamageZone extends L2ZoneType
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
 

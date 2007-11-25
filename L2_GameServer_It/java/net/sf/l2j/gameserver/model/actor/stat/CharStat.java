@@ -46,7 +46,7 @@ public class CharStat
 	 * Calculate the new value of the state with modifiers that will be applied
 	 * on the targeted L2Character.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * <B><U> Concept</U> :</B><BR>
 	 * <BR>
 	 * A L2Character owns a table of Calculators called <B>_calculators</B>.
@@ -54,17 +54,17 @@ public class CharStat
 	 * Func object is a mathematic function that permit to calculate the
 	 * modifier of a state (ex : REGENERATE_HP_RATE...) : <BR>
 	 * <BR>
-	 * 
+	 *
 	 * FuncAtkAccuracy -> Math.sqrt(_player.getDEX())*6+_player.getLevel()<BR>
 	 * <BR>
-	 * 
+	 *
 	 * When the calc method of a calculator is launched, each mathematic
 	 * function is called according to its priority <B>_order</B>. Indeed, Func
 	 * with lowest priority order is executed firsta and Funcs with the same
 	 * order are executed in unspecified order. The result of the calculation is
 	 * stored in the value property of an Env class instance.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param stat
 	 *            The stat to calculate the new value with modifiers
 	 * @param init
@@ -75,7 +75,7 @@ public class CharStat
 	 * @param skill
 	 *            The L2Skill whose properties will be used in the calculation
 	 *            (ex : Level...)
-	 * 
+	 *
 	 */
 	public final double calcStat(Stats stat, double init, L2Character target, L2Skill skill)
 	{
@@ -169,11 +169,11 @@ public class CharStat
 			return 1;
 
 		int criticalHit = (int) calcStat(Stats.CRITICAL_RATE, _activeChar.getTemplate().baseCritRate, target, skill);
-		
+
 		// Set a cap of Critical Hit at 500
 		if(criticalHit > 500)
 			criticalHit = 500;
-		
+
 		return criticalHit;
 	}
 
@@ -182,7 +182,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.STAT_DEX, _activeChar.getTemplate().baseDEX, null, null);
 	}
 
@@ -191,7 +191,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) (calcStat(Stats.EVASION_RATE, 0, target, null) / _activeChar.getArmourExpertisePenalty());
 	}
 
@@ -210,7 +210,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.STAT_INT, _activeChar.getTemplate().baseINT, null, null);
 	}
 
@@ -232,7 +232,7 @@ public class CharStat
 
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return _activeChar.getTemplate().baseAtkRange;
 	}
 
@@ -240,7 +240,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.MAX_CP, _activeChar.getTemplate().baseCpMax, null, null);
 	}
 
@@ -248,7 +248,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.MAX_HP, _activeChar.getTemplate().baseHpMax, null, null);
 	}
 
@@ -256,7 +256,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.MAX_MP, _activeChar.getTemplate().baseMpMax, null, null);
 	}
 
@@ -264,13 +264,13 @@ public class CharStat
 	 * Return the MAtk (base+modifier) of the L2Character for a skill used in
 	 * function of abnormal effects in progress.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li> Calculate Magic damage </li>
 	 * <BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param target
 	 *            The L2Character targeted by the skill
 	 * @param skill
@@ -372,12 +372,12 @@ public class CharStat
 	 * Return the MDef (base+modifier) of the L2Character against a skill in
 	 * function of abnormal effects in progress.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li> Calculate Magic damage </li>
 	 * <BR>
-	 * 
+	 *
 	 * @param target
 	 *            The L2Character targeted by the skill
 	 * @param skill
@@ -387,7 +387,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		// Get the base MAtk of the L2Character
 		double defence = _activeChar.getTemplate().baseMDef;
 
@@ -404,7 +404,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.STAT_MEN, _activeChar.getTemplate().baseMEN, null, null);
 	}
 
@@ -412,7 +412,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return getRunSpeed() * 1f / _activeChar.getTemplate().baseRunSpd;
 	}
 
@@ -424,7 +424,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		if (_activeChar.isRunning())
 			return getRunSpeed();
 		return getWalkSpeed();
@@ -435,7 +435,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return calcStat(Stats.MAGIC_REUSE_RATE, _activeChar.getTemplate().baseMReuseRate, null, skill);
 	}
 
@@ -510,7 +510,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.POWER_DEFENCE, (_activeChar.isRaid()) ? _activeChar.getTemplate().basePDef * Config.RAID_DEFENCE_MULTIPLIER : _activeChar.getTemplate().basePDef, target, null);
 	}
 
@@ -519,7 +519,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.POWER_ATTACK_RANGE, _activeChar.getTemplate().baseAtkRange, null, null);
 	}
 
@@ -537,7 +537,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		// err we should be adding TO the persons run speed
 		// not making it a constant
 		int val = (int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null);
@@ -577,7 +577,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.STAT_STR, _activeChar.getTemplate().baseSTR, null, null);
 	}
 
@@ -586,7 +586,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (getRunSpeed() * 70) / 100;
 	}
 
@@ -595,7 +595,7 @@ public class CharStat
 	{
     	if (_activeChar == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseWIT, null, null);
 	}
 
@@ -615,7 +615,7 @@ public class CharStat
 	{
     	if (skill == null)
     		return 1;
-    	
+
 		return (int) calcStat(Stats.MP_CONSUME, skill.getMpInitialConsume(), null, skill);
 	}
 }

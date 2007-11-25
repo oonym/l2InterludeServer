@@ -32,8 +32,8 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2ControlTowerInstance extends L2NpcInstance {
 
-    private List<L2Spawn> _guards; 
-	
+    private List<L2Spawn> _guards;
+
 	public L2ControlTowerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -49,52 +49,52 @@ public class L2ControlTowerInstance extends L2NpcInstance {
     }
 
     @Override
-	public boolean isAutoAttackable(L2Character attacker) 
+	public boolean isAutoAttackable(L2Character attacker)
 	{
 		// Attackable during siege by attacker only
-		return (attacker != null 
-		        && attacker instanceof L2PcInstance 
+		return (attacker != null
+		        && attacker instanceof L2PcInstance
 		        && getCastle() != null
 		        && getCastle().getCastleId() > 0
 		        && getCastle().getSiege().getIsInProgress()
 		        && getCastle().getSiege().checkIsAttacker(((L2PcInstance)attacker).getClan()));
 	}
-	
+
 	@Override
 	public void onForcedAttack(L2PcInstance player)
 	{
 		onAction(player);
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (this != player.getTarget())
 		{
             player.setTarget(this);
-            
+
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
             player.sendPacket(my);
-            
+
             StatusUpdate su = new StatusUpdate(getObjectId());
             su.addAttribute(StatusUpdate.CUR_HP, (int)getCurrentHp() );
             su.addAttribute(StatusUpdate.MAX_HP, getMaxHp() );
             player.sendPacket(su);
-            
+
             player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
             player.sendPacket(my);
-            
+
             if (
                     isAutoAttackable(player)                       // Object is attackable
                     && Math.abs(player.getZ() - getZ()) < 100      // Less then max height difference, delete check when geo
                     && GeoData.getInstance().canSeeTarget(player, this)
                 )
                 player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-            else 
+            else
                 player.sendPacket(new ActionFailed());
 		}
 	}
@@ -116,12 +116,12 @@ public class L2ControlTowerInstance extends L2NpcInstance {
             }
         }
     }
-    
+
     public void registerGuard(L2Spawn guard)
     {
         getGuards().add(guard);
     }
-    
+
     public final List<L2Spawn> getGuards()
     {
         if (_guards == null) _guards = new FastList<L2Spawn>();

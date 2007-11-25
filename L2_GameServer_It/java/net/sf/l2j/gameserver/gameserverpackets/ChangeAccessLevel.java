@@ -32,7 +32,7 @@ public class ChangeAccessLevel extends GameServerBasePacket
 		writeD(access);
 		writeS(player);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
 	 */
@@ -41,5 +41,5 @@ public class ChangeAccessLevel extends GameServerBasePacket
 	{
 		return getBytes();
 	}
-	
+
 }

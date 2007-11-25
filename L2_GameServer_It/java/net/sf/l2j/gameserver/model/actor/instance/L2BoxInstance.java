@@ -143,8 +143,8 @@ public class L2BoxInstance extends L2NpcInstance {
 		if (val == 0)
 		{
 			pom = "" + npcId;
-		} 
-		else 
+		}
+		else
 		{
 			pom = npcId + "-" + val;
 		}
@@ -353,7 +353,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		{
 			_log.info("getItems failed: "+e);
 		}
-		finally 
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
@@ -446,7 +446,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		{
 			_log.info("could not store item to box "+getSpawn().getId()+"-"+drawer+" for char "+charname);
 		}
-		finally 
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}*/
@@ -486,7 +486,7 @@ public class L2BoxInstance extends L2NpcInstance {
 			}
 		}
 	}
-	
+
 	private L2BoxItem takeItemOutBox(L2PcInstance player, String drawer, L2ItemInstance item)
 	{
 		String charname = player.getName();
@@ -536,7 +536,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		{
 			_log.info("could not delete/update item, box "+getSpawn().getId()+"-"+drawer+" for char "+charname+": "+e);
 		}
-		finally 
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}

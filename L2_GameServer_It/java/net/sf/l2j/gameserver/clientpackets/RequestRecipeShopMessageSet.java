@@ -29,9 +29,9 @@ public class RequestRecipeShopMessageSet extends L2GameClientPacket
 {
     private static final String _C__B1_RequestRecipeShopMessageSet = "[C] b1 RequestRecipeShopMessageSet";
     //private static Logger _log = Logger.getLogger(RequestRecipeShopMessageSet.class.getName());
-    
+
     private String _name;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -52,9 +52,9 @@ public class RequestRecipeShopMessageSet extends L2GameClientPacket
         {
             player.getCreateList().setStoreName(_name);
         }
-            
+
     }
-    
+
     @Override
 	public String getType()
     {

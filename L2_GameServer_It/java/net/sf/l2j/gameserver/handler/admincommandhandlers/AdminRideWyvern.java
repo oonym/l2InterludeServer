@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * @author 
+ * @author
  *
  * TODO nothing.
  */
@@ -41,12 +41,12 @@ public class AdminRideWyvern implements IAdminCommandHandler
     };
     private static final int REQUIRED_LEVEL = Config.GM_RIDER;
     private int _petRideId;
-    
+
     public boolean useAdminCommand(String command, L2PcInstance activeChar) {
-        
+
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
-    
+
         if(command.startsWith("admin_ride"))
         {
             if(activeChar.isMounted() || activeChar.getPet() != null){
@@ -60,7 +60,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
             }
             else if (command.startsWith("admin_ride_strider")) {
             	_petRideId = 12526;
-            }         
+            }
             else
             {
                 SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
@@ -82,12 +82,12 @@ public class AdminRideWyvern implements IAdminCommandHandler
         }
         return true;
     }
-    
+
     public String[] getAdminCommandList() {
         return ADMIN_COMMANDS;
     }
-    
+
     private boolean checkLevel(int level) {
         return (level >= REQUIRED_LEVEL);
-    }    
+    }
 }

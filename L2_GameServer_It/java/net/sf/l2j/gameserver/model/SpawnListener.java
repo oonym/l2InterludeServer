@@ -8,7 +8,7 @@
  * Revision 1  7/09/2005 23:44:50  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 

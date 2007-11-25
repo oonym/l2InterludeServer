@@ -16,7 +16,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-package net.sf.l2j.gameserver.handler.skillhandlers; 
+package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
@@ -31,17 +31,17 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Util;
 
-/** 
- * @author _drunk_ 
- * 
- * TODO To change the template for this generated type comment go to 
- * Window - Preferences - Java - Code Style - Code Templates 
- */ 
-public class TakeCastle implements ISkillHandler 
-{ 
-    //private static Logger _log = Logger.getLogger(TakeCastle.class.getName()); 
-	private static final SkillType[] SKILL_IDS = {SkillType.TAKECASTLE}; 
-    
+/**
+ * @author _drunk_
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class TakeCastle implements ISkillHandler
+{
+    //private static Logger _log = Logger.getLogger(TakeCastle.class.getName());
+	private static final SkillType[] SKILL_IDS = {SkillType.TAKECASTLE};
+
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance)) return;
@@ -52,26 +52,26 @@ public class TakeCastle implements ISkillHandler
 
         Castle castle = CastleManager.getInstance().getCastle(player);
         if (castle == null || !checkIfOkToCastSealOfRule(player, castle, true)) return;
-        
+
         try
         {
         	if(targets[0] instanceof L2ArtefactInstance)
         		castle.Engrave(player.getClan(), targets[0].getObjectId());
         }
-        catch(Exception e) 
+        catch(Exception e)
         {}
-    } 
-    
-    public SkillType[] getSkillIds() 
-    { 
-        return SKILL_IDS; 
-    } 
+    }
+
+    public SkillType[] getSkillIds()
+    {
+        return SKILL_IDS;
+    }
 
     /**
      * Return true if character clan place a flag<BR><BR>
-     * 
+     *
      * @param activeChar The L2Character of the character placing the flag
-     * 
+     *
      */
     public static boolean checkIfOkToCastSealOfRule(L2Character activeChar, boolean isCheckOnly)
     {
@@ -98,7 +98,7 @@ public class TakeCastle implements ISkillHandler
             sm.addString("You must be an attacker to use this skill");
         else
         {
-            if (!isCheckOnly) castle.getSiege().announceToPlayer("Clan " + player.getClan().getName() + " has begun to engrave the ruler.", true);                
+            if (!isCheckOnly) castle.getSiege().announceToPlayer("Clan " + player.getClan().getName() + " has begun to engrave the ruler.", true);
             return true;
         }
 

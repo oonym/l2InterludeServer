@@ -38,7 +38,7 @@ import net.sf.l2j.util.Rnd;
 /**
  * This class handles following admin commands:
  * - gm = turns gm mode on/off
- * 
+ *
  * @version $Revision: 1.1.2.1 $ $Date: 2005/03/15 21:32:48 $
  */
 public class AdminFightCalculator implements IAdminCommandHandler {
@@ -58,7 +58,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
     		//don't check for gm status ;)
             if (!Config.ALT_PRIVILEGES_ADMIN)
                 if (!checkLevel(activeChar.getAccessLevel())) return false;
-            
+
     		if (command.startsWith("admin_fight_calculator_show"))
     			handleShow(command.substring("admin_fight_calculator_show".length()), activeChar);
     		else if (command.startsWith("admin_fcs"))
@@ -70,15 +70,15 @@ public class AdminFightCalculator implements IAdminCommandHandler {
         { }
 		return true;
 	}
-	
+
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean checkLevel(int level) {
 		return (level >= REQUIRED_LEVEL);
 	}
-	
+
 	private void handleStart(String params, L2PcInstance activeChar) {
 		StringTokenizer st = new StringTokenizer(params);
 		int lvl1 = 0;
@@ -93,17 +93,17 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			if (s.equals("mid1")) { mid1 = Integer.parseInt(st.nextToken()); continue; }
 			if (s.equals("mid2")) { mid2 = Integer.parseInt(st.nextToken()); continue; }
 		}
-		
+
 		L2NpcTemplate npc1 = null;
 		if (mid1 != 0)
 			npc1 = NpcTable.getInstance().getTemplate(mid1);
 		L2NpcTemplate npc2 = null;
 		if (mid2 != 0)
 			npc2 = NpcTable.getInstance().getTemplate(mid2);
-		
-		
+
+
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		
+
 		TextBuilder replyMSG = new TextBuilder();
 		if (npc1 != null && npc2 != null)
 		{
@@ -152,12 +152,12 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 	        replyMSG.append("</center>");
 	        replyMSG.append("</body></html>");
 		}
-		
+
 		adminReply.setHtml(replyMSG.toString());
-		activeChar.sendPacket(adminReply);	
+		activeChar.sendPacket(adminReply);
 	}
-	
-	
+
+
 	private void handleShow(String params, L2PcInstance activeChar) {
 		Formulas f = Formulas.getInstance();
 		params = params.trim();
@@ -187,7 +187,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			npc2 = new L2MonsterInstance(IdFactory.getInstance().getNextId(),
 					NpcTable.getInstance().getTemplate(mid2));
 		}
-		
+
 		int miss1 = 0;
 		int miss2 = 0;
 		int shld1 = 0;
@@ -200,15 +200,15 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 		double pdef2 = 0;
 		double dmg1 = 0;
 		double dmg2 = 0;
-		
-		
+
+
 		// ATTACK speed in milliseconds
 		int sAtk1 = npc1.calculateTimeBetweenAttacks(npc2, null);
 		int sAtk2 = npc2.calculateTimeBetweenAttacks(npc1, null);
 		// number of ATTACK per 100 seconds
-		sAtk1 = 100000 / sAtk1; 
-		sAtk2 = 100000 / sAtk2; 
-		
+		sAtk1 = 100000 / sAtk1;
+		sAtk2 = 100000 / sAtk2;
+
 		for (int i=0; i < 10000; i++)
 		{
 			boolean _miss1 = f.calcHitMiss(npc1, npc2);
@@ -217,11 +217,11 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			if (_shld1) shld1++;
 			boolean _crit1 = f.calcCrit(npc1.getCriticalHit(npc2, null));
 			if (_crit1) crit1++;
-			
+
 			double _patk1 = npc1.getPAtk(npc2);
 			_patk1 += Rnd.nextDouble()* npc1.getRandomDamage(npc2);
 			patk1 += _patk1;
-			
+
 			double _pdef1 = npc1.getPDef(npc2);
 			pdef1 += _pdef1;
 
@@ -241,11 +241,11 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 			if (_shld2) shld2++;
 			boolean _crit2 = f.calcCrit(npc2.getCriticalHit(npc1, null));
 			if (_crit2) crit2++;
-			
+
 			double _patk2 = npc2.getPAtk(npc1);
 			_patk2 += Rnd.nextDouble()* npc2.getRandomDamage(npc1);
 			patk2 += _patk2;
-			
+
 			double _pdef2 = npc2.getPDef(npc1);
 			pdef2 += _pdef2;
 
@@ -269,7 +269,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 		pdef2 /= 10000;
 		dmg1  /= 10000;
 		dmg2  /= 10000;
-		
+
 		// total damage per 100 seconds
 		int tdmg1 = (int)(sAtk1 * dmg1);
 		int tdmg2 = (int)(sAtk2 * dmg2);
@@ -281,7 +281,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 		int hp2 = (int)(f.calcHpRegen(npc2) * 100000 / f.getRegeneratePeriod(npc2));
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		
+
 		TextBuilder replyMSG = new TextBuilder();
 		replyMSG.append("<html><title>Selected mobs to fight</title>");
 		replyMSG.append("<body>");

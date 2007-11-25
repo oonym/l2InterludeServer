@@ -20,10 +20,10 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
-public class PledgeShowMemberListDeleteAll extends L2GameServerPacket 
+public class PledgeShowMemberListDeleteAll extends L2GameServerPacket
 {
 	private static final String _S__9B_PLEDGESHOWMEMBERLISTDELETEALL = "[S] 82 PledgeShowMemberListDeleteAll";
 
@@ -31,7 +31,7 @@ public class PledgeShowMemberListDeleteAll extends L2GameServerPacket
 	{
 
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

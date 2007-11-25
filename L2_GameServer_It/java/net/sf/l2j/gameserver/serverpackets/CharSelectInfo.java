@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.network.L2GameClient;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.8.2.4.2.6 $ $Date: 2005/04/06 16:13:46 $
  */
 public class CharSelectInfo extends L2GameServerPacket
@@ -59,7 +59,7 @@ public class CharSelectInfo extends L2GameServerPacket
 		_characterPackages = loadCharacterSelectInfo();
 		_activeId = -1;
 	}
-	
+
 	public CharSelectInfo(String loginName, int sessionId, int activeId)
 	{
 		_sessionId = sessionId;
@@ -107,7 +107,7 @@ public class CharSelectInfo extends L2GameServerPacket
 
 			if (charInfoPackage.getClassId() == charInfoPackage.getBaseClassId())
 				writeD(charInfoPackage.getClassId());
-			else 
+			else
 				writeD(charInfoPackage.getBaseClassId());
 
 			writeD(0x01); // active ??
@@ -225,8 +225,8 @@ public class CharSelectInfo extends L2GameServerPacket
 		catch (Exception e)
 		{
 			_log.warning("Could not restore char info: " + e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
@@ -260,13 +260,13 @@ public class CharSelectInfo extends L2GameServerPacket
 		catch (Exception e)
 		{
 			_log.warning("Could not restore char subclass info: " + e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
 
-	} 
+	}
 
 
 	private CharSelectInfoPackage restoreChar(ResultSet chardata) throws Exception
@@ -277,7 +277,7 @@ public class CharSelectInfo extends L2GameServerPacket
 		long deletetime = chardata.getLong("deletetime");
 		if (deletetime > 0)
 		{
-			if (System.currentTimeMillis() > deletetime) 
+			if (System.currentTimeMillis() > deletetime)
 			{
 				L2PcInstance cha = L2PcInstance.load(objectId);
 				L2Clan clan = cha.getClan();
@@ -314,16 +314,16 @@ public class CharSelectInfo extends L2GameServerPacket
 		final int activeClassId = chardata.getInt("classid");
 
 		// if is in subclass, load subclass exp, sp, lvl info
-		if(baseClassId != activeClassId)        
-			loadCharacterSubclassInfo(charInfopackage, objectId, activeClassId);        
+		if(baseClassId != activeClassId)
+			loadCharacterSubclassInfo(charInfopackage, objectId, activeClassId);
 
 		charInfopackage.setClassId(activeClassId);
-		
+
 		// Get the augmentation id for equipped weapon
 		int weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND);
 		if (weaponObjId < 1)
 			weaponObjId = charInfopackage.getPaperdollObjectId(Inventory.PAPERDOLL_RHAND);
-		
+
 		if (weaponObjId > 0)
 		{
 			java.sql.Connection con = null;
@@ -345,15 +345,15 @@ public class CharSelectInfo extends L2GameServerPacket
 			catch (Exception e)
 			{
 				_log.warning("Could not restore augmentation info: " + e);
-			} 
+			}
 			finally { try { con.close(); } catch (Exception e) {} }
 		}
 
 		/*
 		 * Check if the base class is set to zero and alse doesn't match
 		 * with the current active class, otherwise send the base class ID.
-		 * 
-		 * This prevents chars created before base class was introduced 
+		 *
+		 * This prevents chars created before base class was introduced
 		 * from being displayed incorrectly.
 		 */
 		if (baseClassId == 0 && activeClassId > 0)

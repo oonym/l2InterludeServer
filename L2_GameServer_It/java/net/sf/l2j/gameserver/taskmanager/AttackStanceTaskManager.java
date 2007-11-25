@@ -5,7 +5,7 @@
  * $Date: $
  * $Revision: $
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.AutoAttackStop;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: $ $Date: $
  * @author  Luca Baldi
  */
@@ -44,48 +44,48 @@ public class AttackStanceTaskManager
     protected static final Logger _log = Logger.getLogger(AttackStanceTaskManager.class.getName());
 
     protected Map<L2Character,Long> _attackStanceTasks = new FastMap<L2Character,Long>().setShared(true);
-    
+
     private static AttackStanceTaskManager _instance;
-    
+
     public AttackStanceTaskManager()
     {
         ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new FightModeScheduler(), 0, 1000);
     }
-    
+
     public static AttackStanceTaskManager getInstance()
     {
         if(_instance == null)
             _instance = new AttackStanceTaskManager();
-        
+
         return _instance;
     }
-    
+
     public void addAttackStanceTask(L2Character actor)
     {
         _attackStanceTasks.put(actor, System.currentTimeMillis());
     }
-    
+
     public void removeAttackStanceTask(L2Character actor)
     {
         _attackStanceTasks.remove(actor);
     }
-    
+
     public boolean getAttackStanceTask(L2Character actor)
     {
         return _attackStanceTasks.containsKey(actor);
     }
 
     private class FightModeScheduler implements Runnable
-    {  
+    {
     	protected FightModeScheduler()
     	{
     		// Do nothing
     	}
-    	
+
         public void run()
         {
             Long current = System.currentTimeMillis();
-            try 
+            try
             {
             	if (_attackStanceTasks != null)
             		synchronized (this) {
@@ -100,7 +100,7 @@ public class AttackStanceTaskManager
             			}
             		}
             } catch (Throwable e) {
-            	// TODO: Find out the reason for exception. Unless caught here, players remain in attack positions. 
+            	// TODO: Find out the reason for exception. Unless caught here, players remain in attack positions.
             	_log.warning(e.toString());
             }
         }

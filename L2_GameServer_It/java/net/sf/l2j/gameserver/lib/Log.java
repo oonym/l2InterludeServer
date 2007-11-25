@@ -15,7 +15,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-/** 
+/**
 	coded by Balancer
 	balancer@balancer.ru
 	http://balancer.ru
@@ -51,7 +51,7 @@ public class Log
 		String date = (new SimpleDateFormat("yy.MM.dd H:mm:ss")).format(new Date());
 
 		new File("log/game").mkdirs();
-		
+
 		try
 		{
 			File file 		= new File("log/game/"+(cat!=null?cat:"_all")+".txt");
@@ -82,8 +82,8 @@ public class Log
 
         new File("log/game").mkdirs();
         File file       = new File("log/game/actions_"+filedate+".txt");
-        FileWriter save         = null; 
-        
+        FileWriter save         = null;
+
         try
         {
             save = new FileWriter(file, true);
@@ -98,7 +98,7 @@ public class Log
         finally
         {
             try { save.close(); } catch (Exception e1) { }
-        }    
+        }
     }
 
     @Deprecated

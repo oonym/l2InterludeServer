@@ -169,7 +169,7 @@ public abstract class L2Character extends L2Object
 
 	/** FastMap(Integer, L2Skill) containing all skills of the L2Character */
 	protected final Map<Integer, L2Skill> _skills;
-	
+
 	/** Zone system */
 	public static final int ZONE_PVP = 1;
 	public static final int ZONE_PEACE = 2;
@@ -181,9 +181,9 @@ public abstract class L2Character extends L2Object
 	public static final int ZONE_WATER = 128;
 	public static final int ZONE_JAIL = 256;
 	public static final int ZONE_MONSTERTRACK = 512;
-	
+
 	private int _currentZones = 0;
-	
+
 	public boolean isInsideZone(int zone)
 	{
 		return ((_currentZones & zone) != 0);
@@ -277,7 +277,7 @@ public abstract class L2Character extends L2Object
 		if(reg != null) reg.removeFromZones(this);
 		decayMe();
 	}
-	
+
 	@Override
 	public void onSpawn()
 	{
@@ -332,7 +332,7 @@ public abstract class L2Character extends L2Object
 
 		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
 		{
-			try 
+			try
 			{
 				player.sendPacket(mov);
 				if (mov instanceof CharInfo && this instanceof L2PcInstance) {
@@ -341,7 +341,7 @@ public abstract class L2Character extends L2Object
 						player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
         		}
 				//if(Config.DEVELOPER && !isInsideRadius(player, 3500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
-        	} catch (NullPointerException e) { } 
+        	} catch (NullPointerException e) { }
         }
 	}
 
@@ -362,7 +362,7 @@ public abstract class L2Character extends L2Object
 
         for (L2PcInstance player : getKnownList().getKnownPlayers().values())
         {
-        	try 
+        	try
         	{
         		if (!isInsideRadius(player, radiusInKnownlist, false, false)) continue;
         		player.sendPacket(mov);
@@ -479,10 +479,10 @@ public abstract class L2Character extends L2Object
 
 		setIsTeleporting(true);
 		setTarget(null);
-		
+
 		// Remove from world regions zones
 		getWorldRegion().removeFromZones(this);
-		
+
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 
         if (Config.RESPAWN_RANDOM_ENABLED && allowRandomOffset)
@@ -501,7 +501,7 @@ public abstract class L2Character extends L2Object
 
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
 		getPosition().setXYZ(x, y, z);
-		
+
 		decayMe();
 
 		if (!(this instanceof L2PcInstance))
@@ -517,7 +517,7 @@ public abstract class L2Character extends L2Object
 		int x = loc.getX();
 		int y = loc.getY();
 		int z = loc.getZ();
-		
+
 		if (this instanceof L2PcInstance && DimensionalRiftManager.getInstance().checkIfInRiftZone(getX(), getY(), getZ(), true)) // true -> ignore waiting room :)
 		{
 			L2PcInstance player = (L2PcInstance)this;
@@ -574,7 +574,7 @@ public abstract class L2Character extends L2Object
 		if (isAttackingDisabled())
             return;
 
-		if (this instanceof L2PcInstance) 
+		if (this instanceof L2PcInstance)
 		{
 	        if (((L2PcInstance)this).inObserverMode())
 	        {
@@ -639,7 +639,7 @@ public abstract class L2Character extends L2Object
 					sendPacket(new ActionFailed());
 					return;
 				}
-				
+
 				// Verify if the bow can be use
 				if (_disableBowAttackEndTime <= GameTimeController.getGameTicks())
 				{

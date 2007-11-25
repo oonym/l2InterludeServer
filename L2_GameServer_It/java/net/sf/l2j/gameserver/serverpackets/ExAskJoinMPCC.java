@@ -20,9 +20,9 @@ package net.sf.l2j.gameserver.serverpackets;
 /**
  *
  * @author  chris_00
- * 
+ *
  * Asks the player to join a CC
- * 
+ *
  */
 public class ExAskJoinMPCC extends L2GameServerPacket
 {
@@ -37,7 +37,7 @@ public class ExAskJoinMPCC extends L2GameServerPacket
 	{
 		_requestorName = requestorName;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
@@ -47,7 +47,7 @@ public class ExAskJoinMPCC extends L2GameServerPacket
 		writeC(0xFE);
 		writeH(0x27);
 		writeS(_requestorName);  // name of CCLeader
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -58,5 +58,5 @@ public class ExAskJoinMPCC extends L2GameServerPacket
 	{
 		return _S__FE_27_EXASKJOINMPCC;
 	}
-	
+
 }

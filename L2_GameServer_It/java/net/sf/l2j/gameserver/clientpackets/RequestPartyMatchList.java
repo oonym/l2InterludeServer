@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.serverpackets.PartyMatchList;
 
 /**
  * Packetformat  Rev650  cdddddS
- * 
+ *
  * @version $Revision: 1.1.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 
@@ -46,8 +46,8 @@ public class RequestPartyMatchList extends L2GameClientPacket
 	private int _unk4;
     @SuppressWarnings("unused")
 	private String _unk5;
-    
-    
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -67,11 +67,11 @@ public class RequestPartyMatchList extends L2GameClientPacket
 	{
 		if (_status == 1)
 		{
-			// window is open fill the list  
+			// window is open fill the list
 			// actually the client should get automatic updates for the list
 			// for now we only fill it once
 
-			//Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers(); 
+			//Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers();
 			//L2PcInstance[] allPlayers = players.toArray(new L2PcInstance[players.size()]);
 			L2PcInstance[] empty = new L2PcInstance[] { };
 			PartyMatchList matchList = new PartyMatchList(empty);

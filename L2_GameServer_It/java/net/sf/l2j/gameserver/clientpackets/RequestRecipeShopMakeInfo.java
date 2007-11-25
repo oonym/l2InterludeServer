@@ -30,11 +30,11 @@ public final class RequestRecipeShopMakeInfo extends L2GameClientPacket
 {
     private static final String _C__B5_RequestRecipeShopMakeInfo = "[C] b5 RequestRecipeShopMakeInfo";
     //private static Logger _log = Logger.getLogger(RequestRecipeShopMakeInfo.class.getName());
-    
+
     @SuppressWarnings("unused")
     private int _playerObjectId;
     private int _recipeId;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -48,18 +48,18 @@ public final class RequestRecipeShopMakeInfo extends L2GameClientPacket
         L2PcInstance player = getClient().getActiveChar();
         if (player == null)
         	return;
-	    
+
 
         player.sendPacket(new RecipeShopItemInfo(_playerObjectId,_recipeId));
-        
+
     }
-    
-    
+
+
     @Override
 	public String getType()
     {
         return _C__B5_RequestRecipeShopMakeInfo;
     }
-    
-    
+
+
 }

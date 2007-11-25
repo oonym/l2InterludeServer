@@ -28,13 +28,13 @@ public abstract class LoginServerBasePacket
 {
 	private byte[] _decrypt;
 	private int _off;
-	
+
 	public LoginServerBasePacket(byte[] decrypt)
 	{
 		_decrypt = decrypt;
 		_off = 1;		// skip packet type id
 	}
-	
+
 	public int readD()
 	{
 		int result = _decrypt[_off++] &0xff;
@@ -85,7 +85,7 @@ public abstract class LoginServerBasePacket
 		_off += result.length()*2 + 2;
 		return result;
 	}
-	
+
 	public final byte[] readB(int length)
 	{
 		byte[] result = new byte[length];
@@ -96,6 +96,6 @@ public abstract class LoginServerBasePacket
 		_off += length;
 		return result;
 	}
-	
+
 	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
 }

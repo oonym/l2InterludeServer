@@ -28,27 +28,27 @@ import net.sf.l2j.gameserver.templates.L2CharTemplate;
 
 /**
  * This class represents all Playable characters in the world.<BR><BR>
- * 
+ *
  * L2PlayableInstance :<BR><BR>
  * <li>L2PcInstance</li>
  * <li>L2Summon</li><BR><BR>
- * 
+ *
  */
 
-public abstract class L2PlayableInstance extends L2Character 
+public abstract class L2PlayableInstance extends L2Character
 {
 
 	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
-	private boolean _getCharmOfLuck = false; // Charm of Luck - During a Raid/Boss war, decreased chance for death penalty 
+	private boolean _getCharmOfLuck = false; // Charm of Luck - During a Raid/Boss war, decreased chance for death penalty
 	/**
 	 * Constructor of L2PlayableInstance (use L2Character constructor).<BR><BR>
-	 *  
+	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
 	 * <li>Call the L2Character constructor to create an empty _skills slot and link copy basic Calculator set to this L2PlayableInstance </li><BR><BR>
-	 * 
+	 *
 	 * @param objectId Identifier of the object to initialized
 	 * @param template The L2CharTemplate to apply to the L2PlayableInstance
-	 * 
+	 *
 	 */
 	public L2PlayableInstance(int objectId, L2CharTemplate template)
 	{
@@ -57,7 +57,7 @@ public abstract class L2PlayableInstance extends L2Character
         getStat();			// init stats
         getStatus();		// init status
 	}
-    
+
     @Override
 	public PlayableKnownList getKnownList()
     {
@@ -65,7 +65,7 @@ public abstract class L2PlayableInstance extends L2Character
     		setKnownList(new PlayableKnownList(this));
     	return (PlayableKnownList)super.getKnownList();
     }
-    
+
     @Override
 	public PlayableStat getStat()
     {
@@ -73,7 +73,7 @@ public abstract class L2PlayableInstance extends L2Character
     		setStat(new PlayableStat(this));
     	return (PlayableStat)super.getStat();
     }
-    
+
     @Override
 	public PlayableStatus getStatus()
     {
@@ -87,7 +87,7 @@ public abstract class L2PlayableInstance extends L2Character
     {
     	if (!super.doDie(killer))
     		return false;
-    	
+
     	if (killer != null)
         {
             L2PcInstance player = null;
@@ -145,7 +145,7 @@ public abstract class L2PlayableInstance extends L2Character
         return false;
         */
     }
-    
+
     /**
 	 * Return True.<BR><BR>
 	 */
@@ -154,50 +154,50 @@ public abstract class L2PlayableInstance extends L2Character
     {
         return true;
     }
-    
+
     // Support for Noblesse Blessing skill, where buffs are retained
     // after resurrect
     public final boolean isNoblesseBlessed() { return _isNoblesseBlessed; }
     public final void setIsNoblesseBlessed(boolean value) { _isNoblesseBlessed = value; }
-     
+
     public final void startNoblesseBlessing()
     {
     	setIsNoblesseBlessed(true);
     	updateAbnormalEffect();
     }
-    
+
     public final void stopNoblesseBlessing(L2Effect effect)
     {
     	if (effect == null)
     		stopEffects(L2Effect.EffectType.NOBLESSE_BLESSING);
     	else
     		removeEffect(effect);
-    			
+
     	setIsNoblesseBlessed(false);
     	updateAbnormalEffect();
     }
-    
+
 	public abstract boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference, boolean sendMessage);
 	public abstract boolean destroyItem(String process, int objectId, int count, L2Object reference, boolean sendMessage);
-	 
-	//Charm of Luck - During a Raid/Boss war, decreased chance for death penalty 
-	public final boolean getCharmOfLuck() { return _getCharmOfLuck; } 
-	public final void setCharmOfLuck(boolean value) { _getCharmOfLuck = value; } 
-	
-	public final void startCharmOfLuck() 
-	{ 
-		setCharmOfLuck(true); 
-		updateAbnormalEffect(); 
-	} 
-	
-	public final void stopCharmOfLuck(L2Effect effect) 
-	{ 
-		if (effect == null) 
-			stopEffects(L2Effect.EffectType.CHARM_OF_LUCK); 
-		else 
-			removeEffect(effect); 
-	              
-		setCharmOfLuck(false); 	
-		updateAbnormalEffect(); 
-	} 
+
+	//Charm of Luck - During a Raid/Boss war, decreased chance for death penalty
+	public final boolean getCharmOfLuck() { return _getCharmOfLuck; }
+	public final void setCharmOfLuck(boolean value) { _getCharmOfLuck = value; }
+
+	public final void startCharmOfLuck()
+	{
+		setCharmOfLuck(true);
+		updateAbnormalEffect();
+	}
+
+	public final void stopCharmOfLuck(L2Effect effect)
+	{
+		if (effect == null)
+			stopEffects(L2Effect.EffectType.CHARM_OF_LUCK);
+		else
+			removeEffect(effect);
+
+		setCharmOfLuck(false);
+		updateAbnormalEffect();
+	}
 }

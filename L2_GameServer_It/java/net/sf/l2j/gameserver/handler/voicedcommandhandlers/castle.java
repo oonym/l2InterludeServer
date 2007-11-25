@@ -26,12 +26,12 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.serverpackets.Ride;
 
 /**
- * 
+ *
  *
  */
 public class castle implements IVoicedCommandHandler
 {
-    private static final String[] VOICED_COMMANDS = { "open doors", "close doors", "ride wyvern" }; 
+    private static final String[] VOICED_COMMANDS = { "open doors", "close doors", "ride wyvern" };
 
     public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
@@ -68,7 +68,7 @@ public class castle implements IVoicedCommandHandler
     	return true;
     }
 
- 
+
     public String[] getVoicedCommandList()
     {
         return VOICED_COMMANDS;

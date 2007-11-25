@@ -25,16 +25,16 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestReplyStopPledgeWar extends L2GameClientPacket
 {
     private static final String _C__50_REQUESTREPLYSTOPPLEDGEWAR = "[C] 50 RequestReplyStopPledgeWar";
     //private static Logger _log = Logger.getLogger(RequestReplyStopPledgeWar.class.getName());
-    
+
     private int _answer;
-            
+
     @Override
 	protected void readImpl()
     {
@@ -51,20 +51,20 @@ public final class RequestReplyStopPledgeWar extends L2GameClientPacket
         L2PcInstance requestor = activeChar.getActiveRequester();
         if(requestor == null)
         	return;
-        
+
         if (_answer == 1)
         {
             ClanTable.getInstance().deleteclanswars(requestor.getClanId(), activeChar.getClanId());
-        } 
+        }
         else
         {
             requestor.sendPacket(new SystemMessage(SystemMessageId.REQUEST_TO_END_WAR_HAS_BEEN_DENIED));
         }
-        
+
         activeChar.setActiveRequester(null);
         requestor.onTransactionResponse();
     }
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */

@@ -25,7 +25,7 @@ import net.sf.l2j.gameserver.skills.Env;
 
 
 class EffectHealOverTime extends L2Effect
-{		
+{
 	public EffectHealOverTime(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -39,23 +39,23 @@ class EffectHealOverTime extends L2Effect
 
 	@Override
 	public boolean onActionTime()
-	{	
+	{
 		if(getEffected().isDead())
 			return false;
-		
+
 		if(getEffected() instanceof L2DoorInstance)
 			return false;
-		
-		double hp = getEffected().getCurrentHp(); 
+
+		double hp = getEffected().getCurrentHp();
 		double maxhp = getEffected().getMaxHp();
-		hp += calc(); 
+		hp += calc();
 		if(hp > maxhp)
 		{
 			hp = maxhp;
 		}
-		getEffected().setCurrentHp(hp); 
-		StatusUpdate suhp = new StatusUpdate(getEffected().getObjectId()); 
-		suhp.addAttribute(StatusUpdate.CUR_HP, (int)hp); 
+		getEffected().setCurrentHp(hp);
+		StatusUpdate suhp = new StatusUpdate(getEffected().getObjectId());
+		suhp.addAttribute(StatusUpdate.CUR_HP, (int)hp);
 		getEffected().sendPacket(suhp);
 		return true;
 	}

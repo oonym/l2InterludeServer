@@ -17,7 +17,6 @@
  */
 package net.sf.l2j.gameserver.skills.effects;
 
-import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.skills.Env;
 
 /**
@@ -26,7 +25,7 @@ import net.sf.l2j.gameserver.skills.Env;
  */
 public final class EffectBattleForce extends EffectForce
 {
-	public EffectBattleForce(Env env, EffectTemplate template) 
+	public EffectBattleForce(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}

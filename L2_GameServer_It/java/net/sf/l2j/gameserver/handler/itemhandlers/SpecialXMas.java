@@ -37,14 +37,14 @@ public class SpecialXMas implements IItemHandler
 			return;
 		L2PcInstance activeChar = (L2PcInstance)playable;
 	    int itemId = item.getItemId();
-		
+
 	    if (itemId == 5555) // Token of Love
 	    {
 	    	ShowXMasSeal SXS = new ShowXMasSeal(5555);
 			activeChar.broadcastPacket(SXS);
 		}
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#getItemIds()
 	 */

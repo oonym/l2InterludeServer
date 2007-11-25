@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.7 $ $Date: 2005/03/27 15:29:32 $
  */
 public final class L2ClassMasterInstance extends L2FolkInstance
@@ -44,7 +44,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	//private static Logger _log = Logger.getLogger(L2ClassMasterInstance.class.getName());
 	private static final int[] SECONDN_CLASS_IDS = {2,3,5,6,9,8,12,13,14,16,17,20,21,23,24,27,
 													28,30,33,34,36,37,40,41,43,46,48,51,52,55,57};
-	
+
 	/**
 	 * @param template
 	 */
@@ -52,17 +52,17 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (getObjectId() != player.getTargetId())
 		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
-			
-            if (Config.DEBUG) 
+
+            if (Config.DEBUG)
                 _log.fine("ClassMaster selected:"+getObjectId());
-            
+
 			player.setTarget(this);
             player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
 			// correct location
@@ -75,15 +75,15 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 				return;
 			}
-            
-			if (Config.DEBUG) 
+
+			if (Config.DEBUG)
                 _log.fine("ClassMaster activated");
-            
+
 			ClassId classId = player.getClassId();
 
 			int jobLevel = 0;
 			int level = player.getLevel();
-            ClassLevel lvl = PlayerClass.values()[classId.getId()].getLevel();  
+            ClassLevel lvl = PlayerClass.values()[classId.getId()].getLevel();
             switch (lvl)
 			{
                 case First:
@@ -95,21 +95,21 @@ public final class L2ClassMasterInstance extends L2FolkInstance
                 default:
                     jobLevel = 3;
 			}
-			
-			if (!Config.ALLOW_CLASS_MASTERS) 
+
+			if (!Config.ALLOW_CLASS_MASTERS)
 				jobLevel = 3;
-			
+
 			if(player.isGM())
 			{
 				showChatWindowChooseClass(player);
 			}
 			else if (((level >= 20 && jobLevel == 1 ) ||
 				(level >= 40 && jobLevel == 2 )) && Config.ALLOW_CLASS_MASTERS)
-			{				
+			{
 				showChatWindow(player, classId.getId());
 			}
 			else if (level >= 76 && Config.ALLOW_CLASS_MASTERS && classId.getId() < 88)
-			{			
+			{
 				for (int i = 0; i < SECONDN_CLASS_IDS.length; i++)
 				{
 					if (classId.getId() == SECONDN_CLASS_IDS[i])
@@ -128,7 +128,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 					}
 				}
 			}
-			else 
+			else
 			{
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				TextBuilder sb = new TextBuilder();
@@ -145,7 +145,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 						sb.append("There are no more class changes for you.<br>");
 						break;
 				}
-                
+
 				for (Quest q : Quest.findAllEvents())
 					sb.append("Event: <a action=\"bypass -h Quest "+q.getName()+"\">"+q.getDescr()+"</a><br>");
 
@@ -153,11 +153,11 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 				html.setHtml(sb.toString());
 				player.sendPacket(html);
 			}
-				
+
 			player.sendPacket(new ActionFailed());
 		}
 	}
-	
+
 	@Override
 	public String getHtmlPath(@SuppressWarnings("unused") int npcId, int val)
 	{
@@ -198,19 +198,19 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 		else if(command.startsWith("change_class"))
 		{
             int val = Integer.parseInt(command.substring(13));
-            
-            // Exploit prevention 
+
+            // Exploit prevention
             ClassId classId = player.getClassId();
             int level = player.getLevel();
             int jobLevel = 0;
             int newJobLevel = 0;
-            
-            ClassLevel lvlnow = PlayerClass.values()[classId.getId()].getLevel();  
-            
+
+            ClassLevel lvlnow = PlayerClass.values()[classId.getId()].getLevel();
+
             if(player.isGM())
             {
             	changeClass(player, val);
-                
+
                 if(val >= 88)
                 	player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
                 else
@@ -221,7 +221,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
                 sb.append("<html><body>");
                 sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateTable.getClassNameById(player.getClassId().getId()) + "</font>.");
                 sb.append("</body></html>");
-                            
+
                 html.setHtml(sb.toString());
                 player.sendPacket(html);
             	return;
@@ -243,7 +243,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 
             if(jobLevel == 4) return; // no more job changes
 
-            ClassLevel lvlnext = PlayerClass.values()[val].getLevel();  
+            ClassLevel lvlnext = PlayerClass.values()[val].getLevel();
             switch (lvlnext)
             {
             	case First:
@@ -266,10 +266,10 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             if (level < 40 && newJobLevel > 2) return;
             if (level < 75 && newJobLevel > 3) return;
             // -- prevention ends
-            
-            
+
+
             changeClass(player, val);
-            
+
             if(val >= 88)
             	player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
             else
@@ -280,11 +280,11 @@ public final class L2ClassMasterInstance extends L2FolkInstance
             sb.append("<html><body>");
             sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateTable.getClassNameById(player.getClassId().getId()) + "</font>.");
             sb.append("</body></html>");
-                        
+
             html.setHtml(sb.toString());
             player.sendPacket(html);
        }
-       else 
+       else
        {
            super.onBypassFeedback(player, command);
        }
@@ -310,7 +310,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         player.sendPacket(html);
         return;
 	}
-	
+
 	private void showChatWindow1st(L2PcInstance player)
 	{
   		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -345,7 +345,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         player.sendPacket(html);
         return;
 	}
-	
+
 	private void showChatWindow2nd(L2PcInstance player)
 	{
   		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -393,7 +393,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         player.sendPacket(html);
         return;
 	}
-	
+
 	private void showChatWindow3rd(L2PcInstance player)
 	{
   		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -441,7 +441,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         player.sendPacket(html);
         return;
 	}
-	
+
 	private void showChatWindowBase(L2PcInstance player)
 	{
   		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -467,17 +467,17 @@ public final class L2ClassMasterInstance extends L2FolkInstance
         player.sendPacket(html);
         return;
 	}
-	
+
 	private void changeClass(L2PcInstance player, int val)
 	{
 		if (Config.DEBUG) _log.fine("Changing class to ClassId:"+val);
         player.setClassId(val);
-        
+
         if (player.isSubClassActive())
             player.getSubClasses().get(player.getClassIndex()).setClassId(player.getActiveClass());
         else
             player.setBaseClass(player.getActiveClass());
-        
+
 		player.broadcastUserInfo();
 	}
 }

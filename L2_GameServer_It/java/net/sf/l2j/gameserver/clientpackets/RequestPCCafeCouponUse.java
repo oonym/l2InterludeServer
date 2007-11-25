@@ -21,14 +21,14 @@ package net.sf.l2j.gameserver.clientpackets;
 /**
  * Format: (ch) S
  * @author  -Wooden-
- * 
+ *
  */
 public final class RequestPCCafeCouponUse extends L2GameClientPacket
 {
     private static final String _C__D0_20_REQUESTPCCAFECOUPONUSE = "[C] D0:20 RequestPCCafeCouponUse";
     private String _str;
-    
-    
+
+
     @Override
 	protected void readImpl()
     {
@@ -53,5 +53,5 @@ public final class RequestPCCafeCouponUse extends L2GameClientPacket
     {
         return _C__D0_20_REQUESTPCCAFECOUPONUSE;
     }
-    
+
 }

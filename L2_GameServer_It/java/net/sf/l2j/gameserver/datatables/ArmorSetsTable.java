@@ -34,7 +34,7 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2ArmorSet;
 
 /**
- * 
+ *
  *
  * @author  Luno
  */
@@ -42,9 +42,9 @@ public class ArmorSetsTable
 {
 	private static Logger _log = Logger.getLogger(ArmorSetsTable.class.getName());
 	private static ArmorSetsTable _instance;
-	
+
 	private FastMap<Integer,L2ArmorSet> _armorSets;
-	
+
 	public static ArmorSetsTable getInstance()
 	{
 		if(_instance == null)
@@ -59,12 +59,12 @@ public class ArmorSetsTable
 	private void loadData()
 	{
 		Connection con;
-		try 
+		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill FROM armorsets");
 			ResultSet rset = statement.executeQuery();
-			
+
 			while(rset.next())
 			{
 				int chest = rset.getInt("chest");
@@ -78,14 +78,14 @@ public class ArmorSetsTable
 				int enchant6skill = rset.getInt("enchant6skill");
 				_armorSets.put(chest, new L2ArmorSet(chest, legs, head, gloves, feet,skill_id, shield, shield_skill_id, enchant6skill));
 			}
-			
+
 			_log.config("ArmorSetsTable: Loaded "+_armorSets.size()+" armor sets.");
-			
+
 			rset.close();
 			statement.close();
 			con.close();
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			_log.severe("ArmorSetsTable: Error reading ArmorSets table: " + e);
 		}

@@ -46,7 +46,7 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 public abstract class L2Summon extends L2PlayableInstance
 {
     //private static Logger _log = Logger.getLogger(L2Summon.class.getName());
-    
+
 	protected int _pkKills;
     private byte _pvpFlag;
     private L2PcInstance _owner;
@@ -55,16 +55,16 @@ public abstract class L2Summon extends L2PlayableInstance
     private boolean _follow = true;
     private boolean _previousFollowStatus = true;
     private int _maxLoad;
-    
+
     private int _chargedSoulShot;
     private int _chargedSpiritShot;
-    
+
     // TODO: currently, all servitors use 1 shot.  However, this value
     // should vary depending on the servitor template (id and level)!
     private int _soulShotsPerHit = 1;
     private int _spiritShotsPerHit = 1;
 	protected boolean _showSummonAnimation;
-    
+
 	public class AIAccessor extends L2Character.AIAccessor
 	{
 		protected AIAccessor() {}
@@ -83,11 +83,11 @@ public abstract class L2Summon extends L2PlayableInstance
         getKnownList();	// init knownlist
         getStat();			// init stats
         getStatus();		// init status
-        
+
         _showSummonAnimation = true;
 		_owner = owner;
 		_ai = new L2SummonAI(new L2Summon.AIAccessor());
-        
+
 		setXYZInvisible(owner.getX()+50, owner.getY()+100, owner.getZ()+100);
 	}
 
@@ -98,7 +98,7 @@ public abstract class L2Summon extends L2PlayableInstance
     		setKnownList(new SummonKnownList(this));
     	return (SummonKnownList)super.getKnownList();
     }
-    
+
     @Override
 	public SummonStat getStat()
     {
@@ -106,7 +106,7 @@ public abstract class L2Summon extends L2PlayableInstance
     		setStat(new SummonStat(this));
     	return (SummonStat)super.getStat();
     }
-    
+
     @Override
 	public SummonStatus getStatus()
     {
@@ -114,9 +114,9 @@ public abstract class L2Summon extends L2PlayableInstance
     		setStatus(new SummonStatus(this));
     	return (SummonStatus)super.getStatus();
     }
-	
+
 	@Override
-	public L2CharacterAI getAI() 
+	public L2CharacterAI getAI()
     {
 		if (_ai == null)
 		{
@@ -126,10 +126,10 @@ public abstract class L2Summon extends L2PlayableInstance
 					_ai = new L2SummonAI(new L2Summon.AIAccessor());
 			}
 		}
-        
+
 		return _ai;
 	}
-	
+
 	@Override
 	public L2NpcTemplate getTemplate()
 	{
@@ -145,7 +145,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
 			player.sendPacket(new NpcInfo(this, player));
     }
-    
+
     /**
      * @return Returns the mountable.
      */
@@ -170,7 +170,7 @@ public abstract class L2Summon extends L2PlayableInstance
             player.sendPacket(my);
         }
     }
-    
+
 	public long getExpForThisLevel()
     {
         if(getLevel() >= Experience.LEVEL.length)
@@ -179,7 +179,7 @@ public abstract class L2Summon extends L2PlayableInstance
         }
 		return Experience.LEVEL[getLevel()];
     }
-	
+
     public long getExpForNextLevel()
     {
         if(getLevel() >= Experience.LEVEL.length - 1)
@@ -188,82 +188,82 @@ public abstract class L2Summon extends L2PlayableInstance
         }
         return Experience.LEVEL[getLevel()+1];
     }
-    
+
 	public final int getKarma()
     {
         return _karma;
     }
-    
+
     public void setKarma(int karma)
     {
         _karma = karma;
     }
-    
+
     public final L2PcInstance getOwner()
     {
         return _owner;
     }
-    
+
     public final int getNpcId()
     {
         return getTemplate().npcId;
     }
-    
+
     public void setPvpFlag(byte pvpFlag)
     {
         _pvpFlag = pvpFlag;
     }
-    
+
     public byte getPvpFlag()
     {
         return _pvpFlag;
     }
-    
+
     public void setPkKills(int pkKills)
     {
         _pkKills = pkKills;
     }
-    
+
     public final int getPkKills()
     {
         return _pkKills;
     }
-    
+
     public final int getMaxLoad()
     {
         return _maxLoad;
     }
-    
+
     public final int getSoulShotsPerHit()
     {
         return _soulShotsPerHit;
     }
-    
+
     public final int getSpiritShotsPerHit()
     {
         return _spiritShotsPerHit;
     }
-    
+
     public void setMaxLoad(int maxLoad)
     {
         _maxLoad = maxLoad;
     }
-    
+
     public void setChargedSoulShot(int shotType)
     {
         _chargedSoulShot = shotType;
     }
-    
+
     public void setChargedSpiritShot(int shotType)
     {
         _chargedSpiritShot = shotType;
     }
-    
+
     public void followOwner()
     {
 		setFollowStatus(true);
     }
-	
+
 	@Override
 	public boolean doDie(L2Character killer)
     {
@@ -283,18 +283,18 @@ public abstract class L2Summon extends L2PlayableInstance
 		}
 		return true;
 	}
-	
+
     public void stopDecay()
     {
         DecayTaskManager.getInstance().cancelDecayTask(this);
     }
-    
+
     @Override
 	public void onDecay()
     {
         deleteMe(_owner);
-    }    
-    
+    }
+
     @Override
 	public void broadcastStatusUpdate()
     {
@@ -303,17 +303,17 @@ public abstract class L2Summon extends L2PlayableInstance
         if (getOwner() != null && isVisible())
             getOwner().sendPacket(new PetStatusUpdate(this));
     }
-    
+
     public void deleteMe(L2PcInstance owner)
-    {   
+    {
         getAI().stopFollow();
         owner.sendPacket(new PetDelete(getObjectId(), 2));
-        
+
         //FIXME: I think it should really drop items to ground and only owner can take for a while
-        giveAllToOwner(); 
+        giveAllToOwner();
         decayMe();
         getKnownList().removeAllKnownObjects();
-        owner.setPet(null); 
+        owner.setPet(null);
     }
 
     public synchronized void unSummon(L2PcInstance owner)
@@ -324,7 +324,7 @@ public abstract class L2Summon extends L2PlayableInstance
 	        owner.sendPacket(new PetDelete(getObjectId(), 2));
 	        if (getWorldRegion() != null) getWorldRegion().removeFromZones(this);
 	        store();
-            
+
 	        giveAllToOwner();
 		    decayMe();
             getKnownList().removeAllKnownObjects();
@@ -332,19 +332,19 @@ public abstract class L2Summon extends L2PlayableInstance
 	        setTarget(null);
 	    }
     }
-    
+
     public int getAttackRange()
     {
-        return _attackRange; 
+        return _attackRange;
     }
-    
+
     public void setAttackRange(int range)
     {
         if (range < 36)
             range = 36;
         _attackRange = range;
     }
-    
+
     public void setFollowStatus(boolean state)
     {
         _follow = state;
@@ -353,95 +353,95 @@ public abstract class L2Summon extends L2PlayableInstance
 		else
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
     }
-    
+
     public boolean getFollowStatus()
     {
         return _follow;
     }
-    
+
 
     @Override
 	public boolean isAutoAttackable(L2Character attacker)
     {
         return _owner.isAutoAttackable(attacker);
     }
-    
+
     public int getChargedSoulShot()
     {
         return _chargedSoulShot;
     }
-    
+
     public int getChargedSpiritShot()
     {
         return _chargedSpiritShot;
     }
-    
+
     public int getControlItemId()
     {
         return 0;
     }
-    
+
     public L2Weapon getActiveWeapon()
     {
         return null;
     }
-    
+
     public PetInventory getInventory()
     {
         return null;
     }
-    
+
 	protected void doPickupItem(L2Object object)
     {
         return;
     }
-    
+
     public void giveAllToOwner()
     {
         return;
     }
-    
+
     public void store()
     {
         return;
     }
-	
+
 	@Override
-	public L2ItemInstance getActiveWeaponInstance() 
+	public L2ItemInstance getActiveWeaponInstance()
 	{
 		return null;
 	}
-	
+
 	@Override
-	public L2Weapon getActiveWeaponItem() 
+	public L2Weapon getActiveWeaponItem()
     {
 		return null;
 	}
-    
+
 	@Override
-	public L2ItemInstance getSecondaryWeaponInstance() 
+	public L2ItemInstance getSecondaryWeaponInstance()
     {
 		return null;
 	}
-    
+
 	@Override
-	public L2Weapon getSecondaryWeaponItem() 
+	public L2Weapon getSecondaryWeaponItem()
     {
 		return null;
 	}
-	
+
 	/**
 	 * Return the L2Party object of its L2PcInstance owner or null.<BR><BR>
 	 */
 	@Override
 	public L2Party getParty()
 	{
-		if (_owner == null) 
+		if (_owner == null)
 			return null;
 		else
 			return _owner.getParty();
 	}
-    
+
 	/**
 	 * Return True if the L2Character has a Party in progress.<BR><BR>
 	 */
@@ -468,33 +468,33 @@ public abstract class L2Summon extends L2PlayableInstance
 	 * @param skill The L2Skill to use
 	 * @param forceUse used to force ATTACK on players
 	 * @param dontMove used to prevent movement, if not in range
-	 * 
+	 *
 	 */
 	public void useMagic(L2Skill skill, boolean forceUse, boolean dontMove)
 	{
 		if (skill == null || isDead())
 			return;
-		
+
         // Check if the skill is active
 		if (skill.isPassive())
 		{
 	        // just ignore the passive skill request. why does the client send it anyway ??
 			return;
 		}
-		
+
 		//************************************* Check Casting in Progress *******************************************
-        
+
         // If a skill is currently being used
         if (isCastingNow())
 		{
             return;
 		}
-            
+
         //************************************* Check Target *******************************************
-        
+
 		// Get the target for the skill
 		L2Object target = null;
-		
+
 		switch (skill.getTargetType())
 		{
 			// OWNER_PET should be cast even if no target has been found
@@ -520,11 +520,11 @@ public abstract class L2Summon extends L2PlayableInstance
         		getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_CANT_FOUND));
             return;
         }
-        
+
         //************************************* Check skill availability *******************************************
-        
+
         // Check if this skill is enabled (ex : reuse time)
-        if (isSkillDisabled(skill.getId()) 
+        if (isSkillDisabled(skill.getId())
         		&& getOwner() != null
         		&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
         {
@@ -533,7 +533,7 @@ public abstract class L2Summon extends L2PlayableInstance
             getOwner().sendPacket(sm);
             return;
         }
-        
+
         // Check if all skills are disabled
         if (isAllSkillsDisabled()
         		&& getOwner() != null
@@ -543,7 +543,7 @@ public abstract class L2Summon extends L2PlayableInstance
         }
 
         //************************************* Check Consumables *******************************************
-        
+
         // Check if the summon has enough MP
         if (getCurrentMp() < getStat().getMpConsume(skill) + getStat().getMpInitialConsume(skill))
         {
@@ -552,7 +552,7 @@ public abstract class L2Summon extends L2PlayableInstance
         		getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
             return;
         }
-        
+
         // Check if the summon has enough HP
         if (getCurrentHp() <= skill.getHpConsume())
         {
@@ -563,9 +563,9 @@ public abstract class L2Summon extends L2PlayableInstance
         }
 
         //************************************* Check Summon State *******************************************
-        
+
         // Check if this is offensive magic skill
-        if (skill.isOffensive())  
+        if (skill.isOffensive())
 		{
 			if (isInsidePeaceZone(this, target)
 					&& getOwner() != null
@@ -583,15 +583,15 @@ public abstract class L2Summon extends L2PlayableInstance
 			}
 
             // Check if the target is attackable
-			if (target instanceof L2DoorInstance) 
+			if (target instanceof L2DoorInstance)
         	{
 				if(!((L2DoorInstance)target).isAttackable(getOwner()))
 					return;
         	}
 			else
 			{
-				if (!target.isAttackable() 
-            		&& getOwner() != null 
+				if (!target.isAttackable()
+            		&& getOwner() != null
             		&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
 				{
 					return;
@@ -613,7 +613,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		// Notify the AI with AI_INTENTION_CAST and target
 		getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
 	}
-	
+
 	@Override
 	public void setIsImobilised(boolean value)
 	{
@@ -632,7 +632,7 @@ public abstract class L2Summon extends L2PlayableInstance
 			setFollowStatus(_previousFollowStatus);
 		}
 	}
-	
+
 	public void setOwner(L2PcInstance newOwner)
 	{
 		_owner = newOwner;
@@ -653,13 +653,13 @@ public abstract class L2Summon extends L2PlayableInstance
 	{
 	    _showSummonAnimation = showSummonAnimation;
 	}
-	
+
 	/**
 	 * Servitors' skills automatically change their level based on the servitor's level.
-	 * Until level 70, the servitor gets 1 lv of skill per 10 levels. After that, it is 1 
-	 * skill level per 5 servitor levels.  If the resulting skill level doesn't exist use 
+	 * Until level 70, the servitor gets 1 lv of skill per 10 levels. After that, it is 1
+	 * skill level per 5 servitor levels.  If the resulting skill level doesn't exist use
 	 * the max that does exist!
-	 * 
+	 *
 	 * @see net.sf.l2j.gameserver.model.L2Character#doCast(net.sf.l2j.gameserver.model.L2Skill)
 	 */
 	@Override
@@ -673,7 +673,7 @@ public abstract class L2Summon extends L2PlayableInstance
     	// adjust the level for servitors less than lv 10
     	if (skillLevel < 1)
     		skillLevel = 1;
-    	
+
     	L2Skill skillToCast = SkillTable.getInstance().getInfo(skill.getId(),skillLevel);
 
     	if (skillToCast != null)

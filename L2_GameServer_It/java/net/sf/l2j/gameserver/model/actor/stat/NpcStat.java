@@ -24,7 +24,7 @@ public class NpcStat extends CharStat
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public NpcStat(L2NpcInstance activeChar)

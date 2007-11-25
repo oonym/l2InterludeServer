@@ -51,7 +51,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.3.2.8 $ $Date: 2005/03/29 23:15:15 $
  */
 public final class L2VillageMasterInstance extends L2FolkInstance
@@ -160,7 +160,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             showPledgeSkillList(player);
         }
         else if (command.startsWith("Subclass"))
-        { 
+        {
         	int cmdChoice = Integer.parseInt(command.substring(9, 10).trim());
 
             // Subclasses may not be changed while a skill is in use.
@@ -277,7 +277,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 case 4: // Add Subclass - Action (Subclass 4 x[x])
                     boolean allowAddition = true;
                     /*
-                     * If the character is less than level 75 on any of their previously chosen 
+                     * If the character is less than level 75 on any of their previously chosen
                      * classes then disallow them to change to their most recently added sub-class choice.
                      */
                     if (player.getLevel() < 75)
@@ -312,10 +312,10 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                         }
                     }
 
-                    /* 
-                     * If quest checking is enabled, verify if the character has completed the Mimir's Elixir (Path to Subclass) 
+                    /*
+                     * If quest checking is enabled, verify if the character has completed the Mimir's Elixir (Path to Subclass)
                      * and Fate's Whisper (A Grade Weapon) quests by checking for instances of their unique reward items.
-                     * 
+                     *
                      * If they both exist, remove both unique items and continue with adding the sub-class.
                      */
                     if (!Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS)
@@ -359,7 +359,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                     break;
                 case 5: // Change Class - Action
                     /*
-                     * If the character is less than level 75 on any of their previously chosen 
+                     * If the character is less than level 75 on any of their previously chosen
                      * classes then disallow them to change to their most recently added sub-class choice.
                      *
                      * Note: paramOne = classIndex
@@ -401,8 +401,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                     }
                     break;
                 case 7: // Change Subclass - Action
-                    /* 
-                     * Warning: the information about this subclass will be removed from the 
+                    /*
+                     * Warning: the information about this subclass will be removed from the
                      * subclass list even if false!
                      */
                     if (player.modifySubClass(paramOne, paramTwo))
@@ -577,7 +577,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         //if (Config.DEBUG)
             _log.fine(player.getObjectId() + "(" + player.getName() + ") requested sub clan creation from "
                 + getObjectId() + "(" + getName() + ")");
-        
+
         if (!player.isClanLeader())
         {
             player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
@@ -626,7 +626,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 			}
 
 		}
-        
+
         if (pledgeType != L2Clan.SUBUNIT_ACADEMY)
             if (clan.getClanMember(leaderName) == null || clan.getClanMember(leaderName).getPledgeType() != 0)
             {
@@ -644,7 +644,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         if (clan.createSubPledge(player, pledgeType, leaderName, clanName) == null)
             return;
 
-        SystemMessage sm; 
+        SystemMessage sm;
         if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
         {
         	sm = new SystemMessage(SystemMessageId.THE_S1S_CLAN_ACADEMY_HAS_BEEN_CREATED);
@@ -660,9 +660,9 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         	sm = new SystemMessage(SystemMessageId.THE_ROYAL_GUARD_OF_S1_HAVE_BEEN_CREATED);
         	sm.addString(player.getClan().getName());
         }
-        else 
+        else
         	sm = new SystemMessage(SystemMessageId.CLAN_CREATED);
-        
+
         player.sendPacket(sm);
         if(pledgeType != L2Clan.SUBUNIT_ACADEMY)
         {
@@ -678,7 +678,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
     	if (Config.DEBUG)
     		_log.fine(player.getObjectId() + "(" + player.getName() + ") requested to assign sub clan" + clanName + "leader "
     	                + "(" + leaderName + ")");
-        
+
         if (!player.isClanLeader())
         {
             player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
@@ -690,17 +690,17 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             player.sendPacket(new SystemMessage(SystemMessageId.NAMING_CHARNAME_UP_TO_16CHARS));
             return;
         }
-        
+
         if(player.getName().equals(leaderName))
         {
         	player.sendPacket(new SystemMessage(SystemMessageId.CAPTAIN_OF_ROYAL_GUARD_CANNOT_BE_APPOINTED));
         	return;
         }
-        
+
         L2Clan clan = player.getClan();
         SubPledge subPledge = player.getClan().getSubPledge(clanName);
 
-        if (null == subPledge) 
+        if (null == subPledge)
         {
 			player.sendPacket(new SystemMessage(SystemMessageId.CLAN_NAME_INCORRECT));
             return;
@@ -723,7 +723,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             }
             return;
         }
-        
+
         subPledge.setLeaderName(leaderName);
         clan.updateSubPledgeInDB(subPledge.getId());
         L2ClanMember leaderSubPledge = clan.getClanMember(leaderName);
@@ -749,21 +749,21 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         PlayerClass currClass = PlayerClass.values()[charClassId];
 
         /**
-         * If the race of your main class is Elf or Dark Elf, 
-         * you may not select each class as a subclass to the other class, 
+         * If the race of your main class is Elf or Dark Elf,
+         * you may not select each class as a subclass to the other class,
          * and you may not select Overlord and Warsmith class as a subclass.
-         * 
-         * You may not select a similar class as the subclass. 
+         *
+         * You may not select a similar class as the subclass.
          * The occupations classified as similar classes are as follows:
-         *  
-         * Treasure Hunter, Plainswalker and Abyss Walker 
-         * Hawkeye, Silver Ranger and Phantom Ranger 
-         * Paladin, Dark Avenger, Temple Knight and Shillien Knight 
-         * Warlocks, Elemental Summoner and Phantom Summoner 
-         * Elder and Shillien Elder 
-         * Swordsinger and Bladedancer 
+         *
+         * Treasure Hunter, Plainswalker and Abyss Walker
+         * Hawkeye, Silver Ranger and Phantom Ranger
+         * Paladin, Dark Avenger, Temple Knight and Shillien Knight
+         * Warlocks, Elemental Summoner and Phantom Summoner
+         * Elder and Shillien Elder
+         * Swordsinger and Bladedancer
          * Sorcerer, Spellsinger and Spellhowler
-         * 
+         *
          */
         Set<PlayerClass> availSubs = currClass.getAvailableSubclasses();
 
@@ -784,8 +784,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
                 if ((npcRace == PlayerRace.Human || npcRace == PlayerRace.LightElf))
                 {
-                    // If the master is human or light elf, ensure that fighter-type 
-                    // masters only teach fighter classes, and priest-type masters 
+                    // If the master is human or light elf, ensure that fighter-type
+                    // masters only teach fighter classes, and priest-type masters
                     // only teach priest classes etc.
                     if (!availSub.isOfType(npcTeachType)) availSubs.remove(availSub);
 
@@ -795,7 +795,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 }
                 else
                 {
-                    // If the master is not human and not light elf, 
+                    // If the master is not human and not light elf,
                     // then remove any classes not of the same race as the master.
                     if ((npcRace != PlayerRace.Human && npcRace != PlayerRace.LightElf)
                         && !availSub.isOfRace(npcRace)) availSubs.remove(availSub);
@@ -812,26 +812,26 @@ public final class L2VillageMasterInstance extends L2FolkInstance
      */
     public void showPledgeSkillList(L2PcInstance player)
     {
-        if (Config.DEBUG) 
+        if (Config.DEBUG)
             _log.fine("PledgeSkillList activated on: "+getObjectId());
         if(player.getClan() == null) return;
-        
+
         L2PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(player);
         AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Clan);
         int counts = 0;
-        
+
         for (L2PledgeSkillLearn s: skills)
         {
             int cost = s.getRepCost();
             counts++;
-            
+
             asl.addSkill(s.getId(), s.getLevel(), s.getLevel(), cost, 0);
         }
-        
+
         if (counts == 0)
         {
             NpcHtmlMessage html = new NpcHtmlMessage(1);
-            
+
             if (player.getClan().getLevel() < 8)
             {
                 SystemMessage sm = new SystemMessage(SystemMessageId.DO_NOT_HAVE_FURTHER_SKILLS_TO_LEARN);
@@ -847,15 +847,15 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 html.setHtml(sb.toString());
                 player.sendPacket(html);
             }
-        } 
-        else 
+        }
+        else
         {
             player.sendPacket(asl);
         }
-        
+
         player.sendPacket(new ActionFailed());
     }
-    
+
     private final String formatClassForDisplay(PlayerClass className)
     {
         String classNameStr = className.toString();

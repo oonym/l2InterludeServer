@@ -48,9 +48,9 @@ public class QuestDropInfo
 			dropItemCount	= itemCount;
 		}
 	}
-	
+
 	public List<DropInfo> dropList;
-	
+
 	/**
 	 * Add informations for dropped items in the inventory of the player.
 	 * @param pcInstance : L2PcInstance designating the player
@@ -71,8 +71,8 @@ public class QuestDropInfo
 				// Get drops given by the mob
                 if(questDrop == null)
                     continue;
-                
-                // Go through all drops of the mob 
+
+                // Go through all drops of the mob
     			for(L2DropData dropInfo : questDrop)
     			{
     				int dropID 		= dropInfo.getItemId();
@@ -81,9 +81,9 @@ public class QuestDropInfo
     				//If player doesn't have this quest item(doesn't kill need npc? or other) then skip it
     				if(pcInstance.getInventory().getItemByItemId(dropID) == null)
     					continue;
-    				
+
     				dropObjID = pcInstance.getInventory().getItemByItemId(dropID).getObjectId();
-    				// Add info for the dropped item in the player's inventory 
+    				// Add info for the dropped item in the player's inventory
     				dropList.add(new DropInfo(dropID, dropCount, dropObjID));
     			}
             }

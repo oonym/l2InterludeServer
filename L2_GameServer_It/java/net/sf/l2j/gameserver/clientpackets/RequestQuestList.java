@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.serverpackets.QuestList;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestQuestList extends L2GameClientPacket
@@ -30,7 +30,7 @@ public final class RequestQuestList extends L2GameClientPacket
 	private static final String _C__63_REQUESTQUESTLIST = "[C] 63 RequestQuestList";
 	//private static Logger _log = Logger.getLogger(RequestQuestList.class.getName());
 
-	
+
 	@Override
 	protected void readImpl()
 	{

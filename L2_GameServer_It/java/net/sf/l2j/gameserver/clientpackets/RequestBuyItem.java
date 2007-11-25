@@ -44,7 +44,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.12.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestBuyItem extends L2GameClientPacket
@@ -55,7 +55,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 	private int _listId;
 	private int _count;
 	private int[] _items; // count*2
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -63,13 +63,13 @@ public final class RequestBuyItem extends L2GameClientPacket
 		_count = readD();
 //		 count*8 is the size of a for iteration of each item
 		if(_count * 2 < 0 || _count * 8 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET) _count = 0;
-		
+
 
 		_items = new int[_count * 2];
 		for (int i = 0; i < _count; i++)
 		{
 			int itemId   = readD(); _items[i * 2 + 0] = itemId;
-			long cnt      = readD(); 
+			long cnt      = readD();
 			if (cnt > Integer.MAX_VALUE || cnt < 0)
 			{
 			    _count=0; _items = null;
@@ -122,13 +122,13 @@ public final class RequestBuyItem extends L2GameClientPacket
         	player.sendMessage("Invalid Target: Seller must be targetted");
         	return;
         }
-        
+
         L2TradeList list = null;
-        
+
         if (merchant != null)
         {
         	List<L2TradeList> lists = TradeController.getInstance().getBuyListByNpcId(merchant.getNpcId());
-        	
+
         	if(!player.isGM() )
         	{
         		if (lists == null)
@@ -156,7 +156,7 @@ public final class RequestBuyItem extends L2GameClientPacket
         	Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
         	return;
         }
-        
+
         _listId = list.getListId();
 
         if (_listId > 1000000) // lease
@@ -176,7 +176,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 		if (merchant != null && merchant.getIsInTown()) taxRate = merchant.getCastle().getTaxRate();
 		long subTotal = 0;
 		int tax = 0;
-		
+
 		// Check for buylist validity and calculates summary values
 		long slots = 0;
 		long weight = 0;
@@ -185,7 +185,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 			int itemId = _items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
 			int price = -1;
-			
+
 			if (!list.containsItemId(itemId))
 			{
 				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
@@ -193,7 +193,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 			}
 
             L2Item template = ItemTable.getInstance().getTemplate(itemId);
-            
+
             if (template == null) continue;
             if (count > Integer.MAX_VALUE || (!template.isStackable() && count > 1))
 			{
@@ -201,7 +201,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 				SystemMessage sm = new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 				sendPacket(sm);
 				sm = null;
-				
+
 				return;
 			}
 
@@ -210,7 +210,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 				//list = TradeController.getInstance().getBuyList(_listId);
 				price = list.getPriceForItemId(itemId);
                 if (itemId >= 3960 && itemId <= 4026) price *= Config.RATE_SIEGE_GUARDS_PRICE;
-	
+
 			}
 /* TODO: Disabled until Leaseholders are rewritten ;-)
 			} else {
@@ -226,7 +226,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 				price = li.getPriceToSell(); // lease holder sells the item
 				weight = li.getItem().getWeight();
 			}
-			
+
 */
 			if (price < 0)
 			{
@@ -234,14 +234,14 @@ public final class RequestBuyItem extends L2GameClientPacket
                 sendPacket(new ActionFailed());
                 return;
 			}
-			
+
 			if(price == 0 && !player.isGM() && Config.ONLY_GM_ITEMS_FREE)
 			{
 				player.sendMessage("Ohh Cheat dont work? You have a problem now!");
 				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" tried buy item for 0 adena.", Config.DEFAULT_PUNISH);
 				return;
 			}
-			
+
 			subTotal += (long)count * price;	// Before tax
 			tax = (int)(subTotal * taxRate);
             if (subTotal + tax > Integer.MAX_VALUE)
@@ -283,7 +283,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 			int itemId = _items[i * 2 + 0];
 			int count  = _items[i * 2 + 1];
 			if (count < 0) count = 0;
-			
+
 			if (!list.containsItemId(itemId))
 			{
 				Util.handleIllegalPlayerAction(player,"Warning!! Character "+player.getName()+" of account "+player.getAccountName()+" sent a false BuyList list_id.",Config.DEFAULT_PUNISH);
@@ -295,7 +295,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 			player.getInventory().addItem("Buy", itemId, count, player, merchant);
 /* TODO: Disabled until Leaseholders are rewritten ;-)
 			// Update Leaseholder list
-			if (_listId >= 1000000) 
+			if (_listId >= 1000000)
 			{
 				L2ItemInstance li = merchant.findLeaseItem(item.getItemId(), 0);
 				if (li == null)
@@ -326,13 +326,13 @@ public final class RequestBuyItem extends L2GameClientPacket
 				player.sendPacket(boughtMsg);
 			}
 		}
-		
+
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
 		player.sendPacket(new ItemList(player, true));
 	}
-    
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

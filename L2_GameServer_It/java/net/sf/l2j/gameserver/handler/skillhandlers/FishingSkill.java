@@ -31,11 +31,11 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 
-public class FishingSkill implements ISkillHandler 
-{ 
-    //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName()); 
-	private static final SkillType[] SKILL_IDS = {SkillType.PUMPING, SkillType.REELING}; 
-    
+public class FishingSkill implements ISkillHandler
+{
+    //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
+	private static final SkillType[] SKILL_IDS = {SkillType.PUMPING, SkillType.REELING};
+
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance)) return;
@@ -54,7 +54,7 @@ public class FishingSkill implements ISkillHandler
 			{
                 //Reeling skill is available only while fishing
 				player.sendPacket(new SystemMessage(SystemMessageId.CAN_USE_REELING_ONLY_WHILE_FISHING));
-			}			
+			}
 			player.sendPacket(new ActionFailed());
 			return;
 		}
@@ -66,14 +66,14 @@ public class FishingSkill implements ISkillHandler
 		int pen = 0;
 		if (weaponInst != null && weaponInst.getChargedFishshot()) SS = 2;
 		double gradebonus = 1 + weaponItem.getCrystalType() * 0.1;
-		int dmg = (int)(skill.getPower()*gradebonus*SS);		
-		if (player.getSkillLevel(1315) <= skill.getLevel()-2) //1315 - Fish Expertise 
+		int dmg = (int)(skill.getPower()*gradebonus*SS);
+		if (player.getSkillLevel(1315) <= skill.getLevel()-2) //1315 - Fish Expertise
 		{//Penalty
 			player.sendPacket(new SystemMessage(SystemMessageId.REELING_PUMPING_3_LEVELS_HIGHER_THAN_FISHING_PENALTY));
             pen = 50;
 			int penatlydmg = dmg - pen;
 			if (player.isGM()) player.sendMessage("Dmg w/o penalty = " +dmg);
-			dmg = penatlydmg;			
+			dmg = penatlydmg;
 		}
 		if (SS > 1)
 		{
@@ -87,10 +87,10 @@ public class FishingSkill implements ISkillHandler
 		{
 			fish.usePomping(dmg, pen);
 		}
-    } 
-    
-    public SkillType[] getSkillIds() 
-    { 
-        return SKILL_IDS; 
-    }    
+    }
+
+    public SkillType[] getSkillIds()
+    {
+        return SKILL_IDS;
+    }
 }

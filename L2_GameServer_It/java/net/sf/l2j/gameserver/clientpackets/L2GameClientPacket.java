@@ -34,7 +34,7 @@ import com.l2jserver.mmocore.network.ReceivablePacket;
 public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 {
 	private static final Logger _log = Logger.getLogger(L2GameClientPacket.class.getName());
-	
+
 	@Override
 	protected boolean read()
 	{
@@ -51,9 +51,9 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		return false;
 	}
-	
+
 	protected abstract void readImpl();
-	
+
 	@Override
 	public void run()
 	{

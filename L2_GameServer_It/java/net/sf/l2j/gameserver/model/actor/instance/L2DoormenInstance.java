@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision$ $Date$
  */
 public class L2DoormenInstance extends L2FolkInstance
@@ -214,7 +214,7 @@ public class L2DoormenInstance extends L2FolkInstance
             {
                 //		        if (getCastle().getSiege().getIsInProgress())
                 //		            return COND_BUSY_BECAUSE_OF_SIEGE;									// Busy because of siege
-                //		        else 
+                //		        else
                 if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
                     return COND_CASTLE_OWNER; // Owner
             }

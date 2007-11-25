@@ -34,7 +34,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class AdminCache implements IAdminCommandHandler
 {
 	private static final int   REQUIRED_LEVEL  = Config.GM_CACHE;
-	private static final String[] ADMIN_COMMANDS  = 
+	private static final String[] ADMIN_COMMANDS  =
 		{
 		"admin_cache_htm_rebuild",
 		"admin_cache_htm_reload",

@@ -21,10 +21,10 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Character;
 
 /**
- *  
+ *
  * format  dd
- * 
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $ 
+ *
+ * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class FinishRotation extends L2GameServerPacket
 {
@@ -37,7 +37,7 @@ public class FinishRotation extends L2GameServerPacket
 		_charObjId = cha.getObjectId();
 		_heading = cha.getHeading();
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

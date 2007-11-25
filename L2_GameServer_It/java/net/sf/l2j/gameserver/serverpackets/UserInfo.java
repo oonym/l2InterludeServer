@@ -60,7 +60,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  * but it actually reads
  * dddddSdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffddddSdddddcccddh (h) c dc *dddddddd* hhdh ddddc dcc cddd d
  * 																					*...*: here i am not sure at least it looks like it reads that much data (32 bytes), not sure about the format inside because it is not read thanks to the ususal parsing function
- * 
+ *
  * dddddSddddQddddddddddddddddddddddddddddddddddddddddddddddddhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhddddddddddddddddddddffffddddSdddddcccddh [h] c dc d hhdh ddddc c dcc cddd d c dd d d
 
  * @version $Revision: 1.14.2.4.2.12 $ $Date: 2005/04/11 10:05:55 $
@@ -79,7 +79,7 @@ public class UserInfo extends L2GameServerPacket
     public UserInfo(L2PcInstance character)
     {
         _activeChar = character;
-        
+
         _moveMultiplier = _activeChar.getMovementSpeedMultiplier();
         _runSpd = (int) (_activeChar.getRunSpeed() / _moveMultiplier);
         _walkSpd = (int) (_activeChar.getWalkSpeed() / _moveMultiplier);
@@ -142,7 +142,7 @@ public class UserInfo extends L2GameServerPacket
         writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND));
         writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_HAIR));
         writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
-        
+
         writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
         writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_REAR));
         writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LEAR));
@@ -160,7 +160,7 @@ public class UserInfo extends L2GameServerPacket
         writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LRHAND));
         writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_HAIR));
         writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_FACE));
-        
+
         // c6 new h's
         writeH(0x00);
         writeH(0x00);
@@ -195,7 +195,7 @@ public class UserInfo extends L2GameServerPacket
         writeH(0x00);
         writeH(0x00);
         // end of c6 new h's
-        
+
         writeD(_activeChar.getPAtk(null));
         writeD(_activeChar.getPAtkSpd());
         writeD(_activeChar.getPDef(null));
@@ -238,7 +238,7 @@ public class UserInfo extends L2GameServerPacket
         writeD(_activeChar.getAppearance().getHairStyle());
         writeD(_activeChar.getAppearance().getHairColor());
         writeD(_activeChar.getAppearance().getFace());
-        writeD((_activeChar.getAccessLevel() >= Config.GM_ALTG_MIN_LEVEL) ? 1 : 0); // builder level 
+        writeD((_activeChar.getAccessLevel() >= Config.GM_ALTG_MIN_LEVEL) ? 1 : 0); // builder level
 
         String title = _activeChar.getTitle();
         if (_activeChar.getAppearance().getInvisible() && _activeChar.isGM()) title = "Invisible";
@@ -293,25 +293,25 @@ public class UserInfo extends L2GameServerPacket
         	writeC(0x00); //team circle around feet 1= Blue, 2 = red
 
         writeD(_activeChar.getClanCrestLargeId());
-        writeC(_activeChar.isNoble() ? 1 : 0); //0x01: symbol on char menu ctrl+I  
+        writeC(_activeChar.isNoble() ? 1 : 0); //0x01: symbol on char menu ctrl+I
         writeC((_activeChar.isHero() || (_activeChar.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); //0x01: Hero Aura
 
         writeC(_activeChar.isFishing() ? 1 : 0); //Fishing Mode
-        writeD(_activeChar.GetFishx()); //fishing x  
+        writeD(_activeChar.GetFishx()); //fishing x
         writeD(_activeChar.GetFishy()); //fishing y
         writeD(_activeChar.GetFishz()); //fishing z
         writeD(_activeChar.getAppearance().getNameColor());
-        
-		//new c5 
-       	writeC(_activeChar.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window 
-        
+
+		//new c5
+       	writeC(_activeChar.isRunning() ? 0x01 : 0x00); //changes the Speed display on Status Window
+
         writeD(_activeChar.getPledgeClass()); //changes the text above CP on Status Window
         writeD(0x00); // ??
-        
+
         writeD(_activeChar.getAppearance().getTitleColor());
-        
+
         //writeD(0x00); // ??
-        
+
         if (_activeChar.isCursedWeaponEquiped())
         	writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
         else

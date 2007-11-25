@@ -23,33 +23,33 @@ import net.sf.l2j.gameserver.RecipeController;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.2.2.1 $ $Date: 2005/03/27 15:29:32 $
  */
-public class L2ManufactureItem 
+public class L2ManufactureItem
 {
     private int _recipeId;
     private int _cost;
     private boolean _isDwarven;
-    
+
     public L2ManufactureItem(int recipeId, int cost)
     {
         _recipeId = recipeId;
         _cost = cost;
-        
+
         _isDwarven = RecipeController.getInstance().getRecipeById(_recipeId).isDwarvenRecipe();
     }
-    
+
     public int getRecipeId()
     {
         return _recipeId;
     }
-    
+
     public int getCost()
     {
         return _cost;
     }
-    
+
     public boolean isDwarven()
     {
     	return _isDwarven;

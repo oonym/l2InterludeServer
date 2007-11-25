@@ -37,18 +37,18 @@ public class BeastSpice implements IItemHandler
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
-		
+
 		L2PcInstance activeChar = (L2PcInstance)playable;
 
 		if (!(activeChar.getTarget() instanceof L2FeedableBeastInstance))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
-			return;				
+			return;
 		}
 
 		L2Object[] targets = new L2Object[1];
 		targets[0] = activeChar.getTarget();
-		
+
 	    int itemId = item.getItemId();
 		if (itemId == 6643) { // Golden Spice
 			activeChar.useMagic(SkillTable.getInstance().getInfo(2188,1),false,false);
@@ -58,8 +58,8 @@ public class BeastSpice implements IItemHandler
 		}
 	}
 
-    public int[] getItemIds() 
-	{ 
-		return ITEM_IDS; 
-	} 
+    public int[] getItemIds()
+	{
+		return ITEM_IDS;
+	}
 }

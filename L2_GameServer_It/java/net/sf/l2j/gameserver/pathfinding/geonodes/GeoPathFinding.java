@@ -48,14 +48,14 @@ public class GeoPathFinding extends PathFinding
 	private static GeoPathFinding _instance;
 	private static Map<Short, ByteBuffer> _pathNodes = new FastMap<Short, ByteBuffer>();
 	private static Map<Short, IntBuffer> _pathNodesIndex = new FastMap<Short, IntBuffer>();
-	
+
 	public static GeoPathFinding getInstance()
 	{
 		if (_instance == null)
 			_instance = new GeoPathFinding();
 		return _instance;
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#PathNodesExist(short)
 	 */
@@ -64,7 +64,7 @@ public class GeoPathFinding extends PathFinding
 	{
 		return _pathNodesIndex.containsKey(regionoffset);
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
 	 */
@@ -73,15 +73,15 @@ public class GeoPathFinding extends PathFinding
 	{
 		Node start = readNode(gx,gy,z);
 		Node end = readNode(gtx,gty,tz);
-		if (start == null || end == null) 
+		if (start == null || end == null)
 			return null;
-		if (start == end) 
+		if (start == end)
 			return null;
-		
+
 		//return searchAStar(start, end);
 		return searchByClosest(start, end);
 	}
-	
+
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
 	 */
@@ -90,11 +90,11 @@ public class GeoPathFinding extends PathFinding
 	{
 		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
 		ByteBuffer pn = _pathNodes.get(regoffset);
-		
+
 		List<Node> Neighbors = new FastList<Node>(8);
 		Node newNode;
 		short new_node_x, new_node_y;
-		
+
 		//Region for sure will change, we must read from correct file
 		byte neighbor = pn.get(idx); //N
 		idx++;
@@ -179,9 +179,9 @@ public class GeoPathFinding extends PathFinding
 		Node[] result = new Node[Neighbors.size()];
 		return Neighbors.toArray(result);
 	}
-	
+
 	//Private
-	
+
 	private Node readNode(short node_x, short node_y, byte layer)
 	{
 		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
@@ -201,7 +201,7 @@ public class GeoPathFinding extends PathFinding
 		idx += 2;
 		return new Node(new GeoNodeLoc(node_x,node_y,node_z), idx);
 	}
-	
+
 	private Node readNode(int gx, int gy, short z)
 	{
 		short node_x = getNodePos(gx);
@@ -227,7 +227,7 @@ public class GeoPathFinding extends PathFinding
 			}
 			idx += 10; //short + 8 byte
 			nodes--;
-		}		
+		}
 		return new Node(new GeoNodeLoc(node_x,node_y,last_z), idx2);
 	}
 
@@ -236,15 +236,15 @@ public class GeoPathFinding extends PathFinding
 		LineNumberReader lnr = null;
 		try
 		{
-			_log.info("PathFinding Engine: - Loading Path Nodes...");			
+			_log.info("PathFinding Engine: - Loading Path Nodes...");
 			File Data = new File("./data/pathnode/pn_index.txt");
 			if (!Data.exists())
 				return;
-			
-			lnr = new LineNumberReader(new BufferedReader(new FileReader(Data)));	
+
+			lnr = new LineNumberReader(new BufferedReader(new FileReader(Data)));
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Error("Failed to Load pn_index File.");	
+			throw new Error("Failed to Load pn_index File.");
 		}
 		String line;
 		try
@@ -262,12 +262,12 @@ public class GeoPathFinding extends PathFinding
 			throw new Error("Failed to Read pn_index File.");
 		}
 	}
-	
+
 	private void LoadPathNodeFile(byte rx,byte ry)
 	{
 		String fname = "./data/pathnode/"+rx+"_"+ry+".pn";
 		short regionoffset = getRegionOffset(rx,ry);
-		_log.info("PathFinding Engine: - Loading: "+fname+" -> region offset: "+regionoffset+"X: "+rx+" Y: "+ry);		
+		_log.info("PathFinding Engine: - Loading: "+fname+" -> region offset: "+regionoffset+"X: "+rx+" Y: "+ry);
 		File Pn = new File(fname);
 		int node = 0,size, index = 0;
 		try {
@@ -279,11 +279,11 @@ public class GeoPathFinding extends PathFinding
 				//it is not guarantee, because the underlying operating system may have paged out some of the buffer's data
 				nodes = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size).load();
 			else
-				nodes = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size);	
+				nodes = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size);
 
 			// Indexing pathnode files, so we will know where each block starts
 			IntBuffer indexs = IntBuffer.allocate(65536);
-			
+
 			while(node < 65536)
 			{
 				byte layer = nodes.get(index);
@@ -298,6 +298,6 @@ public class GeoPathFinding extends PathFinding
 			e.printStackTrace();
 			_log.warning("Failed to Load PathNode File: "+fname+"\n");
 	    }
-		
+
 	}
 }

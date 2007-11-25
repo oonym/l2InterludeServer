@@ -52,7 +52,7 @@ public class Post
 	 */
 	//public enum ConstructorType {REPLY, CREATE };
 	public Post(String _PostOwner,int _PostOwnerID,long date,int tid,int _PostForumID,String txt)
-	{				
+	{
 			_post = new FastList<CPost>();
 			CPost cp = new CPost();
 			cp.postId = 0;
@@ -64,7 +64,7 @@ public class Post
 			cp.postTxt = txt;
 			_post.add(cp);
 			insertindb(cp);
-			
+
 	}
 	public void insertindb(CPost cp)
 	{
@@ -79,9 +79,9 @@ public class Post
 			statement.setLong(4, cp.postDate);
 			statement.setInt(5, cp.postTopicId);
 			statement.setInt(6, cp.postForumId);
-			statement.setString(7, cp.postTxt);			
+			statement.setString(7, cp.postTxt);
 			statement.execute();
-			statement.close();		
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -104,7 +104,7 @@ public class Post
 		_post = new FastList<CPost>();
 		load(t);
 	}
-	
+
 	public CPost getCPost(int id)
 	{
 		int i = 0;
@@ -119,7 +119,7 @@ public class Post
 		return null;
 	}
 	public void deleteme(Topic t)
-	{	
+	{
 		PostBBSManager.getInstance().delPostByTopic(t);
 		java.sql.Connection con = null;
 		try
@@ -128,11 +128,11 @@ public class Post
 			PreparedStatement statement = con.prepareStatement("DELETE FROM posts WHERE post_forum_id=? AND post_topic_id=?");
 			statement.setInt(1, t.getForumID());
 			statement.setInt(2, t.getID());
-			statement.execute();					
+			statement.execute();
 			statement.close();
 		}
 		catch (Exception e)
-		{			
+		{
 			e.printStackTrace();
 		}
 		finally
@@ -150,7 +150,7 @@ public class Post
 	 * @param t
 	 */
 	private void load(Topic t)
-	{		
+	{
 		java.sql.Connection con = null;
 		try
 		{
@@ -204,9 +204,9 @@ public class Post
 			statement.setString(1, cp.postTxt);
 			statement.setInt(2, cp.postId);
 			statement.setInt(3, cp.postTopicId);
-			statement.setInt(4, cp.postForumId);				
+			statement.setInt(4, cp.postForumId);
 			statement.execute();
-			statement.close();			
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -222,14 +222,14 @@ public class Post
 			{
 			}
 		}
-		
+
 	}
 	/**
-	 * 
+	 *
 	 */
-	
-	
-	
-	
-	
+
+
+
+
+
 }

@@ -24,14 +24,14 @@ package net.sf.l2j.gameserver.serverpackets;
  *
  * sample
  * <p>
- * 7d 
- * c1 b2 e0 4a 
+ * 7d
+ * c1 b2 e0 4a
  * 00 00 00 00
  * <p>
- * 
+ *
  * format
  * cdd
- * 
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class AskJoinFriend extends L2GameServerPacket
@@ -44,7 +44,7 @@ public class AskJoinFriend extends L2GameServerPacket
 
 	/**
 	 * @param int objectId of the target
-	 * @param int 
+	 * @param int
 	 */
 //	public AskJoinFriend(String requestorName, int itemDistribution)
 	public AskJoinFriend(String requestorName)
@@ -52,7 +52,7 @@ public class AskJoinFriend extends L2GameServerPacket
 		_requestorName = requestorName;
 //		_itemDistribution = itemDistribution;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -60,7 +60,7 @@ public class AskJoinFriend extends L2GameServerPacket
 		writeS(_requestorName);
 		writeD(0);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

@@ -20,15 +20,15 @@ package net.sf.l2j.gameserver.model.base;
 
 /**
  * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.<BR><BR>
- * 
+ *
  * Data :<BR><BR>
  * <li>id : The Identifier of the class</li>
  * <li>isMage : True if the class is a mage class</li>
  * <li>race : The race of this class</li>
  * <li>parent : The parent ClassId or null if this class is the root</li><BR><BR>
- * 
+ *
  * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:33 $
- * 
+ *
  */
 public enum ClassId {
     fighter(0x00, false, Race.human, null),
@@ -171,9 +171,9 @@ public enum ClassId {
 
     /**
      * Return True if this Class is a child of the selected ClassId.<BR><BR>
-     * 
+     *
      * @param cid The parent ClassId to check
-     * 
+     *
      */
     public final boolean childOf(ClassId cid)
     {
@@ -187,9 +187,9 @@ public enum ClassId {
 
     /**
      * Return True if this Class is equal to the selected ClassId or a child of the selected ClassId.<BR><BR>
-     * 
+     *
      * @param cid The parent ClassId to check
-     * 
+     *
      */
     public final boolean equalsOrChildOf(ClassId cid)
     {
@@ -198,9 +198,9 @@ public enum ClassId {
 
     /**
      * Return the child level of this Class (0=root, 1=child leve 1...).<BR><BR>
-     * 
+     *
      * @param cid The parent ClassId to check
-     * 
+     *
      */
     public final int level()
     {
@@ -211,7 +211,7 @@ public enum ClassId {
 
     /**
      * Return its parent ClassId<BR><BR>
-     * 
+     *
      */
     public final ClassId getParent()
     {

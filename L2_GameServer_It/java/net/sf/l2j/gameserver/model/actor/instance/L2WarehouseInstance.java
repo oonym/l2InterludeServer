@@ -81,7 +81,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
         	player.sendPacket(new SystemMessage(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH));
         	return;
         }
-        
+
         if (Config.DEBUG) _log.fine("Showing stored items");
         player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.PRIVATE));
     }
@@ -186,7 +186,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
                 player.sendPacket(new ActionFailed());
                 return;
             }
-            
+
             player.sendPacket(new PackageToList(chars));
 
             if (Config.DEBUG)

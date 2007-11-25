@@ -63,7 +63,7 @@ public class Universe implements java.io.Serializable
     public static final int MIN_GRID = 360;
     private static Universe _instance;
     protected static final Logger _log = Logger.getLogger(Universe.class.getName());
-    
+
     protected List<Coord> _coordList;
 
     private HashSet<Integer> _logPlayers;
@@ -345,7 +345,7 @@ public class Universe implements java.io.Serializable
         File[] files = directory.listFiles(filter);
         for (File file : files)
         {
-            FileInputStream fos = new FileInputStream(file); // Save to file 
+            FileInputStream fos = new FileInputStream(file); // Save to file
             DataInputStream data = new DataInputStream(fos);
             int count = data.readInt();
             List<Coord> newMap = new LinkedList<Coord>();
@@ -372,7 +372,7 @@ public class Universe implements java.io.Serializable
         File[] files = directory.listFiles(filter);
         for (File file : files)
         {
-            FileInputStream fos = new FileInputStream(file); // Save to file 
+            FileInputStream fos = new FileInputStream(file); // Save to file
             GZIPInputStream gzos = new GZIPInputStream(fos);
             DataInputStream data = new DataInputStream(gzos);
             int count = data.readInt();
@@ -403,10 +403,10 @@ public class Universe implements java.io.Serializable
         File[] files = directory.listFiles(filter);
         for (File file : files)
         {
-            //Create necessary input streams 
-            FileInputStream fis = new FileInputStream(file); // Read from file 
-            GZIPInputStream gzis = new GZIPInputStream(fis); // Uncompress 
-            ObjectInputStream in = new ObjectInputStream(gzis); // Read objects 
+            //Create necessary input streams
+            FileInputStream fis = new FileInputStream(file); // Read from file
+            GZIPInputStream gzis = new GZIPInputStream(fis); // Uncompress
+            ObjectInputStream in = new ObjectInputStream(gzis); // Read objects
             // Read in an object. It should be a vector of scribbles
 
             TreeSet<Position> temp = (TreeSet<Position>) in.readObject();
@@ -458,7 +458,7 @@ public class Universe implements java.io.Serializable
         {
             String pad = "";
             if (b) pad = "" + System.currentTimeMillis();
-            FileOutputStream fos = new FileOutputStream("data/universe" + pad + ".fin"); // Save to file 
+            FileOutputStream fos = new FileOutputStream("data/universe" + pad + ".fin"); // Save to file
             DataOutputStream data = new DataOutputStream(fos);
             int count = _map.size();
             //System.out.println("Size of dump: "+count);

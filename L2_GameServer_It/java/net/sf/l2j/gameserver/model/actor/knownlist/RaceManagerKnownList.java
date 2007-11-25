@@ -28,7 +28,7 @@ public class RaceManagerKnownList extends NpcKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public RaceManagerKnownList(L2RaceManagerInstance activeChar)
@@ -73,7 +73,7 @@ public class RaceManagerKnownList extends NpcKnownList
 
         return true;
     }
-    
+
     // =========================================================
     // Method - Private
 

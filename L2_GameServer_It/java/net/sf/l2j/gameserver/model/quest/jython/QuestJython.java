@@ -26,7 +26,7 @@ import org.apache.bsf.BSFManager;
 public abstract class QuestJython extends Quest
 {
 	private static BSFManager _bsf;
-	
+
 	/**
 	 * Initialize the engine for scripts of quests, luxury shops and blacksmith
 	 */
@@ -40,7 +40,7 @@ public abstract class QuestJython extends Quest
 			// inside the DataPack directory
 
 			String dataPackDirForwardSlashes = Config.DATAPACK_ROOT.getPath().replaceAll("\\\\","/");
-			String loadingScript = 
+			String loadingScript =
 			    "import sys;"
 			  + "sys.path.insert(0,'" + dataPackDirForwardSlashes + "');"
 			  + "import data";
@@ -52,7 +52,7 @@ public abstract class QuestJython extends Quest
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static boolean reloadQuest(String questFolder)
 	{
 		try

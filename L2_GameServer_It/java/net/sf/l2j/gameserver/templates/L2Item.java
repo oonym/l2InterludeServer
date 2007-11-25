@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.skills.funcs.FuncTemplate;
  * Mother class of :
  * <LI>L2Armor</LI>
  * <LI>L2EtcItem</LI>
- * <LI>L2Weapon</LI> 
+ * <LI>L2Weapon</LI>
  * @version $Revision: 1.7.2.2.2.5 $ $Date: 2005/04/06 18:25:18 $
  */
 public abstract class L2Item
@@ -55,8 +55,8 @@ public abstract class L2Item
     public static final int TYPE2_PET_HATCHLING = 7;
     public static final int TYPE2_PET_STRIDER = 8;
     public static final int TYPE2_PET_BABY = 9;
-	
-	
+
+
 	public static final int SLOT_NONE = 0x0000;
 	public static final int SLOT_UNDERWEAR = 0x0001;
 	public static final int SLOT_R_EAR = 0x0002;
@@ -81,7 +81,7 @@ public abstract class L2Item
     public static final int SLOT_BABYPET = 0x400000;
     public static final int SLOT_FACE = 0x040000;
     public static final int SLOT_DHAIR = 0x080000;
-	
+
 	public static final int MATERIAL_STEEL = 0x00; // ??
 	public static final int MATERIAL_FINE_STEEL = 0x01; // ??
 	public static final int MATERIAL_BLOOD_STEEL = 0x02; // ??
@@ -112,7 +112,7 @@ public abstract class L2Item
 	public static final int CRYSTAL_B = 0x03; // ??
 	public static final int CRYSTAL_A = 0x04; // ??
 	public static final int CRYSTAL_S = 0x05; // ??
-	
+
     private static final int[] crystalItemId = {0, 1458, 1459, 1460, 1461, 1462};
     private static final int[] crystalEnchantBonusArmor = {0, 11, 6, 11, 19, 25};
     private static final int[] crystalEnchantBonusWeapon = {0, 90, 45, 67, 144, 250};
@@ -125,7 +125,7 @@ public abstract class L2Item
 	private final boolean _crystallizable;
 	private final boolean _stackable;
 	private final int _materialType;
-	private final int _crystalType; // default to none-grade 
+	private final int _crystalType; // default to none-grade
 	private final int _duration;
 	private final int _bodyPart;
 	private final int _referencePrice;
@@ -134,16 +134,16 @@ public abstract class L2Item
 	private final boolean _dropable;
 	private final boolean _destroyable;
 	private final boolean _tradeable;
-	
+
 	protected final Enum _type;
-	
+
 	protected FuncTemplate[] _funcTemplates;
 	protected EffectTemplate[] _effectTemplates;
     protected L2Skill[] _skills;
-    
+
     private static final Func[] _emptyFunctionSet = new Func[0];
     protected static final L2Effect[] _emptyEffectSet = new L2Effect[0];
-	
+
 	/**
 	 * Constructor of the L2Item that fill class variables.<BR><BR>
 	 * <U><I>Variables filled :</I></U><BR>
@@ -173,7 +173,7 @@ public abstract class L2Item
 		_crystallizable = set.getBool("crystallizable");
 		_stackable      = set.getBool("stackable", false);
 		_materialType   = set.getInteger("material");
-		_crystalType    = set.getInteger("crystal_type", CRYSTAL_NONE); // default to none-grade 
+		_crystalType    = set.getInteger("crystal_type", CRYSTAL_NONE); // default to none-grade
 		_duration     = set.getInteger("duration");
 		_bodyPart       = set.getInteger("bodypart");
 		_referencePrice = set.getInteger("price");
@@ -183,7 +183,7 @@ public abstract class L2Item
 		_destroyable	= set.getBool("destroyable", true);
 		_tradeable	= set.getBool("tradeable", true);
 	}
-	
+
 	/**
 	 * Returns the itemType.
 	 * @return Enum
@@ -192,7 +192,7 @@ public abstract class L2Item
 	{
 		return _type;
 	}
-	
+
 	/**
 	 * Returns the duration of the item
 	 * @return int
@@ -212,7 +212,7 @@ public abstract class L2Item
 	}
 
 	public abstract int getItemMask();
-	
+
 	/**
 	 * Return the type of material of the item
 	 * @return int
@@ -266,7 +266,7 @@ public abstract class L2Item
     {
         return crystalItemId[_crystalType];
     }
-    
+
 	/**
 	 * Returns the grade of the item.<BR><BR>
 	 * <U><I>Concept :</I></U><BR>
@@ -277,7 +277,7 @@ public abstract class L2Item
     {
         return getCrystalType();
     }
-    
+
     /**
      * Returns the quantity of crystals for crystallization
      * @return int
@@ -361,7 +361,7 @@ public abstract class L2Item
 	{
         return (isConsumable() ? (int)(_referencePrice * Config.RATE_CONSUMABLE_COST) : _referencePrice);
 	}
-	
+
 	/**
 	 * Returns if the item can be sold
 	 * @return boolean
@@ -370,7 +370,7 @@ public abstract class L2Item
 	{
 		return _sellable;
 	}
-    
+
 	/**
 	 * Returns if the item can dropped
 	 * @return boolean
@@ -415,7 +415,7 @@ public abstract class L2Item
     {
         return (_type2 == TYPE2_PET_STRIDER);
     }
-	
+
     /**
      * Returns if item is for wolf
      * @return boolean
@@ -435,7 +435,7 @@ public abstract class L2Item
     }
 
     /**
-	 * Returns array of Func objects containing the list of functions used by the item 
+	 * Returns array of Func objects containing the list of functions used by the item
 	 * @param instance : L2ItemInstance pointing out the item
 	 * @param player : L2Character pointing out the player
 	 * @return Func[] : array of functions
@@ -458,7 +458,7 @@ public abstract class L2Item
     		return _emptyFunctionSet;
     	return funcs.toArray(new Func[funcs.size()]);
     }
-    
+
     /**
      * Returns the effects associated with the item.
      * @param instance : L2ItemInstance pointing out the item
@@ -483,7 +483,7 @@ public abstract class L2Item
     		return _emptyEffectSet;
     	return effects.toArray(new L2Effect[effects.size()]);
     }
-    
+
     /**
      * Returns effects of skills associated with the item.
      * @param caster : L2Character pointing out the caster
@@ -498,9 +498,9 @@ public abstract class L2Item
 
         for (L2Skill skill : _skills)
         {
-            if (!skill.checkCondition(caster, target, true)) 
+            if (!skill.checkCondition(caster, target, true))
                 continue; // Skill condition not met
-            
+
             if (target.getFirstEffect(skill.getId()) != null)
                 target.removeEffect(target.getFirstEffect(skill.getId()));
             for (L2Effect e:skill.getEffects(caster, target))
@@ -510,8 +510,8 @@ public abstract class L2Item
             return _emptyEffectSet;
         return effects.toArray(new L2Effect[effects.size()]);
     }
-    
-    
+
+
     /**
      * Add the FuncTemplate f to the list of functions used with the item
      * @param f : FuncTemplate to add

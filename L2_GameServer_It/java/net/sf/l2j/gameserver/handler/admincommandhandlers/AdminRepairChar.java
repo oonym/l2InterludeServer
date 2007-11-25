@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class handles following admin commands: - delete = deletes target
- * 
+ *
  * @version $Revision: 1.1.2.6.2.3 $ $Date: 2005/04/11 10:05:59 $
  */
 public class AdminRepairChar implements IAdminCommandHandler
@@ -49,7 +49,7 @@ public class AdminRepairChar implements IAdminCommandHandler
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
                 return false;
         }
-        
+
 		String target = (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target");
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
@@ -74,7 +74,7 @@ public class AdminRepairChar implements IAdminCommandHandler
         {
             return;
         }
-        
+
         String cmd = "UPDATE characters SET x=-84318, y=244579, z=-3730 WHERE char_name=?";
         java.sql.Connection connection = null;
         try
@@ -84,7 +84,7 @@ public class AdminRepairChar implements IAdminCommandHandler
             statement.setString(1,parts[1]);
             statement.execute();
             statement.close();
-            
+
             statement = connection.prepareStatement("SELECT obj_id FROM characters where char_name=?");
             statement.setString(1,parts[1]);
             ResultSet rset = statement.executeQuery();
@@ -93,19 +93,19 @@ public class AdminRepairChar implements IAdminCommandHandler
             {
                 objId = rset.getInt(1);
             }
-            
+
             rset.close();
             statement.close();
-            
+
             if (objId == 0) {connection.close(); return;}
-            
+
             //connection = L2DatabaseFactory.getInstance().getConnection();
             statement = connection.prepareStatement("DELETE FROM character_shortcuts WHERE char_obj_id=?");
             statement.setInt(1, objId);
             statement.execute();
             statement.close();
-            
-            
+
+
             //connection = L2DatabaseFactory.getInstance().getConnection();
             statement = connection.prepareStatement("UPDATE items SET loc=\"INVENTORY\" WHERE owner_id=?");
             statement.setInt(1, objId);
@@ -116,8 +116,8 @@ public class AdminRepairChar implements IAdminCommandHandler
         catch (Exception e)
         {
 			_log.log(Level.WARNING, "could not repair char:", e);
-        } 
-        finally 
+        }
+        finally
         {
             try { connection.close(); } catch (Exception e) {}
         }

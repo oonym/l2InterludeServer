@@ -28,14 +28,14 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:30:07 $
  */
 
 public class CompBlessedSpiritShotPacks implements IItemHandler
 {
 	private static final int[] ITEM_IDS = { 5146, 5147, 5148, 5149, 5150, 5151, 5262, 5263, 5264, 5265, 5266, 5267 };
-	
+
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -45,7 +45,7 @@ public class CompBlessedSpiritShotPacks implements IItemHandler
 	    int itemId = item.getItemId();
 	    int itemToCreateId;
 	    int amount;
-	    
+
 	    if (itemId < 5200){ // Normal Compressed Package of SpiritShots
     		itemToCreateId = itemId - 1199; // Gives id of matching item for this pack
     		amount = 300;
@@ -57,7 +57,7 @@ public class CompBlessedSpiritShotPacks implements IItemHandler
 	    activeChar.getInventory().destroyItem("Extract", item, activeChar, null);
 	    activeChar.getInventory().addItem("Extract", itemToCreateId, amount, activeChar, item);
 
-	    SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S); 
+	    SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 	    sm.addItemName(itemToCreateId);
 	    sm.addNumber(amount);
         activeChar.sendPacket(sm);
@@ -65,7 +65,7 @@ public class CompBlessedSpiritShotPacks implements IItemHandler
         ItemList playerUI = new ItemList(activeChar, false);
 		activeChar.sendPacket(playerUI);
 	}
-	
+
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

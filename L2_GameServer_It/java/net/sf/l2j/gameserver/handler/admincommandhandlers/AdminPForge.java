@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
  * This class handles commands for gm to forge packets
- * 
+ *
  * @author Maktakien
  *
  */
@@ -64,7 +64,7 @@ public class AdminPForge implements IAdminCommandHandler
 			{
 				ex.printStackTrace();
 				activeChar.sendMessage("Usage: //forge2 format");
-			}            
+			}
 		}
 		else if (command.startsWith("admin_forge3"))
 		{
@@ -96,7 +96,7 @@ public class AdminPForge implements IAdminCommandHandler
 						if(activeChar.getBoat() != null)
 						{
 							val = String.valueOf(activeChar.getBoat().getObjectId());
-						}                		  
+						}
 					}
 					else if(val.toLowerCase().equals("$clanid"))
 					{
@@ -125,11 +125,11 @@ public class AdminPForge implements IAdminCommandHandler
 					else if(val.toLowerCase().equals("$z"))
 					{
 						val = String.valueOf(activeChar.getZ());
-					} 
+					}
 					else if(val.toLowerCase().equals("$heading"))
 					{
 						val = String.valueOf(activeChar.getHeading());
-					} 
+					}
 					else if(val.toLowerCase().equals("$tx"))
 					{
 						val = String.valueOf(activeChar.getTarget().getX());
@@ -145,7 +145,7 @@ public class AdminPForge implements IAdminCommandHandler
 					else if(val.toLowerCase().equals("$theading"))
 					{
 						val = String.valueOf(((L2PcInstance) activeChar.getTarget()).getHeading());
-					} 
+					}
 
 					sp.addPart(format.getBytes()[i],val);
 				}
@@ -162,7 +162,7 @@ public class AdminPForge implements IAdminCommandHandler
 			catch(Exception ex)
 			{
 				ex.printStackTrace();
-			}            
+			}
 		}
 		return true;
 	}
@@ -194,7 +194,7 @@ public class AdminPForge implements IAdminCommandHandler
 		adminReply.setFile("data/html/admin/pforge3.htm");
 		adminReply.replace("%format%", format);
 		adminReply.replace("%command%", command);
-		activeChar.sendPacket(adminReply); 
+		activeChar.sendPacket(adminReply);
 	}
 
 	public String[] getAdminCommandList() {

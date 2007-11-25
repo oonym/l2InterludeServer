@@ -45,5 +45,5 @@ public class ShowPCCafeCouponShowUI extends L2GameServerPacket
 	{
 		return _S__FE_43_SHOWPCCAFECOUPONSHOWUI;
 	}
-	
+
 }

@@ -22,10 +22,10 @@ package net.sf.l2j.gameserver.model;
 /**
  * Used to Store data sent to Client for Character
  * Selection screen.
- * 
+ *
  * @version $Revision: 1.2.2.2.2.4 $ $Date: 2005/03/27 15:29:33 $
  */
-public class CharSelectInfoPackage 
+public class CharSelectInfoPackage
 {
 	private String _name;
     private int _objectId = 0;
@@ -50,8 +50,8 @@ public class CharSelectInfoPackage
 	private int[][] _paperdoll;
     private int _karma=0;
     private int _augmentationId=0;
-	
-    
+
+
     /**
      * @param int1
      */
@@ -61,17 +61,17 @@ public class CharSelectInfoPackage
         _name = name;
         _paperdoll = PcInventory.restoreVisibleInventory(objectId);
     }
-    
+
     public int getObjectId()
     {
         return _objectId;
     }
-    
+
     public void setObjectId(int objectId)
     {
         _objectId = objectId;
     }
-	
+
     public int getCharId()
     {
         return _charId;

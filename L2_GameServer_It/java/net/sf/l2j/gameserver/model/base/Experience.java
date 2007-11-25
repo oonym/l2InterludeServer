@@ -19,7 +19,7 @@
 package net.sf.l2j.gameserver.model.base;
 
 /**
- * 
+ *
  *
  */
 public class Experience
@@ -106,16 +106,16 @@ public class Experience
         1151275834L,
         1511275834L,
         2099275834L,
-        4200000000L, //level 80 
+        4200000000L, //level 80
         6299994999L
     };
-    
+
 	/**
 	 * This is the first UNREACHABLE level.<BR>
 	 *   ex: If you want a max at 80 & 99.99%, you have to put 81.<BR><BR>
 	 */
 	public final static byte MAX_LEVEL = 81;
-	
+
 	public final static byte MIN_NEWBIE_LEVEL = 6;
 	public final static byte MAX_NEWBIE_LEVEL = 25;
 }

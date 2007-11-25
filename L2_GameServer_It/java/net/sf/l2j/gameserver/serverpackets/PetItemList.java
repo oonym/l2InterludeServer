@@ -26,10 +26,10 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
-public class PetItemList extends L2GameServerPacket 
+public class PetItemList extends L2GameServerPacket
 {
 	private static Logger _log = Logger.getLogger(PetItemList.class.getName());
 	private static final String _S__cb_PETITEMLIST = "[S] b2  PetItemList";
@@ -48,16 +48,16 @@ public class PetItemList extends L2GameServerPacket
 			}
 		}
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xB2);
-		
+
 		L2ItemInstance[] items = _activeChar.getInventory().getItems();
-		int count = items.length; 
+		int count = items.length;
 		writeH(count);
-		
+
 		for (L2ItemInstance temp : items)
 		{
 			writeH(temp.getItem().getType1()); // item type1
@@ -80,7 +80,7 @@ public class PetItemList extends L2GameServerPacket
 			writeH(0x00);	// ?
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

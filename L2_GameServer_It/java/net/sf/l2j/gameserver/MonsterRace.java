@@ -33,8 +33,8 @@ public class MonsterRace
     private static MonsterRace _instance;
     private Constructor _constructor;
     private int[][] _speeds;
-    private int[] _first, _second; 
-    
+    private int[] _first, _second;
+
     private MonsterRace()
     {
         _monsters    = new L2NpcInstance[8];
@@ -42,21 +42,21 @@ public class MonsterRace
         _first       = new int[2];
         _second      = new int[2];
     }
-    
+
     public static MonsterRace getInstance()
     {
         if (_instance == null)
         {
             _instance = new MonsterRace();
         }
-        
+
         return _instance;
     }
-    
+
     public void newRace()
     {
         int random = 0;
-        
+
         for (int i=0; i<8; i++)
         {
             int id = 31003;
@@ -79,7 +79,7 @@ public class MonsterRace
                 _constructor = Class.forName("net.sf.l2j.gameserver.model.actor.instance." + template.type + "Instance").getConstructors()[0];
                 int objectId = IdFactory.getInstance().getNextId();
                 _monsters[i] = (L2NpcInstance)_constructor.newInstance(objectId, template);
-            } 
+            }
             catch (Exception e)
             {
                 e.printStackTrace();
@@ -88,7 +88,7 @@ public class MonsterRace
         }
         newSpeeds();
     }
-    
+
     public void newSpeeds()
     {
         _speeds = new int[8][20];
@@ -111,7 +111,7 @@ public class MonsterRace
                 _second[1] = _first[1];
                 _first[0] = 8 - i;
                 _first[1] = total;
-            } 
+            }
             else if (total >= _second[1])
             {
                 _second[0] = 8 - i;
@@ -145,6 +145,6 @@ public class MonsterRace
     {
         return _second[0];
     }
-    
-    
+
+
 }

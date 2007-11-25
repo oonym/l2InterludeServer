@@ -46,7 +46,7 @@ public final class Action extends L2GameClientPacket
 	@SuppressWarnings("unused")
     private int _originZ;
 	private int _actionId;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -70,7 +70,7 @@ public final class Action extends L2GameClientPacket
 			return;
 
 		L2Object obj;
-		
+
 		if (activeChar.getTargetId() == _objectId)
 			obj = activeChar.getTarget();
 		else

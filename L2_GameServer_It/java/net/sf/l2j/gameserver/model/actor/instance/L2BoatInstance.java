@@ -52,11 +52,11 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 public class L2BoatInstance extends L2Character
 {
 	protected static final Logger _logBoat = Logger.getLogger(L2BoatInstance.class.getName());
-	
+
 	private class L2BoatTrajet
 	{
 		private Map<Integer,L2BoatPoint> _path;
-		
+
 		public int idWaypoint1;
 		public int idWTicket1 ;
 		public int ntx1;
@@ -70,14 +70,14 @@ public class L2BoatInstance extends L2Character
 		public String sysmess1_1;
 		public String sysmessb_1;
 		public String sysmess0_1;
-		
-		
+
+
 		protected class L2BoatPoint
 		{
 			public int speed1;
 			public int speed2;
-			public int x; 
-			public int y; 
+			public int x;
+			public int y;
 			public int z;
 			public int time;
 		}
@@ -119,7 +119,7 @@ public class L2BoatInstance extends L2Character
 			_path = new FastMap<Integer,L2BoatPoint>();
 			StringTokenizer st = new StringTokenizer(line, ";");
 			Integer.parseInt(st.nextToken());
-			max = Integer.parseInt(st.nextToken());			
+			max = Integer.parseInt(st.nextToken());
 			for(int i = 0; i < max;i++)
 			{
 				L2BoatPoint bp = new L2BoatPoint();
@@ -128,44 +128,44 @@ public class L2BoatInstance extends L2Character
 				bp.x = Integer.parseInt(st.nextToken());
 				bp.y = Integer.parseInt(st.nextToken());
 				bp.z = Integer.parseInt(st.nextToken());
-				bp.time = Integer.parseInt(st.nextToken());		
+				bp.time = Integer.parseInt(st.nextToken());
 				_path.put(i,bp);
-			}			
+			}
 			return;
 		}
 		/**
-		 * 
+		 *
 		 */
 		private void loadBoatPath()
 		{
 			LineNumberReader lnr = null;
-			try 
+			try
 			{
 				File doorData = new File(Config.DATAPACK_ROOT, "data/boatpath.csv");
 				lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
-				
+
 				String line = null;
-				while ((line = lnr.readLine()) != null) 
+				while ((line = lnr.readLine()) != null)
 				{
-					if (line.trim().length() == 0 || !line.startsWith(idWaypoint1+";")) 
+					if (line.trim().length() == 0 || !line.startsWith(idWaypoint1+";"))
 						continue;
-					parseLine(line);	
+					parseLine(line);
 					return;
 				}
 				_logBoat.warning("No path for boat "+boatName+" !!!");
-			} 
-			catch (FileNotFoundException e) 
-			{		
+			}
+			catch (FileNotFoundException e)
+			{
 				_logBoat.warning("boatpath.csv is missing in data folder");
-			} 
-			catch (Exception e) 
+			}
+			catch (Exception e)
 			{
 				_logBoat.warning("error while creating boat table " + e);
-			} 
-			finally 
+			}
+			finally
 			{
 				try { lnr.close(); } catch (Exception e1) { /* ignore problems */ }
-			}					
+			}
 		}
 
 		/**
@@ -188,10 +188,10 @@ public class L2BoatInstance extends L2Character
 				int heading = (int) (Math.atan2(-sin, -cos) * 10430.378350470452724949566316381);
 				heading += 32768;
 		        _boat.getPosition().setHeading(heading);
-						       
+
 				_boat._vd = new VehicleDeparture(_boat,bp.speed1,bp.speed2,bp.x,bp.y,bp.z);
-				//_boat.getTemplate().baseRunSpd = bp.speed1;				
-				_boat.moveToLocation(bp.x,bp.y,bp.z,(float)bp.speed1);				
+				//_boat.getTemplate().baseRunSpd = bp.speed1;
+				_boat.moveToLocation(bp.x,bp.y,bp.z,(float)bp.speed1);
 				Collection<L2PcInstance> knownPlayers = _boat.getKnownList().getKnownPlayers().values();
 				if (knownPlayers == null || knownPlayers.isEmpty())
 					return bp.time;
@@ -210,7 +210,7 @@ public class L2BoatInstance extends L2Character
 				return 0;
 			}
 		}
-		
+
 	}
 	private String _name;
 	protected L2BoatTrajet _t1;
@@ -224,16 +224,16 @@ public class L2BoatInstance extends L2Character
 		super.setKnownList(new BoatKnownList(this));
 		/* super.setStat(new DoorStat(new L2DoorInstance[] {this}));
 		 super.setStatus(new DoorStatus(new L2DoorInstance[] {this}));*/
-		_name = name;				
+		_name = name;
 	}
-	
+
 	/**
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
 	public void moveToLocation(int x, int y, int z,float speed)
-	{				     
+	{
 		final int curX = getX();
 		final int curY = getY();
 		final int curZ = getZ();
@@ -291,7 +291,7 @@ public class L2BoatInstance extends L2Character
 		if (m._ticksToMove < 1 )
 			m._ticksToMove = 1;
 
-		if (Config.DEBUG) 
+		if (Config.DEBUG)
 			_logBoat.fine("time to target:" + m._ticksToMove);
 
 		// Set the L2Character _move object to MoveData object
@@ -308,14 +308,14 @@ public class L2BoatInstance extends L2Character
 		private L2BoatInstance _boat;
 		/**
 		 * @param i
-		 * @param instance 
+		 * @param instance
 		 */
 		public BoatCaptain(int i, L2BoatInstance instance)
 		{
 			_state = i;
 			_boat = instance;
 		}
-		
+
 		public void run()
 		{
 			BoatCaptain bc;
@@ -324,22 +324,22 @@ public class L2BoatInstance extends L2Character
 				case 1:
 					_boat.say(5);
 					bc = new BoatCaptain(2,_boat);
-					ThreadPoolManager.getInstance().scheduleGeneral(bc, 240000);  
+					ThreadPoolManager.getInstance().scheduleGeneral(bc, 240000);
 					break;
 				case 2:
 					_boat.say(1);
 					bc = new BoatCaptain(3,_boat);
-					ThreadPoolManager.getInstance().scheduleGeneral(bc, 40000);  
+					ThreadPoolManager.getInstance().scheduleGeneral(bc, 40000);
 					break;
 				case 3:
 					_boat.say(0);
 					bc = new BoatCaptain(4,_boat);
-					ThreadPoolManager.getInstance().scheduleGeneral(bc, 20000);  
+					ThreadPoolManager.getInstance().scheduleGeneral(bc, 20000);
 					break;
 				case 4:
 					_boat.say(-1);
-					_boat.begin();	        		     
-					break;					
+					_boat.begin();
+					break;
 			}
 		}
 	}
@@ -349,14 +349,14 @@ public class L2BoatInstance extends L2Character
 		private L2BoatInstance _boat;
 		/**
 		 * @param i
-		 * @param instance 
+		 * @param instance
 		 */
 		public Boatrun(int i, L2BoatInstance instance)
 		{
 			_state = i;
 			_boat = instance;
 		}
-		
+
 		public void run()
 		{
 			_boat._vd = null;
@@ -369,22 +369,22 @@ public class L2BoatInstance extends L2Character
 					_state++;
 					Boatrun bc = new Boatrun(_state,_boat);
 					ThreadPoolManager.getInstance().scheduleGeneral(bc, time);
-					
+
 				}
 				else if(time == 0)
 				{
 					_boat._cycle = 2;
 					_boat.say(10);
 					BoatCaptain bc = new BoatCaptain(1,_boat);
-					ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000); 
+					ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000);
 				}
 				else
-				{ 
+				{
 					_boat.needOnVehicleCheckLocation = true;
 					_state++;
-					_boat._runstate = _state;					
-				}					
-			} 
+					_boat._runstate = _state;
+				}
+			}
 			else if(_boat._cycle == 2)
 			{
 				int time = _boat._t2.state(_state,_boat);
@@ -399,10 +399,10 @@ public class L2BoatInstance extends L2Character
 					_boat._cycle = 1;
 					_boat.say(10);
 					BoatCaptain bc = new BoatCaptain(1,_boat);
-					ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000); 
+					ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000);
 				}
 				else
-				{ 
+				{
 					_boat.needOnVehicleCheckLocation = true;
 					_state++;
 					_boat._runstate = _state;
@@ -412,11 +412,11 @@ public class L2BoatInstance extends L2Character
 	}
 	public int _runstate  = 0;
 	/**
-	 * 
+	 *
 	 */
 	public void evtArrived()
 	{
-		
+
 		if(_runstate != 0)
 		{
 			//_runstate++;
@@ -429,7 +429,7 @@ public class L2BoatInstance extends L2Character
 	 * @param activeChar
 	 */
 	public void sendVehicleDeparture(L2PcInstance activeChar)
-	{		
+	{
 		if(_vd != null)
 		{
 			activeChar.sendPacket(_vd);
@@ -440,10 +440,10 @@ public class L2BoatInstance extends L2Character
 		return _vd;
 	}
 	public void beginCycle()
-	{				
-		say(10);     
-		BoatCaptain bc = new BoatCaptain(1,this); 
-		ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000);   
+	{
+		say(10);
+		BoatCaptain bc = new BoatCaptain(1,this);
+		ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000);
 	}
 	   /**
 	 * @param destination
@@ -455,7 +455,7 @@ public class L2BoatInstance extends L2Character
 	protected boolean needOnVehicleCheckLocation= false;
 	public void updatePeopleInTheBoat(int x, int y, int z)
 	{
-		
+
 		if(_inboat != null)
 		{
 			boolean check = false;
@@ -493,13 +493,13 @@ public class L2BoatInstance extends L2Character
 				}
 			}
 		}
-		
+
 	}
 	/**
 	 * @param i
 	 */
 	public void begin()
-	{		
+	{
 		if(_cycle == 1)
 		{
 			Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
@@ -514,11 +514,11 @@ public class L2BoatInstance extends L2Character
 					L2ItemInstance it;
 					it = player.getInventory().getItemByItemId(_t1.idWTicket1);
 					if((it != null)&&(it.getCount() >= 1))
-					{					
+					{
 						player.getInventory().destroyItem("Boat", it.getObjectId(), 1, player, this);
 						InventoryUpdate iu = new InventoryUpdate();
 						iu.addModifiedItem(it);
-						player.sendPacket(iu);	
+						player.sendPacket(iu);
 						_inboat.put(i,player);
 						i++;
 					}
@@ -532,7 +532,7 @@ public class L2BoatInstance extends L2Character
 						player.teleToLocation(_t1.ntx1,_t1.nty1,_t1.ntz1, false);
 					}
 					}
-				}				  
+				}
 			}
 			Boatrun bc = new Boatrun(0,this);
 			ThreadPoolManager.getInstance().scheduleGeneral(bc, 0);
@@ -551,8 +551,8 @@ public class L2BoatInstance extends L2Character
 					L2ItemInstance it;
 					it = player.getInventory().getItemByItemId(_t2.idWTicket1);
 					if((it != null)&&(it.getCount() >= 1))
-					{	
-						
+					{
+
 						player.getInventory().destroyItem("Boat", it.getObjectId(), 1, player, this);
 						InventoryUpdate iu = new InventoryUpdate();
 						iu.addModifiedItem(it);
@@ -571,24 +571,24 @@ public class L2BoatInstance extends L2Character
 					}
 					}
 				}
-				
+
 			}
 			Boatrun bc = new Boatrun(0,this);
-			ThreadPoolManager.getInstance().scheduleGeneral(bc, 0); 
+			ThreadPoolManager.getInstance().scheduleGeneral(bc, 0);
 		}
 	}
-	
+
 	/**
 	 * @param i
 	 */
 	public void say(int i)
 	{
-		
-		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();        
+
+		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
 		CreatureSay sm;
 		PlaySound ps;
 		switch(i)
-		{     	   
+		{
 		case 10:
 			if(_cycle == 1)
 			{
@@ -600,7 +600,7 @@ public class L2BoatInstance extends L2Character
 			}
 			ps = new PlaySound(0,"itemsound.ship_arrival_departure",1,getObjectId(),getX(),getY(),getZ());
 			if (knownPlayers == null || knownPlayers.isEmpty())
-				return;  
+				return;
 			for (L2PcInstance player : knownPlayers)
 			{
 				player.sendPacket(sm);
@@ -618,7 +618,7 @@ public class L2BoatInstance extends L2Character
 			}
 			ps = new PlaySound(0,"itemsound.ship_5min",1,getObjectId(),getX(),getY(),getZ());
 			if (knownPlayers == null || knownPlayers.isEmpty())
-				return;  
+				return;
 			for (L2PcInstance player : knownPlayers)
 			{
 				player.sendPacket(sm);
@@ -626,7 +626,7 @@ public class L2BoatInstance extends L2Character
 			}
 			break;
 		case 1:
-			
+
 			if(_cycle == 1)
 			{
 				sm =new CreatureSay(0, Say2.SHOUT,_t1.npc1, _t1.sysmess1_1);
@@ -637,7 +637,7 @@ public class L2BoatInstance extends L2Character
 			}
 			ps = new PlaySound(0,"itemsound.ship_1min",1,getObjectId(),getX(),getY(),getZ());
 			if (knownPlayers == null || knownPlayers.isEmpty())
-				return;  
+				return;
 			for (L2PcInstance player : knownPlayers)
 			{
 				player.sendPacket(sm);
@@ -645,7 +645,7 @@ public class L2BoatInstance extends L2Character
 			}
 			break;
 		case 0:
-			
+
 			if(_cycle == 1)
 			{
 				sm =new CreatureSay(0, Say2.SHOUT,_t1.npc1, _t1.sysmess0_1);
@@ -653,9 +653,9 @@ public class L2BoatInstance extends L2Character
 			else
 			{
 				sm =new CreatureSay(0, Say2.SHOUT,_t2.npc1, _t2.sysmess0_1);
-			}			
+			}
 			if (knownPlayers == null || knownPlayers.isEmpty())
-				return;  
+				return;
 			for (L2PcInstance player : knownPlayers)
 			{
 				player.sendPacket(sm);
@@ -680,13 +680,13 @@ public class L2BoatInstance extends L2Character
 			break;
 		}
 	}
-	
+
 	//
 	/**
-	 * 
+	 *
 	 */
 	public void spawn()
-	{		
+	{
 		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
 		_cycle = 1;
 		beginCycle();
@@ -694,7 +694,7 @@ public class L2BoatInstance extends L2Character
 			return;
 		VehicleInfo vi = new VehicleInfo(this);
 		for (L2PcInstance player : knownPlayers)
-			player.sendPacket(vi);        
+			player.sendPacket(vi);
 	}
 	/**
 	 * @param idWaypoint1
@@ -709,14 +709,14 @@ public class L2BoatInstance extends L2Character
 	 * @param sysmessb_1
 	 */
 	public void setTrajet1(int idWaypoint1, int idWTicket1, int ntx1, int nty1, int ntz1, String idnpc1, String sysmess10_1, String sysmess5_1, String sysmess1_1, String sysmess0_1, String sysmessb_1)
-	{		
+	{
 		_t1 = new L2BoatTrajet(idWaypoint1,idWTicket1,ntx1,nty1,ntz1,idnpc1,sysmess10_1,sysmess5_1,sysmess1_1,sysmess0_1,sysmessb_1,_name);
 	}
 	public void setTrajet2(int idWaypoint1, int idWTicket1, int ntx1, int nty1, int ntz1, String idnpc1, String sysmess10_1, String sysmess5_1, String sysmess1_1, String sysmess0_1, String sysmessb_1)
-	{		
+	{
 		_t2 = new L2BoatTrajet(idWaypoint1,idWTicket1,ntx1,nty1,ntz1,idnpc1,sysmess10_1,sysmess5_1,sysmess1_1,sysmess0_1,sysmessb_1,_name);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Character#updateAbnormalEffect()
 	 */
@@ -724,9 +724,9 @@ public class L2BoatInstance extends L2Character
 	public void updateAbnormalEffect()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Character#getActiveWeaponInstance()
 	 */
@@ -736,7 +736,7 @@ public class L2BoatInstance extends L2Character
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Character#getActiveWeaponItem()
 	 */
@@ -746,7 +746,7 @@ public class L2BoatInstance extends L2Character
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Character#getSecondaryWeaponInstance()
 	 */
@@ -756,7 +756,7 @@ public class L2BoatInstance extends L2Character
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Character#getSecondaryWeaponItem()
 	 */
@@ -766,7 +766,7 @@ public class L2BoatInstance extends L2Character
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Character#getLevel()
 	 */
@@ -776,7 +776,7 @@ public class L2BoatInstance extends L2Character
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.L2Object#isAutoAttackable(net.sf.l2j.gameserver.model.L2Character)
 	 */
@@ -785,6 +785,6 @@ public class L2BoatInstance extends L2Character
 	{
 		// TODO Auto-generated method stub
 		return false;
-	}	
+	}
 }
 

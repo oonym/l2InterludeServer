@@ -33,11 +33,12 @@ import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.idfactory.BitSetIDFactory;
+import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Clan;
 
 /**
  * @author Layane
- * 
+ *
  */
 public class CrestCache
 {
@@ -157,7 +158,7 @@ public class CrestCache
 			_log.info("Found old crest file \"" + file.getName()
 					+ "\" for clanId " + clanId);
 
-			int newId = BitSetIDFactory.getInstance().getNextId();
+			int newId = IdFactory.getInstance().getNextId();
 
 			L2Clan clan = ClanTable.getInstance().getClan(clanId);
 

@@ -29,9 +29,9 @@ import net.sf.l2j.gameserver.model.entity.Couple;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-/** 
+/**
  * @author evill33t
- * 
+ *
  */
 public class CoupleManager
 {
@@ -50,12 +50,12 @@ public class CoupleManager
         return _instance;
     }
     // =========================================================
-    
+
     // =========================================================
     // Data Field
     private FastList<Couple> _couples;
 
-    
+
     // =========================================================
     // Method - Public
     public void reload()
@@ -92,7 +92,7 @@ public class CoupleManager
         {
             _log.error("Exception: CoupleManager.load(): " + e.getMessage(),e);
         }
-        
+
         finally {try { con.close(); } catch (Exception e) {}}
     }
 
@@ -104,7 +104,7 @@ public class CoupleManager
         if (index >= 0) return getCouples().get(index);
         return null;
     }
-    
+
     public void createCouple(L2PcInstance player1,L2PcInstance player2)
     {
         if(player1!=null && player2!=null)
@@ -113,7 +113,7 @@ public class CoupleManager
             {
                 int _player1id = player1.getObjectId();
                 int _player2id = player2.getObjectId();
-                
+
                 Couple _new = new Couple(player1,player2);
                 getCouples().add(_new);
                 player1.setPartnerId(_player2id);
@@ -137,19 +137,19 @@ public class CoupleManager
                player1.setPartnerId(0);
                player1.setMarried(false);
                player1.setCoupleId(0);
-               
+
             }
             if (player2 != null)
             {
                player2.setPartnerId(0);
                player2.setMarried(false);
                player2.setCoupleId(0);
-               
+
             }
             couple.divorce();
             getCouples().remove(index);
         }
-    }    
+    }
 
     public final int getCoupleIndex(int coupleId)
     {

@@ -294,7 +294,7 @@ public class L2CubicInstance
                                         z = (caster.getZ() - partyMember.getZ());
                                         if ((x * x) + (y * y) + (z * z) > range * range) continue;
 
-                                        //member is in cubic casting range, check if he need heal and if he have the lowest HP                               
+                                        //member is in cubic casting range, check if he need heal and if he have the lowest HP
                                         if (partyMember.getCurrentHp() < partyMember.getMaxHp())
                                         {
                                             if (percentleft > (partyMember.getCurrentHp() / partyMember.getMaxHp()))

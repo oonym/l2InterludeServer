@@ -8,7 +8,7 @@
  * Revision 1  25/10/2005 18:42:48  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -46,7 +46,7 @@ import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -124,7 +124,7 @@ public class MinionList
             minionReferences.remove(minion);
         }
     }
-    
+
     public void moveMinionToRespawnList(L2MinionInstance minion)
     {
     	Long current = System.currentTimeMillis();
@@ -133,7 +133,7 @@ public class MinionList
             minionReferences.remove(minion);
             if(_respawnTasks.get(current) == null)
             	_respawnTasks.put(current,minion.getNpcId());
-            else 
+            else
             {
             	// nice AoE
             	for(int i = 1; i < 30; i++)
@@ -147,7 +147,7 @@ public class MinionList
             }
         }
     }
-    
+
     public void clearRespawnList()
     {
     	_respawnTasks.clear();
@@ -158,7 +158,7 @@ public class MinionList
      */
     public void maintainMinions()
     {
-    	 if(master == null || master.isAlikeDead()) return; 
+    	 if(master == null || master.isAlikeDead()) return;
     	 Long current = System.currentTimeMillis();
          if (_respawnTasks != null)
              for(long deathTime : _respawnTasks.keySet())
@@ -171,16 +171,16 @@ public class MinionList
                  }
              }
     }
-    
+
     /**
      * Manage the spawn of all Minions of this RaidBoss.<BR><BR>
-     * 
+     *
      * <B><U> Actions</U> :</B><BR><BR>
      * <li>Get the Minion data of all Minions that must be spawn </li>
      * <li>For each Minion type, spawn the amount of Minion needed </li><BR><BR>
-     * 
+     *
      * @param player The L2PcInstance to attack
-     * 
+     *
      */
     public void spawnMinions()
     {
@@ -207,16 +207,16 @@ public class MinionList
 
     /**
      * Init a Minion and add it in the world as a visible object.<BR><BR>
-     * 
+     *
      * <B><U> Actions</U> :</B><BR><BR>
      * <li>Get the template of the Minion to spawn </li>
      * <li>Create and Init the Minion and generate its Identifier </li>
      * <li>Set the Minion HP, MP and Heading </li>
      * <li>Set the Minion leader to this RaidBoss </li>
      * <li>Init the position of the Minion and add it in the world as a visible object </li><BR><BR>
-     * 
+     *
      * @param minionid The I2NpcTemplate Identifier of the Minion to spawn
-     * 
+     *
      */
     public void spawnSingleMinion(int minionid)
     {
@@ -239,12 +239,12 @@ public class MinionList
         int randSpawnLim = 170;
         int randPlusMin = 1;
         spawnConstant = Rnd.nextInt(randSpawnLim);
-        //randomize +/-  
+        //randomize +/-
         randPlusMin = Rnd.nextInt(2);
         if (randPlusMin == 1) spawnConstant *= -1;
         int newX = master.getX() + Math.round(spawnConstant);
         spawnConstant = Rnd.nextInt(randSpawnLim);
-        //randomize +/-  
+        //randomize +/-
         randPlusMin = Rnd.nextInt(2);
         if (randPlusMin == 1) spawnConstant *= -1;
         int newY = master.getY() + Math.round(spawnConstant);

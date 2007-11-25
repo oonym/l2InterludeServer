@@ -36,22 +36,22 @@ public class L2TownZone extends L2ZoneType
 	private int _taxById;
 	private boolean _noPeace;
 	private int[] _spawnLoc;
-	
-	
+
+
 	public L2TownZone()
 	{
 		super();
-		
+
 		_taxById = 0;
 		_spawnLoc = new int[3];
-		
+
 		// Default to Giran
 		_redirectTownId = 9;
-		
+
 		// Default peace zone
 		_noPeace = false;
 	}
-	
+
 	@Override
 	public void setParameter(String name, String value)
 	{
@@ -97,33 +97,33 @@ public class L2TownZone extends L2ZoneType
 		{
 			// PVP possible during siege, now for siege participants only
 			// Could also check if this town is in siege, or if any siege is going on
-			if (((L2PcInstance)character).getSiegeState() != 0 && Config.ZONE_TOWN == 1) 
+			if (((L2PcInstance)character).getSiegeState() != 0 && Config.ZONE_TOWN == 1)
 				return;
 
 			//((L2PcInstance)character).sendMessage("You entered "+_townName);
 		}
-		
+
 		if (!_noPeace && Config.ZONE_TOWN != 2) character.setInsideZone(L2Character.ZONE_PEACE, true);
-		
+
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
 		if (!_noPeace) character.setInsideZone(L2Character.ZONE_PEACE, false);
-		
+
 		// if (character instanceof L2PcInstance)
 			//((L2PcInstance)character).sendMessage("You left "+_townName);
 
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
 
-	
+
 	/**
 	 * Returns this town zones name
 	 * @return
@@ -133,7 +133,7 @@ public class L2TownZone extends L2ZoneType
 	{
 		return _townName;
 	}
-	
+
 	/**
 	 * Returns this zones town id (if any)
 	 * @return
@@ -142,7 +142,7 @@ public class L2TownZone extends L2ZoneType
 	{
 		return _townId;
 	}
-	
+
 	/**
 	 * Gets the id for this town zones redir town
 	 * @return
@@ -152,7 +152,7 @@ public class L2TownZone extends L2ZoneType
 	{
 		return _redirectTownId;
 	}
-	
+
 	/**
 	 * Returns this zones spawn location
 	 * @return
@@ -161,7 +161,7 @@ public class L2TownZone extends L2ZoneType
     {
     	return _spawnLoc;
     }
-	
+
 	/**
 	 * Returns this town zones castle id
 	 * @return

@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.clientpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 
@@ -33,17 +33,17 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket
 	private int _showLevel;
 	private int _showClass;
 	private String _memo;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
 		_automaticRegistration    = readD();
 		_showLevel                = readD();
 		_showClass                = readD();
-        
+
         /*
-         *  TODO: Check if this this part of the packet has been 
+         *  TODO: Check if this this part of the packet has been
          *  removed by latest versions.
          *
 		try
@@ -61,10 +61,10 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// TODO: this packet is currently for creating a new party room 
+		// TODO: this packet is currently for creating a new party room
 		if (getClient().getActiveChar() == null)
 		    return;
-		
+
 		getClient().getActiveChar().setPartyMatchingAutomaticRegistration(_automaticRegistration == 1);
 		getClient().getActiveChar().setPartyMatchingShowLevel(_showLevel == 1);
 		getClient().getActiveChar().setPartyMatchingShowClass(_showClass == 1);

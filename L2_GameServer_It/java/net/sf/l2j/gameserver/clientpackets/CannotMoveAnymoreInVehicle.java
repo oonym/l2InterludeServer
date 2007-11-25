@@ -33,7 +33,7 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 	private int _z;
 	private int _heading;
 	private int _boatId;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -43,7 +43,7 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 		_z = readD();
 		_heading = readD();
 	}
-	
+
 	@Override
 	protected void runImpl()
 	{
@@ -63,7 +63,7 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 			}
 		}
 	}
-	
+
 	@Override
 	public String getType()
 	{

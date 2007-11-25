@@ -8,7 +8,7 @@
  * Revision 1  25/07/2005 17:15:21  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -34,6 +34,7 @@ import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GmListTable;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
@@ -54,25 +55,25 @@ public class AdminZone implements IAdminCommandHandler
 
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
-        
+
         StringTokenizer st = new StringTokenizer(command, " ");
         String actualCommand = st.nextToken(); // Get actual command
 
         //String val = "";
         //if (st.countTokens() >= 1) {val = st.nextToken();}
- 
+
         if (actualCommand.equalsIgnoreCase("admin_zone_check"))
         {
-            if (activeChar.isInsideZone(L2PcInstance.ZONE_PVP))
+            if (activeChar.isInsideZone(L2Character.ZONE_PVP))
             	activeChar.sendMessage("This is a PvP zone.");
             else
             	activeChar.sendMessage("This is NOT a PvP zone.");
 
-            if (activeChar.isInsideZone(L2PcInstance.ZONE_NOLANDING))
+            if (activeChar.isInsideZone(L2Character.ZONE_NOLANDING))
             	activeChar.sendMessage("This is a no landing zone.");
             else
             	activeChar.sendMessage("This is NOT a no landing zone.");
-            
+
             activeChar.sendMessage("MapRegion: x:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getX()) + " y:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getY()));
 
             activeChar.sendMessage("Closest Town: " + MapRegionTable.getInstance().getClosestTownName(activeChar));

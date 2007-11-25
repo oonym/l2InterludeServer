@@ -34,7 +34,7 @@ public class GuardKnownList extends AttackableKnownList
 
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public GuardKnownList(L2GuardInstance activeChar)
@@ -53,17 +53,17 @@ public class GuardKnownList extends AttackableKnownList
 
         // Set home location of the L2GuardInstance (if not already done)
         if (getActiveChar().getHomeX() == 0) getActiveChar().getHomeLocation();
-        
-        
-        if (object instanceof L2PcInstance) 
+
+
+        if (object instanceof L2PcInstance)
         {
             // Check if the object added is a L2PcInstance that owns Karma
             L2PcInstance player = (L2PcInstance) object;
-            
+
             if ( (player.getKarma() > 0) )
             {
                 if (Config.DEBUG) _log.fine(getActiveChar().getObjectId()+": PK "+player.getObjectId()+" entered scan range");
-                
+
                 // Set the L2GuardInstance Intention to AI_INTENTION_ACTIVE
                 if (getActiveChar().getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
                     getActiveChar().getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
@@ -73,11 +73,11 @@ public class GuardKnownList extends AttackableKnownList
         {
             // Check if the object added is an aggressive L2MonsterInstance
             L2MonsterInstance mob = (L2MonsterInstance) object;
-            
+
             if (mob.isAggressive() )
             {
                 if (Config.DEBUG) _log.fine(getActiveChar().getObjectId()+": Aggressive mob "+mob.getObjectId()+" entered scan range");
-                
+
                 // Set the L2GuardInstance Intention to AI_INTENTION_ACTIVE
                 if (getActiveChar().getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
                     getActiveChar().getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
@@ -93,10 +93,10 @@ public class GuardKnownList extends AttackableKnownList
         if (!super.removeKnownObject(object)) return false;
 
         // Check if the _aggroList of the L2GuardInstance is Empty
-        if (getActiveChar().noTarget()) 
+        if (getActiveChar().noTarget())
         {
             //removeAllKnownObjects();
-            
+
             // Set the L2GuardInstance to AI_INTENTION_IDLE
             L2CharacterAI ai = getActiveChar().getAI();
             if (ai != null) ai.setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
@@ -104,7 +104,7 @@ public class GuardKnownList extends AttackableKnownList
 
         return true;
     }
-    
+
     // =========================================================
     // Method - Private
 

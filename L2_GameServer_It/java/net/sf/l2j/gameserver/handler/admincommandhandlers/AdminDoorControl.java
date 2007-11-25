@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.model.entity.Castle;
  * - close3 = close coloseum door 24190003
  * - close4 = close coloseum door 24190004
  * - closeall = close all coloseum door
- * 
+ *
  * - open = open selected door
  * - close = close selected door
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
@@ -50,7 +50,7 @@ public class AdminDoorControl implements IAdminCommandHandler
     //private static Logger      _log            = Logger.getLogger(AdminDoorControl.class.getName());
     private static final int   REQUIRED_LEVEL = Config.GM_DOOR;
     private static DoorTable   _doorTable;
-    private static final String[] ADMIN_COMMANDS  = 
+    private static final String[] ADMIN_COMMANDS  =
     {
         "admin_open",
         "admin_close",
@@ -58,14 +58,14 @@ public class AdminDoorControl implements IAdminCommandHandler
         "admin_closeall"
     };
     //private static final Map<String, Integer>   doorMap = new FastMap<String, Integer>(); //FIXME: should we jute remove this?
-    
+
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
-        
+
 		_doorTable = DoorTable.getInstance();
-        
+
 		try {
             if (command.startsWith("admin_open "))
             {
@@ -119,7 +119,7 @@ public class AdminDoorControl implements IAdminCommandHandler
                     activeChar.sendMessage("Incorrect target.");
                 }
             }
-            
+
             if (command.equals("admin_close"))
             {
                 L2Object target = activeChar.getTarget();
@@ -132,7 +132,7 @@ public class AdminDoorControl implements IAdminCommandHandler
                     activeChar.sendMessage("Incorrect target.");
                 }
             }
-        } 
+        }
         catch (Exception e)
         {
             e.printStackTrace();
@@ -152,5 +152,4 @@ public class AdminDoorControl implements IAdminCommandHandler
         return (level >= REQUIRED_LEVEL);
     }
 }
-	
-   
+

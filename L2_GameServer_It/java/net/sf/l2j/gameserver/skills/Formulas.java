@@ -76,8 +76,8 @@ public final class Formulas
     protected static final double[] STRbonus = new double[MAX_STAT_VALUE];
     protected static final double[] DEXbonus = new double[MAX_STAT_VALUE];
     protected static final double[] CONbonus = new double[MAX_STAT_VALUE];
-    
-    // These values are 100% matching retail tables, no need to change and no need add 
+
+    // These values are 100% matching retail tables, no need to change and no need add
     // calculation into the stat bonus when accessing (not efficient),
     // better to have everything precalculated and use values directly (saves CPU)
     static
@@ -857,31 +857,31 @@ public final class Formulas
 
 		if (Config.L2JMOD_CHAMPION_ENABLE && cha.isChampion())
 			hpRegenMultiplier *= Config.L2JMOD_CHAMPION_HP_REGEN;
-		
+
 		if (cha instanceof L2PcInstance)
 		{
             L2PcInstance player = (L2PcInstance) cha;
 
             // Calculate correct baseHpReg value for certain level of PC
             init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10.0) : 0.5;
-            
+
             // SevenSigns Festival modifier
-			if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant()) 
+			if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
                 hpRegenMultiplier *= calcFestivalRegenModifier(player);
 			else
 			{
 				double siegeModifier = calcSiegeRegenModifer(player);
 				if (siegeModifier > 0) hpRegenMultiplier *= siegeModifier;
 			}
-            
+
             if (player.isInsideZone(L2Character.ZONE_CLANHALL) && player.getClan() != null)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
-            	if (clanHallIndex > 0) 
+            	if (clanHallIndex > 0)
             	{
             		ClanHall clansHall = ClanHallManager.getInstance().getClanHallById(clanHallIndex);
             		if(clansHall != null)
-            			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_HP) != null) 
+            			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_HP) != null)
             				hpRegenMultiplier *= 1+ clansHall.getFunction(ClanHall.FUNC_RESTORE_HP).getLvl()/100;
             	}
             }
@@ -918,14 +918,14 @@ public final class Formulas
 
             // Calculate correct baseMpReg value for certain level of PC
             init += 0.3*((player.getLevel()-1)/10.0);
-			
+
             // SevenSigns Festival modifier
             if (SevenSignsFestival.getInstance().isFestivalInProgress() && player.isFestivalParticipant())
 				mpRegenMultiplier *= calcFestivalRegenModifier(player);
 
 			// Mother Tree effect is calculated at last
 			if (player.isInsideZone(L2Character.ZONE_MOTHERTREE)) mpRegenBonus += 1;
-            
+
             if (player.isInsideZone(L2Character.ZONE_CLANHALL) && player.getClan() != null)
             {
             	int clanHallIndex = player.getClan().getHasHideout();
@@ -933,11 +933,11 @@ public final class Formulas
             	{
             		ClanHall clansHall = ClanHallManager.getInstance().getClanHallById(clanHallIndex);
             		if(clansHall != null)
-            			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_MP) != null) 
+            			if (clansHall.getFunction(ClanHall.FUNC_RESTORE_MP) != null)
             				mpRegenMultiplier *= 1+ clansHall.getFunction(ClanHall.FUNC_RESTORE_MP).getLvl()/100;
             	}
             }
-            	
+
 			// Calculate Movement bonus
             if (player.isSitting()) mpRegenMultiplier *= 1.5;      // Sitting
             else if (!player.isMoving()) mpRegenMultiplier *= 1.1; // Staying
@@ -964,10 +964,10 @@ public final class Formulas
         if (cha instanceof L2PcInstance)
         {
 	        L2PcInstance player = (L2PcInstance) cha;
-	
+
 	        // Calculate correct baseHpReg value for certain level of PC
 	        init += (player.getLevel() > 10) ? ((player.getLevel()-1)/10.0) : 0.5;
-	        
+
 	        // Calculate Movement bonus
 	        if (player.isSitting()) cpRegenMultiplier *= 1.5;      // Sitting
 	        else if (!player.isMoving()) cpRegenMultiplier *= 1.1; // Staying
@@ -1037,7 +1037,7 @@ public final class Formulas
 			defence += target.getShldDef();
 		if(ss && skill.getSSBoost()>0)
 			power *= skill.getSSBoost();
-		
+
 		//Multiplier should be removed, it's false ??
 		damage += 1.5*attacker.calcStat(Stats.CRITICAL_DAMAGE, damage+power, target, skill);
 		//damage *= (double)attacker.getLevel()/target.getLevel();
@@ -1053,7 +1053,7 @@ public final class Formulas
 		damage += Rnd.get() * attacker.getRandomDamage(target);
 		// Sami: Must be removed, after armor resistances are checked.
 		// These values are a quick fix to balance dagger gameplay and give
-		// armor resistances vs dagger. daggerWpnRes could also be used if a skill 
+		// armor resistances vs dagger. daggerWpnRes could also be used if a skill
 		// was given to all classes. The values here try to be a compromise.
 		// They were originally added in a late C4 rev (2289).
 		if (target instanceof L2PcInstance)
@@ -1067,7 +1067,7 @@ public final class Formulas
 				//	damage /= 1.1; // 1.5
 				//if(((L2PcInstance)target).isWearingMagicArmor())
 				//	damage /= 1;   // 1.3
-			}            
+			}
 		}
 		return damage < 1 ? 1. : damage;
 	}
@@ -1091,7 +1091,7 @@ public final class Formulas
 			if (pcInst.isGM() && pcInst.getAccessLevel() < Config.GM_CAN_GIVE_DAMAGE)
 					return 0;
 		}
-		
+
 		double damage = attacker.getPAtk(target);
 		double defence = target.getPDef(attacker);
 		if (ss) damage *= 2;
@@ -1114,7 +1114,7 @@ public final class Formulas
 		}
 		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;
-		
+
 		// defence modifier depending of the attacker weapon
 		L2Weapon weapon = attacker.getActiveWeaponItem();
 		Stats stat = null;
@@ -1155,14 +1155,14 @@ public final class Formulas
 					break;
 			}
 		}
-		
+
 
 		if (crit) damage += attacker.getCriticalDmg(target, damage);
 		if (shld && !Config.ALT_GAME_SHIELD_BLOCKS)
 		{
 			defence += target.getShldDef();
 		}
-		//if (!(attacker instanceof L2RaidBossInstance) && 
+		//if (!(attacker instanceof L2RaidBossInstance) &&
 		/*
 		if ((attacker instanceof L2NpcInstance || attacker instanceof L2SiegeGuardInstance))
 		{

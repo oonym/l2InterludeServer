@@ -38,15 +38,15 @@ public class SkillSpellbookTable
 	{
         if (_instance == null)
             _instance = new SkillSpellbookTable();
-        
+
 		return _instance;
 	}
-    
+
 	private SkillSpellbookTable()
 	{
 		_skillSpellbooks = new FastMap<Integer, Integer>();
 		java.sql.Connection con = null;
-        
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -58,8 +58,8 @@ public class SkillSpellbookTable
 
 			spbooks.close();
 			statement.close();
-            
-			_log.config("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " Spellbooks.");		
+
+			_log.config("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " Spellbooks.");
 		}
 		catch (Exception e)
 		{
@@ -67,10 +67,10 @@ public class SkillSpellbookTable
 		}
 		finally
 		{
-			try	
+			try
             {
-				con.close(); 
-			} 
+				con.close();
+			}
             catch (Exception e) {}
 		}
 	}
@@ -79,10 +79,10 @@ public class SkillSpellbookTable
     {
         if (!_skillSpellbooks.containsKey(skillId))
             return -1;
-        
+
         return _skillSpellbooks.get(skillId);
     }
-    
+
     public int getBookForSkill(L2Skill skill)
     {
         return getBookForSkill(skill.getId());

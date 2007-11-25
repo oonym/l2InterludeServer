@@ -8,7 +8,7 @@
  * Revision 1  25/07/2005 17:15:21  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -50,7 +50,7 @@ public class AdminQuest implements IAdminCommandHandler
 
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
-        
+
         if (command.startsWith("admin_quest_reload"))
         {
         	String[] parts = command.split(" ");
@@ -84,7 +84,7 @@ public class AdminQuest implements IAdminCommandHandler
             			activeChar.sendMessage("Quest Reloaded Failed");
             		}
         		}
-        	}     
+        	}
         }
         return true;
     }

@@ -45,13 +45,13 @@ public class Ride extends L2GameServerPacket
             _rideType = 2; // 1 for Strider ; 2 for wyvern
         }
     }
-    
+
     @Override
     public void runImpl()
     {
 
     }
-    
+
     public int getMountType()
     {
         return _rideType;

@@ -34,7 +34,7 @@ public class PlayerAuthResponse extends ServerBasePacket
 		writeS(account);
 		writeC(response ? 1 : 0);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.loginserver.serverpackets.ServerBasePacket#getContent()
 	 */
@@ -43,5 +43,5 @@ public class PlayerAuthResponse extends ServerBasePacket
 	{
 		return getBytes();
 	}
-	
+
 }

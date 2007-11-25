@@ -40,11 +40,11 @@ public class OlympiadStadiaManager
     }
     // =========================================================
 
-    
+
     // =========================================================
     // Data Field
     private FastList<L2OlympiadStadiumZone> _olympiadStadias;
-    
+
     // =========================================================
     // Constructor
     public OlympiadStadiaManager()
@@ -53,23 +53,23 @@ public class OlympiadStadiaManager
 
     // =========================================================
     // Property - Public
-    
+
     public void addStadium(L2OlympiadStadiumZone arena)
     {
     	if (_olympiadStadias == null)
     		_olympiadStadias = new FastList<L2OlympiadStadiumZone>();
-    	
+
     	_olympiadStadias.add(arena);
     }
-    
+
     public final L2OlympiadStadiumZone getStadium(L2Character character)
     {
     	for (L2OlympiadStadiumZone temp : _olympiadStadias)
     		if (temp.isCharacterInZone(character)) return temp;
-    	
+
     	return null;
     }
-    
+
     @Deprecated
     public final L2OlympiadStadiumZone getOlympiadStadiumById(int olympiadStadiumId)
     {

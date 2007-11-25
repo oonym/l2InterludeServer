@@ -32,11 +32,11 @@ import net.sf.l2j.Config;
 public class VoicedCommandHandler
 {
 	private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
-	
+
 	private static VoicedCommandHandler _instance;
-	
+
 	private Map<String, IVoicedCommandHandler> _datatable;
-	
+
 	public static VoicedCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -45,12 +45,12 @@ public class VoicedCommandHandler
 		}
 		return _instance;
 	}
-	
+
 	private VoicedCommandHandler()
 	{
 		_datatable = new FastMap<String, IVoicedCommandHandler>();
 	}
-	
+
 	public void registerVoicedCommandHandler(IVoicedCommandHandler handler)
 	{
 		String[] ids = handler.getVoicedCommandList();
@@ -60,7 +60,7 @@ public class VoicedCommandHandler
 			_datatable.put(ids[i], handler);
 		}
 	}
-	
+
 	public IVoicedCommandHandler getVoicedCommandHandler(String voicedCommand)
 	{
 		String command = voicedCommand;

@@ -50,7 +50,7 @@ public class SiegeInfo extends L2GameServerPacket
     private static final String _S__C9_SIEGEINFO = "[S] c9 SiegeInfo";
     private static Logger _log = Logger.getLogger(SiegeInfo.class.getName());
     private Castle _castle;
-    
+
     public SiegeInfo(Castle castle)
     {
         _castle = castle;
@@ -64,7 +64,7 @@ public class SiegeInfo extends L2GameServerPacket
 
         writeC(0xc9);
         writeD(_castle.getCastleId());
-        writeD(((_castle.getOwnerId() == activeChar.getClanId()) && (activeChar.isClanLeader())) ? 0x01 : 0x00);        
+        writeD(((_castle.getOwnerId() == activeChar.getClanId()) && (activeChar.isClanLeader())) ? 0x01 : 0x00);
         writeD(_castle.getOwnerId());
         if (_castle.getOwnerId() > 0)
         {
@@ -86,7 +86,7 @@ public class SiegeInfo extends L2GameServerPacket
             writeD(0);      // Ally ID
             writeS("");     // Ally Name
         }
-        
+
         writeD((int) (Calendar.getInstance().getTimeInMillis()/1000));
         writeD((int) (_castle.getSiege().getSiegeDate().getTimeInMillis()/1000));
         writeD(0x00); //number of choices?

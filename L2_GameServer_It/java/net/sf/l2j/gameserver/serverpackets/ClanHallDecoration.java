@@ -43,12 +43,12 @@ public class ClanHallDecoration extends L2GameServerPacket
 		writeC(0); // Crytal
 		writeC(0); // Curtain
 		writeC(0); // FUNC_ITEM_CREATE (Magic Curtain)
-		writeC(0); // FUNC_SUPPORT 
+		writeC(0); // FUNC_SUPPORT
 		writeC(0); // FUNC_SUPPORT (Flag)
 		writeC(0); // Front Platform
 		writeC(0); // FUNC_ITEM_CREATE
 		writeD(0);
-		writeD(0); 
+		writeD(0);
 	 */
 	@Override
 	protected final void writeImpl(){
@@ -93,7 +93,7 @@ public class ClanHallDecoration extends L2GameServerPacket
 			writeC(1);
 		else
 			writeC(2);
-		writeC(0); 
+		writeC(0);
 		//CURTAINS
 		_function = _clanHall.getFunction(ClanHall.FUNC_DECO_CURTAINS);
 		if(_function == null || _function.getLvl() == 0)
@@ -110,7 +110,7 @@ public class ClanHallDecoration extends L2GameServerPacket
 			writeC(1);
 		else
 			writeC(2);
-		// FUNC_SUPPORT 
+		// FUNC_SUPPORT
 		_function = _clanHall.getFunction(ClanHall.FUNC_SUPPORT);
 		if(_function == null || _function.getLvl() == 0){
 			writeC(0);
@@ -140,7 +140,7 @@ public class ClanHallDecoration extends L2GameServerPacket
 		else
 			writeC(2);
 		writeD(0);
-		writeD(0); 
+		writeD(0);
 	}
 	@Override
 	public String getType()

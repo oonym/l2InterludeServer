@@ -29,7 +29,7 @@ public class NpcKnownList extends CharKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public NpcKnownList(L2NpcInstance activeChar)
@@ -39,7 +39,7 @@ public class NpcKnownList extends CharKnownList
 
     // =========================================================
     // Method - Public
-    
+
     // =========================================================
     // Method - Private
 
@@ -56,16 +56,16 @@ public class NpcKnownList extends CharKnownList
     {
         if (object instanceof L2FestivalGuideInstance)
             return 10000;
-        
+
         if (object instanceof L2FolkInstance || !(object instanceof L2Character))
             return 0;
-        
+
         if (object instanceof L2CabaleBufferInstance)
             return 900;
-        
-        if (object instanceof L2PlayableInstance) 
+
+        if (object instanceof L2PlayableInstance)
             return 1500;
-        
+
         return 500;
     }
 }

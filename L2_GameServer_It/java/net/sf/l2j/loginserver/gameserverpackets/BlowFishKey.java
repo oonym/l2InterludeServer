@@ -68,9 +68,9 @@ public class BlowFishKey extends ClientBasePacket
 		{
 			//TODO: manage
 		}*/
-		
+
 	}
-	
+
 	public byte[] getKey()
 	{
 		return _key;

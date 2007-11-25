@@ -65,7 +65,7 @@ public class FishTable
 					int id = Fishes.getInt("id");
 					int lvl = Fishes.getInt("level");
 					String name = Fishes.getString("name");
-					int hp = Fishes.getInt("hp");					
+					int hp = Fishes.getInt("hp");
 					int hpreg = Fishes.getInt("hpregen");
 					int type = Fishes.getInt("fish_type");
 					int group = Fishes.getInt("fish_group");

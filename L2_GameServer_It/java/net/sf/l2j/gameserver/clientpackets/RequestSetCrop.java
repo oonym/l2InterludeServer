@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.instancemanager.CastleManorManager.CropProcure;
  * c - reward type
  * ]
  * @author l3x
- * 
+ *
  */
 public class RequestSetCrop extends L2GameClientPacket {
 	private static final String _C__D0_0B_REQUESTSETCROP = "[C] D0:0B RequestSetCrop";

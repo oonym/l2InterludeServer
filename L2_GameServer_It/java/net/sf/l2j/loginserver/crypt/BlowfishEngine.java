@@ -21,22 +21,22 @@ package net.sf.l2j.loginserver.crypt;
 import java.io.IOException;
 
 /**
- * This file is based on the Blowfish Engine that is part of 
+ * This file is based on the Blowfish Engine that is part of
  * the BouncyCastle JCE
- * 
+ *
  * Copyright (c) 2000 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
- * and associated documentation files (the "Software"), to deal in the Software without restriction, 
- * including without limitation the rights to use, copy, modify, merge, publish, distribute, 
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all copies 
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
  * or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
- * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
- * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 public class BlowfishEngine
@@ -276,7 +276,7 @@ public class BlowfishEngine
 
     /**
      * initialise a Blowfish cipher.
-     * 
+     *
      * @param encryption
      *            whether or not we are for encryption.
      * @param key
@@ -367,7 +367,7 @@ public class BlowfishEngine
          * - comments are from _Applied Crypto_, Schneier, p338 please be
          * careful comparing the two, AC numbers the arrays from 1, the
          * enclosed code from 0.
-         * 
+         *
          * (1) Initialise the S-boxes and the P-array, with a fixed string This
          * string contains the hexadecimal digits of pi (3.141...)
          */
@@ -404,14 +404,14 @@ public class BlowfishEngine
         /*
          * (3) Encrypt the all-zero string with the Blowfish algorithm, using
          * the subkeys described in (1) and (2)
-         * 
+         *
          * (4) Replace P1 and P2 with the output of step (3)
-         * 
+         *
          * (5) Encrypt the output of step(3) using the Blowfish algorithm, with
          * the modified subkeys.
-         * 
+         *
          * (6) Replace P3 and P4 with the output of step (5)
-         * 
+         *
          * (7) Continue the process, replacing all elements of the P-array and
          * then all four S-boxes in order, with the output of the continuously
          * changing Blowfish algorithm

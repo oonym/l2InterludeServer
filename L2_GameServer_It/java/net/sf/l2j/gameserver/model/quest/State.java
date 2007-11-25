@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.model.L2DropData;
 /**
  * @author Luis Arias
  *
- * Functions in this class are used in python files 
+ * Functions in this class are used in python files
  */
 public class State
 {
@@ -36,7 +36,7 @@ public class State
 	/** Prototype of empty String list */
 	private static final String[] _emptyStrList = new String[0];
 	// TODO - End
-	
+
 	/** Name of the quest */
     /** Quest object associated to the state */
 	private final Quest _quest;
@@ -46,7 +46,7 @@ public class State
 
 
 	/**
-	 * Constructor for the state of the quest. 
+	 * Constructor for the state of the quest.
 	 * @param name : String pointing out the name of the quest
 	 * @param quest : Quest
 	 */
@@ -60,10 +60,10 @@ public class State
     // =========================================================
     // Method - Public
     /**
-     * Add drop for the quest at this state of the quest 
+     * Add drop for the quest at this state of the quest
      * @param npcId : int designating the ID of the NPC
      * @param itemId : int designating the ID of the item dropped
-     * @param chance : int designating the chance the item dropped 
+     * @param chance : int designating the chance the item dropped
      */
     public void addQuestDrop(int npcId, int itemId, int chance) {
         try {
@@ -86,7 +86,7 @@ public class State
             e.printStackTrace();
         }
     }
-    
+
     // =========================================================
     // Proeprty
 
@@ -97,7 +97,7 @@ public class State
     Map<Integer, List<L2DropData>> getDrops() {
         return _drops;
     }
-    
+
     /**
      * Return list of events
      * @return String[]
@@ -114,7 +114,7 @@ public class State
     {
         return _name;
     }
-	
+
     /**
      * Return name of the quest
      * @return String

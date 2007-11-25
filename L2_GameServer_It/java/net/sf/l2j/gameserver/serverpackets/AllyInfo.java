@@ -37,19 +37,19 @@ public class AllyInfo extends L2GameServerPacket
 	{
 		_cha = cha;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 	    L2PcInstance activeChar = getClient().getActiveChar();
 	    if (activeChar == null) return;
-        
+
 	    if (activeChar.getAllyId() == 0)
 	    {
 	        _cha.sendPacket(new SystemMessage(SystemMessageId.NO_CURRENT_ALLIANCES));
             return;
 	    }
-        
+
 		//======<AllyInfo>======
 	    SystemMessage sm = new SystemMessage(SystemMessageId.ALLIANCE_INFO_HEAD);
 		_cha.sendPacket(sm);
@@ -67,7 +67,7 @@ public class AllyInfo extends L2GameServerPacket
 			count+=clan.getMembers().length;
 		    }
 		}
-		//Connection 
+		//Connection
 		sm = new SystemMessage(SystemMessageId.CONNECTION_S1_TOTAL_S2);
 		sm.addString(""+online);
 		sm.addString(""+count);
@@ -107,7 +107,7 @@ public class AllyInfo extends L2GameServerPacket
 		sm = new SystemMessage(SystemMessageId.CLAN_INFO_FOOT);
 		_cha.sendPacket(sm);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

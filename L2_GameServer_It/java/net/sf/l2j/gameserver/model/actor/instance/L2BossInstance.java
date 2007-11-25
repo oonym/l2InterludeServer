@@ -23,15 +23,15 @@ import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
- * This class manages all RaidBoss. 
- * 
+ * This class manages all RaidBoss.
+ *
  * @version $Revision: 1.0.0.0 $ $Date: 2006/06/16 $
  */
 public final class L2BossInstance extends L2MonsterInstance
 {
 	//protected static Logger _log = Logger.getLogger(L2BossInstance.class.getName());
 	private boolean _teleportedToNest;
-    
+
     private static final int BOSS_MAINTENANCE_INTERVAL = 10000;
 
     /**
@@ -59,7 +59,7 @@ public final class L2BossInstance extends L2MonsterInstance
 
     @Override
 	protected int getMaintenanceInterval() { return BOSS_MAINTENANCE_INTERVAL; }
-	
+
     /**
      * Used by Orfen to set 'teleported' flag, when hp goes to <50%
      * @param flag
@@ -68,21 +68,21 @@ public final class L2BossInstance extends L2MonsterInstance
     {
         _teleportedToNest = flag;
     }
-    
+
     public boolean getTeleported()
     {
         return _teleportedToNest;
     }
-    
+
     @Override
 	public void onSpawn()
     {
-    	super.onSpawn(); 
+    	super.onSpawn();
     }
-    
+
     /**
-     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR> 
-     * 
+     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR>
+     *
      */
     @Override
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
@@ -103,7 +103,7 @@ public final class L2BossInstance extends L2MonsterInstance
 
         super.reduceCurrentHp(damage, attacker, awake);
     }
-    
+
     @Override
 	public boolean isRaid()
     {

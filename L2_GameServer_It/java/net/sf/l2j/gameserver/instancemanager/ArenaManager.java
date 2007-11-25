@@ -36,11 +36,11 @@ public class ArenaManager
     }
     // =========================================================
 
-    
+
     // =========================================================
     // Data Field
     private FastList<L2ArenaZone> _arenas;
-    
+
     // =========================================================
     // Constructor
     public ArenaManager()
@@ -49,12 +49,12 @@ public class ArenaManager
 
     // =========================================================
     // Property - Public
-    
+
     public void addArena(L2ArenaZone arena)
     {
     	if (_arenas == null)
     		_arenas = new FastList<L2ArenaZone>();
-    	
+
     	_arenas.add(arena);
     }
 
@@ -62,7 +62,7 @@ public class ArenaManager
     {
     	for (L2ArenaZone temp : _arenas)
     		if (temp.isCharacterInZone(character)) return temp;
-    	
+
     	return null;
     }
 }

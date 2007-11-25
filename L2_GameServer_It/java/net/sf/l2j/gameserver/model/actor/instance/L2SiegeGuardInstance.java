@@ -40,18 +40,18 @@ import net.sf.l2j.util.Rnd;
 /**
  * This class represents all guards in the world. It inherits all methods from
  * L2Attackable and adds some more such as tracking PK's or custom interactions.
- * 
+ *
  * @version $Revision: 1.11.2.1.2.7 $ $Date: 2005/04/06 16:13:40 $
  */
 public final class L2SiegeGuardInstance extends L2Attackable
 {
     @SuppressWarnings("hiding")
 	private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
-	
+
     private int _homeX;
     private int _homeY;
     private int _homeZ;
-    
+
     public L2SiegeGuardInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
@@ -67,7 +67,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
     }
 
 	@Override
-	public L2CharacterAI getAI() 
+	public L2CharacterAI getAI()
 	{
 		synchronized(this)
 		{
@@ -75,26 +75,26 @@ public final class L2SiegeGuardInstance extends L2Attackable
 				_ai = new L2SiegeGuardAI(new AIAccessor());
 		}
 		return _ai;
-	}    
-    
+	}
+
 	/**
 	 * Return True if a siege is in progress and the L2Character attacker isn't a Defender.<BR><BR>
-	 * 
+	 *
 	 * @param attacker The L2Character that the L2SiegeGuardInstance try to attack
-	 * 
+	 *
 	 */
     @Override
-	public boolean isAutoAttackable(L2Character attacker) 
+	public boolean isAutoAttackable(L2Character attacker)
 	{
  // Attackable during siege by all except defenders
-		return (attacker != null 
-		        && attacker instanceof L2PcInstance 
+		return (attacker != null
+		        && attacker instanceof L2PcInstance
 		        && getCastle() != null
 		        && getCastle().getCastleId() > 0
 		        && getCastle().getSiege().getIsInProgress()
          && !getCastle().getSiege().checkIsDefender(((L2PcInstance)attacker).getClan()));
     }
-    
+
     /**
      * Sets home location of guard. Guard will always try to return to this location after
      * it has killed all PK's in range.
@@ -105,22 +105,22 @@ public final class L2SiegeGuardInstance extends L2Attackable
         _homeX = getX();
         _homeY = getY();
         _homeZ = getZ();
-        
+
         if (Config.DEBUG)
             _log.finer(getObjectId()+": Home location set to"+
                     " X:" + _homeX + " Y:" + _homeY + " Z:" + _homeZ);
     }
-    
+
     public int getHomeX()
     {
     	return _homeX;
     }
-    
+
     public int getHomeY()
     {
     	return _homeY;
     }
-    
+
     /**
      * This method forces guard to return to home location previously set
      *
@@ -176,7 +176,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
 		{
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
 			player.sendPacket(my);
-			
+
 			if (isAutoAttackable(player) && !isAlikeDead())
 			{
 				if (Math.abs(player.getZ() - getZ()) < 600) // this max heigth difference might need some tweaking
@@ -197,26 +197,26 @@ public final class L2SiegeGuardInstance extends L2Attackable
 //					player.setCurrentState(L2Character.STATE_INTERACT);
 //					player.setInteractTarget(this);
 //					player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
-				} else 
+				} else
                 {
 					SocialAction sa = new SocialAction(getObjectId(), Rnd.nextInt(8));
 					broadcastPacket(sa);
 					sendPacket(sa);
 					showChatWindow(player, 0);
-					player.sendPacket(new ActionFailed());					
+					player.sendPacket(new ActionFailed());
 //					player.setCurrentState(L2Character.STATE_IDLE);
 				}
 			}
 		}
 		//super.onAction(player);
     }
-    
+
     @Override
 	public void addDamageHate(L2Character attacker, int damage, int aggro)
     {
         if (attacker == null)
             return;
-        
+
         if (!(attacker instanceof L2SiegeGuardInstance))
         {
             super.addDamageHate(attacker, damage, aggro);

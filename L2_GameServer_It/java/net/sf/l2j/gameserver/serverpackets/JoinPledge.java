@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class JoinPledge extends L2GameServerPacket
@@ -33,15 +33,15 @@ public class JoinPledge extends L2GameServerPacket
 	{
 		_pledgeId = pledgeId;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x33);
-		
+
 		writeD(_pledgeId);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

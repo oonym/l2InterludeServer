@@ -24,7 +24,7 @@ import javolution.util.FastList;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.1.2.2 $ $Date: 2005/03/27 15:29:33 $
  */
 public class L2ManufactureList

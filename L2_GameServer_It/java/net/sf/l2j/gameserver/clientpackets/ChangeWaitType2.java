@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.serverpackets.ChairSit;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class ChangeWaitType2 extends L2GameClientPacket
@@ -35,7 +35,7 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 	private static final String _C__1D_CHANGEWAITTYPE2 = "[C] 1D ChangeWaitType2";
 
 	private boolean _typeStand;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -54,10 +54,10 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 				player.sendPacket(new ActionFailed());
 				return;
 			}
-			
+
 			if (player.getMountType() != 0) //prevent sit/stand if you riding
 				return;
-			if (target != null 
+			if (target != null
 					&& !player.isSitting()
 					&& target instanceof L2StaticObjectInstance
 					&& ((L2StaticObjectInstance)target).getType() == 1

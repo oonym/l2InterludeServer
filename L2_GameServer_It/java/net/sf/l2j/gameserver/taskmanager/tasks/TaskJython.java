@@ -29,9 +29,9 @@ import org.python.util.PythonInterpreter;
 public class TaskJython extends Task
 {
     public static final String NAME = "jython";
-    
+
     private final PythonInterpreter _python = new PythonInterpreter();
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.taskmanager.Task#getName()
      */

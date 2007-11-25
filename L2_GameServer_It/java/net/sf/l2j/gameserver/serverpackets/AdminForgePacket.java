@@ -30,24 +30,24 @@ import java.util.List;
 public class AdminForgePacket extends L2GameServerPacket
 {
 	private List<Part> _parts = new ArrayList<Part>();
-	
+
 	private class Part
 	{
 		public byte b;
 		public String str;
-		
+
 		public Part(byte bb, String string)
 		{
 			b = bb;
 			str = string;
 		}
 	}
-	
+
 	public AdminForgePacket()
 	{
-	
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
@@ -58,7 +58,7 @@ public class AdminForgePacket extends L2GameServerPacket
 		{
 			generate(p.b, p.str);
 		}
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -108,10 +108,10 @@ public class AdminForgePacket extends L2GameServerPacket
 		}
 		return false;
 	}
-	
+
 	public void addPart(byte b, String string)
 	{
 		_parts.add(new Part(b, string));
 	}
-	
+
 }

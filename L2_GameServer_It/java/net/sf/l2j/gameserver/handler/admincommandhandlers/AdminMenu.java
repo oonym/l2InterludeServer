@@ -39,10 +39,10 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands:
  * - handles every admin menu command
- * 
+ *
  * @version $Revision: 1.3.2.6.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
-public class AdminMenu implements IAdminCommandHandler 
+public class AdminMenu implements IAdminCommandHandler
 {
 	private static final Logger _log = Logger.getLogger(AdminMenu.class.getName());
 
@@ -200,11 +200,11 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		return true;
 	}
-	public String[] getAdminCommandList() 
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	private boolean checkLevel(int level) 
+	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}
@@ -232,7 +232,7 @@ public class AdminMenu implements IAdminCommandHandler
 			}
 			else if (Config.L2JMOD_CHAMPION_ENABLE && target.isChampion())
 				target.reduceCurrentHp(target.getMaxHp()*Config.L2JMOD_CHAMPION_HP + 1, activeChar);
-			else 
+			else
 				target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
 		}
 		else
@@ -244,7 +244,7 @@ public class AdminMenu implements IAdminCommandHandler
 
 	private void teleportCharacter(L2PcInstance player, int x, int y, int z, L2PcInstance activeChar, String message)
 	{
-		if (player != null) 
+		if (player != null)
 		{
 			player.sendMessage(message);
 			player.teleToLocation(x, y, z, true);
@@ -254,9 +254,9 @@ public class AdminMenu implements IAdminCommandHandler
 	private void teleportToCharacter(L2PcInstance activeChar, L2Object target)
 	{
 		L2PcInstance player = null;
-		if (target != null && target instanceof L2PcInstance) 
+		if (target != null && target instanceof L2PcInstance)
 			player = (L2PcInstance)target;
-		else 
+		else
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			return;
@@ -282,7 +282,7 @@ public class AdminMenu implements IAdminCommandHandler
 	{
 		java.sql.Connection con = null;
 		try
-		{           
+		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			String stmt = "SELECT account_name FROM characters WHERE char_name = ?";
 			PreparedStatement statement = con.prepareStatement(stmt);
@@ -310,12 +310,12 @@ public class AdminMenu implements IAdminCommandHandler
 			_log.warning("Could not set accessLevel:"+e);
 			if (Config.DEBUG)
 				e.printStackTrace();
-		} 
-		finally 
+		}
+		finally
 		{
-			try 
-			{ 
-				con.close(); 
+			try
+			{
+				con.close();
 			}
 			catch (Exception e) {}
 		}

@@ -19,16 +19,16 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: (ch)ddd
- * 
+ *
  */
 public class ExConfirmVariationItem extends L2GameServerPacket
 {
 	private static final String _S__FE_52_EXCONFIRMVARIATIONITEM = "[S] FE:52 ExConfirmVariationItem";
-	
+
 	private int _itemObjId;
 	private int _unk1;
 	private int _unk2;
-	
+
 	public ExConfirmVariationItem(int itemObjId)
 	{
 		_itemObjId = itemObjId;

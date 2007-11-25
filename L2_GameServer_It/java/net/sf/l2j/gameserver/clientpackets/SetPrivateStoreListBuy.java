@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class SetPrivateStoreListBuy extends L2GameClientPacket
@@ -39,14 +39,14 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 
     private int _count;
     private int[] _items; // count * 3
-    
+
     @Override
 	protected void readImpl()
     {
         _count = readD();
         if (_count <= 0  || _count * 12 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
         {
-            _count = 0; 
+            _count = 0;
             _items = null;
             return;
         }
@@ -56,7 +56,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
             int itemId = readD(); _items[x * 3 + 0] = itemId;
             readH();//TODO analyse this
             readH();//TODO analyse this
-            long cnt    = readD(); 
+            long cnt    = readD();
 	    if (cnt > Integer.MAX_VALUE || cnt < 0)
 	    {
 		_count = 0; _items = null;
@@ -72,13 +72,13 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 	{
         L2PcInstance player = getClient().getActiveChar();
     	if (player == null) return;
-        
+
         if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
         {
             player.sendMessage("Transactions are disable for your Access Level");
             return;
         }
-        
+
         TradeList tradeList = player.getBuyList();
         tradeList.clear();
 
@@ -92,7 +92,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
             tradeList.addItemByItemId(itemId, count, price);
             cost += count * price;
         }
-        
+
         if (_count <= 0)
         {
             player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
@@ -107,7 +107,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
         	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
             return;
         }
-        
+
         // Check for available funds
         if (cost > player.getAdena() || cost <= 0)
         {

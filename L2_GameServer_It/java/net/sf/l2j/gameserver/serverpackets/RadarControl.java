@@ -27,7 +27,7 @@ public class RadarControl extends L2GameServerPacket
     private int _y;
     private int _z;
     /**
-     * 0xEB RadarControl         ddddd 
+     * 0xEB RadarControl         ddddd
      * @param _
      */
 
@@ -39,7 +39,7 @@ public class RadarControl extends L2GameServerPacket
         _y = y;
         _z = z;
     }
-	
+
 	@Override
 	protected final void writeImpl()
     {

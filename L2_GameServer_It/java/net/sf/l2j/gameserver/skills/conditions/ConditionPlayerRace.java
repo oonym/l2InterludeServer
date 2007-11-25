@@ -32,12 +32,12 @@ import net.sf.l2j.gameserver.skills.Env;
 public class ConditionPlayerRace extends Condition {
 
 	private final Race _race;
-	
+
 	public ConditionPlayerRace(Race race)
 	{
 		_race = race;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env) {
 		if (!(env.player instanceof L2PcInstance))

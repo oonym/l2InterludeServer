@@ -29,7 +29,7 @@ public class GeoNodeLoc extends AbstractNodeLoc
 	private final short _x;
 	private final short _y;
 	private final short _z;
-	
+
 	public GeoNodeLoc(short x, short y, short z)
 	{
 		_x = x;
@@ -63,13 +63,13 @@ public class GeoNodeLoc extends AbstractNodeLoc
 	{
 		return _z;
 	}
-	
+
 	@Override
 	public short getNodeX()
 	{
 		return _x;
 	}
-	
+
 	@Override
 	public short getNodeY()
 	{

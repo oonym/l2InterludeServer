@@ -33,53 +33,53 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 /**
  * This class handles following admin commands:
  * - server_shutdown [sec] = shows menu or shuts down server in sec seconds
- * 
+ *
  * @version $Revision: 1.5.2.1.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminShutdown implements IAdminCommandHandler {
 	//private static Logger _log = Logger.getLogger(AdminShutdown.class.getName());
-	
+
 	private static final String[] ADMIN_COMMANDS = {"admin_server_shutdown", "admin_server_restart", "admin_server_abort"};
 	private static final int REQUIRED_LEVEL = Config.GM_RESTART;
-	
+
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
-		
+
 		if (command.startsWith("admin_server_shutdown"))
-		{	
+		{
 			try
 			{
-				int val = Integer.parseInt(command.substring(22)); 
+				int val = Integer.parseInt(command.substring(22));
 				serverShutdown(activeChar, val, false);
 			}
 			catch (StringIndexOutOfBoundsException e)
-			{				
+			{
 				sendHtmlForm(activeChar);
 			}
 		} else if (command.startsWith("admin_server_restart"))
-		{	
+		{
 			try
 			{
-				int val = Integer.parseInt(command.substring(21)); 
+				int val = Integer.parseInt(command.substring(21));
 				serverShutdown(activeChar, val, true);
 			}
 			catch (StringIndexOutOfBoundsException e)
-			{				
+			{
 				sendHtmlForm(activeChar);
 			}
 		} else if (command.startsWith("admin_server_abort"))
-		{	
+		{
 			serverAbort(activeChar);
-		} 
-		
+		}
+
 		return true;
 	}
-	
+
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean checkLevel(int level) {
 		return (level >= REQUIRED_LEVEL);
 	}
@@ -103,12 +103,12 @@ public class AdminShutdown implements IAdminCommandHandler {
 		adminReply.replace("%time%",String.valueOf(format.format(cal.getTime())));
 		activeChar.sendPacket(adminReply);
 	}
-	
+
 	private void serverShutdown(L2PcInstance activeChar, int seconds, boolean restart)
 	{
 		Shutdown.getInstance().startShutdown(activeChar, seconds, restart);
 	}
-	
+
 	private void serverAbort(L2PcInstance activeChar)
 	{
 		Shutdown.getInstance().abort(activeChar);

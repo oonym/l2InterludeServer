@@ -18,7 +18,6 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager.CropProcure;
 import net.sf.l2j.gameserver.model.L2Manor;
 
@@ -26,7 +25,7 @@ import net.sf.l2j.gameserver.model.L2Manor;
  * Format: ch cddd[ddddcdcdcd]
  * c - id (0xFE)
  * h - sub id (0x1D)
- * 
+ *
  * c
  * d - manor id
  * d
@@ -43,7 +42,7 @@ import net.sf.l2j.gameserver.model.L2Manor;
  * c - reward 2 items
  * d - reward 2 item id
  * ]
- * 
+ *
  * @author l3x
  */
 
@@ -86,6 +85,6 @@ public class ExShowCropInfo extends L2GameServerPacket {
     public String getType() {
 		return _S__FE_1C_EXSHOWSEEDINFO;
     }
-    
+
 
 }

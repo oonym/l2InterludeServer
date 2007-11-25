@@ -29,24 +29,24 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * 
+ *
  *
  */
 public class ScriptDocument
 {
-    private Document _document; 
+    private Document _document;
     private String _name;
-    
+
     public ScriptDocument(String name, InputStream input)
     {
         _name = name;
-        
+
         DocumentBuilderFactory factory =
             DocumentBuilderFactory.newInstance();
         try {
            DocumentBuilder builder = factory.newDocumentBuilder();
            _document = builder.parse( input );
- 
+
         } catch (SAXException sxe) {
            // Error generated during parsing)
            Exception  x = sxe;
@@ -63,12 +63,12 @@ public class ScriptDocument
            ioe.printStackTrace();
         }
     }
-    
+
     public Document getDocument()
     {
         return _document;
     }
-    
+
     /**
      * @return Returns the _name.
      */
@@ -76,11 +76,11 @@ public class ScriptDocument
     {
         return _name;
     }
-    
+
     @Override
 	public String toString()
     {
         return _name;
     }
-    
+
 }

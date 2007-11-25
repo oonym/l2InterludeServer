@@ -31,8 +31,8 @@ public final class SuperCmdCharacterInfo extends L2GameClientPacket
 	private static final String _C__39_00_SUPERCMDCHARACTERINFO = "[C] 39:00 SuperCmdCharacterInfo";
 	@SuppressWarnings("unused")
 	private String _characterName;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -46,7 +46,7 @@ public final class SuperCmdCharacterInfo extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -57,5 +57,5 @@ public final class SuperCmdCharacterInfo extends L2GameClientPacket
 	{
 		return _C__39_00_SUPERCMDCHARACTERINFO;
 	}
-	
+
 }

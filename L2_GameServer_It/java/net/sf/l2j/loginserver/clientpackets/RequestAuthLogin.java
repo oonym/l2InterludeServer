@@ -116,7 +116,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		try
 		{
 			AuthLoginResult result = lc.tryAuthLogin(_user, _password, getClient());
-			
+
 			switch (result)
 			{
 				case AUTH_SUCCESS:

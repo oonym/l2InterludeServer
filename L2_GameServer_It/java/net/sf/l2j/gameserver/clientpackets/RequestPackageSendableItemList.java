@@ -29,8 +29,8 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 {
 	private static final String _C_9E_REQUESTPACKAGESENDABLEITEMLIST = "[C] 9E RequestPackageSendableItemList";
 	private int _objectID;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{

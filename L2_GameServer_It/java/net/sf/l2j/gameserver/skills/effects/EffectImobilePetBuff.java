@@ -42,7 +42,7 @@ final class EffectImobilePetBuff extends L2Effect {
 	{
 		return EffectType.BUFF;
 	}
-	
+
 	/** Notify started */
 	@Override
 	public void onStart() {
@@ -54,15 +54,15 @@ final class EffectImobilePetBuff extends L2Effect {
 		{
 			_pet = (L2Summon)getEffected();
 			_pet.setIsImobilised(true);
-		} 
+		}
 	}
-	
+
 	/** Notify exited */
 	@Override
 	public void onExit() {
-		if (_pet != null) 
+		if (_pet != null)
 			_pet.setIsImobilised(false);
-	}	
+	}
 
 	@Override
 	public boolean onActionTime()

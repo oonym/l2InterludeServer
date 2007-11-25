@@ -21,7 +21,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class CreatureSay extends L2GameServerPacket
@@ -53,14 +53,14 @@ public class CreatureSay extends L2GameServerPacket
 		writeD(_textType);
 		writeS(_charName);
 		writeS(_text);
-		
+
 		L2PcInstance _pci = getClient().getActiveChar();
 		if (_pci != null)
 		{
 			_pci.broadcastSnoop(_textType,_charName,_text);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
@@ -69,5 +69,5 @@ public class CreatureSay extends L2GameServerPacket
 	{
 		return _S__4A_CREATURESAY;
 	}
-	
+
 }

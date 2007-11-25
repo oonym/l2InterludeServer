@@ -27,7 +27,7 @@ import javolution.text.TextBuilder;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.1 $ $Date: 2005/03/27 15:30:08 $
  */
 
@@ -40,12 +40,12 @@ public class FileLogFormatter extends Formatter
 	private static final String CRLF = "\r\n";
 	private static final String _ = "\t";
 	private SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
-	
+
 	@Override
 	public String format(LogRecord record)
 	{
         TextBuilder output = new TextBuilder();
-		
+
 		return output
 		.append(dateFmt.format(new Date(record.getMillis())))
 		.append(_)

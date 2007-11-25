@@ -34,40 +34,40 @@ public class FishingZoneManager
 		return _instance;
 	}
 	// =========================================================
-	
-	
+
+
 	// =========================================================
 	// Data Field
 	private FastList<L2FishingZone> _fishingZones;
-	
+
 	// =========================================================
 	// Constructor
 	public FishingZoneManager()
 	{
 	}
-	
+
 	// =========================================================
 	// Property - Public
-	
+
 	public void addFishingZone(L2FishingZone fishingZone)
 	{
 		if (_fishingZones == null)
 			_fishingZones = new FastList<L2FishingZone>();
-    	
+
 		_fishingZones.add(fishingZone);
 	}
-	
+
 	/* isInsideFishingZone() - This function was modified to check the coordinates without caring for Z.
 	 * This allows for the player to fish off bridges, into the water, or from other similar high places. One
 	 * should be able to cast the line from up into the water, not only fishing whith one's feet wet. :)
-	 * 
+	 *
 	 *  TODO: Consider in the future, limiting the maximum height one can be above water, if we start getting
-	 *  "orbital fishing" players... xD 
-	 */ 
+	 *  "orbital fishing" players... xD
+	 */
 	public final L2FishingZone isInsideFishingZone(int x, int y, int z)
 	{
 		for (L2FishingZone temp : _fishingZones)
-			if (temp.isInsideZone(x, y, temp.getWaterZ() - 10)) return temp;	
+			if (temp.isInsideZone(x, y, temp.getWaterZ() - 10)) return temp;
 		return null;
 	}
 }

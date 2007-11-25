@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.ExCursedWeaponList;
 public class RequestCursedWeaponList extends L2GameClientPacket
 {
 	private static final String _C__D0_22_REQUESTCURSEDWEAPONLIST = "[C] D0:22 RequestCursedWeaponList";
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -48,7 +48,7 @@ public class RequestCursedWeaponList extends L2GameClientPacket
 		L2Character activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		
+
 		//send a ExCursedWeaponList :p
 		List<Integer> list = new FastList<Integer>();
 		for (int id : CursedWeaponsManager.getInstance().getCursedWeaponsIds())

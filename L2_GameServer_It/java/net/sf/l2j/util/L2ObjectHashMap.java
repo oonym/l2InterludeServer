@@ -29,31 +29,31 @@ import net.sf.l2j.gameserver.model.L2Object;
  * keys are integers. The main goal of this class is to allow
  * concurent read/iterate and write access to this table,
  * plus minimal used memory.
- * 
+ *
  * This class uses plain array as the table of values, and
  * keys are used to get position in the table. If the position
  * is already busy, we iterate to the next position, unil we
  * find the needed element or null.
- * 
+ *
  * To iterate over the table (read access) we may simply iterate
  * throgh table array.
- * 
+ *
  * In case we remove an element from the table, we check - if
  * the next position is null, we reset table's slot to null,
  * otherwice we assign it to a dummy value
- * 
- * 
+ *
+ *
  * @author mkizub
  *
- * @param <T> type of values stored in this hashtable 
+ * @param <T> type of values stored in this hashtable
  */
 public final class L2ObjectHashMap<T extends L2Object>
 	extends L2ObjectMap<T>
 {
-	
+
 	private static final boolean TRACE = false;
 	private static final boolean DEBUG = false;
-	
+
 	private final static int[] PRIMES = {
 		5, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293,
 		353, 431, 521, 631, 761, 919, 1103, 1327, 1597, 1931, 2333, 2801,
@@ -63,11 +63,11 @@ public final class L2ObjectHashMap<T extends L2Object>
 		467237, 560689, 672827, 807403, 968897, 1162687, 1395263, 1674319,
 		2009191, 2411033, 2893249, 3471899, 4166287, 4999559, 5999471, 7199369
 		};
-	
+
 	private T[] _table;
 	private int[] _keys;
 	private int _count;
-	
+
 	private static int getPrime(int min)
 	{
 		for (int i=0; i < PRIMES.length; i++)
@@ -77,7 +77,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		}
 		throw new OutOfMemoryError();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public L2ObjectHashMap()
 	{
@@ -86,7 +86,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		_keys = new int[size];
 		if (DEBUG) check();
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#size()
      */
@@ -95,7 +95,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 	{
 		return _count;
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#isEmpty()
      */
@@ -104,7 +104,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 	{
 		return _count == 0;
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#clear()
      */
@@ -118,7 +118,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		_count = 0;
 		if (DEBUG) check();
 	}
-	
+
 	private void check()
 	{
 		if (DEBUG)
@@ -126,7 +126,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 			int cnt = 0;
 			for (int i=0; i < _table.length; i++)
 			{
-				L2Object obj = _table[i]; 
+				L2Object obj = _table[i];
 				if (obj == null) {
 					assert _keys[i] == 0 || _keys[i] == 0x80000000;
 				} else {
@@ -137,7 +137,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 			assert cnt == _count;
 		}
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#put(T)
      */
@@ -189,7 +189,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 					return;
 				}
 			}
-			
+
 			// set collision bit
 			_keys[pos] |= 0x80000000;
 			// calculate next slot
@@ -198,7 +198,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		if (DEBUG) check();
 		throw new IllegalStateException();
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#remove(T)
      */
@@ -234,7 +234,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		if (DEBUG) check();
 		throw new IllegalStateException();
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#get(int)
      */
@@ -246,7 +246,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 			return null;
 		if (size <= 11)
 		{
-			// for small tables linear check is fast 
+			// for small tables linear check is fast
 			for (int i=0; i < size; i++)
 			{
 				if ((_keys[i]&0x7FFFFFFF) == id)
@@ -271,7 +271,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		} while (++ntry < size);
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#contains(T)
      */
@@ -280,19 +280,19 @@ public final class L2ObjectHashMap<T extends L2Object>
 	{
 		return get(obj.getObjectId()) != null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private /*already synchronized in put()*/ void expand()
 	{
 		int newSize = getPrime(_table.length+1);
 		L2Object[] newTable = new L2Object[newSize];
 		int[] newKeys = new int[newSize];
-		
+
 		// over all old entries
 	next_entry:
 		for (int i=0; i < _table.length; i++)
 		{
-			L2Object obj = _table[i]; 
+			L2Object obj = _table[i];
 			if (obj == null)
 				continue;
 			final int hashcode = _keys[i] & 0x7FFFFFFF;
@@ -305,7 +305,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 				int pos = (seed % newSize) & 0x7FFFFFFF;
 				if (newTable[pos] == null)
 				{
-					if (Config.ASSERT) assert newKeys[pos] == 0 && hashcode != 0; 
+					if (Config.ASSERT) assert newKeys[pos] == 0 && hashcode != 0;
 					// found an empty slot without previous collisions,
 					// but use previously found slot
 					newKeys[pos] = hashcode;
@@ -324,7 +324,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 		_keys = newKeys;
 		if (DEBUG) check();
 	}
-	
+
 	/* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#iterator()
      */
@@ -333,7 +333,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 	{
 		return new Itr(_table);
 	}
-	
+
 	class Itr implements Iterator<T>
 	{
 		private final T[] _array;
@@ -345,7 +345,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 			this._array = pArray;
 			for (; _nextIdx < _array.length; _nextIdx++)
 			{
-				_nextObj = _array[_nextIdx]; 
+				_nextObj = _array[_nextIdx];
 				if (_nextObj != null)
 					return;
 			}
@@ -361,7 +361,7 @@ public final class L2ObjectHashMap<T extends L2Object>
 			_lastRet = _nextObj;
 			for (_nextIdx++; _nextIdx < _array.length; _nextIdx++)
 			{
-				_nextObj = _array[_nextIdx]; 
+				_nextObj = _array[_nextIdx];
 				if (_nextObj != null)
 					break;
 			}

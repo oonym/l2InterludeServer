@@ -24,31 +24,31 @@ import javolution.util.FastList;
 
 /**
  * <code>
- * sample 
- * 
+ * sample
+ *
  * a4
  * 4d000000 01000000 98030000 			Attack Aura, level 1, sp cost
  * 01000000 							number of requirements
  * 05000000 47040000 0100000 000000000	   1 x spellbook advanced ATTACK                                                 .
  * </code>
- * 
+ *
  * format   ddd d (dddd)
- * 
+ *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
 public class AquireSkillInfo extends L2GameServerPacket
 {
 	private static final String _S__A4_AQUIRESKILLINFO = "[S] 8b AquireSkillInfo";
 	private List<Req> _reqs;
-	private int _id, _level, _spCost, _mode;	
-	
+	private int _id, _level, _spCost, _mode;
+
 	private class Req
 	{
 		public int itemId;
 		public int count;
 		public int type;
 		public int unk;
-		
+
 		public Req(int pType, int pItemId, int pCount, int pUnk)
 		{
 			itemId = pItemId;
@@ -65,13 +65,13 @@ public class AquireSkillInfo extends L2GameServerPacket
 		_level = level;
 		_spCost = spCost;
 		_mode = mode;
-	}	
-	
+	}
+
 	public void addRequirement(int type, int id, int count, int unk)
 	{
 		_reqs.add(new Req(type, id, count, unk));
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -80,7 +80,7 @@ public class AquireSkillInfo extends L2GameServerPacket
 		writeD(_level);
 		writeD(_spCost);
 		writeD(_mode); //c4
-		
+
 		writeD(_reqs.size());
 
 		for (Req temp : _reqs)
@@ -91,7 +91,7 @@ public class AquireSkillInfo extends L2GameServerPacket
 			writeD(temp.unk);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
@@ -100,5 +100,5 @@ public class AquireSkillInfo extends L2GameServerPacket
 	{
 		return _S__A4_AQUIRESKILLINFO;
 	}
-	
+
 }

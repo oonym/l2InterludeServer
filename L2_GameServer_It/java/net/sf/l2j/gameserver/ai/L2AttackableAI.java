@@ -135,7 +135,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     {
         if (target == null || !(_actor instanceof L2Attackable)) return false;
         L2Attackable me = (L2Attackable) _actor;
-        
+
         // Check if the target isn't invulnerable
         if (target.isInvul())
         {
@@ -174,13 +174,13 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             // check if the target is within the grace period for JUST getting up from fake death
             if (((L2PcInstance)target).isRecentFakeDeath())
                 return false;
-            
+
             if (target.isInParty() && target.getParty().isInDimensionalRift())
             {
                 byte riftType = target.getParty().getDimensionalRift().getType();
                 byte riftRoom = target.getParty().getDimensionalRift().getCurrentRoom();
-                
-                if (me instanceof L2RiftInvaderInstance 
+
+                if (me instanceof L2RiftInvaderInstance
                         && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(me.getX(), me.getY(), me.getZ()))
                     return false;
             }
@@ -223,11 +223,11 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             // Check if the target isn't another L2NpcInstance
             if (target instanceof L2NpcInstance) return false;
 
-            // depending on config, do not allow mobs to attack _new_ players in peacezones, 
-            // unless they are already following those players from outside the peacezone. 
-            if (!Config.ALT_MOB_AGRO_IN_PEACEZONE && target.isInsideZone(L2Character.ZONE_PEACE)) 
+            // depending on config, do not allow mobs to attack _new_ players in peacezones,
+            // unless they are already following those players from outside the peacezone.
+            if (!Config.ALT_MOB_AGRO_IN_PEACEZONE && target.isInsideZone(L2Character.ZONE_PEACE))
                 return false;
-            
+
             // Check if the actor is Aggressive
             return (me.isAggressive() && GeoData.getInstance().canSeeTarget(me, target));
         }
@@ -463,7 +463,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     x1 = _actor.getX() + (int) ((x1 - _actor.getX()) / delay);
                     y1 = _actor.getY() + (int) ((y1 - _actor.getY()) / delay);
                 }
-                else 
+                else
                 	npc.setisReturningToSpawnPoint(false);
 
             }
@@ -861,7 +861,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             }
         }
     }
-    
+
     @Override
 	protected void onIntentionActive()
     {
@@ -869,7 +869,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
         _attackTimeout = Integer.MAX_VALUE;
     	super.onIntentionActive();
     }
-    
+
     public void setGlobalAggro(int value)
     {
     	_globalAggro = value;

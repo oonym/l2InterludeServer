@@ -25,7 +25,7 @@ public class ExPCCafePointInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_31_EXPCCAFEPOINTINFO = "[S] FE:31 ExPCCafePointInfo";
 	private int _unk1, _unk2, _unk3, _unk4, _unk5 = 0;
-	
+
 	public ExPCCafePointInfo(int val1, int val2, int val3, int val4, int val5)
 	{
 		_unk1 = val1;
@@ -34,7 +34,7 @@ public class ExPCCafePointInfo extends L2GameServerPacket
 		_unk4 = val4;
 		_unk5 = val5;
 	}
-	
+
 	@Override
 	protected void writeImpl()
 	{

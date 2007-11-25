@@ -41,7 +41,7 @@ public class L2NoLandingZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_NOLANDING, true);
 		}
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -50,10 +50,10 @@ public class L2NoLandingZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_NOLANDING, false);
 		}
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
 

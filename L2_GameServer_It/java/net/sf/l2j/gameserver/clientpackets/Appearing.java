@@ -36,7 +36,7 @@ public final class Appearing extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		
+
 	}
 
 	@Override

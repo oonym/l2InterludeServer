@@ -72,7 +72,7 @@ public class L2TeleportLocation
 	{
 		_price = price;
 	}
-	
+
 	/**
 	 * @param val
 	 */
@@ -121,7 +121,7 @@ public class L2TeleportLocation
 	{
 		return _price;
 	}
-	
+
 	/**
 	 * @return
 	 */

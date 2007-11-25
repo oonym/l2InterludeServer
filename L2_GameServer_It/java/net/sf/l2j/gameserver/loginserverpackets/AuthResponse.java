@@ -35,7 +35,7 @@ public class AuthResponse extends LoginServerBasePacket
 	public AuthResponse(byte[] decrypt)
 	{
 		super(decrypt);
-		_serverId = readC(); 
+		_serverId = readC();
 		_serverName = readS();
 	}
 

@@ -51,8 +51,8 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminAdmin implements IAdminCommandHandler {
 
-	private static final String[] ADMIN_COMMANDS = {"admin_admin", "admin_admin1", "admin_admin2", "admin_admin3", "admin_admin4", "admin_admin5", 
-		"admin_gmliston", "admin_gmlistoff", "admin_silence", "admin_diet", "admin_tradeoff", "admin_reload", "admin_set", "admin_set_menu", "admin_set_mod", 
+	private static final String[] ADMIN_COMMANDS = {"admin_admin", "admin_admin1", "admin_admin2", "admin_admin3", "admin_admin4", "admin_admin5",
+		"admin_gmliston", "admin_gmlistoff", "admin_silence", "admin_diet", "admin_tradeoff", "admin_reload", "admin_set", "admin_set_menu", "admin_set_mod",
 		"admin_saveolymp", "admin_manualhero"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_MENU;
@@ -62,9 +62,9 @@ public class AdminAdmin implements IAdminCommandHandler {
 		if (!Config.ALT_PRIVILEGES_ADMIN)
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
-		
+
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target"), "");
-		
+
 		if (command.startsWith("admin_admin"))
 		{
 			showMainPage(activeChar,command);
@@ -80,7 +80,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 			activeChar.sendMessage("Removed from gm list");
 		}
 		else if(command.startsWith("admin_silence"))
-		{     	
+		{
 			if (activeChar.getMessageRefusal()) // already in message refusal mode
 			{
 				activeChar.setMessageRefusal(false);
@@ -90,11 +90,11 @@ public class AdminAdmin implements IAdminCommandHandler {
 			{
 				activeChar.setMessageRefusal(true);
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.MESSAGE_REFUSAL_MODE));
-			}	    
+			}
 		}
 		else if(command.startsWith("admin_saveolymp"))
 		{
-			try 
+			try
 			{
 				Olympiad.getInstance().save();
 			}
@@ -103,7 +103,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 		}
 		else if(command.startsWith("admin_manualhero"))
 		{
-			try 
+			try
 			{
 				Olympiad.getInstance().manualSelectHeroes();
 			}
@@ -161,7 +161,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 					activeChar.sendMessage("Trade refusal disabled");
 				}
 			}
-			catch(Exception ex) 
+			catch(Exception ex)
 			{
 				if(activeChar.getTradeRefusal())
 				{
@@ -173,7 +173,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 					activeChar.setTradeRefusal(true);
 					activeChar.sendMessage("Trade refusal enabled");
 				}
-			}            
+			}
 		}
 		else if(command.startsWith("admin_reload"))
 		{
@@ -235,7 +235,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 				String pValue = parameter[1].trim();
 				if (Config.setParameterValue(pName, pValue))
 					activeChar.sendMessage("parameter "+pName+" succesfully set to "+pValue);
-				else 
+				else
 					activeChar.sendMessage("Invalid parameter!");
 			}
 			catch(Exception e)
@@ -262,7 +262,7 @@ public class AdminAdmin implements IAdminCommandHandler {
 		return ADMIN_COMMANDS;
 	}
 
-	private boolean checkLevel(int level) 
+	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}

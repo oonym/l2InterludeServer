@@ -34,8 +34,8 @@ import net.sf.l2j.loginserver.SessionKey;
 public final class LoginOk extends L2LoginServerPacket
 {
 	private int _loginOk1, _loginOk2;
-	
-	public LoginOk(SessionKey sessionKey) 
+
+	public LoginOk(SessionKey sessionKey)
 	{
 		_loginOk1 = sessionKey.loginOkID1;
 		_loginOk2 = sessionKey.loginOkID2;

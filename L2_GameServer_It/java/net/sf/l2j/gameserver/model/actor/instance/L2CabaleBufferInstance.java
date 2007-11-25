@@ -37,35 +37,35 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 public class L2CabaleBufferInstance extends L2NpcInstance
 {
     private ScheduledFuture _aiTask;
-    
+
     private class CabalaAI implements Runnable
     {
         private L2CabaleBufferInstance _caster;
-        
-        protected CabalaAI(L2CabaleBufferInstance caster) 
+
+        protected CabalaAI(L2CabaleBufferInstance caster)
         {
             _caster = caster;
         }
-        
+
         public void run()
         {
             boolean isBuffAWinner = false;
             boolean isBuffALoser = false;
-            
+
             final int winningCabal = SevenSigns.getInstance().getCabalHighestScore();
             int losingCabal = SevenSigns.CABAL_NULL;
-            
+
             if (winningCabal == SevenSigns.CABAL_DAWN)
                 losingCabal = SevenSigns.CABAL_DUSK;
             else if (winningCabal == SevenSigns.CABAL_DUSK)
                 losingCabal = SevenSigns.CABAL_DAWN;
-            
+
             /**
              * For each known player in range, cast either the positive or negative buff.
              * <BR>
              * The stats affected depend on the player type, either a fighter or a mystic.
              * <BR><BR>
-             * Curse of Destruction (Loser)<BR> 
+             * Curse of Destruction (Loser)<BR>
              *  - Fighters: -25% Accuracy, -25% Effect Resistance<BR>
              *  - Mystics: -25% Casting Speed, -25% Effect Resistance<BR>
              * <BR><BR>
@@ -76,20 +76,20 @@ public class L2CabaleBufferInstance extends L2NpcInstance
             for (L2PcInstance player : getKnownList().getKnownPlayers().values())
             {
                 final int playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
-                
+
                 if (playerCabal == winningCabal && playerCabal != SevenSigns.CABAL_NULL && _caster.getNpcId() == SevenSigns.ORATOR_NPC_ID)
                 {
-                    if (!player.isMageClass()) 
+                    if (!player.isMageClass())
                     {
-                        if (handleCast(player, 4364)) 
+                        if (handleCast(player, 4364))
                         {
                             isBuffAWinner = true;
                             continue;
                         }
                     }
-                    else 
+                    else
                     {
-                        if (handleCast(player, 4365)) 
+                        if (handleCast(player, 4365))
                         {
                             isBuffAWinner = true;
                             continue;
@@ -98,51 +98,51 @@ public class L2CabaleBufferInstance extends L2NpcInstance
                 }
                 else if (playerCabal == losingCabal && playerCabal != SevenSigns.CABAL_NULL && _caster.getNpcId() == SevenSigns.PREACHER_NPC_ID)
                 {
-                    if (!player.isMageClass()) 
+                    if (!player.isMageClass())
                     {
-                        if (handleCast(player, 4361)) 
+                        if (handleCast(player, 4361))
                         {
                             isBuffALoser = true;
                             continue;
                         }
                     }
-                    else 
+                    else
                     {
-                        if (handleCast(player, 4362)) 
+                        if (handleCast(player, 4362))
                         {
                             isBuffALoser = true;
                             continue;
                         }
                     }
                 }
-                
+
                 if (isBuffAWinner && isBuffALoser)
                     break;
             }
         }
-        
+
         private boolean handleCast(L2PcInstance player, int skillId)
         {
         	int skillLevel = 1;
-        	
+
         	if (player.getLevel() > 40)
         		skillLevel = 2;
-        	
+
         	if (player.isDead() || !player.isVisible() || !isInsideRadius(player, getDistanceToWatchObject(player), false, false))
         		return false;
 
         	L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
-        	
+
             if (player.getFirstEffect(skill) == null)
             {
             	skill.getEffects(_caster, player);
-            	
+
            		broadcastPacket(new MagicSkillUser(_caster, player, skill.getId(), skillLevel, skill.getHitTime(), 0));
-                
+
            		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
            		sm.addSkillName(skillId);
            		player.sendPacket(sm);
-                    
+
            		return true;
             }
 
@@ -150,17 +150,17 @@ public class L2CabaleBufferInstance extends L2NpcInstance
         }
     }
 
-    
+
     public L2CabaleBufferInstance(int objectId, L2NpcTemplate template)
     {
         super(objectId, template);
-        
-        if (_aiTask != null) 
+
+        if (_aiTask != null)
         	_aiTask.cancel(true);
-        
+
         _aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CabalaAI(this), 3000, 3000);
     }
-    
+
     @Override
 	public void deleteMe()
     {
@@ -169,16 +169,16 @@ public class L2CabaleBufferInstance extends L2NpcInstance
         	_aiTask.cancel(true);
         	_aiTask = null;
         }
-        
+
         super.deleteMe();
     }
-    
+
     @Override
 	public int getDistanceToWatchObject(L2Object object)
     {
         return 900;
     }
-    
+
     @Override
 	public boolean isAutoAttackable(L2Character attacker)
     {

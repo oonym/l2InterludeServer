@@ -31,16 +31,16 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.4.4 $ $Date: 2005/04/06 16:13:48 $
  */
 public final class RequestChangePetName extends L2GameClientPacket
 {
 	private static final String REQUESTCHANGEPETNAME__C__89 = "[C] 89 RequestChangePetName";
 	//private static Logger _log = Logger.getLogger(RequestChangePetName.class.getName());
-	
+
 	private String _name;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -54,7 +54,7 @@ public final class RequestChangePetName extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
-		final L2Summon pet = activeChar.getPet(); 
+		final L2Summon pet = activeChar.getPet();
 		if (pet == null)
 			return;
 
@@ -75,7 +75,7 @@ public final class RequestChangePetName extends L2GameClientPacket
 			// SystemMessage sm = new SystemMessage(SystemMessage.NAMING_PETNAME_UP_TO_8CHARS);
         	activeChar.sendPacket(sm);
         	sm = null;
-        	
+
 			return;
 		}
         else if (!PetNameTable.getInstance().isValidPetName(_name))
@@ -83,13 +83,13 @@ public final class RequestChangePetName extends L2GameClientPacket
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS));
 			return;
 		}
-		
+
 		pet.setName(_name);
 		pet.broadcastPacket(new NpcInfo(pet, activeChar));
 		activeChar.sendPacket(new PetInfo(pet));
 		// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
 		pet.updateEffectIcons(true);
-		
+
 		// set the flag on the control item to say that the pet has a name
 		if (pet instanceof L2PetInstance)
 		{
@@ -104,7 +104,7 @@ public final class RequestChangePetName extends L2GameClientPacket
 			}
 		}
 	}
-	
+
 	@Override
 	public String getType()
 	{

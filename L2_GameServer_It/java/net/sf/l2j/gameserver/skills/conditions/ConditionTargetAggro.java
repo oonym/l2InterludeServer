@@ -33,12 +33,12 @@ import net.sf.l2j.gameserver.skills.Env;
 public class ConditionTargetAggro extends Condition {
 
 	private final boolean _isAggro;
-	
+
 	public ConditionTargetAggro(boolean isAggro)
 	{
 		_isAggro = isAggro;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env) {
 		L2Character target = env.target;

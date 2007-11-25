@@ -40,9 +40,9 @@ public class GameServerRegister
 	public static void main(String[] args) throws IOException
 	{
 		Server.serverMode = Server.MODE_LOGINSERVER;
-		
+
 		Config.load();
-		
+
 		LineNumberReader _in = new LineNumberReader(new InputStreamReader(System.in));
 		try
 		{
@@ -91,13 +91,13 @@ public class GameServerRegister
 				{
 					int id = new Integer(_choice).intValue();
 					int size = gameServerTable.getServerNames().size();
-					
+
 					if (size == 0)
 					{
 						System.out.println("No server names avalible, please make sure that servername.xml is in the LoginServer directory.");
 						System.exit(1);
 					}
-					
+
 					String name = gameServerTable.getServerNameById(id);
 					if (name == null)
 					{
@@ -128,7 +128,7 @@ public class GameServerRegister
 			}
 		}
 	}
-	
+
 	public static void cleanRegisteredGameServersFromDB()
 	{
 		java.sql.Connection con = null;

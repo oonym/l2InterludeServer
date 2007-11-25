@@ -32,17 +32,17 @@ import net.sf.l2j.gameserver.model.base.Race;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class L2PcTemplate extends L2CharTemplate {
-	
+
 	/** The Class object of the L2PcInstance */
 	public final ClassId classId;
-	
+
 	public final Race   race;
 	public final String className;
-	
+
 	public final int    spawnX;
 	public final int    spawnY;
 	public final int    spawnZ;
-	
+
 	public final int     classBaseLevel;
 	public final float   lvlHpAdd;
 	public final float   lvlHpMod;
@@ -50,21 +50,21 @@ public class L2PcTemplate extends L2CharTemplate {
 	public final float   lvlCpMod;
 	public final float   lvlMpAdd;
 	public final float   lvlMpMod;
-	
+
 	private List<L2Item> _items = new FastList<L2Item>();
-	
-	
+
+
 	public L2PcTemplate(StatsSet set)
 	{
 		super(set);
 		classId   = ClassId.values()[set.getInteger("classId")];
 		race      = Race.values()[set.getInteger("raceId")];
 		className = set.getString("className");
-		
+
 		spawnX    = set.getInteger("spawnX");
 		spawnY    = set.getInteger("spawnY");
 		spawnZ    = set.getInteger("spawnZ");
-		
+
 		classBaseLevel = set.getInteger("classBaseLevel");
 		lvlHpAdd  = set.getFloat("lvlHpAdd");
 		lvlHpMod  = set.getFloat("lvlHpMod");
@@ -73,7 +73,7 @@ public class L2PcTemplate extends L2CharTemplate {
 		lvlMpAdd  = set.getFloat("lvlMpAdd");
 		lvlMpMod  = set.getFloat("lvlMpMod");
 	}
-	
+
 	/**
 	 * add starter equipment
 	 * @param i
@@ -84,7 +84,7 @@ public class L2PcTemplate extends L2CharTemplate {
 		if (item != null)
 			_items.add(item);
 	}
-	
+
 	/**
 	 *
 	 * @return itemIds of all the starter equipment

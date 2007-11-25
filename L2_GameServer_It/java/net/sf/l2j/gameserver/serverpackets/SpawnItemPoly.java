@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 
 /**
- * 15 
+ * 15
  * ee cc 11 43 		object id
  * 39 00 00 00 		item id
  * 8f 14 00 00 		x
@@ -30,9 +30,9 @@ import net.sf.l2j.gameserver.model.L2Object;
  * 60 f2 ff ff 		z
  * 01 00 00 00 		show item count
  * 7a 00 00 00      count                                         .
- *  
- * format  dddddddd 
- * 
+ *
+ * format  dddddddd
+ *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class SpawnItemPoly extends L2GameServerPacket
@@ -67,14 +67,14 @@ public class SpawnItemPoly extends L2GameServerPacket
 	     	_count = 1;
 		}
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x0b);
 		writeD(_objectId);
 		writeD(_itemId);
-		
+
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);

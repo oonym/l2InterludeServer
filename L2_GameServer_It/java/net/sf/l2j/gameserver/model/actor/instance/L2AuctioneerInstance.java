@@ -43,7 +43,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
     private static final int COND_ALL_FALSE = 0;
     private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
     private static final int COND_REGULAR = 3;
-    
+
     private Map<Integer, Auction> _pendingAuctions = new FastMap<Integer, Auction>();
 
     public L2AuctioneerInstance(int objectId, L2NpcTemplate template)
@@ -109,10 +109,10 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                         Auction a = new Auction(player.getClan().getHasHideout(), player.getClan(), days*86400000L, bid, ClanHallManager.getInstance().getClanHallByOwner(player.getClan()).getName());
                         if (_pendingAuctions.get(a.getId()) != null)
                             _pendingAuctions.remove(a.getId());
-                        
+
                         _pendingAuctions.put(a.getId(), a);
-                        
-                        String filename = "data/html/auction/AgitSale3.htm";                        
+
+                        String filename = "data/html/auction/AgitSale3.htm";
                         NpcHtmlMessage html = new NpcHtmlMessage(1);
                         html.setFile(filename);
                         html.replace("%x%", val);
@@ -146,12 +146,12 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                 catch (Exception e)
                 {
                     player.sendMessage("Invalid auction");
-                }                   
+                }
                 return;
             }
             else if (actualCommand.equalsIgnoreCase("bidding"))
             {
-                if (val == "") return;               
+                if (val == "") return;
                 if(Config.DEBUG) player.sendMessage("bidding show successful");
 
                 try
@@ -237,12 +237,12 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                     String filename = "data/html/auction/AgitBid1.htm";
 
                     int minimumBid = AuctionManager.getInstance().getAuction(Integer.parseInt(val)).getHighestBidderMaxBid();
-                    if (minimumBid == 0) minimumBid = AuctionManager.getInstance().getAuction(Integer.parseInt(val)).getStartingBid(); 
-                    
+                    if (minimumBid == 0) minimumBid = AuctionManager.getInstance().getAuction(Integer.parseInt(val)).getStartingBid();
+
                     NpcHtmlMessage html = new NpcHtmlMessage(1);
                     html.setFile(filename);
                     html.replace("%AGIT_LINK_BACK%", "bypass -h npc_"+getObjectId()+"_bidding "+val);
-                    html.replace("%PLEDGE_ADENA%", String.valueOf(player.getClan().getWarehouse().getAdena())); 
+                    html.replace("%PLEDGE_ADENA%", String.valueOf(player.getClan().getWarehouse().getAdena()));
                     html.replace("%AGIT_AUCTION_MINBID%", String.valueOf(minimumBid));
                     html.replace("npc_%objectId%_bid", "npc_"+getObjectId()+"_bid "+val);
                     player.sendPacket(html);
@@ -289,7 +289,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                             	"<td>"+format.format(a.getEndDate())+"</td>" +
                             	"<td>"+a.getStartingBid()+"</td>" +
                             "</tr>";
-                    
+
                 }
                 items+= "</table>";
                 String filename = "data/html/auction/AgitAuctionList.htm";
@@ -566,7 +566,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
     {
         int nearestTownId = MapRegionTable.getInstance().getMapRegion(plyr.getX(), plyr.getY());
         String nearestTown;
-        
+
         switch (nearestTownId)
         {
             case 5: nearestTown = "GLUDIO"; break;
@@ -578,7 +578,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
             case 16: nearestTown = "SCHUTTGART"; break;
             default: nearestTown = "ADEN"; break;
         }
-        
+
         return nearestTown;
     }
 }

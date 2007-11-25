@@ -57,8 +57,8 @@ import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.datatables.StaticObjects;
 import net.sf.l2j.gameserver.datatables.SummonItemsData;
 import net.sf.l2j.gameserver.datatables.TeleportLocationTable;
-import net.sf.l2j.gameserver.geoeditorcon.GeoEditorListener;
 import net.sf.l2j.gameserver.datatables.ZoneData;
+import net.sf.l2j.gameserver.geoeditorcon.GeoEditorListener;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;
@@ -376,7 +376,7 @@ public class GameServer
         GeoData.getInstance();
         if (Config.GEODATA == 2)
         	GeoPathFinding.getInstance();
-        
+
         // Load clan hall data before zone data
         _cHManager = ClanHallManager.getInstance();
 		CastleManager.getInstance();
@@ -393,7 +393,7 @@ public class GameServer
 		Announcements.getInstance();
 		MapRegionTable.getInstance();
 		EventDroplist.getInstance();
-		
+
 		/** Load Manor data */
 		L2Manor.getInstance();
 
@@ -598,7 +598,7 @@ public class GameServer
         L2PetDataTable.getInstance().loadPetsData();
 
         Universe.getInstance();
-        
+
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 			GeoEditorListener.getInstance();
 

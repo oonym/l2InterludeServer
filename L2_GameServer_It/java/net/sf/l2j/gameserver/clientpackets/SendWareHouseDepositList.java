@@ -38,7 +38,7 @@ import net.sf.l2j.gameserver.templates.L2EtcItemType;
  * This class ...
  *
  * 31  SendWareHouseDepositList  cd (dd)
- *  
+ *
  * @version $Revision: 1.3.4.5 $ $Date: 2005/04/11 10:06:09 $
  */
 public final class SendWareHouseDepositList extends L2GameClientPacket
@@ -48,24 +48,24 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 
 	private int _count;
 	private int[] _items;
-	
+
 	@Override
 	protected void readImpl()
 	{
 		_count = readD();
-		
+
 		// check packet list size
 		if (_count < 0  || _count * 8 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
 		{
             _count = 0;
 		}
-		
+
 		_items = new int[_count * 2];
 		for (int i=0; i < _count; i++)
 		{
 			int objectId = readD();
 			_items[i * 2 + 0] = objectId;
-			long cnt = readD(); 
+			long cnt = readD();
 			if (cnt > Integer.MAX_VALUE || cnt < 0)
 			{
 			    _count = 0;
@@ -85,7 +85,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
         if (warehouse == null) return;
 		L2FolkInstance manager = player.getLastFolkNPC();
         if ((manager == null || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM()) return;
-        
+
         if ((warehouse instanceof ClanWarehouse) && Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
         {
             player.sendMessage("Transactions are disable for your Access Level");
@@ -94,10 +94,10 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 
         // Alt game - Karma punishment
         if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && player.getKarma() > 0) return;
-        
+
         // Freight price from config or normal price per item slot (30)
 		int fee = _count * 30;
-		int currentAdena = player.getAdena(); 
+		int currentAdena = player.getAdena();
         int slots = 0;
 
 		for (int i = 0; i < _count; i++)
@@ -114,15 +114,15 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
             	_items[i * 2 + 1] = 0;
             	continue;
             }
-            
+
             if ((warehouse instanceof ClanWarehouse) && !item.isTradeable() || item.getItemType() == L2EtcItemType.QUEST) return;
             // Calculate needed adena and slots
             if (item.getItemId() == 57) currentAdena -= count;
             if (!item.isStackable()) slots += count;
             else if (warehouse.getItemByItemId(item.getItemId()) == null) slots++;
 		}
-		
-        // Item Max Limit Check 
+
+        // Item Max Limit Check
         if (!warehouse.validateCapacity(slots))
         {
             sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
@@ -142,22 +142,22 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 		{
 			int objectId = _items[i * 2 + 0];
 			int count = _items[i * 2 + 1];
-			
+
 			// check for an invalid item
 			if (objectId == 0 && count == 0) continue;
-			
+
 			L2ItemInstance oldItem = player.getInventory().getItemByObjectId(objectId);
             if (oldItem == null)
             {
                 _log.warning("Error depositing a warehouse object for char "+player.getName()+" (olditem == null)");
                 continue;
             }
-            
+
             int itemId = oldItem.getItemId();
-            
+
             if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
                 continue;
-            
+
 			L2ItemInstance newItem = player.getInventory().transferItem("Warehouse", objectId, count, warehouse, player, player.getLastFolkNPC());
             if (newItem == null)
             {
@@ -175,7 +175,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
         // Send updated item list to the player
 		if (playerIU != null) player.sendPacket(playerIU);
 		else player.sendPacket(new ItemList(player, false));
-		
+
 		// Update current load status on player
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());

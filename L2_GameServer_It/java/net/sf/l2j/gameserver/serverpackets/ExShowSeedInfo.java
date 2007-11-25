@@ -18,7 +18,6 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager.SeedProduction;
 import net.sf.l2j.gameserver.model.L2Manor;
 
@@ -27,23 +26,23 @@ import net.sf.l2j.gameserver.model.L2Manor;
  * ch ddd [dddddcdcd]
  * c  - id
  * h  - sub id
- * 
+ *
  * d  - manor id
  * d
  * d  - size
- * 
+ *
  * [
  * d  - seed id
  * d  - left to buy
  * d  - started amount
  * d  - sell price
  * d  - seed level
- * c 
+ * c
  * d  - reward 1 id
  * c
- * d  - reward 2 id 
+ * d  - reward 2 id
  * ]
- * 
+ *
  * @author l3x
  */
 public class ExShowSeedInfo extends L2GameServerPacket {

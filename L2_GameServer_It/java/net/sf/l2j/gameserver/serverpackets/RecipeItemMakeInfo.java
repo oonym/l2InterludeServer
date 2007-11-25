@@ -26,11 +26,11 @@ import net.sf.l2j.gameserver.model.L2RecipeList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
  *
- * 
+ *
+ *
  * format   dddd
- * 
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class RecipeItemMakeInfo extends L2GameServerPacket
@@ -66,10 +66,10 @@ public class RecipeItemMakeInfo extends L2GameServerPacket
             writeC(0xD7);
 
             writeD(_id);
-            writeD(recipe.isDwarvenRecipe() ? 0 : 1); // 0 = Dwarven - 1 = Common 
+            writeD(recipe.isDwarvenRecipe() ? 0 : 1); // 0 = Dwarven - 1 = Common
             writeD((int) _activeChar.getCurrentMp());
             writeD(_activeChar.getMaxMp());
-            writeD(_success ? 1 : 0); // item creation success/failed  
+            writeD(_success ? 1 : 0); // item creation success/failed
         }
         else if (Config.DEBUG) _log.info("No recipe found with ID = " + _id);
     }

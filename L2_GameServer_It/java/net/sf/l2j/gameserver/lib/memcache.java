@@ -27,14 +27,14 @@ public class memcache
 	private HashMap<Integer,String> _hms;
 	private HashMap<Integer,Integer> _hmi;
 	private HashMap<Integer,Long> _lastAccess;
-	
+
 	private static final memcache _instance = new memcache();
-	
+
 	public static memcache getInstance()
 	{
 		return _instance;
 	}
-	
+
 	private memcache()
 	{
 		_hms = new HashMap<Integer,String>();

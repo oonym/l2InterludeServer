@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 /**
  * This class handles following admin commands:
  * - help path = shows /data/html/admin/path file to char, should not be used by GM's directly
- * 
+ *
  * @version $Revision: 1.2.4.3 $ $Date: 2005/04/11 10:06:02 $
  */
 public class AdminHelpPage implements IAdminCommandHandler {
@@ -38,7 +38,7 @@ public class AdminHelpPage implements IAdminCommandHandler {
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!checkLevel(activeChar.getAccessLevel())) return false;
-		
+
 		if (command.startsWith("admin_help"))
 		{
 			try
@@ -49,20 +49,20 @@ public class AdminHelpPage implements IAdminCommandHandler {
 			catch (StringIndexOutOfBoundsException e)
 			{
 				//case of empty filename
-			}			
+			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean checkLevel(int level) {
 		return (level >= REQUIRED_LEVEL);
 	}
-	
+
 	//FIXME: implement method to send html to player in L2PcInstance directly
 	//PUBLIC & STATIC so other classes from package can include it directly
 	public static void showHelpPage(L2PcInstance targetChar, String filename)

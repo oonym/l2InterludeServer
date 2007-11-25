@@ -21,17 +21,17 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public final class RequestDeleteMacro extends L2GameClientPacket
-{  
+{
 	private int _id;
-	
+
 	private static final String _C__C2_REQUESTDELETEMACRO = "[C] C2 RequestDeleteMacro";
-	
+
 	@Override
 	protected void readImpl()
 	{
 		_id = readD();
 	}
-	
+
 	@Override
 	protected void runImpl()
 	{
@@ -43,7 +43,7 @@ public final class RequestDeleteMacro extends L2GameClientPacket
 		sendPacket(sm);
 		sm = null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

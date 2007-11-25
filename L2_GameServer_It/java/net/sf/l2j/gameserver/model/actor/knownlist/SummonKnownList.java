@@ -24,7 +24,7 @@ public class SummonKnownList extends PlayableKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public SummonKnownList(L2Summon activeChar)
@@ -34,7 +34,7 @@ public class SummonKnownList extends PlayableKnownList
 
     // =========================================================
     // Method - Public
-    
+
     // =========================================================
     // Method - Private
 

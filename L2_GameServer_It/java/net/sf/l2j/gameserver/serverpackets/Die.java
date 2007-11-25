@@ -27,13 +27,13 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 
 /**
  * sample
- * 0b 
- * 952a1048     objectId 
+ * 0b
+ * 952a1048     objectId
  * 00000000 00000000 00000000 00000000 00000000 00000000
- 
+
  * format  dddddd   rev 377
  * format  ddddddd   rev 417
- * 
+ *
  * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/27 18:46:18 $
  */
 public class Die extends L2GameServerPacket
@@ -57,15 +57,15 @@ public class Die extends L2GameServerPacket
             L2PcInstance player = (L2PcInstance)cha;
             _access = player.getAccessLevel();
             _clan=player.getClan();
-            
+
         }
         _charObjId = cha.getObjectId();
         _fake = !cha.isDead();
         if (cha instanceof L2Attackable)
             _sweepable = ((L2Attackable)cha).isSweepActive();
-        
+
     }
-    
+
     @Override
 	protected final void writeImpl()
     {
@@ -73,8 +73,8 @@ public class Die extends L2GameServerPacket
             return;
 
         writeC(0x06);
-        
-        writeD(_charObjId); 
+
+        writeD(_charObjId);
         // NOTE:
         // 6d 00 00 00 00 - to nearest village
         // 6d 01 00 00 00 - to hide away
@@ -91,7 +91,7 @@ public class Die extends L2GameServerPacket
             Castle castle = CastleManager.getInstance().getCastle(_activeChar);
             if (castle != null && castle.getSiege().getIsInProgress())
             {
-            	//siege in progress            	
+            	//siege in progress
                 siegeClan = castle.getSiege().getAttackerClan(_clan);
                 if (siegeClan == null && castle.getSiege().checkIsDefender(_clan)){
                 	isInDefense = true;
@@ -101,11 +101,11 @@ public class Die extends L2GameServerPacket
             writeD(_clan.getHasHideout() > 0 ? 0x01 : 0x00);            // 6d 01 00 00 00 - to hide away
             writeD(_clan.getHasCastle() > 0 ||
             	   isInDefense? 0x01 : 0x00);             				// 6d 02 00 00 00 - to castle
-            writeD(siegeClan != null && 
+            writeD(siegeClan != null &&
             	   !isInDefense &&
                    siegeClan.getFlag().size() > 0 ? 0x01 : 0x00);       // 6d 03 00 00 00 - to siege HQ
         }
-        else 
+        else
         {
             writeD(0x00);                                               // 6d 01 00 00 00 - to hide away
             writeD(0x00);                                               // 6d 02 00 00 00 - to castle

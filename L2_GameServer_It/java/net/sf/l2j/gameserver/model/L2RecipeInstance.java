@@ -25,11 +25,11 @@ public class L2RecipeInstance
 {
 	/** The Identifier of the item needed in the L2RecipeInstance */
     private int _itemId;
-	
+
 	/** The item quantity needed in the L2RecipeInstance */
     private int _quantity;
-    
-	
+
+
 	/**
 	 * Constructor of L2RecipeInstance (create a new line in a RecipeList).<BR><BR>
 	 */
@@ -38,7 +38,7 @@ public class L2RecipeInstance
         _itemId = itemId;
         _quantity = quantity;
     }
-    
+
 	/**
 	 * Return the Identifier of the L2RecipeInstance Item needed.<BR><BR>
 	 */
@@ -46,7 +46,7 @@ public class L2RecipeInstance
     {
         return _itemId;
     }
-    
+
 	/**
 	 * Return the Item quantity needed of the L2RecipeInstance.<BR><BR>
 	 */
@@ -54,5 +54,5 @@ public class L2RecipeInstance
     {
         return _quantity;
     }
-	
+
 }

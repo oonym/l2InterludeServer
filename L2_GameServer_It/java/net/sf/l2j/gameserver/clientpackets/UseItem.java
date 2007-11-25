@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.util.FloodProtector;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.18.2.7.2.9 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class UseItem extends L2GameClientPacket
@@ -49,7 +49,7 @@ public final class UseItem extends L2GameClientPacket
 	private static final String _C__14_USEITEM = "[C] 14 UseItem";
 
 	private int _objectId;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -61,10 +61,10 @@ public final class UseItem extends L2GameClientPacket
 	{
 
 		L2PcInstance activeChar = getClient().getActiveChar();
-        
-		if (activeChar == null) 
+
+		if (activeChar == null)
             return;
-		
+
 		// Flood protect UseItem
 		if (!FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_USEITEM))
 			return;
@@ -83,7 +83,7 @@ public final class UseItem extends L2GameClientPacket
 
 			if (item == null)
                 return;
-			
+
 			if (item.isWear())
 			{
 				// No unequipping wear-items
@@ -95,7 +95,7 @@ public final class UseItem extends L2GameClientPacket
 			 * Alt game - Karma punishment // SOE
 			 * 736  	Scroll of Escape
 			 * 1538  	Blessed Scroll of Escape
-			 * 1829  	Scroll of Escape: Clan Hall  	
+			 * 1829  	Scroll of Escape: Clan Hall
 			 * 1830  	Scroll of Escape: Castle
 			 * 3958  	L2Day - Blessed Scroll of Escape
 			 * 5858  	Blessed Scroll of Escape: Clan Hall
@@ -105,7 +105,7 @@ public final class UseItem extends L2GameClientPacket
 			 * 7117  	Scroll of Escape to Talking Island
 			 * 7118  	Scroll of Escape to Elven Village
 			 * 7119  	Scroll of Escape to Dark Elf Village
-			 * 7120  	Scroll of Escape to Orc Village  	
+			 * 7120  	Scroll of Escape to Orc Village
 			 * 7121  	Scroll of Escape to Dwarven Village
 			 * 7122  	Scroll of Escape to Gludin Village
 			 * 7123  	Scroll of Escape to the Town of Gludio
@@ -116,7 +116,7 @@ public final class UseItem extends L2GameClientPacket
 			 * 7128  	Scroll of Escape to Heine
 			 * 7129  	Scroll of Escape to the Town of Oren
 			 * 7130  	Scroll of Escape to Ivory Tower
-			 * 7131  	Scroll of Escape to Hunters Village  
+			 * 7131  	Scroll of Escape to Hunters Village
 			 * 7132  	Scroll of Escape to Aden Castle Town
 			 * 7133  	Scroll of Escape to the Town of Goddard
 			 * 7134  	Scroll of Escape to the Rune Township
@@ -125,22 +125,22 @@ public final class UseItem extends L2GameClientPacket
 			 * 7555  	Scroll of Escape to Elven Village
 			 * 7556  	Scroll of Escape to Dark Elf Village
 			 * 7557  	Scroll of Escape to Orc Village
-			 * 7558  	Scroll of Escape to Dwarven Village  	
+			 * 7558  	Scroll of Escape to Dwarven Village
 			 * 7559  	Scroll of Escape to Giran Castle Town
 			 * 7618  	Scroll of Escape - Ketra Orc Village
-			 * 7619  	Scroll of Escape - Varka Silenos Village  	 
+			 * 7619  	Scroll of Escape - Varka Silenos Village
 			 */
-			if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && activeChar.getKarma() > 0 
-				&& (itemId == 736 || itemId == 1538 || itemId == 1829 || itemId == 1830 
-				|| itemId == 3958 || itemId == 5858 || itemId == 5859 || itemId == 6663 
-				|| itemId == 6664 || (itemId >= 7117 && itemId <= 7135) 
-				|| (itemId >= 7554 && itemId <= 7559) || itemId == 7618 || itemId == 7619)) 
+			if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && activeChar.getKarma() > 0
+				&& (itemId == 736 || itemId == 1538 || itemId == 1829 || itemId == 1830
+				|| itemId == 3958 || itemId == 5858 || itemId == 5859 || itemId == 6663
+				|| itemId == 6664 || (itemId >= 7117 && itemId <= 7135)
+				|| (itemId >= 7554 && itemId <= 7559) || itemId == 7618 || itemId == 7619))
 				return;
 
 			// Items that cannot be used
-			if (itemId == 57) 
+			if (itemId == 57)
                 return;
-            
+
             if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
             {
                 // You cannot do anything else while fishing
@@ -149,7 +149,7 @@ public final class UseItem extends L2GameClientPacket
                 sm = null;
                 return;
             }
-            
+
 			// Char cannot use item when dead
 			if (activeChar.isDead())
 			{
@@ -159,7 +159,7 @@ public final class UseItem extends L2GameClientPacket
 				sm = null;
 				return;
 			}
-            
+
 			// Char cannot use pet items
 			if (item.getItem().isForWolf() || item.getItem().isForHatchling()
 				|| item.getItem().isForStrider() || item.getItem().isForBabyPet())
@@ -170,8 +170,8 @@ public final class UseItem extends L2GameClientPacket
 				sm = null;
 				return;
 			}
-            
-			if (Config.DEBUG) 
+
+			if (Config.DEBUG)
                 _log.finest(activeChar.getObjectId() + ": use item " + _objectId);
 
 			if (item.isEquipable())
@@ -187,8 +187,8 @@ public final class UseItem extends L2GameClientPacket
 				int bodyPart = item.getItem().getBodyPart();
                 // Prevent player to remove the weapon on special conditions
                 if ((activeChar.isAttackingNow() || activeChar.isCastingNow() || activeChar.isMounted())
-                        && (bodyPart == L2Item.SLOT_LR_HAND 
-                            || bodyPart == L2Item.SLOT_L_HAND 
+                        && (bodyPart == L2Item.SLOT_LR_HAND
+                            || bodyPart == L2Item.SLOT_L_HAND
                             || bodyPart == L2Item.SLOT_R_HAND))
                 {
                     return;
@@ -196,25 +196,25 @@ public final class UseItem extends L2GameClientPacket
                 /* Since c5 you can equip weapon again
                 // Don't allow weapon/shield equipment if wearing formal wear
                 if (activeChar.isWearingFormalWear()
-                	&& (bodyPart == L2Item.SLOT_LR_HAND 
-                            || bodyPart == L2Item.SLOT_L_HAND 
+                	&& (bodyPart == L2Item.SLOT_LR_HAND
+                            || bodyPart == L2Item.SLOT_L_HAND
                             || bodyPart == L2Item.SLOT_R_HAND))
                 {
         				SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_USE_ITEMS_SKILLS_WITH_FORMALWEAR);
         				activeChar.sendPacket(sm);
                         return;
                 } */
-                
+
                 // Don't allow weapon/shield equipment if a cursed weapon is equiped
                 if (activeChar.isCursedWeaponEquiped()
-                		&& ((bodyPart == L2Item.SLOT_LR_HAND 
-                				|| bodyPart == L2Item.SLOT_L_HAND 
+                		&& ((bodyPart == L2Item.SLOT_LR_HAND
+                				|| bodyPart == L2Item.SLOT_L_HAND
                 				|| bodyPart == L2Item.SLOT_R_HAND)
                 		|| itemId == 6408)) // Don't allow to put formal wear
                 {
                 	return;
                 }
-                
+
                 // Don't allow weapon/shield hero equipment during Olympiads
                 if (activeChar.isInOlympiadMode()
                 		&& (
@@ -224,7 +224,7 @@ public final class UseItem extends L2GameClientPacket
                 			)
                 		&& (
                 				(item.getItemId() >= 6611 && item.getItemId() <= 6621) ||
-                				item.getItemId() == 6842 
+                				item.getItemId() == 6842
                 			)
                 	)
                 {
@@ -240,7 +240,7 @@ public final class UseItem extends L2GameClientPacket
                 			)
                 		&& (
                 				(item.getItemId() >= 6611 && item.getItemId() <= 6621) ||
-                				item.getItemId() == 6842 
+                				item.getItemId() == 6842
                 			)
                 	)
                 {
@@ -271,11 +271,11 @@ public final class UseItem extends L2GameClientPacket
 			            sm.addItemName(itemId);
 		            }
 		            activeChar.sendPacket(sm);
-		            
+
 		            // Remove augementation boni on unequip
 		            if (item.isAugmented())
 		            	item.getAugmentation().removeBoni(activeChar);
-		            
+
 		            int slot = activeChar.getInventory().getSlotFromItem(item);
                 	items = activeChar.getInventory().unEquipItemInBodySlotAndRecord(slot);
                 }
@@ -283,7 +283,7 @@ public final class UseItem extends L2GameClientPacket
                 {
                 	int tempBodyPart = item.getItem().getBodyPart();
                 	L2ItemInstance tempItem = activeChar.getInventory().getPaperdollItemByL2ItemId(tempBodyPart);
-                	
+
                 	// remove augmentation stats for replaced items
                 	// currently weapons only..
                 	if (tempItem != null && tempItem.isAugmented())
@@ -297,7 +297,7 @@ public final class UseItem extends L2GameClientPacket
                     	if (tempItem2 != null && tempItem2.isAugmented())
                     		tempItem2.getAugmentation().removeBoni(activeChar);
                 	}
-                	
+
                 	//check if the item replaces a wear-item
                 	if (tempItem != null && tempItem.isWear())
                 	{
@@ -309,7 +309,7 @@ public final class UseItem extends L2GameClientPacket
                 		// this may not remove left OR right hand equipment
                 		tempItem = activeChar.getInventory().getPaperdollItem(7);
                 		if (tempItem != null && tempItem.isWear()) return;
-                		
+
                 		tempItem = activeChar.getInventory().getPaperdollItem(8);
                 		if (tempItem != null && tempItem.isWear()) return;
                 	}
@@ -318,7 +318,7 @@ public final class UseItem extends L2GameClientPacket
                 		// this may not remove chest or leggins
                 		tempItem = activeChar.getInventory().getPaperdollItem(10);
                 		if (tempItem != null && tempItem.isWear()) return;
-                		
+
                 		tempItem = activeChar.getInventory().getPaperdollItem(11);
                 		if (tempItem != null && tempItem.isWear()) return;
                 	}
@@ -335,20 +335,20 @@ public final class UseItem extends L2GameClientPacket
 						sm.addItemName(itemId);
 					}
 					activeChar.sendPacket(sm);
-					
+
 		            // Apply augementation boni on equip
 		            if (item.isAugmented())
 		            	item.getAugmentation().applyBoni(activeChar);
-		            
+
 					items = activeChar.getInventory().equipItemAndRecord(item);
-					
+
 		            // Consume mana - will start a task if required; returns if item is not a shadow item
 		            item.decreaseMana(false);
                 }
                 sm = null;
 
                 activeChar.refreshExpertisePenalty();
-                
+
 				if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
 					activeChar.checkIfWeaponIsAllowed();
 
@@ -363,7 +363,7 @@ public final class UseItem extends L2GameClientPacket
                 L2Weapon weaponItem = activeChar.getActiveWeaponItem();
                 int itemid = item.getItemId();
 				//_log.finest("item not equipable id:"+ item.getItemId());
-                if (itemid == 4393) 
+                if (itemid == 4393)
                 {
                         activeChar.sendPacket(new ShowCalculator(4393));
                 }
@@ -380,10 +380,10 @@ public final class UseItem extends L2GameClientPacket
 				else
 				{
 					IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getItemId());
-                    
-					if (handler == null) 
+
+					if (handler == null)
                         _log.warning("No item handler registered for item ID " + item.getItemId() + ".");
-					else 
+					else
                         handler.useItem(activeChar, item);
 				}
 			}

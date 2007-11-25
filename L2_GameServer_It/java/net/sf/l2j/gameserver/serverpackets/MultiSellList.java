@@ -8,7 +8,7 @@
  * Revision 1  2/08/2005 14:21:01  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.model.L2Multisell.MultiSellListContainer;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 public class MultiSellList extends L2GameServerPacket
@@ -45,7 +45,7 @@ public class MultiSellList extends L2GameServerPacket
 
     protected int _listId, _page, _finished;
     protected MultiSellListContainer _list;
-    
+
     public MultiSellList(MultiSellListContainer list, int page, int finished)
     {
     	_list = list;
@@ -53,19 +53,19 @@ public class MultiSellList extends L2GameServerPacket
     	_page = page;
     	_finished = finished;
     }
-    
+
     @Override
 	protected void writeImpl()
     {
     	// [ddddd] [dchh] [hdhdh] [hhdh]
-    	
+
         writeC(0xd0);
         writeD(_listId);    // list id
         writeD(_page);		// page
         writeD(_finished);	// finished
         writeD(0x28);	// size of pages
         writeD(_list == null ? 0 : _list.getEntries().size()); //list lenght
-        
+
         if(_list != null)
         {
             for(MultiSellEntry ent : _list.getEntries())
@@ -76,7 +76,7 @@ public class MultiSellList extends L2GameServerPacket
             	writeC(1);
             	writeH(ent.getProducts().size());
             	writeH(ent.getIngredients().size());
-    
+
             	for(MultiSellIngredient i: ent.getProducts())
             	{
 	            	writeH(i.getItemId());
@@ -87,7 +87,7 @@ public class MultiSellList extends L2GameServerPacket
 	            	writeD(0x00); // C6
 	            	writeD(0x00); // C6
             	}
-        	    
+
                 for(MultiSellIngredient i : ent.getIngredients())
                 {
                 	int items = i.getItemId();

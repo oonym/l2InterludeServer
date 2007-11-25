@@ -45,5 +45,5 @@ public class ExOrcMove extends L2GameServerPacket
 	{
 		return _S__FE_44_EXORCMOVE;
 	}
-	
+
 }

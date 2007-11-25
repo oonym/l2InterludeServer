@@ -32,7 +32,7 @@ public class AttackableKnownList extends NpcKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public AttackableKnownList(L2Attackable activeChar)
@@ -47,12 +47,12 @@ public class AttackableKnownList extends NpcKnownList
     {
         if (!super.removeKnownObject(object)) return false;
 
-        // Remove the L2Object from the _aggrolist of the L2Attackable            
+        // Remove the L2Object from the _aggrolist of the L2Attackable
         if (object != null && object instanceof L2Character)
             getActiveChar().getAggroList().remove(object);
         // Set the L2Attackable Intention to AI_INTENTION_IDLE
         Collection<L2PcInstance> known = getKnownPlayers().values();
-        
+
         //FIXME: This is a temporary solution
         L2CharacterAI ai = getActiveChar().getAI();
         if (ai != null && (known == null || known.isEmpty()))
@@ -62,7 +62,7 @@ public class AttackableKnownList extends NpcKnownList
 
         return true;
     }
-    
+
     // =========================================================
     // Method - Private
 
@@ -74,8 +74,8 @@ public class AttackableKnownList extends NpcKnownList
     @Override
 	public int getDistanceToForgetObject(L2Object object)
     {
-        if (getActiveChar().getAggroListRP() != null)        
-        	if (getActiveChar().getAggroListRP().get(object) != null) return 3000;            
+        if (getActiveChar().getAggroListRP() != null)
+        	if (getActiveChar().getAggroListRP().get(object) != null) return 3000;
         return Math.min(2200, 2 * getDistanceToWatchObject(object));
     }
 
@@ -84,16 +84,16 @@ public class AttackableKnownList extends NpcKnownList
     {
         if (object instanceof L2FolkInstance || !(object instanceof L2Character))
             return 0;
-        
-        if (object instanceof L2PlayableInstance) 
+
+        if (object instanceof L2PlayableInstance)
             return 1500;
-        
+
         if (getActiveChar().getAggroRange() > getActiveChar().getFactionRange())
             return getActiveChar().getAggroRange();
-        
+
         if (getActiveChar().getFactionRange() > 200)
             return getActiveChar().getFactionRange();
-        
+
         return 200;
     }
 }

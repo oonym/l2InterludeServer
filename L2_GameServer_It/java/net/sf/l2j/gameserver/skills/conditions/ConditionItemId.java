@@ -29,12 +29,12 @@ import net.sf.l2j.gameserver.skills.Env;
 public final class ConditionItemId extends Condition {
 
 	private final int _itemId;
-	
+
 	public ConditionItemId(int itemId)
 	{
 		_itemId= itemId;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env)
 	{

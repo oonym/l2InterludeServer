@@ -67,7 +67,7 @@ public class LoginStatusThread extends Thread
 	}
 
 	private boolean isValidIP(Socket client) {
-		boolean result = false;        
+		boolean result = false;
 		InetAddress ClientIP = client.getInetAddress();
 
 		// convert IP to String, and compare with list
@@ -76,7 +76,7 @@ public class LoginStatusThread extends Thread
 		telnetOutput(1, "Connection from: "+clientStringIP);
 
 		// read and loop thru list of IPs, compare with newIP
-		if ( Config.DEVELOPER ) telnetOutput(2, "");    
+		if ( Config.DEVELOPER ) telnetOutput(2, "");
 
 		try {
 			Properties telnetSettings = new Properties();
@@ -96,7 +96,7 @@ public class LoginStatusThread extends Thread
 					if ( clientStringIP.equals(ipToCompare) ) result = true;
 					if ( Config.DEVELOPER ) telnetOutput(3, clientStringIP + " = " + ipToCompare + "("+ip+") = " + result);
 				}
-			}    
+			}
 		}
 		catch ( IOException e) {
 			if ( Config.DEVELOPER ) telnetOutput(4, "");
@@ -114,7 +114,7 @@ public class LoginStatusThread extends Thread
 		_print = new PrintWriter(_cSocket.getOutputStream());
 		_read  = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
 
-		if ( isValidIP(client) ) {    
+		if ( isValidIP(client) ) {
 			telnetOutput(1, client.getInetAddress().getHostAddress()+" accepted.");
 			_print.println("Welcome To The L2J Telnet Session.");
 			_print.println("Please Insert Your Login!");

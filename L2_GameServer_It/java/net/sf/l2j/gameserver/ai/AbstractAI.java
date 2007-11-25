@@ -504,7 +504,7 @@ abstract class AbstractAI implements Ctrl
             L2GameServerPacket msg;
 
             if (pawn instanceof L2Character) {
-            	if(_actor.isOnGeodataPath()) 
+            	if(_actor.isOnGeodataPath())
             		msg = new CharMoveToLocation(_actor);
             	else
             		msg = new MoveToPawn(_actor, (L2Character) pawn, offset);
@@ -611,24 +611,24 @@ abstract class AbstractAI implements Ctrl
             }
         }
     }
-    
+
     // Client has already arrived to target, no need to force StopMove packet
     protected void clientStoppedMoving()
     {
     	if (_clientMovingToPawnOffset > 0) // movetoPawn needs to be stopped
-    	{	
+    	{
     		_clientMovingToPawnOffset = 0;
     		StopMove msg = new StopMove(_actor);
             _actor.broadcastPacket(msg);
     	}
     	_clientMoving = false;
     }
-    
+
     public boolean isAutoAttacking()
     {
         return _clientAutoAttacking;
     }
-    
+
     public void setAutoAttacking(boolean isAutoAttacking)
     {
         _clientAutoAttacking = isAutoAttacking;
@@ -661,7 +661,7 @@ abstract class AbstractAI implements Ctrl
     {
         if (_actor instanceof L2PcInstance)
         {
-            if (!AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor) && isAutoAttacking()) 
+            if (!AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor) && isAutoAttacking())
                 AttackStanceTaskManager.getInstance().addAttackStanceTask(_actor);
         }
         else if (isAutoAttacking())

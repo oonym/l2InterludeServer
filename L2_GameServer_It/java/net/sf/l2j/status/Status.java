@@ -35,15 +35,15 @@ import net.sf.l2j.util.Rnd;
 
 public class Status extends Thread
 {
-    
+
     private ServerSocket    statusServerSocket;
-    
+
     private int             		_uptime;
     private int             		_statusPort;
     private String          		_statusPw;
     private int						_mode;
     private List<LoginStatusThread> _loginStatus;
-    
+
     @Override
 	public void run()
     {
@@ -52,7 +52,7 @@ public class Status extends Thread
             try
             {
                 Socket connection = statusServerSocket.accept();
-                
+
                 if(_mode == Server.MODE_GAMESERVER)
                 {
                 	new GameStatusThread(connection, _uptime, _statusPw);
@@ -89,7 +89,7 @@ public class Status extends Thread
             }
         }
     }
-    
+
     public Status(int mode) throws IOException
     {
         super("Status");
@@ -98,7 +98,7 @@ public class Status extends Thread
         InputStream is = new FileInputStream( new File(Config.TELNET_FILE));
         telnetSettings.load(is);
         is.close();
-        
+
         _statusPort       = Integer.parseInt(telnetSettings.getProperty("StatusPort", "12345"));
         _statusPw         = telnetSettings.getProperty("StatusPW");
         if(_mode == Server.MODE_GAMESERVER)
@@ -122,9 +122,9 @@ public class Status extends Thread
         _uptime = (int) System.currentTimeMillis();
         _loginStatus = new FastList<LoginStatusThread>();
     }
-    
-    
-    
+
+
+
     private String rndPW(int length)
     {
         TextBuilder password = new TextBuilder();
@@ -149,7 +149,7 @@ public class Status extends Thread
         }
         return password.toString();
     }
-    
+
     public void sendMessageToTelnets(String msg)
     {
     	List<LoginStatusThread> lsToRemove = new FastList<LoginStatusThread>();

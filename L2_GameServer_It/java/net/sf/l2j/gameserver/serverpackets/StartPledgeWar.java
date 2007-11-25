@@ -29,7 +29,7 @@ public class StartPledgeWar extends L2GameServerPacket
         _pledgeName = pledge;
         _playerName = charName;
     }
-    
+
     @Override
 	protected final void writeImpl()
     {
@@ -37,7 +37,7 @@ public class StartPledgeWar extends L2GameServerPacket
         writeS(_playerName);
         writeS(_pledgeName);
     }
-    
+
     @Override
 	public String getType()
     {

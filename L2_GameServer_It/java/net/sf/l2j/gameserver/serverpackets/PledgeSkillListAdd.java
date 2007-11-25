@@ -28,7 +28,7 @@ public class PledgeSkillListAdd extends L2GameServerPacket
 	private static final String _S__FE_3A_PLEDGESKILLLISTADD = "[S] FE:3A PledgeSkillListAdd";
 	private int _id;
 	private int _lvl;
-	
+
 	public PledgeSkillListAdd(int id, int lvl)
 	{
 		_id = id;
@@ -43,7 +43,7 @@ public class PledgeSkillListAdd extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x3a);
-		
+
 		writeD(_id);
 		writeD(_lvl);
 	}

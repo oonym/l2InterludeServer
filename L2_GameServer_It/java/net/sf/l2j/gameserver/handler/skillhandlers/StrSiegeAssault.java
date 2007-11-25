@@ -16,7 +16,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-package net.sf.l2j.gameserver.handler.skillhandlers; 
+package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
@@ -33,15 +33,15 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 
-/** 
- * @author _tomciaaa_ 
- * 
- */ 
-public class StrSiegeAssault implements ISkillHandler 
-{ 
-    //private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName()); 
-	private static final SkillType[] SKILL_IDS = {SkillType.STRSIEGEASSAULT}; 
-    
+/**
+ * @author _tomciaaa_
+ *
+ */
+public class StrSiegeAssault implements ISkillHandler
+{
+    //private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName());
+	private static final SkillType[] SKILL_IDS = {SkillType.STRSIEGEASSAULT};
+
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
 
@@ -63,7 +63,7 @@ public class StrSiegeAssault implements ISkillHandler
 
             // damage calculation
             int damage = 0;
-                      
+
             for(int index = 0;index < targets.length;index++)
             {
                 L2Character target = (L2Character)targets[index];
@@ -75,23 +75,23 @@ public class StrSiegeAssault implements ISkillHandler
                 }
                 else if (target.isAlikeDead())
                     continue;
-                
+
                 boolean dual  = activeChar.isUsingDualWeapon();
                 boolean shld = Formulas.getInstance().calcShldUse(activeChar, target);
                 boolean crit = Formulas.getInstance().calcCrit(activeChar.getCriticalHit(target, skill));
                 boolean soul = (weapon!= null && weapon.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT && weapon.getItemType() != L2WeaponType.DAGGER );
-                
+
                 if(!crit && (skill.getCondition() & L2Skill.COND_CRIT) != 0)
                 	damage = 0;
                 else
                 	damage = (int)Formulas.getInstance().calcPhysDam(
             			activeChar, target, skill, shld, crit, dual, soul);
-                
+
                 if (damage > 0)
                 {
                 	target.reduceCurrentHp(damage, activeChar);
                 	if (soul && weapon!= null)
-                		weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);                
+                		weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 
                 	activeChar.sendDamageMessage(target, damage, false, false, false);
 
@@ -103,16 +103,16 @@ public class StrSiegeAssault implements ISkillHandler
         {
             player.sendMessage("Error using siege assault:" + e);
         }
-    } 
-    
-    public SkillType[] getSkillIds() 
-    { 
-        return SKILL_IDS; 
+    }
+
+    public SkillType[] getSkillIds()
+    {
+        return SKILL_IDS;
     }
 
     /**
      * Return true if character clan place a flag<BR><BR>
-     * 
+     *
      * @param activeChar The L2Character of the character placing the flag
      * @param isCheckOnly if false, it will send a notification to the player telling him
      * why it failed
@@ -126,7 +126,7 @@ public class StrSiegeAssault implements ISkillHandler
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance))
             return false;
-        
+
         SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
         L2PcInstance player = (L2PcInstance)activeChar;
 
@@ -140,7 +140,7 @@ public class StrSiegeAssault implements ISkillHandler
             sm.addString("You can only use strider siege assault when on strider.");
         else
             return true;
-        
+
         if (!isCheckOnly) {player.sendPacket(sm);}
         return false;
     }

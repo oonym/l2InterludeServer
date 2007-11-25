@@ -25,7 +25,7 @@ public class ExRedSky extends L2GameServerPacket
 {
 	private static final String _S__FE_40_EXREDSKYPACKET = "[S] FE:40 ExRedSkyPacket";
 	private int _duration;
-	
+
 	public ExRedSky(int duration)
 	{
 		_duration = duration;

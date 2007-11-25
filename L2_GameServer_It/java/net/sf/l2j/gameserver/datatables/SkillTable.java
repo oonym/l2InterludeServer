@@ -27,17 +27,17 @@ import net.sf.l2j.gameserver.templates.L2WeaponType;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.8.2.6.2.18 $ $Date: 2005/04/06 16:13:25 $
  */
 public class SkillTable
 {
 	//private static Logger _log = Logger.getLogger(SkillTable.class.getName());
 	private static SkillTable _instance;
-	
+
 	private Map<Integer, L2Skill> _skills;
 	private boolean _initialized = true;
-    
+
 	public static SkillTable getInstance()
 	{
 		if (_instance == null)
@@ -50,17 +50,17 @@ public class SkillTable
 		_skills = new FastMap<Integer, L2Skill>();
 		SkillsEngine.getInstance().loadAllSkills(_skills);
 	}
-    
+
     public void reload()
     {
         _instance = new SkillTable();
     }
-    
+
 	public boolean isInitialized()
 	{
 	    return _initialized;
 	}
-	
+
 	/**
      * Provides the skill hash
      * @param skill The L2Skill to be hashed
@@ -70,7 +70,7 @@ public class SkillTable
     {
         return SkillTable.getSkillHashCode(skill.getId(), skill.getLevel());
     }
-	
+
     /**
      * Centralized method for easier change of the hashing sys
      * @param skillId The Skill Id
@@ -81,7 +81,7 @@ public class SkillTable
     {
         return skillId*256+skillLevel;
     }
-    
+
 	public L2Skill getInfo(int skillId, int level)
 	{
 		return _skills.get(SkillTable.getSkillHashCode(skillId, level));
@@ -90,19 +90,19 @@ public class SkillTable
 	public int getMaxLevel(int magicId, int level)
 	{
 	    L2Skill temp;
-        
-	    while (level < 100) 
+
+	    while (level < 100)
 	    {
 	        level++;
 	        temp = _skills.get(SkillTable.getSkillHashCode(magicId, level));
-        
+
 		    if (temp == null)
 		        return level-1;
 	    }
-        
+
 	    return level;
 	}
-	
+
 	private static final L2WeaponType[] weaponDbMasks = {
 		L2WeaponType.ETC,
 		L2WeaponType.BOW,
@@ -116,14 +116,14 @@ public class SkillTable
         L2WeaponType.ROD,
         L2WeaponType.BIGBLUNT
 		};
-	
+
 	public int calcWeaponsAllowed(int mask)
 	{
 		if (mask == 0)
 			return 0;
-        
+
 		int weaponsAllowed = 0;
-        
+
 		for (int i=0; i < weaponDbMasks.length; i++)
 			if ((mask & (1<<i)) != 0)
 				weaponsAllowed |= weaponDbMasks[i].mask();

@@ -56,13 +56,13 @@ public abstract class ItemContainer
 	 * @return int
 	 */
 	public int getOwnerId(){return getOwner() == null ? 0 : getOwner().getObjectId();}
-	
+
 	/**
 	 * Returns the quantity of items in the inventory
 	 * @return int
 	 */
 	public int getSize() {return _items.size();}
-	
+
 	/**
 	 * Returns the list of items in inventory
 	 * @return L2ItemInstance : items in inventory
@@ -71,7 +71,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Returns the item from inventory by using its <B>itemId</B><BR><BR>
-     * 
+     *
 	 * @param itemId : int designating the ID of the item
 	 * @return L2ItemInstance designating the item or null if not found in inventory
 	 */
@@ -82,10 +82,10 @@ public abstract class ItemContainer
 
 	    return null;
 	}
-    
+
     /**
      * Returns the item from inventory by using its <B>itemId</B><BR><BR>
-     * 
+     *
      * @param itemId : int designating the ID of the item
      * @param itemToIgnore : used during a loop, to avoid returning the same item
      * @return L2ItemInstance designating the item or null if not found in inventory
@@ -93,10 +93,10 @@ public abstract class ItemContainer
     public L2ItemInstance getItemByItemId(int itemId, L2ItemInstance itemToIgnore)
     {
         for (L2ItemInstance item : _items)
-                if (item != null && item.getItemId() == itemId && 
-                        !item.equals(itemToIgnore)) 
-                    return item; 
-        
+                if (item != null && item.getItemId() == itemId &&
+                        !item.equals(itemToIgnore))
+                    return item;
+
         return null;
     }
 
@@ -112,7 +112,7 @@ public abstract class ItemContainer
 
 	    return null;
 	}
-    
+
     /**
      * Gets count of item in the inventory
 	 * @param itemId : Item to look for
@@ -122,7 +122,7 @@ public abstract class ItemContainer
     public int getInventoryItemCount(int itemId, int enchantLevel)
     {
         int count = 0;
-        
+
         for (L2ItemInstance item : _items)
             if (item.getItemId() == itemId && ((item.getEnchantLevel() == enchantLevel) || (enchantLevel<0)))
                 //if (item.isAvailable((L2PcInstance)getOwner(), true) || item.getItem().getType2() == 3)//available or quest item
@@ -130,7 +130,7 @@ public abstract class ItemContainer
                     count = item.getCount();
                 else
                     count++;
-        
+
         return count;
     }
 
@@ -157,9 +157,9 @@ public abstract class ItemContainer
 			ItemTable.getInstance().destroyItem(process, item, actor, reference);
 			item.updateDatabase();
 			item = olditem;
-			
+
 			// Updates database
-			if (item.getItemId() == 57 && count < 10000*Config.RATE_DROP_ADENA) 
+			if (item.getItemId() == 57 && count < 10000*Config.RATE_DROP_ADENA)
 			{
 				// Small adena changes won't be saved to database all the time
 				if (GameTimeController.getGameTicks() % 5 == 0)
@@ -185,7 +185,7 @@ public abstract class ItemContainer
 		refreshWeight();
 		return item;
 	}
-	
+
     /**
      * Adds item to inventory
 	 * @param process : String Identifier of process triggering this action
@@ -198,14 +198,14 @@ public abstract class ItemContainer
     public L2ItemInstance addItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
     {
 		L2ItemInstance item = getItemByItemId(itemId);
-		
+
 		// If stackable item is found in inventory just add to current quantity
 		if (item != null && item.isStackable())
 		{
 			item.changeCount(process, count, actor, reference);
 			item.setLastChange(L2ItemInstance.MODIFIED);
 			// Updates database
-			if (itemId == 57 && count < 10000*Config.RATE_DROP_ADENA) 
+			if (itemId == 57 && count < 10000*Config.RATE_DROP_ADENA)
 			{
 				// Small adena changes won't be saved to database all the time
 				if (GameTimeController.getGameTicks() % 5 == 0)
@@ -236,18 +236,18 @@ public abstract class ItemContainer
 				// Updates database
 				item.updateDatabase();
 
-                // If stackable, end loop as entire count is included in 1 instance of item  
+                // If stackable, end loop as entire count is included in 1 instance of item
                 if (template.isStackable() || !Config.MULTIPLE_ITEM_DROP) break;
 			}
 		}
-		
+
 		refreshWeight();
 		return item;
 	}
-	
+
     /**
      * Adds Wear/Try On item to inventory<BR><BR>
-     * 
+     *
 	 * @param process : String Identifier of process triggering this action
      * @param itemId : int Item Identifier of the item to be added
 	 * @param actor : L2PcInstance Player requesting the item add
@@ -258,7 +258,7 @@ public abstract class ItemContainer
     {
         // Surch the item in the inventory of the player
 		L2ItemInstance item = getItemByItemId(itemId);
-		
+
 		// There is such item already in inventory
 		if (item != null) return item;
 
@@ -274,13 +274,13 @@ public abstract class ItemContainer
 
 		// Add item in inventory and equip it if necessary (item location defined)
 		addItem(item);
-        
+
         // Calculate the weight loaded by player
 		refreshWeight();
-        
+
 		return item;
 	}
-	
+
     /**
      * Transfers item to another inventory
 	 * @param process : String Identifier of process triggering this action
@@ -296,7 +296,7 @@ public abstract class ItemContainer
         {
         	return null;
         }
-        
+
     	L2ItemInstance sourceitem = getItemByObjectId(objectId);
     	if (sourceitem == null)
     	{
@@ -311,10 +311,10 @@ public abstract class ItemContainer
         	{
         		return null;
         	}
-        	
+
         	// Check if requested quantity is available
         	if (count > sourceitem.getCount()) count = sourceitem.getCount();
-    
+
         	// If possible, move entire item object
         	if (sourceitem.getCount() == count && targetitem == null)
         	{
@@ -324,7 +324,7 @@ public abstract class ItemContainer
         	}
         	else
         	{
-        		if (sourceitem.getCount() > count) // If possible, only update counts 
+        		if (sourceitem.getCount() > count) // If possible, only update counts
         		{
         			sourceitem.changeCount(process, -count, actor, reference);
         		}
@@ -333,17 +333,17 @@ public abstract class ItemContainer
             		removeItem(sourceitem);
                     ItemTable.getInstance().destroyItem(process, sourceitem, actor, reference);
         		}
-        		
+
         		if (targetitem != null) // If possible, only update counts
         		{
         			targetitem.changeCount(process, count, actor, reference);
         		}
-        		else // Otherwise add new item 
+        		else // Otherwise add new item
         		{
         			targetitem = target.addItem(process, sourceitem.getItemId(), count, actor, reference);
         		}
         	}
-    		
+
     		// Updates database
     		sourceitem.updateDatabase();
     		if (targetitem != sourceitem && targetitem != null) targetitem.updateDatabase();
@@ -353,7 +353,7 @@ public abstract class ItemContainer
         }
 		return targetitem;
 	}
-	
+
 	/**
 	 * Destroy item from inventory and updates database
 	 * @param process : String Identifier of process triggering this action
@@ -371,10 +371,10 @@ public abstract class ItemContainer
         	{
         		return null;
         	}
-        	
+
     		removeItem(item);
             ItemTable.getInstance().destroyItem(process, item, actor, reference);
-    
+
     		item.updateDatabase();
     		refreshWeight();
         }
@@ -402,7 +402,7 @@ public abstract class ItemContainer
             {
     			item.changeCount(process, -count, actor, reference);
     			item.setLastChange(L2ItemInstance.MODIFIED);
-    
+
     			item.updateDatabase();
     			refreshWeight();
                 }
@@ -436,7 +436,7 @@ public abstract class ItemContainer
     		}
     		// Directly drop entire item
     		else return destroyItem(process, item, actor, reference);
-    
+
     		item.updateDatabase();
     		refreshWeight();
         }
@@ -451,27 +451,27 @@ public abstract class ItemContainer
 	 */
 	public synchronized void destroyAllItems(String process, L2PcInstance actor, L2Object reference)
 	{
-		for (L2ItemInstance item : _items) 
+		for (L2ItemInstance item : _items)
 			destroyItem(process, item, actor, reference);
 	}
-	
+
 	/**
-	 * Get warehouse adena  
+	 * Get warehouse adena
 	 */
 	public int getAdena()
     {
         int count = 0;
-        
+
         for (L2ItemInstance item : _items)
             if (item.getItemId() == 57)
             {
                 count = item.getCount();
                 return count;
             }
-        
+
         return count;
     }
-	
+
     /**
      * Adds item to inventory for further adjustments.
      * @param item : L2ItemInstance to be added from inventory
@@ -503,12 +503,12 @@ public abstract class ItemContainer
 		try { updateDatabase(); } catch (Throwable t) {_log.log(Level.SEVERE, "deletedMe()", t); }
 		List<L2Object> items = new FastList<L2Object>(_items);
     	_items.clear();
-		
+
     	L2World.getInstance().removeObjects(items);
 	}
-	
+
 	/**
-	 * Update database with items in inventory  
+	 * Update database with items in inventory
 	 */
 	public void updateDatabase()
 	{
@@ -537,14 +537,14 @@ public abstract class ItemContainer
             statement.setInt(1, getOwnerId());
             statement.setString(2, getBaseLocation().name());
             ResultSet inv = statement.executeQuery();
-            
+
             L2ItemInstance item;
             while (inv.next())
             {
 				int objectId = inv.getInt(1);
 				item = L2ItemInstance.restoreFromDb(objectId);
 				if (item == null) continue;
-				
+
 				L2World.getInstance().storeObject(item);
 
 				// If stackable item is found in inventory just add to current quantity
@@ -552,7 +552,7 @@ public abstract class ItemContainer
 					addItem("Restore", item, null, getOwner());
 				else addItem(item);
             }
-            
+
             inv.close();
             statement.close();
             refreshWeight();
@@ -560,15 +560,15 @@ public abstract class ItemContainer
         catch (Exception e)
         {
 			_log.log(Level.WARNING, "could not restore container:", e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     public boolean validateCapacity(int slots) { return true; }
-    
-    public boolean validateWeight(int weight) { return true; }    
+
+    public boolean validateWeight(int weight) { return true; }
 
 }

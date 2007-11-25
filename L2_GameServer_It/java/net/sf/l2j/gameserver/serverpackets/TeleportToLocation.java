@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 
 /**
  * format  dddd
- * 
+ *
  * sample
  * 0000: 3a  69 08 10 48  02 c1 00 00  f7 56 00 00  89 ea ff    :i..H.....V.....
  * 0010: ff  0c b2 d8 61                                     ....a
@@ -47,7 +47,7 @@ public class TeleportToLocation extends L2GameServerPacket
 		_y = y;
 		_z = z;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

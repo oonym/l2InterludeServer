@@ -20,9 +20,9 @@ package net.sf.l2j.gameserver.serverpackets;
 /**
  *
  * @author  chris_00
- * 
+ *
  * close the CommandChannel Information window
- * 
+ *
  */
 public class ExCloseMPCC extends L2GameServerPacket
 {
@@ -36,7 +36,7 @@ public class ExCloseMPCC extends L2GameServerPacket
 	protected void writeImpl()
 	{
 		writeC(0xfe);
-		writeH(0x26);		
+		writeH(0x26);
 	}
 
 	/* (non-Javadoc)
@@ -47,5 +47,5 @@ public class ExCloseMPCC extends L2GameServerPacket
 	{
 		return _S__FE_26_EXCLOSEMPCC;
 	}
-	
+
 }

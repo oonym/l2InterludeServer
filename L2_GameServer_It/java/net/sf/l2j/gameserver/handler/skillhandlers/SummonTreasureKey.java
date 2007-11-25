@@ -28,9 +28,9 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.util.Rnd;
 
-/** 
+/**
  * @author evill33t
- * 
+ *
  */
 public class SummonTreasureKey implements ISkillHandler
 {
@@ -46,37 +46,37 @@ public class SummonTreasureKey implements ISkillHandler
 
         try
         {
-         
+
             int item_id = 0;
 
             switch (skill.getLevel())
             {
                 case 1:
                 {
-                  item_id = Rnd.get(6667, 6669); 
+                  item_id = Rnd.get(6667, 6669);
                   break;
                 }
                 case 2:
                 {
-                  item_id = Rnd.get(6668, 6670); 
+                  item_id = Rnd.get(6668, 6670);
                   break;
                 }
                 case 3:
                 {
-                  item_id = Rnd.get(6669, 6671); 
+                  item_id = Rnd.get(6669, 6671);
                   break;
                 }
                 case 4:
                 {
-                  item_id = Rnd.get(6670, 6672); 
+                  item_id = Rnd.get(6670, 6672);
                   break;
                 }
             }
-            player.addItem("Skill", item_id, Rnd.get(2,3), player, false);  
+            player.addItem("Skill", item_id, Rnd.get(2,3), player, false);
         }
         catch (Exception e)
         {
-            _log.warning("Error using skill summon Treasure Key:" + e); 
+            _log.warning("Error using skill summon Treasure Key:" + e);
         }
     }
 

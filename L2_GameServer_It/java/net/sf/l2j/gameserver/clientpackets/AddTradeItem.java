@@ -47,7 +47,7 @@ public final class AddTradeItem extends L2GameClientPacket
     public AddTradeItem()
     {
     }
-    
+
     @Override
 	protected void readImpl()
 	{

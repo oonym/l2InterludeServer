@@ -54,21 +54,21 @@ public class ForumsBBSManager extends BaseBBSManager
 	public ForumsBBSManager()
 	{
 		_root = new FastMap<Integer, Forum>();
-		_table = new FastList<Forum>();		
+		_table = new FastList<Forum>();
 	}
 
 	public void addForum(Forum ff)
 	{
 		_table.add(ff);
-	
+
 		if (ff.getID() > _lastid)
 		{
 			_lastid = ff.getID();
-		}		
+		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void load()
 	{
@@ -77,12 +77,12 @@ public class ForumsBBSManager extends BaseBBSManager
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT forum_id FROM forums WHERE forum_type=0");
-			ResultSet result = statement.executeQuery();			
+			ResultSet result = statement.executeQuery();
 			while (result.next())
 			{
-				
+
 				Forum f = new Forum(Integer.parseInt(result.getString("forum_id")), null);
-				_root.put(Integer.parseInt(result.getString("forum_id")), f);								
+				_root.put(Integer.parseInt(result.getString("forum_id")), f);
 			}
 			result.close();
 			statement.close();
@@ -127,7 +127,7 @@ public class ForumsBBSManager extends BaseBBSManager
 				return f;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -139,7 +139,7 @@ public class ForumsBBSManager extends BaseBBSManager
 	public Forum createNewForum(String name, Forum parent, int type, int perm, int oid)
 	{
 		Forum forum;
-		forum = new Forum(name, parent, type, perm, oid);		
+		forum = new Forum(name, parent, type, perm, oid);
 		forum.insertindb();
 		return forum;
 	}
@@ -158,14 +158,14 @@ public class ForumsBBSManager extends BaseBBSManager
 	 * @return
 	 */
 	public Forum getForumByID(int idf)
-	{		
+	{
 		for (Forum f : _table)
 		{
 			if (f.getID() == idf)
 			{
 				return f;
 			}
-		}		
+		}
 		return null;
 	}
 
@@ -176,6 +176,6 @@ public class ForumsBBSManager extends BaseBBSManager
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

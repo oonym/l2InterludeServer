@@ -32,12 +32,12 @@ public class AuthRequest extends GameServerBasePacket
 	 * d max players
 	 * d hexid size
 	 * b hexid
-	 * 
+	 *
 	 * @param id
 	 * @param acceptAlternate
 	 * @param hexid
 	 * @param externalHost
-	 * @param internalHost 
+	 * @param internalHost
 	 * @param reserveHost
 	 * @param maxplayer
 	 */
@@ -54,7 +54,7 @@ public class AuthRequest extends GameServerBasePacket
 		writeD(hexid.length);
 		writeB(hexid);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
 	 */
@@ -63,5 +63,5 @@ public class AuthRequest extends GameServerBasePacket
 	{
 		return getBytes();
 	}
-	
+
 }

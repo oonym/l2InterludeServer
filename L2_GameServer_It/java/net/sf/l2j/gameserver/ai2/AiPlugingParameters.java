@@ -24,7 +24,7 @@ import javolution.util.FastSet;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 
 /**
- * 
+ *
  * @author  -Wooden-
  */
 public class AiPlugingParameters
@@ -36,7 +36,7 @@ public class AiPlugingParameters
 	private Set<Integer> _npcIDs;
 	private boolean _converted;
 	private AiPlugingParameters _but;
-	
+
 	public AiPlugingParameters(Set<String> npcClassTypes, Set<Class> npcL2jClasses, Set<String> aiTypes, Set<Integer> npcIDs, AiPlugingParameters but)
 	{
 		_npcClassTypes = npcClassTypes;
@@ -47,13 +47,13 @@ public class AiPlugingParameters
 		if(_npcIDs == null)
 			_npcIDs = new FastSet<Integer>();
 	}
-	
-	
+
+
 	public void convertToIDs()
 	{
 		if(_but != null && !_but.isEmpty())
 			_but.convertToIDs();
-		
+
 		if(_npcClassTypes != null)
 			for(String classType : _npcClassTypes)
 			{
@@ -64,24 +64,24 @@ public class AiPlugingParameters
 			{
 				_npcIDs.addAll(NpcTable.getInstance().getAllNpcOfL2jClass(l2jClass));
 			}
-		
+
 		if(_aiTypes != null)
 			for(String aiType : _aiTypes)
 			{
 				_npcIDs.addAll(NpcTable.getInstance().getAllNpcOfAiType(aiType));
 			}
-		
+
 		if(_but != null && !_but.isEmpty())
 			removeIDs(_but.getIDs());
-		
+
 		_converted = true;
 	}
-	
+
 	public boolean isEmpty()
 	{
 		return (_npcIDs.isEmpty() && _aiTypes.isEmpty() && _npcL2jClasses.isEmpty() && _npcClassTypes.isEmpty());
 	}
-	
+
 	/**
 	 * If a AiPlugingParameters was converted to IDs its other parameter sets might not be accurate
 	 * @return true if AiPlugingParameters where converted to IDs
@@ -90,12 +90,12 @@ public class AiPlugingParameters
 	{
 		return _converted;
 	}
-	
+
 	public void removeIDs(Set<Integer> ids)
 	{
 		_npcIDs.removeAll(ids);
 	}
-	
+
 	public Set<Integer> getIDs()
 	{
 		return _npcIDs;
@@ -114,7 +114,7 @@ public class AiPlugingParameters
 			return _npcIDs.contains(id);
 		return _npcIDs.contains(id) && !_but.contains(id);
 	}
-	
+
 	public boolean equals(AiPlugingParameters pparams)
 	{
 		if(!_converted)

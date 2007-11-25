@@ -30,18 +30,18 @@ import net.sf.l2j.gameserver.serverpackets.SendTradeRequest;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * 
+ *
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class TradeRequest extends L2GameClientPacket
 {
 	private static final String TRADEREQUEST__C__15 = "[C] 15 TradeRequest";
 	private static Logger _log = Logger.getLogger(TradeRequest.class.getName());
-	
+
 	private int _objectId;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -53,7 +53,7 @@ public final class TradeRequest extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
         if (player == null) return;
-        
+
         if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
         {
         	player.sendMessage("Transactions are disable for your Access Level");
@@ -61,17 +61,17 @@ public final class TradeRequest extends L2GameClientPacket
             return;
         }
 
-        
+
 		L2Object target = L2World.getInstance().findObject(_objectId);
-        if (target == null || !player.getKnownList().knowsObject(target) 
+        if (target == null || !player.getKnownList().knowsObject(target)
         		|| !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 			return;
 		}
-		
+
         L2PcInstance partner = (L2PcInstance)target;
-        
+
         if (partner.isInOlympiadMode() || player.isInOlympiadMode())
         {
             player.sendMessage("You or your target cant request trade in Olympiad mode");
@@ -98,7 +98,7 @@ public final class TradeRequest extends L2GameClientPacket
 			return;
 		}
 
-		if (partner.isProcessingRequest() || partner.isProcessingTransaction()) 
+		if (partner.isProcessingRequest() || partner.isProcessingTransaction())
 		{
 			if (Config.DEBUG) _log.info("transaction already in progress.");
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
@@ -112,14 +112,14 @@ public final class TradeRequest extends L2GameClientPacket
             player.sendMessage("Target is in trade refusal mode");
             return;
         }
-        
+
 		player.onTransactionRequest(partner);
 		partner.sendPacket(new SendTradeRequest(player.getObjectId()));
 		SystemMessage sm = new SystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE);
 		sm.addString(partner.getName());
 		player.sendPacket(sm);
-	} 
-	
+	}
+
 	@Override
 	public String getType()
 	{

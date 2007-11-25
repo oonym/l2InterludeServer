@@ -19,9 +19,9 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- * 
+ *
  * <p>
- * sample  bf 73 5d 30 49 01 00 
+ * sample  bf 73 5d 30 49 01 00
  * <p>
  * format dh	(objectid, color)
  * <p>
@@ -31,9 +31,9 @@ package net.sf.l2j.gameserver.serverpackets;
  * 			-2	-> 2    white<p>
  * 			 3	-> 5	green<p>
  * 			 6	-> 8	light-blue<p>
- * 			 9	-> xx	blue<p>	
+ * 			 9	-> xx	blue<p>
  * <p>
- * usually the color equals the level difference to the selected target 			
+ * usually the color equals the level difference to the selected target
  *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
@@ -52,7 +52,7 @@ public class MyTargetSelected extends L2GameServerPacket
 		_objectId = objectId;
 		_color = color;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -60,7 +60,7 @@ public class MyTargetSelected extends L2GameServerPacket
 		writeD(_objectId);
 		writeH(_color);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

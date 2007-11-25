@@ -24,7 +24,7 @@ import net.sf.l2j.gameserver.skills.Env;
 
 
 class EffectCombatPointHealOverTime extends L2Effect
-{       
+{
     public EffectCombatPointHealOverTime(Env env, EffectTemplate template)
     {
         super(env, template);
@@ -38,20 +38,20 @@ class EffectCombatPointHealOverTime extends L2Effect
 
     @Override
 	public boolean onActionTime()
-    {   
+    {
         if(getEffected().isDead())
             return false;
-        
-        double cp = getEffected().getCurrentCp(); 
+
+        double cp = getEffected().getCurrentCp();
         double maxcp = getEffected().getMaxCp();
-        cp += calc(); 
+        cp += calc();
         if(cp > maxcp)
         {
             cp = maxcp;
         }
-        getEffected().setCurrentCp(cp); 
-        StatusUpdate sump = new StatusUpdate(getEffected().getObjectId()); 
-        sump.addAttribute(StatusUpdate.CUR_CP, (int)cp); 
+        getEffected().setCurrentCp(cp);
+        StatusUpdate sump = new StatusUpdate(getEffected().getObjectId());
+        sump.addAttribute(StatusUpdate.CUR_CP, (int)cp);
         getEffected().sendPacket(sump);
         return true;
     }

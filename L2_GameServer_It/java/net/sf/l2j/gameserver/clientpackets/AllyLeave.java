@@ -28,12 +28,12 @@ public final class AllyLeave extends L2GameClientPacket
 {
     private static final String _C__84_ALLYLEAVE = "[C] 84 AllyLeave";
     //private static Logger _log = Logger.getLogger(AllyLeave.class.getName());
-    
+
     @Override
 	protected void readImpl()
     {
     }
-    
+
     @Override
 	protected void runImpl()
     {
@@ -63,7 +63,7 @@ public final class AllyLeave extends L2GameClientPacket
 			player.sendPacket(new SystemMessage(SystemMessageId.ALLIANCE_LEADER_CANT_WITHDRAW));
 			return;
 		}
-		
+
 		long currentTime = System.currentTimeMillis();
         clan.setAllyId(0);
         clan.setAllyName(null);
@@ -71,10 +71,10 @@ public final class AllyLeave extends L2GameClientPacket
         		currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_LEAVED * 86400000L,
         		L2Clan.PENALTY_TYPE_CLAN_LEAVED); //24*60*60*1000 = 86400000
         clan.updateClanInDB();
-        
+
         player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_WITHDRAWN_FROM_ALLIANCE));
     }
-    
+
     @Override
 	public String getType()
     {

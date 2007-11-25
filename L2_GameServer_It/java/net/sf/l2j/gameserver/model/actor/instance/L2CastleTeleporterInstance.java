@@ -43,7 +43,7 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static final int COND_OWNER = 2;
 	private static final int COND_REGULAR = 3;
-	
+
 	/**
 	 * @param template
 	 */
@@ -51,18 +51,18 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		player.sendPacket(new ActionFailed());
 		player.setTarget(this);
 		player.sendPacket(new MyTargetSelected(getObjectId(), -15));
-	
+
 		if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 			showChatWindow(player);
 	}
-	
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -105,21 +105,21 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 		if (val == 0)
 		{
 			pom = "" + npcId;
-		} 
-		else 
+		}
+		else
 		{
 			pom = npcId + "-" + val;
 		}
-		
+
 		return "data/html/teleporter/" + pom + ".htm";
 	}
 
-	
+
 	@Override
 	public void showChatWindow(L2PcInstance player)
 	{
 		String filename = "data/html/teleporter/castleteleporter-no.htm";
-		
+
 		int condition = validateCondition(player);
 		if (condition == COND_REGULAR)
 		{
@@ -150,7 +150,7 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player "+player.getName()+" to new location: "+list.getLocX()+":"+list.getLocY()+":"+list.getLocZ());
-                
+
 				// teleport
 				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
 				player.stopMove(new L2CharPosition(list.getLocX(), list.getLocY(), list.getLocZ(), player.getHeading()));
@@ -172,7 +172,7 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 	        else if (getCastle().getOwnerId() == player.getClanId())					// Clan owns castle
 	            return COND_OWNER;	// Owner
 		}
-		
+
 		return COND_ALL_FALSE;
 	}
 }

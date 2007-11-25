@@ -33,7 +33,7 @@ public class ConfirmDlg extends L2GameServerPacket
 		_requestId = requestId;
 		_name = requestorName;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

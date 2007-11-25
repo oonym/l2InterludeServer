@@ -25,7 +25,7 @@ import net.sf.l2j.gameserver.serverpackets.HennaEquipList;
 
 /**
  * RequestHennaList - 0xba
- * 
+ *
  * @author Tempy
  */
 public final class RequestHennaList extends L2GameClientPacket
@@ -35,7 +35,7 @@ public final class RequestHennaList extends L2GameClientPacket
     // This is just a trigger packet...
     @SuppressWarnings("unused")
     private int _unknown;
-    
+
     @Override
 	protected void readImpl()
     {

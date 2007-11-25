@@ -19,7 +19,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- * Fromat: (ch) 
+ * Fromat: (ch)
  * (just a trigger)
  * @author -Wooden-
  *
@@ -37,7 +37,7 @@ public class ExMailArrived extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x2d);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -48,5 +48,5 @@ public class ExMailArrived extends L2GameServerPacket
 	{
 		return _S__FE_2D_EXMAILARRIVED;
 	}
-	
+
 }

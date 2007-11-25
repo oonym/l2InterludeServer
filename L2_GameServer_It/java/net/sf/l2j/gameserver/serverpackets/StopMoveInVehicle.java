@@ -31,7 +31,7 @@ public class StopMoveInVehicle  extends L2GameServerPacket
 	private int _boatId;
 	/**
 	 * @param player
-	 * @param boatid 
+	 * @param boatid
 	 */
 	public StopMoveInVehicle(L2PcInstance player, int boatid)
 	{
@@ -44,7 +44,7 @@ public class StopMoveInVehicle  extends L2GameServerPacket
 	 */
 	@Override
 	protected void writeImpl()
-	{		
+	{
 		writeC(0x72);
 		writeD(_activeChar.getObjectId());
 		writeD(_boatId);

@@ -39,14 +39,14 @@ import net.sf.l2j.gameserver.skills.Formulas;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.2.2.9 $ $Date: 2005/04/03 15:55:04 $
  */
 
 public class Continuous implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(Continuous.class.getName());
-	
+
 	private static final SkillType[] SKILL_IDS = {
 		L2Skill.SkillType.BUFF,
 		L2Skill.SkillType.DEBUFF,
@@ -67,36 +67,36 @@ public class Continuous implements ISkillHandler
 		L2Skill.SkillType.AGGDEBUFF,
 		L2Skill.SkillType.FORCE_BUFF
 		};
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Character target = null;
-		
+
 		L2PcInstance player = null;
 		if (activeChar instanceof L2PcInstance)
 			player = (L2PcInstance)activeChar;
-		
+
         for(int index = 0;index < targets.length;index++)
         {
             target = (L2Character)targets[index];
 
-            if(skill.getSkillType() != L2Skill.SkillType.BUFF && skill.getSkillType() != L2Skill.SkillType.HOT 
+            if(skill.getSkillType() != L2Skill.SkillType.BUFF && skill.getSkillType() != L2Skill.SkillType.HOT
             		&& skill.getSkillType() != L2Skill.SkillType.CPHOT && skill.getSkillType() != L2Skill.SkillType.MPHOT
-            		&& skill.getSkillType() != L2Skill.SkillType.UNDEAD_DEFENSE && skill.getSkillType() != L2Skill.SkillType.AGGDEBUFF 
+            		&& skill.getSkillType() != L2Skill.SkillType.UNDEAD_DEFENSE && skill.getSkillType() != L2Skill.SkillType.AGGDEBUFF
             		&& skill.getSkillType() != L2Skill.SkillType.CONT)
             {
                 if(target.reflectSkill(skill))
                 	target = activeChar;
             }
-            
+
             // Walls and Door should not be buffed
             if(target instanceof L2DoorInstance && (skill.getSkillType() == L2Skill.SkillType.BUFF || skill.getSkillType() == L2Skill.SkillType.HOT))
             	continue;
-            
-            
+
+
             // Player holding a cursed weapon can't be buffed and can't buff
             if (skill.getSkillType() == L2Skill.SkillType.BUFF)
             {
@@ -108,7 +108,7 @@ public class Continuous implements ISkillHandler
 	            		continue;
 	            }
             }
-            
+
 			if (skill.isOffensive())
 			{
 
@@ -135,13 +135,13 @@ public class Continuous implements ISkillHandler
 			                    	weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 			                }
 		        		}
-		                else 
+		                else
 		                	if (weaponInst.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT)
 			                {
 			                    ss = true;
 			                    if (skill.getId() != 1020) // vitalize
 			                    	weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-			                }		
+			                }
 		        	}
 		        }
 		        else if (activeChar instanceof L2Summon)
@@ -160,20 +160,20 @@ public class Continuous implements ISkillHandler
 			                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
 			            }
 	        		}
-		            else 
+		            else
 		            	if (activeSummon.getChargedSoulShot() == L2ItemInstance.CHARGED_SOULSHOT)
 			            {
 			                ss = true;
 			                activeSummon.setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
 			            }
 		        }
-		        
+
 				boolean acted = Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, ss, sps, bss);
 				if (!acted) {
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
 					continue;
 				}
-				
+
 			}
 			boolean stopped = false;
 			L2Effect[] effects = target.getAllEffects();
@@ -189,12 +189,12 @@ public class Continuous implements ISkillHandler
 			}
 			if (skill.isToggle() && stopped)
 				return;
-			
+
 			// if this is a debuff let the duel manager know about it
 			// so the debuff can be removed after the duel
 			// (player & target must be in the same duel)
-			if (target instanceof L2PcInstance && ((L2PcInstance)target).isInDuel() 
-					&& (skill.getSkillType() == L2Skill.SkillType.DEBUFF || 
+			if (target instanceof L2PcInstance && ((L2PcInstance)target).isInDuel()
+					&& (skill.getSkillType() == L2Skill.SkillType.DEBUFF ||
 					skill.getSkillType() == L2Skill.SkillType.BUFF)
 					&& player.getDuelId() == ((L2PcInstance)target).getDuelId())
 			{
@@ -219,15 +219,15 @@ public class Continuous implements ISkillHandler
 			}
         }
         // self Effect :]
-        L2Effect effect = activeChar.getFirstEffect(skill.getId());        
-        if (effect != null && effect.isSelfEffect())        
-        {            
-        	//Replace old effect with new one.            
-        	effect.exit();        
-        }        
+        L2Effect effect = activeChar.getFirstEffect(skill.getId());
+        if (effect != null && effect.isSelfEffect())
+        {
+        	//Replace old effect with new one.
+        	effect.exit();
+        }
         skill.getEffectsSelf(activeChar);
 	}
-	
+
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

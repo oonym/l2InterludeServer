@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.GameTimeController;
 
 /**
  * Flood protector
- * 
+ *
  * @author durgus
  */
 public class FloodProtector
@@ -48,7 +48,7 @@ public class FloodProtector
 	private FastMap<Integer,Integer[]> _floodClient;
 
 	// =========================================================
-	
+
 	// reuse delays for protected actions (in game ticks 1 tick = 100ms)
 	private static final int[] REUSEDELAY = new int[]{ 4, 42, 42, 16, 100 };
 
@@ -66,7 +66,7 @@ public class FloodProtector
 		_log.info("Initializing FloodProtector");
 		_floodClient = new FastMap<Integer, Integer[]>(Config.FLOODPROTECTOR_INITIALSIZE);
 	}
-	
+
 	/**
 	 * Add a new player to the flood protector
 	 * (should be done for all players when they enter the world)
@@ -78,11 +78,11 @@ public class FloodProtector
 		Integer[] array = new Integer[REUSEDELAY.length];
 		for (int i=0; i<array.length; i++)
 			array[i] = 0;
-		
+
 		// register the player with an empty array
 		_floodClient.put(playerObjId, array);
 	}
-	
+
 	/**
 	 * Remove a player from the flood protector
 	 * (should be done if player loggs off)
@@ -92,7 +92,7 @@ public class FloodProtector
 	{
 		_floodClient.remove(playerObjId);
 	}
-	
+
 	/**
 	 * Return the size of the flood protector
 	 * @return size
@@ -101,10 +101,10 @@ public class FloodProtector
 	{
 		return _floodClient.size();
 	}
-	
+
 	/**
 	 * Try to perform the requested action
-	 * 
+	 *
 	 * @param playerObjId
 	 * @param action
 	 * @return true if the action may be performed

@@ -116,13 +116,13 @@ public class AuctionManager
             System.out.println("Exception: AuctionManager.load(): " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         finally {try { con.close(); } catch (Exception e) {}}
     }
     public final Auction getAuction(int auctionId)
     {
         int index = getAuctionIndex(auctionId);
-        if (index >= 0) 
+        if (index >= 0)
         	return getAuctions().get(index);
         return null;
     }
@@ -133,7 +133,7 @@ public class AuctionManager
         for (int i = 0; i < getAuctions().size(); i++)
         {
         	auction = getAuctions().get(i);
-            if (auction != null && auction.getId() == auctionId) 
+            if (auction != null && auction.getId() == auctionId)
             	return i;
         }
         return -1;

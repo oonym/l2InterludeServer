@@ -36,8 +36,8 @@ public final class RequestDuelStart extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(RequestDuelStart.class.getName());
 	private String _player;
 	private int _partyDuel;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -59,13 +59,13 @@ public final class RequestDuelStart extends L2GameClientPacket
         {
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL));
         	return;
-        }	
-        if (activeChar == targetChar) 
+        }
+        if (activeChar == targetChar)
         {
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL));
         	return;
-        }	
-        
+        }
+
         // Check if duel is possible
         if (!activeChar.canDuel())
         {
@@ -85,7 +85,7 @@ public final class RequestDuelStart extends L2GameClientPacket
         	activeChar.sendPacket(msg);
         	return;
         }
-        
+
         // Duel is a party duel
 		if (_partyDuel == 1)
 		{
@@ -133,14 +133,14 @@ public final class RequestDuelStart extends L2GameClientPacket
 			{
 				activeChar.onTransactionRequest(partyLeader);
 				partyLeader.sendPacket(new ExDuelAskStart(activeChar.getName(), _partyDuel));
-				
-				if (Config.DEBUG) 
+
+				if (Config.DEBUG)
 			        _log.fine(activeChar.getName() + " requested a duel with " + partyLeader.getName());
-				
+
 				SystemMessage msg = new SystemMessage(SystemMessageId.S1S_PARTY_HAS_BEEN_CHALLENGED_TO_A_DUEL);
 				msg.addString(partyLeader.getName());
 				activeChar.sendPacket(msg);
-				
+
 				msg = new SystemMessage(SystemMessageId.S1S_PARTY_HAS_CHALLENGED_YOUR_PARTY_TO_A_DUEL);
 				msg.addString(activeChar.getName());
 				targetChar.sendPacket(msg);
@@ -158,14 +158,14 @@ public final class RequestDuelStart extends L2GameClientPacket
 			{
 				activeChar.onTransactionRequest(targetChar);
 				targetChar.sendPacket(new ExDuelAskStart(activeChar.getName(), _partyDuel));
-				
-				if (Config.DEBUG) 
+
+				if (Config.DEBUG)
 			        _log.fine(activeChar.getName() + " requested a duel with " + targetChar.getName());
-				
+
 				SystemMessage msg = new SystemMessage(SystemMessageId.S1_HAS_BEEN_CHALLENGED_TO_A_DUEL);
 				msg.addString(targetChar.getName());
 				activeChar.sendPacket(msg);
-				
+
 				msg = new SystemMessage(SystemMessageId.S1_HAS_CHALLENGED_YOU_TO_A_DUEL);
 				msg.addString(activeChar.getName());
 				targetChar.sendPacket(msg);

@@ -38,7 +38,7 @@ public class EffectInvincible extends L2Effect
 	public void onStart() {
 		getEffected().setIsInvul(true);
 	}
-	
+
 	@Override
 	public boolean onActionTime()
 	{

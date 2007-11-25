@@ -57,7 +57,7 @@ public class ChristmasTree implements IItemHandler
                 break;
             }
         }
-        
+
         if (template1 == null)
             return;
 

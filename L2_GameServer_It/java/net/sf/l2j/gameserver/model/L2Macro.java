@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.model;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3 $ $Date: 2004/10/23 22:12:44 $
  */
 public class L2Macro
@@ -55,7 +55,7 @@ public class L2Macro
     }
 
     /**
-     * 
+     *
      */
     public L2Macro(int pId, int pIcon, String pName, String pDescr, String pAcronym, L2MacroCmd[] pCommands)
     {

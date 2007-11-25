@@ -27,14 +27,14 @@ import net.sf.l2j.gameserver.taskmanager.TaskManager.ExecutedTask;
 
 /**
  * Updates all data of Olympiad nobles in db
- * 
+ *
  * @author godson
  */
 public class TaskOlympiadSave extends Task
 {
     private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
     public static final String NAME = "OlympiadSave";
-    
+
     @Override
 	public String getName()
     {
@@ -52,7 +52,7 @@ public class TaskOlympiadSave extends Task
             _log.warning("Olympiad System: Failed to save Olympiad configuration: " + e);
         }
     }
-    
+
     @Override
 	public void initializate()
     {

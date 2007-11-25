@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: $ $Date: $
  * @author  Luca Baldi
  */
@@ -35,7 +35,7 @@ public class ExQuestInfo extends L2GameServerPacket
 	protected void writeImpl()
     {
         writeC(0xfe);
-        writeH(0x19);       
+        writeH(0x19);
     }
 
     /* (non-Javadoc)

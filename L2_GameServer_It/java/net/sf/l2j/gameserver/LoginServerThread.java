@@ -159,7 +159,7 @@ public class LoginServerThread extends Thread
 				{
 					lengthLo = _in.read();
 					lengthHi = _in.read();
-					length= lengthHi*256 + lengthLo;  
+					length= lengthHi*256 + lengthLo;
 
 					if (lengthHi < 0 )
 					{
@@ -197,7 +197,7 @@ public class LoginServerThread extends Thread
 						break;
 					}
 
-					if (Config.DEBUG) 
+					if (Config.DEBUG)
 						_log.warning("[C]\n"+Util.printData(decrypt));
 
 					int packetType = decrypt[0]&0xff;
@@ -447,7 +447,7 @@ public class LoginServerThread extends Thread
 
 	public static byte[] generateHex(int size)
 	{
-		byte [] array = new byte[size]; 
+		byte [] array = new byte[size];
 		Rnd.nextBytes(array);
 		if (Config.DEBUG)_log.fine("Generated random String:  \""+array+"\"");
 		return array;
@@ -607,7 +607,7 @@ public class LoginServerThread extends Thread
 			account = acc;
 			timestamp = GameTimeController.getGameTicks();
 			gameClient = client;
-			session = key;			
+			session = key;
 		}
 	}
 }

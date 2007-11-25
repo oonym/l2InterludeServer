@@ -28,27 +28,27 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Rnd;
 
 /**
- * This class manages all RaidBoss. 
+ * This class manages all RaidBoss.
  * In a group mob, there are one master called RaidBoss and several slaves called Minions.
- * 
+ *
  * @version $Revision: 1.20.4.6 $ $Date: 2005/04/06 16:13:39 $
  */
 public final class L2RaidBossInstance extends L2MonsterInstance
 {
 	//protected static Logger _log = Logger.getLogger(L2RaidBossInstance.class.getName());
-    
+
     private static final int RAIDBOSS_MAINTENANCE_INTERVAL = 30000; // 30 sec
-    
+
     private RaidBossSpawnManager.StatusEnum _raidStatus;
 
 	/**
 	 * Constructor of L2RaidBossInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
-	 *  
+	 *
 	 * <B><U> Actions</U> :</B><BR><BR>
 	 * <li>Call the L2Character constructor to set the _template of the L2RaidBossInstance (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR) </li>
 	 * <li>Set the name of the L2RaidBossInstance</li>
 	 * <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it </li><BR><BR>
-	 * 
+	 *
 	 * @param objectId Identifier of the object to initialized
 	 * @param L2NpcTemplate Template to apply to the NPC
 	 */
@@ -56,16 +56,16 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 	{
 		super(objectId, template);
 	}
-    
+
     @Override
 	public boolean isRaid()
     {
-        return true; 
+        return true;
     }
 
     @Override
 	protected int getMaintenanceInterval() { return RAIDBOSS_MAINTENANCE_INTERVAL; }
-	
+
     @Override
 	public boolean doDie(L2Character killer)
     {
@@ -76,11 +76,11 @@ public final class L2RaidBossInstance extends L2MonsterInstance
         	SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
         	broadcastPacket(msg);
         }
-        
+
         RaidBossSpawnManager.getInstance().updateStatus(this, true);
         return true;
     }
-    
+
     /* Unused
     public void onSpawn()
     {
@@ -94,12 +94,12 @@ public final class L2RaidBossInstance extends L2MonsterInstance
             getSpawn().stopRespawn();
     }
     */
-    
+
     /**
      * Spawn all minions at a regular interval
-     * Also if boss is too far from home location at the time of this check, teleport it home 
-     * 
-     */    
+     * Also if boss is too far from home location at the time of this check, teleport it home
+     *
+     */
     @Override
     protected void manageMinions()
     {
@@ -118,31 +118,31 @@ public final class L2RaidBossInstance extends L2MonsterInstance
             }
         }, 60000, getMaintenanceInterval()+Rnd.get(5000));
     }
-    
+
     public void setRaidStatus (RaidBossSpawnManager.StatusEnum status)
     {
     	_raidStatus = status;
     }
-    
+
     public RaidBossSpawnManager.StatusEnum getRaidStatus()
     {
     	return _raidStatus;
     }
-    
+
     /**
-     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR> 
-     * 
+     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR>
+     *
      */
     @Override
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
     {
         super.reduceCurrentHp(damage, attacker, awake);
     }
-    
+
     public void healFull()
     {
         super.setCurrentHp(super.getMaxHp());
         super.setCurrentMp(super.getMaxMp());
     }
-    
+
 }

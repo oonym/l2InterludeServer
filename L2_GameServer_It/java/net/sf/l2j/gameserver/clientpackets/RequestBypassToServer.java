@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.12.4.5 $ $Date: 2005/04/11 10:06:11 $
  */
 public final class RequestBypassToServer extends L2GameClientPacket
@@ -60,10 +60,10 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-        
+
 		if (activeChar == null)
 		    return;
-		
+
 		try {
 			if (_command.startsWith("admin_")) //&& activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL)
 			{
@@ -72,9 +72,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
                     _log.info("<GM>" + activeChar + " does not have sufficient privileges for command '" + _command + "'.");
                     return;
                 }
-                
+
 				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(_command);
-				
+
 				if (ach != null)
 					ach.useAdminCommand(_command, activeChar);
 				else
@@ -128,7 +128,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
                 }
 			}
 			// Navigate throught Manor windows
-            else if (_command.startsWith("manor_menu_select?")) 
+            else if (_command.startsWith("manor_menu_select?"))
             {
                 L2Object object = activeChar.getTarget();
                 if (object instanceof L2NpcInstance)
@@ -151,7 +151,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 
 				L2PcInstance player = getClient().getActiveChar();
 				if (player == null) return;
-				
+
 				String p = _command.substring(6).trim();
 				int idx = p.indexOf(' ');
 				if (idx < 0)
@@ -171,7 +171,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	/**
 	 * @param client
 	 */
-	private void comeHere(L2PcInstance activeChar) 
+	private void comeHere(L2PcInstance activeChar)
 	{
 		L2Object obj = activeChar.getTarget();
 		if (obj == null) return;
@@ -183,7 +183,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					new L2CharPosition(activeChar.getX(),activeChar.getY(), activeChar.getZ(), 0 ));
 //			temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
-		
+
 	}
 
 	private void playerHelp(L2PcInstance activeChar, String path)

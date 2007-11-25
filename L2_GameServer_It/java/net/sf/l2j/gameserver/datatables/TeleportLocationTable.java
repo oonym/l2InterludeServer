@@ -35,11 +35,11 @@ import net.sf.l2j.gameserver.model.L2TeleportLocation;
 public class TeleportLocationTable
 {
 	private static Logger _log = Logger.getLogger(TeleportLocationTable.class.getName());
-	
+
 	private static TeleportLocationTable _instance;
-	
+
 	private Map<Integer, L2TeleportLocation> _teleports;
-	
+
 	public static TeleportLocationTable getInstance()
 	{
 		if (_instance == null)
@@ -48,7 +48,7 @@ public class TeleportLocationTable
 		}
 		return _instance;
 	}
-	
+
 	private TeleportLocationTable()
 	{
 	    reloadAll();
@@ -64,11 +64,11 @@ public class TeleportLocationTable
 			PreparedStatement statement = con.prepareStatement("SELECT Description, id, loc_x, loc_y, loc_z, price, fornoble FROM teleport");
 			ResultSet rset = statement.executeQuery();
 			L2TeleportLocation teleport;
-			
+
 			while (rset.next())
 			{
 				teleport = new L2TeleportLocation();
-				
+
 				teleport.setTeleId(rset.getInt("id"));
 				teleport.setLocX(rset.getInt("loc_x"));
 				teleport.setLocY(rset.getInt("loc_y"));
@@ -78,7 +78,7 @@ public class TeleportLocationTable
 
 				_teleports.put(teleport.getTeleId(), teleport);
 			}
-			
+
 			rset.close();
 			statement.close();
 
@@ -87,13 +87,13 @@ public class TeleportLocationTable
 		catch (Exception e)
 		{
 			_log.warning("error while creating teleport table "+e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-	
+
 
 	/**
 	 * @param template id

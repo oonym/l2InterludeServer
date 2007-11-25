@@ -29,14 +29,14 @@ import net.sf.l2j.gameserver.taskmanager.TaskManager.ExecutedTask;
 /**
  * Updates all data for the Seven Signs and Festival of Darkness engines,
  * when time is elapsed.
- * 
+ *
  * @author Tempy
  */
 public class TaskSevenSignsUpdate extends Task
 {
     private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
     public static final String NAME = "SevenSignsUpdate";
-    
+
     @Override
 	public String getName()
     {
@@ -51,14 +51,14 @@ public class TaskSevenSignsUpdate extends Task
 
             if (!SevenSigns.getInstance().isSealValidationPeriod())
                 SevenSignsFestival.getInstance().saveFestivalData(false);
-            
+
             _log.info("SevenSigns: Data updated successfully.");
         }
         catch (Exception e) {
             _log.warning("SevenSigns: Failed to save Seven Signs configuration: " + e);
         }
     }
-    
+
     @Override
 	public void initializate()
     {

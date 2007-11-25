@@ -25,7 +25,7 @@ package net.sf.l2j.gameserver.serverpackets;
 public class LeaveWorld extends L2GameServerPacket
 {
 	private static final String _S__96_LEAVEWORLD = "[S] 7e LeaveWorld";
-	
+
 	@Override
 	protected final void writeImpl()
 	{

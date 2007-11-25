@@ -31,10 +31,10 @@ public final class DlgAnswer extends L2GameClientPacket
 {
 	private static final String _C__C5_DLGANSWER = "[C] C5 DlgAnswer";
 	private static Logger _log = Logger.getLogger(DlgAnswer.class.getName());
-	
+
 	private int _messageId;
 	private int _answer, _unk;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -52,7 +52,7 @@ public final class DlgAnswer extends L2GameClientPacket
 			getClient().getActiveChar().reviveAnswer(_answer);
 		else if (_messageId==614 && Config.L2JMOD_ALLOW_WEDDING)
 						getClient().getActiveChar().EngageAnswer(_answer);
-			 	
+
 	}
 
 	@Override

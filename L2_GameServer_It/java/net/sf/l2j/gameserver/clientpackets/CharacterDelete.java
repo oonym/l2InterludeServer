@@ -40,7 +40,7 @@ public final class CharacterDelete extends L2GameClientPacket
 	// cd
 	private int _charSlot;
 
-	
+
 	@Override
 	protected void readImpl()
 	{

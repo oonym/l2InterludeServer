@@ -45,15 +45,15 @@ import com.l2jserver.mmocore.network.ReceivablePacket;
 public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, IClientFactory<L2GameClient>, IMMOExecutor<L2GameClient>
 {
 	private static final Logger _log = Logger.getLogger(L2GamePacketHandler.class.getName());
-	
+
 	// implementation
 	public ReceivablePacket<L2GameClient> handlePacket(ByteBuffer buf, L2GameClient client)
 	{
 		int opcode = buf.get() & 0xFF;
-		
+
 		ReceivablePacket<L2GameClient> msg = null;
 		GameClientState state = client.getState();
-		
+
 		switch (state)
 		{
 			case CONNECTED:
@@ -77,10 +77,10 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new Logout();
 						break;
 					case 0x0b:
-						msg = new CharacterCreate();	
+						msg = new CharacterCreate();
 						break;
 					case 0x0c:
-						msg = new CharacterDelete();	
+						msg = new CharacterDelete();
 						break;
 					case 0x0d:
 						msg = new CharacterSelected();
@@ -103,7 +103,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				switch(opcode)
 				{
 					case 0x01:
-						msg = new MoveBackwardToLocation(); 
+						msg = new MoveBackwardToLocation();
 						break;
 //					case 0x02:
 //						// Say  ... not used any more ??
@@ -124,7 +124,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new RequestItemList();
 						break;
 //					case 0x10:
-//						// RequestEquipItem ... not used any more, instead "useItem"  
+//						// RequestEquipItem ... not used any more, instead "useItem"
 //						break;
 					case 0x11:
 						msg = new RequestUnEquipItem();
@@ -181,31 +181,31 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new RequestAnswerJoinPledge();
 						break;
 					case 0x26:
-						msg = new RequestWithdrawalPledge();  
+						msg = new RequestWithdrawalPledge();
 						break;
 					case 0x27:
-						msg = new RequestOustPledgeMember();  
+						msg = new RequestOustPledgeMember();
 						break;
 //					case 0x28:
-//						// RequestDismissPledge  
+//						// RequestDismissPledge
 //						break;
 					case 0x29:
-						msg = new RequestJoinParty();    
+						msg = new RequestJoinParty();
 						break;
 					case 0x2a:
-						msg = new RequestAnswerJoinParty();     
+						msg = new RequestAnswerJoinParty();
 						break;
 					case 0x2b:
-						msg = new RequestWithDrawalParty();     
+						msg = new RequestWithDrawalParty();
 						break;
 					case 0x2c:
 						msg = new RequestOustPartyMember();
 						break;
 					case 0x2d:
-						// RequestDismissParty  
+						// RequestDismissParty
 						break;
 					case 0x2e:
-						msg = new DummyPacket();   
+						msg = new DummyPacket();
 						break;
 					case 0x2f:
 						msg = new RequestMagicSkillUse();
@@ -214,23 +214,23 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new Appearing();  //  (after death)
 						break;
 					case 0x31:
-						if (Config.ALLOW_WAREHOUSE) 
-							msg = new SendWareHouseDepositList();  
+						if (Config.ALLOW_WAREHOUSE)
+							msg = new SendWareHouseDepositList();
 						break;
 					case 0x32:
-		                msg = new SendWareHouseWithDrawList();  
+		                msg = new SendWareHouseWithDrawList();
 						break;
 					case 0x33:
-						msg = new RequestShortCutReg();    
+						msg = new RequestShortCutReg();
 						break;
 					case 0x34:
-						msg = new DummyPacket();    
+						msg = new DummyPacket();
 						break;
 					case 0x35:
-						msg = new RequestShortCutDel();    
+						msg = new RequestShortCutDel();
 						break;
 					case 0x36:
-						msg = new CannotMoveAnymore();    
+						msg = new CannotMoveAnymore();
 						break;
 					case 0x37:
 						msg = new RequestTargetCanceld();
@@ -251,7 +251,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 //						// MoveWithDelta    ... unused ?? or only on ship ??
 //						break;
 					case 0x42:
-						msg = new RequestGetOnVehicle();  
+						msg = new RequestGetOnVehicle();
 						break;
 					case 0x43:
 						msg = new RequestGetOffVehicle();
@@ -266,33 +266,33 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new RequestRestart();
 						break;
 //					case 0x47:
-//						// RequestSiegeInfo   
+//						// RequestSiegeInfo
 //						break;
 					case 0x48:
 						msg = new ValidatePosition();
 						break;
 //					case 0x49:
-//						// RequestSEKCustom   
+//						// RequestSEKCustom
 //						break;
-//						THESE ARE NOW TEMPORARY DISABLED 
+//						THESE ARE NOW TEMPORARY DISABLED
 					case 0x4a:
-						//new StartRotating();  
+						//new StartRotating();
 						break;
 					case 0x4b:
-						//new FinishRotating(); 
+						//new FinishRotating();
 						break;
 					case 0x4d:
-						msg = new RequestStartPledgeWar();   
+						msg = new RequestStartPledgeWar();
 						break;
 					case 0x4e:
-						msg = new RequestReplyStartPledgeWar();      
+						msg = new RequestReplyStartPledgeWar();
 						break;
 					case 0x4f:
-		                msg = new RequestStopPledgeWar();      
+		                msg = new RequestStopPledgeWar();
 						break;
 					case 0x50:
-		                msg = new RequestReplyStopPledgeWar();           
-		                break; 
+		                msg = new RequestReplyStopPledgeWar();
+		                break;
 		            case 0x51:
 		                msg = new RequestSurrenderPledgeWar();
 		                break;
@@ -300,36 +300,36 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		                msg = new RequestReplySurrenderPledgeWar();
 		                break;
 		            case 0x53:
-						msg = new RequestSetPledgeCrest();           
+						msg = new RequestSetPledgeCrest();
 						break;
 					case 0x55:
-						msg = new RequestGiveNickName();             
+						msg = new RequestGiveNickName();
 						break;
 					case 0x57:
-						msg = new RequestShowBoard();                
+						msg = new RequestShowBoard();
 						break;
 					case 0x58:
 						msg = new RequestEnchantItem();
 						break;
 					case 0x59:
 						msg = new RequestDestroyItem();
-						break;				
+						break;
 					case 0x5b:
-						msg = new SendBypassBuildCmd();   
+						msg = new SendBypassBuildCmd();
 						break;
 					case 0x5c:
 						msg = new RequestMoveToLocationInVehicle();
 						break;
 					case 0x5d:
 						msg = new CannotMoveAnymoreInVehicle();
-						break;		
+						break;
 					case 0x5e:
 						msg = new RequestFriendInvite();
 						break;
 					case 0x5f:
 						msg = new RequestAnswerFriendInvite();
 						break;
-						
+
 					case 0x60:
 						msg = new RequestFriendList();
 						break;
@@ -339,23 +339,23 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					case 0x63:
 						msg = new RequestQuestList();
 						break;
-					case 0x64:  
-						msg = new RequestQuestAbort();  
-						break;				
+					case 0x64:
+						msg = new RequestQuestAbort();
+						break;
 					case 0x66:
 						msg = new RequestPledgeInfo();
 						break;
 //					case 0x67:
-//						// RequestPledgeExtendedInfo   
+//						// RequestPledgeExtendedInfo
 //						break;
 					case 0x68:
 						msg = new RequestPledgeCrest();
 						break;
 					case 0x69:
-		                msg = new RequestSurrenderPersonally();  
+		                msg = new RequestSurrenderPersonally();
 						break;
 //					case 0x6a:
-//						// Ride  
+//						// Ride
 //						break;
 					case 0x6b: // send when talking to trainer npc, to show list of available skills
 						msg = new RequestAquireSkillInfo();//  --> [s] 0xa4;
@@ -364,59 +364,59 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						msg = new RequestAquireSkill();
 						break;
 					case 0x6d:
-						msg = new RequestRestartPoint(); 
+						msg = new RequestRestartPoint();
 						break;
-					case 0x6e: 
-						msg = new RequestGMCommand();  
+					case 0x6e:
+						msg = new RequestGMCommand();
 						break;
-					case 0x6f: 
+					case 0x6f:
 						msg = new RequestPartyMatchList();
 						break;
-						
-					case 0x70: 
-						msg = new RequestPartyMatchConfig();      
+
+					case 0x70:
+						msg = new RequestPartyMatchConfig();
 						break;
 					case 0x71:
-						msg = new RequestPartyMatchDetail();     
+						msg = new RequestPartyMatchDetail();
 						break;
 					case 0x72:
 						msg = new RequestCrystallizeItem();
 						break;
 					case 0x73:
-						msg = new RequestPrivateStoreManageSell();        
+						msg = new RequestPrivateStoreManageSell();
 						break;
 					case 0x74:
-						msg = new SetPrivateStoreListSell();        
+						msg = new SetPrivateStoreListSell();
 						break;
 //					case 0x75:
-//						msg = new RequestPrivateStoreManageCancel(data, _client);        
+//						msg = new RequestPrivateStoreManageCancel(data, _client);
 //						break;
 					case 0x76:
-						msg = new RequestPrivateStoreQuitSell();          
+						msg = new RequestPrivateStoreQuitSell();
 						break;
 					case 0x77:
-						msg = new SetPrivateStoreMsgSell();           
+						msg = new SetPrivateStoreMsgSell();
 						break;
 //					case 0x78:
-//						// RequestPrivateStoreList         
+//						// RequestPrivateStoreList
 //						break;
 					case 0x79:
-						msg = new RequestPrivateStoreBuy();             
+						msg = new RequestPrivateStoreBuy();
 						break;
 //					case 0x7a:
-//						// ReviveReply            
+//						// ReviveReply
 //						break;
 //					case 0x7b:
-//						// RequestTutorialLinkHtml           
+//						// RequestTutorialLinkHtml
 //						break;
 //					case 0x7c:
-//						// RequestTutorialPassCmdToServer              
+//						// RequestTutorialPassCmdToServer
 //						break;
 //					case 0x7d:
-//						// RequestTutorialQuestionMark             
+//						// RequestTutorialQuestionMark
 //						break;
 //					case 0x7e:
-//						// RequestTutorialClientEvent             
+//						// RequestTutorialClientEvent
 //						break;
 					case 0x7f:
 						msg = new RequestPetition();
@@ -507,7 +507,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 //						break;
 					case 0x9d:
 						// RequestSkillCoolTime
-						/*if (Config.DEBUG) 
+						/*if (Config.DEBUG)
 							_log.info("Request Skill Cool Time .. ignored");
 						msg = null;*/
 						break;
@@ -562,7 +562,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					case 0xaf:
 						msg = new RequestRecipeItemMakeSelf();
 					    break;
-					    
+
 					//case 0xb0:
 					//	msg = new RequestRecipeShopManageList(data, client);
 					//    break;
@@ -601,7 +601,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						break;
 					case 0xc0:
 						// Clan Privileges
-						msg = new RequestPledgePower();  
+						msg = new RequestPledgePower();
 						break;
 		            case 0xc1:
 		                msg = new RequestMakeMacro();
@@ -639,7 +639,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		            case 0xcf: //record video
 		            	msg = new RequestRecordInfo();
 		                break;
-		                
+
 		            case 0xd0:
 		            	int id2 = -1;
 		            	if (buf.remaining() >= 2)
@@ -651,7 +651,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		            		_log.warning("Client: "+client.toString()+" sent a 0xd0 without the second opcode.");
 		            		break;
 		            	}
-		            	
+
 		                switch (id2)
 		                {
 		                	case 1:
@@ -794,13 +794,13 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		                    case 0x30:
 		                    	msg = new RequestDuelSurrender();
 		                    	break;
-		                    default: 
+		                    default:
 		                     	printDebugDoubleOpcode(opcode, id2, buf, state, client);
 		                    	break;
 		                }
 						break;
 		            /*case 0xee:
-						msg = new RequestChangePartyLeader(data, _client);     
+						msg = new RequestChangePartyLeader(data, _client);
 						break;*/
 					default:
 						printDebug(opcode, buf, state, client);
@@ -810,21 +810,21 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		}
 		return msg;
 	}
-	
+
 	private void printDebug(int opcode, ByteBuffer buf, GameClientState state, L2GameClient client)
 	{
-		int size = buf.remaining(); 
-     	_log.warning("Unknown Packet: "+Integer.toHexString(opcode)+" on State: "+state.name()+" Client: "+client.toString()); 
+		int size = buf.remaining();
+     	_log.warning("Unknown Packet: "+Integer.toHexString(opcode)+" on State: "+state.name()+" Client: "+client.toString());
      	byte[] array = new byte[size];
      	buf.get(array);
      	_log.warning(Util.printData(array, size));
 	}
-	
+
 	private void printDebugDoubleOpcode(int opcode, int id2, ByteBuffer buf, GameClientState state, L2GameClient client)
 	{
-		int size = buf.remaining(); 
-     	_log.warning("Unknown Packet: "+Integer.toHexString(opcode)+":" + Integer.toHexString(id2)+" on State: "+state.name()+" Client: "+client.toString()); 
-     	byte[] array = new byte[size]; 
+		int size = buf.remaining();
+     	_log.warning("Unknown Packet: "+Integer.toHexString(opcode)+":" + Integer.toHexString(id2)+" on State: "+state.name()+" Client: "+client.toString());
+     	byte[] array = new byte[size];
      	buf.get(array);
      	_log.warning(Util.printData(array, size));
 	}
@@ -834,7 +834,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 	{
 		return new L2GameClient(con);
 	}
-	
+
 	public void execute(ReceivablePacket<L2GameClient> rp)
 	{
 		try

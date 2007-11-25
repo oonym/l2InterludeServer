@@ -18,7 +18,6 @@
 package net.sf.l2j.gameserver.skills.effects;
 
 import net.sf.l2j.gameserver.datatables.SkillTable;
-import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.skills.Env;
@@ -38,7 +37,7 @@ public class EffectForce extends L2Effect
 	public int forces = 0;
 	private int _range = -1;
 
-	public EffectForce(Env env, EffectTemplate template) 
+	public EffectForce(Env env, EffectTemplate template)
 	{
 		super(env, template);
 		forces = getSkill().getLevel();
@@ -83,6 +82,7 @@ public class EffectForce extends L2Effect
 		newSkill.getEffects(getEffector(), getEffected());
 	}
 
+	@Override
 	public void onExit()
 	{
 		//try

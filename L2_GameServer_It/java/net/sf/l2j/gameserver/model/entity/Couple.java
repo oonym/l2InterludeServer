@@ -29,14 +29,14 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/** 
+/**
  * @author evill33t
- * 
+ *
  */
 public class Couple
 {
     private static final Log _log = LogFactory.getLog(Couple.class.getName());
-    
+
     // =========================================================
     // Data Field
     private int _Id                             = 0;
@@ -51,7 +51,7 @@ public class Couple
     public Couple(int coupleId)
     {
         _Id = coupleId;
-        
+
         java.sql.Connection con = null;
         try
         {
@@ -84,7 +84,7 @@ public class Couple
         }
         finally {try { con.close(); } catch (Exception e) {}}
     }
-    
+
     public Couple(L2PcInstance player1,L2PcInstance player2)
     {
         int _tempPlayer1Id = player1.getObjectId();
@@ -98,7 +98,7 @@ public class Couple
 
         _weddingDate = Calendar.getInstance();
         _weddingDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
-        
+
         java.sql.Connection con = null;
         try
         {
@@ -111,7 +111,7 @@ public class Couple
             statement.setInt(3, _player2Id);
             statement.setBoolean(4, false);
             statement.setLong(5, _affiancedDate.getTimeInMillis());
-            statement.setLong(6, _weddingDate.getTimeInMillis());            
+            statement.setLong(6, _weddingDate.getTimeInMillis());
             statement.execute();
             statement.close();
         }
@@ -124,7 +124,7 @@ public class Couple
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     public void marry()
     {
         java.sql.Connection con = null;
@@ -151,7 +151,7 @@ public class Couple
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     public void divorce()
     {
         java.sql.Connection con = null;
@@ -159,7 +159,7 @@ public class Couple
         {
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement;
-            
+
             statement = con.prepareStatement("DELETE FROM mods_wedding WHERE id=?");
             statement.setInt(1, _Id);
             statement.execute();
@@ -173,13 +173,13 @@ public class Couple
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     public final int getId() { return _Id; }
 
     public final int getPlayer1Id() { return _player1Id; }
-    public final int getPlayer2Id() { return _player2Id; }    
+    public final int getPlayer2Id() { return _player2Id; }
 
-    public final boolean getMaried() { return _maried; }    
+    public final boolean getMaried() { return _maried; }
 
     public final Calendar getAffiancedDate() { return _affiancedDate; }
     public final Calendar getWeddingDate() { return _weddingDate; }

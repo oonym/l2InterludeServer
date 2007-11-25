@@ -34,9 +34,9 @@ import net.sf.l2j.gameserver.model.L2PetDataTable;
 public class PetNameTable
 {
 	private static Logger _log = Logger.getLogger(PetNameTable.class.getName());
-	
+
 	private static PetNameTable _instance;
-	
+
 	public static PetNameTable getInstance()
 	{
 		if (_instance == null)
@@ -45,18 +45,18 @@ public class PetNameTable
 		}
 		return _instance;
 	}
-	
+
 	public boolean doesPetNameExist(String name, int petNpcId)
 	{
 		boolean result = true;
 		java.sql.Connection con = null;
-		
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT name FROM pets p, items i WHERE p.item_obj_id = i.object_id AND name=? AND i.item_id IN (?)");
 			statement.setString(1, name);
-			
+
 			String cond = "";
 			for (int it : L2PetDataTable.getPetItemsAsNpc(petNpcId))
 			{
@@ -83,7 +83,7 @@ public class PetNameTable
     public boolean isValidPetName(String name)
     {
         boolean result = true;
-        
+
         if (!isAlphaNumeric(name)) return result;
 
         Pattern pattern;

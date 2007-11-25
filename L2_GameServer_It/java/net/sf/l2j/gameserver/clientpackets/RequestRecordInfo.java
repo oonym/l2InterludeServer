@@ -109,7 +109,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 					}
 					else
 						_activeChar.sendPacket(new NpcInfo(summon, _activeChar));
-					
+
 					// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
 					summon.updateEffectIcons(true);
 				}
@@ -126,7 +126,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 							_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
 						_activeChar.sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
 					}
-					else 
+					else
 					{
 						_activeChar.sendPacket(new CharInfo(otherPlayer));
 						int relation = otherPlayer.getRelation(_activeChar);

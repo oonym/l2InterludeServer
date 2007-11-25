@@ -36,33 +36,33 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * This class handles following admin commands:
  * - kill = kills target L2Character
  * - kill_monster = kills target non-player
- * 
+ *
  * - kill <radius> = If radius is specified, then ALL players only in that radius will be killed.
  * - kill_monster <radius> = If radius is specified, then ALL non-players only in that radius will be killed.
- * 
+ *
  * @version $Revision: 1.2.4.5 $ $Date: 2007/07/31 10:06:06 $
  */
-public class AdminKill implements IAdminCommandHandler 
+public class AdminKill implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static final String[] ADMIN_COMMANDS = {"admin_kill", "admin_kill_monster"};
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
-	private boolean checkLevel(int level) 
+	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}
 
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) 
+			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
 
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
-		if (command.startsWith("admin_kill")) 
+		if (command.startsWith("admin_kill"))
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
 			st.nextToken(); // skip command
@@ -75,7 +75,7 @@ public class AdminKill implements IAdminCommandHandler
 				{
 					if (st.hasMoreTokens())
 					{
-						try 
+						try
 						{
 							int radius  = Integer.parseInt(st.nextToken());
 							for (L2Character knownChar : plyr.getKnownList().getKnownCharactersInRadius(radius))
@@ -99,7 +99,7 @@ public class AdminKill implements IAdminCommandHandler
 				}
 				else
 				{
-					try 
+					try
 					{
 						int radius  = Integer.parseInt(firstParam);
 
@@ -141,14 +141,14 @@ public class AdminKill implements IAdminCommandHandler
 		}
 		else if (Config.L2JMOD_CHAMPION_ENABLE && target.isChampion())
 			target.reduceCurrentHp(target.getMaxHp()*Config.L2JMOD_CHAMPION_HP + 1, activeChar);
-		else 
+		else
 			target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
-		if (Config.DEBUG) 
+		if (Config.DEBUG)
 			_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+")"+
 					" killed character "+target.getObjectId());
 	}
 
-	public String[] getAdminCommandList() 
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}

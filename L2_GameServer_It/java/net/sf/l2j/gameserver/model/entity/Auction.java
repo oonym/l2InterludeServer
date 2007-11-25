@@ -60,7 +60,7 @@ public class Auction
 	private Map<Integer, Bidder> _bidders        = new FastMap<Integer, Bidder>();
 	private static final String[] ItemTypeName =
 	{
-	             "ClanHall" 
+	             "ClanHall"
 	};
 	public static enum ItemTypeEnum
 	{
@@ -155,7 +155,7 @@ public class Auction
             while (rs.next())
             {
         	    _currentBid = rs.getInt("currentBid");
-        	    _endDate= rs.getLong("endDate");        	    
+        	    _endDate= rs.getLong("endDate");
         	    _itemId = rs.getInt("itemId");
         	    _itemName = rs.getString("itemName");
         	    _itemObjectId = rs.getInt("itemObjectId");
@@ -165,7 +165,7 @@ public class Auction
         	    _sellerName = rs.getString("sellerName");
         	    _startingBid = rs.getInt("startingBid");
             }
-            statement.close();            
+            statement.close();
             loadBid();
         }
         catch (Exception e)
@@ -237,13 +237,13 @@ public class Auction
             statement.setLong(1, _endDate);
             statement.setInt(2, _id);
             statement.execute();
-            
+
             statement.close();
         }
         catch (Exception e)
         {
         	 _log.log(Level.SEVERE, "Exception: saveAuctionDate(): " + e.getMessage(),e);
-        } 
+        }
         finally {try { con.close(); } catch (Exception e) {}}
     }
     /** Set a bid */
@@ -252,7 +252,7 @@ public class Auction
 	    int requiredAdena = bid;
 	    if (getHighestBidderName().equals(bidder.getClan().getLeaderName()))
 	    		requiredAdena = bid - getHighestBidderMaxBid();
-		if ((getHighestBidderId() >0 && bid > getHighestBidderMaxBid()) 
+		if ((getHighestBidderId() >0 && bid > getHighestBidderMaxBid())
 				|| (getHighestBidderId() == 0 && bid >= getStartingBid()))
 	    {
 			if(takeItem(bidder, 57, requiredAdena))
@@ -316,7 +316,7 @@ public class Auction
                 statement.execute();
                 statement.close();
                 if (L2World.getInstance().getPlayer(_highestBidderName) != null)
-                    L2World.getInstance().getPlayer(_highestBidderName).sendMessage("You have been out bidded");   
+                    L2World.getInstance().getPlayer(_highestBidderName).sendMessage("You have been out bidded");
             }
             _highestBidderId = bidder.getClanId();
             _highestBidderMaxBid = bid;
@@ -348,11 +348,11 @@ public class Auction
         {
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement;
-            
+
             statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=?");
             statement.setInt(1, getId());
             statement.execute();
-            
+
             statement.close();
         }
         catch (Exception e)
@@ -429,7 +429,7 @@ public class Auction
 		    ClanHallManager.getInstance().setOwner(_itemId, Clan);
     	}else{
     		/** Task waiting ClanHallManager is loaded every 3s */
-            ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), 3000); 
+            ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), 3000);
     	}
     }
     /** Cancel bid */
@@ -440,12 +440,12 @@ public class Auction
         {
             con = L2DatabaseFactory.getInstance().getConnection();
             PreparedStatement statement;
-            
+
             statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=? AND bidderId=?");
             statement.setInt(1, getId());
             statement.setInt(2, bidder);
             statement.execute();
-            
+
             statement.close();
         }
         catch (Exception e)
@@ -477,7 +477,7 @@ public class Auction
             PreparedStatement statement;
             con = L2DatabaseFactory.getInstance().getConnection();
 
-            statement = con.prepareStatement("INSERT INTO auction (id, sellerId, sellerName, sellerClanName, itemType, itemId, itemObjectId, itemName, itemQuantity, startingBid, currentBid, endDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"); 
+            statement = con.prepareStatement("INSERT INTO auction (id, sellerId, sellerName, sellerClanName, itemType, itemId, itemObjectId, itemName, itemQuantity, startingBid, currentBid, endDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
             statement.setInt(1, getId());
             statement.setInt(2, _sellerId);
             statement.setString(3, _sellerName);
@@ -489,9 +489,9 @@ public class Auction
             statement.setInt(9, _itemQuantity);
             statement.setInt(10, _startingBid);
             statement.setInt(11, _currentBid);
-            statement.setLong(12, _endDate); 
+            statement.setLong(12, _endDate);
             statement.execute();
-            statement.close();            
+            statement.close();
             loadBid();
         }
         catch (Exception e)

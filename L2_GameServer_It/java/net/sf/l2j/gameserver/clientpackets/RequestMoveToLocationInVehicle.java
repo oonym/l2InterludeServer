@@ -34,7 +34,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 	private final Point3D _pos = new Point3D(0,0,0);
 	private final Point3D _origin_pos = new Point3D(0,0,0);
 	private int _boatId;
-	
+
 	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
 
 	/**
@@ -53,7 +53,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 		_x = readD();
 		_y = readD();
 		_z = readD();
-		_origin_pos.setXYZ(_x, _y, _z);  
+		_origin_pos.setXYZ(_x, _y, _z);
 	}
 
 	/* (non-Javadoc)
@@ -63,25 +63,25 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 	protected
 	void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();		
+		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-			return;		
+			return;
 		else if (activeChar.isAttackingNow() && activeChar.getActiveWeaponItem() != null && (activeChar.getActiveWeaponItem().getItemType() == L2WeaponType.BOW))
 		{
 			activeChar.sendPacket(new ActionFailed());
 		}
-		else 
+		else
 		{
 			if(!activeChar.isInBoat())
 			{
-				activeChar.setInBoat(true);						
+				activeChar.setInBoat(true);
 			}
 			L2BoatInstance boat = BoatManager.getInstance().GetBoat(_boatId);
 			activeChar.setBoat(boat);
 			activeChar.setInBoatPosition(_pos);
-			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT, new L2CharPosition(_pos.getX(),_pos.getY(), _pos.getZ(), 0), new L2CharPosition(_origin_pos.getX(),_origin_pos.getY(),_origin_pos.getZ(), 0));	        
-		}	
-		
+			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT, new L2CharPosition(_pos.getX(),_pos.getY(), _pos.getZ(), 0), new L2CharPosition(_origin_pos.getX(),_origin_pos.getY(),_origin_pos.getZ(), 0));
+		}
+
 	}
 
 	/**

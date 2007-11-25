@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPrivateStoreSell extends L2GameClientPacket
@@ -39,12 +39,12 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 //	private static final String _C__96_SENDPRIVATESTOREBUYBUYLIST = "[C] 96 SendPrivateStoreBuyBuyList";
 	private static final String _C__96_REQUESTPRIVATESTORESELL = "[C] 96 RequestPrivateStoreSell";
 	private static Logger _log = Logger.getLogger(RequestPrivateStoreSell.class.getName());
-	
+
 	private int _storePlayerId;
 	private int _count;
 	private int _price;
 	private ItemRequest[] _items;
-    
+
 	@Override
 	protected void readImpl()
 	{
@@ -58,30 +58,30 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		long priceTotal = 0;
 		for (int i = 0; i < _count; i++)
 		{
-			int objectId = readD(); 
-			int itemId = readD(); 
+			int objectId = readD();
+			int itemId = readD();
             readH(); //TODO analyse this
             readH(); //TODO analyse this
-			long count   = readD(); 
-			int price    = readD(); 
-			
+			long count   = readD();
+			int price    = readD();
+
 			if (count > Integer.MAX_VALUE || count < 0)
 			{
 	            String msgErr = "[RequestPrivateStoreSell] player "+getClient().getActiveChar().getName()+" tried an overflow exploit, ban this player!";
 	            Util.handleIllegalPlayerAction(getClient().getActiveChar(),msgErr,Config.DEFAULT_PUNISH);
-			    _count = 0; 
+			    _count = 0;
 			    _items = null;
 			    return;
 			}
 			_items[i] = new ItemRequest(objectId, itemId, (int)count, price);
 			priceTotal += price * count;
 		}
-        
+
 		if(priceTotal < 0 || priceTotal > Integer.MAX_VALUE)
         {
             String msgErr = "[RequestPrivateStoreSell] player "+getClient().getActiveChar().getName()+" tried an overflow exploit, ban this player!";
             Util.handleIllegalPlayerAction(getClient().getActiveChar(),msgErr,Config.DEFAULT_PUNISH);
-		    _count = 0; 
+		    _count = 0;
 		    _items = null;
             return;
         }
@@ -100,14 +100,14 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		if (storePlayer.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_BUY) return;
 		TradeList storeList = storePlayer.getBuyList();
 		if (storeList == null) return;
-        
+
         if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
         {
         	player.sendMessage("Transactions are disable for your Access Level");
             sendPacket(new ActionFailed());
             return;
         }
-        
+
         if (storePlayer.getAdena() < _price)
 		{
 			sendPacket(new ActionFailed());
@@ -116,7 +116,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 			storePlayer.broadcastUserInfo();
 			return;
 		}
-        
+
         if (!storeList.PrivateStoreSell(player, _items, _price))
         {
             sendPacket(new ActionFailed());
@@ -130,7 +130,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 			storePlayer.broadcastUserInfo();
 		}
 	}
-    
+
 	@Override
 	public String getType()
 	{

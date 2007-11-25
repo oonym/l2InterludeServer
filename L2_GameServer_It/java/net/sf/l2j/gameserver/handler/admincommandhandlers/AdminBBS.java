@@ -28,7 +28,7 @@ public class AdminBBS implements IAdminCommandHandler
 	 //private static Logger _log = Logger.getLogger(AdminKick.class.getName());
     private static final String[] ADMIN_COMMANDS = {"admin_bbs"};
     private static final int REQUIRED_LEVEL = Config.GM_MIN;
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
 	 */
@@ -52,7 +52,7 @@ public class AdminBBS implements IAdminCommandHandler
 	public String[] getAdminCommandList() {
         return ADMIN_COMMANDS;
     }
-    
+
     private boolean checkLevel(int level) {
         return (level >= REQUIRED_LEVEL);
     }

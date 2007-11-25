@@ -40,5 +40,5 @@ public class KickPlayer extends LoginServerBasePacket
 	{
 		return _account;
 	}
-	
+
 }

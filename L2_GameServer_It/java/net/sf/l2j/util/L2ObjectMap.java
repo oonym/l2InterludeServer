@@ -8,7 +8,7 @@
  * Revision 1  22/07/2005 13:17:51  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -35,7 +35,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -57,7 +57,7 @@ public abstract class L2ObjectMap<T extends L2Object> implements Iterable<T>
     public abstract boolean contains(T obj);
 
     public abstract Iterator<T> iterator();
-    
+
     public static L2ObjectMap<L2Object> createL2ObjectMap()
     {
         switch (Config.MAP_TYPE)

@@ -31,7 +31,7 @@ import com.l2jserver.mmocore.network.SendablePacket;
 public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 {
 	private static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
-	
+
 	/**
 	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
 	 */
@@ -48,14 +48,14 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 			t.printStackTrace();
 		}
 	}
-	
+
 	public void runImpl()
 	{
-		
+
 	}
-	
+
 	protected abstract void writeImpl();
-	
+
 	/**
 	 * @return A String with this packet name for debuging purposes
 	 */

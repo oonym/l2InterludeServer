@@ -24,19 +24,19 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * 
+ *
  *
  */
 public class Time implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = { 77 }; 
+	private static final int[] COMMAND_IDS = { 77 };
     /* (non-Javadoc)
-     * 
+     *
      */
     public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
         if (COMMAND_IDS[0] != id) return false;
-        
+
 		int t = GameTimeController.getInstance().getGameTime();
 		String h = "" + (t/60)%24;
 		String m;

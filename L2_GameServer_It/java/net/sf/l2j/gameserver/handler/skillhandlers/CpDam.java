@@ -67,7 +67,7 @@ public class CpDam implements ISkillHandler
 	                sps = true;
 	            }
         	}
-            else 
+            else
             	if (weaponInst.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT)
 	            {
 	                ss = true;
@@ -93,7 +93,7 @@ public class CpDam implements ISkillHandler
         for (int index = 0; index < targets.length; index++)
         {
             L2Character target = (L2Character) targets[index];
-            
+
             if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance
                 && target.isAlikeDead() && target.isFakeDeath())
             {
@@ -103,18 +103,18 @@ public class CpDam implements ISkillHandler
             {
                 continue;
             }
-      
+
             if (!Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, ss, sps, bss))
             	return;
             int damage = (int)(target.getCurrentCp() * (1-skill.getPower()));
-            
+
             // Manage attack or cast break of the target (calculating rate, sending message...)
             if (!target.isRaid() && Formulas.getInstance().calcAtkBreak(target, damage))
             {
             	target.breakAttack();
             	target.breakCast();
             }
-            skill.getEffects(activeChar, target); 
+            skill.getEffects(activeChar, target);
             activeChar.sendDamageMessage(target, damage, false, false, false);
             target.setCurrentCp(target.getCurrentCp() - damage);
         }

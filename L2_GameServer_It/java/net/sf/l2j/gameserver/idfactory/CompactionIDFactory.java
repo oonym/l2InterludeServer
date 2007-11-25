@@ -8,7 +8,7 @@
  * Revision 1  24/08/2005 22:32:43  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -38,7 +38,7 @@ import net.sf.l2j.L2DatabaseFactory;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -47,21 +47,21 @@ public class CompactionIDFactory extends IdFactory
     private static Logger _log = Logger.getLogger(CompactionIDFactory.class.getName());
     private int _curOID;
     private int _freeSize;
-    
+
     protected CompactionIDFactory()
     {
         super();
         _curOID = FIRST_OID;
         _freeSize = 0;
-        
+
         java.sql.Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
             //con.createStatement().execute("drop table if exists tmp_obj_id");
-            
+
             int[] tmp_obj_ids = extractUsedObjectIDTable();
-            
+
             int N = tmp_obj_ids.length;
             for (int idx = 0; idx < N; idx++)
             {
@@ -81,7 +81,7 @@ public class CompactionIDFactory extends IdFactory
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     private int insertUntil(int[] tmp_obj_ids, int idx, int N,
             java.sql.Connection con) throws SQLException
     {
@@ -110,7 +110,7 @@ public class CompactionIDFactory extends IdFactory
             ps.close();
         }
         }
-        
+
         int hole = id - _curOID;
         if (hole > N - idx) hole = N - idx;
         for (int i = 1; i <= hole; i++)
@@ -138,7 +138,7 @@ public class CompactionIDFactory extends IdFactory
        /* else
         	return _freeOIDs[--_freeSize];*/
     }
-    
+
     @Override
 	public synchronized void releaseId(@SuppressWarnings("unused") int id)
     {
@@ -151,7 +151,7 @@ public class CompactionIDFactory extends IdFactory
         }
         _freeOIDs[_freeSize++] = id;*/
     }
-    
+
     @Override
 	public int size()
     {

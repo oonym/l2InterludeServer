@@ -29,7 +29,7 @@ public class PetStatus extends SummonStatus
     // =========================================================
     // Data Field
     private int _currentFed               = 0; //Current Fed of the L2PetInstance
-    
+
     // =========================================================
     // Constructor
     public PetStatus(L2PetInstance activeChar)

@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.templates;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.6 $ $Date: 2005/04/02 15:57:51 $
  */
 public class L2CharTemplate
@@ -35,13 +35,13 @@ public class L2CharTemplate
 	public final float baseHpMax;
     public final float baseCpMax;
 	public final float baseMpMax;
-	
+
 	/** HP Regen base */
 	public final float baseHpReg;
-	
+
 	/** MP Regen base */
 	public final float baseMpReg;
-       
+
 	public final int basePAtk;
 	public final int baseMAtk;
 	public final int basePDef;
@@ -84,16 +84,16 @@ public class L2CharTemplate
 	public final double baseEarthVuln;
 	public final double baseHolyVuln;
 	public final double baseDarkVuln;
-	
+
 	public final boolean isUndead;
-    
+
     //C4 Stats
     public final int baseMpConsumeRate;
     public final int baseHpConsumeRate;
-	
-	public final int collisionRadius;   
+
+	public final int collisionRadius;
 	public final int collisionHeight;
-	
+
 	public L2CharTemplate(StatsSet set)
 	{
 		// Base stats
@@ -150,13 +150,13 @@ public class L2CharTemplate
 		baseEarthVuln       = set.getInteger("baseEarthVuln",       1);
 		baseHolyVuln        = set.getInteger("baseHolyVuln",        1);
 		baseDarkVuln        = set.getInteger("baseDarkVuln",        1);
-		
+
 		isUndead			= (set.getInteger("isUndead", 0) == 1);
-        
+
         //C4 Stats
         baseMpConsumeRate      = set.getInteger("baseMpConsumeRate",        0);
         baseHpConsumeRate      = set.getInteger("baseHpConsumeRate",        0);
-		
+
 		// Geometry
 		collisionRadius    = set.getInteger("collision_radius");
 		collisionHeight    = set.getInteger("collision_height");

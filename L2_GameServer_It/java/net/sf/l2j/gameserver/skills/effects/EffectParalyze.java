@@ -34,21 +34,21 @@ final class EffectParalyze extends L2Effect {
 	{
 		return EffectType.PARALYZE;
 	}
-	
+
 	@Override
-	public void onStart() 
+	public void onStart()
 	{
-		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1); 
+		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1);
 		getEffected().setIsParalyzed(true);
 	}
-	
+
 	@Override
-	public void onExit() 
+	public void onExit()
 	{
-		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1); 
+		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1);
 		getEffected().setIsParalyzed(false);
 	}
-	
+
     @Override
 	public boolean onActionTime()
     {

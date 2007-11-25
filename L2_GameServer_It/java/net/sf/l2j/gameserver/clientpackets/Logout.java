@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.9.4.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class Logout extends L2GameClientPacket
@@ -90,7 +90,7 @@ public final class Logout extends L2GameClientPacket
 		// and it is in progress, otherwise notify party members that the player
 		// is not longer a participant.
 		if (player.isFestivalParticipant()) {
-			if (SevenSignsFestival.getInstance().isFestivalInitialized()) 
+			if (SevenSignsFestival.getInstance().isFestivalInitialized())
 			{
 				player.sendMessage("You cannot log out while you are a participant in a festival.");
 				return;
@@ -100,8 +100,8 @@ public final class Logout extends L2GameClientPacket
 			if (playerParty != null)
 				player.getParty().broadcastToPartyMembers(SystemMessage.sendString(player.getName() + " has been removed from the upcoming festival."));
 		}
-		if (player.isFlying()) 
-		{ 
+		if (player.isFlying())
+		{
 			player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
 		}
 
@@ -137,13 +137,13 @@ public final class Logout extends L2GameClientPacket
 					friend.sendPacket(new FriendList(friend));
 				}
 			}
-			
+
 			rset.close();
 			statement.close();
-		} 
+		}
 		catch (Exception e) {
 			_log.warning("could not restore friend data:"+e);
-		} 
+		}
 		finally {
 			try {con.close();} catch (Exception e){}
 		}

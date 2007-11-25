@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.skills.funcs.FuncTemplate;
 
 /**
  * This class is dedicated to the management of armors.
- * 
+ *
  * @version $Revision: 1.2.2.1.2.6 $ $Date: 2005/03/27 15:30:10 $
  */
 public final class L2Armor extends L2Item
@@ -42,7 +42,7 @@ public final class L2Armor extends L2Item
 	private final int _mpBonus;
 	private final int _hpBonus;
 	private L2Skill _itemSkill = null; // for passive skill
-	
+
     /**
      * Constructor for Armor.<BR><BR>
      * <U><I>Variables filled :</I></U><BR>
@@ -61,13 +61,13 @@ public final class L2Armor extends L2Item
 		_mDef          = set.getInteger("m_def");
 		_mpBonus       = set.getInteger("mp_bonus", 0);
 		_hpBonus       = set.getInteger("hp_bonus", 0);
-		
+
 		int sId = set.getInteger("item_skill_id");
 		int sLv = set.getInteger("item_skill_lvl");
 		if(sId > 0 && sLv > 0)
 			_itemSkill = SkillTable.getInstance().getInfo(sId,sLv);
 	}
-	
+
 	/**
 	 * Returns the type of the armor.
 	 * @return L2ArmorType
@@ -77,7 +77,7 @@ public final class L2Armor extends L2Item
 	{
 		return (L2ArmorType)super._type;
 	}
-	
+
 	/**
 	 * Returns the ID of the item after applying the mask.
 	 * @return int : ID of the item
@@ -87,7 +87,7 @@ public final class L2Armor extends L2Item
 	{
 		return getItemType().mask();
 	}
-	
+
 	/**
 	 * Returns the magical defense of the armor
 	 * @return int : value of the magic defense
@@ -96,7 +96,7 @@ public final class L2Armor extends L2Item
 	{
 		return _mDef;
 	}
-	
+
 	/**
 	 * Returns the physical defense of the armor
 	 * @return int : value of the physical defense
@@ -105,7 +105,7 @@ public final class L2Armor extends L2Item
 	{
 		return _pDef;
 	}
-	
+
 	/**
 	 * Returns avoid modifier given by the armor
 	 * @return int : avoid modifier
@@ -114,7 +114,7 @@ public final class L2Armor extends L2Item
 	{
 		return _avoidModifier;
 	}
-	
+
 	/**
 	 * Returns magical bonus given by the armor
 	 * @return int : value of the magical bonus
@@ -123,7 +123,7 @@ public final class L2Armor extends L2Item
 	{
 		return _mpBonus;
 	}
-	
+
 	/**
 	 * Returns physical bonus given by the armor
 	 * @return int : value of the physical bonus
@@ -133,7 +133,7 @@ public final class L2Armor extends L2Item
 		return _hpBonus;
 	}
 
-	/** 
+	/**
 	 * Returns passive skill linked to that armor
 	 * @return
 	 */
@@ -141,9 +141,9 @@ public final class L2Armor extends L2Item
 	{
 		return _itemSkill;
 	}
-	
+
 	/**
-	 * Returns array of Func objects containing the list of functions used by the armor 
+	 * Returns array of Func objects containing the list of functions used by the armor
 	 * @param instance : L2ItemInstance pointing out the armor
 	 * @param player : L2Character pointing out the player
 	 * @return Func[] : array of functions

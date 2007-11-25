@@ -26,7 +26,7 @@ public final class RequestReplySurrenderPledgeWar extends L2GameClientPacket
     //private static Logger _log = Logger.getLogger(RequestReplySurrenderPledgeWar.class.getName());
 
     private int _answer;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -43,16 +43,16 @@ public final class RequestReplySurrenderPledgeWar extends L2GameClientPacket
         L2PcInstance requestor = activeChar.getActiveRequester();
         if (requestor == null)
             return;
-        
+
         if (_answer == 1)
         {
             requestor.deathPenalty(false);
-            ClanTable.getInstance().deleteclanswars(requestor.getClanId(), activeChar.getClanId());            
-        } 
+            ClanTable.getInstance().deleteclanswars(requestor.getClanId(), activeChar.getClanId());
+        }
         else
         {
         }
-        
+
         activeChar.onTransactionRequest(null);
     }
 

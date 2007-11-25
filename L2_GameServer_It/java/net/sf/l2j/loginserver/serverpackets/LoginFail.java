@@ -35,24 +35,24 @@ public final class LoginFail extends L2LoginServerPacket
 		REASON_SERVER_MAINTENANCE	(0x10),
 		REASON_TEMP_PASS_EXPIRED	(0x11),
 		REASON_DUAL_BOX				(0x23);
-		
+
 		private final int _code;
-		
+
 		LoginFailReason(int code)
 		{
 			_code = code;
 		}
-		
+
 		public final int getCode()
 		{
 			return _code;
 		}
 	}
-	
+
 	private LoginFailReason _reason;
-	
-	
-	public LoginFail(LoginFailReason reason) 
+
+
+	public LoginFail(LoginFailReason reason)
 	{
 		_reason = reason;
 	}

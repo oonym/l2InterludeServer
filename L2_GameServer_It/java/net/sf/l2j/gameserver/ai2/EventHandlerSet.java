@@ -24,7 +24,7 @@ import javolution.util.FastList;
 import net.sf.l2j.gameserver.TaskPriority;
 
 /**
- * 
+ *
  * @author -Wooden-
  *
  */
@@ -34,7 +34,7 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 	private long _insertionTime;
 	private List<EventHandler> _handlers;
 	private AiEventType _eventType;
-	
+
 	public EventHandlerSet(AiEventType event, List<EventHandler> handlers, TaskPriority prio)
 	{
 		_comparatorPrio = (prio.ordinal()+1)*3;
@@ -43,7 +43,7 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 		for(EventHandler handler : handlers)
 			addHandler(handler);
 	}
-	
+
 	public EventHandlerSet(EventHandler handler, TaskPriority prio)
 	{
 		_comparatorPrio = (prio.ordinal()+1)*3;
@@ -51,7 +51,7 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 		_eventType = handler.getEvenType();
 		addHandler(handler);
 	}
-	
+
 	public void addHandler(EventHandler handler)
 	{
 		if(handler == null)
@@ -75,27 +75,27 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 			_handlers.add(handler);
 		}
 	}
-	
+
 	public void setPrio(TaskPriority prio)
 	{
 		_comparatorPrio = (prio.ordinal()+1)*3;
 	}
-	
+
 	public void stampInsertionTime()
 	{
 		 _insertionTime = System.currentTimeMillis();
 	}
-	
+
 	public int getComparatorPriority()
 	{
 		return _comparatorPrio;
 	}
-	
+
 	public List<EventHandler> getHandlers()
 	{
 		return _handlers;
 	}
-	
+
 	public AiEventType getEventType()
 	{
 		return _eventType;
@@ -109,7 +109,7 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 		return (int)( (System.currentTimeMillis() - _insertionTime)/1000) + _comparatorPrio - es.getComparatorPriority();
 	}
 
-	
+
 	@Override
 	public String toString()
 	{
@@ -120,5 +120,5 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 		}
 		return str;
 	}
-	
+
 }

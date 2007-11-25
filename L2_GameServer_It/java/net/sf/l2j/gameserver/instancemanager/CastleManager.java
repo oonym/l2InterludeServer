@@ -23,13 +23,13 @@ import java.util.List;
 
 import javolution.util.FastList;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
-import net.sf.l2j.gameserver.SevenSigns;
 
 
 public class CastleManager
@@ -48,11 +48,11 @@ public class CastleManager
     }
     // =========================================================
 
-    
+
     // =========================================================
     // Data Field
     private List<Castle> _castles;
-    
+
     // =========================================================
     // Constructor
     private static final int _castleCirclets[] = { 0, 6838, 6835, 6839, 6837, 6840, 6834, 6836, 8182, 8183 };
@@ -113,13 +113,13 @@ public class CastleManager
             System.out.println("Exception: loadCastleData(): " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         finally {try { con.close(); } catch (Exception e) {}}
     }
 
     // =========================================================
     // Property - Public
-    
+
     public final Castle getCastleById(int castleId)
     {
     	for (Castle temp : getCastles())
@@ -129,7 +129,7 @@ public class CastleManager
     	}
         return null;
     }
-    
+
     public final Castle getCastleByOwner(L2Clan clan)
     {
     	for (Castle temp : getCastles())
@@ -139,7 +139,7 @@ public class CastleManager
     	}
         return null;
     }
-    
+
     public final Castle getCastle(String name)
     {
     	for (Castle temp : getCastles())
@@ -149,7 +149,7 @@ public class CastleManager
     	}
         return null;
     }
-    
+
     public final Castle getCastle(int x, int y, int z)
     {
     	for (Castle temp : getCastles())
@@ -214,18 +214,18 @@ public class CastleManager
 			if(castle.getTaxPercent() > maxTax)
 				castle.setTaxPercent(maxTax);
 	}
-	
+
 	int _castleId = 1; // from this castle
 	public int getCirclet()
 	{
 		return getCircletByCastleId(_castleId);
 	}
-        
+
 	public int getCircletByCastleId(int castleId)
 	{
 		if (castleId > 0 && castleId < 10)
 			return _castleCirclets[castleId];
-		
+
 		return 0;
 	}
 
@@ -234,19 +234,19 @@ public class CastleManager
 	{
 		for (L2ClanMember member : clan.getMembers())
 			removeCirclet(member, castleId);
-	}      
+	}
 	public void removeCirclet(L2ClanMember member, int castleId)
 	{
 		if (member == null) return;
 		L2PcInstance player = member.getPlayerInstance();
 		int circletId = getCircletByCastleId(castleId);
-		
+
 		if (circletId != 0)
 		{
 			// online-player circlet removal
-			if (player != null) 
+			if (player != null)
 			{
-				try 
+				try
 				{
 					L2ItemInstance circlet = player.getInventory().getItemByItemId(circletId);
 					if (circlet != null)
@@ -256,9 +256,9 @@ public class CastleManager
 						player.destroyItemByItemId("CastleCircletRemoval", circletId, 1, player, true);
 					}
 					return;
-				} catch (NullPointerException e) 
-				{ 
-					// continue removing offline 
+				} catch (NullPointerException e)
+				{
+					// continue removing offline
 				}
 			}
 			// else offline-player circlet removal

@@ -49,7 +49,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * - give_all_skills
  * - remove_all_skills
  * - add_clan_skills
- * 
+ *
  * @version $Revision: 1.2.4.7 $ $Date: 2005/04/11 10:06:02 $
  */
 public class AdminSkill implements IAdminCommandHandler {
@@ -84,7 +84,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			showMainPage(activeChar);
 		else if (command.startsWith("admin_remove_skills"))
 		{
-			try 
+			try
 			{
 				String val = command.substring(20);
 				removeSkillsPage(activeChar, Integer.parseInt(val));
@@ -108,14 +108,14 @@ public class AdminSkill implements IAdminCommandHandler {
 		{
 			try
 			{
-				String val = command.substring(15); 
+				String val = command.substring(15);
 				if (activeChar == activeChar.getTarget() || activeChar.getAccessLevel() >= REQUIRED_LEVEL2)
 					adminAddSkill(activeChar, val);
 			}
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Usage: //add_skill <skill_id> <level>");
-			}			
+			}
 		}
 		else if (command.startsWith("admin_remove_skill"))
 		{
@@ -129,7 +129,7 @@ public class AdminSkill implements IAdminCommandHandler {
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Usage: //remove_skill <skill_id>");
-			}			
+			}
 		}
 		else if (command.equals("admin_get_skills"))
 		{
@@ -184,7 +184,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
 			player = (L2PcInstance)target;
-		else 
+		else
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			return;
@@ -252,7 +252,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (SkillsEnd - SkillsStart > MaxSkillsPerPage)
 			SkillsEnd = SkillsStart + MaxSkillsPerPage;
 
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);		
+		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		TextBuilder replyMSG = new TextBuilder("<html><body>");
 		replyMSG.append("<table width=260><tr>");
 		replyMSG.append("<td width=40><button value=\"Main\" action=\"bypass -h admin_admin\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
@@ -274,7 +274,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		}
 		pages += "</tr></table></center>";
 		replyMSG.append(pages);
-		replyMSG.append("<br><table width=270>");		
+		replyMSG.append("<br><table width=270>");
 		replyMSG.append("<tr><td width=80>Name:</td><td width=60>Level:</td><td width=40>Id:</td></tr>");
 		for (int i = SkillsStart; i < SkillsEnd; i++)
 			replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_remove_skill "+skills[i].getId()+"\">"+skills[i].getName()+"</a></td><td width=60>"+skills[i].getLevel()+"</td><td width=40>"+skills[i].getId()+"</td></tr>");
@@ -283,7 +283,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		replyMSG.append("Remove skill by ID :");
 		replyMSG.append("<tr><td>Id: </td>");
 		replyMSG.append("<td><edit var=\"id_to_remove\" width=110></td></tr>");
-		replyMSG.append("</table></center>");		
+		replyMSG.append("</table></center>");
 		replyMSG.append("<center><button value=\"Remove skill\" action=\"bypass -h admin_remove_skill $id_to_remove\" width=110 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
 		replyMSG.append("<br><center><button value=\"Back\" action=\"bypass -h admin_current_player\" width=40 height=15></center>");
 		replyMSG.append("</body></html>");
@@ -317,7 +317,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		if (target instanceof L2PcInstance)
 			player = (L2PcInstance)target;
 		else
-		{			
+		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			return;
 		}
@@ -343,7 +343,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
 			player = (L2PcInstance)target;
-		else 
+		else
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 			return;
@@ -403,7 +403,7 @@ public class AdminSkill implements IAdminCommandHandler {
 				String name = skill.getName();
 				player.sendMessage("Admin gave you the skill "+name+".");
 				player.addSkill(skill, true);
-				//Admin information	
+				//Admin information
 				activeChar.sendMessage("You gave the skill "+name+" to "+player.getName()+".");
 				if (Config.DEBUG)
 					_log.fine("[GM]"+activeChar.getName()+" gave skill "+name+" to "+player.getName()+".");

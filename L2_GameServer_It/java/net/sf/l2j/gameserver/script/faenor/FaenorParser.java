@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -38,9 +38,9 @@ public abstract class FaenorParser extends Parser
 {
     protected static FaenorInterface _bridge = FaenorInterface.getInstance();
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy", Locale.US);
-    
+
     public final static boolean DEBUG = true;
-    
+
     /*
      * UTILITY FUNCTIONS
      */
@@ -48,13 +48,13 @@ public abstract class FaenorParser extends Parser
     {
         return attribute(node, attributeName, null);
     }
-    
+
     public static String element(Node node, String elementName)
     {
         return element(node, elementName, null);
     }
 
-    public static String attribute(Node node, String attributeName, String defaultValue) 
+    public static String attribute(Node node, String attributeName, String defaultValue)
     {
         try
         {
@@ -68,7 +68,7 @@ public abstract class FaenorParser extends Parser
         }
     }
 
-    public static String element(Node parentNode, String elementName, String defaultValue) 
+    public static String element(Node parentNode, String elementName, String defaultValue)
     {
         try
         {
@@ -87,44 +87,44 @@ public abstract class FaenorParser extends Parser
         if (defaultValue != null)
             return defaultValue;
         throw new NullPointerException();
-        
+
     }
-    
+
     public static boolean isNodeName(Node node, String name)
     {
         return node.getNodeName().equalsIgnoreCase(name);
     }
-    
+
     public static Date getDate(String date) throws ParseException
     {
         return DATE_FORMAT.parse(date);
     }
-    
+
     public static double getPercent(String percent)
     {
         return (Double.parseDouble(percent.split("%")[0]) / 100.0);
     }
-    
+
     protected static int getInt(String number)
     {
         return Integer.parseInt(number);
     }
-    
+
     protected static double getDouble(String number)
     {
         return Double.parseDouble(number);
     }
-    
+
     protected static float getFloat(String number)
     {
         return Float.parseFloat(number);
     }
-    
+
     protected static String getParserName(String name)
     {
         return "faenor.Faenor"+name+"Parser";
     }
-    
+
     /**
      * @param script
      */

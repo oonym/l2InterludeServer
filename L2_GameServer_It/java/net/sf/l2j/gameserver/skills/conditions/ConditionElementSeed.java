@@ -30,13 +30,13 @@ public class ConditionElementSeed extends Condition
 {
     private static int[] seedSkills = {1285, 1286, 1287};
     private final int[] _requiredSeeds;
-    
+
     public ConditionElementSeed(int[] seeds)
     {
         _requiredSeeds = seeds;
 //        if (Config.DEVELOPER) System.out.println("Required seeds: " + _requiredSeeds[0] + ", " + _requiredSeeds[1] + ", " + _requiredSeeds[2]+ ", " + _requiredSeeds[3]+ ", " + _requiredSeeds[4]);
     }
-    
+
     ConditionElementSeed(int fire, int water, int wind, int various, int any)
     {
         _requiredSeeds = new int[5];
@@ -46,7 +46,7 @@ public class ConditionElementSeed extends Condition
         _requiredSeeds[3] = various;
         _requiredSeeds[4] = any;
     }
-    
+
     @Override
 	public boolean testImpl(Env env)
     {
@@ -54,11 +54,11 @@ public class ConditionElementSeed extends Condition
         for (int i = 0; i < Seeds.length; i++)
         {
             Seeds[i] = (env.player.getFirstEffect(seedSkills[i]) instanceof EffectSeed ? ((EffectSeed)env.player.getFirstEffect(seedSkills[i])).getPower() : 0);
-            if (Seeds[i] >= _requiredSeeds[i]) 
+            if (Seeds[i] >= _requiredSeeds[i])
                 Seeds[i] -= _requiredSeeds[i];
             else return false;
         }
-        
+
 //        if (Config.DEVELOPER) System.out.println("Seeds: " + Seeds[0] + ", " + Seeds[1] + ", " + Seeds[2]);
         if (_requiredSeeds[3] > 0)
         {

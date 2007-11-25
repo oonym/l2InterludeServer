@@ -34,7 +34,7 @@ public class GMAudit {
             SimpleDateFormat formatter;
             formatter = new SimpleDateFormat("dd/MM/yyyy H:mm:ss");
             today = formatter.format(new Date());
-			
+
 			_log.log(Level.INFO, today + ">" + gmName + ">" + action + ">" +target + ">" + params);
 		}
 	}

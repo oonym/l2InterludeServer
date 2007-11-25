@@ -25,15 +25,15 @@ import net.sf.l2j.gameserver.serverpackets.RecipeShopManageList;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.1.2.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestRecipeShopManageList extends L2GameClientPacket
 {
 	private static final String _C__B0_RequestRecipeShopManageList = "[C] b0 RequestRecipeShopManageList";
 	//private static Logger _log = Logger.getLogger(RequestPrivateStoreManage.class.getName());
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -46,7 +46,7 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 		    return;
-        
+
         // Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
         if (player.isAlikeDead())
         {
@@ -62,9 +62,9 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
         {
             player.setCreateList(new L2ManufactureList());
         }
-		
+
 		player.sendPacket(new RecipeShopManageList(player, true));
-		
+
 		/*
 		int privatetype=player.getPrivateStoreType();
 		if (privatetype == 0)
@@ -75,7 +75,7 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
 				player.sendPacket(new ChangeWaitType (player,1));
 				player.broadcastPacket(new ChangeWaitType (player,1));
 			}
-			
+
 			if (player.getTradeList() == null)
 			{
 				player.setTradeList(new L2TradeList(0));
@@ -89,21 +89,21 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
 			player.sendPacket(new PrivateSellListSell(client.getActiveChar()));
 			player.sendPacket(new UserInfo(player));
 			player.broadcastPacket(new UserInfo(player));
-		
+
 		}
-		
+
 		if (privatetype == 1)
 		{
 			player.setPrivateStoreType(2);
-			player.sendPacket(new PrivateSellListSell(client.getActiveChar()));	
+			player.sendPacket(new PrivateSellListSell(client.getActiveChar()));
 			player.sendPacket(new ChangeWaitType (player,1));
 			player.broadcastPacket(new ChangeWaitType (player,1));
-			
-			
+
+
 		}*/
-		
-		
-		
+
+
+
 	}
 
 	/* (non-Javadoc)

@@ -48,12 +48,12 @@ public final class EffectTemplate
 	public final int period; // in seconds
 	public final int abnormalEffect;
 	public FuncTemplate[] funcTemplates;
-	
+
 	public final String stackType;
 	public final float stackOrder;
-	
+
 	public EffectTemplate(Condition pAttachCond, Condition pApplayCond,
-			String func, Lambda pLambda, int pCounter, int pPeriod, 
+			String func, Lambda pLambda, int pCounter, int pPeriod,
 			int pAbnormalEffect, String pStackType, float pStackOrder)
 	{
 		attachCond = pAttachCond;
@@ -75,7 +75,7 @@ public final class EffectTemplate
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public L2Effect getEffect(Env env)
 	{
 		if (attachCond != null && !attachCond.test(env))
@@ -96,7 +96,7 @@ public final class EffectTemplate
 			e.getTargetException().printStackTrace();
 			return null;
 		}
-	
+
 	}
 
     public void attach(FuncTemplate f)

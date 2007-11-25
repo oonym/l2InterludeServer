@@ -29,20 +29,20 @@ import net.sf.l2j.gameserver.templates.StatsSet;
 
 public class L2SkillCharge extends L2Skill {
 
-	public L2SkillCharge(StatsSet set) 
+	public L2SkillCharge(StatsSet set)
 	{
 		super(set);
 	}
 
 	@Override
-	public void useSkill(L2Character caster, @SuppressWarnings("unused") L2Object[] targets) 
+	public void useSkill(L2Character caster, @SuppressWarnings("unused") L2Object[] targets)
 	{
 		if (caster.isAlikeDead())
 			return;
-		
+
 		// get the effect
 		EffectCharge effect = (EffectCharge) caster.getFirstEffect(this);
-		if (effect != null) 
+		if (effect != null)
 		{
 			if (effect.numCharges < getNumCharges())
 			{
@@ -63,17 +63,17 @@ public class L2SkillCharge extends L2Skill {
             return;
 		}
 		getEffects(caster, caster);
-		
+
         //effect self :]
         //L2Effect seffect = caster.getEffect(getId());
         //TODO ?? this is always null due to a return in the if block above!
         //if (effect != null && seffect.isSelfEffect())
-        //{             
+        //{
             //Replace old effect with new one.
         //    seffect.exit();
         //}
         // cast self effect if any
         getEffectsSelf(caster);
 	}
-	
+
 }

@@ -52,24 +52,24 @@ public final class RequestExAcceptJoinMPCC extends L2GameClientPacket
 	    	L2PcInstance requestor = player.getActiveRequester();
 			if (requestor == null)
 			    return;
-	    			
-			if (_response == 1) 
+
+			if (_response == 1)
 	        {
 				if(!requestor.getParty().isInCommandChannel())
 				{
 					new L2CommandChannel(requestor); // Create new CC
 				}
-				requestor.getParty().getCommandChannel().addParty(player.getParty());			
-			} 
+				requestor.getParty().getCommandChannel().addParty(player.getParty());
+			}
 			else
 	        {
 				requestor.sendMessage("The player declined to join your Command Channel.");
 			}
-	        
+
 			player.setActiveRequester(null);
 			requestor.onTransactionResponse();
         }
-		
+
 	}
 
 	/* (non-Javadoc)

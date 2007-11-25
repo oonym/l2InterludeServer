@@ -34,7 +34,7 @@ public class PlayerInGame extends GameServerBasePacket
 		writeH(1);
 		writeS(player);
 	}
-	
+
 	public PlayerInGame (FastList<String> players)
 	{
 		writeC(0x02);
@@ -42,7 +42,7 @@ public class PlayerInGame extends GameServerBasePacket
 		for(String pc : players)
 			writeS(pc);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
 	 */
@@ -51,5 +51,5 @@ public class PlayerInGame extends GameServerBasePacket
 	{
 		return getBytes();
 	}
-	
+
 }

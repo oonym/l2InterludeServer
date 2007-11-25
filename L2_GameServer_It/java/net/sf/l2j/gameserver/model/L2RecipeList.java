@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.model;
 /**
  * This class describes a Recipe used by Dwarf to craft Item.
  * All L2RecipeList are made of L2RecipeInstance (1 line of the recipe : Item-Quantity needed).<BR><BR>
- * 
+ *
  */
 public class L2RecipeList
 {
@@ -52,8 +52,8 @@ public class L2RecipeList
 	/** The quantity of Item crafted when using this L2RecipeList */
 	private int _count;
 
-	/** If this a common or a dwarven recipe */ 
-	private boolean _isDwarvenRecipe; 
+	/** If this a common or a dwarven recipe */
+	private boolean _isDwarvenRecipe;
 
 	/**
 	 * Constructor of L2RecipeList (create a new Recipe).<BR><BR>
@@ -161,13 +161,13 @@ public class L2RecipeList
 		return _count;
 	}
 
-	/** 
-	 * Return <B>true</B> if this a Dwarven recipe or <B>false</B> if its a Common recipe 
-	 */ 
-	public boolean isDwarvenRecipe() 
-	{ 
-		return _isDwarvenRecipe; 
-	} 
+	/**
+	 * Return <B>true</B> if this a Dwarven recipe or <B>false</B> if its a Common recipe
+	 */
+	public boolean isDwarvenRecipe()
+	{
+		return _isDwarvenRecipe;
+	}
 
 	/**
 	 * Return the table containing all L2RecipeInstance (1 line of the recipe : Item-Quantity needed) of the L2RecipeList.<BR><BR>

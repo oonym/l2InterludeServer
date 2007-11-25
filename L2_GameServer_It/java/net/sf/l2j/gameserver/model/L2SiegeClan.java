@@ -58,8 +58,8 @@ public class L2SiegeClan
 		return _numFlagsAdded;
 	}
 
-	public void addFlag(L2NpcInstance flag) 
-	{	
+	public void addFlag(L2NpcInstance flag)
+	{
 		_numFlagsAdded++;
 		getFlag().add(flag);
 	}
@@ -113,6 +113,6 @@ public class L2SiegeClan
 	}
 
 	public SiegeClanType getType() { return _type; }
-    
-    public void setType(SiegeClanType setType) { _type = setType; } 
+
+    public void setType(SiegeClanType setType) { _type = setType; }
 }

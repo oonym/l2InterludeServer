@@ -36,7 +36,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	private int _skey1;
 	private int _skey2;
 	private int _serverId;
-	
+
 	/**
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	public void run()
 	{
 		SessionKey sk = getClient().getSessionKey();
-		
+
 		// if we didnt showed the license we cant check these values
 		if (!Config.SHOW_LICENCE || sk.checkLoginPair(_skey1, _skey2))
 		{

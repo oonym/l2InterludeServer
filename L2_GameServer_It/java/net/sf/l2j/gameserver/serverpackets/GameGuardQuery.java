@@ -28,9 +28,9 @@ public class GameGuardQuery extends L2GameServerPacket
 
     public GameGuardQuery()
     {
-    	
+
     }
-    
+
     @Override
 	public void runImpl()
     {
@@ -39,13 +39,13 @@ public class GameGuardQuery extends L2GameServerPacket
         // or kick
         getClient().setGameGuardOk(false);
     }
-    
+
     @Override
 	public void writeImpl()
     {
         writeC(0xf9);
     }
-    
+
     @Override
 	public String getType()
     {

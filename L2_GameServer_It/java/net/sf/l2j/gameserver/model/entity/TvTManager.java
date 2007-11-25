@@ -45,8 +45,8 @@ public class TvTManager implements Runnable
 	}
 
 	/**
-	 * Initialize new/Returns the one and only instance<br><br> 
-	 * 
+	 * Initialize new/Returns the one and only instance<br><br>
+	 *
 	 * @return TvTManager<br>
 	 */
 	public static TvTManager getInstance()
@@ -59,7 +59,7 @@ public class TvTManager implements Runnable
 
 	/**
 	 * The task method to handle cycles of the event<br><br>
-	 * 
+	 *
 	 * @see java.lang.Runnable#run()<br>
 	 */
 	public void run()
@@ -69,7 +69,7 @@ public class TvTManager implements Runnable
 		for (;;)
 		{
 			waiter(Config.TVT_EVENT_INTERVAL * 60); // in config given as minutes
-			
+
 			if (!TvTEvent.startParticipation())
 			{
 				Announcements.getInstance().announceToAll("TvT Event: Event was canceled.");
@@ -99,7 +99,7 @@ public class TvTManager implements Runnable
 
 	/**
 	 * This method waits for a period time delay<br><br>
-	 * 
+	 *
 	 * @param interval<br>
 	 */
 	void waiter(int seconds)
@@ -107,9 +107,9 @@ public class TvTManager implements Runnable
 		while (seconds > 1)
 		{
 			seconds--; // here because we don't want to see two time announce at the same time
-			
+
 			if (TvTEvent.isParticipating() || TvTEvent.isStarted())
-			{			
+			{
 				switch (seconds)
 				{
 				case 3600: // 1 hour left
@@ -121,12 +121,12 @@ public class TvTManager implements Runnable
 					break;
 				case 1800: // 30 minutes left
 				case 900: // 15 minutes left
-				case 600: //  10 minutes left 
+				case 600: //  10 minutes left
 				case 300: // 5 minutes left
 				case 240: // 4 minutes left
 				case 180: // 3 minutes left
 				case 120: // 2 minutes left
-				case 60: // 1 minute left															   
+				case 60: // 1 minute left
 					if (TvTEvent.isParticipating())
 						Announcements.getInstance().announceToAll("TvT Event: " + seconds / 60 + " minute(s) until registration is closed!");
 					else if (TvTEvent.isStarted())
@@ -139,9 +139,9 @@ public class TvTManager implements Runnable
 				 * case 10: // 10 seconds left
 				*/
 				case 5: // 5 seconds left
-				
+
 				/**
-				 * 
+				 *
 				 * case 4: // 4 seconds left
 				 * case 3: // 3 seconds left
 				 * case 2: // 2 seconds left

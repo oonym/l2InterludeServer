@@ -24,7 +24,7 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExShowQuestMark extends L2GameServerPacket
 {
 	private int _questId;
-	
+
 	public ExShowQuestMark(int questId)
 	{
 		_questId = questId;

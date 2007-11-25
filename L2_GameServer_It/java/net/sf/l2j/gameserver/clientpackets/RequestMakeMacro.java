@@ -29,15 +29,15 @@ public final class RequestMakeMacro extends L2GameClientPacket
 {
 	private L2Macro _macro;
 	private int _commandsLenght = 0;
-    
+
 	private static final String _C__C1_REQUESTMAKEMACRO = "[C] C1 RequestMakeMacro";
 	private static final int MAX_MACRO_LENGTH = 12;
-	
+
 	/**
 	 * packet type id 0xc1
-	 * 
+	 *
 	 * sample
-	 * 
+	 *
 	 * c1
 	 * d // id
 	 * S // macro name
@@ -45,13 +45,13 @@ public final class RequestMakeMacro extends L2GameClientPacket
      * S // unknown  acronym
      * c // icon
      * c // count
-     * 
+     *
      * c // entry
      * c // type
      * d // skill id
      * c // shortcut id
      * S // command name
-	 * 
+	 *
 	 * format:		cdSSScc (ccdcS)
 	 */
 	@Override
@@ -64,8 +64,8 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		int _icon = readC();
 		int _count = readC();
 		if (_count > MAX_MACRO_LENGTH) _count = MAX_MACRO_LENGTH;
-		
-		L2MacroCmd[] commands = new L2MacroCmd[_count];  
+
+		L2MacroCmd[] commands = new L2MacroCmd[_count];
         if (Config.DEBUG) System.out.println("Make macro id:"+_id+"\tname:"+_name+"\tdesc:"+_desc+"\tacronym:"+_acronym+"\ticon:"+_icon+"\tcount:"+_count);
         for (int i = 0; i < _count; i++)
         {
@@ -84,7 +84,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance  player = getClient().getActiveChar(); 
+		L2PcInstance  player = getClient().getActiveChar();
 		if (player == null)
 		    return;
 		if (_commandsLenght > 255)

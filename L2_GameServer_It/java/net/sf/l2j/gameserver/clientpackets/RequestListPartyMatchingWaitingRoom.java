@@ -22,12 +22,12 @@ package net.sf.l2j.gameserver.clientpackets;
  * Format: (ch)
  * this is just a trigger : no data
  * @author  -Wooden-
- * 
+ *
  */
 public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
 {
     private static final String _C__D0_16_REQUESTLISTPARTYMATCHINGWAITINGROOM = "[C] D0:16 RequestListPartyMatchingWaitingRoom";
-    
+
     @Override
 	protected void readImpl()
     {
@@ -52,5 +52,5 @@ public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
     {
         return _C__D0_16_REQUESTLISTPARTYMATCHINGWAITINGROOM;
     }
-    
+
 }

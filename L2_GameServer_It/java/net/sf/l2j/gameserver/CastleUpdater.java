@@ -33,28 +33,28 @@ import net.sf.l2j.gameserver.model.entity.Castle;
  */
 public class CastleUpdater implements Runnable
 {
-		protected static Logger _log = Logger.getLogger(CastleUpdater.class.getName());	
+		protected static Logger _log = Logger.getLogger(CastleUpdater.class.getName());
 		private L2Clan _clan;
         private int _runCount = 0;
-		
+
 		public CastleUpdater(L2Clan clan, int runCount)
 		{
 			_clan = clan;
             _runCount = runCount;
 		}
-		
+
 		public void run()
 		{
-			try 
+			try
 			{
 				// Move current castle treasury to clan warehouse every 2 hour
 				ItemContainer warehouse = _clan.getWarehouse();
-				if ((warehouse != null) && (_clan.getHasCastle() > 0)) 
+				if ((warehouse != null) && (_clan.getHasCastle() > 0))
 				{
 					Castle castle = CastleManager.getInstance().getCastleById(_clan.getHasCastle());
-					if (!Config.ALT_MANOR_SAVE_ALL_ACTIONS) 
+					if (!Config.ALT_MANOR_SAVE_ALL_ACTIONS)
 					{
-						if (_runCount % Config.ALT_MANOR_SAVE_PERIOD_RATE == 0) 
+						if (_runCount % Config.ALT_MANOR_SAVE_PERIOD_RATE == 0)
 						{
 							castle.saveSeedData();
 							castle.saveCropData();

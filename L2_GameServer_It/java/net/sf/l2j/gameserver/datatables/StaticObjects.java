@@ -35,11 +35,11 @@ import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
 public class StaticObjects
 {
     private static Logger _log = Logger.getLogger(StaticObjects.class.getName());
-    
+
     private static StaticObjects _instance;
     private Map<Integer,L2StaticObjectInstance> _staticObjects;
 
-        
+
     public static StaticObjects getInstance()
     {
         if(_instance == null)
@@ -53,40 +53,40 @@ public class StaticObjects
         parseData();
         _log.config("StaticObject: Loaded " + _staticObjects.size() + " StaticObject Templates.");
     }
-    
+
     private void parseData()
     {
         LineNumberReader lnr = null;
-        try 
+        try
         {
             File doorData = new File(Config.DATAPACK_ROOT, "data/staticobjects.csv");
             lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
 
             String line = null;
-            while ((line = lnr.readLine()) != null) 
+            while ((line = lnr.readLine()) != null)
             {
-                if (line.trim().length() == 0 || line.startsWith("#")) 
+                if (line.trim().length() == 0 || line.startsWith("#"))
                     continue;
 
                 L2StaticObjectInstance obj = parse(line);
-                _staticObjects.put(obj.getStaticObjectId(),obj);             
+                _staticObjects.put(obj.getStaticObjectId(),obj);
             }
-        } 
-        catch (FileNotFoundException e) 
+        }
+        catch (FileNotFoundException e)
         {
             _log.warning("staticobjects.csv is missing in data folder");
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             _log.warning("error while creating StaticObjects table " + e);
-        } 
-        finally 
+        }
+        finally
         {
             try { lnr.close(); } catch (Exception e) {}
-        }        
+        }
     }
-    
-    public static L2StaticObjectInstance parse(String line) 
+
+    public static L2StaticObjectInstance parse(String line)
     {
         StringTokenizer st = new StringTokenizer(line, ";");
 
@@ -109,5 +109,5 @@ public class StaticObjects
         obj.spawnMe();
 
         return obj;
-    }   
+    }
 }

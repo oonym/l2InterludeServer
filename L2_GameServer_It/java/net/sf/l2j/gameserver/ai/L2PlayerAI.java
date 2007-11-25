@@ -133,7 +133,7 @@ public class L2PlayerAI extends L2CharacterAI
                  _log.warning("L2PlayerAI: onEvtFinishCasting -> " + cmd._intention + " " + cmd._arg0 + " " + cmd._arg1);
                  */
 
-                if (cmd != null && cmd._crtlIntention != AI_INTENTION_CAST) // previous state shouldn't be casting 
+                if (cmd != null && cmd._crtlIntention != AI_INTENTION_CAST) // previous state shouldn't be casting
                 {
                 	setIntention(cmd._crtlIntention, cmd._arg0, cmd._arg1);
                 }
@@ -216,9 +216,9 @@ public class L2PlayerAI extends L2CharacterAI
             return;
         }
 
-        if (target != null) 
+        if (target != null)
         	if (maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill))) return;
-        
+
         if (_skill.getHitTime() > 50) clientStopMoving(null);
 
         L2Object oldTarget = _actor.getTarget();

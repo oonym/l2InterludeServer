@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class L2OlympiadStadiumZone extends L2ZoneType
 {
 	private int _stadiumId;
-	
+
 	public L2OlympiadStadiumZone()
 	{
 		super();
@@ -46,35 +46,35 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 		}
 		else super.setParameter(name, value);
 	}
-	
+
 	@Override
 	protected void onEnter(L2Character character)
 	{
 		character.setInsideZone(L2Character.ZONE_PVP, true);
-		
+
 		if (character instanceof L2PcInstance)
 		{
 			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
 		character.setInsideZone(L2Character.ZONE_PVP, false);
-		
+
 		if (character instanceof L2PcInstance)
 		{
 			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 		}
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
-	
+
 	/**
 	 * Returns this zones stadium id (if any)
 	 * @return

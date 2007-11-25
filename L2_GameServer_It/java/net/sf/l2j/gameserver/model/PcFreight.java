@@ -26,38 +26,38 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class PcFreight extends ItemContainer
 {
     //private static final Logger _log = Logger.getLogger(PcFreight.class.getName());
-    
+
     private L2PcInstance _owner;    // This is the L2PcInstance that owns this Freight;
     private int _activeLocationId;
-    
+
     public PcFreight(L2PcInstance owner)
     {
         _owner = owner;
     }
-    
+
 	@Override
 	public L2PcInstance getOwner() { return _owner; }
     @Override
 	public ItemLocation getBaseLocation() { return ItemLocation.FREIGHT; }
     public void setActiveLocation(int locationId) { _activeLocationId = locationId; }
     public int getactiveLocation() { return _activeLocationId; }
-    
+
 	/**
 	 * Returns the quantity of items in the inventory
 	 * @return int
 	 */
 	@Override
-	public int getSize() 
+	public int getSize()
 	{
 		int size = 0;
 		for (L2ItemInstance item : _items)
 		{
-			if (item.getEquipSlot() == 0 || _activeLocationId == 0 
+			if (item.getEquipSlot() == 0 || _activeLocationId == 0
         			|| item.getEquipSlot() == _activeLocationId) size++;
 		}
 		return size;
 	}
-	
+
 	/**
 	 * Returns the list of items in inventory
 	 * @return L2ItemInstance : items in inventory
@@ -83,8 +83,8 @@ public class PcFreight extends ItemContainer
 	public L2ItemInstance getItemByItemId(int itemId)
 	{
 	    for (L2ItemInstance item : _items)
-	        if ((item.getItemId() == itemId) 
-	        	&& (item.getEquipSlot() == 0 || _activeLocationId == 0 
+	        if ((item.getItemId() == itemId)
+	        	&& (item.getEquipSlot() == 0 || _activeLocationId == 0
 	        			|| item.getEquipSlot() == _activeLocationId)
 	        	) return item;
 

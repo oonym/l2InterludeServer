@@ -34,7 +34,7 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 import net.sf.l2j.gameserver.templates.L2Henna;
 /**
  * This class ...
- * 
+ *
  * @version $Revision$ $Date$
  */
 public class HennaTreeTable
@@ -43,12 +43,12 @@ public class HennaTreeTable
 	private static final HennaTreeTable _instance = new HennaTreeTable();
 	private Map<ClassId, List<L2HennaInstance>> _hennaTrees;
 	private boolean _initialized = true;
-	
+
 	public static HennaTreeTable getInstance()
 	{
 		return _instance;
 	}
-	
+
 	private HennaTreeTable()
 	{
 		_hennaTrees = new FastMap<ClassId, List<L2HennaInstance>>();
@@ -96,37 +96,37 @@ public class HennaTreeTable
 					temp.setStatMEM(template.getStatMEM());
 					temp.setStatDEX(template.getStatDEX());
 					temp.setStatWIT(template.getStatWIT());
-					
+
 					list.add(temp);
 				}
 				_hennaTrees.put(ClassId.values()[classId], list);
 				hennatree.close();
 				statement2.close();
                 count   += list.size();
-				_log.fine("Henna Tree for Class: " + classId + " has " + list.size() + " Henna Templates.");		
+				_log.fine("Henna Tree for Class: " + classId + " has " + list.size() + " Henna Templates.");
 			}
-			
+
 			classlist.close();
 			statement.close();
-			
-			
+
+
 		}
 		catch (Exception e)
 		{
 			_log.warning("error while creating henna tree for classId "+classId + "  "+e);
 			e.printStackTrace();
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
 
         _log.config("HennaTreeTable: Loaded " + count + " Henna Tree Templates.");
-		
+
 	}
-	
-	
-	
+
+
+
 	public L2HennaInstance[] getAvailableHenna(ClassId classId)
 	{
 		List<L2HennaInstance> result = new FastList<L2HennaInstance>();
@@ -137,20 +137,20 @@ public class HennaTreeTable
 			_log.warning("Hennatree for class " + classId + " is not defined !");
 			return new L2HennaInstance[0];
 		}
-		
-		
+
+
 		for (int i = 0; i < henna.size(); i++)
 		{
 			L2HennaInstance temp = henna.get(i);
 			result.add(temp);
 		}
-		
+
 		return result.toArray(new L2HennaInstance[result.size()]);
 	}
-	
+
 	public boolean isInitialized()
 	{
 		return _initialized;
 	}
-	
+
 }

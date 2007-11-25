@@ -40,11 +40,11 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 	public MoveToLocationInVehicle(L2Character actor, L2CharPosition destination, L2CharPosition origin)
 	{
 		if (!(actor instanceof L2PcInstance)) return;
-		
+
 		L2PcInstance player = (L2PcInstance)actor;
-		
+
 		if (player.getBoat() == null) return;
-		
+
 		_charObjId = player.getObjectId();
 		_boatId = player.getBoat().getObjectId();
 		_destination = destination;
@@ -69,7 +69,7 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 		writeD(_destination.z);
 		writeD(_origin.x);
 		writeD(_origin.y);
-		writeD(_origin.z);		
+		writeD(_origin.z);
 	}
 
 	/* (non-Javadoc)

@@ -34,7 +34,7 @@ public class ItemLogFormatter extends Formatter
 {
 	private static final String CRLF = "\r\n";
 	private SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
-	
+
 	@Override
 	public String format(LogRecord record)
 	{
@@ -54,7 +54,7 @@ public class ItemLogFormatter extends Formatter
 				L2ItemInstance item = (L2ItemInstance)p;
 				output.append("item " + item.getObjectId() + ":");
 				if (item.getEnchantLevel() > 0) output.append("+" + item.getEnchantLevel() + " ");
-				output.append(item.getItem().getName()); 
+				output.append(item.getItem().getName());
 				output.append("(" + item.getCount() + ")");
 			}
 //			else if (p instanceof L2PcInstance)

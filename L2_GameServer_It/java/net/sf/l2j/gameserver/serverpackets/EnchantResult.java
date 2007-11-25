@@ -27,7 +27,7 @@ public class EnchantResult extends L2GameServerPacket
 	{
 		_unknown = unknown;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

@@ -20,20 +20,20 @@ package net.sf.l2j.loginserver.clientpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.1 $ $Date: 2005/03/27 15:30:12 $
  */
 public abstract class ClientBasePacket
 {
 	private byte[] _decrypt;
 	private int _off;
-	
+
 	public ClientBasePacket(byte[] decrypt)
 	{
 		_decrypt = decrypt;
 		_off = 1;		// skip packet type id
 	}
-	
+
 	public int readD()
 	{
 		int result = _decrypt[_off++] &0xff;
@@ -84,7 +84,7 @@ public abstract class ClientBasePacket
 		_off += result.length()*2 + 2;
 		return result;
 	}
-	
+
 	public final byte[] readB(int length)
 	{
 		byte[] result = new byte[length];

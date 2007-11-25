@@ -207,7 +207,7 @@ public class DynamicExtension {
      * @param function the ExtensionFunction implementation
      */
 	public void addGetter(String name, ExtensionFunction function) {
-	    _getters.put(name, function);   
+	    _getters.put(name, function);
 	}
 
     /**

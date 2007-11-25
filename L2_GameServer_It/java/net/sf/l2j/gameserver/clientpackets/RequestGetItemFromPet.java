@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.4.4 $ $Date: 2005/03/29 23:15:33 $
  */
 public final class RequestGetItemFromPet extends L2GameClientPacket
@@ -39,7 +39,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 	private int _amount;
 	@SuppressWarnings("unused")
     private int _unknown;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -51,9 +51,9 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar(); 
+		L2PcInstance player = getClient().getActiveChar();
         if (player == null || player.getPet() == null || !(player.getPet() instanceof L2PetInstance)) return;
-        L2PetInstance pet = (L2PetInstance)player.getPet(); 
+        L2PetInstance pet = (L2PetInstance)player.getPet();
 
         if(_amount < 0)
         {
@@ -62,7 +62,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
         }
         else if(_amount == 0)
         	return;
-        
+
 		if (pet.transferItem("Transfer", _objectId, _amount, player.getInventory(), player, pet) == null)
 		{
 			_log.warning("Invalid item transfer request: " + pet.getName() + "(pet) --> " + player.getName());

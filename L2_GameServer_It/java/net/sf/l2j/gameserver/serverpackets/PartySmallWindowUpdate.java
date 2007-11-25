@@ -22,36 +22,36 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.5 $ $Date: 2005/03/27 15:29:39 $
  */
-public class PartySmallWindowUpdate extends L2GameServerPacket 
+public class PartySmallWindowUpdate extends L2GameServerPacket
 {
 	private static final String _S__67_PARTYSMALLWINDOWUPDATE = "[S] 52 PartySmallWindowUpdate";
 	private L2PcInstance _member;
-	
+
 	public PartySmallWindowUpdate(L2PcInstance member)
 	{
 		_member = member;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x52);
 		writeD(_member.getObjectId());
 		writeS(_member.getName());
-		
+
 		writeD((int) _member.getCurrentCp()); //c4
 		writeD(_member.getMaxCp()); //c4
-		
+
 		writeD((int) _member.getCurrentHp());
 		writeD(_member.getMaxHp());
 		writeD((int) _member.getCurrentMp());
 		writeD(_member.getMaxMp());
 		writeD(_member.getLevel());
 		writeD(_member.getClassId().getId());
-		
+
 	}
 
 	/* (non-Javadoc)

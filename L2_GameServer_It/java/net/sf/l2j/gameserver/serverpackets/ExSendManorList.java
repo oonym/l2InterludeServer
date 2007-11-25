@@ -23,10 +23,10 @@ import javolution.util.FastList;
 /**
  * Format : (h) d [dS]
  * h  sub id
- * 
+ *
  * d: number of manors
  * [
- * d: id 
+ * d: id
  * S: manor name
  * ]
  * @author l3x

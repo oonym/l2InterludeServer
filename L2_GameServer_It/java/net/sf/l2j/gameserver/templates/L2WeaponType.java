@@ -37,10 +37,10 @@ public enum L2WeaponType {
     PET       (12, "Pet"),
 	ROD       (13, "Rod"),
 	BIGBLUNT  (14, "Big Blunt"); // Two handed blunt
-	
+
 	private final int _id;
 	private final String _name;
-	
+
 	/**
 	 * Constructor of the L2WeaponType.
 	 * @param id : int designating the ID of the WeaponType
@@ -51,7 +51,7 @@ public enum L2WeaponType {
 		_id = id;
 		_name = name;
 	}
-	
+
 	/**
 	 * Returns the ID of the item after applying the mask.
 	 * @return int : ID of the item
@@ -59,7 +59,7 @@ public enum L2WeaponType {
 	public int mask() {
 		return 1<<_id;
 	}
-	
+
     /**
      * Returns the name of the WeaponType
      * @return String

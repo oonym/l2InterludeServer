@@ -48,7 +48,7 @@ import net.sf.l2j.gameserver.model.entity.Castle;
  * S = AllyName<BR>
  * S = AllyLeaderName<BR>
  * d = AllyCrestID<BR>
- * 
+ *
  * @author KenM
  */
 public class SiegeAttackerList extends L2GameServerPacket
@@ -56,10 +56,10 @@ public class SiegeAttackerList extends L2GameServerPacket
     private static final String _S__CA_SiegeAttackerList = "[S] ca SiegeAttackerList";
     //private static Logger _log = Logger.getLogger(SiegeAttackerList.class.getName());
     private Castle _castle;
-    
+
     public SiegeAttackerList(Castle castle)
     {
-        _castle = castle;   
+        _castle = castle;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SiegeAttackerList extends L2GameServerPacket
     {
         writeC(0xca);
         writeD(_castle.getCastleId());
-        writeD(0x00); //0 
+        writeD(0x00); //0
         writeD(0x01); //1
         writeD(0x00); //0
         int size = _castle.getSiege().getAttackerClans().size();

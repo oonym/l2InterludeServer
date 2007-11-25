@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.GmListTable;
 
 /**
  * This class handles RequestGmLista packet triggered by /gmlist command
- * 
+ *
  * @version $Revision: 1.1.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestGmList extends L2GameClientPacket
@@ -32,7 +32,7 @@ public final class RequestGmList extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		
+
 	}
 
 	@Override

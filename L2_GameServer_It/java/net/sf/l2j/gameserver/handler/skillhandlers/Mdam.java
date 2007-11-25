@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.skills.Formulas;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.8.2.9 $ $Date: 2005/04/05 19:41:23 $
  */
 
@@ -105,7 +105,7 @@ public class Mdam implements ISkillHandler
         for (int index = 0; index < targets.length; index++)
         {
             L2Character target = (L2Character) targets[index];
-            
+
             if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance
                 && target.isAlikeDead() && target.isFakeDeath())
             {
@@ -123,14 +123,14 @@ public class Mdam implements ISkillHandler
             //				if (skill.getSkillType() == L2Skill.SkillType.DOT || skill.getSkillType() == L2Skill.SkillType.MDOT)
             //				    acted = Formulas.getInstance().calcSkillSuccess(
             //						activeChar, target, skill);
-            //				else			
+            //				else
             //				    acted = Formulas.getInstance().calcMagicAffected(
             //						activeChar, target, skill);
             //				if (!acted) {
             //					activeChar.sendPacket(new SystemMessage(SystemMessage.MISSED_TARGET));
             //					continue;
             //				}
-            //				
+            //
             //			}
 
             boolean mcrit = Formulas.getInstance().calcMCrit(activeChar.getMCriticalHit(target, skill));
@@ -157,7 +157,7 @@ public class Mdam implements ISkillHandler
             // It doesn't seem to make sense for me. I'm moving this line inside the "if" condition, right after the effects processing...
             // [changed by nexus - 2006-08-15]
             //target.reduceCurrentHp(damage, activeChar);
-    
+
             if (damage > 0)
             {
                 // Manage attack or cast break of the target (calculating rate, sending message...)
@@ -168,7 +168,7 @@ public class Mdam implements ISkillHandler
                 }
 
                 activeChar.sendDamageMessage(target, damage, mcrit, false, false);
-    
+
                 if (skill.hasEffects())
                 {
                 	if (target.reflectSkill(skill))
@@ -183,7 +183,7 @@ public class Mdam implements ISkillHandler
                 	{
                 		// activate attacked effects, if any
                         target.stopSkillEffects(skill.getId());
-                        if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, ss, bss)) 
+                        if (Formulas.getInstance().calcSkillSuccess(activeChar, target, skill, false, ss, bss))
                             skill.getEffects(activeChar, target);
                         else
                         {
@@ -194,19 +194,19 @@ public class Mdam implements ISkillHandler
                         }
                 	}
                 }
-                
+
                 target.reduceCurrentHp(damage, activeChar);
             }
         }
         // self Effect :]
-        L2Effect effect = activeChar.getFirstEffect(skill.getId());        
-        if (effect != null && effect.isSelfEffect())        
-        {            
-        	//Replace old effect with new one.            
-        	effect.exit();        
-        }        
+        L2Effect effect = activeChar.getFirstEffect(skill.getId());
+        if (effect != null && effect.isSelfEffect())
+        {
+        	//Replace old effect with new one.
+        	effect.exit();
+        }
         skill.getEffectsSelf(activeChar);
-        
+
         if (skill.isSuicideAttack())
         {
         	activeChar.doDie(null);

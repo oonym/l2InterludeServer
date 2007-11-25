@@ -25,17 +25,17 @@ package net.sf.l2j.gameserver.events;
 public abstract class EventHandler
 {
     private Object _owner;
-    
+
     public EventHandler(Object owner)
     {
         _owner = owner;
     }
-    
+
     public final Object getOwner()
     {
         return _owner;
     }
-    
+
     @Override
 	public final boolean equals(Object object)
     {
@@ -43,7 +43,7 @@ public abstract class EventHandler
             return true;
         return false;
     }
-    
+
     public abstract void handler(Object trigger, IEventParams params);
-    
+
 }

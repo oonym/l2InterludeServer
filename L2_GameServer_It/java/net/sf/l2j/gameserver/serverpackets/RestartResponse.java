@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class RestartResponse extends L2GameServerPacket
@@ -33,7 +33,7 @@ public class RestartResponse extends L2GameServerPacket
 	{
 		_message = "ok merong~ khaha";
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

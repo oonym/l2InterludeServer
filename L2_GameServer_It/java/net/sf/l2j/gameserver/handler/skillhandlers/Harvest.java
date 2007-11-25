@@ -16,7 +16,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-package net.sf.l2j.gameserver.handler.skillhandlers; 
+package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
@@ -40,21 +40,21 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author  l3x
  */
-public class Harvest implements ISkillHandler { 
-	private static Log _log = LogFactory.getLog(Harvest.class.getName()); 
+public class Harvest implements ISkillHandler {
+	private static Log _log = LogFactory.getLog(Harvest.class.getName());
     private static final SkillType[] SKILL_IDS = {SkillType.HARVEST};
-    
+
     private L2PcInstance _activeChar;
     private L2MonsterInstance _target;
-    
-    public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets) { 
+
+    public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets) {
         if (!(activeChar instanceof L2PcInstance))
             return;
 
         _activeChar = (L2PcInstance) activeChar;
-        
+
 		L2Object[] targetList = skill.getTargetList(activeChar);
-		
+
 		InventoryUpdate iu = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
 
         if (targetList == null) {
@@ -63,23 +63,23 @@ public class Harvest implements ISkillHandler {
 
         if(_log.isDebugEnabled())
         	_log.info("Casting harvest");
-    	
+
     	for (int index = 0; index < targetList.length; index++) {
 	    	if (!(targetList[index] instanceof L2MonsterInstance))
 	            continue;
-	
+
 	        _target = (L2MonsterInstance) targetList[index];
-	        
+
 	        if (_activeChar != _target.getSeeder()) {
 	        	SystemMessage sm = new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_HARVEST);
 	        	_activeChar.sendPacket(sm);
 	        	continue;
 	        }
-	        
+
 	        boolean send = false;
 	        int total = 0;
 	        int cropId = 0;
-	
+
 	        // TODO: check items and amount of items player harvest
 	        if (_target.isSeeded()) {
 	         	if (calcSuccess()) {
@@ -87,7 +87,7 @@ public class Harvest implements ISkillHandler {
 	 	            if (items != null && items.length > 0) {
 	 	                for (L2Attackable.RewardItem ritem : items) {
 	 	                    cropId = ritem.getItemId(); // always got 1 type of crop as reward
-	 	                    if (_activeChar.isInParty()) 
+	 	                    if (_activeChar.isInParty())
 	 	                    	_activeChar.getParty().distributeItem(_activeChar, ritem, true, _target);
 	 	                    else {
 	 	                        L2ItemInstance item = _activeChar.getInventory().addItem("Manor", ritem.getItemId(), ritem.getCount() * Config.RATE_DROP_MANOR, _activeChar, _target);
@@ -108,7 +108,7 @@ public class Harvest implements ISkillHandler {
 		 	                    smsg.addItemName(cropId);
 		 	       	    		_activeChar.getParty().broadcastToPartyMembers(_activeChar, smsg);
 		 	       	    	}
-	 	
+
 	 	                    if (iu != null) _activeChar.sendPacket(iu);
 	 	            		else _activeChar.sendPacket(new ItemList(_activeChar, false));
 	 	                }
@@ -122,7 +122,7 @@ public class Harvest implements ISkillHandler {
     	}
 
     }
-    
+
     private boolean calcSuccess() {
         int basicSuccess = 100;
         int levelPlayer = _activeChar.getLevel();
@@ -131,25 +131,25 @@ public class Harvest implements ISkillHandler {
         int diff = (levelPlayer - levelTarget);
         if(diff < 0)
             diff = -diff;
-                
+
         // apply penalty, target <=> player levels
         // 5% penalty for each level
         if(diff > 5) {
             basicSuccess -= (diff-5) * 5;
         }
-        
+
         // success rate cant be less than 1%
         if(basicSuccess < 1)
             basicSuccess = 1;
-        
+
         int rate = Rnd.nextInt(99);
-        
+
         if(rate < basicSuccess)
             return true;
         return false;
     }
-    
-    public SkillType[] getSkillIds() { 
-        return SKILL_IDS; 
-    } 
+
+    public SkillType[] getSkillIds() {
+        return SKILL_IDS;
+    }
 }

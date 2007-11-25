@@ -28,14 +28,14 @@ import net.sf.l2j.gameserver.skills.Env;
 
 final class EffectSilentMove extends L2Effect
 {
-	public EffectSilentMove(Env env, EffectTemplate template) 
+	public EffectSilentMove(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
 
 	/** Notify started */
 	@Override
-	public void onStart() 
+	public void onStart()
 	{
 		super.onStart();
 
@@ -43,45 +43,45 @@ final class EffectSilentMove extends L2Effect
 		if (effected instanceof L2PcInstance)
 			((L2PcInstance)effected).setSilentMoving(true);
 	}
-	
+
 	/** Notify exited */
 	@Override
-	public void onExit() 
+	public void onExit()
 	{
 		super.onExit();
-		
+
 		L2Character effected = getEffected();
 		if (effected instanceof L2PcInstance)
 			((L2PcInstance)effected).setSilentMoving(false);
 	}
-	
+
 	@Override
-	public EffectType getEffectType() 
+	public EffectType getEffectType()
 	{
 		return EffectType.SILENT_MOVE;
 	}
 
 	@Override
-	public boolean onActionTime() 
+	public boolean onActionTime()
 	{
 		 // Only cont skills shouldn't end
 		if(getSkill().getSkillType() != SkillType.CONT)
 			return false;
-		
+
 		if(getEffected().isDead())
 			return false;
-		
+
 		double manaDam = calc();
-		
+
 		if(manaDam > getEffected().getCurrentMp())
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
 			getEffected().sendPacket(sm);
 			return false;
 		}
-		
+
 		getEffected().reduceCurrentMp(manaDam);
 		return true;
 	}
-	
+
 }

@@ -44,19 +44,19 @@ final class EffectBluff extends L2Effect {
     {
         return EffectType.BLUFF; //test for bluff effect
     }
-    
+
     /** Notify started */
     @Override
 	public void onStart()
-    { 
+    {
         getEffected().startFear();
     	if(getEffected() instanceof L2FolkInstance) return;
     	// if(getEffected() instanceof L2SiegeGuardInstance) return;
-    	// Cannot be used on Headquarters Flag.  
+    	// Cannot be used on Headquarters Flag.
     	// bluff now is a PVE PVP skill
     	if(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062 || getSkill().getId() != 358) return;
-    	
-    	if(getEffected() instanceof L2SiegeSummonInstance) 
+
+    	if(getEffected() instanceof L2SiegeSummonInstance)
     	{
     		return;
     	}
@@ -69,7 +69,7 @@ final class EffectBluff extends L2Effect {
             signx=1;
         if (getEffected().getY()>getEffector().getY())
             signy=1;
-        
+
         //posX += signx*40; //distance less than melee attacks (40)
         //posY += signy*40;
 
@@ -84,7 +84,7 @@ final class EffectBluff extends L2Effect {
 	public void onExit()
     {
         getEffected().stopFear(this);
-        
+
     }
     @Override
 	public boolean onActionTime()

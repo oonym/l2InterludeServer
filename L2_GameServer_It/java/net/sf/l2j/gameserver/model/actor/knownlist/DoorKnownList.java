@@ -26,7 +26,7 @@ public class DoorKnownList extends CharKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public DoorKnownList(L2DoorInstance activeChar)
@@ -36,7 +36,7 @@ public class DoorKnownList extends CharKnownList
 
     // =========================================================
     // Method - Public
-    
+
     // =========================================================
     // Method - Private
 
@@ -51,7 +51,7 @@ public class DoorKnownList extends CharKnownList
         if (object instanceof L2SiegeGuardInstance) return 800;
     	if (!(object instanceof L2PcInstance))
             return 0;
-        
+
         return 4000;
     }
 

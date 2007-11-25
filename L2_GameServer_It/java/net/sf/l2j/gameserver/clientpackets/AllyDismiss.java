@@ -28,15 +28,15 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public final class AllyDismiss extends L2GameClientPacket
 {
     private static final String _C__85_ALLYDISMISS = "[C] 85 AllyDismiss";
-    
+
     private String _clanName;
-    
+
     @Override
 	protected void readImpl()
     {
     	_clanName = readS();
     }
-    
+
     @Override
 	protected void runImpl()
     {
@@ -81,23 +81,23 @@ public final class AllyDismiss extends L2GameClientPacket
 			player.sendPacket(new SystemMessage(SystemMessageId.DIFFERANT_ALLIANCE));
 			return;
         }
-        
+
 		long currentTime = System.currentTimeMillis();
         leaderClan.setAllyPenaltyExpiryTime(
         		currentTime + Config.ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED * 86400000L,
         		L2Clan.PENALTY_TYPE_DISMISS_CLAN); //24*60*60*1000 = 86400000
 		leaderClan.updateClanInDB();
-		
+
         clan.setAllyId(0);
         clan.setAllyName(null);
         clan.setAllyPenaltyExpiryTime(
         		currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED * 86400000L,
         		L2Clan.PENALTY_TYPE_CLAN_DISMISSED); //24*60*60*1000 = 86400000
         clan.updateClanInDB();
-        
+
         player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXPELED_A_CLAN));
     }
-    
+
     @Override
 	public String getType()
     {

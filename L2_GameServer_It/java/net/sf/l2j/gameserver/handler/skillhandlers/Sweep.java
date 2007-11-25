@@ -16,7 +16,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-package net.sf.l2j.gameserver.handler.skillhandlers; 
+package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
@@ -32,31 +32,31 @@ import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
-/** 
- * @author _drunk_ 
- * 
- * TODO To change the template for this generated type comment go to 
- * Window - Preferences - Java - Code Style - Code Templates 
- */ 
-public class Sweep implements ISkillHandler 
-{ 
-    //private static Logger _log = Logger.getLogger(Sweep.class.getName()); 
-	private static final SkillType[] SKILL_IDS = {SkillType.SWEEP}; 
-    
-    public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, L2Object[] targets) 
-    { 
+/**
+ * @author _drunk_
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class Sweep implements ISkillHandler
+{
+    //private static Logger _log = Logger.getLogger(Sweep.class.getName());
+	private static final SkillType[] SKILL_IDS = {SkillType.SWEEP};
+
+    public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, L2Object[] targets)
+    {
         if (!(activeChar instanceof L2PcInstance))
         {
             return;
         }
-        
+
         L2PcInstance player = (L2PcInstance)activeChar;
 		InventoryUpdate iu = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
 		boolean send = false;
-		
-        for(int index = 0;index < targets.length;index++) 
-        { 
-            if (!(targets[index] instanceof L2Attackable)) 
+
+        for(int index = 0;index < targets.length;index++)
+        {
+            if (!(targets[index] instanceof L2Attackable))
             	continue;
 	        L2Attackable target = (L2Attackable)targets[index];
         	L2Attackable.RewardItem[] items = null;
@@ -70,7 +70,7 @@ public class Sweep implements ISkillHandler
 	        }
             if (isSweeping)
             {
-				if (items == null || items.length == 0) 
+				if (items == null || items.length == 0)
 					continue;
 				for (L2Attackable.RewardItem ritem : items)
 				{
@@ -99,19 +99,19 @@ public class Sweep implements ISkillHandler
 				}
             }
             target.endDecayTask();
-            
+
     		if (send)
     		{
-                if (iu != null) 
+                if (iu != null)
                 	player.sendPacket(iu);
-        		else 
+        		else
         			player.sendPacket(new ItemList(player, false));
     		}
         }
-    } 
-    
-    public SkillType[] getSkillIds() 
-    { 
-        return SKILL_IDS; 
-    } 
+    }
+
+    public SkillType[] getSkillIds()
+    {
+        return SKILL_IDS;
+    }
 }

@@ -46,35 +46,35 @@ import com.l2jserver.mmocore.network.SelectorThread;
 public class L2LoginServer
 {
 	public static final int PROTOCOL_REV = 0x0102;
-	
+
 	private static L2LoginServer _instance;
 	private Logger _log = Logger.getLogger(L2LoginServer.class.getName());
 	private GameServerListener _gameServerListener;
 	private SelectorThread<L2LoginClient> _selectorThread;
 	private Status _statusServer;
-	
+
 	public static void main(String[] args)
 	{
 		_instance = new L2LoginServer();
 	}
-	
+
 	public static L2LoginServer getInstance()
 	{
 		return _instance;
 	}
-	
+
 	public L2LoginServer()
 	{
 		Server.serverMode = Server.MODE_LOGINSERVER;
 //      Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME   = "./log.cfg"; // Name of log file
-		
+
 		/*** Main ***/
 		// Create log folder
-		File logFolder = new File(Config.DATAPACK_ROOT, LOG_FOLDER); 
+		File logFolder = new File(Config.DATAPACK_ROOT, LOG_FOLDER);
 		logFolder.mkdir();
-		
+
 		// Create input stream for log file -- or store file data into memory
 		InputStream is = null;
 		try
@@ -102,10 +102,10 @@ public class L2LoginServer
 				e.printStackTrace();
 			}
 		}
-		
+
 		// Load Config
 		Config.load();
-		
+
 		// Prepare Database
 		try
 		{
@@ -120,7 +120,7 @@ public class L2LoginServer
 			}
 			System.exit(1);
 		}
-		
+
 		try
 		{
 			LoginController.load();
@@ -134,7 +134,7 @@ public class L2LoginServer
 			}
 			System.exit(1);
 		}
-		
+
 		try
 		{
 			GameServerTable.load();
@@ -157,9 +157,9 @@ public class L2LoginServer
 			}
 			System.exit(1);
 		}
-		
+
 		loadBanFile();
-		
+
 		InetAddress bindAddress = null;
 		if (!Config.LOGIN_BIND_ADDRESS.equals("*"))
 		{
@@ -176,7 +176,7 @@ public class L2LoginServer
 				}
 			}
 		}
-		
+
 		SelectorServerConfig ssc = new SelectorServerConfig(bindAddress, Config.PORT_LOGIN);
 		L2LoginPacketHandler loginPacketHandler = new L2LoginPacketHandler();
 		SelectorHelper sh = new SelectorHelper();
@@ -194,7 +194,7 @@ public class L2LoginServer
 			}
 			System.exit(1);
 		}
-		
+
 		try
 		{
 			_gameServerListener = new GameServerListener();
@@ -210,7 +210,7 @@ public class L2LoginServer
 			}
 			System.exit(1);
 		}
-		
+
 		if ( Config.IS_TELNET_ENABLED )
 		{
 			try
@@ -231,7 +231,7 @@ public class L2LoginServer
 		{
 		    System.out.println("Telnet server is currently disabled.");
 		}
-		
+
 		try
 		{
 			_selectorThread.openServerSocket();
@@ -248,17 +248,17 @@ public class L2LoginServer
 		_selectorThread.start();
 		_log.info("Login Server ready on "+(bindAddress == null ? "*" : bindAddress.getHostAddress())+":"+Config.PORT_LOGIN);
 	}
-	
+
 	public Status getStatusServer()
 	{
 		return _statusServer;
 	}
-	
+
 	public GameServerListener getGameServerListener()
 	{
 		return _gameServerListener;
 	}
-	
+
 	private void loadBanFile()
 	{
 		File bannedFile = new File("./banned_ip.cfg");
@@ -278,14 +278,14 @@ public class L2LoginServer
 				}
 				return;
 			}
-			
+
 			LineNumberReader reader = new LineNumberReader(new InputStreamReader(fis));
-			
+
 			String line;
 			String[] parts;
 			try
 			{
-				
+
 				while ((line = reader.readLine()) != null)
 				{
 					line = line.trim();
@@ -294,16 +294,16 @@ public class L2LoginServer
 					{
 						// split comments if any
 						parts = line.split("#");
-						
+
 						// discard comments in the line, if any
 						line = parts[0];
-						
+
 						parts = line.split(" ");
-						
+
 						String address = parts[0];
-						
+
 						long duration = 0;
-						
+
 						if (parts.length > 1)
 						{
 							try
@@ -316,7 +316,7 @@ public class L2LoginServer
 								continue;
 							}
 						}
-						
+
 						try
 						{
 							LoginController.getInstance().addBanForAddress(address, duration);
@@ -343,7 +343,7 @@ public class L2LoginServer
 			_log.config("IP Bans file ("+bannedFile.getName()+") is missing or is a directory, skipped.");
 		}
 	}
-	
+
 	public void shutdown(boolean restart)
 	{
 		Runtime.getRuntime().exit(restart ? 2 : 0);

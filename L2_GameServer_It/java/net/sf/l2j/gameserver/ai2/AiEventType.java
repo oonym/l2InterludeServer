@@ -19,7 +19,7 @@
 package net.sf.l2j.gameserver.ai2;
 
 /**
- * 
+ *
  * @author -Wooden-
  *
  */

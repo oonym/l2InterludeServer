@@ -66,22 +66,22 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
     {
         super(objectId, template);
     }
-    
+
     public void onAction(L2PcInstance player)
     {
     	player.setLastFolkNPC(this);
-    	
+
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
         {
             // Set the target of the L2PcInstance player
             player.setTarget(this);
-            
+
             // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
             // The player.getLevel() - getLevel() permit to display the correct color in the select window
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
             player.sendPacket(my);
-            
+
             // Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
             player.sendPacket(new ValidateLocation(this));
         }
@@ -91,7 +91,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
             // The player.getLevel() - getLevel() permit to display the correct color
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
             player.sendPacket(my);
-            
+
             // Calculate the distance between the L2PcInstance and the L2NpcInstance
             if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
             {
@@ -100,22 +100,22 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
                 // player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
 
                 // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
-                player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);                    
-                
+                player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+
                 // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
                 player.sendPacket(new ActionFailed());
-            } 
-            else 
+            }
+            else
             {
             	showMessageWindow(player);
 
                 // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-                player.sendPacket(new ActionFailed());                  
+                player.sendPacket(new ActionFailed());
                 // player.setCurrentState(L2Character.STATE_IDLE);
             }
         }
     }
-    
+
     @Override
 	public void onBypassFeedback(L2PcInstance player, String command)
     {
@@ -134,7 +134,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 
 	        String val = "";
 	        if (st.countTokens() >= 1) {val = st.nextToken();}
-	 
+
 			if (actualCommand.equalsIgnoreCase("banish_foreigner"))
             {
                 getCastle().banishForeigners();                                                      // Move non-clan members off castle area
@@ -284,11 +284,11 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 						} else {
 							if (getCastle().addToTreasuryNoTax((-1)*amount))
 								player.addAdena("Castle", amount, this, true);
-							
+
 						}
 					}
 				}
-				
+
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile(filename);
 				html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -296,7 +296,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 				html.replace("%tax_income%", Util.formatAdena(getCastle().getTreasury()));
 				html.replace("%withdraw_amount%", Util.formatAdena(amount));
 				player.sendPacket(html);
-					
+
 				return;
 			}
 	        else if(actualCommand.equalsIgnoreCase("manor")) {
@@ -318,7 +318,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 							break;
 		            }
 				}
-				
+
 				if (filename.length()!=0) {
 		            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 					html.setFile(filename);
@@ -327,26 +327,26 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					player.sendPacket(html);
 				}
 				return;
-	        } else if (command.startsWith("manor_menu_select")) { // input string format: 
+	        } else if (command.startsWith("manor_menu_select")) { // input string format:
 	        														// manor_menu_select?ask=X&state=Y&time=X
 	        	if (CastleManorManager.getInstance().isUnderMaintenance()) {
 					player.sendPacket(new ActionFailed());
 					player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
 					return;
 				}
-	        	
+
 				String params = command.substring(command.indexOf("?")+1);
 				StringTokenizer str = new StringTokenizer(params, "&");
 				int ask   = Integer.parseInt(str.nextToken().split("=")[1]);
 				int state = Integer.parseInt(str.nextToken().split("=")[1]);
 				int time  = Integer.parseInt(str.nextToken().split("=")[1]);
-				
+
 				int castleId;
 				if (state == -1) // info for current manor
 					castleId = getCastle().getCastleId();
 				else 			 // info for requested manor
 					castleId = state;
-				
+
 				switch (ask) { // Main action
 				case 3: // Current seeds (Manor info)
 					if (time == 1 && !CastleManager.getInstance().getCastleById(castleId).isNextPeriodApproved())
@@ -431,12 +431,12 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 		html.replace("%npcname%", getName());
         player.sendPacket(html);
     }
-    
+
     private void showMessageWindow(L2PcInstance player)
 	{
 		player.sendPacket( new ActionFailed() );
 		String filename = "data/html/chamberlain/chamberlain-no.htm";
-		
+
 		int condition = validateCondition(player);
 		if (condition > COND_ALL_FALSE)
 		{
@@ -445,7 +445,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 	        else if (condition == COND_OWNER)												// Clan owns castle
 	            filename = "data/html/chamberlain/chamberlain.htm";							// Owner message window
 		}
-		
+
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(filename);
 		html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -481,7 +481,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 		            return COND_OWNER;	// Owner
 		    }
 		}
-		
+
 		return COND_ALL_FALSE;
 	}
 }

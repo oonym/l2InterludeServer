@@ -44,11 +44,11 @@ public class QuestManager
     }
     // =========================================================
 
-    
+
     // =========================================================
     // Data Field
     private List<Quest> _quests = new FastList<Quest>();
-    
+
     // =========================================================
     // Constructor
     public QuestManager()

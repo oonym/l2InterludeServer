@@ -26,14 +26,14 @@ public class BeginRotation extends L2GameServerPacket
 	private int _charObjId;
 	private int _degree;
 	private int _side;
-	
+
 	public BeginRotation(L2PcInstance player, int degree, int side)
 	{
 		_charObjId = player.getObjectId();
 		_degree = degree;
 		_side = side;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

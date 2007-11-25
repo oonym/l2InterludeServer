@@ -32,51 +32,51 @@ import net.sf.l2j.gameserver.pathfinding.utils.FastNodeList;
 public abstract class PathFinding
 {
 	private static PathFinding _instance;
-	
+
 	public static PathFinding getInstance()
 	{
 		if (_instance == null)
 		{
-			if (true /*Config.GEODATA_PATHFINDING*/)				
+			if (true /*Config.GEODATA_PATHFINDING*/)
 			{
 				//Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
 				return GeoPathFinding.getInstance();
 			}
-			else // WORLD_PATHFINDING				
+			else // WORLD_PATHFINDING
 			{
-				//Higher Memoru Usage, Lower Cpu Usage (PreCalculated)				
-			}	
+				//Higher Memoru Usage, Lower Cpu Usage (PreCalculated)
+			}
 		}
 		return _instance;
 	}
-		
-	public abstract boolean pathNodesExist(short regionoffset);	
+
+	public abstract boolean pathNodesExist(short regionoffset);
 	public abstract List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gtz, short tz);
 	public abstract Node[] readNeighbors(short node_x,short node_y, int idx);
-	
+
 	public List<AbstractNodeLoc> search(Node start, Node end)
 	{
-		// The simplest grid-based pathfinding. 
+		// The simplest grid-based pathfinding.
 		// Drawback is not having higher cost for diagonal movement (means funny routes)
-		// Could be optimized e.g. not to calculate backwards as far as forwards. 
+		// Could be optimized e.g. not to calculate backwards as far as forwards.
 
 		// List of Visited Nodes
-		LinkedList<Node> visited = new LinkedList<Node>();		
+		LinkedList<Node> visited = new LinkedList<Node>();
 
 		// List of Nodes to Visit
 		LinkedList<Node> to_visit = new LinkedList<Node>();
 		to_visit.add(start);
-		
+
 		int i = 0;
 		while (i < 800)//TODO! Add limit to cfg. Worst case max distance is 1810..
 		{
 			Node node;
-			try 
+			try
 			{
 				 node = to_visit.removeFirst();
 			}
-			catch (Exception e) 
-			{ 
+			catch (Exception e)
+			{
 				// No Path found
 				return null;
 			}
@@ -105,17 +105,17 @@ public abstract class PathFinding
 
 	public List<AbstractNodeLoc> searchByClosest(Node start, Node end)
 	{
-		// Always continues checking from the closest to target non-blocked 
+		// Always continues checking from the closest to target non-blocked
 		// node from to_visit list. There's extra length in path if needed
-		// to go backwards/sideways but when moving generally forwards, this is extra fast 
+		// to go backwards/sideways but when moving generally forwards, this is extra fast
 		// and accurate. And can reach insane distances (try it with 800 nodes..).
 		// Minimum required node count would be around 300-400.
 		// Generally returns a bit (only a bit) more intelligent looking routes than
 		// the basic version. Not a true distance image (which would increase CPU
-		// load) level of intelligence though. 
-		
+		// load) level of intelligence though.
+
 		// List of Visited Nodes
-		FastNodeList visited = new FastNodeList(550);		
+		FastNodeList visited = new FastNodeList(550);
 
 		// List of Nodes to Visit
 		LinkedList<Node> to_visit = new LinkedList<Node>();
@@ -128,12 +128,12 @@ public abstract class PathFinding
 		while (i < 550)
 		{
 			Node node;
-			try 
+			try
 			{
 				 node = to_visit.removeFirst();
 			}
-			catch (Exception e) 
-			{ 
+			catch (Exception e)
+			{
 				// No Path found
 				return null;
 			}
@@ -174,7 +174,7 @@ public abstract class PathFinding
 		return null;
 	}
 
-	
+
 	public List<AbstractNodeLoc> searchAStar(Node start, Node end)
 	{
 		// Not operational yet?
@@ -188,17 +188,17 @@ public abstract class PathFinding
 		// List of Nodes to Visit
 		BinaryNodeHeap to_visit = new BinaryNodeHeap(800);
 		to_visit.add(start);
-		
+
 		int i = 0;
 		while (i < 800)//TODO! Add limit to cfg
 		{
 			Node node;
-			try 
+			try
 			{
 				 node = to_visit.removeFirst();
 			}
-			catch (Exception e) 
-			{ 
+			catch (Exception e)
+			{
 				// No Path found
 				return null;
 			}
@@ -224,7 +224,7 @@ public abstract class PathFinding
 		//No Path found
 		return null;
 	}
-	
+
 	public List<AbstractNodeLoc> constructPath(Node node)
 	{
 		LinkedList<AbstractNodeLoc> path = new LinkedList<AbstractNodeLoc>();
@@ -247,7 +247,7 @@ public abstract class PathFinding
 		}
 		return path;
 	}
-	
+
 	/**
 	 * Convert geodata position to pathnode position
 	 * @param geo_pos
@@ -257,7 +257,7 @@ public abstract class PathFinding
 	{
 		return (short)(geo_pos >> 3); //OK?
 	}
-	
+
 	/**
 	 * Convert node position to pathnode block position
 	 * @param geo_pos
@@ -267,22 +267,22 @@ public abstract class PathFinding
 	{
 		return (short)(node_pos % 256);
 	}
-	
+
 	public byte getRegionX(int node_pos)
 	{
 		return (byte)((node_pos >> 8) + 16);
 	}
-	
+
 	public byte getRegionY(int node_pos)
 	{
-		return (byte)((node_pos >> 8) + 10);	    
+		return (byte)((node_pos >> 8) + 10);
 	}
-	
+
 	public short getRegionOffset(byte rx, byte ry)
 	{
 		return (short)((rx << 5) + ry);
 	}
-	
+
 	/**
 	 * Convert pathnode x to World x position
 	 * @param node_x, rx
@@ -292,7 +292,7 @@ public abstract class PathFinding
 	{
 		return   L2World.MAP_MIN_X  + node_x * 128 + 48 ;
 	}
-	
+
 	/**
 	 * Convert pathnode y to World y position
 	 * @param node_y

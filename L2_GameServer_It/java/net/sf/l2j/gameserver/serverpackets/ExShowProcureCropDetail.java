@@ -12,17 +12,17 @@ import net.sf.l2j.gameserver.model.entity.Castle;
  * ch dd [dddc]
  * c  - id
  * h  - sub id
- * 
+ *
  * d  - crop id
  * d  - size
- * 
+ *
  * [
  * d  - manor name
  * d  - buy residual
  * d  - buy price
  * c  - reward type
  * ]
- * 
+ *
  * @author l3x
  */
 public class ExShowProcureCropDetail extends L2GameServerPacket {
@@ -34,7 +34,7 @@ public class ExShowProcureCropDetail extends L2GameServerPacket {
 	public ExShowProcureCropDetail(int cropId) {
 		_cropId = cropId;
 		_castleCrops = new FastMap<Integer, CropProcure>();
-		
+
 		for (Castle c : CastleManager.getInstance().getCastles()) {
 			CropProcure cropItem = c.getCrop(_cropId, CastleManorManager.PERIOD_CURRENT);
 			if (cropItem != null && cropItem.getAmount() > 0) {
@@ -56,7 +56,7 @@ public class ExShowProcureCropDetail extends L2GameServerPacket {
 		writeD(_castleCrops.size());       // size
 
 		for (int manorId : _castleCrops.keySet()) {
-			CropProcure crop = _castleCrops.get(manorId); 
+			CropProcure crop = _castleCrops.get(manorId);
 			writeD(manorId);          // manor name
 			writeD(crop.getAmount()); // buy residual
 			writeD(crop.getPrice());  // buy price

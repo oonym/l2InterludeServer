@@ -257,13 +257,13 @@ abstract class DocumentBase
             lvl = Integer.decode(getValue(attrs.getNamedItem("lvl").getNodeValue(), template));
         }
         L2Skill skill = SkillTable.getInstance().getInfo(id, lvl);
-        if (attrs.getNamedItem("chance") != null) 
+        if (attrs.getNamedItem("chance") != null)
         {
         	if (template instanceof L2Weapon || template instanceof L2Item)
         	{
         		skill.attach(new ConditionGameChance(Integer.decode(getValue(attrs.getNamedItem("chance").getNodeValue(), template))), true);
         	}
-        	else 
+        	else
         	{
         		skill.attach(new ConditionGameChance(Integer.decode(getValue(attrs.getNamedItem("chance").getNodeValue(), template))), false);
         	}

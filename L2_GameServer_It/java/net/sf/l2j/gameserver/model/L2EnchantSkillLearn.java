@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.2 $ $Date: 2005/03/27 15:29:33 $
  */
 public final class L2EnchantSkillLearn
@@ -30,10 +30,10 @@ public final class L2EnchantSkillLearn
     // these two build the primary key
     private final int _id;
     private final int _level;
-    
+
     // not needed, just for easier debug
     private final String _name;
-    
+
     private final int _spCost;
     private final int _baseLvl;
     private final int _minSkillLevel;
@@ -41,7 +41,7 @@ public final class L2EnchantSkillLearn
     private final byte _rate76;
     private final byte _rate77;
     private final byte _rate78;
-    
+
     public L2EnchantSkillLearn(int id, int lvl, int minSkillLvl, int baseLvl, String name, int cost, int exp, byte rate76, byte rate77, byte rate78)
     {
         _id = id;
@@ -55,7 +55,7 @@ public final class L2EnchantSkillLearn
         _rate77 = rate77;
         _rate78 = rate78;
     }
-    
+
     /**
      * @return Returns the id.
      */
@@ -79,7 +79,7 @@ public final class L2EnchantSkillLearn
     {
         return _baseLvl;
     }
-    
+
     /**
      * @return Returns the minSkillLevel.
      */
@@ -107,12 +107,12 @@ public final class L2EnchantSkillLearn
     {
         return _exp;
     }
-    
+
     public byte getRate(L2PcInstance ply)
     {
         byte result;
         switch (ply.getLevel())
-        {        
+        {
         case 76:
             result = _rate76;
             break;
@@ -121,11 +121,11 @@ public final class L2EnchantSkillLearn
             break;
         case 78:
             result = _rate78;
-            break;        
+            break;
         default:
             result = _rate78;
             break;
         }
         return result;
-    }       
+    }
 }

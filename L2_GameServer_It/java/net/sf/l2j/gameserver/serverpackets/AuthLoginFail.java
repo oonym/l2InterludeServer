@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * format  d   rev 417
- * 
+ *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class AuthLoginFail extends L2GameServerPacket
@@ -38,7 +38,7 @@ public class AuthLoginFail extends L2GameServerPacket
 	public static final int ACCESS_FAILED_TRY_LATER3 = 8;
 	public static final int ACCESS_FAILED_TRY_LATER4 = 9;
 	public static final int ACCESS_FAILED_TRY_LATER5 = 10;
-	
+
 	private int _reason;
 
 	/**
@@ -48,12 +48,12 @@ public class AuthLoginFail extends L2GameServerPacket
 	{
 		_reason = reason;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x14);
-		writeD(_reason); 
+		writeD(_reason);
 	}
 
 	/* (non-Javadoc)

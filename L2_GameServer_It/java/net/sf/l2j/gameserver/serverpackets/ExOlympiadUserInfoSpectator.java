@@ -23,9 +23,9 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- * 
+ *
  * @author godson
  */
 public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
@@ -34,7 +34,7 @@ public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
 	private static final String _S__FE_29_OLYMPIADUSERINFOSPECTATOR = "[S] FE:29 OlympiadUserInfoSpectator";
 	private static int _side;
 	private static L2PcInstance _player;
-	
+
 
 	/**
 	 * @param _player
@@ -45,7 +45,7 @@ public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
 		_player = player;
 		_side = side;
 	}
-	
+
 
 	@Override
 	protected final void writeImpl()
@@ -61,7 +61,7 @@ public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
 		writeD((int)_player.getCurrentCp());
 		writeD(_player.getMaxCp());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

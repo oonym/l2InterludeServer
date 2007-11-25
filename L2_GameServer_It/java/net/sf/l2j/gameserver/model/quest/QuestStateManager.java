@@ -43,7 +43,7 @@ public class QuestStateManager
     // Data Field
     private static QuestStateManager _instance;
     private List<QuestState> _questStates = new FastList<QuestState>();
-    
+
     // =========================================================
     // Constructor
     public QuestStateManager()
@@ -77,7 +77,7 @@ public class QuestStateManager
             }
         }
     }
-    
+
     // =========================================================
     // Method - Private
     /**
@@ -96,7 +96,7 @@ public class QuestStateManager
             _instance = new QuestStateManager();
         return _instance;
     }
-    
+
     /**
      * Return QuestState for specified player instance
      */
@@ -106,9 +106,9 @@ public class QuestStateManager
         {
             if (getQuestStates().get(i).getPlayer() != null && getQuestStates().get(i).getPlayer().getObjectId() == player.getObjectId())
                 return getQuestStates().get(i);
-                
+
         }
-        
+
         return null;
     }
 

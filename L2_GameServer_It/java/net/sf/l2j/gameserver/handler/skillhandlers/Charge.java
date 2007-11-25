@@ -29,22 +29,22 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.2.2.9 $ $Date: 2005/04/04 19:08:01 $
  */
 
 public class Charge implements ISkillHandler
 {
 	static Logger _log = Logger.getLogger(Charge.class.getName());
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
 	private static final SkillType[] SKILL_IDS = {/*SkillType.CHARGE*/};
-	
+
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
-		
+
         for(int index = 0;index < targets.length;index++)
         {
         	if (!(targets[index] instanceof L2PcInstance))
@@ -53,12 +53,12 @@ public class Charge implements ISkillHandler
         	skill.getEffects(activeChar, target);
 		}
         // self Effect :]
-        L2Effect effect = activeChar.getFirstEffect(skill.getId());        
-        if (effect != null && effect.isSelfEffect())        
-        {            
-        	//Replace old effect with new one.            
-        	effect.exit();        
-        }        
+        L2Effect effect = activeChar.getFirstEffect(skill.getId());
+        if (effect != null && effect.isSelfEffect())
+        {
+        	//Replace old effect with new one.
+        	effect.exit();
+        }
         skill.getEffectsSelf(activeChar);
 	}
 

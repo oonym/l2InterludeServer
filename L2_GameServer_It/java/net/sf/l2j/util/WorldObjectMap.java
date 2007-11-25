@@ -8,7 +8,7 @@
  * Revision 1  22/07/2005 14:15:11  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -36,14 +36,14 @@ import net.sf.l2j.gameserver.model.L2Object;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
 public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
 {
     Map<Integer, T> _objectMap = new FastMap<Integer, T>().setShared(true);
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.util.L2ObjectMap#size()
      */

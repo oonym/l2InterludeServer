@@ -36,10 +36,10 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * It has static final fields initialized from configuration files.<br>
  * It's initialized at the very begin of startup, and later JIT will optimize
  * away debug/unused code.
- * 
+ *
  * @author mkizub
  */
-public final class Config 
+public final class Config
 {
     protected static final Logger _log = Logger.getLogger(Config.class.getName());
     /** Debug/release mode */
@@ -70,7 +70,7 @@ public final class Config
     public static String DATABASE_DRIVER;
     /** Path to access to database */
     public static String DATABASE_URL;
-    /** Database login */ 
+    /** Database login */
     public static String DATABASE_LOGIN;
     /** Database password */
     public static String DATABASE_PASSWORD;
@@ -285,25 +285,25 @@ public final class Config
 
     /** Olympaid Validation Period */
     public static long ALT_OLY_VPERIOD;
-    
+
     /** Manor Refresh Starting time */
     public static int ALT_MANOR_REFRESH_TIME;
-    
+
     /** Manor Refresh Min */
-    public static int ALT_MANOR_REFRESH_MIN; 
-    
+    public static int ALT_MANOR_REFRESH_MIN;
+
     /** Manor Next Period Approve Starting time */
-    public static int ALT_MANOR_APPROVE_TIME; 
-    
+    public static int ALT_MANOR_APPROVE_TIME;
+
     /** Manor Next Period Approve Min */
     public static int ALT_MANOR_APPROVE_MIN;
-    
+
     /** Manor Maintenance Time */
-    public static int ALT_MANOR_MAINTENANCE_PERIOD; 
-    
+    public static int ALT_MANOR_MAINTENANCE_PERIOD;
+
     /** Manor Save All Actions */
     public static boolean ALT_MANOR_SAVE_ALL_ACTIONS;
-    
+
     /** Manor Save Period Rate */
     public static int ALT_MANOR_SAVE_PERIOD_RATE;
 
@@ -407,7 +407,7 @@ public final class Config
     /** General GM AccessLevel with Resurrection rights */
     public static int     GM_RES;
     /** General GM AccessLevel to attack in the peace zone */
-    public static int     GM_PEACEATTACK;   
+    public static int     GM_PEACEATTACK;
     /** General GM AccessLevel to heal */
     public static int     GM_HEAL;
     /** General GM AccessLevel to unblock IPs detected as hack IPs */
@@ -491,16 +491,16 @@ public final class Config
     /** Rate for player's equipment drop */
     public static int   PLAYER_RATE_DROP_EQUIP;
     /** Rate for player's equipment and weapon drop */
-    public static int   PLAYER_RATE_DROP_EQUIP_WEAPON;    
+    public static int   PLAYER_RATE_DROP_EQUIP_WEAPON;
 
     // Pet Rates (Multipliers)
     /** Rate for experience rewards of the pet */
-    public static float         PET_XP_RATE; 
+    public static float         PET_XP_RATE;
     /** Rate for food consumption of the pet */
     public static int           PET_FOOD_RATE;
-    /** Rate for experience rewards of the Sin Eater */ 
-    public static float         SINEATER_XP_RATE; 
-    
+    /** Rate for experience rewards of the Sin Eater */
+    public static float         SINEATER_XP_RATE;
+
     // Karma Drop Rate control
     /** Karma drop limit */
     public static int   KARMA_DROP_LIMIT;
@@ -511,7 +511,7 @@ public final class Config
     /** Karma drop rate for equipment */
     public static int   KARMA_RATE_DROP_EQUIP;
     /** Karma drop rate for equipment and weapon */
-    public static int   KARMA_RATE_DROP_EQUIP_WEAPON;    
+    public static int   KARMA_RATE_DROP_EQUIP_WEAPON;
 
     /** Time after which item will auto-destroy */
     public static int     AUTODESTROY_ITEM_AFTER;
@@ -543,7 +543,7 @@ public final class Config
     /** This is setting of experimental Client <--> Server Player coordinates synchronization<br>
      * <b><u>Valeurs :</u></b>
      * <li>0 - no synchronization at all</li>
-     * <li>1 - parcial synchronization Client --> Server only * using this option it is difficult for players 
+     * <li>1 - parcial synchronization Client --> Server only * using this option it is difficult for players
      *         to bypass obstacles</li>
      * <li>2 - parcial synchronization Server --> Client only</li>
      * <li>3 - full synchronization Client <--> Server</li>
@@ -561,8 +561,8 @@ public final class Config
     public static int MAX_DRIFT_RANGE;
 
     /** Allow fishing ? */
-    public static boolean ALLOWFISHING;    
-    
+    public static boolean ALLOWFISHING;
+
     /** Allow Manor system */
     public static boolean ALLOW_MANOR;
 
@@ -579,7 +579,7 @@ public final class Config
         GM
     }
 
-    /** Allow the use of L2Walker client ? */ 
+    /** Allow the use of L2Walker client ? */
     public static L2WalkerAllowed ALLOW_L2WALKER_CLIENT;
     /** Auto-ban client that use L2Walker ? */
     public static boolean         AUTOBAN_L2WALKER_ACC;
@@ -604,7 +604,7 @@ public final class Config
     /** Duration of the try on after which items are taken back */
     public static int               WEAR_DELAY;
     /** Price of the try on of one item */
-    public static int               WEAR_PRICE;    
+    public static int               WEAR_PRICE;
     /** Allow lottery ? */
     public static boolean           ALLOW_LOTTERY;
     /** Allow race ? */
@@ -664,8 +664,8 @@ public final class Config
     public static int     NAME_PER_ROW_COMMUNITYBOARD;
 
     // Configuration files
-    /** Properties file that allows selection of new Classes for storage of World Objects. 
-     * <br>This may help servers with large amounts of players recieving error messages related to 
+    /** Properties file that allows selection of new Classes for storage of World Objects.
+     * <br>This may help servers with large amounts of players recieving error messages related to
      * the <i>L2ObjectHashMap</i> and <i>L2ObejctHashSet</i> classes.*/
     /** Properties file for game server (connection and ingame) configurations */
     public static final String  CONFIGURATION_FILE          = "./config/server.properties";
@@ -687,9 +687,9 @@ public final class Config
     public static final String  GM_ACCESS_FILE                = "./config/GMAccess.properties";
     /** Properties file for telnet configuration */
     public static final String  TELNET_FILE                    = "./config/telnet.properties";
-    /** Properties file for l2j server version configurations */ 
+    /** Properties file for l2j server version configurations */
     public static final String  SERVER_VERSION_FILE            = "./config/l2j-version.properties";
-    /** Properties file for l2j datapack version configurations */ 
+    /** Properties file for l2j datapack version configurations */
     public static final String  DATAPACK_VERSION_FILE       = "./config/l2jdp-version.properties";
     /** Properties file for siege configuration */
     public static final String  SIEGE_CONFIGURATION_FILE    = "./config/siege.properties";
@@ -808,10 +808,10 @@ public final class Config
     /** List of NPCs that rent pets */
     public static List<Integer> LIST_PET_RENT_NPC   = new FastList<Integer>();
 
-    /** Duration (in ms) while a player stay in PVP mode after hitting an innocent */ 
-    public static int PVP_NORMAL_TIME;    
-    /** Duration (in ms) while a player stay in PVP mode after hitting a purple player */ 
-    public static int PVP_PVP_TIME;    
+    /** Duration (in ms) while a player stay in PVP mode after hitting an innocent */
+    public static int PVP_NORMAL_TIME;
+    /** Duration (in ms) while a player stay in PVP mode after hitting a purple player */
+    public static int PVP_PVP_TIME;
 
     // Karma Punishment
     /** Allow player with karma to be killed in peace zone ? */
@@ -878,7 +878,7 @@ public final class Config
     public static int L2JMOD_WEDDING_DIVORCE_COSTS;
 
     // Packet information
-    /** Count the amount of packets per minute ? */  
+    /** Count the amount of packets per minute ? */
     public static boolean  COUNT_PACKETS           = false;
     /** Dump packet count ? */
     public static boolean  DUMP_PACKET_COUNTS      = false;
@@ -918,7 +918,7 @@ public final class Config
     public static ObjectSetType   SET_TYPE;
 
     /**
-     * Allow lesser effects to be canceled if stronger effects are used when effects of the same stack group are used.<br> 
+     * Allow lesser effects to be canceled if stronger effects are used when effects of the same stack group are used.<br>
      * New effects that are added will be canceled if they are of lesser priority to the old one.
      */
     public static boolean EFFECT_CANCELING;
@@ -948,7 +948,7 @@ public final class Config
     public static double  CP_REGEN_MULTIPLIER;
 
     // Raid Boss multipliers
-    /** Multiplier for Raid boss HP regeneration */ 
+    /** Multiplier for Raid boss HP regeneration */
     public static double   RAID_HP_REGEN_MULTIPLIER;
     /** Mulitplier for Raid boss MP regeneration */
     public static double   RAID_MP_REGEN_MULTIPLIER;
@@ -959,7 +959,7 @@ public final class Config
     /** Mulitplier for Raid boss minimum time respawn */
     public static float   RAID_MIN_RESPAWN_MULTIPLIER;
     /** Mulitplier for Raid boss maximum time respawn */
-    public static float   RAID_MAX_RESPAWN_MULTIPLIER;  
+    public static float   RAID_MAX_RESPAWN_MULTIPLIER;
     /** Amount of adenas when starting a new character */
     public static int STARTING_ADENA;
 
@@ -1039,7 +1039,7 @@ public final class Config
     public static int     GM_NAME_COLOR;
     /** Color of admin name */
     public static int     ADMIN_NAME_COLOR;
-    /** Place an aura around the GM ? */ 
+    /** Place an aura around the GM ? */
     public static boolean GM_HERO_AURA;
     /** Set the GM invulnerable at startup ? */
     public static boolean GM_STARTUP_INVULNERABLE;
@@ -1157,12 +1157,12 @@ public final class Config
     /** Alt Settings for devs */
     public static boolean ALT_DEV_NO_QUESTS;
     public static boolean ALT_DEV_NO_SPAWNS;
-	
+
 
     /**
      * This class initializes all global variables for configuration.<br>
      * If key doesn't appear in properties file, a default value is setting on by this class.
-     * @see CONFIGURATION_FILE (propertie file) for configuring your server. 
+     * @see CONFIGURATION_FILE (propertie file) for configuring your server.
      */
     public static void load()
     {
@@ -1214,7 +1214,7 @@ public final class Config
                 e.printStackTrace();
                 throw new Error("Failed to Load "+CONFIGURATION_FILE+" File.");
             }
-            try 
+            try
             {
                 Properties optionsSettings    = new Properties();
                 InputStream is               = new FileInputStream(new File(OPTIONS_FILE));
@@ -1328,11 +1328,11 @@ public final class Config
                 BYPASS_VALIDATION               = Boolean.valueOf(optionsSettings.getProperty("BypassValidation", "False"));
 
                 GAMEGUARD_ENFORCE               = Boolean.valueOf(optionsSettings.getProperty("GameGuardEnforce", "False"));
-                GAMEGUARD_PROHIBITACTION        = Boolean.valueOf(optionsSettings.getProperty("GameGuardProhibitAction", "False"));    
+                GAMEGUARD_PROHIBITACTION        = Boolean.valueOf(optionsSettings.getProperty("GameGuardProhibitAction", "False"));
 
                 GRIDS_ALWAYS_ON                 = Boolean.parseBoolean(optionsSettings.getProperty("GridsAlwaysOn", "False"));
                 GRID_NEIGHBOR_TURNON_TIME       = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOnTime", "30"));
-                GRID_NEIGHBOR_TURNOFF_TIME      = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));    
+                GRID_NEIGHBOR_TURNOFF_TIME      = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));
 
                 GEODATA                         = Integer.parseInt(optionsSettings.getProperty("GeoData", "0"));
                 FORCE_GEODATA                   = Boolean.parseBoolean(optionsSettings.getProperty("ForceGeoData", "True"));
@@ -1350,7 +1350,7 @@ public final class Config
                 LINKED_NODE_ID                  = Integer.parseInt(optionsSettings.getProperty("NewNodeId", "7952"));
                 NEW_NODE_TYPE                   = optionsSettings.getProperty("NewNodeType", "npc");
 
-                COUNT_PACKETS                   = Boolean.valueOf(optionsSettings.getProperty("CountPacket", "false"));  
+                COUNT_PACKETS                   = Boolean.valueOf(optionsSettings.getProperty("CountPacket", "false"));
                 DUMP_PACKET_COUNTS              = Boolean.valueOf(optionsSettings.getProperty("DumpPacketCounts", "false"));
                 DUMP_INTERVAL_SECONDS           = Integer.parseInt(optionsSettings.getProperty("PacketDumpInterval", "60"));
 
@@ -1371,7 +1371,7 @@ public final class Config
             try
             {
                 Properties serverVersion    = new Properties();
-                InputStream is              = new FileInputStream(new File(SERVER_VERSION_FILE));  
+                InputStream is              = new FileInputStream(new File(SERVER_VERSION_FILE));
                 serverVersion.load(is);
                 is.close();
 
@@ -1391,7 +1391,7 @@ public final class Config
             try
             {
                 Properties serverVersion    = new Properties();
-                InputStream is              = new FileInputStream(new File(DATAPACK_VERSION_FILE));  
+                InputStream is              = new FileInputStream(new File(DATAPACK_VERSION_FILE));
                 serverVersion.load(is);
                 is.close();
 
@@ -1407,7 +1407,7 @@ public final class Config
             try
             {
                 Properties telnetSettings   = new Properties();
-                InputStream is              = new FileInputStream(new File(TELNET_FILE));  
+                InputStream is              = new FileInputStream(new File(TELNET_FILE));
                 telnetSettings.load(is);
                 is.close();
 
@@ -1449,7 +1449,7 @@ public final class Config
                 DEEPBLUE_DROP_RULES = Boolean.parseBoolean(otherSettings.getProperty("UseDeepBlueDropRules", "True"));
                 ALLOW_GUARDS        = Boolean.valueOf(otherSettings.getProperty("AllowGuards", "False"));
                 EFFECT_CANCELING    = Boolean.valueOf(otherSettings.getProperty("CancelLesserEffect", "True"));
-                WYVERN_SPEED        = Integer.parseInt(otherSettings.getProperty("WyvernSpeed", "100"));         
+                WYVERN_SPEED        = Integer.parseInt(otherSettings.getProperty("WyvernSpeed", "100"));
                 STRIDER_SPEED       = Integer.parseInt(otherSettings.getProperty("StriderSpeed", "80"));
                 ALLOW_WYVERN_UPGRADER     = Boolean.valueOf(otherSettings.getProperty("AllowWyvernUpgrader", "False"));
 
@@ -1484,10 +1484,10 @@ public final class Config
                 MP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("MpRegenMultiplier", "100")) /100;
                 CP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("CpRegenMultiplier", "100")) /100;
 
-                RAID_HP_REGEN_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidHpRegenMultiplier", "100")) /100;    
-                RAID_MP_REGEN_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidMpRegenMultiplier", "100")) /100;    
-                RAID_DEFENCE_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidDefenceMultiplier", "100")) /100;    
-                RAID_MINION_RESPAWN_TIMER  = Integer.parseInt(otherSettings.getProperty("RaidMinionRespawnTime", "300000"));                
+                RAID_HP_REGEN_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidHpRegenMultiplier", "100")) /100;
+                RAID_MP_REGEN_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidMpRegenMultiplier", "100")) /100;
+                RAID_DEFENCE_MULTIPLIER  = Double.parseDouble(otherSettings.getProperty("RaidDefenceMultiplier", "100")) /100;
+                RAID_MINION_RESPAWN_TIMER  = Integer.parseInt(otherSettings.getProperty("RaidMinionRespawnTime", "300000"));
                 RAID_MIN_RESPAWN_MULTIPLIER = Float.parseFloat(otherSettings.getProperty("RaidMinRespawnMultiplier", "1.0"));
                 RAID_MAX_RESPAWN_MULTIPLIER = Float.parseFloat(otherSettings.getProperty("RaidMaxRespawnMultiplier", "1.0"));
 
@@ -1546,7 +1546,7 @@ public final class Config
                 GM_STARTUP_SILENCE = Boolean.parseBoolean(otherSettings.getProperty("GMStartupSilence", "True"));
                 GM_STARTUP_AUTO_LIST = Boolean.parseBoolean(otherSettings.getProperty("GMStartupAutoList", "True"));
                 GM_ADMIN_MENU_STYLE = otherSettings.getProperty("GMAdminMenuStyle", "modern");
-                
+
 
                 PETITIONING_ALLOWED = Boolean.parseBoolean(otherSettings.getProperty("PetitioningAllowed", "True"));
                 MAX_PETITIONS_PER_PLAYER = Integer.parseInt(otherSettings.getProperty("MaxPetitionsPerPlayer", "5"));
@@ -1554,7 +1554,7 @@ public final class Config
 
                 JAIL_IS_PVP       = Boolean.valueOf(otherSettings.getProperty("JailIsPvp", "True"));
                 JAIL_DISABLE_CHAT = Boolean.valueOf(otherSettings.getProperty("JailDisableChat", "True"));
-                
+
                 DEATH_PENALTY_CHANCE = Integer.parseInt(otherSettings.getProperty("DeathPenaltyChance", "20"));
             }
             catch (Exception e)
@@ -1582,12 +1582,12 @@ public final class Config
                 RATE_DROP_SPOIL                 = Float.parseFloat(ratesSettings.getProperty("RateDropSpoil", "1."));
                 RATE_DROP_MANOR                 = Integer.parseInt(ratesSettings.getProperty("RateDropManor", "1"));
                 RATE_DROP_QUEST                 = Float.parseFloat(ratesSettings.getProperty("RateDropQuest", "1."));
-                RATE_KARMA_EXP_LOST             = Float.parseFloat(ratesSettings.getProperty("RateKarmaExpLost", "1."));    
+                RATE_KARMA_EXP_LOST             = Float.parseFloat(ratesSettings.getProperty("RateKarmaExpLost", "1."));
                 RATE_SIEGE_GUARDS_PRICE         = Float.parseFloat(ratesSettings.getProperty("RateSiegeGuardsPrice", "1."));
                 RATE_DROP_COMMON_HERBS             = Float.parseFloat(ratesSettings.getProperty("RateCommonHerbs", "15."));
-                RATE_DROP_MP_HP_HERBS           = Float.parseFloat(ratesSettings.getProperty("RateHpMpHerbs", "10."));                
+                RATE_DROP_MP_HP_HERBS           = Float.parseFloat(ratesSettings.getProperty("RateHpMpHerbs", "10."));
                 RATE_DROP_GREATER_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateGreaterHerbs", "4."));
-                RATE_DROP_SUPERIOR_HERBS        = Float.parseFloat(ratesSettings.getProperty("RateSuperiorHerbs", "0.8"))*10;                
+                RATE_DROP_SUPERIOR_HERBS        = Float.parseFloat(ratesSettings.getProperty("RateSuperiorHerbs", "0.8"))*10;
                 RATE_DROP_SPECIAL_HERBS         = Float.parseFloat(ratesSettings.getProperty("RateSpecialHerbs", "0.2"))*10;
 
                 PLAYER_DROP_LIMIT               = Integer.parseInt(ratesSettings.getProperty("PlayerDropLimit", "3"));
@@ -1597,8 +1597,8 @@ public final class Config
                 PLAYER_RATE_DROP_EQUIP_WEAPON   = Integer.parseInt(ratesSettings.getProperty("PlayerRateDropEquipWeapon", "5"));
 
                 PET_XP_RATE                     = Float.parseFloat(ratesSettings.getProperty("PetXpRate", "1."));
-                PET_FOOD_RATE                   = Integer.parseInt(ratesSettings.getProperty("PetFoodRate", "1")); 
-                SINEATER_XP_RATE                = Float.parseFloat(ratesSettings.getProperty("SinEaterXpRate", "1.")); 
+                PET_FOOD_RATE                   = Integer.parseInt(ratesSettings.getProperty("PetFoodRate", "1"));
+                SINEATER_XP_RATE                = Float.parseFloat(ratesSettings.getProperty("SinEaterXpRate", "1."));
 
                 KARMA_DROP_LIMIT                = Integer.parseInt(ratesSettings.getProperty("KarmaDropLimit", "10"));
                 KARMA_RATE_DROP                 = Integer.parseInt(ratesSettings.getProperty("KarmaRateDrop", "70"));
@@ -1616,7 +1616,7 @@ public final class Config
             try
             {
                 Properties altSettings  = new Properties();
-                InputStream is          = new FileInputStream(new File(ALT_SETTINGS_FILE));  
+                InputStream is          = new FileInputStream(new File(ALT_SETTINGS_FILE));
                 altSettings.load(is);
                 is.close();
 
@@ -1646,7 +1646,7 @@ public final class Config
                 ALT_PARTY_RANGE2  		= Integer.parseInt(altSettings.getProperty("AltPartyRange2", "1400"));
                 REMOVE_CASTLE_CIRCLETS  = Boolean.parseBoolean(altSettings.getProperty("RemoveCastleCirclets", "true"));
                 IS_CRAFTING_ENABLED     = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "true"));
-                LIFE_CRYSTAL_NEEDED     = Boolean.parseBoolean(altSettings.getProperty("LifeCrystalNeeded", "true"));                
+                LIFE_CRYSTAL_NEEDED     = Boolean.parseBoolean(altSettings.getProperty("LifeCrystalNeeded", "true"));
                 SP_BOOK_NEEDED          = Boolean.parseBoolean(altSettings.getProperty("SpBookNeeded", "true"));
                 ES_SP_BOOK_NEEDED       = Boolean.parseBoolean(altSettings.getProperty("EnchantSkillSpBookNeeded","true"));
                 AUTO_LOOT               = altSettings.getProperty("AutoLoot").equalsIgnoreCase("True");
@@ -1684,7 +1684,7 @@ public final class Config
                 ALT_OLY_IWAIT                                       = Long.parseLong(altSettings.getProperty("AltOlyIWait","300000"));
                 ALT_OLY_WPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyWPeriod","604800000"));
                 ALT_OLY_VPERIOD                                     = Long.parseLong(altSettings.getProperty("AltOlyVPeriod","86400000"));
-                
+
                 ALT_MANOR_REFRESH_TIME                              = Integer.parseInt(altSettings.getProperty("AltManorRefreshTime","20"));
     	        ALT_MANOR_REFRESH_MIN                               = Integer.parseInt(altSettings.getProperty("AltManorRefreshMin","00"));
     	        ALT_MANOR_APPROVE_TIME                              = Integer.parseInt(altSettings.getProperty("AltManorApproveTime","6"));
@@ -1705,17 +1705,17 @@ public final class Config
                 ALT_DEV_NO_SPAWNS                = Boolean.parseBoolean(altSettings.getProperty("AltDevNoSpawns", "False"));
 
                 // Dimensional Rift Config
-                RIFT_MIN_PARTY_SIZE              = Integer.parseInt(altSettings.getProperty("RiftMinPartySize", "5")); 
-                RIFT_MAX_JUMPS                   = Integer.parseInt(altSettings.getProperty("MaxRiftJumps", "4")); 
+                RIFT_MIN_PARTY_SIZE              = Integer.parseInt(altSettings.getProperty("RiftMinPartySize", "5"));
+                RIFT_MAX_JUMPS                   = Integer.parseInt(altSettings.getProperty("MaxRiftJumps", "4"));
 				RIFT_SPAWN_DELAY                 = Integer.parseInt(altSettings.getProperty("RiftSpawnDelay", "10000"));
-                RIFT_AUTO_JUMPS_TIME_MIN         = Integer.parseInt(altSettings.getProperty("AutoJumpsDelayMin", "480")); 
-                RIFT_AUTO_JUMPS_TIME_MAX         = Integer.parseInt(altSettings.getProperty("AutoJumpsDelayMax", "600")); 
-                RIFT_ENTER_COST_RECRUIT          = Integer.parseInt(altSettings.getProperty("RecruitCost", "18")); 
-                RIFT_ENTER_COST_SOLDIER          = Integer.parseInt(altSettings.getProperty("SoldierCost", "21")); 
-                RIFT_ENTER_COST_OFFICER          = Integer.parseInt(altSettings.getProperty("OfficerCost", "24")); 
-                RIFT_ENTER_COST_CAPTAIN          = Integer.parseInt(altSettings.getProperty("CaptainCost", "27")); 
-                RIFT_ENTER_COST_COMMANDER        = Integer.parseInt(altSettings.getProperty("CommanderCost", "30")); 
-                RIFT_ENTER_COST_HERO             = Integer.parseInt(altSettings.getProperty("HeroCost", "33")); 
+                RIFT_AUTO_JUMPS_TIME_MIN         = Integer.parseInt(altSettings.getProperty("AutoJumpsDelayMin", "480"));
+                RIFT_AUTO_JUMPS_TIME_MAX         = Integer.parseInt(altSettings.getProperty("AutoJumpsDelayMax", "600"));
+                RIFT_ENTER_COST_RECRUIT          = Integer.parseInt(altSettings.getProperty("RecruitCost", "18"));
+                RIFT_ENTER_COST_SOLDIER          = Integer.parseInt(altSettings.getProperty("SoldierCost", "21"));
+                RIFT_ENTER_COST_OFFICER          = Integer.parseInt(altSettings.getProperty("OfficerCost", "24"));
+                RIFT_ENTER_COST_CAPTAIN          = Integer.parseInt(altSettings.getProperty("CaptainCost", "27"));
+                RIFT_ENTER_COST_COMMANDER        = Integer.parseInt(altSettings.getProperty("CommanderCost", "30"));
+                RIFT_ENTER_COST_HERO             = Integer.parseInt(altSettings.getProperty("HeroCost", "33"));
                 RIFT_BOSS_ROOM_TIME_MUTIPLY      = Float.parseFloat(altSettings.getProperty("BossRoomTimeMultiply", "1.5"));
             }
             catch (Exception e)
@@ -1728,7 +1728,7 @@ public final class Config
             try
             {
                 Properties SevenSettings  = new Properties();
-                InputStream is            = new FileInputStream(new File(SEVENSIGNS_FILE));  
+                InputStream is            = new FileInputStream(new File(SEVENSIGNS_FILE));
                 SevenSettings.load(is);
                 is.close();
 
@@ -1827,7 +1827,7 @@ public final class Config
                 L2JMOD_CHAMP_MAX_LVL                = Integer.parseInt(L2JModSettings.getProperty("ChampionMaxLevel", "60"));
                 L2JMOD_CHAMPION_HP                     = Integer.parseInt(L2JModSettings.getProperty("ChampionHp", "7"));
                 L2JMOD_CHAMPION_HP_REGEN               = Float.parseFloat(L2JModSettings.getProperty("ChampionHpRegen", "1."));
-                L2JMOD_CHAMPION_REWARDS                = Integer.parseInt(L2JModSettings.getProperty("ChampionRewards", "8"));    
+                L2JMOD_CHAMPION_REWARDS                = Integer.parseInt(L2JModSettings.getProperty("ChampionRewards", "8"));
                 L2JMOD_CHAMPION_ADENAS_REWARDS         = Integer.parseInt(L2JModSettings.getProperty("ChampionAdenasRewards", "1"));
                 L2JMOD_CHAMPION_ATK                 = Float.parseFloat(L2JModSettings.getProperty("ChampionAtk", "1."));
                 L2JMOD_CHAMPION_SPD_ATK             = Float.parseFloat(L2JModSettings.getProperty("ChampionSpdAtk", "1."));
@@ -1844,7 +1844,7 @@ public final class Config
                 /** L2JMOD Wedding system  */
                 L2JMOD_ALLOW_WEDDING                    = Boolean.valueOf(L2JModSettings.getProperty("AllowWedding", "False"));
                 L2JMOD_WEDDING_PRICE                    = Integer.parseInt(L2JModSettings.getProperty("WeddingPrice", "250000000"));
-                L2JMOD_WEDDING_PUNISH_INFIDELITY        = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingPunishInfidelity", "True"));                
+                L2JMOD_WEDDING_PUNISH_INFIDELITY        = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingPunishInfidelity", "True"));
                 L2JMOD_WEDDING_TELEPORT                 = Boolean.parseBoolean(L2JModSettings.getProperty("WeddingTeleport", "True"));
                 L2JMOD_WEDDING_TELEPORT_PRICE           = Integer.parseInt(L2JModSettings.getProperty("WeddingTeleportPrice", "50000"));
                 L2JMOD_WEDDING_TELEPORT_DURATION        = Integer.parseInt(L2JModSettings.getProperty("WeddingTeleportDuration", "60"));
@@ -1868,7 +1868,7 @@ public final class Config
                     }
                     else
                     {
-                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[0]  = Integer.parseInt(propertySplit[0]); 
+                        TVT_EVENT_PARTICIPATION_NPC_COORDINATES[0]  = Integer.parseInt(propertySplit[0]);
                         TVT_EVENT_PARTICIPATION_NPC_COORDINATES[1]  = Integer.parseInt(propertySplit[1]);
                         TVT_EVENT_PARTICIPATION_NPC_COORDINATES[2]  = Integer.parseInt(propertySplit[2]);
 
@@ -1927,12 +1927,12 @@ public final class Config
                                 		}
                                 	}
                                 }
-                                
+
                                 TVT_EVENT_TARGET_TEAM_MEMBERS_ALLOWED	= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventTargetTeamMembersAllowed", "true"));
                         		TVT_EVENT_POTIONS_ALLOWED				= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventPotionsAllowed", "false"));
                         		TVT_EVENT_SUMMON_BY_ITEM_ALLOWED		= Boolean.parseBoolean(L2JModSettings.getProperty("TvTEventSummonByItemAllowed", "false"));
                         		propertySplit							= L2JModSettings.getProperty("TvTEventDoorsCloseOpenOnStartEnd", "").split(";");
-                        		
+
                         		for (String door : propertySplit)
                         		{
                         			try
@@ -1960,7 +1960,7 @@ public final class Config
             try
             {
                 Properties pvpSettings      = new Properties();
-                InputStream is              = new FileInputStream(new File(PVP_CONFIG_FILE));  
+                InputStream is              = new FileInputStream(new File(PVP_CONFIG_FILE));
                 pvpSettings.load(is);
                 is.close();
 
@@ -2001,9 +2001,9 @@ public final class Config
             try
             {
                 Properties gmSettings   = new Properties();
-                InputStream is          = new FileInputStream(new File(GM_ACCESS_FILE));  
+                InputStream is          = new FileInputStream(new File(GM_ACCESS_FILE));
                 gmSettings.load(is);
-                is.close();               
+                is.close();
 
                 GM_ACCESSLEVEL  = Integer.parseInt(gmSettings.getProperty("GMAccessLevel", "100"));
                 GM_MIN          = Integer.parseInt(gmSettings.getProperty("GMMinLevel", "100"));
@@ -2050,7 +2050,7 @@ public final class Config
                 }
                 else
                 {
-                    GM_DISABLE_TRANSACTION = false; 
+                    GM_DISABLE_TRANSACTION = false;
                 }
                 GM_CAN_GIVE_DAMAGE = Integer.parseInt(gmSettings.getProperty("GMCanGiveDamage", "90"));
                 GM_DONT_TAKE_AGGRO = Integer.parseInt(gmSettings.getProperty("GMDontTakeAggro", "90"));
@@ -2066,7 +2066,7 @@ public final class Config
             try
             {
                 Properties Settings   = new Properties();
-                InputStream is          = new FileInputStream(HEXID_FILE);  
+                InputStream is          = new FileInputStream(HEXID_FILE);
                 Settings.load(is);
                 is.close();
                 SERVER_ID = Integer.parseInt(Settings.getProperty("ServerID"));
@@ -2075,7 +2075,7 @@ public final class Config
             catch (Exception e)
             {
                 _log.warning("Could not load HexID file ("+HEXID_FILE+"). Hopefully login will give us one.");
-            }     
+            }
         }
         else if(Server.serverMode == Server.MODE_LOGINSERVER)
         {
@@ -2083,7 +2083,7 @@ public final class Config
             try
             {
                 Properties serverSettings    = new Properties();
-                InputStream is               = new FileInputStream(new File(LOGIN_CONFIGURATION_FILE));  
+                InputStream is               = new FileInputStream(new File(LOGIN_CONFIGURATION_FILE));
                 serverSettings.load(is);
                 is.close();
 
@@ -2138,7 +2138,7 @@ public final class Config
             try
             {
                 Properties telnetSettings   = new Properties();
-                InputStream is              = new FileInputStream(new File(TELNET_FILE));  
+                InputStream is              = new FileInputStream(new File(TELNET_FILE));
                 telnetSettings.load(is);
                 is.close();
 
@@ -2196,7 +2196,7 @@ public final class Config
 
         else if (pName.equalsIgnoreCase("AutoDestroyDroppedItemAfter")) AUTODESTROY_ITEM_AFTER = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("DestroyPlayerDroppedItem")) DESTROY_DROPPED_PLAYER_ITEM = Boolean.valueOf(pValue);
-        else if (pName.equalsIgnoreCase("DestroyEquipableItem")) DESTROY_EQUIPABLE_PLAYER_ITEM = Boolean.valueOf(pValue);        
+        else if (pName.equalsIgnoreCase("DestroyEquipableItem")) DESTROY_EQUIPABLE_PLAYER_ITEM = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("SaveDroppedItem")) SAVE_DROPPED_ITEM = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("EmptyDroppedItemTableAfterLoad")) EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD = Boolean.valueOf(pValue);
         else if (pName.equalsIgnoreCase("SaveDroppedItemInterval")) SAVE_DROPPED_ITEM_INTERVAL = Integer.parseInt(pValue);
@@ -2355,7 +2355,7 @@ public final class Config
         else if (pName.equalsIgnoreCase("ChampionMaxLevel")) L2JMOD_CHAMP_MAX_LVL = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionHp")) L2JMOD_CHAMPION_HP = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionHpRegen")) L2JMOD_CHAMPION_HP_REGEN = Float.parseFloat(pValue);
-        else if (pName.equalsIgnoreCase("ChampionRewards")) L2JMOD_CHAMPION_REWARDS = Integer.parseInt(pValue);        
+        else if (pName.equalsIgnoreCase("ChampionRewards")) L2JMOD_CHAMPION_REWARDS = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionAdenasRewards")) L2JMOD_CHAMPION_ADENAS_REWARDS = Integer.parseInt(pValue);
         else if (pName.equalsIgnoreCase("ChampionAtk")) L2JMOD_CHAMPION_ATK = Float.parseFloat(pValue);
         else if (pName.equalsIgnoreCase("ChampionSpdAtk")) L2JMOD_CHAMPION_SPD_ATK = Float.parseFloat(pValue);
@@ -2401,7 +2401,7 @@ public final class Config
     /**
      * Allow the player to use L2Walker ?
      * @param player (L2PcInstance) : Player trying to use L2Walker
-     * @return boolean : true if (L2Walker allowed as a general rule) or (L2Walker client allowed for GM and 
+     * @return boolean : true if (L2Walker allowed as a general rule) or (L2Walker client allowed for GM and
      *                   player is a GM)
      */
     public static boolean allowL2Walker(L2PcInstance player)

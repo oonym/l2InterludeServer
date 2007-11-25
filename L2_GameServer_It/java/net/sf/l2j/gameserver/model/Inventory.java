@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.templates.L2WeaponType;
 
 /**
  * This class manages inventory
- * 
+ *
  * @version $Revision: 1.13.2.9.2.12 $ $Date: 2005/03/29 23:15:15 $
  * rewritten 23.2.2006 by Advi
  */
@@ -51,7 +51,7 @@ public abstract class Inventory extends ItemContainer
     	public void notifyEquiped(int slot, L2ItemInstance inst);
     	public void notifyUnequiped(int slot, L2ItemInstance inst);
     }
-    
+
 	public static final int PAPERDOLL_UNDER = 0;
 	public static final int PAPERDOLL_LEAR = 1;
 	public static final int PAPERDOLL_REAR = 2;
@@ -70,7 +70,7 @@ public abstract class Inventory extends ItemContainer
 	public static final int PAPERDOLL_FACE = 15;
 	public static final int PAPERDOLL_HAIR = 16;
 	public static final int PAPERDOLL_DHAIR = 17;
-    
+
     //Speed percentage mods
     public static final double MAX_ARMOR_WEIGHT = 12000;
 
@@ -79,10 +79,10 @@ public abstract class Inventory extends ItemContainer
 
 	// protected to be accessed from child classes only
 	protected int _totalWeight;
-	
+
 	// used to quickly check for using of items of special type
 	private int _wearedMask;
-	
+
 	final class FormalWearListener implements PaperdollListener
 	{
 	    public void notifyUnequiped(int slot, L2ItemInstance item)
@@ -90,9 +90,9 @@ public abstract class Inventory extends ItemContainer
 	        if (!(getOwner() != null
 	                && getOwner() instanceof L2PcInstance))
 	            return;
-	        
-	        L2PcInstance owner = (L2PcInstance)getOwner(); 
-	
+
+	        L2PcInstance owner = (L2PcInstance)getOwner();
+
 	        if (item.getItemId() == 6408)
 	            owner.setIsWearingFormalWear(false);
 	    }
@@ -101,22 +101,22 @@ public abstract class Inventory extends ItemContainer
 	        if (!(getOwner() != null
 	                && getOwner() instanceof L2PcInstance))
 	            return;
-	        
-	        L2PcInstance owner = (L2PcInstance)getOwner(); 
-	
-	        // If player equip Formal Wear unequip weapons and abort cast/attack 
-	        if (item.getItemId() == 6408) 
+
+	        L2PcInstance owner = (L2PcInstance)getOwner();
+
+	        // If player equip Formal Wear unequip weapons and abort cast/attack
+	        if (item.getItemId() == 6408)
 	        {
 	            owner.setIsWearingFormalWear(true);
-	        } 
-	        else 
+	        }
+	        else
 	        {
 	            if (!owner.isWearingFormalWear())
 	                return;
 	        }
 	    }
-	}	
-	
+	}
+
 	/**
 	 * Recorder of alterations in inventory
 	 */
@@ -124,9 +124,9 @@ public abstract class Inventory extends ItemContainer
     {
     	private final Inventory _inventory;
     	private final List<L2ItemInstance> _changed;
-    	
+
     	/**
-    	 * Constructor of the ChangeRecorder 
+    	 * Constructor of the ChangeRecorder
     	 * @param inventory
     	 */
     	ChangeRecorder(Inventory inventory) {
@@ -134,7 +134,7 @@ public abstract class Inventory extends ItemContainer
 			_changed = new FastList<L2ItemInstance>();
 			_inventory.addPaperdollListener(this);
     	}
-    	
+
     	/**
     	 * Add alteration in inventory when item equiped
     	 */
@@ -143,19 +143,19 @@ public abstract class Inventory extends ItemContainer
     		if (!_changed.contains(item))
     			_changed.add(item);
     	}
-    	
+
     	/**
     	 * Add alteration in inventory when item unequiped
     	 */
-        @SuppressWarnings("unused") 
+        @SuppressWarnings("unused")
     	public void notifyUnequiped(int slot, L2ItemInstance item) {
     		if (!_changed.contains(item))
     			_changed.add(item);
     	}
-    	
+
     	/**
     	 * Returns alterations in inventory
-    	 * @return L2ItemInstance[] : array of alterated items 
+    	 * @return L2ItemInstance[] : array of alterated items
     	 */
     	public L2ItemInstance[] getChangedItems() {
     		return _changed.toArray(new L2ItemInstance[_changed.size()]);
@@ -168,7 +168,7 @@ public abstract class Inventory extends ItemContainer
     	{
     		if (slot != PAPERDOLL_LRHAND)
     			return;
-    		if (Config.ASSERT) assert null == getPaperdollItem(PAPERDOLL_LRHAND); 
+    		if (Config.ASSERT) assert null == getPaperdollItem(PAPERDOLL_LRHAND);
     		if (item.getItemType() == L2WeaponType.BOW)
     		{
     			L2ItemInstance arrow = getPaperdollItem(PAPERDOLL_LHAND);
@@ -180,7 +180,7 @@ public abstract class Inventory extends ItemContainer
     	{
     		if (slot != PAPERDOLL_LRHAND)
     			return;
-    		if (Config.ASSERT) assert item == getPaperdollItem(PAPERDOLL_LRHAND); 
+    		if (Config.ASSERT) assert item == getPaperdollItem(PAPERDOLL_LRHAND);
     		if (item.getItemType() == L2WeaponType.BOW)
     		{
     			L2ItemInstance arrow = findArrowForBow(item.getItem());
@@ -189,7 +189,7 @@ public abstract class Inventory extends ItemContainer
     		}
     	}
     }
-	
+
     final class StatsListener implements PaperdollListener
     {
     	public void notifyUnequiped(int slot, L2ItemInstance item)
@@ -205,25 +205,25 @@ public abstract class Inventory extends ItemContainer
     		getOwner().addStatFuncs(item.getStatFuncs(getOwner()));
     	}
     }
-    
+
     final class ItemPassiveSkillsListener implements PaperdollListener
     {
     	public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		L2PcInstance player;
-			
+
 	        if(getOwner() instanceof L2PcInstance)
 	        {
 	            player = (L2PcInstance)getOwner();
 	        }
-	        else 
+	        else
 	        	return;
-	        
+
 	        L2Skill passiveSkill = null;
 	        L2Skill enchant4Skill = null;
-	        
+
 			L2Item it = item.getItem();
-			
+
 			if(it instanceof L2Weapon)
 			{
 				passiveSkill = ((L2Weapon)it).getSkill();

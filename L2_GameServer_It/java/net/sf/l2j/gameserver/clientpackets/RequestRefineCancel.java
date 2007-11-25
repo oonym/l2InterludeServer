@@ -34,7 +34,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 {
 	private static final String _C__D0_2E_REQUESTREFINECANCEL = "[C] D0:2E RequestRefineCancel";
 	private int _targetItemObjId;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -49,7 +49,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
-		
+
 		if (activeChar == null) return;
 		if (targetItem == null)
 		{
@@ -64,7 +64,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 			activeChar.sendPacket(new ExVariationCancelResult(0));
 			return;
 		}
-		
+
 		// get the price
 		int price=0;
 		switch (targetItem.getItem().getItemGrade())
@@ -99,24 +99,24 @@ public final class RequestRefineCancel extends L2GameClientPacket
 				activeChar.sendPacket(new ExVariationCancelResult(0));
 				return;
 		}
-		
+
 		// try to reduce the players adena
 		if (!activeChar.reduceAdena("RequestRefineCancel", price, null, true)) return;
-		
+
 		// unequip item
 		if (targetItem.isEquipped()) activeChar.disarmWeapons();
-		
+
 		// remove the augmentation
 		targetItem.removeAugmentation();
-		
+
 		// send ExVariationCancelResult
 		activeChar.sendPacket(new ExVariationCancelResult(1));
-		
+
 		// send inventory update
 		InventoryUpdate iu = new InventoryUpdate();
 		iu.addModifiedItem(targetItem);
 		activeChar.sendPacket(iu);
-		
+
 		// send system message
 		SystemMessage sm = new SystemMessage(SystemMessageId.AUGMENTATION_HAS_BEEN_SUCCESSFULLY_REMOVED_FROM_YOUR_S1);
 		sm.addString(targetItem.getItemName());

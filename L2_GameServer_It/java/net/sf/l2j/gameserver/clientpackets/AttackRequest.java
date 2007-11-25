@@ -25,7 +25,7 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.2.1.2.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class AttackRequest extends L2GameClientPacket
@@ -42,7 +42,7 @@ public final class AttackRequest extends L2GameClientPacket
     private int _attackId;
 
 	private static final String _C__0A_ATTACKREQUEST = "[C] 0A AttackRequest";
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -72,13 +72,13 @@ public final class AttackRequest extends L2GameClientPacket
 		else
 		{
 			if ((target.getObjectId() != activeChar.getObjectId())
-					&& activeChar.getPrivateStoreType() ==0 
+					&& activeChar.getPrivateStoreType() ==0
 					&& activeChar.getActiveRequester() ==null)
 			{
 				//_log.config("Starting ForcedAttack");
 				target.onForcedAttack(activeChar);
 				//_log.config("Ending ForcedAttack");
-			} 
+			}
 			else
 			{
 				sendPacket(new ActionFailed());

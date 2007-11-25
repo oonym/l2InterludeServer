@@ -37,17 +37,17 @@ final class EffectBigHead extends L2Effect
 	{
 		return EffectType.BUFF;
 	}
-	
+
 	@Override
 	public void onStart() {
 		 getEffected().startAbnormalEffect(0x02000);
 	}
-	
+
 	@Override
 	public void onExit() {
 		 getEffected().stopAbnormalEffect(0x02000);
 	}
-	
+
 	@Override
 	public boolean onActionTime() {
 		return false;

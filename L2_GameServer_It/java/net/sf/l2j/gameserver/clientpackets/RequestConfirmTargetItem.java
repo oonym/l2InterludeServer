@@ -52,9 +52,9 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemObjId);
-		
+
 		if (item == null) return;
-		
+
 		if (activeChar.getLevel() < 46)
 		{
 			activeChar.sendMessage("You have to be level 46 in order to augment an item");
@@ -64,7 +64,7 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 		// check if the item is augmentable
 		int itemGrade = item.getItem().getItemGrade();
 		int itemType = item.getItem().getType2();
-		
+
 		if (item.isAugmented())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.ONCE_AN_ITEM_IS_AUGMENTED_IT_CANNOT_BE_AUGMENTED_AGAIN));
@@ -77,7 +77,7 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;
 		}
-		
+
 		// check if the player can augment
 		if (activeChar.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_NONE)
 		{

@@ -35,7 +35,7 @@ public class TvTEventTeleporter implements Runnable
 
 	/**
 	 * Initialize the teleporter and start the delayed task
-	 * 
+	 *
 	 * @param playerInstance
 	 * @param coordinates
 	 * @param reAdd
@@ -62,19 +62,19 @@ public class TvTEventTeleporter implements Runnable
 	 * 3. Revive and full heal the player
 	 * 4. Teleport the player
 	 * 5. Broadcast status and user info
-	 * 
+	 *
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run()
 	{
 		if (_playerInstance == null)
 			return;
-		
+
 		L2Summon summon = _playerInstance.getPet();
-	   
+
 		if (summon != null)
 			summon.unSummon(_playerInstance);
-		   
+
 		for (L2Effect effect : _playerInstance.getAllEffects())
 		{
 			if (effect != null)
@@ -86,12 +86,12 @@ public class TvTEventTeleporter implements Runnable
 		_playerInstance.setCurrentHp(_playerInstance.getMaxHp());
 		_playerInstance.setCurrentMp(_playerInstance.getMaxMp());
 		_playerInstance.teleToLocation(_coordinates[0], _coordinates[1], _coordinates[2], false);
-		
+
 		if (TvTEvent.isStarted() && !_adminRemove)
 			_playerInstance.setTeam(TvTEvent.getParticipantTeamId(_playerInstance.getName())+1);
 		else
 			_playerInstance.setTeam(0);
-		
+
 		_playerInstance.broadcastStatusUpdate();
 		_playerInstance.broadcastUserInfo();
 	}

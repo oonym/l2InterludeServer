@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.templates.L2Henna;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision$ $Date$
  */
 public final class RequestHennaItemInfo extends L2GameClientPacket
@@ -36,8 +36,8 @@ public final class RequestHennaItemInfo extends L2GameClientPacket
 	//private static Logger _log = Logger.getLogger(RequestHennaItemInfo.class.getName());
 	private int _symbolId;
 	// format  cd
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -56,11 +56,11 @@ public final class RequestHennaItemInfo extends L2GameClientPacket
             return;
         }
     	L2HennaInstance temp = new L2HennaInstance(template);
-		
+
 		HennaItemInfo hii = new HennaItemInfo(temp,activeChar);
 		activeChar.sendPacket(hii);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

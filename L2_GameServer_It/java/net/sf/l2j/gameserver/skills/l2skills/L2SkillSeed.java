@@ -40,12 +40,12 @@ public class L2SkillSeed extends L2Skill {
 			L2Character target = (L2Character)targets[i];
 			if (target.isAlikeDead() && getTargetType() != SkillTargetType.TARGET_CORPSE_MOB)
 				continue;
-			
+
             EffectSeed oldEffect = (EffectSeed) target.getFirstEffect(getId());
             if (oldEffect == null)
                 getEffects(caster, target);
             else oldEffect.increasePower();
-			
+
             L2Effect[] effects = target.getAllEffects();
             for (int j = 0; j < effects.length; j++)
                 if (effects[j].getEffectType() == L2Effect.EffectType.SEED)

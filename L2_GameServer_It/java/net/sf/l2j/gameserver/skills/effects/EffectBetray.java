@@ -41,7 +41,7 @@ final class EffectBetray extends L2Effect
     {
         return EffectType.BETRAY;
     }
-    
+
     /** Notify started */
     @Override
     public void onStart()
@@ -57,7 +57,7 @@ final class EffectBetray extends L2Effect
         }
      /** Notify exited */
     @Override
-    public void onExit() 
+    public void onExit()
     {
         if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
         {

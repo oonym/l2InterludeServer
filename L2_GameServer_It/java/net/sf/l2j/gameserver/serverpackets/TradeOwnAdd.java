@@ -22,7 +22,7 @@ import net.sf.l2j.gameserver.model.TradeList;
 
 /**
  * This class ...
- * 
+ *
  * @author Yme
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
@@ -35,14 +35,14 @@ public class TradeOwnAdd extends L2GameServerPacket
 	{
 		_item = item;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x20);
-		
+
 		writeH(1);  // item count
-		
+
 		writeH(_item.getItem().getType1()); // item type1
 		writeD(_item.getObjectId());
 		writeD(_item.getItem().getItemId());

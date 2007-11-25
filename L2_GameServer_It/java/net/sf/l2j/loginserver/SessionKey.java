@@ -53,7 +53,7 @@ public class SessionKey
 	{
 		return loginOkID1 == loginOk1 && loginOkID2 == loginOk2;
 	}
-	
+
 	/**
 	 * <p>Returns true if keys are equal.</p>
 	 * <p>Only checks the PlayOk part of the session key if server doesnt show the licence when player logs in.</p>
@@ -62,12 +62,12 @@ public class SessionKey
 	public boolean equals(SessionKey key)
 	{
 		// when server doesnt show licence it deosnt send the LoginOk packet, client doesnt have this part of the key then.
-		if (Config.SHOW_LICENCE) 
+		if (Config.SHOW_LICENCE)
 		{
 			return (playOkID1 == key.playOkID1 && loginOkID1 == key.loginOkID1
 					&& playOkID2 == key.playOkID2 && loginOkID2 == key.loginOkID2);
 		}
-		else 
+		else
 		{
 			return (playOkID1 == key.playOkID1 && playOkID2 == key.playOkID2);
 		}

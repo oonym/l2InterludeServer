@@ -31,7 +31,7 @@ public class PlayerLogout extends GameServerBasePacket
 		writeC(0x03);
 		writeS(player);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
 	 */
@@ -40,5 +40,5 @@ public class PlayerLogout extends GameServerBasePacket
 	{
 		return getBytes();
 	}
-	
+
 }

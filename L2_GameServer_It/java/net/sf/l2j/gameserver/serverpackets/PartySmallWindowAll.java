@@ -24,39 +24,39 @@ import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
+ *
  *
  * sample
- * 63 
- * 01 00 00 00  count 
- * 
+ * 63
+ * 01 00 00 00  count
+ *
  * c1 b2 e0 4a  object id
  * 54 00 75 00 65 00 73 00 64 00 61 00 79 00 00 00  name
  * 5a 01 00 00  hp
  * 5a 01 00 00  hp max
  * 89 00 00 00  mp
  * 89 00 00 00  mp max
- * 0e 00 00 00  level 
+ * 0e 00 00 00  level
  * 12 00 00 00  class
- * 00 00 00 00  
+ * 00 00 00 00
  * 01 00 00 00
- * 
- * 
+ *
+ *
  * format   d (dSdddddddd)
- *          
- * 
+ *
+ *
  * @version $Revision: 1.6.2.1.2.5 $ $Date: 2005/03/27 15:29:57 $
  */
 public class PartySmallWindowAll extends L2GameServerPacket
 {
 	private static final String _S__63_PARTYSMALLWINDOWALL = "[S] 4e PartySmallWindowAll";
 	private List<L2PcInstance> _partyMembers = new FastList<L2PcInstance>();
-	
+
 	public void setPartyList(List<L2PcInstance> party)
 	{
 		_partyMembers = party;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -65,18 +65,18 @@ public class PartySmallWindowAll extends L2GameServerPacket
         writeD(_partyMembers.get(0).getObjectId()); // c3 party leader id
         writeD(_partyMembers.get(0).getParty().getLootDistribution());//c3 party loot type (0,1,2,....)
 		writeD(_partyMembers.size()-1);
-		
-		for(int i = 0; i < _partyMembers.size(); i++) 
+
+		for(int i = 0; i < _partyMembers.size(); i++)
 		{
 			L2PcInstance member = _partyMembers.get(i);
 			if (!member.equals(player))
 			{
 				writeD(member.getObjectId());
 				writeS(member.getName());
-				
+
 				writeD((int) member.getCurrentCp()); //c4
 				writeD(member.getMaxCp()); //c4
-				
+
 				writeD((int) member.getCurrentHp());
 				writeD(member.getMaxHp());
 				writeD((int) member.getCurrentMp());

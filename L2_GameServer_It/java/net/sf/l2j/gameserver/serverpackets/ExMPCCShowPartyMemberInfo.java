@@ -33,7 +33,7 @@ public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x4a);
-		
+
 		//TODO this packet has a list, so im not going to add temp vars ^^
 	}
 
@@ -45,5 +45,5 @@ public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 	{
 		return _S__FE_4A_EXMPCCSHOWPARTYMEMBERINFO;
 	}
-	
+
 }

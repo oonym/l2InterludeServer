@@ -36,7 +36,7 @@ import net.sf.l2j.gameserver.serverpackets.SendMacroList;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.1.2.2 $ $Date: 2005/03/02 15:38:41 $
  */
 public class MacroList
@@ -54,21 +54,21 @@ public class MacroList
 		_revision = 1;
 		_macroId = 1000;
     }
-    
+
 	public int getRevision() {
 		return _revision;
 	}
-	
+
     public L2Macro[] getAllMacroses()
     {
 		return _macroses.values().toArray(new L2Macro[_macroses.size()]);
     }
-    
+
     public L2Macro getMacro(int id)
     {
         return _macroses.get(id-1);
     }
-    
+
     public void registerMacro(L2Macro macro)
     {
 		if (macro.id == 0) {
@@ -122,7 +122,7 @@ public class MacroList
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-        
+
             PreparedStatement statement = con.prepareStatement("INSERT INTO character_macroses (char_obj_id,id,icon,name,descr,acronym,commands) values(?,?,?,?,?,?,?)");
 			statement.setInt(1, _owner.getObjectId());
             statement.setInt(2, macro.id);
@@ -146,13 +146,13 @@ public class MacroList
         catch (Exception e)
         {
 			_log.log(Level.WARNING, "could not store macro:", e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     /**
      * @param shortcut
      */
@@ -162,7 +162,7 @@ public class MacroList
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
-        
+
             PreparedStatement statement = con.prepareStatement("DELETE FROM character_macroses WHERE char_obj_id=? AND id=?");
             statement.setInt(1, _owner.getObjectId());
             statement.setInt(2, macro.id);
@@ -172,13 +172,13 @@ public class MacroList
         catch (Exception e)
         {
 			_log.log(Level.WARNING, "could not delete macro:", e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }
     }
-    
+
     public void restore()
     {
 		_macroses.clear();
@@ -221,8 +221,8 @@ public class MacroList
         catch (Exception e)
         {
 			_log.log(Level.WARNING, "could not store shortcuts:", e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }

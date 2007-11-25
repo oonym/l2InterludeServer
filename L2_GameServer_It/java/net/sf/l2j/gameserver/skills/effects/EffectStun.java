@@ -39,19 +39,19 @@ final class EffectStun extends L2Effect {
 	{
 		return EffectType.STUN;
 	}
-	
+
 	/** Notify started */
 	@Override
 	public void onStart() {
 		getEffected().startStunning();
 	}
-	
+
 	/** Notify exited */
 	@Override
 	public void onExit() {
 		getEffected().stopStunning(this);
 	}
-	
+
     @Override
 	public boolean onActionTime()
     {

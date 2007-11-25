@@ -32,7 +32,7 @@ public class RequestServerList extends L2LoginClientPacket
 	private int _skey1;
 	private int _skey2;
 	private int _data3;
-	
+
 	/**
 	 * @return
 	 */
@@ -56,7 +56,7 @@ public class RequestServerList extends L2LoginClientPacket
 	{
 		return _data3;
 	}
-	
+
 	@Override
 	public boolean readImpl()
 	{

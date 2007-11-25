@@ -25,12 +25,12 @@ import net.sf.l2j.gameserver.skills.Env;
 
 
 class EffectManaDamOverTime extends L2Effect
-{		
+{
 	public EffectManaDamOverTime(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
-	
+
 	@Override
 	public EffectType getEffectType()
 	{
@@ -39,12 +39,12 @@ class EffectManaDamOverTime extends L2Effect
 
 	@Override
 	public boolean onActionTime()
-	{	
+	{
 		if(getEffected().isDead())
 			return false;
-		
+
 		double manaDam = calc();
-		
+
 		if(manaDam > getEffected().getCurrentMp())
 		{
 			if(getSkill().isToggle())
@@ -54,7 +54,7 @@ class EffectManaDamOverTime extends L2Effect
 				return false;
 			}
 		}
-		
+
 		getEffected().reduceCurrentMp(manaDam);
 		return true;
 	}

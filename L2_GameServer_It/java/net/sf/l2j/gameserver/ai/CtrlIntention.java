@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.ai;
 /** Enumaration of generic intentions of an NPC/PC, an intention may require
  * several steps to be completed */
 
-public enum CtrlIntention 
+public enum CtrlIntention
 {
 	/** Do nothing, disconnect AI of NPC if no players around */
 	AI_INTENTION_IDLE,

@@ -218,7 +218,7 @@ public class TradeList
     /**
      * Adjust available item from Inventory by the one in this list
      * @param item : L2ItemInstance to be adjusted
-     * @return TradeItem representing adjusted item 
+     * @return TradeItem representing adjusted item
      */
     public TradeItem adjustAvailableItem(L2ItemInstance item)
     {
@@ -286,20 +286,20 @@ public class TradeList
             return null;
         }
         L2Object o = L2World.getInstance().findObject(objectId);
-        
+
         if (o == null || !(o instanceof L2ItemInstance))
         {
             _log.warning(_owner.getName() + ": Attempt to add invalid item to TradeList!");
             return null;
         }
-        
+
         L2ItemInstance item = (L2ItemInstance)o;
-        
+
 	if (!item.isTradeable() || item.getItemType() == L2EtcItemType.QUEST)
              return null;
-        
+
 	if (count > item.getCount()) return null;
-        
+
 	if (!item.isStackable() && count > 1)
         {
             _log.warning(_owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
@@ -448,8 +448,8 @@ public class TradeList
             else { sync1 = this; sync2 = partnerList; }
 
             synchronized (sync1)
-            { 
-                synchronized (sync2) 
+            {
+                synchronized (sync2)
                 {
                     _confirmed = true;
                     if (partnerList.isConfirmed())
@@ -533,8 +533,8 @@ public class TradeList
         return true;
     }
 
-    /**                                                                                                   
-     * Count items slots                                                                                  
+    /**
+     * Count items slots
      */
 
     public int countItemsSlots(L2PcInstance partner)
@@ -554,8 +554,8 @@ public class TradeList
         return slots;
     }
 
-    /**                                                                                                   
-     * Calc weight of items in tradeList                                                                  
+    /**
+     * Calc weight of items in tradeList
      */
 
     public int calcItemsWeight()
@@ -616,7 +616,7 @@ public class TradeList
             playerSU = new StatusUpdate(_partner.getObjectId());
             playerSU.addAttribute(StatusUpdate.CUR_LOAD, _partner.getCurrentLoad());
             _partner.sendPacket(playerSU);
-            
+
             success = true;
         }
         // Finish the trade
@@ -685,7 +685,7 @@ public class TradeList
         // Transfer items
         for (ItemRequest item : items)
         {
-            //Check if requested item is sill on the list and adjust its count 
+            //Check if requested item is sill on the list and adjust its count
             adjustItemRequest(item);
             if (item.getCount() == 0) continue;
 
@@ -708,7 +708,7 @@ public class TradeList
             if (newItem.getCount() > item.getCount()) playerIU.addModifiedItem(newItem);
             else playerIU.addNewItem(newItem);
 
-            // Send messages about the transaction to both players 
+            // Send messages about the transaction to both players
             if (newItem.isStackable())
             {
                 SystemMessage msg = new SystemMessage(SystemMessageId.S1_PURCHASED_S3_S2_S);
@@ -753,12 +753,12 @@ public class TradeList
 
         PcInventory ownerInventory = _owner.getInventory();
         PcInventory playerInventory = player.getInventory();
-        
+
         //we must check item are available before begining transaction, TODO: should we remove that check when transfering items as it's done here? (there might be synchro problems if player clicks fast if we remove it)
         // also check if augmented items are traded. If so, cancel it...
         for (ItemRequest item : items)
         {
-            // Check if requested item is available for manipulation 
+            // Check if requested item is available for manipulation
             L2ItemInstance oldItem = player.checkItemManipulation(item.getObjectId(), item.getCount(), "sell");
             if (oldItem == null)
                 return false;
@@ -778,11 +778,11 @@ public class TradeList
         // Transfer items
         for (ItemRequest item : items)
         {
-            // Check if requested item is sill on the list and adjust its count 
+            // Check if requested item is sill on the list and adjust its count
             adjustItemRequestByItemId(item);
             if (item.getCount() == 0) continue;
 
-            // Check if requested item is available for manipulation 
+            // Check if requested item is available for manipulation
             L2ItemInstance oldItem = player.checkItemManipulation(item.getObjectId(), item.getCount(), "sell");
             if (oldItem == null) return false;
 
@@ -797,7 +797,7 @@ public class TradeList
             if (newItem.getCount() > item.getCount()) ownerIU.addModifiedItem(newItem);
             else ownerIU.addNewItem(newItem);
 
-            // Send messages about the transaction to both players 
+            // Send messages about the transaction to both players
             if (newItem.isStackable())
             {
                 SystemMessage msg = new SystemMessage(SystemMessageId.PURCHASED_S3_S2_S_FROM_S1);
@@ -825,7 +825,7 @@ public class TradeList
                 player.sendPacket(msg);
             }
         }
-        
+
         // Transfer adena
         if (price > ownerInventory.getAdena()) return false;
         L2ItemInstance adenaItem = ownerInventory.getAdenaInstance();

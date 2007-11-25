@@ -35,7 +35,7 @@ public class TaskRecom extends Task
 {
     private static final Logger _log = Logger.getLogger(TaskRecom.class.getName());
     private static final String NAME = "sp_recommendations";
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.taskmanager.Task#getName()
      */
@@ -58,7 +58,7 @@ public class TaskRecom extends Task
         }
         _log.config("Recommendation Global Task: launched.");
     }
-    
+
     @Override
 	public void  initializate()
     {

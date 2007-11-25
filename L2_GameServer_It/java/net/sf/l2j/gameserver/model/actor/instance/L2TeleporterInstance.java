@@ -76,7 +76,7 @@ public final class L2TeleporterInstance extends L2FolkInstance
                 case 31098: // Enter Necropolises
                 case 31099: //
                 case 31100: //
-                case 31101: // 
+                case 31101: //
                 case 31102: //
 
                 case 31114: //
@@ -93,7 +93,7 @@ public final class L2TeleporterInstance extends L2FolkInstance
                 case 31106: // Exit Necropolises
                 case 31107: //
                 case 31108: //
-                case 31109: // 
+                case 31109: //
                 case 31110: //
 
                 case 31120: //

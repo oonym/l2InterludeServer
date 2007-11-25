@@ -33,8 +33,8 @@ import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeSummonInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2StaticObjectInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -101,7 +101,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			if (activeChar.getMountType() != 0)
 				break;
 
-			if (target != null 
+			if (target != null
 					&& !activeChar.isSitting()
 					&& target instanceof L2StaticObjectInstance
 					&& ((L2StaticObjectInstance)target).getType() == 1
@@ -121,7 +121,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			else
 				activeChar.sitDown();
 
-			if (Config.DEBUG) 
+			if (Config.DEBUG)
 				_log.fine("new wait type: "+(activeChar.isSitting() ? "SITTING" : "STANDING"));
 
 			break;
@@ -131,7 +131,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			else
 				activeChar.setRunning();
 
-			if (Config.DEBUG) 
+			if (Config.DEBUG)
 				_log.fine("new move type: "+(activeChar.isRunning() ? "RUNNING" : "WALKIN"));
 			break;
 		case 15:
@@ -147,7 +147,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				if (activeChar.isInOlympiadMode() && !activeChar.isOlympiadStart()){
 					// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
 					activeChar.sendPacket(new ActionFailed());
-					return;	
+					return;
 				}
 
 				if (activeChar.getAccessLevel() < Config.GM_PEACEATTACK &&
@@ -159,7 +159,7 @@ public final class RequestActionUse extends L2GameClientPacket
 
 				if (target.isAutoAttackable(activeChar) || _ctrlPressed)
 				{
-					if (target instanceof L2DoorInstance) 
+					if (target instanceof L2DoorInstance)
 					{
 						if(((L2DoorInstance)target).isAttackable(activeChar) && pet.getNpcId() != L2SiegeSummonInstance.SWOOP_CANNON_ID)
 							pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
@@ -187,7 +187,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				else if (pet.isAttackingNow() || pet.isRooted())
 				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE));
-				} 
+				}
 				else
 				{
 					// if it is a pet and not a summon
@@ -206,7 +206,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			break;
 		case 38: // pet mount
 			// mount
-			if (pet != null && pet.isMountable() && !activeChar.isMounted() && !activeChar.isBetrayed()) 
+			if (pet != null && pet.isMountable() && !activeChar.isMounted() && !activeChar.isBetrayed())
 			{
 				if (activeChar.isDead())
 				{
@@ -216,7 +216,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					msg = null;
 				}
 				else if (pet.isDead())
-				{   
+				{
 					//A dead strider cannot be ridden.
 					SystemMessage msg = new SystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
 					activeChar.sendPacket(msg);
@@ -233,9 +233,9 @@ public final class RequestActionUse extends L2GameClientPacket
 				{
 					//A strider cannot be ridden while in battle
 					SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
-					activeChar.sendPacket(msg);   
+					activeChar.sendPacket(msg);
 					msg = null;
-				}                   
+				}
 				else if (activeChar.isSitting() || activeChar.isMoving())
 				{
 					//A strider can be ridden only when standing
@@ -381,8 +381,8 @@ public final class RequestActionUse extends L2GameClientPacket
 		case 1000: // Siege Golem - Siege Hammer
 			if (target instanceof L2DoorInstance) useSkill(4079);
 			break;
-		case 1001: 
-			break; 
+		case 1001:
+			break;
 		case 1003: // Wind Hatchling/Strider - Wild Stun
 			useSkill(4710); //TODO use correct skill lvl based on pet lvl
 			break;
@@ -467,8 +467,8 @@ public final class RequestActionUse extends L2GameClientPacket
 
 	/*
 	 * Cast a skill for active pet/servitor.
-	 * Target is specified as a parameter but can be 
-	 * overwrited or ignored depending on skill type.  
+	 * Target is specified as a parameter but can be
+	 * overwrited or ignored depending on skill type.
 	 */
 	private void useSkill(int skillId, L2Object target)
 	{
@@ -497,7 +497,7 @@ public final class RequestActionUse extends L2GameClientPacket
 
 			L2Skill skill = _skills.get(skillId);
 
-			if (skill == null) 
+			if (skill == null)
 			{
 				if (Config.DEBUG)
 					_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
@@ -511,8 +511,8 @@ public final class RequestActionUse extends L2GameClientPacket
 
 	/*
 	 * Cast a skill for active pet/servitor.
-	 * Target is retrieved from owner' target, 
-	 * then validated by overloaded method useSkill(int, L2Character).  
+	 * Target is retrieved from owner' target,
+	 * then validated by overloaded method useSkill(int, L2Character).
 	 */
 	private void useSkill(int skillId)
 	{

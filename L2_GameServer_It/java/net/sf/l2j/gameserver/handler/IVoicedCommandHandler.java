@@ -34,9 +34,9 @@ public interface IVoicedCommandHandler
 	 * @return command success
 	 */
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target);
-	
+
 	/**
-	 * this method is called at initialization to register all the item ids automatically 
+	 * this method is called at initialization to register all the item ids automatically
 	 * @return all known itemIds
 	 */
 	public String[] getVoicedCommandList();

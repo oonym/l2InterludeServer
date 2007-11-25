@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.4.8 $ $Date: 2005/04/02 15:57:52 $
  */
 public final class L2TrainerInstance extends L2FolkInstance

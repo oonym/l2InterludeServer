@@ -35,11 +35,11 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 {
 	private static final String _C__B2_RequestRecipeShopListSet = "[C] b2 RequestRecipeShopListSet";
 	//private static Logger _log = Logger.getLogger(RequestRecipeShopListSet.class.getName());
-	
+
 	private int _count;
 	private int[] _items; // count*2
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -66,17 +66,17 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 			player.sendPacket(new SystemMessage(SystemMessageId.CANT_CRAFT_DURING_COMBAT));
 			return;
 		}
-		
+
 		if (_count == 0)
 		{
 			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
 			player.broadcastUserInfo();
 			player.standUp();
 		}
-		else 
+		else
 		{
             L2ManufactureList createList = new L2ManufactureList();
-            
+
             for (int x = 0; x < _count ; x++)
             {
                 int recipeID = _items[x*2 + 0];
@@ -85,7 +85,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
             }
             createList.setStoreName(player.getCreateList() != null ? player.getCreateList().getStoreName() : "");
             player.setCreateList(createList);
-    
+
 			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_MANUFACTURE);
 			player.sitDown();
 			player.broadcastUserInfo();
@@ -93,13 +93,13 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 			player.broadcastPacket(new RecipeShopMsg(player));
 		}
 	}
-	
-	
+
+
 	@Override
 	public String getType()
 	{
 		return _C__B2_RequestRecipeShopListSet;
 	}
-	
-	
+
+
 }

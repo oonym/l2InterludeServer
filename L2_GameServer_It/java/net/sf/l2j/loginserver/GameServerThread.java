@@ -72,10 +72,10 @@ public class GameServerThread extends Thread
 	private String _connectionIp;
 
 	private GameServerInfo _gsi;
-	
+
 	/** Authed Clients on a GameServer*/
 	private Set<String> _accountsOnGameServer = new FastSet<String>();
-	
+
 	private String _connectionIPAddress;
 
 	@Override
@@ -103,7 +103,7 @@ public class GameServerThread extends Thread
 			{
 				lengthLo = _in.read();
 				lengthHi = _in.read();
-				length= lengthHi*256 + lengthLo;  
+				length= lengthHi*256 + lengthLo;
 
 				if (lengthHi < 0 || _connection.isClosed())
 				{
@@ -169,7 +169,7 @@ public class GameServerThread extends Thread
 						_log.warning("Unknown Opcode ("+Integer.toHexString(packetType).toUpperCase()+") from GameServer, closing connection.");
 						forceClose(LoginServerFail.NOT_AUTHED);
 				}
-				
+
 			}
 		}
 		catch (IOException e)
@@ -190,7 +190,7 @@ public class GameServerThread extends Thread
 			L2LoginServer.getInstance().getGameServerListener().removeFloodProtection(_connectionIp);
 		}
 	}
-	
+
 	private void onReceiveBlowfishKey(byte[] data)
 	{
 		/*if (_blowfish == null)
@@ -244,7 +244,7 @@ public class GameServerThread extends Thread
 				{
 					_log.info("Account "+account+" logged in GameServer: ["+getServerId()+"] "+GameServerTable.getInstance().getServerNameById(getServerId()));
 				}
-				
+
 				broadcastToTelnet("Account "+account+" logged in GameServer "+getServerId());
 			}
 
@@ -265,7 +265,7 @@ public class GameServerThread extends Thread
 			{
 				_log.info("Player "+plo.getAccount()+" logged out from gameserver ["+getServerId()+"] "+GameServerTable.getInstance().getServerNameById(getServerId()));
 			}
-			
+
 			broadcastToTelnet("Player "+plo.getAccount()+" disconnected from GameServer "+getServerId());
 		}
 		else
@@ -417,12 +417,12 @@ public class GameServerThread extends Thread
 			}
 		}
 	}
-	
+
 	public boolean hasAccountOnGameServer(String account)
 	{
 		return _accountsOnGameServer.contains(account);
 	}
-	
+
 	public int getPlayerCount()
 	{
 		return _accountsOnGameServer.size();
@@ -468,7 +468,7 @@ public class GameServerThread extends Thread
 	}
 
 	/**
-	 * 
+	 *
 	 * @param gameServerauth
 	 */
 	/*private void handleRegisterationProcess(GameServerAuth gameServerauth)
@@ -621,7 +621,7 @@ public class GameServerThread extends Thread
 			_out.flush();
 		}
 	}
-	
+
 	private void broadcastToTelnet(String msg)
 	{
 		if (L2LoginServer.getInstance().getStatusServer() != null)
@@ -629,7 +629,7 @@ public class GameServerThread extends Thread
 			L2LoginServer.getInstance().getStatusServer().sendMessageToTelnets(msg);
 		}
 	}
-	
+
 	public void kickPlayer(String account)
 	{
 		KickPlayer kp = new KickPlayer(account);
@@ -650,10 +650,10 @@ public class GameServerThread extends Thread
 	{
 		String oldInternal = _gsi.getInternalHost();
 		String oldExternal = _gsi.getExternalHost();
-		
+
 		_gsi.setExternalHost(gameExternalHost);
 		_gsi.setInternalIp(gameInternalHost);
-		
+
 		if (!gameExternalHost.equals("*"))
 		{
 			try
@@ -684,7 +684,7 @@ public class GameServerThread extends Thread
 		{
 			_gsi.setInternalIp(_connectionIp);
 		}
-		
+
 		_log.info("Updated Gameserver ["+getServerId()+"] "+GameServerTable.getInstance().getServerNameById(getServerId())+" IP's:");
 		if (oldInternal == null || !oldInternal.equalsIgnoreCase(gameInternalHost))
 			_log.info("InternalIP: "+gameInternalHost);

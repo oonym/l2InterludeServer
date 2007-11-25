@@ -34,8 +34,8 @@ public class ItemFilter implements Filter
 
 //	This is example how to exclude consuming of shots and arrows from logging
 //	private String _excludeProcess = "Consume";
-//	private String _excludeItemType = "Arrow, Shot"; 
-	
+//	private String _excludeItemType = "Arrow, Shot";
+
 	public boolean isLoggable(LogRecord record)
 	{
 		if (record.getLoggerName() != "item") return false;

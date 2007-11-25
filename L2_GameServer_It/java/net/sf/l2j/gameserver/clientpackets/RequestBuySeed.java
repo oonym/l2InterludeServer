@@ -39,7 +39,7 @@ import net.sf.l2j.gameserver.util.Util;
 /**
  * Format: cdd[dd]
  * c    // id (0xC4)
- * 
+ *
  * d    // manor id
  * d    // seeds to buy
  * [
@@ -48,7 +48,7 @@ import net.sf.l2j.gameserver.util.Util;
  * ]
  * @param decrypt
  * @author l3x
- */ 
+ */
 
 
 
@@ -59,8 +59,9 @@ public class RequestBuySeed extends L2GameClientPacket
 	private int _count;
 	private int _manorId;
 	private int[] _items; // size _count * 2
-	
-    protected void readImpl()
+
+    @Override
+	protected void readImpl()
 	{
 		_manorId = readD();
 		_count = readD();
@@ -87,7 +88,8 @@ public class RequestBuySeed extends L2GameClientPacket
 			_items[i * 2 + 1] = (int) cnt;
 		}
 	}
-    
+
+	@Override
 	protected void runImpl()
 	{
 		long totalPrice = 0;
@@ -97,7 +99,7 @@ public class RequestBuySeed extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
-		if (_count < 1) 
+		if (_count < 1)
 		{
 			sendPacket(new ActionFailed());
 			return;
@@ -110,7 +112,7 @@ public class RequestBuySeed extends L2GameClientPacket
 
 		if (!(target instanceof L2ManorManagerInstance))
 			return;
-		
+
 		Castle castle = CastleManager.getInstance().getCastleById(_manorId);
 
 		for (int i = 0; i < _count; i++)
@@ -139,7 +141,7 @@ public class RequestBuySeed extends L2GameClientPacket
 			else if (player.getInventory().getItemByItemId(seedId) == null)
 				slots++;
 		}
-		
+
 		if (totalPrice > Integer.MAX_VALUE)
 		{
 			Util.handleIllegalPlayerAction(player, "Warning!! Character "
@@ -149,7 +151,7 @@ public class RequestBuySeed extends L2GameClientPacket
 					Config.DEFAULT_PUNISH);
 			return;
 		}
-		
+
 		if (!player.getInventory().validateWeight(totalWeight))
 		{
 			sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
@@ -168,7 +170,7 @@ public class RequestBuySeed extends L2GameClientPacket
 			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;
 		}
-		
+
 		// Adding to treasury for Manor Castle
 		castle.addToTreasuryNoTax((int) totalPrice);
 
@@ -214,6 +216,7 @@ public class RequestBuySeed extends L2GameClientPacket
 		player.sendPacket(su);
 	}
 
+	@Override
 	public String getType()
 	{
 		return _C__C4_REQUESTBUYSEED;

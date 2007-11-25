@@ -20,42 +20,41 @@ package net.sf.l2j.gameserver.instancemanager;
 
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import java.io.File;
-import java.io.IOException;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
+import net.sf.l2j.gameserver.model.L2ItemInstance;
+import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.model.SpawnListener;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import net.sf.l2j.gameserver.model.entity.DimensionalRift;
-import net.sf.l2j.gameserver.model.L2ItemInstance;
-import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.SpawnListener;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Rnd;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-/** 
+/**
 * Thanks to L2Fortress and balancer.ru - kombat
-*/ 
+*/
 public class DimensionalRiftManager
 {
 
@@ -142,7 +141,7 @@ public class DimensionalRiftManager
 
         _log.info("DimensionalRiftManager: Loaded " + typeSize + " room types with " + roomSize + " rooms.");
     }
-    
+
     public void loadSpawns()
     {
         int countGood = 0, countBad = 0;
@@ -151,18 +150,18 @@ public class DimensionalRiftManager
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
             factory.setIgnoringComments(true);
-            
+
             File file = new File(Config.DATAPACK_ROOT+"/data/dimensionalRift.xml");
             if (!file.exists())
                 throw new IOException();
-            
+
             Document doc = factory.newDocumentBuilder().parse(file);
             NamedNodeMap attrs;
             byte type, roomId;
             int mobId, x, y, z, delay, count;
             L2Spawn spawnDat;
             L2NpcTemplate template;
-            
+
             for (Node rift = doc.getFirstChild(); rift != null; rift = rift.getNextSibling())
             {
                 if ("rift".equalsIgnoreCase(rift.getNodeName()))
@@ -173,14 +172,14 @@ public class DimensionalRiftManager
                         {
                             attrs = area.getAttributes();
                             type = Byte.parseByte(attrs.getNamedItem("type").getNodeValue());
-                            
+
                             for (Node room = area.getFirstChild(); room != null; room = room.getNextSibling())
                             {
                                 if ("room".equalsIgnoreCase(room.getNodeName()))
                                 {
                                     attrs = room.getAttributes();
                                     roomId = Byte.parseByte(attrs.getNamedItem("id").getNodeValue());
-                                    
+
                                     for (Node spawn = room.getFirstChild(); spawn != null; spawn = spawn.getNextSibling())
                                     {
                                         if ("spawn".equalsIgnoreCase(spawn.getNodeName()))
@@ -192,19 +191,19 @@ public class DimensionalRiftManager
                                             //z = Integer.parseInt(attrs.getNamedItem("z").getNodeValue());
                                             delay = Integer.parseInt(attrs.getNamedItem("delay").getNodeValue());
                                             count = Integer.parseInt(attrs.getNamedItem("count").getNodeValue());
-                                            
+
                                             template = NpcTable.getInstance().getTemplate(mobId);
                                             if(template==null)_log.warn("Template "+mobId+" not found!");
                                             if(!_rooms.containsKey(type))_log.warn("Type "+type+" not found!");
                                             else if(!_rooms.get(type).containsKey(roomId))_log.warn("Room "+roomId+" in Type "+type+" not found!");
-                                            
+
                                             for (int i = 0; i < count; i++)
                                             {
 	                                            DimensionalRiftRoom riftRoom = _rooms.get(type).get(roomId);
 	                                            x = riftRoom.getRandomX();
 	                                            y = riftRoom.getRandomY();
 	                                            z = riftRoom.getTeleportCoords()[2];
-	                                            
+
 	                                            if (template != null && _rooms.containsKey(type) && _rooms.get(type).containsKey(roomId))
 	                                            {
 	                                                spawnDat = new L2Spawn(template);
@@ -215,7 +214,7 @@ public class DimensionalRiftManager
 	                                                spawnDat.setHeading(-1);
 	                                                spawnDat.setRespawnDelay(delay);
 	                                                L2Spawn.addSpawnListener(new RiftSpawnListener(type, roomId));
-	                                                
+
 	                                                SpawnTable.getInstance().addNewSpawn(spawnDat, false);
 	                                                _rooms.get(type).get(roomId).getSpawns().add(spawnDat);
 	                                                countGood++;
@@ -296,7 +295,7 @@ public class DimensionalRiftManager
             handleCheat(player, npc);
             return;
         }
-        
+
         if(player.getParty().getMemberCount() < Config.RIFT_MIN_PARTY_SIZE)
         {
             NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
@@ -310,7 +309,7 @@ public class DimensionalRiftManager
         for(L2PcInstance p : player.getParty().getPartyMembers())
             if(!checkIfInPeaceZone(p.getX(), p.getY(), p.getZ()))
                 canPass = false;
-        
+
         if(!canPass)
         {
             showHtmlFile(player, "data/html/seven_signs/rift/NotInWaitingRoom.htm", npc);
@@ -348,7 +347,7 @@ public class DimensionalRiftManager
             i = p.getInventory().getItemByItemId(DIMENSIONAL_FRAGMENT_ITEM_ID);
             p.destroyItem("RiftEntrance", i.getObjectId(), getNeededItems(type), null, false);
         }
-        
+
         new DimensionalRift(player.getParty(), type, (byte) Rnd.get(1, 9));
     }
 
@@ -356,13 +355,13 @@ public class DimensionalRiftManager
     {
         if(d.getTeleportTimerTask() != null)d.getTeleportTimerTask().cancel();
         d.setTeleportTimerTask(null);
-        
+
         if(d.getTeleportTimer() != null)d.getTeleportTimer().cancel();
         d.setTeleportTimer(null);
-        
+
         if(d.getSpawnTimerTask() != null)d.getSpawnTimerTask().cancel();
         d.setSpawnTimerTask(null);
-        
+
         if(d.getSpawnTimer() != null)d.getSpawnTimer().cancel();
         d.setSpawnTimer(null);
     }
@@ -399,12 +398,12 @@ public class DimensionalRiftManager
             _roomMobs = new FastList<L2NpcInstance>();
             _s = new Polygon(new int[] { xMin, xMax, xMax, xMin }, new int[] { yMin, yMin, yMax, yMax }, 4);
         }
-        
+
         public int getRandomX()
         {
         	return Rnd.get(_xMin, _xMax);
         }
-        
+
         public int getRandomY()
         {
         	return Rnd.get(_yMin, _yMax);
@@ -449,18 +448,18 @@ public class DimensionalRiftManager
             }
         }
     }
-    
+
     private class RiftSpawnListener implements SpawnListener
     {
         private byte _type;
         private byte _room;
-        
+
         public RiftSpawnListener(byte type, byte room)
         {
             _type = type;
             _room = room;
         }
-    
+
         public void npcSpawned(L2NpcInstance mob)
         {
         	if (mob instanceof L2RiftInvaderInstance)
@@ -500,7 +499,7 @@ public class DimensionalRiftManager
         html.replace("%npc_name%", npc.getName());
         player.sendPacket(html);
     }
-    
+
     public void handleCheat(L2PcInstance player, L2NpcInstance npc)
     {
         showHtmlFile(player, "data/html/seven_signs/rift/Cheater.htm", npc);

@@ -8,7 +8,7 @@
  * Revision 1  24/08/2005 22:44:26  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -37,18 +37,18 @@ import net.sf.l2j.util.PrimeFinder;
 
 /**
  * This class ..
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
 public class BitSetIDFactory extends IdFactory
 {
     private static Logger _log = Logger.getLogger(BitSetIDFactory.class.getName());
-    
+
     private BitSet          _freeIds;
     private AtomicInteger   _freeIdCount;
     private AtomicInteger   _nextFreeId;
-    
+
     public class BitSetCapacityCheck implements Runnable
     {
 
@@ -62,9 +62,9 @@ public class BitSetIDFactory extends IdFactory
                 increaseBitSetCapacity();
             }
         }
-        
+
     }
-    
+
     protected BitSetIDFactory()
     {
         super();
@@ -72,7 +72,7 @@ public class BitSetIDFactory extends IdFactory
         initialize();
         _log.info("IDFactory: "+ _freeIds.size() + " id's available.");
     }
-    
+
     public synchronized void initialize()
     {
         try
@@ -80,7 +80,7 @@ public class BitSetIDFactory extends IdFactory
             _freeIds     = new BitSet(PrimeFinder.nextPrime(100000));
             _freeIds.clear();
             _freeIdCount = new AtomicInteger(FREE_OBJECT_ID_SIZE);
-            
+
             for (int usedObjectId : extractUsedObjectIDTable())
             {
                 int objectID = usedObjectId - FIRST_OID;
@@ -92,7 +92,7 @@ public class BitSetIDFactory extends IdFactory
                 _freeIds.set(usedObjectId - FIRST_OID);
                 _freeIdCount.decrementAndGet();
             }
-            
+
             _nextFreeId  = new AtomicInteger(_freeIds.nextClearBit(0));
             _initialized = true;
         }
@@ -103,7 +103,7 @@ public class BitSetIDFactory extends IdFactory
             e.printStackTrace();
         }
     }
-    
+
     @Override
 	public synchronized void releaseId(int objectID)
     {
@@ -114,16 +114,16 @@ public class BitSetIDFactory extends IdFactory
         } else
             _log.warning("BitSet ID Factory: release objectID "+objectID+" failed (< "+FIRST_OID+")");
     }
-    
+
     @Override
 	public synchronized int getNextId()
     {
         int newID = _nextFreeId.get();
         _freeIds.set(newID);
         _freeIdCount.decrementAndGet();
-        
+
         int nextFree = _freeIds.nextClearBit(newID);
-        
+
         if (nextFree < 0)
         {
             nextFree = _freeIds.nextClearBit(0);
@@ -144,23 +144,23 @@ public class BitSetIDFactory extends IdFactory
 
         return newID + FIRST_OID;
     }
-    
+
     @Override
 	public synchronized int size()
     {
         return _freeIdCount.get();
     }
-    
+
     protected synchronized int usedIdCount()
     {
         return (size() - FIRST_OID);
     }
-    
+
     protected synchronized boolean reachingBitSetCapacity()
     {
         return PrimeFinder.nextPrime(usedIdCount() * 11 / 10) > _freeIds.size();
     }
-    
+
     protected synchronized void increaseBitSetCapacity()
     {
         BitSet newBitSet = new BitSet(PrimeFinder.nextPrime(usedIdCount() * 11 / 10));

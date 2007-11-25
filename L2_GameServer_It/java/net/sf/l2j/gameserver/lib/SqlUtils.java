@@ -26,7 +26,7 @@ import net.sf.l2j.L2DatabaseFactory;
 public class SqlUtils
 {
 	private static Logger _log = Logger.getLogger(SqlUtils.class.getName());
-	
+
     // =========================================================
     // Data Field
 	private static SqlUtils _instance;
@@ -45,7 +45,7 @@ public class SqlUtils
 	{
         String query = "";
 		Integer res = null;
-		
+
 		PreparedStatement statement = null;
 		ResultSet rset = null;
 
@@ -55,7 +55,7 @@ public class SqlUtils
 
 			statement = L2DatabaseFactory.getInstance().getConnection().prepareStatement(query);
 			rset = statement.executeQuery();
-		
+
 			if(rset.next()) res = rset.getInt(1);
 		}
 		catch(Exception e)
@@ -76,7 +76,7 @@ public class SqlUtils
     {
         String query = "";
         Integer[] res = null;
-        
+
         PreparedStatement statement = null;
         ResultSet rset = null;
 
@@ -85,18 +85,18 @@ public class SqlUtils
             query = L2DatabaseFactory.getInstance().prepQuerySelect(new String[] {resultField}, tableName, whereClause, false);
             statement = L2DatabaseFactory.getInstance().getConnection().prepareStatement(query);
             rset = statement.executeQuery();
-            
+
             int rows = 0;
-            
+
             while (rset.next())
                 rows++;
-            
+
             if (rows == 0) return new Integer[0];
 
             res = new Integer[rows-1];
 
             rset.first();
-        
+
             int row = 0;
             while (rset.next())
             {

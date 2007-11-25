@@ -32,7 +32,7 @@ public class ExFishingStart extends L2GameServerPacket
 	private int _x,_y,_z, _fishType;
 	@SuppressWarnings("unused")
 	private boolean _isNightLure;
-	
+
 	public ExFishingStart(L2Character character, int fishType, int x, int y,int z, boolean isNightLure)
 	{
 		_activeChar = character;
@@ -70,5 +70,5 @@ public class ExFishingStart extends L2GameServerPacket
 	{
 		return _S__FE_13_EXFISHINGSTART;
 	}
-	
+
 }

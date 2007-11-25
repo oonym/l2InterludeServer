@@ -29,7 +29,7 @@ import net.sf.l2j.L2DatabaseFactory;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.7 $ $Date: 2005/04/11 10:06:12 $
  */
 public class StackIDFactory extends IdFactory
@@ -38,7 +38,7 @@ public class StackIDFactory extends IdFactory
 
 	private int _curOID;
 	private int _tempOID;
-	
+
 	private Stack<Integer> _freeOIDStack = new Stack<Integer>();
 
 	protected StackIDFactory()
@@ -52,14 +52,14 @@ public class StackIDFactory extends IdFactory
         {
             con = L2DatabaseFactory.getInstance().getConnection();
             //con.createStatement().execute("drop table if exists tmp_obj_id");
-            
+
             int[] tmp_obj_ids = extractUsedObjectIDTable();
             if (tmp_obj_ids.length > 0)
             {
                 _curOID = tmp_obj_ids[tmp_obj_ids.length-1];
             }
             System.out.println("Max Id = " + _curOID);
-            
+
             int N = tmp_obj_ids.length;
             for (int idx = 0; idx < N; idx++)
             {
@@ -80,7 +80,7 @@ public class StackIDFactory extends IdFactory
             try { con.close(); } catch (Exception e) {}
         }
 	}
-    
+
 	private int insertUntil(int[] tmp_obj_ids, int idx, int N, java.sql.Connection con) throws SQLException
     {
         int id = tmp_obj_ids[idx];
@@ -109,7 +109,7 @@ public class StackIDFactory extends IdFactory
             ps.close();
         }
         }
-        
+
         //int hole = id - _curOID;
         int hole = id - _tempOID;
         if (hole > N - idx) hole = N - idx;
@@ -123,7 +123,7 @@ public class StackIDFactory extends IdFactory
         if (hole < N - idx) _tempOID++;
         return N - hole;
     }
-	
+
 	public static IdFactory getInstance()
 	{
         return _instance;
@@ -143,7 +143,7 @@ public class StackIDFactory extends IdFactory
         	}
         	return id;
     }
-	
+
 	/**
 	 * return a used Object ID back to the pool
 	 * @param object ID
@@ -153,7 +153,7 @@ public class StackIDFactory extends IdFactory
     {
 		_freeOIDStack.push(id);
     }
-    
+
     @Override
 	public int size()
     {

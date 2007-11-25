@@ -46,7 +46,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public class RequestAquireSkill extends L2GameClientPacket
@@ -60,7 +60,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 	private int _level;
 
 	private int _skillType;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -88,7 +88,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 			return;
 
 		if (!Config.ALT_GAME_SKILL_LEARN) player.setSkillLearningClassId(player.getClassId());
-		
+
 		if (player.getSkillLevel(_id) >= _level)
 		{
 			// already knows the skill with this level
@@ -160,7 +160,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 						SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
 				player.sendPacket(sm);
 				sm = null;
-				
+
 				return;
 			}
 		} else if (_skillType == 1)
@@ -221,33 +221,33 @@ public class RequestAquireSkill extends L2GameClientPacket
 				sm = null;
 				return;
 			}
-		} 
+		}
 		else if (_skillType == 2) //pledgeskills TODO: Find appropriate system messages.
         {
-            if (!player.isClanLeader()) 
+            if (!player.isClanLeader())
             {
             	// TODO: Find and add system msg
             	player.sendMessage("This feature is available only for the clan leader");
             	return;
             }
-            
+
 			int itemId = 0;
             int repCost = 100000000;
             // Skill Learn bug Fix
             L2PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(player);
-            
+
             for (L2PledgeSkillLearn s : skills)
             {
                 L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
-                
+
                 if (sk == null || sk != skill)
                     continue;
-                
+
                 counts++;
                 itemId = s.getItemId();
-                repCost = s.getRepCost(); 
+                repCost = s.getRepCost();
             }
-            
+
             if (counts == 0)
             {
                 player.sendMessage("You are trying to learn skill that u can't..");
@@ -255,10 +255,10 @@ public class RequestAquireSkill extends L2GameClientPacket
                                                + " tried to learn skill that he can't!!!", IllegalPlayerAction.PUNISH_KICK);
                 return;
             }
-            
+
             if (player.getClan().getReputationScore() >= repCost)
             {
-            	if (Config.LIFE_CRYSTAL_NEEDED) 
+            	if (Config.LIFE_CRYSTAL_NEEDED)
             	{
             		if (!player.destroyItemByItemId("Consume", itemId, 1, trainer, false))
             		{
@@ -266,7 +266,7 @@ public class RequestAquireSkill extends L2GameClientPacket
             			player.sendPacket(new SystemMessage(SystemMessageId.ITEM_MISSING_TO_LEARN_SKILL));
             			return;
             		}
-                
+
             		SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
             		sm.addItemName(itemId);
             		sm.addNumber(1);
@@ -283,10 +283,10 @@ public class RequestAquireSkill extends L2GameClientPacket
             }
             player.getClan().setReputationScore(player.getClan().getReputationScore()-repCost, true);
             player.getClan().addNewSkill(skill);
-            
-            if (Config.DEBUG) 
+
+            if (Config.DEBUG)
                 _log.fine("Learned pledge skill " + _id + " for " + _requiredSp + " SP.");
-            
+
             SystemMessage cr = new SystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP);
             cr.addNumber(repCost);
             player.sendPacket(cr);

@@ -35,33 +35,33 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 /**
  * Admin comand handler for Manor System
  * This class handles following admin commands:
- * - manor_info = shows info about current manor state 
- * - manor_approve = approves settings for the next manor period 
+ * - manor_info = shows info about current manor state
+ * - manor_approve = approves settings for the next manor period
  * - manor_setnext = changes manor settings to the next day's
  * - manor_reset castle = resets all manor data for specified castle (or all)
  * - manor_setmaintenance = sets manor system under maintenance mode
  * - manor_save = saves all manor data into database
  * - manor_disable = disables manor system
- * 
+ *
  * @author l3x
  */
 public class AdminManor implements IAdminCommandHandler {
-	private static final String[] _adminCommands = {"admin_manor", 
-													"admin_manor_approve", 
+	private static final String[] _adminCommands = {"admin_manor",
+													"admin_manor_approve",
 													"admin_manor_setnext",
 													"admin_manor_reset",
 													"admin_manor_setmaintenance",
 													"admin_manor_save",
 													"admin_manor_disable"};
 
-	private static final int REQUIRED_LEVEL = Config.GM_MENU;	
+	private static final int REQUIRED_LEVEL = Config.GM_MENU;
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		if (!Config.ALT_PRIVILEGES_ADMIN) {
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) 
+			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
 				return false;
 		}
-		
+
 		StringTokenizer st = new StringTokenizer(command);
 		command = st.nextToken();
 
@@ -84,7 +84,7 @@ public class AdminManor implements IAdminCommandHandler {
 			try {
 				castleId = Integer.parseInt(st.nextToken());
 			} catch (Exception e) {}
-			
+
 			if (castleId>0) {
 				Castle castle = CastleManager.getInstance().getCastleById(castleId);
 				castle.setCropProcure(new FastList<CropProcure>(), CastleManorManager.PERIOD_CURRENT);
@@ -131,14 +131,14 @@ public class AdminManor implements IAdminCommandHandler {
 				activeChar.sendMessage("Manor System: disabled");
 			showMainPage(activeChar);
 		}
-		
+
 		return true;
 	}
 
 	public String[] getAdminCommandList() {
 		return _adminCommands;
 	}
-	
+
 	private String formatTime(long millis) {
 		String s = "";
 		int secs  = (int) millis/1000;
@@ -146,18 +146,18 @@ public class AdminManor implements IAdminCommandHandler {
 		secs -= mins*60;
 		int hours = mins/60;
 		mins -= hours*60;
-		
+
 		if (hours>0)
 			s += hours + ":";
 		s += mins + ":";
 		s += secs;
 		return s;
 	}
-	
+
 	private void showMainPage(L2PcInstance activeChar) {
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
         TextBuilder replyMSG = new TextBuilder("<html><body>");
-        
+
         replyMSG.append("<center><font color=\"LEVEL\"> [Manor System] </font></center><br>");
         replyMSG.append("<table width=\"100%\"><tr><td>");
         replyMSG.append("Disabled: " + (CastleManorManager.getInstance().isDisabled()?"yes":"no") + "</td><td>");
@@ -165,7 +165,7 @@ public class AdminManor implements IAdminCommandHandler {
         replyMSG.append("Time to refresh: " + formatTime(CastleManorManager.getInstance().getMillisToManorRefresh()) + "</td><td>");
         replyMSG.append("Time to approve: " + formatTime(CastleManorManager.getInstance().getMillisToNextPeriodApprove()) + "</td></tr>");
         replyMSG.append("</table>");
-        
+
         replyMSG.append("<center><table><tr><td>");
         replyMSG.append("<button value=\"Set Next\" action=\"bypass -h admin_manor_setnext\" width=110 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td><td>");
         replyMSG.append("<button value=\"Approve Next\" action=\"bypass -h admin_manor_approve\" width=110 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr><tr><td>");
@@ -174,23 +174,23 @@ public class AdminManor implements IAdminCommandHandler {
         replyMSG.append("<button value=\"Refresh\" action=\"bypass -h admin_manor\" width=110 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td><td>");
         replyMSG.append("<button value=\"Back\" action=\"bypass -h admin_admin\" width=110 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
         replyMSG.append("</table></center>");
-        
+
         replyMSG.append("<br><center>Castle Information:<table width=\"100%\">");
         replyMSG.append("<tr><td></td><td>Current Period</td><td>Next Period</td></tr>");
-        
+
         for (Castle c : CastleManager.getInstance().getCastles()) {
         	replyMSG.append("<tr><td>"+c.getName()+"</td>" +
         						"<td>"+c.getManorCost(CastleManorManager.PERIOD_CURRENT)+"a</td>" +
 								"<td>"+c.getManorCost(CastleManorManager.PERIOD_NEXT)+"a</td>" +
 							"</tr>");
         }
-        
+
         replyMSG.append("</table><br>");
-        
+
         replyMSG.append("</body></html>");
-        
+
         adminReply.setHtml(replyMSG.toString());
-        activeChar.sendPacket(adminReply); 		
+        activeChar.sendPacket(adminReply);
 	}
 
 	private boolean checkLevel(int level) {

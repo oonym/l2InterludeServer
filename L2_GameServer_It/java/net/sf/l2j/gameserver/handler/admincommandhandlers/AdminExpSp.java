@@ -43,7 +43,7 @@ public class AdminExpSp implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = {"admin_add_exp_sp_to_character","admin_add_exp_sp","admin_remove_exp_sp"};
 	private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
 
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -54,20 +54,20 @@ public class AdminExpSp implements IAdminCommandHandler {
 		{
 			try
 			{
-				String val = command.substring(16); 
+				String val = command.substring(16);
 				if (!adminAddExpSp(activeChar, val))
 					activeChar.sendMessage("Usage: //add_exp_sp exp sp");
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{	//Case of missing parameter
 				activeChar.sendMessage("Usage: //add_exp_sp exp sp");
-			}			
+			}
 		}
 		else if(command.startsWith("admin_remove_exp_sp"))
 		{
 			try
 			{
-				String val = command.substring(19); 
+				String val = command.substring(19);
 				if (!adminRemoveExpSP(activeChar, val))
 					activeChar.sendMessage("Usage: //remove_exp_sp exp sp");
 			}
@@ -147,7 +147,7 @@ public class AdminExpSp implements IAdminCommandHandler {
 				//Common character information
 				player.sendMessage("Admin is adding you "+expval+" xp and "+spval+" sp.");
 				player.addExpAndSp(expval,spval);
-				//Admin information	
+				//Admin information
 				activeChar.sendMessage("Added "+expval+" xp and "+spval+" sp to "+player.getName()+".");
 				if (Config.DEBUG)
 					_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") added "+expval+
@@ -193,7 +193,7 @@ public class AdminExpSp implements IAdminCommandHandler {
 				//Common character information
 				player.sendMessage("Admin is removing you "+expval+" xp and "+spval+" sp.");
 				player.removeExpAndSp(expval,spval);
-				//Admin information 
+				//Admin information
 				activeChar.sendMessage("Removed "+expval+" xp and "+spval+" sp from "+player.getName()+".");
 				if (Config.DEBUG)
 					_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") removed "+expval+

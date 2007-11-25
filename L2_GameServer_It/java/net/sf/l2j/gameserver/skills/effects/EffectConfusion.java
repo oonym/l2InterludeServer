@@ -47,27 +47,27 @@ final class EffectConfusion extends L2Effect {
 	{
 		return EffectType.CONFUSION;
 	}
-	
+
 	/** Notify started */
 	@Override
 	public void onStart() {
 		getEffected().startConfused();
 		onActionTime();
 	}
-	
+
 	/** Notify exited */
 	@Override
 	public void onExit() {
 		getEffected().stopConfused(this);
 	}
-	
+
     @Override
 	public boolean onActionTime()
     {
     	if (Config.DEBUG)
     		System.out.println(getEffected());
 		List<L2Character> targetList = new FastList<L2Character>();
-		
+
 		// Getting the possible targets
 
         for (L2Object obj : getEffected().getKnownList().getKnownObjects().values())
@@ -82,17 +82,17 @@ final class EffectConfusion extends L2Effect {
 		if (targetList.size()==0){
 			return true;
 		}
-			
+
 		// Choosing randomly a new target
 		int nextTargetIdx = Rnd.nextInt(targetList.size());
 		L2Object target = targetList.get(nextTargetIdx);
-		
+
 		// Attacking the target
 		//getEffected().setTarget(target);
 		getEffected().setTarget(target);
 		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK,target);
-		
-		
+
+
     	return true;
     }
 }

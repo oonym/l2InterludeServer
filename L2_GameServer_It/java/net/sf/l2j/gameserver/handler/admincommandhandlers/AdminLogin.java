@@ -29,14 +29,14 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
  * This class handles the admin commands that acts on the login
- * 
+ *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2007/07/31 10:05:56 $
  */
 public class AdminLogin implements IAdminCommandHandler
 {
 	//private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
 
-	private static final String[] ADMIN_COMMANDS = { "admin_server_gm_only", "admin_server_all", 
+	private static final String[] ADMIN_COMMANDS = { "admin_server_gm_only", "admin_server_all",
 		"admin_server_max_player", "admin_server_list_clock", "admin_server_login"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
@@ -126,7 +126,7 @@ public class AdminLogin implements IAdminCommandHandler
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void showMainPage(L2PcInstance activeChar)
 	{
@@ -141,7 +141,7 @@ public class AdminLogin implements IAdminCommandHandler
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void allowToAll()
 	{
@@ -150,7 +150,7 @@ public class AdminLogin implements IAdminCommandHandler
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void gmOnly()
 	{

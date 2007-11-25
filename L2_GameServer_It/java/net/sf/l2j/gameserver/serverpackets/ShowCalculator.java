@@ -20,10 +20,10 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * sample
-  
+
  * format
  * d
- * 
+ *
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class ShowCalculator extends L2GameServerPacket
@@ -37,7 +37,7 @@ public class ShowCalculator extends L2GameServerPacket
 	{
 		_calculatorId = calculatorId;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

@@ -16,7 +16,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-package net.sf.l2j.gameserver.handler.skillhandlers; 
+package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
@@ -33,17 +33,17 @@ import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
-/** 
- * @author _drunk_ 
- * 
- * TODO To change the template for this generated type comment go to 
- * Window - Preferences - Java - Code Style - Code Templates 
- */ 
-public class SiegeFlag implements ISkillHandler 
-{ 
-    //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName()); 
-	private static final SkillType[] SKILL_IDS = {SkillType.SIEGEFLAG}; 
-    
+/**
+ * @author _drunk_
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class SiegeFlag implements ISkillHandler
+{
+    //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
+	private static final SkillType[] SKILL_IDS = {SkillType.SIEGEFLAG};
+
     public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance)) return;
@@ -55,7 +55,7 @@ public class SiegeFlag implements ISkillHandler
         Castle castle = CastleManager.getInstance().getCastle(player);
 
         if (castle == null || !checkIfOkToPlaceFlag(player, castle, true)) return;
-        
+
         try
         {
             // Spawn a new flag
@@ -70,16 +70,16 @@ public class SiegeFlag implements ISkillHandler
         {
             player.sendMessage("Error placing flag:" + e);
         }
-    } 
-    
-    public SkillType[] getSkillIds() 
-    { 
-        return SKILL_IDS; 
+    }
+
+    public SkillType[] getSkillIds()
+    {
+        return SKILL_IDS;
     }
 
     /**
      * Return true if character clan place a flag<BR><BR>
-     * 
+     *
      * @param activeChar The L2Character of the character placing the flag
      * @param isCheckOnly if false, it will send a notification to the player telling him
      * why it failed
@@ -93,7 +93,7 @@ public class SiegeFlag implements ISkillHandler
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance))
             return false;
-        
+
         SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
         L2PcInstance player = (L2PcInstance)activeChar;
 
@@ -109,7 +109,7 @@ public class SiegeFlag implements ISkillHandler
         	sm.addString("You have already placed the maximum number of flags possible");
         else
             return true;
-        
+
         if (!isCheckOnly) {player.sendPacket(sm);}
         return false;
     }

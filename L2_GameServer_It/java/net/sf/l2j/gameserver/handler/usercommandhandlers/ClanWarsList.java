@@ -30,37 +30,37 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * Support for /clanwarlist command  
+ * Support for /clanwarlist command
  * @author Tempy
  */
 public class ClanWarsList implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = { 88, 89, 90 }; 
-	
+	private static final int[] COMMAND_IDS = { 88, 89, 90 };
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
 	 */
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
-		if (id != COMMAND_IDS[0] && id != COMMAND_IDS[1] && id != COMMAND_IDS[2]) 
+		if (id != COMMAND_IDS[0] && id != COMMAND_IDS[1] && id != COMMAND_IDS[2])
             return false;
-		
+
 		L2Clan clan = activeChar.getClan();
-		
+
 		if (clan == null)
 		{
 			activeChar.sendMessage("You are not in a clan.");
-			return false;	
+			return false;
 		}
-		
+
 		SystemMessage sm;
 		java.sql.Connection con = null;
-		
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-			
+
 			if (id == 88)
 			{
 				// Attack List
@@ -68,7 +68,7 @@ public class ClanWarsList implements IUserCommandHandler
 				statement = con.prepareStatement("select clan_name,clan_id,ally_id,ally_name from clan_data,clan_wars where clan1=? and clan_id=clan2 and clan2 not in (select clan1 from clan_wars where clan2=?)");
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
-			} 
+			}
 			else if (id == 89)
 			{
 				// Under Attack List
@@ -76,7 +76,7 @@ public class ClanWarsList implements IUserCommandHandler
 				statement = con.prepareStatement("select clan_name,clan_id,ally_id,ally_name from clan_data,clan_wars where clan2=? and clan_id=clan1 and clan1 not in (select clan2 from clan_wars where clan1=?)");
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
-			} 
+			}
 			else // ID = 90
 			{
 				// War List
@@ -85,14 +85,14 @@ public class ClanWarsList implements IUserCommandHandler
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
 			}
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				String clanName = rset.getString("clan_name");
 				int ally_id = rset.getInt("ally_id");
-				
+
 				if (ally_id > 0)
 				{
 					// Target With Ally
@@ -106,12 +106,12 @@ public class ClanWarsList implements IUserCommandHandler
 					sm = new SystemMessage(SystemMessageId.S1_NO_ALLI_EXISTS);
 					sm.addString(clanName);
 				}
-				
+
 				activeChar.sendPacket(sm);
 			}
 
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
-			
+
 			rset.close();
 			statement.close();
 		}
@@ -120,10 +120,10 @@ public class ClanWarsList implements IUserCommandHandler
 		{
 			try {con.close();} catch (Exception e) {}
 		}
-		
+
 		return true;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */

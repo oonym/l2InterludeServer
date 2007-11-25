@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 
 public class NullKnownList extends ObjectKnownList
 {
-	
+
 	/**
 	 * @param activeObject
 	 */
@@ -32,7 +32,7 @@ public class NullKnownList extends ObjectKnownList
 		super(activeObject);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#addKnownObject(net.sf.l2j.gameserver.model.L2Object, net.sf.l2j.gameserver.model.L2Character)
 	 */
@@ -80,7 +80,7 @@ public class NullKnownList extends ObjectKnownList
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#removeAllKnownObjects()
-	 * 
+	 *
 	 * no-op
 	 */
 	@Override

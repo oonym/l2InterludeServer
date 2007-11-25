@@ -47,24 +47,24 @@ public class AdminBBSManager extends BaseBBSManager
 			return;
 		}
 		if (command.startsWith("admin_bbs"))
-		{			
+		{
 			separateAndSend("<html><body><br><br><center>This Page is only an exemple :)<br><br>command="+command+"</center></body></html>",activeChar);
-		}		
+		}
 		else
 		{
-						
+
 			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the command: "+command+" is not implemented yet</center><br><br></body></html>","101");
 			activeChar.sendPacket(sb);
 			activeChar.sendPacket(new ShowBoard(null,"102"));
-			activeChar.sendPacket(new ShowBoard(null,"103"));			
+			activeChar.sendPacket(new ShowBoard(null,"103"));
 		}
-		
+
 	}
 	/**
 	 * @param activeChar
 	 * @param file
 	 */
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.communitybbs.Manager.BaseBBSManager#parsewrite(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
 	 */
@@ -75,6 +75,6 @@ public class AdminBBSManager extends BaseBBSManager
 		{
 			return;
 		}
-		
+
 	}
 }

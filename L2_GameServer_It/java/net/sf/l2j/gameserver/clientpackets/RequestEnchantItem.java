@@ -43,7 +43,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
     private static final int[] CRYSTAL_SCROLLS = { 731, 732, 949, 950, 953, 954, 957, 958, 961, 962 };
 
     private int _objectId;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -60,9 +60,9 @@ public final class RequestEnchantItem extends L2GameClientPacket
         L2ItemInstance scroll = activeChar.getActiveEnchantItem();
         activeChar.setActiveEnchantItem(null);
         if (item == null || scroll == null) return;
-        
+
          // can't enchant rods, hero weapons and shadow items
-        if(item.getItem().getItemType() == L2WeaponType.ROD 
+        if(item.getItem().getItemType() == L2WeaponType.ROD
         		|| item.getItemId() >= 6611 && item.getItemId() <= 6621
         		|| item.isShadowItem())
         {
@@ -78,7 +78,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
         boolean enchantItem = false;
         boolean blessedScroll = false;
         int crystalId = 0;
-        
+
         /** pretty code ;D */
         switch (item.getItem().getCrystalType())
         {
@@ -153,13 +153,13 @@ public final class RequestEnchantItem extends L2GameClientPacket
                 }
                 break;
         }
-        
+
         if (!enchantItem)
         {
             activeChar.sendPacket(new SystemMessage(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION));
             return;
         }
-        
+
         // Get the scroll type - Yesod
         if (scroll.getItemId() >= 6569 && scroll.getItemId() <= 6578)
             blessedScroll = true;
@@ -169,7 +169,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
                 {
                     blessedScroll = true; break;
                 }
-        
+
         scroll = activeChar.getInventory().destroyItem("Enchant", scroll, activeChar, item);
         if(scroll == null)
         {
@@ -177,10 +177,10 @@ public final class RequestEnchantItem extends L2GameClientPacket
             Util.handleIllegalPlayerAction(activeChar,"Player "+activeChar.getName()+" tried to enchant with a scroll he doesnt have", Config.DEFAULT_PUNISH);
             return;
         }
-        
+
         // SystemMessage sm = new SystemMessage(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
         // activeChar.sendPacket(sm);
-        
+
         SystemMessage sm;
 
         int chance = 0;
@@ -201,12 +201,12 @@ public final class RequestEnchantItem extends L2GameClientPacket
         	chance = Config.ENCHANT_CHANCE_JEWELRY;
         	maxEnchantLevel = Config.ENCHANT_MAX_JEWELRY;
         }
-        
-        if (item.getEnchantLevel() < Config.ENCHANT_SAFE_MAX 
-                || (item.getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR 
+
+        if (item.getEnchantLevel() < Config.ENCHANT_SAFE_MAX
+                || (item.getItem().getBodyPart() == L2Item.SLOT_FULL_ARMOR
                         && item.getEnchantLevel() < Config.ENCHANT_SAFE_MAX_FULL))
             chance = 100;
-        
+
         if (Rnd.get(100) < chance)
         {
             synchronized(item)

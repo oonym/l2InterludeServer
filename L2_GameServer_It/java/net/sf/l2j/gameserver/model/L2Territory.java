@@ -15,7 +15,7 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
-/** 
+/**
 	coded by Balancer
 	balancer@balancer.ru
 	http://balancer.ru
@@ -89,13 +89,13 @@ public class L2Territory
 
 		if(Math.signum(dy1) == Math.signum(dy2))
 			return false;
-		
+
 		double dx1 = p1._x - x;
 		double dx2 = p2._x - x;
 
 		if(dx1 >= 0 && dx2 >= 0)
 			return true;
-		
+
 		if(dx1 < 0 && dx2 < 0)
 			return false;
 
@@ -134,8 +134,8 @@ public class L2Territory
 			    p[2] = p1._zmin; p[3] = p1._zmax;
 			    return p;
 			}
-		    }		    
-		    
+		    }
+
 		}
 		for( i=0; i<100; i++)
 		{

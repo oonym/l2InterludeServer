@@ -64,7 +64,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 		L2ItemInstance gemstoneItem = (L2ItemInstance)L2World.getInstance().findObject(_gemstoneItemObjId);
 
 		if (targetItem == null || refinerItem == null || gemstoneItem == null) return;
-		
+
 		// Make sure the item is a gemstone
 		int gemstoneItemId = gemstoneItem.getItem().getItemId();
 		if (gemstoneItemId != 2130 && gemstoneItemId != 2131)
@@ -72,7 +72,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;
 		}
-		
+
 		// Check if the gemstoneCount is sufficant
 		int itemGrade = targetItem.getItem().getItemGrade();
 		switch (itemGrade)
@@ -106,7 +106,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 				}
 				break;
 		}
-		
+
 		activeChar.sendPacket(new ExConfirmVariationGemstone(_gemstoneItemObjId, _gemstoneCount));
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.PRESS_THE_AUGMENT_BUTTON_TO_BEGIN));
 	}

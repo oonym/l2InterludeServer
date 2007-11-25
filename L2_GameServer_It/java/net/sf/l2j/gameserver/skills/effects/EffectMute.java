@@ -38,7 +38,7 @@ public class EffectMute extends L2Effect
 	public void onStart() {
 		getEffected().startMuted();
 	}
-	
+
 	@Override
 	public boolean onActionTime()
 	{

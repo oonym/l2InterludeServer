@@ -36,7 +36,7 @@ public class TutorialShowQuestionMark extends L2GameServerPacket
 	{
 		writeC(0xa1);
 		writeD(_blink);
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -47,5 +47,5 @@ public class TutorialShowQuestionMark extends L2GameServerPacket
 	{
 		return _S__A1_TUTORIALSHOWQUESTIONMARK;
 	}
-	
+
 }

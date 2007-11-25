@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 
 /**
  * This class ...
- * 
+ *
  * @author Yme
  * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/27 15:29:57 $
  * Rebuild 23.2.2006 by Advi
@@ -38,7 +38,7 @@ public class PetInventoryUpdate extends L2GameServerPacket
 	private static Logger _log = Logger.getLogger(InventoryUpdate.class.getName());
 	private static final String _S__37_INVENTORYUPDATE = "[S] b3 InventoryUpdate";
 	private List<ItemInfo> _items;
-	
+
 	/**
 	 * @param items
 	 */
@@ -50,12 +50,12 @@ public class PetInventoryUpdate extends L2GameServerPacket
 			showDebug();
 		}
 	}
-	
+
 	public PetInventoryUpdate()
 	{
 		this(new FastList<ItemInfo>());
 	}
-	
+
 	public void addItem(L2ItemInstance item) { _items.add(new ItemInfo(item)); }
 	public void addNewItem(L2ItemInstance item) { _items.add(new ItemInfo(item, 1)); }
 	public void addModifiedItem(L2ItemInstance item) { _items.add(new ItemInfo(item, 2)); }
@@ -70,16 +70,16 @@ public class PetInventoryUpdate extends L2GameServerPacket
 					" item:" + item.getItem().getName()+" last change:" + item.getChange());
 		}
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xb3);
-		int count = _items.size(); 
+		int count = _items.size();
 		writeH(count);
 		for (ItemInfo item : _items)
 		{
-			writeH(item.getChange());	
+			writeH(item.getChange());
 			writeH(item.getItem().getType1()); // item type1
 			writeD(item.getObjectId());
 			writeD(item.getItem().getItemId());

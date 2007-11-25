@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.instancemanager.DuelManager;
 public final class RequestDuelSurrender extends L2GameClientPacket
 {
 	private static final String _C__D0_30_REQUESTDUELSURRENDER = "[C] D0:30 RequestDuelSurrender";
-	
+
 	@Override
 	protected void readImpl()
 	{

@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  *
- * the HTML parser in the client knowns these standard and non-standard tags and attributes 
+ * the HTML parser in the client knowns these standard and non-standard tags and attributes
  * VOLUMN
  * UNKNOWN
  * UL
@@ -124,7 +124,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * LINK
  * HREF
  * ACTION
- *	
+ *
  *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
@@ -146,18 +146,18 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		_npcObjId = npcObjId;
 		setHtml(text);
 	}
-	
+
 	public NpcHtmlMessage(int npcObjId)
 	{
 		_npcObjId = npcObjId;
 	}
-	
+
 	@Override
 	public void runImpl()
 	{
 		buildBypassCache(getClient().getActiveChar());
 	}
-	
+
 	public void setHtml(String text)
 	{
         if(text.length() > 8192)
@@ -166,7 +166,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 			_html = "<html><body>Html was too long</body></html>";
 			return;
 		}
-		_html = text; // html code must not exceed 8192 bytes 
+		_html = text; // html code must not exceed 8192 bytes
 	}
 
 	public boolean setFile(String path)
@@ -179,7 +179,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 			_log.warning("missing html page "+path);
 			return false;
 		}
-        
+
         setHtml(content);
         return true;
 	}
@@ -188,12 +188,12 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	{
 		_html = _html.replaceAll(pattern, value);
 	}
-	
+
 	public final void buildBypassCache(L2PcInstance activeChar)
 	{
         if (activeChar == null)
             return;
-        
+
         activeChar.clearBypass();
 		int len = _html.length();
 		for(int i=0; i<len; i++)
@@ -203,7 +203,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 
 			if(start < 0 || finish < 0)
 				break;
-			
+
 			start += 10;
 			i = start;
 			int finish2 = _html.indexOf("$",start);
@@ -212,9 +212,9 @@ public class NpcHtmlMessage extends L2GameServerPacket
 			else
                 activeChar.addBypass(_html.substring(start, finish));
 			//System.err.println("["+_html.substring(start, finish)+"]");
-		}		
+		}
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -224,7 +224,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		writeS(_html);
 		writeD(0x00);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

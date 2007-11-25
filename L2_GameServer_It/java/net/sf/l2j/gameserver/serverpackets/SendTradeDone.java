@@ -20,19 +20,19 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class SendTradeDone extends L2GameServerPacket
 {
 	private static final String _S__32_SENDTRADEDONE = "[S] 22 SendTradeDone";
 	private int _num;
-	
+
 	public SendTradeDone (int num)
 	{
 		_num = num;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -48,5 +48,5 @@ public class SendTradeDone extends L2GameServerPacket
 	{
 		return _S__32_SENDTRADEDONE;
 	}
-	
+
 }

@@ -26,13 +26,13 @@ import net.sf.l2j.gameserver.serverpackets.PledgePowerGradeList;
 /**
  * Format: (ch)
  * @author  -Wooden-
- * 
+ *
  */
 public final class RequestPledgePowerGradeList extends L2GameClientPacket
 {
     private static final String _C__D0_1A_REQUESTPLEDGEPOWERGRADELIST = "[C] D0:1A RequestPledgePowerGradeList";
-    
-    
+
+
     @Override
 	protected void readImpl()
     {
@@ -63,5 +63,5 @@ public final class RequestPledgePowerGradeList extends L2GameClientPacket
     {
         return _C__D0_1A_REQUESTPLEDGEPOWERGRADELIST;
     }
-    
+
 }

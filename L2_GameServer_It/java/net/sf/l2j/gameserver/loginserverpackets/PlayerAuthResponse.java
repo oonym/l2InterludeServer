@@ -34,7 +34,7 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 	public PlayerAuthResponse(byte[] decrypt)
 	{
 		super(decrypt);
-		
+
 		_account = readS();
 		_authed = (readC() == 0 ? false : true);
 	}
@@ -54,5 +54,5 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 	{
 		return _authed;
 	}
-	
+
 }

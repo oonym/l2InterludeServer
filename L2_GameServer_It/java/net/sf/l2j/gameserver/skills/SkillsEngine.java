@@ -43,19 +43,19 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 public class SkillsEngine {
 
     protected static final Logger _log = Logger.getLogger(SkillsEngine.class.getName());
-	
+
 	private static final SkillsEngine _instance = new SkillsEngine();
-	
-	private List<File> _armorFiles     = new FastList<File>(); 
-	private List<File> _weaponFiles    = new FastList<File>(); 
-	private List<File> _etcitemFiles   = new FastList<File>(); 
-	private List<File> _skillFiles     = new FastList<File>(); 
-	
+
+	private List<File> _armorFiles     = new FastList<File>();
+	private List<File> _weaponFiles    = new FastList<File>();
+	private List<File> _etcitemFiles   = new FastList<File>();
+	private List<File> _skillFiles     = new FastList<File>();
+
     public static SkillsEngine getInstance()
 	{
 		return _instance;
 	}
-	
+
 	private SkillsEngine()
 	{
 		//hashFiles("data/stats/etcitem", _etcitemFiles);
@@ -63,7 +63,7 @@ public class SkillsEngine {
 		hashFiles("data/stats/weapon", _weaponFiles);
 		hashFiles("data/stats/skills", _skillFiles);
 	}
-	
+
 	private void hashFiles(String dirname, List<File> hash)
 	{
 		File dir = new File(Config.DATAPACK_ROOT, dirname);
@@ -83,7 +83,7 @@ public class SkillsEngine {
 		if (customfile.exists())
 		    hash.add(customfile);
 	}
-	
+
 	public List<L2Skill> loadSkills(File file)
 	{
 		if (file == null)
@@ -95,7 +95,7 @@ public class SkillsEngine {
 		doc.parse();
 		return doc.getSkills();
 	}
-    
+
 	public void loadAllSkills(Map<Integer, L2Skill> allSkills)
 	{
 		int count = 0;

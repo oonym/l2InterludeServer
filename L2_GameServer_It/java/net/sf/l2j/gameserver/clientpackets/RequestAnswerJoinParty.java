@@ -25,21 +25,21 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  *  sample
- *  2a 
+ *  2a
  *  01 00 00 00
- * 
+ *
  *  format  cdd
- * 
- * 
+ *
+ *
  * @version $Revision: 1.7.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestAnswerJoinParty extends L2GameClientPacket
 {
 	private static final String _C__2A_REQUESTANSWERPARTY = "[C] 2A RequestAnswerJoinParty";
 	//private static Logger _log = Logger.getLogger(RequestAnswerJoinParty.class.getName());
-	
+
 	private int _response;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -55,11 +55,11 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
     		L2PcInstance requestor = player.getActiveRequester();
 		if (requestor == null)
 		    return;
-    		
+
     		JoinParty join = new JoinParty(_response);
-    		requestor.sendPacket(join);	
-    			
-    		if (_response == 1) 
+    		requestor.sendPacket(join);
+
+    		if (_response == 1)
             {
     			player.joinParty(requestor.getParty());
     		} else
@@ -67,13 +67,13 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
     			SystemMessage msg = new SystemMessage(SystemMessageId.PLAYER_DECLINED);
     			requestor.sendPacket(msg);
                 msg = null;
-                
-    			//activate garbage collection if there are no other members in party (happens when we were creating new one) 
+
+    			//activate garbage collection if there are no other members in party (happens when we were creating new one)
     			if (requestor.getParty() != null && requestor.getParty().getMemberCount() == 1) requestor.setParty(null);
     		}
     		if (requestor.getParty() != null)
     			requestor.getParty().decreasePendingInvitationNumber(); // if party is null, there is no need of decreasing
-            
+
     		player.setActiveRequester(null);
     		requestor.onTransactionResponse();
         }

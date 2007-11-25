@@ -36,14 +36,14 @@ import net.sf.l2j.gameserver.templates.L2EtcItemType;
 
 /**
  * This class manage all items on ground
- * 
+ *
  * @version $Revision: $ $Date: $
  * @author  DiezelMax - original ideea
  * @author  Enforcer  - actual build
  */
 public class ItemsOnGroundManager
 {
-    static final Logger _log = Logger.getLogger(ItemsOnGroundManager.class.getName());    
+    static final Logger _log = Logger.getLogger(ItemsOnGroundManager.class.getName());
     private static ItemsOnGroundManager _instance;
     protected List<L2ItemInstance> _items = null;
 
@@ -68,22 +68,22 @@ public class ItemsOnGroundManager
     private void load()
     {
     	// If SaveDroppedItem is false, may want to delete all items previously stored to avoid add old items on reactivate
-        if(!Config.SAVE_DROPPED_ITEM && Config.CLEAR_DROPPED_ITEM_TABLE)  
-        	emptyTable();        	 	        	        	        	        
- 
+        if(!Config.SAVE_DROPPED_ITEM && Config.CLEAR_DROPPED_ITEM_TABLE)
+        	emptyTable();
 
-        if(!Config.SAVE_DROPPED_ITEM) 
+
+        if(!Config.SAVE_DROPPED_ITEM)
         	return;
-        
+
         // if DestroyPlayerDroppedItem was previously  false, items curently protected will be added to ItemsAutoDestroy
         if (Config.DESTROY_DROPPED_PLAYER_ITEM)
         {
         	java.sql.Connection con = null;
-            try 
+            try
             {
             	String str = null;
 				if (!Config.DESTROY_EQUIPABLE_PLAYER_ITEM) //Recycle misc. items only
-            		str = "update itemsonground set drop_time=? where drop_time=-1 and equipable=0";		
+            		str = "update itemsonground set drop_time=? where drop_time=-1 and equipable=0";
 				else if (Config.DESTROY_EQUIPABLE_PLAYER_ITEM) //Recycle all items including equipable
            		 	str = "update itemsonground set drop_time=? where drop_time=-1";
 				con = L2DatabaseFactory.getInstance().getConnection();
@@ -91,13 +91,13 @@ public class ItemsOnGroundManager
 				statement.setLong(1, System.currentTimeMillis());
 				statement.execute();
 				statement.close();
-             } 
+             }
              catch (Exception e)
              {
                  _log.log(Level.SEVERE,"error while updating table ItemsOnGround " + e);
                  e.printStackTrace();
              }
-             finally 
+             finally
              {
             	  try { con.close(); } catch (Exception e) {}
             }
@@ -118,7 +118,7 @@ public class ItemsOnGroundManager
                 L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
                 L2World.getInstance().storeObject(item);
                 if (item.isStackable() && result.getInt(3) > 1) //this check and..
-                	item.setCount(result.getInt(3));                
+                	item.setCount(result.getInt(3));
                 if (result.getInt(4) > 0)			// this, are really necessary?
                 	item.setEnchantLevel(result.getInt(4));
                 item.getPosition().setWorldPosition(result.getInt(5), result.getInt(6) ,result.getInt(7));
@@ -131,8 +131,8 @@ public class ItemsOnGroundManager
                 	item.setProtected(false);
                 item.setIsVisible(true);
                 L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion(), null);
-                _items.add(item);                
-                count++;                
+                _items.add(item);
+                count++;
                 // add to ItemsAutoDestroy only items not protected
                 if (!Config.LIST_PROTECTED_ITEMS.contains(item.getItemId())){
                 	if(result.getLong(8) > -1)
@@ -141,7 +141,7 @@ public class ItemsOnGroundManager
                 		   ||(Config.HERB_AUTO_DESTROY_TIME > 0 && item.getItemType() == L2EtcItemType.HERB))
                 			ItemsAutoDestroy.getInstance().addItem(item);
                 	}
-                }                
+                }
             }
             result.close();
             s.close();
@@ -181,7 +181,7 @@ public class ItemsOnGroundManager
     {
     	_items.clear();
     }
-    
+
     public void emptyTable()
     {
     	java.sql.Connection conn = null;
@@ -196,8 +196,8 @@ public class ItemsOnGroundManager
 			e1.printStackTrace();
 		}
 		finally {
-            try { conn.close(); } catch (Exception e1) {}            
-        }	
+            try { conn.close(); } catch (Exception e1) {}
+        }
     }
 
     protected class storeInDb extends Thread
@@ -206,17 +206,17 @@ public class ItemsOnGroundManager
 		public void run()
         {
     	if(!Config.SAVE_DROPPED_ITEM) return;
-    	
+
     	emptyTable();
-    	
+
 		if (_items.isEmpty()){
 			if (Config.DEBUG)
 				_log.warning("ItemsOnGroundManager: nothing to save...");
 			return;
 			}
-		
+
         for (L2ItemInstance item: _items){
-        	
+
         	if (CursedWeaponsManager.getInstance().isCursed(item.getItemId())) continue; // Cursed Items not saved to ground, prevent double save
 
         	java.sql.Connection con = null;
@@ -234,20 +234,20 @@ public class ItemsOnGroundManager
             if (item.isProtected())
             	statement.setLong(8,-1); //item will be protected
             else
-            	statement.setLong(8,item.getDropTime()); //item will be added to ItemsAutoDestroy          
+            	statement.setLong(8,item.getDropTime()); //item will be added to ItemsAutoDestroy
             if (item.isEquipable())
             	statement.setLong(9,1); //set equipable
             else
-            	statement.setLong(9,0);         
+            	statement.setLong(9,0);
             statement.execute();
             statement.close();
             } catch (Exception e) {
                 _log.log(Level.SEVERE,"error while inserting into table ItemsOnGround " + e);
                 e.printStackTrace();
-            }             
+            }
          finally {
-            try { con.close(); } catch (Exception e) {}            
-         }        
+            try { con.close(); } catch (Exception e) {}
+         }
        }
         if (Config.DEBUG)
         	_log.warning("ItemsOnGroundManager: "+ _items.size() + " items on ground saved");

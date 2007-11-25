@@ -29,7 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.0.0.0 $ $Date: 2005/07/11 15:29:30 $
  */
 public final class RequestAutoSoulShot extends L2GameClientPacket
@@ -40,7 +40,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
     // format  cd
     private int _itemId;
     private int _type; // 1 = on : 0 = off;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -52,19 +52,19 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	protected void runImpl()
     {
         L2PcInstance activeChar = getClient().getActiveChar();
-        
-        if (activeChar == null) 
+
+        if (activeChar == null)
             return;
 
-        if (activeChar.getPrivateStoreType() == 0 && 
+        if (activeChar.getPrivateStoreType() == 0 &&
                 activeChar.getActiveRequester() == null &&
                 !activeChar.isDead())
         {
-            if (Config.DEBUG) 
+            if (Config.DEBUG)
                 _log.fine("AutoSoulShot:" + _itemId);
 
             L2ItemInstance item = activeChar.getInventory().getItemByItemId(_itemId);
-            
+
             if (item != null)
             {
                 if (_type == 1)
@@ -77,13 +77,13 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                        activeChar.addAutoSoulShot(_itemId);
 	                        ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
 	                        activeChar.sendPacket(atk);
-	
+
 	                        //start the auto soulshot use
 	                        SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 	                        sm.addString(item.getItemName());
 	                        activeChar.sendPacket(sm);
 	                        sm = null;
-	                        
+
 	                        activeChar.rechargeAutoSoulShot(true, true, true);
 	                    }
 	                    else {
@@ -105,7 +105,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	                    			sm.addString(item.getItemName());
 	                    			activeChar.sendPacket(sm);
 	                    			sm = null;
-	                            
+
 	                    			activeChar.rechargeAutoSoulShot(true, true, false);
 	                    		}
 	                    	}

@@ -8,7 +8,7 @@
  * Revision 1  26/08/2005 01:04:53  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -40,7 +40,7 @@ import net.sf.l2j.util.Rnd;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -60,9 +60,9 @@ public class IDFactoryTest extends TestCase
 	protected static final int RELEASER_THREADS               = 50;
 	protected static final int RELEASER_THREAD_RELEASES       = 1000;
 	protected static final int RELEASER_THREAD_RANDOM_DELAY   = 35;
-	
+
 	private static final long F_SLEEP_INTERVAL = 100;
-	
+
 	CountDownLatch _latch = new CountDownLatch(REQUESTER_THREADS + RELEASER_THREADS);
 	protected static Vector<Integer> _map = new Vector<Integer>();
 
@@ -87,6 +87,7 @@ public class IDFactoryTest extends TestCase
 	/*
 	 * @see TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception
 	{
 		super.setUp();
@@ -104,6 +105,7 @@ public class IDFactoryTest extends TestCase
 	/*
 	 * @see TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();

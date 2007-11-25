@@ -31,7 +31,7 @@ public final class LambdaRnd extends Lambda {
 
 	private final Lambda _max;
 	private final boolean _linear;
-	
+
 	public LambdaRnd(Lambda max, boolean linear)
 	{
 		_max = max;

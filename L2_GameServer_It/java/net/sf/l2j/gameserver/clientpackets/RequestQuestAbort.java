@@ -31,7 +31,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestQuestAbort extends L2GameClientPacket
@@ -40,8 +40,8 @@ public final class RequestQuestAbort extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(RequestQuestAbort.class.getName());
 
 	private int _questId;
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -54,7 +54,7 @@ public final class RequestQuestAbort extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		    return;
-        
+
         Quest qe = QuestManager.getInstance().getQuest(_questId);
         if (qe != null)
         {

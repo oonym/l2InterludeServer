@@ -25,25 +25,25 @@ import net.sf.l2j.gameserver.skills.Env;
 
 public class EffectPetrification extends L2Effect
 {
-	public EffectPetrification(Env env, EffectTemplate template) 
+	public EffectPetrification(Env env, EffectTemplate template)
 	{
         super(env, template);
     }
-	
+
     @Override
-	public EffectType getEffectType() 
+	public EffectType getEffectType()
     {
         return L2Effect.EffectType.PETRIFICATION;
     }
-    
+
     @Override
-	public void onStart() 
+	public void onStart()
     {
     	getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
     	getEffected().setIsParalyzed(true);
     	getEffected().setIsInvul(true);
     }
-    
+
     @Override
 	public void onExit()
     {
@@ -51,7 +51,7 @@ public class EffectPetrification extends L2Effect
 		 getEffected().setIsParalyzed(false);
 		 getEffected().setIsInvul(false);
     }
-    
+
     @Override
 	public boolean onActionTime()
     {

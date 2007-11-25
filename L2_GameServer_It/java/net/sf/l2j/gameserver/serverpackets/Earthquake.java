@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * format   dddddd
- * 
+ *
  */
 public class Earthquake extends L2GameServerPacket
 {
@@ -30,7 +30,7 @@ public class Earthquake extends L2GameServerPacket
 	private int _z;
 	private int _intensity;
     private int _duration;
-	
+
 	/**
 	 * @param
 	 */

@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands:
  * - heal = restores HP/MP/CP on target, name or radius
- * 
+ *
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminHeal implements IAdminCommandHandler {
@@ -50,9 +50,9 @@ public class AdminHeal implements IAdminCommandHandler {
 
 		if (command.equals("admin_heal")) handleRes(activeChar);
 		else if (command.startsWith("admin_heal"))
-		{            
+		{
 			try
-			{   
+			{
 				String healTarget = command.substring(11);
 				handleRes(activeChar, healTarget);
 			}
@@ -84,12 +84,12 @@ public class AdminHeal implements IAdminCommandHandler {
 	private void handleRes(L2PcInstance activeChar, String player) {
 
 		L2Object obj = activeChar.getTarget();
-		if (player != null) 
+		if (player != null)
 		{
 			L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 
 			if (plyr != null)
-				obj = plyr;            
+				obj = plyr;
 			else
 			{
 				try
@@ -106,7 +106,7 @@ public class AdminHeal implements IAdminCommandHandler {
 					}
 					activeChar.sendMessage("Healed within " + radius + " unit radius.");
 					return;
-				} 
+				}
 				catch (NumberFormatException nbe) {}
 			}
 		}
@@ -118,9 +118,9 @@ public class AdminHeal implements IAdminCommandHandler {
 			target.setCurrentHpMp(target.getMaxHp(), target.getMaxMp());
 			if ( target instanceof L2PcInstance )
 				target.setCurrentCp(target.getMaxCp());
-			if (Config.DEBUG) 
+			if (Config.DEBUG)
 				_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") healed character "+target.getName());
-		} 
+		}
 		else
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 	}

@@ -50,10 +50,10 @@ import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
 
-public class Hero 
+public class Hero
 {
     private static Logger _log = Logger.getLogger(Hero.class.getName());
-    
+
     private static Hero _instance;
     private static final String GET_HEROES = "SELECT * FROM heroes WHERE played = 1";
     private static final String GET_ALL_HEROES = "SELECT * FROM heroes";
@@ -119,51 +119,51 @@ public class Hero
                 hero.set(Olympiad.CLASS_ID, rset.getInt(Olympiad.CLASS_ID));
                 hero.set(COUNT, rset.getInt(COUNT));
                 hero.set(PLAYED, rset.getInt(PLAYED));
-                
+
                 statement2 = con2.prepareStatement(GET_CLAN_ALLY);
                 statement2.setInt(1, charId);
                 rset2 = statement2.executeQuery();
-                
+
                 if (rset2.next())
                 {
                     int clanId = rset2.getInt("clanid");
                     int allyId = rset2.getInt("allyId");
-                    
+
                     String clanName = "";
                     String allyName = "";
                     int clanCrest = 0;
                     int allyCrest = 0;
-                    
+
                     if (clanId > 0)
                     {
                         clanName = ClanTable.getInstance().getClan(clanId).getName();
                         clanCrest = ClanTable.getInstance().getClan(clanId).getCrestId();
-                        
+
                         if (allyId > 0)
                         {
                             allyName = ClanTable.getInstance().getClan(clanId).getAllyName();
                             allyCrest = ClanTable.getInstance().getClan(clanId).getAllyCrestId();
                         }
                     }
-                    
+
                     hero.set(CLAN_CREST, clanCrest);
                     hero.set(CLAN_NAME, clanName);
                     hero.set(ALLY_CREST, allyCrest);
                     hero.set(ALLY_NAME, allyName);
                 }
-                
+
                 rset2.close();
                 statement2.close();
-                
+
                 _heroes.put(charId, hero);
             }
-            
+
             rset.close();
             statement.close();
-            
+
             statement = con.prepareStatement(GET_ALL_HEROES);
             rset = statement.executeQuery();
-            
+
             while (rset.next())
             {
                 StatsSet hero = new StatsSet();
@@ -172,48 +172,48 @@ public class Hero
                 hero.set(Olympiad.CLASS_ID, rset.getInt(Olympiad.CLASS_ID));
                 hero.set(COUNT, rset.getInt(COUNT));
                 hero.set(PLAYED, rset.getInt(PLAYED));
-                
+
                 statement2 = con2.prepareStatement(GET_CLAN_ALLY);
                 statement2.setInt(1, charId);
                 rset2 = statement2.executeQuery();
-                
+
                 if (rset2.next())
                 {
                     int clanId = rset2.getInt("clanid");
                     int allyId = rset2.getInt("allyId");
-                    
+
                     String clanName = "";
                     String allyName = "";
                     int clanCrest = 0;
                     int allyCrest = 0;
-                    
+
                     if (clanId > 0)
                     {
                         clanName = ClanTable.getInstance().getClan(clanId).getName();
                         clanCrest = ClanTable.getInstance().getClan(clanId).getCrestId();
-                        
+
                         if (allyId > 0)
                         {
                             allyName = ClanTable.getInstance().getClan(clanId).getAllyName();
                             allyCrest = ClanTable.getInstance().getClan(clanId).getAllyCrestId();
                         }
                     }
-                    
+
                     hero.set(CLAN_CREST, clanCrest);
                     hero.set(CLAN_NAME, clanName);
                     hero.set(ALLY_CREST, allyCrest);
                     hero.set(ALLY_NAME, allyName);
                 }
-                
+
                 rset2.close();
                 statement2.close();
-                
+
                 _completeHeroes.put(charId, hero);
             }
-            
+
             rset.close();
             statement.close();
-            
+
             con.close();
             con2.close();
         } catch(SQLException e)
@@ -221,37 +221,37 @@ public class Hero
         	_log.warning("Hero System: Couldnt load Heroes");
         	if (Config.DEBUG) e.printStackTrace();
         }
-        
+
         _log.info("Hero System: Loaded " + _heroes.size() + " Heroes.");
         _log.info("Hero System: Loaded " + _completeHeroes.size() + " all time Heroes.");
     }
-    
+
     public Map<Integer, StatsSet> getHeroes()
     {
         return _heroes;
     }
-    
+
     public synchronized void computeNewHeroes(List<StatsSet> newHeroes)
     {
         updateHeroes(true);
-        
+
         List heroItems = Arrays.asList(_heroItems);
         L2ItemInstance[] items;
         InventoryUpdate iu;
-        
+
         if (_heroes.size() != 0)
         {
             for (StatsSet hero : _heroes.values())
             {
                 String name = hero.getString(Olympiad.CHAR_NAME);
-                
+
                 L2PcInstance player = L2World.getInstance().getPlayer(name);
-                
+
                 if (player == null) continue;
-                try 
-                {  
+                try
+                {
                 	player.setHero(false);
-                    
+
                     items = player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
                     iu = new InventoryUpdate();
                     for (L2ItemInstance item : items)
@@ -259,7 +259,7 @@ public class Hero
                         iu.addModifiedItem(item);
                     }
                     player.sendPacket(iu);
-                    
+
                     items = player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_HAND);
                     iu = new InventoryUpdate();
                     for (L2ItemInstance item : items)
@@ -267,7 +267,7 @@ public class Hero
                         iu.addModifiedItem(item);
                     }
                     player.sendPacket(iu);
-                    
+
                     items = player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_HAIR);
                     iu = new InventoryUpdate();
                     for (L2ItemInstance item : items)
@@ -275,7 +275,7 @@ public class Hero
                         iu.addModifiedItem(item);
                     }
                     player.sendPacket(iu);
-                    
+
                     items = player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_FACE);
                     iu = new InventoryUpdate();
                     for (L2ItemInstance item : items)
@@ -283,7 +283,7 @@ public class Hero
                         iu.addModifiedItem(item);
                     }
                     player.sendPacket(iu);
-                                         
+
                     items = player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_DHAIR);
                      iu = new InventoryUpdate();
                     for (L2ItemInstance item : items)
@@ -291,43 +291,43 @@ public class Hero
                         iu.addModifiedItem(item);
                     }
                     player.sendPacket(iu);
-                    
+
                     for(L2ItemInstance item : player.getInventory().getAvailableItems(false))
                     {
                         if (item == null) continue;
                         if (!heroItems.contains(item.getItemId())) continue;
-                        
+
                         player.destroyItem("Hero", item, null, true);
                         iu = new InventoryUpdate();
                         iu.addRemovedItem(item);
                         player.sendPacket(iu);
                     }
-                    
+
                     player.sendPacket(new UserInfo(player));
                     player.broadcastUserInfo();
                 } catch (NullPointerException e) {}
             }
         }
-        
+
         if (newHeroes.size() == 0)
         {
             _heroes.clear();
             return;
         }
-        
+
         Map<Integer, StatsSet> heroes = new FastMap<Integer, StatsSet>();
-        
+
         for (StatsSet hero : newHeroes)
         {
             int charId = hero.getInteger(Olympiad.CHAR_ID);
-            
+
             if (_completeHeroes != null && _completeHeroes.containsKey(charId))
             {
                 StatsSet oldHero = _completeHeroes.get(charId);
                 int count = oldHero.getInteger(COUNT);
                 oldHero.set(COUNT, count + 1);
                 oldHero.set(PLAYED, 1);
-                
+
                 heroes.put(charId, oldHero);
             }
             else
@@ -337,25 +337,25 @@ public class Hero
                 newHero.set(Olympiad.CLASS_ID, hero.getInteger(Olympiad.CLASS_ID));
                 newHero.set(COUNT, 1);
                 newHero.set(PLAYED, 1);
-                
+
                 heroes.put(charId, newHero);
             }
         }
-        
+
         deleteItemsInDb();
-        
+
         _heroes.clear();
         _heroes.putAll(heroes);
         heroes.clear();
-        
+
         updateHeroes(false);
-        
+
         for (StatsSet hero : _heroes.values())
         {
             String name = hero.getString(Olympiad.CHAR_NAME);
-            
+
             L2PcInstance player = L2World.getInstance().getPlayer(name);
-            
+
             if (player != null)
             {
                 player.setHero(true);
@@ -371,12 +371,12 @@ public class Hero
                 }
                 player.sendPacket(new UserInfo(player));
                 player.broadcastUserInfo();
-                
+
             }
             else
             {
             	java.sql.Connection con = null;
-            	
+
             	try
             	{
             		con = L2DatabaseFactory.getInstance().getConnection();
@@ -400,7 +400,7 @@ public class Hero
             				}
             			}
             		}
-            		
+
             		rset.close();
             		statement.close();
             	}
@@ -415,7 +415,7 @@ public class Hero
             }
         }
     }
-    
+
     public void updateHeroes(boolean setDefault)
     {
         Connection con = null;
@@ -431,11 +431,11 @@ public class Hero
             else
             {
                 PreparedStatement statement;
-                
+
                 for (Integer heroId : _heroes.keySet())
                 {
                     StatsSet hero = _heroes.get(heroId);
-                    
+
                     if (_completeHeroes == null || !_completeHeroes.containsKey(heroId))
                     {
                         statement = con.prepareStatement(INSERT_HERO);
@@ -445,47 +445,47 @@ public class Hero
                         statement.setInt(4, hero.getInteger(COUNT));
                         statement.setInt(5, hero.getInteger(PLAYED));
                         statement.execute();
-                        
+
                         Connection con2 = L2DatabaseFactory.getInstance().getConnection();
                         PreparedStatement statement2 = con2.prepareStatement(GET_CLAN_ALLY);
                         statement2.setInt(1, heroId);
                         ResultSet rset2 = statement2.executeQuery();
-                        
+
                         if (rset2.next())
                         {
                             int clanId = rset2.getInt("clanid");
                             int allyId = rset2.getInt("allyId");
-                            
+
                             String clanName = "";
                             String allyName = "";
                             int clanCrest = 0;
                             int allyCrest = 0;
-                            
+
                             if (clanId > 0)
                             {
                                 clanName = ClanTable.getInstance().getClan(clanId).getName();
                                 clanCrest = ClanTable.getInstance().getClan(clanId).getCrestId();
-                                
+
                                 if (allyId > 0)
                                 {
                                     allyName = ClanTable.getInstance().getClan(clanId).getAllyName();
                                     allyCrest = ClanTable.getInstance().getClan(clanId).getAllyCrestId();
                                 }
                             }
-                            
+
                             hero.set(CLAN_CREST, clanCrest);
                             hero.set(CLAN_NAME, clanName);
                             hero.set(ALLY_CREST, allyCrest);
                             hero.set(ALLY_NAME, allyName);
                         }
-                        
+
                         rset2.close();
                         statement2.close();
                         con2.close();
-                        
+
                         _heroes.remove(hero);
                         _heroes.put(heroId, hero);
-                        
+
                         _completeHeroes.put(heroId, hero);
                     }
                     else
@@ -496,7 +496,7 @@ public class Hero
                         statement.setInt(3, heroId);
                         statement.execute();
                     }
-                    
+
                     statement.close();
                 }
             }
@@ -509,16 +509,16 @@ public class Hero
             try{con.close();}catch(Exception e){e.printStackTrace();}
         }
     }
-    
+
     public int[] getHeroItems()
     {
         return _heroItems;
     }
-    
+
     private void deleteItemsInDb()
     {
         Connection con = null;
-        
+
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();

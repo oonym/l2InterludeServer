@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.4 $ $Date: 2005/03/27 15:30:07 $
  */
 
@@ -34,7 +34,7 @@ public class CrystalCarol implements IItemHandler
 {
 	private static final int[] ITEM_IDS = { 5562, 5563, 5564, 5565, 5566, 5583, 5584, 5585, 5586, 5587,
 									 4411, 4412, 4413, 4414, 4415, 4416, 4417, 5010, 6903, 7061, 7062, 8555};
-	
+
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -153,7 +153,7 @@ public class CrystalCarol implements IItemHandler
 		}
 		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 	}
-	
+
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

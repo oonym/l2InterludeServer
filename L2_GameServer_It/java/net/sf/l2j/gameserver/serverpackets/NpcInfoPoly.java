@@ -25,14 +25,14 @@ import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.2.4.2.9 $ $Date: 2005/04/11 10:05:54 $
  */
 public class NpcInfoPoly extends L2GameServerPacket
 {
 	//   ddddddddddddddddddffffdddcccccSSddd dddddc
-	     
-	     
+
+
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
 	private L2Character _activeChar;
 	private L2Object _obj;
@@ -67,9 +67,9 @@ public class NpcInfoPoly extends L2GameServerPacket
 			_isAttackable = obj.isAutoAttackable(attacker);
 			_rhand = _template.rhand;
 			_lhand = _template.lhand;
-			
+
 		}
-		
+
 		if(_obj instanceof L2ItemInstance)
         {
 			_x = _obj.getX();
@@ -81,12 +81,12 @@ public class NpcInfoPoly extends L2GameServerPacket
 			_runSpd = 120;
 			_walkSpd = 80;
 			_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
-			_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;	
+			_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 			_isRunning = _isInCombat = _isAlikeDead = false;
 			_name = "item";
 			_title = "polymorphed";
 			_abnormalEffect = 0;
-		}        
+		}
 		else
 		{
 			_x = _activeChar.getX();
@@ -105,17 +105,17 @@ public class NpcInfoPoly extends L2GameServerPacket
 			_name = _activeChar.getName();
 			_title = _activeChar.getTitle();
 			_abnormalEffect = _activeChar.getAbnormalEffect();
-			
+
 		}
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x16);
 		writeD(_obj.getObjectId());
 		writeD(_npcId+1000000);  // npctype id
-		writeD(_isAttackable ? 1 : 0); 
+		writeD(_isAttackable ? 1 : 0);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
@@ -157,7 +157,7 @@ public class NpcInfoPoly extends L2GameServerPacket
 		writeD(0000);  // C2
 		writeC(0000);  // C2
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

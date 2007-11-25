@@ -40,21 +40,21 @@ final class EffectNoblesseBless extends L2Effect {
 	{
 		return EffectType.NOBLESSE_BLESSING;
 	}
-	
+
 	/** Notify started */
 	@Override
 	public void onStart() {
 		if (getEffected() instanceof L2PlayableInstance)
 			((L2PlayableInstance)getEffected()).startNoblesseBlessing();
 	}
-	
+
 	/** Notify exited */
 	@Override
 	public void onExit() {
 		if (getEffected() instanceof L2PlayableInstance)
 			((L2PlayableInstance)getEffected()).stopNoblesseBlessing(this);
 	}
-	
+
     @Override
 	public boolean onActionTime()
     {

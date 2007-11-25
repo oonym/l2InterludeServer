@@ -41,7 +41,7 @@ public class L2DerbyTrackZone extends L2PeaceZone
 		}
 		super.onEnter(character);
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -51,10 +51,10 @@ public class L2DerbyTrackZone extends L2PeaceZone
 		}
 		super.onExit(character);
 	}
-	
+
 	@Override
 	protected void onDieInside(L2Character character) {}
-	
+
 	@Override
 	protected void onReviveInside(L2Character character) {}
 

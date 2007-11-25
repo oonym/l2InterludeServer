@@ -64,12 +64,12 @@ public class Forum
 		_forumId = Forumid;
 		_fParent = FParent;
 		_children = new FastList<Forum>();
-		_topic = new FastMap<Integer,Topic>();	
-		
-		/*load();	
-		getChildren();	*/					
+		_topic = new FastMap<Integer,Topic>();
+
+		/*load();
+		getChildren();	*/
 		ForumsBBSManager.getInstance().addForum(this);
-		
+
 	}
 
 	/**
@@ -89,14 +89,14 @@ public class Forum
 		_fParent = parent;
 		_ownerID = OwnerID;
 		_children = new FastList<Forum>();
-		_topic = new FastMap<Integer,Topic>();	
-		parent._children.add(this);		
+		_topic = new FastMap<Integer,Topic>();
+		parent._children.add(this);
 		ForumsBBSManager.getInstance().addForum(this);
 		_loaded = true;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void load()
 	{
@@ -141,11 +141,11 @@ public class Forum
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM topic WHERE topic_forum_id=? ORDER BY topic_id DESC");
 			statement.setInt(1, _forumId);
 			ResultSet result = statement.executeQuery();
-			
+
 			while (result.next())
 			{
 				Topic t = new Topic(Topic.ConstructorType.RESTORE,Integer.parseInt(result.getString("topic_id")),Integer.parseInt(result.getString("topic_forum_id")),result.getString("topic_name"),Long.parseLong(result.getString("topic_date")),result.getString("topic_ownername"),Integer.parseInt(result.getString("topic_ownerid")),Integer.parseInt(result.getString("topic_type")),Integer.parseInt(result.getString("topic_reply")));
-				_topic.put(t.getID(),t);				
+				_topic.put(t.getID(),t);
 				if(t.getID() > TopicBBSManager.getInstance().getMaxID(this))
 				{
 					TopicBBSManager.getInstance().setMaxID(t.getID(),this);
@@ -172,7 +172,7 @@ public class Forum
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void getChildren()
 	{
@@ -186,7 +186,7 @@ public class Forum
 
 			while (result.next())
 			{
-				
+
 				_children.add(new Forum(Integer.parseInt(result.getString("forum_id")), this));
 			}
 			result.close();
@@ -209,7 +209,7 @@ public class Forum
 		}
 
 	}
-	
+
 	public int getTopicSize()
 	{
 		if(_loaded == false)
@@ -244,7 +244,7 @@ public class Forum
 	* @return
 	*/
 	public int getID()
-	{		
+	{
 		return _forumId;
 	}
 
@@ -286,7 +286,7 @@ public class Forum
 			{
 				return f;
 			}
-		}		
+		}
 		return null;
 	}
 	/**
@@ -295,10 +295,10 @@ public class Forum
 	public void rmTopicByID(int id)
 	{
 		_topic.remove(id);
-		
+
 	}
 	/**
-	 * 
+	 *
 	 */
 	public void insertindb()
 	{
@@ -316,7 +316,7 @@ public class Forum
 			statement.setInt(7, _ownerID);
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
@@ -336,10 +336,10 @@ public class Forum
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void vload()
-	{		
+	{
 		if(_loaded == false)
 		{
 			load();
@@ -348,11 +348,11 @@ public class Forum
 		}
 	}
 
-	
+
 
 	/**
 	 * @return
 	 */
-	
+
 
 }

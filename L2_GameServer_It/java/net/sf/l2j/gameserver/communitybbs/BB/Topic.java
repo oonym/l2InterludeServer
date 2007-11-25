@@ -30,7 +30,7 @@ public class Topic
 	private static Logger _log = Logger.getLogger(Topic.class.getName());
 	public static final int MORMAL = 0;
 	public static final int MEMO = 1;
-	
+
 	private int _id;
 	private int _forumId;
 	private String _topicName;
@@ -62,17 +62,17 @@ public class Topic
 			_type =  type;
 			_cReply = Creply;
 			TopicBBSManager.getInstance().addTopic(this);
-			
-	
+
+
 		 if(ct == ConstructorType.CREATE)
 		{
-			
+
 			 insertindb();
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void insertindb()
 	{
@@ -91,7 +91,7 @@ public class Topic
 			statement.setInt(8, _cReply);
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
@@ -116,11 +116,11 @@ public class Topic
 	 * @return
 	 */
 	public int getID()
-	{		
+	{
 		return _id;
 	}
 	public int getForumID()
-	{		
+	{
 		return _forumId;
 	}
 	/**
@@ -138,7 +138,7 @@ public class Topic
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void deleteme(Forum f)
 	{
@@ -151,11 +151,11 @@ public class Topic
 			PreparedStatement statement = con.prepareStatement("DELETE FROM topic WHERE topic_id=? AND topic_forum_id=?");
 			statement.setInt(1, getID());
 			statement.setInt(2, f.getID());
-			statement.execute();					
+			statement.execute();
 			statement.close();
 		}
 		catch (Exception e)
-		{			
+		{
 			e.printStackTrace();
 		}
 		finally
@@ -174,7 +174,7 @@ public class Topic
 	 * @return
 	 */
 	public long getDate()
-	{		
+	{
 		return _date;
 	};
 }

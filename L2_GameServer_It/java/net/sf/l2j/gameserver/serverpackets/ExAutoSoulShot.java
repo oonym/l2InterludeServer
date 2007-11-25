@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class ExAutoSoulShot extends L2GameServerPacket
@@ -30,7 +30,7 @@ public class ExAutoSoulShot extends L2GameServerPacket
 	private int _type;
 
 	/**
-	 * 0xfe:0x12 ExAutoSoulShot         (ch)dd 
+	 * 0xfe:0x12 ExAutoSoulShot         (ch)dd
 	 * @param _characters
 	 */
 	public ExAutoSoulShot(int itemId, int type)
@@ -38,7 +38,7 @@ public class ExAutoSoulShot extends L2GameServerPacket
 		_itemId = itemId;
 		_type = type;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{

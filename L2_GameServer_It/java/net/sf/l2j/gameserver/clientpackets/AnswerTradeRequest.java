@@ -28,16 +28,16 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class AnswerTradeRequest extends L2GameClientPacket
 {
 	private static final String _C__40_ANSWERTRADEREQUEST = "[C] 40 AnswerTradeRequest";
 	//private static Logger _log = Logger.getLogger(AnswerTradeRequest.class.getName());
-	
+
 	private int _response;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -57,7 +57,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
             return;
         }
 
-        
+
         L2PcInstance partner = player.getActiveRequester();
         if (partner == null || L2World.getInstance().findObject(partner.getObjectId()) == null)
         {
@@ -83,7 +83,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		player.setActiveRequester(null);
 		partner.onTransactionResponse();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

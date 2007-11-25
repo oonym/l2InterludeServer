@@ -78,7 +78,7 @@ public class AdminShop implements IAdminCommandHandler {
 	}
 
 	private void handleBuyRequest(L2PcInstance activeChar, String command)
-	{	
+	{
 		int val = -1;
 		try
 		{
@@ -92,7 +92,7 @@ public class AdminShop implements IAdminCommandHandler {
 		L2TradeList list = TradeController.getInstance().getBuyList(val);
 
 		if (list != null)
-		{	
+		{
 			activeChar.sendPacket(new BuyList(list, activeChar.getAdena()));
 			if (Config.DEBUG)
 				_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") opened GM shop id "+val);

@@ -67,7 +67,7 @@ public abstract class Quest
 	private final String _descr;
     private State _initialState;
     private Map<String, State> _states;
-	
+
 	/**
 	 * Return collection view of the values contains in the allEventS
 	 * @return Collection<Quest>
@@ -75,9 +75,9 @@ public abstract class Quest
 	public static Collection<Quest> findAllEvents() {
 		return _allEventsS.values();
 	}
-	
+
     /**
-     * (Constructor)Add values to class variables and put the quest in HashMaps. 
+     * (Constructor)Add values to class variables and put the quest in HashMaps.
      * @param questId : int pointing out the ID of the quest
      * @param name : String corresponding to the name of the quest
      * @param descr : String for the description of the quest

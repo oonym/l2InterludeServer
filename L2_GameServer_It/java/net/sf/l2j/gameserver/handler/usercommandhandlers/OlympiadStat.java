@@ -24,20 +24,20 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * Support for /olympiadstat command  
+ * Support for /olympiadstat command
  * Added by kamy
  */
 public class OlympiadStat implements IUserCommandHandler
 {
-    private static final int[] COMMAND_IDS = { 109 }; 
-	
+    private static final int[] COMMAND_IDS = { 109 };
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
     public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
         if (id != COMMAND_IDS[0]) return false;
-        
+
         SystemMessage sm = SystemMessage.sendString("Your current record for this Grand Olympiad is "+Olympiad.getInstance().getCompetitionDone(activeChar.getObjectId())+" match(s) played. You have earned "+Olympiad.getInstance().getNoblePoints(activeChar.getObjectId())+" Olympiad Point(s)");
     	activeChar.sendPacket(sm);
     	return true;

@@ -34,16 +34,16 @@ import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.5.2.4 $ $Date: 2005/04/03 15:55:03 $
  */
 
 public class Resurrect implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(Resurrect.class.getName());
-	
+
 	private static final SkillType[] SKILL_IDS = {SkillType.RESURRECT};
-	
+
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
         L2PcInstance player = null;
@@ -52,15 +52,15 @@ public class Resurrect implements ISkillHandler
         L2Character target = null;
         L2PcInstance targetPlayer;
         List<L2Character> targetToRes = new FastList<L2Character>();
-		
+
         for (int index = 0; index < targets.length; index++)
         {
             target = (L2Character) targets[index];
-            
+
             if (target instanceof L2PcInstance)
-            {               
+            {
                 targetPlayer = (L2PcInstance)target;
-                
+
                 // Check for same party or for same clan, if target is for clan.
                 if (skill.getTargetType() == SkillTargetType.TARGET_CORPSE_CLAN)
                 {
@@ -75,7 +75,7 @@ public class Resurrect implements ISkillHandler
             activeChar.abortCast();
             activeChar.sendPacket(SystemMessage.sendString("No valid target to resurrect"));
         }
-        
+
         for (L2Character cha: targetToRes)
             if (activeChar instanceof L2PcInstance)
             {
@@ -90,14 +90,14 @@ public class Resurrect implements ISkillHandler
             	}
             	else cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
             }
-            else 
+            else
             {
             	DecayTaskManager.getInstance().cancelDecayTask(cha);
             	cha.doRevive(Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), activeChar.getWIT()));
             }
 	}
-	
-	
+
+
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

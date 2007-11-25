@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveMemberInfo;
 /**
  * Format: (ch) dS
  * @author  -Wooden-
- * 
+ *
  */
 public final class RequestPledgeMemberInfo extends L2GameClientPacket
 {
@@ -34,7 +34,7 @@ public final class RequestPledgeMemberInfo extends L2GameClientPacket
     @SuppressWarnings("unused")
     private int _unk1;
     private String _player;
-    
+
     @Override
 	protected void readImpl()
     {
@@ -71,5 +71,5 @@ public final class RequestPledgeMemberInfo extends L2GameClientPacket
     {
         return _C__D0_1D_REQUESTPLEDGEMEMBERINFO;
     }
-    
+
 }

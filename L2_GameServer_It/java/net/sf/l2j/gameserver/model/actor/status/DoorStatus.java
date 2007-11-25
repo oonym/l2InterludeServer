@@ -23,7 +23,7 @@ public class DoorStatus extends CharStatus
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public DoorStatus(L2DoorInstance activeChar)

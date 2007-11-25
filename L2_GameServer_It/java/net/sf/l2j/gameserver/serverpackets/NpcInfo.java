@@ -26,15 +26,15 @@ import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.7.2.4.2.9 $ $Date: 2005/04/11 10:05:54 $
  */
 public class NpcInfo extends L2GameServerPacket
 {
 	//   ddddddddddddddddddffffdddcccccSSddd dddddc
 	//   ddddddddddddddddddffffdddcccccSSddd dddddccffd
-	     
-	     
+
+
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
 	private L2Character _activeChar;
 	private int _x, _y, _z, _heading;
@@ -64,21 +64,21 @@ public class NpcInfo extends L2GameServerPacket
         	_name = cha.getTemplate().name;
 
         if(Config.L2JMOD_CHAMPION_ENABLE && cha.isChampion())
-            _title = ("Champion");                   
+            _title = ("Champion");
         else if (cha.getTemplate().serverSideTitle)
     		_title = cha.getTemplate().title;
     	else
     		_title = cha.getTitle();
-    	
+
         if (Config.SHOW_NPC_LVL && _activeChar instanceof L2MonsterInstance)
 	    {
 			String t = "Lv " + cha.getLevel() + (cha.getAggroRange() > 0 ? "*" : "");
 			if (_title != null)
 				t += " " + _title;
-			
+
 			_title = t;
 	    }
-        
+
         _x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
@@ -90,7 +90,7 @@ public class NpcInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
-	
+
 	public NpcInfo(L2Summon cha, L2Character attacker)
 	{
 		_activeChar = cha;
@@ -106,7 +106,7 @@ public class NpcInfo extends L2GameServerPacket
             _name = _activeChar.getName();
     		_title = cha.getTitle();
     	}
-        
+
         _x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
@@ -118,18 +118,18 @@ public class NpcInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
         if (_activeChar instanceof L2Summon)
-            if (((L2Summon)_activeChar).getOwner() != null 
+            if (((L2Summon)_activeChar).getOwner() != null
                     && ((L2Summon)_activeChar).getOwner().getAppearance().getInvisible())
                 return;
 		writeC(0x16);
 		writeD(_activeChar.getObjectId());
 		writeD(_idTemplate+1000000);  // npctype id
-		writeD(_isAttackable ? 1 : 0); 
+		writeD(_isAttackable ? 1 : 0);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
@@ -170,14 +170,14 @@ public class NpcInfo extends L2GameServerPacket
 		writeD(0000);  // C2
 		writeD(0000);  // C2
 		writeC(0000);  // C2
-        
-		writeC(0x00);  // C3  team circle 1-blue, 2-red 
+
+		writeC(0x00);  // C3  team circle 1-blue, 2-red
 		writeF(0x00);  // C4 i think it is collisionRadius a second time
 		writeF(0x00);  // C4      "        collisionHeight     "
-		writeD(0x00);  // C4 
-		writeD(0x00);  // C6 
+		writeD(0x00);  // C4
+		writeD(0x00);  // C6
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

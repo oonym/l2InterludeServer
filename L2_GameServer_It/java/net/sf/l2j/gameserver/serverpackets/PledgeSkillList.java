@@ -30,7 +30,7 @@ public class PledgeSkillList extends L2GameServerPacket
 {
 	private static final String _S__FE_39_PLEDGESKILLLIST = "[S] FE:39 PledgeSkillList";
 	private L2Clan _clan;
-	
+
 	public PledgeSkillList(L2Clan clan)
 	{
 		_clan = clan;

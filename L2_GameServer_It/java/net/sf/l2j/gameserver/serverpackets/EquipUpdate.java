@@ -25,13 +25,13 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
- * 5e 
- * 01 00 00 00 		01 - added ?  02 - modified 
+ * 5e
+ * 01 00 00 00 		01 - added ?  02 - modified
  * 7b 86 73 42      object id
  * 08 00 00 00      body slot
- * 
- * 
- * 
+ *
+ *
+ *
  * body slot
  * 0000  ?? underwear
  * 0001  ear
@@ -46,30 +46,30 @@ import net.sf.l2j.gameserver.templates.L2Item;
  * 000a  chest    (squire shirt)
  * 000b  legs     (squire pants)
  * 000c  feet
- * 000d  ?? back 
+ * 000d  ?? back
  * 000e  lr.hand   (bow)
- *  
- * 
- * 
- * format  ddd 
- * 
+ *
+ *
+ *
+ * format  ddd
+ *
  * @version $Revision: 1.4.2.1.2.4 $ $Date: 2005/03/27 15:29:40 $
  */
 public class EquipUpdate extends L2GameServerPacket
 {
 	private static final String _S__5E_EQUIPUPDATE = "[S] 4b EquipUpdate";
 	private static Logger _log = Logger.getLogger(EquipUpdate.class.getName());
-			
+
 	private L2ItemInstance _item;
 	private int _change;
-	
+
 
 	public EquipUpdate(L2ItemInstance item, int change)
 	{
 		_item = item;
 		_change = change;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -125,7 +125,7 @@ public class EquipUpdate extends L2GameServerPacket
 				bodypart = 0x0f;
 				break;
 		}
-		
+
 		if (Config.DEBUG) _log.fine("body:" +bodypart);
 		writeD(bodypart);
 	}

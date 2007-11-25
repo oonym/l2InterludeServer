@@ -32,14 +32,14 @@ public class L2BlacksmithInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		player.setLastFolkNPC(this);
 		super.onAction(player);
 	}
-	
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -48,10 +48,10 @@ public class L2BlacksmithInstance extends L2FolkInstance
 			int listId = Integer.parseInt(command.substring(9).trim());
 			L2Multisell.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
 		}
-		
+
 		super.onBypassFeedback(player,command);
 	}
-	
+
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -59,12 +59,12 @@ public class L2BlacksmithInstance extends L2FolkInstance
 		if (val == 0)
 		{
 			pom = "" + npcId;
-		} 
-		else 
+		}
+		else
 		{
 			pom = npcId + "-" + val;
 		}
-		
+
 		return "data/html/blacksmith/" + pom + ".htm";
 	}
 }

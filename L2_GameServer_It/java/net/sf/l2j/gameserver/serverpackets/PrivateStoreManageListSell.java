@@ -30,9 +30,9 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * 2)list of items which can be added to sell
  * d(hhddddhhhd)
  *
- * 3)list of items which have already been setup 
- * for sell in previous sell private store sell manageent 
- * d(hhddddhhhdd) * 
+ * 3)list of items which have already been setup
+ * for sell in previous sell private store sell manageent
+ * d(hhddddhhhdd) *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PrivateStoreManageListSell extends L2GameServerPacket
@@ -43,7 +43,7 @@ public class PrivateStoreManageListSell extends L2GameServerPacket
 	private boolean _packageSale;
 	private TradeList.TradeItem[] _itemList;
 	private TradeList.TradeItem[] _sellList;
-	
+
 	public PrivateStoreManageListSell(L2PcInstance player)
 	{
 		_activeChar = player;
@@ -51,19 +51,19 @@ public class PrivateStoreManageListSell extends L2GameServerPacket
 		_activeChar.getSellList().updateItems();
 		_packageSale = _activeChar.getSellList().isPackaged();
 		_itemList = _activeChar.getInventory().getAvailableItems(_activeChar.getSellList());
-		_sellList = _activeChar.getSellList().getItems(); 
+		_sellList = _activeChar.getSellList().getItems();
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x9a);
-		//section 1 
+		//section 1
 		writeD(_activeChar.getObjectId());
 		writeD(_packageSale ? 1 : 0); // Package sell
 		writeD(_playerAdena);
 
-		//section2 
+		//section2
 		writeD(_itemList.length); //for potential sells
 		for (TradeList.TradeItem item : _itemList)
 		{
@@ -76,24 +76,24 @@ public class PrivateStoreManageListSell extends L2GameServerPacket
 			writeH(0);
 			writeD(item.getItem().getBodyPart());
 			writeD(item.getPrice()); //store price
-		}	
+		}
 		//section 3
 		writeD(_sellList.length); //count for any items already added for sell
 		for (TradeList.TradeItem item : _sellList)
 		{
-			writeD(item.getItem().getType2()); 
+			writeD(item.getItem().getType2());
 			writeD(item.getObjectId());
 			writeD(item.getItem().getItemId());
 			writeD(item.getCount());
-			writeH(0);	
+			writeH(0);
 			writeH(item.getEnchant());//enchant lvl
 			writeH(0x00);
 			writeD(item.getItem().getBodyPart());
 			writeD(item.getPrice());//your price
 			writeD(item.getItem().getReferencePrice()); //store price
-		}	
+		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */

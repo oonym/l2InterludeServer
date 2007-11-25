@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public final class RequestRecipeShopMakeItem extends L2GameClientPacket 
+public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 {
     private static final String _C__AF_REQUESTRECIPESHOPMAKEITEM = "[C] B6 RequestRecipeShopMakeItem";
 	//private static Logger _log = Logger.getLogger(RequestSellItem.class.getName());
@@ -37,7 +37,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 	private int _recipeId;
 	@SuppressWarnings("unused")
     private int _unknow;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -55,7 +55,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 		L2PcInstance manufacturer = (L2PcInstance)L2World.getInstance().findObject(_id);
 		if (manufacturer == null)
 		    return;
-        
+
         if (activeChar.getPrivateStoreType() != 0)
         {
             activeChar.sendMessage("Cannot make items while trading");
@@ -66,7 +66,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
             //activeChar.sendMessage("Cannot make items while trading");
             return;
         }
-        
+
         if (activeChar.isInCraftMode() || manufacturer.isInCraftMode())
         {
             activeChar.sendMessage("Currently in Craft Mode");
@@ -74,12 +74,12 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
         }
 		RecipeController.getInstance().requestManufactureItem(manufacturer, _recipeId,activeChar);
 	}
-	
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
      */
     @Override
-	public String getType() 
+	public String getType()
     {
         return _C__AF_REQUESTRECIPESHOPMAKEITEM;
     }

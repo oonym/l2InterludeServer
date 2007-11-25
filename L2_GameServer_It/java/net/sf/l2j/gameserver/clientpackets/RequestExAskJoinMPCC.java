@@ -30,7 +30,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  * Format: (ch) S
  * @author chris_00
  *
- * D0 0D 00 5A 00 77 00 65 00 72 00 67 00 00 00 
+ * D0 0D 00 5A 00 77 00 65 00 72 00 67 00 00 00
  *
  */
 public final class RequestExAskJoinMPCC extends L2GameClientPacket
@@ -38,30 +38,30 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 	//private static Logger _log = Logger.getLogger(RequestExAskJoinMPCC.class.getName());
 	private static final String _C__D0_0D_REQUESTEXASKJOINMPCC = "[C] D0:0D RequestExAskJoinMPCC";
 	private String _name;
-	
+
 	@Override
 	protected void readImpl()
 	{
 		_name = readS();
 	}
-	
+
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if(activeChar == null)
 			return;
-		
+
 		L2PcInstance player = L2World.getInstance().getPlayer(_name);
 		if(player == null)
 			return;
 		// invite yourself? ;)
 		if(activeChar.isInParty() && player.isInParty() && activeChar.getParty().equals(player.getParty()))
 			return;
-		
+
 		//activeChar is in a Party?
 		if (activeChar.isInParty())
-		{			
+		{
 			L2Party activeParty = activeChar.getParty();
 			//activeChar is PartyLeader? && activeChars Party is already in a CommandChannel?
 			if (activeParty.getPartyMembers().get(0).equals(activeChar))
@@ -89,7 +89,7 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 					{
 						activeChar.sendMessage("Your target has no Party.");
 					}
-					
+
 				}
 				else if (activeParty.isInCommandChannel() && !activeParty.getCommandChannel().getChannelLeader().equals(activeChar))
 				{
@@ -124,10 +124,10 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 				activeChar.sendMessage("Only the Partyleader can give out an invite.");
 			}
 		}
-		
+
 
 	}
-	
+
 	private void askJoinMPCC(L2PcInstance requestor, L2PcInstance target)
 	{
 		boolean hasRight = false;

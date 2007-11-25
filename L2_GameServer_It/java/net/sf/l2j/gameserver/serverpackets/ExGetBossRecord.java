@@ -25,7 +25,7 @@ public class ExGetBossRecord extends L2GameServerPacket
 {
 	private static final String _S__FE_33_EXGETBOSSRECORD = "[S] FE:33 ExGetBossRecord";
 	private int _unk1, _unk2;
-	
+
 	public ExGetBossRecord(int val1, int val2)
 	{
 		_unk1 = val1;

@@ -43,17 +43,17 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.11.2.5.2.5 $ $Date: 2005/03/27 15:29:18 $
  */
 public class ClanTable
 {
 	private static Logger _log = Logger.getLogger(ClanTable.class.getName());
-	
+
 	private static ClanTable _instance;
-	
+
 	private Map<Integer, L2Clan> _clans;
-	
+
 	public static ClanTable getInstance()
 	{
 		if (_instance == null)
@@ -66,7 +66,7 @@ public class ClanTable
 	{
 	    return _clans.values().toArray(new L2Clan[_clans.size()]);
 	}
-	
+
 	private ClanTable()
 	{
 		_clans = new FastMap<Integer, L2Clan>();
@@ -75,12 +75,12 @@ public class ClanTable
 	     try
 	        {
 	            con = L2DatabaseFactory.getInstance().getConnection();
-	            PreparedStatement statement = con.prepareStatement("SELECT clan_id FROM clan_data");	           
+	            PreparedStatement statement = con.prepareStatement("SELECT clan_id FROM clan_data");
 	            ResultSet result = statement.executeQuery();
-	            
+
 	            // Count the clans
 	            int clanCount = 0;
-	            
+
 	            while(result.next())
 	            {
 	            	_clans.put(Integer.parseInt(result.getString("clan_id")),new L2Clan(Integer.parseInt(result.getString("clan_id"))));
@@ -100,7 +100,7 @@ public class ClanTable
 	            }
 	            result.close();
 	            statement.close();
-	            
+
 	            _log.config("Restored "+clanCount+" clans from the database.");
 	        }
 	        catch (Exception e) {
@@ -112,7 +112,7 @@ public class ClanTable
 
 		restorewars();
 	}
-	
+
 	/**
 	 * @param clanId
 	 * @return
@@ -137,7 +137,7 @@ public class ClanTable
 
 		return null;
     }
-	
+
 	/**
 	 * Creates a new clan and store clan info to database
 	 *
@@ -148,7 +148,7 @@ public class ClanTable
     {
     	if (null == player)
     		return null;
-    	
+
         if (Config.DEBUG)
             _log.fine(player.getObjectId() + "(" + player.getName() + ") requested a clan creation.");
 
@@ -201,7 +201,7 @@ public class ClanTable
 			_log.fine("New clan created: "+clan.getClanId() + " " +clan.getName());
 
 		_clans.put(new Integer(clan.getClanId()), clan);
-		
+
         //should be update packet only
         player.sendPacket(new PledgeShowInfoUpdate(clan));
         player.sendPacket(new PledgeShowMemberListAll(clan, player));
@@ -342,13 +342,13 @@ public class ClanTable
 			statement.setInt(3, 0);
 			statement.setInt(4, 0);
 			statement.execute();
-			statement.close();            
+			statement.close();
         }
         catch (Exception e)
         {
             _log.warning("could not store clans wars data:"+e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }
@@ -397,14 +397,14 @@ public class ClanTable
             //statement.setInt(1,clanId2);
             //statement.setInt(2,clanId1);
             //statement.execute();
-            
+
             statement.close();
         }
         catch (Exception e)
         {
             _log.warning("could not restore clans wars data:"+e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }
@@ -419,7 +419,7 @@ public class ClanTable
         //msg.addString(clan1.getName());
         //clan2.broadcastToOnlineMembers(msg);
     }
-    
+
     public void checkSurrender(L2Clan clan1, L2Clan clan2)
     {
         int count = 0;
@@ -455,8 +455,8 @@ public class ClanTable
         catch (Exception e)
         {
             _log.warning("could not restore clan wars data:"+e);
-        } 
-        finally 
+        }
+        finally
         {
             try { con.close(); } catch (Exception e) {}
         }

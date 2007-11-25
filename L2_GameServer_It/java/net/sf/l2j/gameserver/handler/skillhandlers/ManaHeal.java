@@ -30,26 +30,26 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.2.2.1 $ $Date: 2005/03/02 15:38:36 $
  */
 
 public class ManaHeal implements ISkillHandler
 {
 	//private static Logger _log = Logger.getLogger(ManaHeal.class.getName());
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
 	private static final SkillType[] SKILL_IDS = {SkillType.MANAHEAL, SkillType.MANARECHARGE, SkillType.MANAHEAL_PERCENT};
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
 	public void useSkill(@SuppressWarnings("unused") L2Character actChar, L2Skill skill, L2Object[] targets)
 	{
         L2Character target = null;
-		
+
         for(int index = 0;index < targets.length;index++)
         {
             target = (L2Character)targets[index];
@@ -62,13 +62,13 @@ public class ManaHeal implements ISkillHandler
              mp = (skill.getSkillType() == SkillType.MANARECHARGE) ? target.calcStat(Stats.RECHARGE_MP_RATE,mp, null, null) : mp;
             }
 			//int cLev = activeChar.getLevel();
-			//hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/; 
+			//hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
             target.setLastHealAmount((int)mp);
-			target.setCurrentMp(mp+target.getCurrentMp()); 
-			StatusUpdate sump = new StatusUpdate(target.getObjectId()); 
-			sump.addAttribute(StatusUpdate.CUR_MP, (int)target.getCurrentMp()); 
-			target.sendPacket(sump); 
-            
+			target.setCurrentMp(mp+target.getCurrentMp());
+			StatusUpdate sump = new StatusUpdate(target.getObjectId());
+			sump.addAttribute(StatusUpdate.CUR_MP, (int)target.getCurrentMp());
+			target.sendPacket(sump);
+
             if (actChar instanceof L2PcInstance && actChar != target)
             {
                 SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_RESTORED_BY_S1);
@@ -78,14 +78,14 @@ public class ManaHeal implements ISkillHandler
             }
             else
             {
-                SystemMessage sm = new SystemMessage(SystemMessageId.S1_MP_RESTORED); 
-                sm.addNumber((int)mp); 
-                target.sendPacket(sm); 
+                SystemMessage sm = new SystemMessage(SystemMessageId.S1_MP_RESTORED);
+                sm.addNumber((int)mp);
+                target.sendPacket(sm);
             }
 		}
 	}
-	
-	
+
+
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

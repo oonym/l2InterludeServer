@@ -8,7 +8,7 @@
  * Revision 1  25/07/2005 17:15:21  luisantonioa
  * Added copyright notice
  *
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -68,7 +68,7 @@ public class AdminLevel implements IAdminCommandHandler
 
         String val = "";
         if (st.countTokens() >= 1) { val = st.nextToken(); }
- 
+
         if (actualCommand.equalsIgnoreCase("admin_add_level"))
         {
             try
@@ -88,13 +88,13 @@ public class AdminLevel implements IAdminCommandHandler
                     return false;
         		}
         		L2PcInstance targetPlayer = (L2PcInstance)targetChar;
-        		
+
                 byte lvl = Byte.parseByte(val);
             	if(lvl >= 1 && lvl <= Experience.MAX_LEVEL)
             	{
             		long pXp = targetPlayer.getExp();
             		long tXp = Experience.LEVEL[lvl];
-            		
+
             		if (pXp > tXp)
             		{
             			targetPlayer.removeExpAndSp(pXp - tXp, 0);

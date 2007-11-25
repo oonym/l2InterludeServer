@@ -28,7 +28,7 @@ public class SiegeGuardKnownList extends AttackableKnownList
 {
     // =========================================================
     // Data Field
-    
+
     // =========================================================
     // Constructor
     public SiegeGuardKnownList(L2SiegeGuardInstance activeChar)
@@ -47,7 +47,7 @@ public class SiegeGuardKnownList extends AttackableKnownList
 
         if (getActiveChar().getHomeX() == 0) getActiveChar().getHomeLocation();
 
-        // Check if siege is in progress 
+        // Check if siege is in progress
         if (getActiveChar().getCastle() != null && getActiveChar().getCastle().getSiege().getIsInProgress())
         {
             L2PcInstance player = null;
@@ -68,7 +68,7 @@ public class SiegeGuardKnownList extends AttackableKnownList
 
         return true;
     }
-    
+
     // =========================================================
     // Method - Private
 

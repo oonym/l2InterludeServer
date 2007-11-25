@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * This class handles all siege commands:
  * Todo: change the class name, and neaten it up
- * 
+ *
  *
  */
 public class AdminSiege implements IAdminCommandHandler
@@ -52,7 +52,7 @@ public class AdminSiege implements IAdminCommandHandler
 		"admin_list_siege_clans", "admin_clear_siege_list",
 		"admin_move_defenders", "admin_spawn_doors",
 		"admin_endsiege", "admin_startsiege",
-		"admin_setcastle", "admin_removecastle", 
+		"admin_setcastle", "admin_removecastle",
 		"admin_clanhall","admin_clanhallset","admin_clanhalldel",
 		"admin_clanhallopendoors","admin_clanhallclosedoors",
 		"admin_clanhallteleportself"
@@ -182,7 +182,7 @@ public class AdminSiege implements IAdminCommandHandler
 				L2ClanHallZone zone = clanhall.getZone();
 				if (zone != null)
 				{
-					activeChar.teleToLocation(zone.getSpawn(), true); 
+					activeChar.teleToLocation(zone.getSpawn(), true);
 				}
 			}
 			else if (command.equalsIgnoreCase("admin_spawn_doors"))
@@ -273,7 +273,7 @@ public class AdminSiege implements IAdminCommandHandler
 		adminReply.setFile("data/html/admin/clanhall.htm");
 		adminReply.replace("%clanhallName%", clanhall.getName());
 		adminReply.replace("%clanhallId%", String.valueOf(clanhall.getId()));
-		L2Clan owner = ClanTable.getInstance().getClan(clanhall.getOwnerId()); 
+		L2Clan owner = ClanTable.getInstance().getClan(clanhall.getOwnerId());
 		if (owner == null)
 			adminReply.replace("%clanhallOwner%","None");
 		else

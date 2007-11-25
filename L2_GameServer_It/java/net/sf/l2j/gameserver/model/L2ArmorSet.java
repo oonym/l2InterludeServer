@@ -22,7 +22,7 @@ package net.sf.l2j.gameserver.model;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * 
+ *
  *
  * @author  Luno
  */
@@ -34,12 +34,12 @@ public final class L2ArmorSet
 	private final int _gloves;
 	private final int _feet;
 	private final int _skillId;
-	
+
 	private final int _shield;
 	private final int _shieldSkillId;
-	
+
 	private final int _enchant6Skill;
-	
+
 	public L2ArmorSet(int chest, int legs, int head, int gloves, int feet, int skill_id, int shield, int shield_skill_id, int enchant6skill)
 	{
 		_chest = chest;
@@ -48,10 +48,10 @@ public final class L2ArmorSet
 		_gloves = gloves;
 		_feet  = feet;
 		_skillId = skill_id;
-		
+
 		_shield = shield;
 		_shieldSkillId = shield_skill_id;
-		
+
 		_enchant6Skill = enchant6skill;
 	}
 	/**
@@ -62,24 +62,24 @@ public final class L2ArmorSet
 	public boolean containAll(L2PcInstance player)
 	{
 		Inventory inv = player.getInventory();
-		
+
 		L2ItemInstance legsItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_LEGS);
 		L2ItemInstance headItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_HEAD);
 		L2ItemInstance glovesItem = inv.getPaperdollItem(Inventory.PAPERDOLL_GLOVES);
 		L2ItemInstance feetItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_FEET);
-		
+
 		int legs = 0;
 		int head = 0;
 		int gloves = 0;
 		int feet = 0;
-		
+
 		if(legsItem != null)   legs = legsItem.getItemId();
 		if(headItem != null)   head = headItem.getItemId();
 		if(glovesItem != null) gloves = glovesItem.getItemId();
 		if(feetItem != null)   feet = feetItem.getItemId();
-		
+
 		return containAll(_chest,legs,head,gloves,feet);
-		
+
 	}
 	public boolean containAll(int chest, int legs, int head, int gloves, int feet)
 	{
@@ -93,7 +93,7 @@ public final class L2ArmorSet
 			return false;
 		if(_feet != 0 && _feet != feet)
 			return false;
-	
+
 		return true;
 	}
 	public boolean containItem(int slot, int itemId)
@@ -121,18 +121,18 @@ public final class L2ArmorSet
 	public boolean containShield(L2PcInstance player)
 	{
 		Inventory inv = player.getInventory();
-		
+
 		L2ItemInstance shieldItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 		if(shieldItem!= null && shieldItem.getItemId() == _shield)
 			return true;
-	
+
 		return false;
 	}
 	public boolean containShield(int shield_id)
 	{
 		if(_shield == 0)
 			return false;
-		
+
 		return _shield == shield_id;
 	}
 	public int getShieldSkillId()
@@ -146,22 +146,22 @@ public final class L2ArmorSet
 	/**
 	 * Checks if all parts of set are enchanted to +6 or more
 	 * @param player
-	 * @return 
+	 * @return
 	 */
 	public boolean isEnchanted6(L2PcInstance player)
 	{
 		 // Player don't have full set
 		if(!containAll(player))
 			return false;
-		
+
 		Inventory inv = player.getInventory();
-		
+
 		L2ItemInstance chestItem  = inv.getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 		L2ItemInstance legsItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_LEGS);
 		L2ItemInstance headItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_HEAD);
 		L2ItemInstance glovesItem = inv.getPaperdollItem(Inventory.PAPERDOLL_GLOVES);
 		L2ItemInstance feetItem   = inv.getPaperdollItem(Inventory.PAPERDOLL_FEET);
-		
+
 		if(chestItem.getEnchantLevel() < 6)
 			return false;
 		if(_legs != 0 && legsItem.getEnchantLevel() < 6)
@@ -172,7 +172,7 @@ public final class L2ArmorSet
 			return false;
 		if(_feet != 0 && feetItem.getEnchantLevel() < 6)
 			return false;
-		
+
 		return true;
 	}
 }

@@ -30,22 +30,22 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminGeoEditor implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = 
+	private static final String[] ADMIN_COMMANDS =
 		{
 			"admin_ge_status",
 			"admin_ge_mode",
 			"admin_ge_join",
 			"admin_ge_leave"
 		};
-	
+
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
-	
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) 
+
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
         if (!Config.ALT_PRIVILEGES_ADMIN)
-            if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) 
+            if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
             	return false;
-        
+
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
         GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
@@ -114,12 +114,12 @@ public class AdminGeoEditor implements IAdminCommandHandler
         }
         return true;
 	}
-	public String[] getAdminCommandList() 
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
-	private boolean checkLevel(int level) 
+
+	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}

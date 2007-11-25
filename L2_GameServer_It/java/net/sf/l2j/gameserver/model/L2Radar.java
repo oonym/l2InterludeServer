@@ -40,7 +40,7 @@ public final class L2Radar
     public void addMarker(int x, int y, int z)
     {
         RadarMarker newMarker = new RadarMarker(x, y, z);
-        
+
         _markers.add(newMarker);
         _player.sendPacket(new RadarControl(0, 1, x, y, z));
     }
@@ -49,7 +49,7 @@ public final class L2Radar
     public void removeMarker(int x, int y, int z)
     {
         RadarMarker newMarker = new RadarMarker(x, y, z);
-        
+
         _markers.remove(newMarker);
         _player.sendPacket(new RadarControl(1, 1, x, y, z));
     }
@@ -96,8 +96,8 @@ public final class L2Radar
             try
             {
                 RadarMarker temp = (RadarMarker) obj;
-                
-                if ((temp._x == _x) && (temp._y == _y) 
+
+                if ((temp._x == _x) && (temp._y == _y)
                         && (temp._z == _z) && (temp._type == _type))
                     return true;
 

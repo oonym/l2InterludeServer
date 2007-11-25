@@ -25,13 +25,13 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision$ $Date$
  */
 public class L2SiegeNpcInstance extends L2FolkInstance
 {
 	//private static Logger _log = Logger.getLogger(L2SiegeNpcInstance.class.getName());
-    
+
 	public L2SiegeNpcInstance(int objectID, L2NpcTemplate template)
 	{
 		super(objectID, template);
@@ -43,7 +43,7 @@ public class L2SiegeNpcInstance extends L2FolkInstance
         if (player == null) return;
 	    super.onBypassFeedback(player, command);
 	}
-	
+
 	/**
 	 * this is called when a player interacts with this NPC
 	 * @param player
@@ -58,7 +58,7 @@ public class L2SiegeNpcInstance extends L2FolkInstance
         if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
             showSiegeInfoWindow(player);
 	}
-	
+
     /**
      * If siege is in progress shows the Busy HTML<BR>
      * else Shows the SiegeInfo window
@@ -78,12 +78,12 @@ public class L2SiegeNpcInstance extends L2FolkInstance
             player.sendPacket( new ActionFailed() );
         }
 	}
-    
+
 	private boolean validateCondition(L2PcInstance player)
 	{
         if (getCastle().getSiege().getIsInProgress())
             return false;       // Busy because of siege
-		
+
 		return true;
 	}
 }

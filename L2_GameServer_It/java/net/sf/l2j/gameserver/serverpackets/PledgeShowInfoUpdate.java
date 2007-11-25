@@ -22,19 +22,19 @@ import net.sf.l2j.gameserver.model.L2Clan;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PledgeShowInfoUpdate extends L2GameServerPacket
 {
 	private static final String _S__A1_PLEDGESHOWINFOUPDATE = "[S] 88 PledgeShowInfoUpdate";
 	private L2Clan _clan;
-	
+
 	public PledgeShowInfoUpdate(L2Clan clan)
 	{
 		_clan = clan;
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -44,13 +44,13 @@ public class PledgeShowInfoUpdate extends L2GameServerPacket
 		writeD(_clan.getClanId());
 		writeD(0);
 		writeD(_clan.getLevel()); //clan level
-		writeD(_clan.getHasCastle()); 
-		writeD(_clan.getHasHideout()); 
+		writeD(_clan.getHasCastle());
+		writeD(_clan.getHasHideout());
 		writeD(0); // displayed in the "tree" view (with the clan skills)
 		writeD(_clan.getReputationScore()); // clan reputation score
 		writeD(0);
 		writeD(0);
-		
+
 		writeD(0); //c5
 		writeS("bili"); //c5
 		writeD(0); //c5

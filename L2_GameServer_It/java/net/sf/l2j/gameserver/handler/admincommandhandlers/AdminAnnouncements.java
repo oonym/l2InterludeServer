@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
  * - announce_announcements = announce all stored announcements to all players
  * - add_announcement text = adds text to startup announcements
  * - del_announcement id = deletes announcement with respective id
- * 
+ *
  * @version $Revision: 1.4.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminAnnouncements implements IAdminCommandHandler {
@@ -51,7 +51,7 @@ public class AdminAnnouncements implements IAdminCommandHandler {
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
-		
+
 		if (command.equals("admin_list_announcements"))
 		{
 			Announcements.getInstance().listAnnouncements(activeChar);
@@ -60,12 +60,12 @@ public class AdminAnnouncements implements IAdminCommandHandler {
 		{
 			Announcements.getInstance().loadAnnouncements();
 			Announcements.getInstance().listAnnouncements(activeChar);
-		} 
+		}
 		else if (command.startsWith("admin_announce_menu"))
 		{
 			Announcements sys = new Announcements();
 			sys.handleAnnounce(command, 20);
-			Announcements.getInstance().listAnnouncements(activeChar);	
+			Announcements.getInstance().listAnnouncements(activeChar);
 		}
 		else if (command.equals("admin_announce_announcements"))
 		{
@@ -98,24 +98,24 @@ public class AdminAnnouncements implements IAdminCommandHandler {
             catch (StringIndexOutOfBoundsException e)
             { }
 		}
-		
-		// Command is admin announce 
+
+		// Command is admin announce
 		else if (command.startsWith("admin_announce"))
 		{
 			// Call method from another class
 			Announcements sys = new Announcements();
 			sys.handleAnnounce(command, 15);
 		}
-		
+
 		return true;
 	}
-	
+
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean checkLevel(int level) {
 		return (level >= REQUIRED_LEVEL);
 	}
-	
+
 }

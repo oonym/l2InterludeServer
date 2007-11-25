@@ -33,42 +33,42 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.5 $ $Date: 2005/03/27 15:29:33 $
  */
 public class L2TradeList
 {
     private static Logger _log = Logger.getLogger(L2TradeList.class.getName());
-    
+
 	private List<L2ItemInstance> _items;
 	private int _listId;
 	private boolean _confirmed;
 	private String _buystorename, _sellstorename;
-    
+
     private String _npcId;
-	
+
 	public L2TradeList(int listId)
 	{
 		_items = new FastList<L2ItemInstance>();
 		_listId = listId;
 		_confirmed = false;
 	}
-	
+
     public void setNpcId(String id)
     {
         _npcId = id;
     }
-    
+
     public String getNpcId()
     {
         return _npcId;
     }
-    
+
 	public void addItem(L2ItemInstance item)
 	{
 		_items.add(item);
 	}
-	
+
     public void replaceItem(int itemID, int price)
     {
         for (int i = 0; i < _items.size(); i++)
@@ -113,7 +113,7 @@ public class L2TradeList
             }
         }
     }
-	
+
 	/**
 	 * @return Returns the listId.
 	 */
@@ -137,7 +137,7 @@ public class L2TradeList
 	{
 		return _buystorename;
 	}
-	
+
 	/**
 	 * @return Returns the items.
 	 */
@@ -145,12 +145,12 @@ public class L2TradeList
 	{
 		return _items;
 	}
-	
+
     public List<L2ItemInstance> getItems(int start, int end)
     {
         return _items.subList(start, end);
     }
-	
+
 	public int getPriceForItemId(int itemId)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -182,7 +182,7 @@ public class L2TradeList
 			if (item.getItemId() == itemId)
 				return true;
 		}
-		
+
 		return false;
 	}
 	public L2ItemInstance getItem(int ObjectId)
@@ -217,14 +217,14 @@ public class L2TradeList
 				{
 					_items.remove(temp);
 				}
-				
+
 				break;
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	public boolean contains(int objId)
 	{
 		boolean bool = false;
@@ -238,15 +238,15 @@ public class L2TradeList
 				break;
 			}
 		}
-		
+
 		return bool;
 	}
-	
+
 	public boolean validateTrade(L2PcInstance player)
 	{
-		Inventory playersInv = player.getInventory();	
+		Inventory playersInv = player.getInventory();
 		L2ItemInstance playerItem,temp;
-		
+
 		for(int y = 0 ; y < _items.size(); y++)
 		{
 			temp = _items.get(y);
@@ -256,7 +256,7 @@ public class L2TradeList
 		}
 		return true;
 	}
-	
+
 	//Call validate before this
 	public void tradeItems(L2PcInstance player,L2PcInstance reciever)
 	{
@@ -265,12 +265,12 @@ public class L2TradeList
 		L2ItemInstance playerItem,recieverItem,temp,newitem;
 		InventoryUpdate update = new InventoryUpdate();
 		ItemTable itemTable = ItemTable.getInstance();
-		
+
 		//boolean isValid;
 		//LinkedList<L2ItemInstance> itemsToAdd = new LinkedList<L2ItemInstance>();
 		//LinkedList<L2ItemInstance> itemsToRemove = new LinkedList<L2ItemInstance>();
 		//LinkedList countsToRemove = new LinkedList();
-		
+
 		for(int y = 0 ; y < _items.size(); y++)
 		{
 			temp = _items.get(y);
@@ -293,19 +293,19 @@ public class L2TradeList
 		    		target = player;
 		    	}else{
 		    		gm = player;
-		    		target = reciever;		    		
+		    		target = reciever;
 		    	}
 		        GMAudit.auditGMAction(gm.getName(), "trade", target.getName(), newitem.getItem().getName()+" - "+newitem.getItemId());
 		    }
 			playerItem = playersInv.destroyItem("!L2TradeList!", playerItem.getObjectId(),temp.getCount(), null, null);
 			recieverItem = recieverInv.addItem("!L2TradeList!", newitem, null, null);
-			
+
             if(playerItem == null)
             {
                 _log.warning("L2TradeList: PlayersInv.destroyItem returned NULL!");
                 continue;
             }
-            
+
 			if (playerItem.getLastChange() == L2ItemInstance.MODIFIED)
 			{
 				update.addModifiedItem(playerItem);
@@ -315,11 +315,11 @@ public class L2TradeList
 				L2World world = L2World.getInstance();
 				world.removeObject(playerItem);
 				update.addRemovedItem(playerItem);
-				
+
 			}
-			
+
 			player.sendPacket(update);
-			
+
 			update = new InventoryUpdate();
 			if (recieverItem.getLastChange() == L2ItemInstance.MODIFIED)
 			{
@@ -329,15 +329,15 @@ public class L2TradeList
 			{
 				update.addNewItem(recieverItem);
 			}
-			
+
 			reciever.sendPacket(update);
 		}
-		
+
 		// weight status update both player and reciever
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
-		
+
 		su = new StatusUpdate(reciever.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, reciever.getCurrentLoad());
 		reciever.sendPacket(su);
@@ -358,21 +358,21 @@ public class L2TradeList
         catch (Exception e) { _log.warning("could not change pet item object id: " + e); }
         finally { try { con.close(); } catch (Exception e) {} }
     }
-    
+
     public void updateBuyList(L2PcInstance player, List<TradeItem> list)
 	{
-		
+
 		TradeItem temp;
 		int count;
 		Inventory playersInv = player.getInventory();
 		L2ItemInstance temp2;
 		count =0;
-		
+
 		while(count!= list.size())
 		{
 			temp = list.get(count);
 			temp2 =playersInv.getItemByItemId(temp.getItemId());
-			if (temp2 == null) 
+			if (temp2 == null)
 			{
 				list.remove(count);
 				count = count-1;
@@ -387,7 +387,7 @@ public class L2TradeList
 			}
 			count++;
 		}
-		
+
 	}
 	public void updateSellList(L2PcInstance player, List<TradeItem> list)
 	{
@@ -399,7 +399,7 @@ public class L2TradeList
 		{
 			temp = list.get(count);
 			temp2 =playersInv.getItemByObjectId(temp.getObjectId());
-			if (temp2 == null) 
+			if (temp2 == null)
 			{
 				list.remove(count);
 				count = count-1;
@@ -410,39 +410,39 @@ public class L2TradeList
 				{
 					temp.setCount(temp2.getCount());
 				}
-				
+
 			}
 			count++;
-		} 
-		
+		}
+
 	}
-	
+
 	public synchronized void buySellItems(L2PcInstance buyer, List<TradeItem> buyerslist, L2PcInstance seller, List<TradeItem> sellerslist)
 	{
 		Inventory sellerInv         = seller.getInventory();
 		Inventory buyerInv          = buyer.getInventory();
-        
+
 		//TradeItem buyerItem         = null;
         TradeItem temp2             = null;
-        
+
 		L2ItemInstance sellerItem   = null;
         L2ItemInstance temp         = null;
         L2ItemInstance newitem      = null;
         L2ItemInstance adena        = null;
         int enchantLevel            = 0;
-        
+
 		InventoryUpdate buyerupdate     = new InventoryUpdate();
         InventoryUpdate sellerupdate    = new InventoryUpdate();
-        
+
 		ItemTable itemTable = ItemTable.getInstance();
-        
+
 		int amount = 0;
 		int x = 0;
 		int y = 0;
-        
+
 		List<SystemMessage> sysmsgs = new FastList<SystemMessage>();
 		SystemMessage msg = null;
-		
+
 		for(TradeItem buyerItem : buyerslist)
 		{
 		    for(x=0 ; x < sellerslist.size(); x++)//find in sellerslist
@@ -454,7 +454,7 @@ public class L2TradeList
 		            break;
 		        }
 		    }
-		    
+
 		    if (sellerItem !=null)
 		    {
 		        if (buyerItem.getCount()> temp2.getCount())
@@ -514,7 +514,7 @@ public class L2TradeList
 		        else
 		        {
 		            if (buyerItem.getCount()< temp2.getCount())
-		            {	
+		            {
 		                temp2.setCount(temp2.getCount()-buyerItem.getCount());
 		            }
 		            else
@@ -522,23 +522,23 @@ public class L2TradeList
 		                buyerItem.setCount(buyerItem.getCount()-temp2.getCount());
 		            }
 		        }
-		        
-		        
+
+
 		        if (sellerItem .getLastChange() == L2ItemInstance.MODIFIED)
 		        {
 		            sellerupdate.addModifiedItem(sellerItem);
-		            
+
 		        }
 		        else
 		        {
 		            L2World world = L2World.getInstance();
 		            world.removeObject(sellerItem );
 		            sellerupdate.addRemovedItem(sellerItem );
-		            
+
 		        }
-		        
-		        
-		        
+
+
+
 		        if (temp.getLastChange() == L2ItemInstance.MODIFIED)
 		        {
 		            buyerupdate.addModifiedItem(temp);
@@ -547,10 +547,10 @@ public class L2TradeList
 		        {
 		            buyerupdate.addNewItem(temp);
 		        }
-		        
-		        
+
+
 		        //}
-		        
+
 		        sellerItem =  null;
 		    }
 		}
@@ -563,14 +563,14 @@ public class L2TradeList
 			adena = buyer.getInventory().getAdenaInstance();
 			adena.setLastChange(L2ItemInstance.MODIFIED);
 			buyerupdate.addModifiedItem(adena);
-			
+
 			seller.sendPacket(sellerupdate);
 			buyer.sendPacket(buyerupdate );
 			y=0;
-			
+
 			for (x=0;x < sysmsgs.size();x++)
 			{
-				
+
 				if (y == 0)
 				{
 					seller.sendPacket(sysmsgs.get(x));
@@ -584,8 +584,8 @@ public class L2TradeList
 			}
 		}
 	}
-		
-	
-	
+
+
+
 }
 

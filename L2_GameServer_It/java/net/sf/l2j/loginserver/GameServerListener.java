@@ -33,7 +33,7 @@ public class GameServerListener extends FloodProtectedListener
 {
 	private static Logger _log = Logger.getLogger(GameServerListener.class.getName());
 	private static List<GameServerThread> _gameServers = new FastList<GameServerThread>();
-	
+
 	public GameServerListener() throws IOException
 	{
 		super(Config.GAME_SERVER_LOGIN_HOST, Config.GAME_SERVER_LOGIN_PORT);
@@ -52,7 +52,7 @@ public class GameServerListener extends FloodProtectedListener
 		GameServerThread gst = new GameServerThread(s);
 		_gameServers.add(gst);
 	}
-	
+
 	public void removeGameServer(GameServerThread gst)
 	{
 		_gameServers.remove(gst);

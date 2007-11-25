@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
 public class SetPrivateStoreListSell extends L2GameClientPacket
@@ -39,8 +39,8 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 	private int _count;
 	private boolean _packageSale;
 	private int[] _items; // count * 3
-	
-	
+
+
 	@Override
 	protected void readImpl()
 	{
@@ -48,7 +48,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		_count = readD();
 		if (_count <= 0  || _count * 12 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
 		{
-		    _count = 0; 
+		    _count = 0;
 		    _items = null;
 		    return;
 		}
@@ -56,17 +56,17 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		for (int x = 0; x < _count ; x++)
 		{
 			int objectId = readD();
-			_items[x * 3 + 0] = objectId; 
-			long cnt      = readD(); 
+			_items[x * 3 + 0] = objectId;
+			long cnt      = readD();
 			if (cnt > Integer.MAX_VALUE || cnt < 0)
 			{
-			    _count = 0; 
+			    _count = 0;
 			    _items = null;
 			    return;
 			}
-			_items[x * 3 + 1] = (int)cnt; 
-			int price    = readD(); 
-			_items[x * 3 + 2] = price; 
+			_items[x * 3 + 1] = (int)cnt;
+			int price    = readD();
+			_items[x * 3 + 2] = price;
 		}
 	}
 
@@ -75,13 +75,13 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null) return;
-        
+
         if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
         {
             player.sendMessage("Transactions are disable for your Access Level");
             return;
         }
-        
+
         TradeList tradeList = player.getSellList();
         tradeList.clear();
         tradeList.setPackaged(_packageSale);
@@ -94,7 +94,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 
             tradeList.addItem(objectId, count, price);
         }
-        
+
         if (_count <= 0)
         {
             player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
@@ -109,7 +109,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
             player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
             return;
         }
-        
+
 		player.sitDown();
 		if (_packageSale)
 			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_PACKAGE_SELL);
@@ -118,7 +118,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		player.broadcastUserInfo();
 		player.broadcastPacket(new PrivateStoreMsgSell(player));
 	}
-	
+
 	@Override
 	public String getType()
 	{

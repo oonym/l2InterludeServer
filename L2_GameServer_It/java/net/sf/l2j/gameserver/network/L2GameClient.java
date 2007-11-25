@@ -53,7 +53,7 @@ import com.l2jserver.mmocore.network.MMOConnection;
 public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 {
 	protected static final Logger _log = Logger.getLogger(L2GameClient.class.getName());
-	
+
 	/**
 	 * CONNECTED	- client has just connected
 	 * AUTHED		- client has authed but doesnt has character attached to it yet
@@ -61,30 +61,30 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	 * @author  KenM
 	 */
 	public static enum GameClientState { CONNECTED, AUTHED, IN_GAME };
-	
+
 	public GameClientState state;
-	
+
 	// Info
 	public String accountName;
 	public SessionKey sessionId;
 	public L2PcInstance activeChar;
 	private ReentrantLock _activeCharLock = new ReentrantLock();
-	
+
 	@SuppressWarnings("unused")
 	private boolean _isAuthedGG;
 	private long _connectionStartTime;
 	private List<Integer> _charSlotMapping = new FastList<Integer>();
-	
+
 	// Task
 	protected /*final*/ ScheduledFuture _autoSaveInDB;
-	
+
 	// Crypt
 	public GameCrypt crypt;
-	
+
 	// Flood protection
 	public byte packetsSentInSec = 0;
 	public int packetsSentStartTick = 0;
-	
+
 	public L2GameClient(MMOConnection<L2GameClient> con)
 	{
 		super(con);
@@ -95,24 +95,24 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
    				new AutoSaveTask(), 300000L, 900000L
    				);
 	}
-	
+
 	public byte[] enableCrypt()
 	{
 		byte[] key = BlowFishKeygen.getRandomKey();
 		crypt.setKey(key);
 		return key;
 	}
-	
+
 	public GameClientState getState()
 	{
 		return state;
 	}
-	
+
 	public void setState(GameClientState pState)
 	{
 		state = pState;
 	}
-	
+
 	public long getConnectionStartTime()
 	{
 		return _connectionStartTime;
@@ -132,12 +132,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		buf.position(buf.position() + size);
 		return true;
 	}
-	
+
 	public L2PcInstance getActiveChar()
 	{
 		return activeChar;
 	}
-	
+
 	public void setActiveChar(L2PcInstance pActiveChar)
 	{
 		activeChar = pActiveChar;
@@ -146,43 +146,43 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			L2World.getInstance().storeObject(getActiveChar());
 		}
 	}
-	
+
 	public ReentrantLock getActiveCharLock()
 	{
 		return _activeCharLock;
 	}
-	
+
 	public void setGameGuardOk(boolean val)
 	{
 		_isAuthedGG = val;
 	}
-	
+
 	public void setAccountName(String pAccountName)
 	{
 		accountName = pAccountName;
 	}
-	
+
 	public String getAccountName()
 	{
 		return accountName;
 	}
-	
+
 	public void setSessionId(SessionKey sk)
 	{
 		sessionId = sk;
 	}
-	
+
 	public SessionKey getSessionId()
 	{
 		return sessionId;
 	}
-	
+
 	public void sendPacket(L2GameServerPacket gsp)
 	{
 		getConnection().sendPacket(gsp);
 		gsp.runImpl();
 	}
-	
+
 	public L2PcInstance markToDeleteChar(int charslot) throws Exception
 	{
 		//have to make sure active character must be nulled
@@ -205,11 +205,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			return character;
 
 		java.sql.Connection con = null;
-		try 
+		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET deletetime=? WHERE obj_id=?");
-			statement.setLong(1, System.currentTimeMillis() + Config.DELETE_DAYS*86400000L); // 24*60*60*1000 = 86400000 
+			statement.setLong(1, System.currentTimeMillis() + Config.DELETE_DAYS*86400000L); // 24*60*60*1000 = 86400000
 			statement.setInt(2, objid);
 			statement.execute();
 			statement.close();
@@ -217,14 +217,14 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		catch (Exception e)
 		{
 			_log.warning("Data error on update delete time of char: " + e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
 	    return null;
 	}
-	
+
 	public L2PcInstance deleteChar(int charslot) throws Exception
 	{
 		//have to make sure active character must be nulled
@@ -234,7 +234,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			if (Config.DEBUG) _log.fine("active Char saved");
 			this.setActiveChar(null);
 		}*/
-	
+
 		int objid = getObjectIdForSlot(charslot);
 		if (objid < 0)
     	    return null;
@@ -246,7 +246,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		deleteCharByObjId(objid);
 		return null;
 	}
-	
+
 	/**
 	 * Save the L2PcInstance to the database.
 	 */
@@ -263,7 +263,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	}
 
 	public void markRestoredChar(int charslot) throws Exception
-	{	
+	{
 		//have to make sure active character must be nulled
 		/*if (getActiveChar() != null)
 		{
@@ -276,7 +276,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     		if (objid < 0)
     		    return;
 		java.sql.Connection con = null;
-		try 
+		try
 		{
 		con = L2DatabaseFactory.getInstance().getConnection();
 		PreparedStatement statement = con.prepareStatement("UPDATE characters SET deletetime=0 WHERE obj_id=?");
@@ -287,24 +287,24 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		catch (Exception e)
 		{
 			_log.severe("Data error on restoring char: " + e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-	
 
-	
+
+
 
 	public static void deleteCharByObjId(int objid)
 	{
 	    if (objid < 0)
 	        return;
-        
+
 	    java.sql.Connection con = null;
-        
-		try 
+
+		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement ;
@@ -314,12 +314,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.setInt(2, objid);
 			statement.execute();
 			statement.close();
-            
+
             statement = con.prepareStatement("DELETE FROM character_hennas WHERE char_obj_id=?");
             statement.setInt(1, objid);
             statement.execute();
             statement.close();
-	
+
 			statement = con.prepareStatement("DELETE FROM character_macroses WHERE char_obj_id=?");
 			statement.setInt(1, objid);
 			statement.execute();
@@ -334,12 +334,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.setInt(1, objid);
 			statement.execute();
 			statement.close();
-	
+
 			statement = con.prepareStatement("DELETE FROM character_shortcuts WHERE char_obj_id=?");
 			statement.setInt(1, objid);
 			statement.execute();
 			statement.close();
-	
+
 			statement = con.prepareStatement("DELETE FROM character_skills WHERE char_obj_id=?");
 			statement.setInt(1, objid);
 			statement.execute();
@@ -354,17 +354,17 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.setInt(1, objid);
 			statement.execute();
 			statement.close();
-            
+
             statement = con.prepareStatement("DELETE FROM heroes WHERE char_id=?");
             statement.setInt(1, objid);
             statement.execute();
             statement.close();
-            
+
             statement = con.prepareStatement("DELETE FROM olympiad_nobles WHERE char_id=?");
             statement.setInt(1, objid);
             statement.execute();
             statement.close();
-            
+
             statement = con.prepareStatement("DELETE FROM seven_signs WHERE char_obj_id=?");
             statement.setInt(1, objid);
             statement.execute();
@@ -374,7 +374,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.setInt(1, objid);
 			statement.execute();
 			statement.close();
-			
+
 			statement = con.prepareStatement("DELETE FROM augmentations WHERE item_id IN (SELECT object_id FROM items WHERE items.owner_id=?)");
 			statement.setInt(1, objid);
 			statement.execute();
@@ -389,8 +389,8 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.setInt(1, objid);
 			statement.execute();
 			statement.close();
-			
-			
+
+
 			statement = con.prepareStatement("DELETE FROM characters WHERE obj_Id=?");
 			statement.setInt(1, objid);
 			statement.execute();
@@ -399,17 +399,17 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		catch (Exception e)
 		{
 			_log.warning("Data error on deleting char: " + e);
-		} 
-		finally 
+		}
+		finally
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-	
+
 	public L2PcInstance loadCharFromDisk(int charslot)
 	{
 		L2PcInstance character = L2PcInstance.load(getObjectIdForSlot(charslot));
-		
+
         if (character != null)
 		{
 			//restoreInventory(character);
@@ -421,7 +421,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			// preinit some values for each login
 			character.setRunning();	// running is default
 			character.standUp();		// standing is default
-			
+
 			character.refreshOverloaded();
 			character.refreshExpertisePenalty();
 			character.sendPacket(new UserInfo(character));
@@ -432,30 +432,30 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		{
 			_log.severe("could not restore in slot: "+ charslot);
 		}
-		
+
 		//setCharacter(character);
 		return character;
 	}
-	
+
 	/**
      * @param chars
      */
     public void setCharSelection(CharSelectInfoPackage[] chars)
     {
         _charSlotMapping.clear();
-        
+
         for (int i = 0; i < chars.length; i++)
         {
             int objectId = chars[i].getObjectId();
             _charSlotMapping.add(new Integer(objectId));
         }
     }
-    
+
     public void close(L2GameServerPacket gsp)
     {
     	getConnection().close(gsp);
     }
-    
+
     /**
      * @param charslot
      * @return
@@ -470,13 +470,13 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
         Integer objectId = _charSlotMapping.get(charslot);
         return objectId.intValue();
     }
-	
+
     @Override
     protected void onForcedDisconnection()
     {
     	_log.info("Client "+toString()+" disconnected abnormally.");
     }
-    
+
     @Override
     protected void onDisconection()
 	{
@@ -490,7 +490,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     		// server is closing
     	}
     }
-    
+
     /**
      * Produces the best possible string representation of this client.
      */
@@ -511,13 +511,13 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 				default:
 					throw new IllegalStateException("Missing state on switch");
 			}
-		} 
+		}
 		catch (NullPointerException e)
 		{
 			return "[Character read failed due to disconnect]";
 		}
 	}
-	
+
 	class DisconnectTask implements Runnable
 	{
 
@@ -537,27 +537,27 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 				{
 					e.printStackTrace();
 				}
-				
+
 				// we are going to mannually save the char bellow thus we can force the cancel
 				_autoSaveInDB.cancel(true);
-				
+
 	            L2PcInstance player = L2GameClient.this.getActiveChar();
 				if (player != null)  // this should only happen on connection loss
 				{
-					
+
 	                // we store all data from players who are disconnected while in an event in order to restore it in the next login
 	                if (player.atEvent)
 	                {
 	                	EventData data = new EventData(player.eventX, player.eventY, player.eventZ, player.eventkarma, player.eventpvpkills, player.eventpkkills, player.eventTitle, player.kills, player.eventSitForced);
 	                    L2Event.connectionLossData.put(player.getName(), data);
 	                }
-	                if (player.isFlying()) 
-	                { 
+	                if (player.isFlying())
+	                {
 	                	player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
 	                }
 					// notify the world about our disconnect
 					player.deleteMe();
-					
+
 					try
 	                {
 						saveCharToDisk(player);
@@ -576,7 +576,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			}
 		}
 	}
-	
+
 	class AutoSaveTask implements Runnable
 	{
 		public void run()

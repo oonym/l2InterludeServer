@@ -37,13 +37,13 @@ public class L2TvTEventNpcInstance extends L2NpcInstance
 	{
 		TvTEvent.onBypass(command, playerInstance);
 	}
-	
+
 	@Override
 	public void showChatWindow(L2PcInstance playerInstance, int val)
 	{
 		if (playerInstance == null)
 			return;
-		
+
 		if (TvTEvent.isParticipating())
 		{
 			String htmFile = "data/html/mods/";
@@ -52,7 +52,7 @@ public class L2TvTEventNpcInstance extends L2NpcInstance
 				htmFile += "TvTEventParticipation";
 			else
 				htmFile += "TvTEventRemoveParticipation";
-			
+
 			htmFile += ".htm";
 
 			String htmContent = HtmCache.getInstance().getHtm(htmFile);
@@ -93,7 +93,7 @@ public class L2TvTEventNpcInstance extends L2NpcInstance
 	    		playerInstance.sendPacket(npcHtmlMessage);
 	    	}
 		}
-		
+
 		playerInstance.sendPacket(new ActionFailed());
 	}
 }

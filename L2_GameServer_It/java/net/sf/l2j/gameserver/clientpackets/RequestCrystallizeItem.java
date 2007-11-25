@@ -38,7 +38,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.3.2.5 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestCrystallizeItem extends L2GameClientPacket
@@ -225,7 +225,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		sm.addNumber(crystalAmount);
 		activeChar.sendPacket(sm);
 		sm = null;
-		
+
 		// send inventory update
 		if (!Config.FORCE_INVENTORY_UPDATE)
 		{
@@ -259,7 +259,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

@@ -45,7 +45,7 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.9.2.3.2.8 $ $Date: 2005/03/27 15:29:30 $
  */
 @SuppressWarnings("unused")
@@ -53,7 +53,7 @@ public final class CharacterCreate extends L2GameClientPacket
 {
 	private static final String _C__0B_CHARACTERCREATE = "[C] 0B CharacterCreate";
 	private static Logger _log = Logger.getLogger(CharacterCreate.class.getName());
-	
+
 	// cSdddddddddddd
 	private String _name;
     private int _race;
@@ -68,7 +68,7 @@ public final class CharacterCreate extends L2GameClientPacket
 	private byte _hairStyle;
 	private byte _hairColor;
 	private byte _face;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -108,7 +108,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		}
 		else if ((_name.length() < 3) || (_name.length() > 16) || !Util.isAlphaNumeric(_name) || !isValidName(_name))
 		{
-			if (Config.DEBUG) 
+			if (Config.DEBUG)
 				_log.fine("charname: " + _name + " is invalid. creation failed.");
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_16_ENG_CHARS);
 			sendPacket(ccf);
@@ -117,15 +117,15 @@ public final class CharacterCreate extends L2GameClientPacket
 
 		if (Config.DEBUG)
 			_log.fine("charname: " + _name + " classId: " + _classId);
-		
+
 		L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(_classId);
-		if(template == null || template.classBaseLevel > 1) 
+		if(template == null || template.classBaseLevel > 1)
 		{
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED);
 			sendPacket(ccf);
 			return;
 		}
-		
+
 		int objectId = IdFactory.getInstance().getNextId();
 		L2PcInstance newChar = L2PcInstance.create(objectId, template, getClient().getAccountName(),
 				_name, _hairStyle, _hairColor, _face, _sex!=0);
@@ -133,14 +133,14 @@ public final class CharacterCreate extends L2GameClientPacket
 		newChar.setCurrentCp(template.baseCpMax);
 		newChar.setCurrentMp(template.baseMpMax);
 		//newChar.setMaxLoad(template.baseLoad);
-		
+
 		// send acknowledgement
 		CharCreateOk cco = new CharCreateOk();
 		sendPacket(cco);
 
 		initNewChar(getClient(), newChar);
 	}
-	
+
     private boolean isValidName(String text)
     {
             boolean result = true;
@@ -162,16 +162,16 @@ public final class CharacterCreate extends L2GameClientPacket
             }
             return result;
     }
-	
+
 	private void initNewChar(L2GameClient client, L2PcInstance newChar)
-	{   
+	{
 		if (Config.DEBUG) _log.fine("Character init start");
 		L2World.getInstance().storeObject(newChar);
-		
+
 		L2PcTemplate template = newChar.getTemplate();
-		
+
 		newChar.addAdena("Init", Config.STARTING_ADENA, null, false);
-		
+
 		newChar.setXYZInvisible(template.spawnX, template.spawnY, template.spawnZ);
 		newChar.setTitle("");
 
@@ -185,7 +185,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		//add sit shortcut
 		shortcut = new L2ShortCut(10,0,3,0,-1,1);
 		newChar.registerShortCut(shortcut);
-		
+
 		ItemTable itemTable = ItemTable.getInstance();
 		L2Item[] items = template.getItems();
 		for (int i = 0; i < items.length; i++)
@@ -201,7 +201,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			    newChar.getInventory().equipItemAndRecord(item);
 			}
 		}
-		
+
 		L2SkillLearn[] startSkills = SkillTreeTable.getInstance().getAvailableSkills(newChar, newChar.getClassId());
 		for (int i = 0; i < startSkills.length; i++)
 		{
@@ -214,21 +214,21 @@ public final class CharacterCreate extends L2GameClientPacket
 			    shortcut = new L2ShortCut(10,0,2,startSkills[i].getId(),1,1);
 			    newChar.registerShortCut(shortcut);
 			}
-			if (Config.DEBUG) 
+			if (Config.DEBUG)
 				_log.fine("adding starter skill:" + startSkills[i].getId()+ " / "+ startSkills[i].getLevel());
 		}
-		
+
 		L2GameClient.saveCharToDisk(newChar);
 		newChar.deleteMe(); // release the world of this character and it's inventory
-		
+
 		// send char list
-		
+
 		CharSelectInfo cl =	new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		client.getConnection().sendPacket(cl);
         client.setCharSelection(cl.getCharInfo());
         if (Config.DEBUG) _log.fine("Character init end");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */

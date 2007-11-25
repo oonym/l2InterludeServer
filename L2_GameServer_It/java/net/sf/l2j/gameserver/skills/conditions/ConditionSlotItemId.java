@@ -34,14 +34,14 @@ public final class ConditionSlotItemId extends ConditionInventory {
 
 	private final int _itemId;
 	private final int _enchantLevel;
-	
+
 	public ConditionSlotItemId(int slot, int itemId, int enchantLevel)
 	{
 		super(slot);
 		_itemId = itemId;
 		_enchantLevel = enchantLevel;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env)
 	{

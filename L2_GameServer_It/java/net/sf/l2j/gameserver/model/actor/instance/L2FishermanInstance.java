@@ -47,7 +47,7 @@ public class L2FishermanInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	/**
 	 * this is called when a player interacts with this NPC
 	 * @param player
@@ -58,20 +58,20 @@ public class L2FishermanInstance extends L2FolkInstance
 		player.setLastFolkNPC(this);
 		super.onAction(player);
 	}
-	
+
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
 		String pom = "";
-        
+
 		if (val == 0)
 			pom = "" + npcId;
-		else 
+		else
 			pom = npcId + "-" + val;
-		
+
 		return "data/html/fisherman/" + pom + ".htm";
 	}
-	
+
 	private void showBuyWindow(L2PcInstance player, int val)
     {
         double taxRate = 0;
@@ -94,7 +94,7 @@ public class L2FishermanInstance extends L2FolkInstance
 
         player.sendPacket(new ActionFailed());
     }
-	
+
 	private void showSellWindow(L2PcInstance player)
     {
         if (Config.DEBUG) _log.fine("Showing selllist");
@@ -105,10 +105,10 @@ public class L2FishermanInstance extends L2FolkInstance
 
         player.sendPacket(new ActionFailed());
     }
-    
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
-	{	
+	{
 		if (command.startsWith("FishSkillList"))
 		{
 			player.setSkillLearningClassId(player.getClassId());
@@ -117,7 +117,7 @@ public class L2FishermanInstance extends L2FolkInstance
 
 		StringTokenizer st = new StringTokenizer(command, " ");
         String command2 = st.nextToken();
-		
+
 		if (command2.equalsIgnoreCase("Buy"))
         {
             if (st.countTokens() < 1) return;
@@ -128,35 +128,35 @@ public class L2FishermanInstance extends L2FolkInstance
         {
         	showSellWindow(player);
         }
-		else 
+		else
 		{
 			super.onBypassFeedback(player, command);
 		}
-	}	
-    
+	}
+
 	public void showSkillList(L2PcInstance player)
-	{		
+	{
 		L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(player);
 		AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Fishing);
-        
+
 		int counts = 0;
 
         for (L2SkillLearn s : skills)
 		{
 			L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
-            
+
 			if (sk == null)
-				continue;	
-            
+				continue;
+
 			counts++;
 			asl.addSkill(s.getId(), s.getLevel(), s.getLevel(), s.getSpCost(), 1);
 		}
-        
+
 		if (counts == 0)
 		{
 		    NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		    int minlevel = SkillTreeTable.getInstance().getMinLevelForNewSkill(player);
-            
+
 		    if (minlevel > 0)
             {
                 // No more skills to learn, come back when you level.
@@ -174,11 +174,11 @@ public class L2FishermanInstance extends L2FolkInstance
                 player.sendPacket(html);
 		    }
 		}
-		else 
+		else
 		{
 		    player.sendPacket(asl);
 		}
-        
+
 		player.sendPacket(new ActionFailed());
 	}
 }

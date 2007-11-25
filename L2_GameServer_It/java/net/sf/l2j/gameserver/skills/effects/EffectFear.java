@@ -23,7 +23,6 @@ import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
@@ -38,7 +37,7 @@ import net.sf.l2j.gameserver.skills.Env;
 final class EffectFear extends L2Effect
 {
 	public static final int FEAR_RANGE = 500;
-	
+
 	public EffectFear(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -49,7 +48,7 @@ final class EffectFear extends L2Effect
 	{
 		return EffectType.FEAR;
 	}
-	
+
 	/** Notify started */
 	@Override
 	public void onStart()

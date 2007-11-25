@@ -51,7 +51,7 @@ public class OnVehicleCheckLocation extends L2GameServerPacket
 	protected
 	void writeImpl()
 	{
-		
+
 		writeC(0x5b);
 		writeD(_boat.getObjectId());
 		writeD(_x);

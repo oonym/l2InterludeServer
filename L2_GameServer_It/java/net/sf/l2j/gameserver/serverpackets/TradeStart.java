@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class TradeStart extends L2GameServerPacket
@@ -31,13 +31,13 @@ public class TradeStart extends L2GameServerPacket
 	private static final String _S__2E_TRADESTART = "[S] 1E TradeStart";
 	private L2PcInstance _activeChar;
 	private L2ItemInstance[] _itemList;
-	
+
 	public TradeStart (L2PcInstance player)
 	{
 		_activeChar = player;
         _itemList = _activeChar.getInventory().getAvailableItems(true);
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{//0x2e TradeStart   d h (h dddhh dhhh)
@@ -47,7 +47,7 @@ public class TradeStart extends L2GameServerPacket
 		writeC(0x1E);
 		writeD(_activeChar.getActiveTradeList().getPartner().getObjectId());
 		//writeD((_activeChar != null || _activeChar.getTransactionRequester() != null)? _activeChar.getTransactionRequester().getObjectId() : 0);
-		
+
 		writeH(_itemList.length);
 		for (L2ItemInstance item : _itemList)//int i = 0; i < count; i++)
 		{

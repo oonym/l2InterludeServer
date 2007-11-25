@@ -27,7 +27,7 @@ public class BinaryNodeHeap
 {
 	private final Node[] _list;
 	private int _size;
-	
+
 	public BinaryNodeHeap(int size)
 	{
 		_list = new Node[size+1];
@@ -69,7 +69,7 @@ public class BinaryNodeHeap
 			{
 				if (_list[cpos].getCost() >= _list[dblcpos].getCost())
 					pos = dblcpos;
-			    if (_list[pos].getCost() >= _list[dblcpos+1].getCost())			    
+			    if (_list[pos].getCost() >= _list[dblcpos+1].getCost())
 			    	pos = dblcpos+1;
 			}
 			else if (dblcpos <= _size)
@@ -77,7 +77,7 @@ public class BinaryNodeHeap
 				if (_list[cpos].getCost() >= _list[dblcpos].getCost())
 					pos = dblcpos;
 			}
-			
+
 			if (cpos != pos)
 			{
 				temp = _list[cpos];

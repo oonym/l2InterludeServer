@@ -34,9 +34,9 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.util.Rnd;
 
 /**
- * 
+ *
  * @author FBIagent 11/12/2006
- * 
+ *
  */
 
 public class ExtractableItems implements IItemHandler
@@ -116,7 +116,7 @@ public class ExtractableItems implements IItemHandler
 		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar
 				.getTarget(), true);
 	}
-    
+
     public int[] getItemIds()
     {
     	return ExtractableItemsData.getInstance().itemIDs();

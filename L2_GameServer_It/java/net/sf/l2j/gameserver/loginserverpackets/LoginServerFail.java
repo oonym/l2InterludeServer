@@ -29,7 +29,7 @@ public class LoginServerFail extends LoginServerBasePacket
 	                                        "Reason: id reserved",
 	                                        "Reason: no free ID",
 	                                        "Not authed",
-	                                        "Reason: already logged in"}; 
+	                                        "Reason: already logged in"};
 	private int _reason;
 	/**
 	 * @param decrypt
@@ -39,15 +39,15 @@ public class LoginServerFail extends LoginServerBasePacket
 		super(decrypt);
 		_reason = readC();
 	}
-	
+
 	public String getReasonString()
 	{
 		return REASONS[_reason];
 	}
-	
+
 	public int getReason()
 	{
 		return _reason;
 	}
-	
+
 }

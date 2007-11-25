@@ -21,7 +21,7 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 
 /**
- * 
+ *
  *
  * @author  -Wooden-
  */
@@ -45,7 +45,7 @@ public class PackageSendableList extends L2GameServerPacket
 	void writeImpl()
 	{
 		writeC(0xC3);
-		
+
 		writeD(_playerObjId);
 		writeD(getClient().getActiveChar().getAdena());
 		writeD(_items.length);
@@ -63,7 +63,7 @@ public class PackageSendableList extends L2GameServerPacket
 			writeH(0x00);
 			writeD(item.getObjectId()); // some item identifier later used by client to answer (see RequestPackageSend) not item id nor object id maybe some freight system id??
 		}
-		
+
 	}
 
 	/**
@@ -74,5 +74,5 @@ public class PackageSendableList extends L2GameServerPacket
 	{
 		return _S__C3_PACKAGESENDABLELIST;
 	}
-	
+
 }

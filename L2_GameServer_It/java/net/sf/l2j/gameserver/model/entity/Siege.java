@@ -35,6 +35,7 @@ import net.sf.l2j.gameserver.instancemanager.MercTicketManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeGuardManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager.SiegeSpawn;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2SiegeClan;
@@ -58,38 +59,38 @@ public class Siege
     // Message to add/check
     //  id=17  msg=[Castle siege has begun.] c3_attr1=[SystemMsg_k.17]
     //  id=18  msg=[Castle siege is over.]   c3_attr1=[SystemMsg_k.18]
-    //  id=288 msg=[The castle gate has been broken down.]  
-    //  id=291 msg=[Clan $s1 is victorious over $s2's castle siege!]        
-    //  id=292 msg=[$s1 has announced the castle siege time.]       
-    //  - id=293 msg=[The registration term for $s1 has ended.]       
-    //  - id=358 msg=[$s1 hour(s) until castle siege conclusion.]     
+    //  id=288 msg=[The castle gate has been broken down.]
+    //  id=291 msg=[Clan $s1 is victorious over $s2's castle siege!]
+    //  id=292 msg=[$s1 has announced the castle siege time.]
+    //  - id=293 msg=[The registration term for $s1 has ended.]
+    //  - id=358 msg=[$s1 hour(s) until castle siege conclusion.]
     //  - id=359 msg=[$s1 minute(s) until castle siege conclusion.]
-    //  - id=360 msg=[Castle siege $s1 second(s) left!]       
-    //  id=640 msg=[You have failed to refuse castle defense aid.]    
+    //  - id=360 msg=[Castle siege $s1 second(s) left!]
+    //  id=640 msg=[You have failed to refuse castle defense aid.]
     //  id=641 msg=[You have failed to approve castle defense aid.]
-    //  id=644 msg=[You are not yet registered for the castle siege.]       
-    //  - id=645 msg=[Only clans with Level 4 and higher may register for a castle siege.]    
-    //  id=646 msg=[You do not have the authority to modify the castle defender list.]     
-    //  - id=688 msg=[The clan that owns the castle is automatically registered on the defending side.]       
-    //  id=689 msg=[A clan that owns a castle cannot participate in another siege.]        
-    //  id=690 msg=[You cannot register on the attacking side because you are part of an alliance with the clan that owns the castle.]     
-    //  id=718 msg=[The castle gates cannot be opened and closed during a siege.]  
-    //  - id=295 msg=[$s1's siege was canceled because there were no clans that participated.]        
-    //  id=659 msg=[This is not the time for siege registration and so registrations cannot be accepted or rejected.]      
-    //  - id=660 msg=[This is not the time for siege registration and so registration and cancellation cannot be done.]      
-    //  id=663 msg=[The siege time has been declared for $s. It is not possible to change the time after a siege time has been declared. Do you want to continue?] 
-    //  id=667 msg=[You are registering on the attacking side of the $s1 siege. Do you want to continue?]  
-    //  id=668 msg=[You are registering on the defending side of the $s1 siege. Do you want to continue?]  
+    //  id=644 msg=[You are not yet registered for the castle siege.]
+    //  - id=645 msg=[Only clans with Level 4 and higher may register for a castle siege.]
+    //  id=646 msg=[You do not have the authority to modify the castle defender list.]
+    //  - id=688 msg=[The clan that owns the castle is automatically registered on the defending side.]
+    //  id=689 msg=[A clan that owns a castle cannot participate in another siege.]
+    //  id=690 msg=[You cannot register on the attacking side because you are part of an alliance with the clan that owns the castle.]
+    //  id=718 msg=[The castle gates cannot be opened and closed during a siege.]
+    //  - id=295 msg=[$s1's siege was canceled because there were no clans that participated.]
+    //  id=659 msg=[This is not the time for siege registration and so registrations cannot be accepted or rejected.]
+    //  - id=660 msg=[This is not the time for siege registration and so registration and cancellation cannot be done.]
+    //  id=663 msg=[The siege time has been declared for $s. It is not possible to change the time after a siege time has been declared. Do you want to continue?]
+    //  id=667 msg=[You are registering on the attacking side of the $s1 siege. Do you want to continue?]
+    //  id=668 msg=[You are registering on the defending side of the $s1 siege. Do you want to continue?]
     //  id=669 msg=[You are canceling your application to participate in the $s1 siege battle. Do you want to continue?]
-    //  id=707 msg=[You cannot teleport to a village that is in a siege.]  
+    //  id=707 msg=[You cannot teleport to a village that is in a siege.]
     //  - id=711 msg=[The siege of $s1 has started.]
     //  - id=712 msg=[The siege of $s1 has finished.]
-    //  id=844 msg=[The siege to conquer $s1 has begun.]    
-    //  - id=845 msg=[The deadline to register for the siege of $s1 has passed.]      
-    //  - id=846 msg=[The siege of $s1 has been canceled due to lack of interest.]    
-    //  - id=856 msg=[The siege of $s1 has ended in a draw.]  
-    //  id=285 msg=[Clan $s1 has succeeded in engraving the ruler!] 
-    //  - id=287 msg=[The opponent clan has begun to engrave the ruler.]           
+    //  id=844 msg=[The siege to conquer $s1 has begun.]
+    //  - id=845 msg=[The deadline to register for the siege of $s1 has passed.]
+    //  - id=846 msg=[The siege of $s1 has been canceled due to lack of interest.]
+    //  - id=856 msg=[The siege of $s1 has ended in a draw.]
+    //  id=285 msg=[Clan $s1 has succeeded in engraving the ruler!]
+    //  - id=287 msg=[The opponent clan has begun to engrave the ruler.]
 
     public static enum TeleportWhoType {
         All, Attacker, DefenderNotOwner, Owner, Spectator
@@ -296,26 +297,26 @@ public class Siege
     {
         if (sc != null) getDefenderClans().remove(sc);
     }
-    
+
     private void removeAttacker(L2SiegeClan sc)
     {
         if (sc != null) getAttackerClans().remove(sc);
     }
-    
+
     private void addDefender(L2SiegeClan sc, SiegeClanType type)
     {
-        if(sc == null) return; 
+        if(sc == null) return;
         sc.setType(type);
         getDefenderClans().add(sc);
     }
-    
+
     private void addAttacker(L2SiegeClan sc)
     {
-        if(sc == null) return; 
+        if(sc == null) return;
         sc.setType(SiegeClanType.ATTACKER);
         getAttackerClans().add(sc);
     }
-    
+
     /**
      * When control of castle changed during siege<BR><BR>
      */
@@ -336,7 +337,7 @@ public class Siege
                 return;
             }
             if (getCastle().getOwnerId() > 0) {
-                                
+
                 int allyId = ClanTable.getInstance().getClan(getCastle().getOwnerId()).getAllyId();
                 if (getDefenderClans().size() == 0) // If defender doesn't exist (Pc vs Npc)
                 // and only an alliance attacks
@@ -347,13 +348,13 @@ public class Siege
                         boolean allinsamealliance = true;
                         for (L2SiegeClan sc : getAttackerClans())
                         {
-                            if(sc != null) 
+                            if(sc != null)
                             {
                                 if(ClanTable.getInstance().getClan(sc.getClanId()).getAllyId() != allyId)
                                     allinsamealliance = false;
                             }
                         }
-                        if(allinsamealliance) 
+                        if(allinsamealliance)
                         {
                             L2SiegeClan sc_newowner = getAttackerClan(getCastle().getOwnerId());
                             removeAttacker(sc_newowner);
@@ -363,7 +364,7 @@ public class Siege
                         }
                     }
                 }
-                
+
                 for (L2SiegeClan sc : getDefenderClans())
                 {
                     if(sc != null) {
@@ -371,16 +372,16 @@ public class Siege
                         addAttacker(sc);
                     }
                 }
-                
+
                 L2SiegeClan sc_newowner = getAttackerClan(getCastle().getOwnerId());
                 removeAttacker(sc_newowner);
                 addDefender(sc_newowner, SiegeClanType.OWNER);
-                
+
                 // The player's clan is in an alliance
                 if (allyId != 0)
                 {
                     L2Clan[] clanList = ClanTable.getInstance().getClans();
-                    
+
                     for (L2Clan clan : clanList) {
                         if (clan.getAllyId() == allyId) {
                             L2SiegeClan sc = getAttackerClan(clan.getClanId());
@@ -393,7 +394,7 @@ public class Siege
                 }
                 teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.SiegeFlag); // Teleport to the second closest town
                 teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town);     // Teleport to the second closest town
-                
+
                 removeDefenderFlags(); 		 // Removes defenders' flags
                 getCastle().removeUpgrade(); // Remove all castle upgrade
                 getCastle().spawnDoor(true); // Respawn door to castle but make them weaker (50% hp)
@@ -412,17 +413,17 @@ public class Siege
             if (getAttackerClans().size() <= 0)
             {
                 SystemMessage sm;
-                if (getCastle().getOwnerId() <= 0) 
+                if (getCastle().getOwnerId() <= 0)
             		sm = new SystemMessage(SystemMessageId.SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST);
                 else
                     sm = new SystemMessage(SystemMessageId.S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED);
                 sm.addString(getCastle().getName());
-                Announcements.getInstance().announceToAll(sm);  
+                Announcements.getInstance().announceToAll(sm);
                 return;
             }
 
             _isNormalSide = true; // Atk is now atk
-            _isInProgress = true; // Flag so that same siege instance cannot be started again 
+            _isInProgress = true; // Flag so that same siege instance cannot be started again
 
             loadSiegeClan(); // Load siege clan from db
             updatePlayerSiegeStateFlags(false);
@@ -434,7 +435,7 @@ public class Siege
             spawnSiegeGuard(); // Spawn siege guard
             MercTicketManager.getInstance().deleteTickets(getCastle().getCastleId()); // remove the tickets from the ground
             _defenderRespawnDelayPenalty = 0; // Reset respawn delay
-            
+
             getCastle().getZone().updateZoneStatusForCharactersInside();
 
             // Schedule a task to prepare auto siege end
@@ -460,7 +461,7 @@ public class Siege
     		getCastle().getZone().announceToPlayers(message);
     		return;
     	}
-    	
+
         // Get all players
         for (L2PcInstance player : L2World.getInstance().getAllPlayers())
         {
@@ -498,7 +499,7 @@ public class Siege
             }
         }
     }
-    
+
     /**
      * Approve clan as defender for siege<BR><BR>
      * @param clanId The int of player's clan id
@@ -561,7 +562,7 @@ public class Siege
             statement.execute();
             statement.close();
 
-            if (getCastle().getOwnerId() > 0) 
+            if (getCastle().getOwnerId() > 0)
             {
             	PreparedStatement statement2 = con.prepareStatement("DELETE FROM siege_clans WHERE clan_id=?");
             	statement2.setInt(1, getCastle().getOwnerId());
@@ -685,7 +686,7 @@ public class Siege
         for (L2PcInstance player : L2World.getInstance().getAllPlayers())
         {
             // quick check from player states, which don't include siege number however
-        	if (!player.isInsideZone(L2PcInstance.ZONE_SIEGE) || player.getSiegeState() != 0) continue;
+        	if (!player.isInsideZone(L2Character.ZONE_SIEGE) || player.getSiegeState() != 0) continue;
         	if ( checkIfInZone(player.getX(), player.getY(), player.getZ()))
         		players.add(player);
         }
@@ -726,12 +727,12 @@ public class Siege
 
     public void registerAttacker(L2PcInstance player, boolean force)
     {
-        
+
     	if(player.getClan() == null) return;
     	int allyId = 0;
     	if (getCastle().getOwnerId() != 0)
     		allyId = ClanTable.getInstance().getClan(getCastle().getOwnerId()).getAllyId();
-    	if (allyId != 0) 
+    	if (allyId != 0)
     	{
     		if(player.getClan().getAllyId() == allyId && !force)
     		{
@@ -795,7 +796,7 @@ public class Siege
 
     /**
      * Remove clan from siege<BR><BR>
-     * @param player The L2PcInstance of player/clan being removed 
+     * @param player The L2PcInstance of player/clan being removed
      */
     public void removeSiegeClan(L2Clan clan)
     {
@@ -806,7 +807,7 @@ public class Siege
 
     /**
      * Remove clan from siege<BR><BR>
-     * @param player The L2PcInstance of player/clan being removed 
+     * @param player The L2PcInstance of player/clan being removed
      */
     public void removeSiegeClan(L2PcInstance player)
     {
@@ -1054,7 +1055,7 @@ public class Siege
             if (sc != null) sc.removeFlags();
         }
     }
-    
+
     /** Remove flags from defenders. */
     private void removeDefenderFlags()
     {
@@ -1063,7 +1064,7 @@ public class Siege
             if (sc != null) sc.removeFlags();
         }
     }
-    
+
     /** Save castle siege related to database. */
     private void saveCastleSiege()
     {
@@ -1083,7 +1084,7 @@ public class Siege
             statement.setLong(1, getSiegeDate().getTimeInMillis());
             statement.setInt(2, getCastle().getCastleId());
             statement.execute();
-            
+
             statement.close();
         }
         catch (Exception e)
@@ -1205,12 +1206,12 @@ public class Siege
         for (SiegeSpawn _sp: SiegeManager.getInstance().getArtefactSpawnList(Id))
         {
         	L2ArtefactInstance art;
-        	
+
         	art = new L2ArtefactInstance(IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(_sp.getNpcId()));
         	art.setCurrentHpMp(art.getMaxHp(), art.getMaxMp());
         	art.setHeading(_sp.getLocation().getHeading());
         	art.spawnMe(_sp.getLocation().getX(),_sp.getLocation().getY(),_sp.getLocation().getZ() + 50);
-        	
+
         	_artifacts.add(art);
         }
     }
@@ -1225,21 +1226,21 @@ public class Siege
         for (SiegeSpawn _sp: SiegeManager.getInstance().getControlTowerSpawnList(Id))
         {
         	L2ControlTowerInstance ct;
-        	
+
         	L2NpcTemplate template = NpcTable.getInstance().getTemplate(_sp.getNpcId());
-        	 
+
             template.getStatsSet().set("baseHpMax", _sp.getHp());
-            // TODO: Check/confirm if control towers have any special weapon resistances/vulnerabilities 
+            // TODO: Check/confirm if control towers have any special weapon resistances/vulnerabilities
             // template.addVulnerability(Stats.BOW_WPN_VULN,0);
             // template.addVulnerability(Stats.BLUNT_WPN_VULN,0);
             // template.addVulnerability(Stats.DAGGER_WPN_VULN,0);
-            
+
             ct = new L2ControlTowerInstance(IdFactory.getInstance().getNextId(), template);
 
 
             ct.setCurrentHpMp(ct.getMaxHp(), ct.getMaxMp());
             ct.spawnMe(_sp.getLocation().getX(),_sp.getLocation().getY(),_sp.getLocation().getZ() + 20);
-        	
+
             _controlTowers.add(ct);
         }
     }

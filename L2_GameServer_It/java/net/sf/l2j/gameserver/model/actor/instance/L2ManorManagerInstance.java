@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import net.sf.l2j.gameserver.TradeController;
@@ -38,15 +37,15 @@ import net.sf.l2j.gameserver.serverpackets.ExShowCropInfo;
 import net.sf.l2j.gameserver.serverpackets.ExShowManorDefaultInfo;
 import net.sf.l2j.gameserver.serverpackets.ExShowProcureCropDetail;
 import net.sf.l2j.gameserver.serverpackets.ExShowSeedInfo;
+import net.sf.l2j.gameserver.serverpackets.ExShowSellCropList;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
-import net.sf.l2j.gameserver.serverpackets.ExShowSellCropList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2ManorManagerInstance extends L2MerchantInstance {
-	
+
 	//private static Logger _log = Logger.getLogger(L2ManorManagerInstance.class.getName());
 
     public L2ManorManagerInstance(int objectId, L2NpcTemplate template)
@@ -54,19 +53,20 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
         super(objectId, template);
     }
 
-    public void onAction(L2PcInstance player) {
+    @Override
+	public void onAction(L2PcInstance player) {
     	player.setLastFolkNPC(this);
-        
+
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget()) {
             // Set the target of the L2PcInstance player
             player.setTarget(this);
-            
+
             // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
             // The player.getLevel() - getLevel() permit to display the correct color in the select window
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
             player.sendPacket(my);
-            
+
             // Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
             player.sendPacket(new ValidateLocation(this));
         } else {
@@ -74,12 +74,12 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
             // The player.getLevel() - getLevel() permit to display the correct color
             MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
             player.sendPacket(my);
-            
+
             // Calculate the distance between the L2PcInstance and the L2NpcInstance
             if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false)) {
                 // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
-                player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);                    
-                
+                player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+
                 // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
                 player.sendPacket(new ActionFailed());
             } else {
@@ -91,17 +91,17 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
 					html.replace("%npcname%", getName());
 					player.sendPacket(html);
                 } else if (!player.isGM()									 		// Player is not GM
-                		&& getCastle() != null && getCastle().getCastleId() > 0 	// Verification of castle 
+                		&& getCastle() != null && getCastle().getCastleId() > 0 	// Verification of castle
                 		&& player.getClan() != null 							 	// Player have clan
                 		&& getCastle().getOwnerId() == player.getClanId()  		    // Player's clan owning the castle
                 		&& player.isClanLeader() 									// Player is clan leader of clan (then he is the lord)
-                		) {        
+                		) {
                 		showMessageWindow(player, "manager-lord.htm");
                 } else {
                 	showMessageWindow(player, "manager.htm");
                 }
                 // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-                player.sendPacket(new ActionFailed());                  
+                player.sendPacket(new ActionFailed());
                 // player.setCurrentState(L2Character.STATE_IDLE);
             }
         }
@@ -124,28 +124,29 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
 
         player.sendPacket(new ActionFailed());
     }
-    
-    public void onBypassFeedback(L2PcInstance player, String command) {    	
-		if (command.startsWith("manor_menu_select")) { // input string format: 
+
+    @Override
+	public void onBypassFeedback(L2PcInstance player, String command) {
+		if (command.startsWith("manor_menu_select")) { // input string format:
 														  	  // manor_menu_select?ask=X&state=Y&time=X
 			if (CastleManorManager.getInstance().isUnderMaintenance()) {
 				player.sendPacket(new ActionFailed());
 				player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
 				return;
 			}
-			
+
 			String params = command.substring(command.indexOf("?")+1);
 			StringTokenizer st = new StringTokenizer(params, "&");
 			int ask   = Integer.parseInt(st.nextToken().split("=")[1]);
 			int state = Integer.parseInt(st.nextToken().split("=")[1]);
 			int time  = Integer.parseInt(st.nextToken().split("=")[1]);
-			
+
 			int castleId;
 			if (state == -1) // info for current manor
 				castleId = getCastle().getCastleId();
 			else 			 // info for requested manor
 				castleId = state;
-			
+
 			switch (ask) { // Main action
 			case 1: // Seed purchase
 				if (castleId != getCastle().getCastleId()) {
@@ -153,7 +154,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
 				} else {
 					L2TradeList tradeList = new L2TradeList(0);
 					FastList<SeedProduction> seeds = getCastle().getSeedProduction(CastleManorManager.PERIOD_CURRENT);
-	
+
 					for (SeedProduction s : seeds) {
 						L2ItemInstance item = ItemTable.getInstance().createDummyItem(s.getId());
 						item.setPriceToSell(s.getPrice());
@@ -161,7 +162,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
 						if ((item.getCount() > 0) && (item.getPriceToSell() > 0))
 							tradeList.addItem(item);
 					}
-	
+
 					BuyListSeed bl = new BuyListSeed(tradeList, castleId, player.getAdena());
 					player.sendPacket(bl);
 				}
@@ -204,7 +205,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
     public String getHtmlPath () {
     	return "data/html/manormanager/";
     }
-    
+
     @Override
     public String getHtmlPath(int npcId, int val) {
 		return "data/html/manormanager/manager.htm"; // Used only in parent method

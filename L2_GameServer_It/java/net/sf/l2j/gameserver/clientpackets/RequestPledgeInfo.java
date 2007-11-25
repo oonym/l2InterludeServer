@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeInfo;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.5.4.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPledgeInfo extends L2GameClientPacket
@@ -38,7 +38,7 @@ public final class RequestPledgeInfo extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(RequestPledgeInfo.class.getName());
 
 	private int _clanId;
-	
+
 	@Override
 	protected void readImpl()
 	{
@@ -75,7 +75,7 @@ public final class RequestPledgeInfo extends L2GameClientPacket
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

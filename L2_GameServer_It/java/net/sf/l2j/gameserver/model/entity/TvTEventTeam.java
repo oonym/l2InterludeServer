@@ -42,7 +42,7 @@ public class TvTEventTeam
 
 	/**
 	 * C'tor initialize the team<br><br>
-	 * 
+	 *
 	 * @param name<br>
 	 * @param coordinates<br>
 	 */
@@ -55,7 +55,7 @@ public class TvTEventTeam
 
 	/**
 	 * Adds a player to the team<br><br>
-	 * 
+	 *
 	 * @param playerInstance<br>
 	 * @return boolean<br>
 	 */
@@ -69,7 +69,7 @@ public class TvTEventTeam
 			String playerName = playerInstance.getName();
 
 			_participatedPlayers.put(playerName, playerInstance);
-			
+
 			if (!_participatedPlayerNames.contains(playerName))
 				_participatedPlayerNames.add(playerName);
 		}
@@ -79,7 +79,7 @@ public class TvTEventTeam
 
 	/**
 	 * Removes a player from the team<br><br>
-	 * 
+	 *
 	 * @param playerName<br>
 	 */
 	public void removePlayer(String playerName)
@@ -113,7 +113,7 @@ public class TvTEventTeam
 
 	/**
 	 * Is given player in this team?<br><br>
-	 * 
+	 *
 	 * @param playerName<br>
 	 * @return boolean<br>
 	 */
@@ -131,7 +131,7 @@ public class TvTEventTeam
 
 	/**
 	 * Returns the name of the team<br><br>
-	 * 
+	 *
 	 * @return String<br>
 	 */
 	public String getName()
@@ -141,7 +141,7 @@ public class TvTEventTeam
 
 	/**
 	 * Returns the coordinates of the team spot<br><br>
-	 * 
+	 *
 	 * @return int[]<br>
 	 */
 	public int[] getCoordinates()
@@ -151,7 +151,7 @@ public class TvTEventTeam
 
 	/**
 	 * Returns the points of the team<br><br>
-	 * 
+	 *
 	 * @return short<br>
 	 */
 	public short getPoints()
@@ -161,7 +161,7 @@ public class TvTEventTeam
 
 	/**
 	 * Returns name and instance of all participated players in FastMap<br><br>
-	 * 
+	 *
 	 * @return Map<String, L2PcInstance><br>
 	 */
 	public Map<String, L2PcInstance> getParticipatedPlayers()
@@ -178,7 +178,7 @@ public class TvTEventTeam
 
 	/**
 	 * Returns name of all participated players in Vector<br><br>
-	 * 
+	 *
 	 * @return Vector<String><br>
 	 */
 	public Vector<String> getParticipatedPlayerNames()
@@ -195,7 +195,7 @@ public class TvTEventTeam
 
 	/**
 	 * Returns player count of this team<br><br>
-	 * 
+	 *
 	 * @return int<br>
 	 */
 	public int getParticipatedPlayerCount()

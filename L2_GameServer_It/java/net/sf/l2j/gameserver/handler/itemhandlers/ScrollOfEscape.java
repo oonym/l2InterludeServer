@@ -40,7 +40,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.2.3.2.5 $ $Date: 2005/03/27 15:30:07 $
  */
 
@@ -52,7 +52,7 @@ public class ScrollOfEscape implements IItemHandler
     								  7125,7126,7127,7128,7129,7130,7131,7132,
     								  7133,7134,7135,7554,7555,7556,7557,7558,
     								  7559,7618,7619};
-    
+
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
      */
@@ -67,29 +67,29 @@ public class ScrollOfEscape implements IItemHandler
         	activeChar.sendPacket(new ActionFailed());
         	return;
         }
-        
-        if (activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isAllSkillsDisabled()) 
+
+        if (activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isAllSkillsDisabled())
             return;
-        
+
         if (activeChar.isSitting())
         {
             activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
             return;
         }
-        
+
         if (activeChar.isInOlympiadMode())
         {
             activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
             return;
         }
-        
+
         // Check to see if the player is in a festival.
-        if (activeChar.isFestivalParticipant()) 
+        if (activeChar.isFestivalParticipant())
         {
             activeChar.sendPacket(SystemMessage.sendString("You may not use an escape skill in a festival."));
             return;
         }
-        
+
         // Check to see if player is in jail
         if (activeChar.isInJail())
         {
@@ -102,17 +102,17 @@ public class ScrollOfEscape implements IItemHandler
         	activeChar.sendPacket(SystemMessage.sendString("You cannot use escape skills during a duel."));
             return;
         }
-        
+
 	//activeChar.abortCast();
         activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
         //SoE Animation section
         activeChar.setTarget(activeChar);
-        
+
         // Modified by Tempy - 28 Jul 05 \\
         // Check if this is a blessed scroll, if it is then shorten the cast time.
         int itemId = item.getItemId();
         int escapeSkill = (itemId == 1538 || itemId == 5858 || itemId == 5859 || itemId == 3958) ? 2036 : 2013;
-        
+
         if (!activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false))
             return;
 
@@ -124,7 +124,7 @@ public class ScrollOfEscape implements IItemHandler
         SetupGauge sg = new SetupGauge(0, skill.getHitTime());
         activeChar.sendPacket(sg);
         //End SoE Animation section
-        
+
         SystemMessage sm = new SystemMessage(SystemMessageId.S1_DISAPPEARED);
         sm.addItemName(itemId);
         activeChar.sendPacket(sm);
@@ -134,25 +134,25 @@ public class ScrollOfEscape implements IItemHandler
         activeChar.setSkillCast(ThreadPoolManager.getInstance().scheduleEffect(ef, skill.getHitTime()));
         activeChar.setSkillCastEndTime(10+GameTimeController.getGameTicks()+skill.getHitTime()/GameTimeController.MILLIS_IN_TICK);
     }
-    
+
     static class EscapeFinalizer implements Runnable
     {
         private L2PcInstance _activeChar;
         private int _itemId;
-        
+
         EscapeFinalizer(L2PcInstance activeChar, int itemId)
         {
             _activeChar = activeChar;
             _itemId = itemId;
         }
-        
+
         public void run()
         {
         	if (_activeChar.isDead()) return;
         	_activeChar.enableAllSkills();
-            
+
             _activeChar.setIsIn7sDungeon(false);
-            
+
             try {
                 if ((_itemId == 1830 || _itemId == 5859) && CastleManager.getInstance().getCastleByOwner(_activeChar.getClan()) != null) // escape to castle if own's one
                 { _activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Castle); }
@@ -270,7 +270,7 @@ public class ScrollOfEscape implements IItemHandler
             }
         }
     }
-    
+
     public int[] getItemIds()
     {
         return ITEM_IDS;
