@@ -132,9 +132,9 @@ public abstract class L2Character extends L2Object
 	// =========================================================
 	// Data Field
 	private List<L2Character> _attackByList;
-	private L2Character _attackingChar;
-	private L2Skill _attackingCharSkill;
-	private boolean _isAfraid                              = false; // Flee in a random direction
+	// private L2Character _attackingChar;
+	private L2Skill _lastSkillCast;
+	private boolean _isAfraid                               = false; // Flee in a random direction
 	private boolean _isConfused                             = false; // Attack anyone randomly
 	private boolean _isFakeDeath                            = false; // Fake death
 	private boolean _isFlying                               = false; //Is flying Wyvern?
@@ -1243,8 +1243,7 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 
-        setAttackingChar(this);
-        setAttackingCharSkill(skill);
+        setLastSkillCast(skill);
 
 		// Get the Identifier of the skill
 		int magicId = skill.getId();
@@ -1593,24 +1592,8 @@ public abstract class L2Character extends L2Object
 		return _attackByList;
 	}
 
-	public final L2Character getAttackingChar() { return _attackingChar; }
-	/**
-	 * Set _attackingChar to the L2Character that attacks this one.<BR><BR>
-	 * @param player The L2Character that attcks this one
-	 */
-	public final void setAttackingChar (L2Character player)
-	{
-		if (player == null || player == this) return;
-		_attackingChar = player;
-		addAttackerToAttackByList(player);
-	}
-
-	public final L2Skill getAttackingCharSkill() { return _attackingCharSkill; }
-	/**
-	 * Set _attackingCharSkill to the L2Skill used against this L2Character.<BR><BR>
-	 * @param skill The L2Skill used against this L2Character
-	 */
-	public void setAttackingCharSkill (L2Skill skill) { _attackingCharSkill = skill; }
+	public final L2Skill getLastSkillCast() { return _lastSkillCast; }
+	public void setLastSkillCast (L2Skill skill) { _lastSkillCast = skill; }
 
 	public final boolean isAfraid() { return _isAfraid; }
 	public final void setIsAfraid(boolean value) { _isAfraid = value; }
@@ -4876,7 +4859,8 @@ public abstract class L2Character extends L2Object
 	 */
 	public void breakCast()
 	{
-		if (isCastingNow() && canAbortCast())
+		// damage can only cancel magical skills
+		if (isCastingNow() && canAbortCast() && getLastSkillCast() != null && getLastSkillCast().isMagic())
 		{
 			// Abort the cast of the L2Character and send Server->Client MagicSkillCanceld/ActionFailed packet.
 			abortCast();
@@ -5354,9 +5338,6 @@ public abstract class L2Character extends L2Object
 		{
 			_skillCast = null;
 			enableAllSkills();
-			
-			setAttackingChar(null);
-			setAttackingCharSkill(null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
@@ -5412,8 +5393,6 @@ public abstract class L2Character extends L2Object
 			_skillCast = null;
 			enableAllSkills();
 			
-			setAttackingChar(null);
-			setAttackingCharSkill(null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 
 			_castEndTime = 0;
@@ -5451,9 +5430,6 @@ public abstract class L2Character extends L2Object
 		{
 			_skillCast = null;
 			enableAllSkills();
-			
-			setAttackingChar(null);
-			setAttackingCharSkill(null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
