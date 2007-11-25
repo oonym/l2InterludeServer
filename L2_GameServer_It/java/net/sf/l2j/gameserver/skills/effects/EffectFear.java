@@ -54,8 +54,11 @@ final class EffectFear extends L2Effect
 	@Override
 	public void onStart()
 	{
-		getEffected().startFear();
-		onActionTime();
+		if (!getEffected().isAfraid())
+		{
+			getEffected().startFear();
+			onActionTime();
+		}
 	}
 	
 	/** Notify exited */
