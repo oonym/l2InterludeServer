@@ -90,7 +90,7 @@ public class Harvest implements ISkillHandler {
 	 	                    if (_activeChar.isInParty())
 	 	                    	_activeChar.getParty().distributeItem(_activeChar, ritem, true, _target);
 	 	                    else {
-	 	                        L2ItemInstance item = _activeChar.getInventory().addItem("Manor", ritem.getItemId(), ritem.getCount() * Config.RATE_DROP_MANOR, _activeChar, _target);
+	 	                        L2ItemInstance item = _activeChar.getInventory().addItem("Manor", ritem.getItemId(), ritem.getCount(), _activeChar, _target);
 	 	                        if (iu != null) iu.addItem(item);
 	 	                        send = true;
 	 	                        total += ritem.getCount();
