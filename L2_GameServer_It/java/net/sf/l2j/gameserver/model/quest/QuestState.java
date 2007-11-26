@@ -227,9 +227,6 @@ public final class QuestState
 			}
 		}
 
-		if (getQuest().getQuestIntId() < 999 && isStarted())
-			getPlayer().sendPacket(new ExShowQuestMark(getQuest().getQuestIntId()));
-
 		Quest.updateQuestInDb(this);
 		QuestList ql = new QuestList();
 
@@ -407,6 +404,10 @@ public final class QuestState
 		// send a packet to the client to inform it of the quest progress (step change)
 		QuestList ql = new QuestList();
 		getPlayer().sendPacket(ql);
+		
+		int questId = getQuest().getQuestIntId();
+		if (questId > 0 && questId < 999 && cond > 0)
+			getPlayer().sendPacket(new ExShowQuestMark(questId));
 	}
 
 	/**
@@ -752,6 +753,13 @@ public final class QuestState
 	public void playSound(String sound)
     {
 		getPlayer().sendPacket(new PlaySound(sound));
+		
+		if(sound.equalsIgnoreCase("Itemsound.quest_itemget") || sound.equalsIgnoreCase("Itemsound.quest_middle"))
+		{
+			int questId = getQuest().getQuestIntId();
+			if (questId > 0 && questId < 999)
+				getPlayer().sendPacket(new ExShowQuestMark(questId));
+		}		
 	}
 
 	/**
