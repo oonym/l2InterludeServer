@@ -497,17 +497,23 @@ public final class L2World
         // Go through the FastList of region
         for (int i = 0; i < _regions.size(); i++)
         {
-            // Go through visible objects of the selected region
-            for (L2Object _object : _regions.get(i).getVisibleObjects())
+            try 
             {
-            	if (_object == null)
-            		continue;
-            	if (_object.equals(object))
-            		continue;   // skip our own character
-            	if (!_object.isVisible())
-            		continue;   // skip dying objects
+            	// Go through visible objects of the selected region
+            	for (L2Object _object : _regions.get(i).getVisibleObjects())
+            	{
+            		if (_object == null)
+            			continue;
+            		if (_object.equals(object))
+            			continue;   // skip our own character
+            		if (!_object.isVisible())
+            			continue;   // skip dying objects
 
-            	result.add(_object);
+            		result.add(_object);
+            	}
+            } catch (NullPointerException e) 
+            {
+            	// just suppress
             }
         }
 
