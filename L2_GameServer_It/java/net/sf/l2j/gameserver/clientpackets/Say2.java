@@ -108,7 +108,7 @@ public final class Say2 extends L2GameClientPacket
 		if (Config.DEBUG)
 			_log.info("Say2: Msg Type = '" + _type + "' Text = '" + _text + "'.");
 
-		if(_type >= CHAT_NAMES.length)
+		if(_type < 0 || _type >= CHAT_NAMES.length)
 		{
 			_log.warning("Say2: Invalid type: "+_type);
 			return;
