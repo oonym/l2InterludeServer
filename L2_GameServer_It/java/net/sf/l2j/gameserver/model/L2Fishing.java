@@ -127,20 +127,25 @@ public class L2Fishing implements Runnable
 		_fishAiTask = null;
 
         if (_fisher == null) return;
-
-		if (win)
-		{
-			int check = Rnd.get(100);
-			if (check <= 5) {
-				PenaltyMonster();
-			}
-			else {
-				_fisher.sendPacket(new SystemMessage(SystemMessageId.YOU_CAUGHT_SOMETHING));
-				_fisher.addItem("Fishing", _fishId, 1, null, true);
-			}
-		}
-		_fisher.EndFishing(win);
-		_fisher = null;
+        
+        try {
+        	if (win)
+        	{
+        		int check = Rnd.get(100);
+        		if (check <= 5) {
+        			PenaltyMonster();
+        		}
+        		else {
+        			_fisher.sendPacket(new SystemMessage(SystemMessageId.YOU_CAUGHT_SOMETHING));
+        			_fisher.addItem("Fishing", _fishId, 1, null, true);
+        		}
+        	}
+        	_fisher.EndFishing(win);
+        	_fisher = null;
+        } catch (NullPointerException e) 
+        {
+        	// fisher disconnected
+        }
 	}
 
 	protected void aiTask()
