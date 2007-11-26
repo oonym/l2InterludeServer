@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.model;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -50,7 +49,7 @@ public final class L2WorldRegion
     /** L2ObjectHashSet(L2Object) containing L2Object visible in this L2WorldRegion */
     private L2ObjectSet<L2Object> _visibleObjects;
 
-    private List<L2WorldRegion> _surroundingRegions;
+    private FastList<L2WorldRegion> _surroundingRegions;
     private int _tileX, _tileY;
     private Boolean _active = false;
     private ScheduledFuture _neighborsTask = null;
@@ -359,7 +358,7 @@ public final class L2WorldRegion
     /**
      * Return the FastList _surroundingRegions containing all L2WorldRegion around the current L2WorldRegion
      */
-    public List<L2WorldRegion> getSurroundingRegions()
+    public FastList<L2WorldRegion> getSurroundingRegions()
     {
         //change to return L2WorldRegion[] ?
         //this should not change after initialization, so maybe changes are not necessary
