@@ -429,14 +429,11 @@ public final class L2World
             // If object is a L2PcInstance, remove it from the L2ObjectHashSet(L2PcInstance) _allPlayers of this L2WorldRegion
             oldRegion.removeVisibleObject(object);
 
-
             // Go through all surrounding L2WorldRegion L2Characters
-            for (L2WorldRegion reg : oldRegion.getSurroundingRegions()) {
-                Iterator<L2Object> iter = reg.iterateVisibleObjects();
-                while (iter.hasNext())
+            for (L2WorldRegion reg : oldRegion.getSurroundingRegions()) 
+            {
+                for (L2Object obj : reg.getVisibleObjects())
                 {
-                    L2Object obj = iter.next();
-
                     // Remove the L2Object from the L2ObjectHashSet(L2Object) _knownObjects of the surrounding L2WorldRegion L2Characters
                     // If object is a L2PcInstance, remove the L2Object from the L2ObjectHashSet(L2PcInstance) _knownPlayer of the surrounding L2WorldRegion L2Characters
                     // If object is targeted by one of the surrounding L2WorldRegion L2Characters, cancel ATTACK and cast
@@ -500,26 +497,18 @@ public final class L2World
         // Go through the FastList of region
         for (int i = 0; i < _regions.size(); i++)
         {
-            // Create an Iterator to go through the visible L2Object of the L2WorldRegion
-            Iterator<L2Object> _objects = _regions.get(i).iterateVisibleObjects();
-
-            // Go through visible object of the selected region
-            try
+            // Go through visible objects of the selected region
+            for (L2Object _object : _regions.get(i).getVisibleObjects())
             {
-            	while (_objects.hasNext())
-            	{
-            		L2Object _object = _objects.next();
+            	if (_object == null)
+            		continue;
+            	if (_object.equals(object))
+            		continue;   // skip our own character
+            	if (!_object.isVisible())
+            		continue;   // skip dying objects
 
-            		if (_object == null)
-            			continue;
-            		if (_object.equals(object))
-            			continue;   // skip our own character
-            		if (!_object.isVisible())
-            			continue;   // skip dying objects
-
-            		result.add(_object);
-            	}
-            } catch (NullPointerException e) {}
+            	result.add(_object);
+            }
         }
 
         return result;
@@ -558,15 +547,11 @@ public final class L2World
         FastList<L2WorldRegion> _regions = object.getWorldRegion().getSurroundingRegions();
 
         // Go through the FastList of region
-        for (int i = 0; i < _regions.size(); i++) {
-
-            // Create an Iterator to go through the visible L2Object of the L2WorldRegion
-            Iterator<L2Object> _objects = _regions.get(i).iterateVisibleObjects();
-
-            // Go through visible object of the selected region
-            while (_objects.hasNext())
+        for (int i = 0; i < _regions.size(); i++) 
+        {
+            // Go through visible objects of the selected region
+            for (L2Object _object : _regions.get(i).getVisibleObjects())
             {
-                L2Object _object = _objects.next();
                 if (_object == null) continue;
                 if (_object.equals(object)) continue;   // skip our own character
 
@@ -625,14 +610,10 @@ public final class L2World
         // Go through visible object of the selected region
         for (int i = 0; i < _regions.size(); i++)
         {
-            // Create an Iterator to go through the visible L2Object of the L2WorldRegion
-            Iterator<L2Object> _objects = _regions.get(i).iterateVisibleObjects();
-
-            // Go through visible object of the selected region
-            while (_objects.hasNext())
+        	for (L2Object _object : _regions.get(i).getVisibleObjects())
             {
-                L2Object _object = _objects.next();
-                if (_object.equals(object)) continue;   // skip our own character
+        		if (_object == null) continue;
+        		if (_object.equals(object)) continue;   // skip our own character
 
                 int x1 = _object.getX();
                 int y1 = _object.getY();

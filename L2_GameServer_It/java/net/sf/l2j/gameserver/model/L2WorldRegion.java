@@ -371,9 +371,9 @@ public final class L2WorldRegion
         return _allPlayable.iterator();
     }
 
-    public Iterator<L2Object> iterateVisibleObjects()
+    public L2ObjectSet<L2Object> getVisibleObjects()
     {
-        return _visibleObjects.iterator();
+        return _visibleObjects;
     }
 
     public String getName()
