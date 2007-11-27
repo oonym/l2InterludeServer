@@ -540,7 +540,7 @@ public abstract class Quest
             statement.setString(2, var);
 			ResultSet rs = statement.executeQuery();
 			if (rs.first())
-				result =  rs.getString(0);
+				result =  rs.getString(1);
 			rs.close();
             statement.close();
         } catch (Exception e) {
