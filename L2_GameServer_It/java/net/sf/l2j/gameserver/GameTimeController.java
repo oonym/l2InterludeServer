@@ -235,8 +235,10 @@ public class GameTimeController
 		{
 			for (L2Character cha : _ended)
 			{
-				cha.getKnownList().updateKnownObjects();
-				cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
+				try {
+					cha.getKnownList().updateKnownObjects();
+					cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
+				} catch (NullPointerException e) {}
 			}
 		}
 	}
