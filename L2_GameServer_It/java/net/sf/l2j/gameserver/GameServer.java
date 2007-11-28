@@ -131,6 +131,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.EnergyStone;
 import net.sf.l2j.gameserver.handler.itemhandlers.ExtractableItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.Firework;
 import net.sf.l2j.gameserver.handler.itemhandlers.FishShots;
+import net.sf.l2j.gameserver.handler.itemhandlers.ForestMap;
 import net.sf.l2j.gameserver.handler.itemhandlers.Harvester;
 import net.sf.l2j.gameserver.handler.itemhandlers.MercTicket;
 import net.sf.l2j.gameserver.handler.itemhandlers.MysteryPotion;
@@ -455,6 +456,7 @@ public class GameServer
 		_itemHandler.registerItemHandler(new Book());
 		_itemHandler.registerItemHandler(new Remedy());
 		_itemHandler.registerItemHandler(new Scrolls());
+		_itemHandler.registerItemHandler(new ForestMap());
 		_itemHandler.registerItemHandler(new CrystalCarol());
 		_itemHandler.registerItemHandler(new SoulCrystals());
 		_itemHandler.registerItemHandler(new SevenSignsRecord());
