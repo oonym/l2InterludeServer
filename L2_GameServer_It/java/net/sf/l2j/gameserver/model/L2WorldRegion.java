@@ -315,7 +315,8 @@ public final class L2WorldRegion
     public void addVisibleObject(L2Object object)
     {
         if (Config.ASSERT) assert object.getWorldRegion() == this;
-
+        
+        if (object == null) return;
         _visibleObjects.put(object);
 
         if (object instanceof L2PlayableInstance)
