@@ -22,18 +22,20 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
+import net.sf.l2j.gameserver.serverpackets.RadarControl;
 import net.sf.l2j.gameserver.serverpackets.ShowMiniMap;
 
 /**
- * This class ...
- *
+ * This class provides handling for items that should display a map 
+ * when double clicked.
+ * 
  * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:30:07 $
  */
 
-public class WorldMap implements IItemHandler
+public class Maps implements IItemHandler
 {
 	// all the items ids that this handler knowns
-	private static final int[] ITEM_IDS = { 1665, 1863 };
+	private static final int[] ITEM_IDS = { 1665, 1863, 7063 };
 
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
@@ -42,8 +44,15 @@ public class WorldMap implements IItemHandler
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
-		L2PcInstance activeChar = (L2PcInstance)playable;
-		activeChar.sendPacket(new ShowMiniMap(item.getItemId()));
+		final L2PcInstance activeChar = (L2PcInstance)playable;
+		final int itemId=item.getItemId();
+		if (itemId == 7063 )
+		{
+			activeChar.sendPacket(new ShowMiniMap(1665));
+			activeChar.sendPacket(new RadarControl(0, 1, 51995, -51265, -3104));
+		}
+		else	
+			activeChar.sendPacket(new ShowMiniMap(itemId));
 		return;
 	}
 

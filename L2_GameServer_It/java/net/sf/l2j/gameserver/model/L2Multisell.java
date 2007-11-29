@@ -56,7 +56,7 @@ public class L2Multisell
             }
         }
 
-        _log.warning("[L2Multisell] cant find list with id: " + id);
+        _log.warning("[L2Multisell] can't find list with id: " + id);
         return null;
     }
 
