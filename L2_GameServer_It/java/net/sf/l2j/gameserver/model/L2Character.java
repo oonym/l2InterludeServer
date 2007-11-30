@@ -4126,9 +4126,7 @@ public abstract class L2Character extends L2Object
 				x = curX;
 				y = curY;
 
-				if (Config.DEBUG) _log.fine("already in range, no movement needed.");
-
-				// Notify the AI that the L2Character is arrived at destination
+				if(this instanceof L2Summon) ((L2Summon)this).setFollowStatus(false);
 				getAI().notifyEvent(CtrlEvent.EVT_ARRIVED, null);
 				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE); //needed?
 				return;

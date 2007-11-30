@@ -448,7 +448,7 @@ public class GeoEngine extends GeoData
         final int distance2 = dx*dx+dy*dy;
 
         if (distance2 == 0)
-        	return startpoint;
+        	return destiny;
         if (distance2 > 36100) // 190*190*16 = 3040 world coord
         {
             // Avoid too long check
