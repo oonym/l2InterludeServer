@@ -18,9 +18,6 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-import java.util.logging.Logger;
-
-import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.templates.L2Item;
@@ -29,91 +26,102 @@ import net.sf.l2j.gameserver.templates.L2Weapon;
 /**
  * Sdh(h dddhh [dhhh] d)
  * Sdh ddddd ddddd ddddd ddddd
- * @version $Revision: 1.1.2.1.2.4 $ $Date: 2005/03/29 23:15:10 $
+ * @version $Revision: 1.1.2.1.2.5 $ $Date: 2007/11/26 16:10:05 $
  */
 public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 {
-	private static Logger _log = Logger.getLogger(GMViewWarehouseWithdrawList.class.getName());
 	private static final String _S__95_GMViewWarehouseWithdrawList = "[S] 95 GMViewWarehouseWithdrawList";
 	private L2ItemInstance[] _items;
-    private String _playerName;
-    private L2PcInstance _activeChar;
-    private int _money;
+	private String _playerName;
+	private L2PcInstance _activeChar;
+	private int _money;
 
 	public GMViewWarehouseWithdrawList(L2PcInstance cha)
 	{
 		_activeChar  = cha;
-
 		_items = _activeChar.getWarehouse().getItems();
 		_playerName = _activeChar.getName();
-        _money = _activeChar.getAdena();
-
-        if (Config.DEBUG)
-        {
-	        for (L2ItemInstance item : _items)
-	            _log.fine("item:" + item.getItem().getName() +
-	                     " type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
-        }
+		_money = _activeChar.getAdena();
 	}
 
 	@Override
 	protected final void writeImpl()
 	{
-		try
+		writeC(0x95);
+		writeS(_playerName);
+		writeD(_money);
+		writeH(_items.length);
+
+		for (L2ItemInstance item : _items)
 		{
-	        writeC(0x95);
-	        writeS(_playerName);
-	        writeD(_money);
-	        writeH(_items.length);
+			writeH(item.getItem().getType1());
 
-	        for (L2ItemInstance item : _items)
+			writeD(item.getObjectId());
+			writeD(item.getItemId());
+			writeD(item.getCount());
+			writeH(item.getItem().getType2());
+			writeH(item.getCustomType1());
+
+			switch (item.getItem().getType2())
 			{
-	        	writeH(item.getItem().getType1()); // item type1 //unconfirmed, works
-
-	        	writeD(item.getObjectId()); //unconfirmed, works
-	            writeD(item.getItemId()); //unconfirmed, works
-	            writeD(item.getCount()); //unconfirmed, works
-	            writeH(item.getItem().getType2()); // item type2 //unconfirmed, works
-	            writeH(0x00);  // ?
-
-	            switch (item.getItem().getType2())
-	            {
-	                case L2Item.TYPE2_WEAPON:
-			            writeD(item.getItem().getBodyPart()); // ?
-			            writeH(item.getEnchantLevel()); // enchant level -confirmed
-			            writeH(((L2Weapon)item.getItem()).getSoulShotCount());  // ?
-			            writeH(((L2Weapon)item.getItem()).getSpiritShotCount());  // ?
-			            break;
-	                case L2Item.TYPE2_SHIELD_ARMOR:
-	                case L2Item.TYPE2_ACCESSORY:
-			            writeD(item.getItem().getBodyPart()); // ?
-			            writeH(item.getEnchantLevel()); // enchant level -confirmed
-			            writeH(0x00);  // ?
-			            writeH(0x00);  // ?
-			            break;
-	            }
-	            writeD(item.getObjectId()); // item id - confimed
-	            if (item.isAugmented())
+				case L2Item.TYPE2_WEAPON:
 				{
-					writeD(0x0000FFFF&item.getAugmentation().getAugmentationId());
-					writeD(item.getAugmentation().getAugmentationId()>>16);
+					writeD(item.getItem().getBodyPart());
+					writeH(item.getEnchantLevel());
+					writeH(((L2Weapon)item.getItem()).getSoulShotCount());
+					writeH(((L2Weapon)item.getItem()).getSpiritShotCount());
+					break;
 				}
-				else
+
+				case L2Item.TYPE2_SHIELD_ARMOR: 
+				case L2Item.TYPE2_ACCESSORY:
+				case L2Item.TYPE2_PET_WOLF:
+				case L2Item.TYPE2_PET_HATCHLING:
+				case L2Item.TYPE2_PET_STRIDER:
+				case L2Item.TYPE2_PET_BABY:
 				{
-					writeD(0x00);
-					writeD(0x00);
+					writeD(item.getItem().getBodyPart());
+					writeH(item.getEnchantLevel());
+					writeH(0x00);
+					writeH(0x00);
+					break;
+				}
+			}
+
+			writeD(item.getObjectId());
+
+			switch (item.getItem().getType2())
+			{
+				case L2Item.TYPE2_WEAPON:
+				{
+					if (item.isAugmented())
+					{
+						writeD(0x0000FFFF & item.getAugmentation().getAugmentationId());
+						writeD(item.getAugmentation().getAugmentationId() >> 16);
+					}
+					else
+					{
+						writeD(0);
+						writeD(0);
+					}
+
+					break;
+				}
+
+				case L2Item.TYPE2_SHIELD_ARMOR: 
+				case L2Item.TYPE2_ACCESSORY:
+				case L2Item.TYPE2_PET_WOLF:
+				case L2Item.TYPE2_PET_HATCHLING:
+				case L2Item.TYPE2_PET_STRIDER:
+				case L2Item.TYPE2_PET_BABY:
+				{
+					writeD(0);
+					writeD(0);
 				}
 			}
 		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
