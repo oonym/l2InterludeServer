@@ -82,7 +82,8 @@ abstract class AbstractAI implements Ctrl
                     stopFollow();
                     return;
                 }
-                if (!Util.checkIfInRange(_range, _actor, _followTarget, false))
+                // TODO: fix Z axis follow support, moveToLocation needs improvements
+                if (!_actor.isInsideRadius(_followTarget, _range, false, false))
                 	moveToPawn(_followTarget, _range);
             }
             catch (Throwable t)
@@ -483,10 +484,22 @@ abstract class AbstractAI implements Ctrl
         {
             if (offset < 10) offset = 10;
 
-            // don't send packets too often, check we already moving to this pawn
-            if (_clientMoving && _target == pawn && _clientMovingToPawnOffset == offset)
+            // prevent possible extra calls to this function (there is none?), 
+            // also don't send movetopawn packets too often
+            boolean sendPacket = true;
+            if (_clientMoving && _target == pawn) 
             {
-                if (GameTimeController.getGameTicks() < _moveToPawnTimeout) return;
+            	if (_clientMovingToPawnOffset == offset)
+            	{
+            		if (GameTimeController.getGameTicks() < _moveToPawnTimeout) return;
+                    sendPacket = false;	
+            	}
+            	else if (_actor.isOnGeodataPath()) 
+            	{
+            		// TODO: this doesn't mean much for now, calculation and
+            		// packet sending runs 1/sec (even when route is the same)
+            		if (GameTimeController.getGameTicks() < _moveToPawnTimeout) return;            		
+            	}
             }
 
             // Set AI movement data
@@ -506,19 +519,19 @@ abstract class AbstractAI implements Ctrl
             	_actor.sendPacket(new ActionFailed());
             	return;
             }
-            // Send a Server->Client packet MoveToPawn/CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
-            L2GameServerPacket msg;
 
+            // Send a Server->Client packet MoveToPawn/CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
             if (pawn instanceof L2Character) {
             	if(_actor.isOnGeodataPath())
-            		msg = new CharMoveToLocation(_actor);
-            	else
-            		msg = new MoveToPawn(_actor, (L2Character) pawn, offset);
+            	{
+            		_actor.broadcastPacket(new CharMoveToLocation(_actor));
+            		_clientMovingToPawnOffset = 0;
+            	}
+            	else if (sendPacket) // don't repeat unnecessarily
+            		_actor.broadcastPacket(new MoveToPawn(_actor, (L2Character) pawn, offset));
             }
-            else msg = new CharMoveToLocation(_actor);
-
-            _actor.broadcastPacket(msg);
-
+            else 
+            	_actor.broadcastPacket(new CharMoveToLocation(_actor));
         }
         else
         {

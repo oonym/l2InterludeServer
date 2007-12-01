@@ -3929,6 +3929,7 @@ public abstract class L2Character extends L2Object
 		final int curZ = super.getZ();
 
 		// Calculate distance (dx,dy) between current position and destination
+        // TODO: improve Z axis follow support when dx,dy are small
 		double dx = (x - curX);
 		double dy = (y - curY);
 		double distance = Math.sqrt(dx*dx + dy*dy);
@@ -4003,7 +4004,8 @@ public abstract class L2Character extends L2Object
 			// when geodata == 2, for all characters except mobs returning home (could be changed later to teleport if pathfinding fails)
 			// when geodata == 1, for l2playableinstance and l2riftinstance only
 			if ((Config.GEODATA == 2 &&	!(this instanceof L2Attackable && ((L2Attackable)this).isReturningToSpawnPoint())) 
-					|| this instanceof L2PlayableInstance 
+					|| this instanceof L2PcInstance 
+					|| (this instanceof L2Summon && !((L2Summon)this).getFollowStatus())
 					|| this instanceof L2RiftInvaderInstance)
 			{
 				if (isOnGeodataPath())
@@ -4381,7 +4383,7 @@ public abstract class L2Character extends L2Object
     }
 
     /**
-     * Check if this object is inside the given radius around the given object.<BR><BR>
+     * Check if this object is inside the given radius around the given object. Warning: doesn't cover collision radius!<BR><BR>
      *
      * @param object   the target
      * @param radius  the radius around the target
@@ -4396,7 +4398,7 @@ public abstract class L2Character extends L2Object
         return isInsideRadius(object.getX(), object.getY(), object.getZ(), radius, checkZ, strictCheck);
     }
     /**
-     * Check if this object is inside the given plan radius around the given point.<BR><BR>
+     * Check if this object is inside the given plan radius around the given point. Warning: doesn't cover collision radius!<BR><BR>
      *
      * @param x   X position of the target
      * @param y   Y position of the target
@@ -5352,7 +5354,7 @@ public abstract class L2Character extends L2Object
 			{
 				if (targets[i] instanceof L2Character)
 				{
-					if(!this.isInsideRadius(targets[i],escapeRange,true,false)) 
+					if (!Util.checkIfInRange(escapeRange, this, targets[i], true))
 						continue;
 					if(skill.isOffensive())
 					{
