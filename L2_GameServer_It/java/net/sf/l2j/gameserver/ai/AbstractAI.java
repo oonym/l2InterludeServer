@@ -38,13 +38,11 @@ import net.sf.l2j.gameserver.serverpackets.AutoAttackStart;
 import net.sf.l2j.gameserver.serverpackets.AutoAttackStop;
 import net.sf.l2j.gameserver.serverpackets.CharMoveToLocation;
 import net.sf.l2j.gameserver.serverpackets.Die;
-import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.serverpackets.MoveToLocationInVehicle;
 import net.sf.l2j.gameserver.serverpackets.MoveToPawn;
 import net.sf.l2j.gameserver.serverpackets.StopMove;
 import net.sf.l2j.gameserver.serverpackets.StopRotation;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
-import net.sf.l2j.gameserver.util.Util;
 
 /**
  * Mother class of all objects AI in the world.<BR><BR>

@@ -28,7 +28,6 @@ import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_MOVE_TO;
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Universe;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2CharPosition;

@@ -36,7 +36,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2VillageMasterInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ExStorageMaxCount;
-import net.sf.l2j.gameserver.serverpackets.PledgeShowInfoUpdate;
 import net.sf.l2j.gameserver.serverpackets.PledgeSkillList;
 import net.sf.l2j.gameserver.serverpackets.ShortCutRegister;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
