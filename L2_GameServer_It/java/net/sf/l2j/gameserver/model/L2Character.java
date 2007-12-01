@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.model;
 
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
+import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -287,10 +288,10 @@ public abstract class L2Character extends L2Object
 
 	public void onTeleported()
 	{
-		setIsTeleporting(false);
-
 		spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
 
+		setIsTeleporting(false);
+		
 		if (_isPendingRevive) doRevive();
 
 		// Modify the position of the pet if necessary
@@ -506,8 +507,6 @@ public abstract class L2Character extends L2Object
 
 		if (!(this instanceof L2PcInstance))
             onTeleported();
-		else
-			((L2PcInstance)this).revalidateZone(true);
 	}
 
 	public void teleToLocation(int x, int y, int z) { teleToLocation(x, y, z, false); }
@@ -3929,9 +3928,10 @@ public abstract class L2Character extends L2Object
 		final int curZ = super.getZ();
 
 		// Calculate distance (dx,dy) between current position and destination
-        // TODO: improve Z axis follow support when dx,dy are small
+        // TODO: improve Z axis move/follow support when dx,dy are small compared to dz
 		double dx = (x - curX);
 		double dy = (y - curY);
+		double dz = (z - curZ);
 		double distance = Math.sqrt(dx*dx + dy*dy);
 
 		if (Config.DEBUG) _log.fine("distance to target:" + distance);
@@ -3952,6 +3952,10 @@ public abstract class L2Character extends L2Object
 		// Check if a movement offset is defined or no distance to go through
 		if (offset > 0 || distance < 1)
 		{
+			// approximation for moving closer when z coordinates are different
+			// TODO: handle Z axis movement better
+			offset -= Math.abs(dz);  
+
 			// If no distance to go through, the movement is canceled
 			if (distance < 1 || distance - offset  <= 0)
 			{
@@ -4005,7 +4009,7 @@ public abstract class L2Character extends L2Object
 			// when geodata == 1, for l2playableinstance and l2riftinstance only
 			if ((Config.GEODATA == 2 &&	!(this instanceof L2Attackable && ((L2Attackable)this).isReturningToSpawnPoint())) 
 					|| this instanceof L2PcInstance 
-					|| (this instanceof L2Summon && !((L2Summon)this).getFollowStatus())
+					|| (this instanceof L2Summon && !(this.getAI().getIntention() == AI_INTENTION_FOLLOW)) // assuming intention_follow only when following owner
 					|| this instanceof L2RiftInvaderInstance)
 			{
 				if (isOnGeodataPath())

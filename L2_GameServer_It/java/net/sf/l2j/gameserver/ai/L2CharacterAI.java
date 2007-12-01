@@ -925,18 +925,9 @@ public class L2CharacterAI extends AbstractAI
         if (!_actor.isInsideRadius(target, offset, false, false))
         {
         	// Caller should be L2Playable and thinkAttack/thinkCast/thinkInteract/thinkPickUp
-        	if (Config.GEODATA > 0 && !GeoData.getInstance().canSeeTarget(_actor, target))
-        	{
-        		if (getFollowTarget() != null) {
-        			// cannot see and follow active
-        			stopFollow();
-        		}
-        		setIntention(AI_INTENTION_IDLE);
-        		return true;
-        	}
-
             if (getFollowTarget() != null) {
-                // prevent attack-follow into peace zones
+
+            	// prevent attack-follow into peace zones
             	if(getAttackTarget() != null && _actor instanceof L2PlayableInstance && target instanceof L2PlayableInstance)
                 {
                     if(getAttackTarget() == getFollowTarget())
@@ -974,12 +965,13 @@ public class L2CharacterAI extends AbstractAI
             {
                 if (((L2Character)target).isMoving()) offset -= 100;
                 if (offset < 5) offset = 5;
+
             	startFollow((L2Character) target, offset);
             }
             else
             {
                 // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
-                moveToPawn(target, offset);
+            	moveToPawn(target, offset);
             }
             return true;
         }

@@ -36,6 +36,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FolkInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Rnd;
 
 /**
@@ -64,7 +65,7 @@ public class L2ControllableMobAI extends L2AttackableAI
     {
 		L2Attackable me = (L2Attackable)_actor;
 
-        if (!me.isInsideRadius(getForcedTarget(), MobGroupTable.FOLLOW_RANGE, false, false))
+		if (!Util.checkIfInRange(MobGroupTable.FOLLOW_RANGE, me, getForcedTarget(), true))
         {
 			int signX = (Rnd.nextInt(2) == 0) ? -1 : 1;
 			int signY = (Rnd.nextInt(2) == 0) ? -1 : 1;
@@ -149,7 +150,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 
 			for (L2Skill sk : skills)
             {
-				if (_actor.isInsideRadius(getAttackTarget(), sk.getCastRange(), false, true) //sk.getCastRange() * sk.getCastRange() >= dist2
+				if (Util.checkIfInRange(sk.getCastRange(), _actor, getAttackTarget(), true)
 						&& !_actor.isSkillDisabled(sk.getId())
 						&& _actor.getCurrentMp() > _actor.getStat().getMpConsume(sk))
                 {
@@ -194,7 +195,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 		try {
 			skills = _actor.getAllSkills();
 			dist2 = _actor.getPlanDistanceSq(target.getX(), target.getY());
-			range = _actor.getPhysicalAttackRange();
+			range = _actor.getPhysicalAttackRange() + _actor.getTemplate().collisionRadius + target.getTemplate().collisionRadius;;
 			max_range = range;
 		}
         catch (NullPointerException e) {
@@ -246,7 +247,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 			_actor.setTarget(getForcedTarget());
 			skills = _actor.getAllSkills();
 			dist2 = _actor.getPlanDistanceSq(getForcedTarget().getX(), getForcedTarget().getY());
-			range = _actor.getPhysicalAttackRange();
+			range = _actor.getPhysicalAttackRange() + _actor.getTemplate().collisionRadius + getForcedTarget().getTemplate().collisionRadius;
 			max_range = range;
 		}
         catch (NullPointerException e) {
@@ -328,7 +329,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 				_actor.setTarget(getAttackTarget());
 				skills = _actor.getAllSkills();
 				dist2 = _actor.getPlanDistanceSq(getAttackTarget().getX(), getAttackTarget().getY());
-				range = _actor.getPhysicalAttackRange();
+				range = _actor.getPhysicalAttackRange() + _actor.getTemplate().collisionRadius + getAttackTarget().getTemplate().collisionRadius;
 				max_range = range;
 			}
             catch (NullPointerException e) {

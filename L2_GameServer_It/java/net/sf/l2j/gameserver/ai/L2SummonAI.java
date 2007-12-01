@@ -40,7 +40,8 @@ public class L2SummonAI extends L2CharacterAI
     @Override
 	protected void onIntentionIdle()
     {
-        onIntentionActive();
+        stopFollow();
+    	onIntentionActive();
     }
 
     @Override

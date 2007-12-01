@@ -68,7 +68,7 @@ abstract class AbstractAI implements Ctrl
 
         public FollowTask(int range)
         {
-            _range = range;
+        	_range = range;
         }
 
         public void run()
@@ -82,9 +82,10 @@ abstract class AbstractAI implements Ctrl
                     stopFollow();
                     return;
                 }
-                // TODO: fix Z axis follow support, moveToLocation needs improvements
-                if (!_actor.isInsideRadius(_followTarget, _range, false, false))
+                if (!_actor.isInsideRadius(_followTarget, _range, true, false))
+                {
                 	moveToPawn(_followTarget, _range);
+                }
             }
             catch (Throwable t)
             {
@@ -496,9 +497,8 @@ abstract class AbstractAI implements Ctrl
             	}
             	else if (_actor.isOnGeodataPath()) 
             	{
-            		// TODO: this doesn't mean much for now, calculation and
-            		// packet sending runs 1/sec (even when route is the same)
-            		if (GameTimeController.getGameTicks() < _moveToPawnTimeout) return;            		
+            		// minimum time to calculate new route is 2 seconds
+            		if (GameTimeController.getGameTicks() < (_moveToPawnTimeout+10)) return;            		
             	}
             }
 

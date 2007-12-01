@@ -340,16 +340,18 @@ public final class L2World
         {
             L2PcInstance player = (L2PcInstance) object;
 
-            L2PcInstance tmp = _allPlayers.get(player.getName().toLowerCase());
-            if(tmp!= null)
+            if (!player.isTeleporting())
             {
-                _log.warning("Duplicate character!? Closing both characters ("+player.getName()+")");
-                player.closeNetConnection();
-                tmp.closeNetConnection();
-                return;
+            	L2PcInstance tmp = _allPlayers.get(player.getName().toLowerCase());
+            	if (tmp != null)
+            	{
+            		_log.warning("Duplicate character!? Closing both characters ("+player.getName()+")");
+            		player.closeNetConnection();
+            		tmp.closeNetConnection();
+            		return;
+            	}
+            	_allPlayers.put(player.getName().toLowerCase(), player);
             }
-
-            _allPlayers.put(player.getName().toLowerCase(), player);
         }
 
         // Get all visible objects contained in the _visibleObjects of L2WorldRegions
@@ -457,7 +459,8 @@ public final class L2World
             // If selected L2Object is a L2PcIntance, remove it from L2ObjectHashSet(L2PcInstance) _allPlayers of L2World
             if (object instanceof L2PcInstance)
             {
-                removeFromAllPlayers((L2PcInstance)object);
+                if (!((L2PcInstance)object).isTeleporting())
+                	removeFromAllPlayers((L2PcInstance)object);
 
                 // If selected L2Object is a GM L2PcInstance, remove it from Set(L2PcInstance) _gmList of GmListTable
                 //if (((L2PcInstance)object).isGM())
