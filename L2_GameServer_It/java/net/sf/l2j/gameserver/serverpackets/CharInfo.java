@@ -92,7 +92,8 @@ public class CharInfo extends L2GameServerPacket
 
 		if (_activeChar.getAppearance().getInvisible())
 		{
-			if (getClient().getActiveChar().isGM())
+			L2PcInstance tmp = getClient().getActiveChar();
+			if (tmp != null && tmp.isGM())
 				gmSeeInvis = true;
 			else
 				return;
