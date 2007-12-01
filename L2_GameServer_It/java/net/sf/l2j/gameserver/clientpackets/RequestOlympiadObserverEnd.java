@@ -48,7 +48,7 @@ public final class RequestOlympiadObserverEnd extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		activeChar.leaveOlympiadObserverMode();
+		if (activeChar.inObserverMode()) activeChar.leaveOlympiadObserverMode();
 	}
 
 	/* (non-Javadoc)
