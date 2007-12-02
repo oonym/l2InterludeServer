@@ -126,10 +126,19 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
     }
 
     @Override
-	public void onBypassFeedback(L2PcInstance player, String command) {
-		if (command.startsWith("manor_menu_select")) { // input string format:
-														  	  // manor_menu_select?ask=X&state=Y&time=X
-			if (CastleManorManager.getInstance().isUnderMaintenance()) {
+	public void onBypassFeedback(L2PcInstance player, String command) 
+    {
+		// BypassValidation Exploit plug.
+		if (player.getLastFolkNPC().getObjectId() != this.getObjectId())
+			return;
+		
+    	if (command.startsWith("manor_menu_select")) 
+    	{ 
+    		// input string format:
+			// manor_menu_select?ask=X&state=Y&time=X
+    		
+			if (CastleManorManager.getInstance().isUnderMaintenance()) 
+			{
 				player.sendPacket(new ActionFailed());
 				player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
 				return;

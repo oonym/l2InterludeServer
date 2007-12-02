@@ -191,7 +191,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		_html = _html.replaceAll(pattern, value);
 	}
 
-	public final void buildBypassCache(L2PcInstance activeChar)
+	private final void buildBypassCache(L2PcInstance activeChar)
 	{
         if (activeChar == null)
             return;

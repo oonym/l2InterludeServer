@@ -130,9 +130,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			// Navigate throught Manor windows
             else if (_command.startsWith("manor_menu_select?"))
             {
-            	if (!activeChar.validateBypass(_command))
-            		return;
-            	
             	L2Object object = activeChar.getTarget();
                 if (object instanceof L2NpcInstance)
                 {
