@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 import java.util.logging.Logger;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.clientpackets.RequestBypassToServer;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -155,7 +156,8 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	@Override
 	public void runImpl()
 	{
-		buildBypassCache(getClient().getActiveChar());
+		if (Config.BYPASS_VALIDATION)
+			buildBypassCache(getClient().getActiveChar());
 	}
 
 	public void setHtml(String text)
