@@ -3955,6 +3955,7 @@ public abstract class L2Character extends L2Object
 			// approximation for moving closer when z coordinates are different
 			// TODO: handle Z axis movement better
 			offset -= Math.abs(dz);  
+			if (offset < 1) offset = 1;
 
 			// If no distance to go through, the movement is canceled
 			if (distance < 1 || distance - offset  <= 0)
