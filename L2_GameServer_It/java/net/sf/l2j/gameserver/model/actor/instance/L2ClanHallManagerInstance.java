@@ -685,13 +685,13 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
     protected int validateCondition(L2PcInstance player)
     {
         if (getClanHall() == null) return COND_ALL_FALSE;
-    	if (player.isGM()) return COND_OWNER;
+        if (player.isGM()) return COND_OWNER;
         if (player.getClan() != null)
         {
             if (getClanHall().getOwnerId() == player.getClanId())
                 return COND_OWNER;
             else
-            	return COND_OWNER_FALSE;
+                return COND_OWNER_FALSE;
         }
         return COND_ALL_FALSE;
     }
@@ -778,8 +778,9 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 
         player.sendPacket(new ActionFailed());
     }
-    private void revalidateDeco(L2PcInstance player){
-		ClanHallDecoration bl = new ClanHallDecoration(ClanHallManager.getInstance().getClanHallByOwner(player.getClan()));
-		player.sendPacket(bl);
+    private void revalidateDeco(L2PcInstance player)
+    {
+        ClanHallDecoration bl = new ClanHallDecoration(ClanHallManager.getInstance().getClanHallByOwner(player.getClan()));
+        player.sendPacket(bl);
     }
 }

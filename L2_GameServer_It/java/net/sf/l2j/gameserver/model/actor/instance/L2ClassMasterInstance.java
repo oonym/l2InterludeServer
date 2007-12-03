@@ -58,42 +58,40 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	{
 		if (getObjectId() != player.getTargetId())
 		{
-			player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
-
-            if (Config.DEBUG)
-                _log.fine("ClassMaster selected:"+getObjectId());
+			if (Config.DEBUG)
+				_log.fine("ClassMaster selected:"+getObjectId());
 
 			player.setTarget(this);
-            player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
-			// correct location
+			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
+			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
 			player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
-            if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-            {
+			if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+			{
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 				return;
 			}
 
 			if (Config.DEBUG)
-                _log.fine("ClassMaster activated");
+				_log.fine("ClassMaster activated");
 
 			ClassId classId = player.getClassId();
 
 			int jobLevel = 0;
 			int level = player.getLevel();
-            ClassLevel lvl = PlayerClass.values()[classId.getId()].getLevel();
-            switch (lvl)
+			ClassLevel lvl = PlayerClass.values()[classId.getId()].getLevel();
+			switch (lvl)
 			{
-                case First:
-                    jobLevel = 1;
-                    break;
-                case Second:
-                    jobLevel = 2;
-                    break;
-                default:
-                    jobLevel = 3;
+				case First:
+					jobLevel = 1;
+					break;
+				case Second:
+					jobLevel = 2;
+					break;
+				default:
+					jobLevel = 3;
 			}
 
 			if (!Config.ALLOW_CLASS_MASTERS)

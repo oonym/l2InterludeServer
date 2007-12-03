@@ -41,13 +41,11 @@ import net.sf.l2j.gameserver.templates.StatsSet;
  */
 public final class L2FestivalGuideInstance extends L2FolkInstance
 {
-    //private static Logger _log = Logger.getLogger(L2FestivalGuideInstance.class.getName());
-
     protected int _festivalType;
     protected int _festivalOracle;
-	protected int _blueStonesNeeded;
-	protected int _greenStonesNeeded;
-	protected int _redStonesNeeded;
+    protected int _blueStonesNeeded;
+    protected int _greenStonesNeeded;
+    protected int _redStonesNeeded;
 
     /**
      * @param template

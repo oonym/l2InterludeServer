@@ -53,12 +53,12 @@ public final class L2MinionInstance extends L2MonsterInstance
 		super(objectId, template);
 	}
 
-    /** Return True if the L2Character is minion of RaidBoss. */
-    @Override
+	/** Return True if the L2Character is minion of RaidBoss. */
+	@Override
 	public boolean isRaid()
-    {
-        return (getLeader() instanceof L2RaidBossInstance);
-    }
+	{
+		return (getLeader() instanceof L2RaidBossInstance);
+	}
 
 	/**
 	 * Return the master of this L2MinionInstance.<BR><BR>
@@ -68,19 +68,18 @@ public final class L2MinionInstance extends L2MonsterInstance
 		return _master;
 	}
 
-    @Override
-    public void onSpawn()
-    {
-    	super.onSpawn();
-    	// Notify Leader that Minion has Spawned
-        getLeader().notifyMinionSpawned(this);
+	@Override
+	public void onSpawn()
+	{
+		super.onSpawn();
+		// Notify Leader that Minion has Spawned
+		getLeader().notifyMinionSpawned(this);
 
-        // check the region where this mob is, do not activate the AI if region is inactive.
-        L2WorldRegion region = L2World.getInstance().getRegion(getX(),getY());
-        if ((region !=null) && (!region.isActive()))
-            ((L2AttackableAI) getAI()).stopAITask();
-
-    }
+		// check the region where this mob is, do not activate the AI if region is inactive.
+		L2WorldRegion region = L2World.getInstance().getRegion(getX(),getY());
+		if ((region !=null) && (!region.isActive()))
+			((L2AttackableAI) getAI()).stopAITask();
+	}
 
 	/**
 	 * Set the master of this L2MinionInstance.<BR><BR>
@@ -93,18 +92,17 @@ public final class L2MinionInstance extends L2MonsterInstance
 		_master = leader;
 	}
 
-    /**
-     * Manages the doDie event for this L2MinionInstance.<BR><BR>
-     *
-     * @param killer The L2Character that killed this L2MinionInstance.<BR><BR>
-     */
-    @Override
+	/**
+	* Manages the doDie event for this L2MinionInstance.<BR><BR>
+	*
+	* @param killer The L2Character that killed this L2MinionInstance.<BR><BR>
+	*/
+	@Override
 	public boolean doDie(L2Character killer)
-    {
-    	if (!super.doDie(killer))
-    		return false;
-    	_master.notifyMinionDied(this);
-        return true;
-    }
-
+	{
+		if (!super.doDie(killer))
+			return false;
+		_master.notifyMinionDied(this);
+		return true;
+	}
 }

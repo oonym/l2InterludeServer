@@ -22,31 +22,9 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2RiftInvaderInstance extends L2MonsterInstance
 {
-	private byte _type;
-	private byte _room;
-
+	// Not longer needed since rift monster targeting control now is handled by the room zones for any mob
 	public L2RiftInvaderInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-	}
-
-	public byte getType()
-	{
-		return _type;
-	}
-
-	public byte getRoom()
-	{
-		return _room;
-	}
-
-	public void setType(byte type)
-	{
-		_type = type;
-	}
-
-	public void setRoom(byte room)
-	{
-		_room = room;
 	}
 }

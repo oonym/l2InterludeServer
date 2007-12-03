@@ -122,18 +122,18 @@ public class L2StaticObjectInstance extends L2Object
             // Calculate the distance between the L2PcInstance and the L2NpcInstance
             if (!player.isInsideRadius(this, INTERACTION_DISTANCE, false, false))
             {
-                    // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
-                    player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+                // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+                player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 
-                    // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
-                    player.sendPacket(new ActionFailed());
+                // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
+                player.sendPacket(new ActionFailed());
             } else {
 			if(_type == 2) {
 				String filename = "data/html/signboard.htm";
 				String content = HtmCache.getInstance().getHtm(filename);
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 
-				if (content == null) html.setHtml("<html><head><body>Signboard is missing:<br>"+filename+"</body></html>");
+				if (content == null) html.setHtml("<html><body>Signboard is missing:<br>"+filename+"</body></html>");
 				else html.setHtml(content);
 
 				player.sendPacket(html);

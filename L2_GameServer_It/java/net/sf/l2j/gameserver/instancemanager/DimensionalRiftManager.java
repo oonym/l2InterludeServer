@@ -36,7 +36,6 @@ import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Spawn;
-import net.sf.l2j.gameserver.model.SpawnListener;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
@@ -186,9 +185,6 @@ public class DimensionalRiftManager
                                         {
                                             attrs = spawn.getAttributes();
                                             mobId = Integer.parseInt(attrs.getNamedItem("mobId").getNodeValue());
-                                            //x = Integer.parseInt(attrs.getNamedItem("x").getNodeValue());
-                                            //y = Integer.parseInt(attrs.getNamedItem("y").getNodeValue());
-                                            //z = Integer.parseInt(attrs.getNamedItem("z").getNodeValue());
                                             delay = Integer.parseInt(attrs.getNamedItem("delay").getNodeValue());
                                             count = Integer.parseInt(attrs.getNamedItem("count").getNodeValue());
 
@@ -213,8 +209,6 @@ public class DimensionalRiftManager
 	                                                spawnDat.setLocz(z);
 	                                                spawnDat.setHeading(-1);
 	                                                spawnDat.setRespawnDelay(delay);
-	                                                L2Spawn.addSpawnListener(new RiftSpawnListener(type, roomId));
-
 	                                                SpawnTable.getInstance().addNewSpawn(spawnDat, false);
 	                                                _rooms.get(type).get(roomId).getSpawns().add(spawnDat);
 	                                                countGood++;
@@ -446,28 +440,6 @@ public class DimensionalRiftManager
                 if(spawn.getLastSpawn() != null)
                     spawn.getLastSpawn().deleteMe();
             }
-        }
-    }
-
-    private class RiftSpawnListener implements SpawnListener
-    {
-        private byte _type;
-        private byte _room;
-
-        public RiftSpawnListener(byte type, byte room)
-        {
-            _type = type;
-            _room = room;
-        }
-
-        public void npcSpawned(L2NpcInstance mob)
-        {
-        	if (mob instanceof L2RiftInvaderInstance)
-        	{
-	            L2RiftInvaderInstance rMob = (L2RiftInvaderInstance)mob;
-	            rMob.setType(_type);
-	            rMob.setType(_room);
-        	}
         }
     }
 

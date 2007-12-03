@@ -51,15 +51,15 @@ public class L2FolkInstance extends L2NpcInstance
 	public void showSkillList(L2PcInstance player, ClassId classId)
 	{
 		if (Config.DEBUG)
-            _log.fine("SkillList activated on: "+getObjectId());
+			_log.fine("SkillList activated on: "+getObjectId());
 
-        int npcId = getTemplate().npcId;
+		int npcId = getTemplate().npcId;
 
 		if (_classesToTeach == null)
-        {
+		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-            TextBuilder sb = new TextBuilder();
-			sb.append("<html><head><body>");
+			TextBuilder sb = new TextBuilder();
+			sb.append("<html><body>");
 			sb.append("I cannot teach you. My class list is empty.<br> Ask admin to fix it. Need add my npcid and classes to skill_learn.sql.<br>NpcId:"+npcId+", Your classId:"+player.getClassId().getId()+"<br>");
 			sb.append("</body></html>");
 			html.setHtml(sb.toString());
@@ -72,7 +72,7 @@ public class L2FolkInstance extends L2NpcInstance
         {
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();
-			sb.append("<html><head><body>");
+			sb.append("<html><body>");
 			sb.append("I cannot teach you any skills.<br> You must find your current class teachers.");
 			sb.append("</body></html>");
 			html.setHtml(sb.toString());
@@ -136,7 +136,7 @@ public class L2FolkInstance extends L2NpcInstance
         {
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();
-            sb.append("<html><head><body>");
+            sb.append("<html><body>");
             sb.append("I cannot teach you. My class list is empty.<br> Ask admin to fix it. Need add my npcid and classes to skill_learn.sql.<br>NpcId:"+npcId+", Your classId:"+player.getClassId().getId()+"<br>");
             sb.append("</body></html>");
             html.setHtml(sb.toString());
@@ -149,7 +149,7 @@ public class L2FolkInstance extends L2NpcInstance
         {
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();
-            sb.append("<html><head><body>");
+            sb.append("<html><body>");
             sb.append("I cannot teach you any skills.<br> You must find your current class teachers.");
             sb.append("</body></html>");
             html.setHtml(sb.toString());
@@ -161,7 +161,7 @@ public class L2FolkInstance extends L2NpcInstance
         {
         	NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             TextBuilder sb = new TextBuilder();
-            sb.append("<html><head><body>");
+            sb.append("<html><body>");
             sb.append("You must have 3rd class change quest completed.");
             sb.append("</body></html>");
             html.setHtml(sb.toString());
@@ -183,7 +183,7 @@ public class L2FolkInstance extends L2NpcInstance
         }
         if (counts == 0)
         {
-        	player.sendPacket(new SystemMessage(SystemMessageId.THERE_IS_NO_SKILL_THAT_ENABLES_ENCHANT));
+            player.sendPacket(new SystemMessage(SystemMessageId.THERE_IS_NO_SKILL_THAT_ENABLES_ENCHANT));
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
             int level = player.getLevel();
 
@@ -196,7 +196,7 @@ public class L2FolkInstance extends L2NpcInstance
             else
             {
                 TextBuilder sb = new TextBuilder();
-                sb.append("<html><head><body>");
+                sb.append("<html><body>");
                 sb.append("You've learned all skills for your class.<br>");
                 sb.append("</body></html>");
                 html.setHtml(sb.toString());
@@ -241,22 +241,18 @@ public class L2FolkInstance extends L2NpcInstance
 						}
 					}
 
-					String text =
-						"<html>\n"+
-						"<body>\n"+
-						"<center>Skill learning:</center>\n"+
-						"<br>\n";
+					String text = "<html><body><center>Skill learning:</center><br>";
 
 					if (!own_class)
                     {
 						String mages = player.getClassId().isMage() ? "fighters" : "mages";
 						text +=
-							"Skills of your class are the easiest to learn.<br>\n"+
-							"Skills of another class are harder.<br>\n"+
-							"Skills for another race are even more harder to learn.<br>\n"+
+							"Skills of your class are the easiest to learn.<br>"+
+							"Skills of another class are harder.<br>"+
+							"Skills for another race are even more hard to learn.<br>"+
 							"You can also learn skills of "+mages+", and they are"+
-							" the harders to learn!<br>\n"+
-							"<br>\n";
+							" the hardest to learn!<br>"+
+							"<br>";
 					}
 
 					// make a list of classes
@@ -284,12 +280,11 @@ public class L2FolkInstance extends L2NpcInstance
                     }
                     else
                     {
-                        text += "No Skills.<br>\n";
+                        text += "No Skills.<br>";
                     }
 
 					text +=
-						"</body>\n"+
-						"</html>";
+						"</body></html>";
 
 					insertObjectIdAndShowChatWindow(player, text);
 					player.sendPacket( new ActionFailed() );

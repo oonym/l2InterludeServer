@@ -53,11 +53,13 @@ public final class L2ChestInstance extends L2MonsterInstance
 		setMustRewardExpSp(true);
 	}
 
-	public synchronized boolean isInteracted() {
+	public synchronized boolean isInteracted()
+	{
 		return _isInteracted;
 	}
 
-	public synchronized void setInteracted() {
+	public synchronized void setInteracted()
+	{
 		_isInteracted = true;
 	}
 

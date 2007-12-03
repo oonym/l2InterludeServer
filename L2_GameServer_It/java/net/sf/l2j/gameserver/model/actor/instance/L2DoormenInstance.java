@@ -36,8 +36,6 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class L2DoormenInstance extends L2FolkInstance
 {
-    //private static Logger _log = Logger.getLogger(L2DoormenInstance.class.getName());
-
     private ClanHall _clanHall;
     private static int COND_ALL_FALSE = 0;
     private static int COND_BUSY_BECAUSE_OF_SIEGE = 1;
@@ -82,11 +80,9 @@ public class L2DoormenInstance extends L2FolkInstance
                 if (condition == COND_HALL_OWNER)
                 {
                     getClanHall().openCloseDoors(true);
-                    player.sendPacket(new NpcHtmlMessage(
-                    		                             getObjectId(),
-                                                         "<html><head><body>You have <font color=\"LEVEL\">opened</font> the clan hall door.<br>Outsiders may enter the clan hall while the door is open. Please close it when you've finished your business.<br><center><button value=\"Close\" action=\"bypass -h npc_"
-                                                             + getObjectId()
-                                                             + "_close_doors\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>"));
+                    player.sendPacket(new NpcHtmlMessage(getObjectId(),
+                        "<html><body>You have <font color=\"LEVEL\">opened</font> the clan hall door.<br>Outsiders may enter the clan hall while the door is open. Please close it when you've finished your business.<br><center><button value=\"Close\" action=\"bypass -h npc_"
+                       + getObjectId() + "_close_doors\" width=70 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>"));
                 }
                 else
                 {
@@ -110,11 +106,9 @@ public class L2DoormenInstance extends L2FolkInstance
                 if (condition == COND_HALL_OWNER)
                 {
                     getClanHall().openCloseDoors(false);
-                    player.sendPacket(new NpcHtmlMessage(
-                    		                             getObjectId(),
-                                                         "<html><head><body>You have <font color=\"LEVEL\">closed</font> the clan hall door.<br>Good day!<br><center><button value=\"To Begining\" action=\"bypass -h npc_"
-                                                             + getObjectId()
-                                                             + "_Chat\" width=90 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>"));
+                    player.sendPacket(new NpcHtmlMessage(getObjectId(),
+                        "<html><body>You have <font color=\"LEVEL\">closed</font> the clan hall door.<br>Good day!<br><center><button value=\"To Begining\" action=\"bypass -h npc_"
+                        + getObjectId() + "_Chat\" width=90 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>"));
                 }
                 else
                 {

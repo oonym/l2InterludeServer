@@ -841,7 +841,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             else
             {
                 TextBuilder sb = new TextBuilder();
-                sb.append("<html><head><body>");
+                sb.append("<html><body>");
                 sb.append("You've learned all skills available for your Clan.<br>");
                 sb.append("</body></html>");
                 html.setHtml(sb.toString());

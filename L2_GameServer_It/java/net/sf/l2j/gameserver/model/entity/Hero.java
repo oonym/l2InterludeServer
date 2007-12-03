@@ -500,11 +500,13 @@ public class Hero
                     statement.close();
                 }
             }
-        } catch(SQLException e)
+        }
+        catch(SQLException e)
         {
-        	_log.warning("Hero System: Couldnt update Heroes");
-        	if (Config.DEBUG) e.printStackTrace();
-        } finally
+            _log.warning("Hero System: Couldnt update Heroes");
+            if (Config.DEBUG) e.printStackTrace();
+        }
+        finally
         {
             try{con.close();}catch(Exception e){e.printStackTrace();}
         }
@@ -526,8 +528,12 @@ public class Hero
             statement.execute();
             statement.close();
         }
-        catch(SQLException e){e.printStackTrace();}
-        finally{
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
             try{con.close();}catch(SQLException e){e.printStackTrace();}
         }
     }

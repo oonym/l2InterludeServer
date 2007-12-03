@@ -35,11 +35,9 @@ import net.sf.l2j.util.Rnd;
  */
 public final class L2RaidBossInstance extends L2MonsterInstance
 {
-	//protected static Logger _log = Logger.getLogger(L2RaidBossInstance.class.getName());
+	private static final int RAIDBOSS_MAINTENANCE_INTERVAL = 30000; // 30 sec
 
-    private static final int RAIDBOSS_MAINTENANCE_INTERVAL = 30000; // 30 sec
-
-    private RaidBossSpawnManager.StatusEnum _raidStatus;
+	private RaidBossSpawnManager.StatusEnum _raidStatus;
 
 	/**
 	 * Constructor of L2RaidBossInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
@@ -58,16 +56,16 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 	}
 
     @Override
-	public boolean isRaid()
+    public boolean isRaid()
     {
         return true;
     }
 
     @Override
-	protected int getMaintenanceInterval() { return RAIDBOSS_MAINTENANCE_INTERVAL; }
+    protected int getMaintenanceInterval() { return RAIDBOSS_MAINTENANCE_INTERVAL; }
 
     @Override
-	public boolean doDie(L2Character killer)
+    public boolean doDie(L2Character killer)
     {
     	if (!super.doDie(killer))
     		return false;
@@ -80,20 +78,6 @@ public final class L2RaidBossInstance extends L2MonsterInstance
         RaidBossSpawnManager.getInstance().updateStatus(this, true);
         return true;
     }
-
-    /* Unused
-    public void onSpawn()
-    {
-    	// calling RaidBossSpawnManager.getInstance() will cause infinite recursion
-    	// as this method is called from getInstance
-    	//RaidBossSpawnManager.getInstance().updateStatus(this, false);
-    	super.onSpawn();
-        if (getNpcId() == 25286 || getNpcId() == 25283)
-            return;
-        else
-            getSpawn().stopRespawn();
-    }
-    */
 
     /**
      * Spawn all minions at a regular interval
@@ -121,12 +105,12 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 
     public void setRaidStatus (RaidBossSpawnManager.StatusEnum status)
     {
-    	_raidStatus = status;
+        _raidStatus = status;
     }
 
     public RaidBossSpawnManager.StatusEnum getRaidStatus()
     {
-    	return _raidStatus;
+        return _raidStatus;
     }
 
     /**
@@ -134,7 +118,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
      *
      */
     @Override
-	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
+    public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
     {
         super.reduceCurrentHp(damage, attacker, awake);
     }
@@ -144,5 +128,4 @@ public final class L2RaidBossInstance extends L2MonsterInstance
         super.setCurrentHp(super.getMaxHp());
         super.setCurrentMp(super.getMaxMp());
     }
-
 }
