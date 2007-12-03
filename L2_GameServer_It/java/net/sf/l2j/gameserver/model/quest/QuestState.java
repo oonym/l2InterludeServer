@@ -753,13 +753,6 @@ public final class QuestState
 	public void playSound(String sound)
     {
 		getPlayer().sendPacket(new PlaySound(sound));
-		
-		if(sound.equalsIgnoreCase("Itemsound.quest_itemget") || sound.equalsIgnoreCase("Itemsound.quest_middle"))
-		{
-			int questId = getQuest().getQuestIntId();
-			if (questId > 0 && questId < 999)
-				getPlayer().sendPacket(new ExShowQuestMark(questId));
-		}		
 	}
 
 	/**
