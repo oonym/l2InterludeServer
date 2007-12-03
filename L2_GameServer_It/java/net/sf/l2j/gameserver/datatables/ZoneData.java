@@ -36,7 +36,6 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.L2WorldRegion;
 import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 import net.sf.l2j.gameserver.model.zone.form.ZoneCuboid;
-import net.sf.l2j.gameserver.model.zone.form.ZoneCylinder;
 import net.sf.l2j.gameserver.model.zone.form.ZoneNPoly;
 import net.sf.l2j.gameserver.model.zone.type.L2ArenaZone;
 import net.sf.l2j.gameserver.model.zone.type.L2BigheadZone;
@@ -131,6 +130,8 @@ public class ZoneData
 						{
 							NamedNodeMap attrs = d.getAttributes();
 							int zoneId = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
+							int minZ = Integer.parseInt(attrs.getNamedItem("minZ").getNodeValue());
+							int maxZ = Integer.parseInt(attrs.getNamedItem("maxZ").getNodeValue());
 							String zoneType = attrs.getNamedItem("type").getNodeValue();
 							String zoneShape = attrs.getNamedItem("shape").getNodeValue();
 
@@ -178,55 +179,68 @@ public class ZoneData
 								PreparedStatement statement = null;
 
 								// Set the correct query
-								if (zoneShape.equals("Cuboid"))
-									statement = con.prepareStatement("SELECT x1,x2,y1,y2,z1,z2 FROM zone_cuboid WHERE id=?");
-								else if (zoneShape.equals("Cylinder"))
-									statement = con.prepareStatement("SELECT x,y,z1,z2,rad FROM zone_cylinder WHERE id=?");
-								else if (zoneShape.equals("NPoly"))
-									statement = con.prepareStatement("SELECT x,y FROM zone_npoly WHERE id=? ORDER BY 'order' ASC ");
+								statement = con.prepareStatement("SELECT x,y FROM zone_vertices WHERE id=? ORDER BY 'order' ASC ");
 
 								statement.setInt(1, zoneId);
 								ResultSet rset = statement.executeQuery();
 
-								if (rset.next())
+								// Create this zone.  Parsing for cuboids is a bit different than for other polygons
+								// cuboids need exactly 2 points to be defined.  Other polygons need at least 3 (one per vertex)
+								if (zoneShape.equals("Cuboid"))
 								{
-									// Create this zone
-									if (zoneShape.equals("Cuboid"))
+									int[] x = {0,0};
+									int[] y = {0,0};
+									boolean successfulLoad = true;
+									
+									for (int i=0;i<2; i++)
 									{
-										temp.setZone(new ZoneCuboid(rset.getInt("x1"),rset.getInt("x2"), rset.getInt("y1"),
-																	rset.getInt("y2"), rset.getInt("z1"), rset.getInt("z2")));
-									}
-									else if (zoneShape.equals("Cylinder"))
-									{
-										temp.setZone(new ZoneCylinder(rset.getInt("x"),rset.getInt("y"), rset.getInt("z1"),
-																	  rset.getInt("z2"), rset.getInt("rad")));
-									}
-									else if (zoneShape.equals("NPoly"))
-									{
-										// First x, y is zmin & zmax
-										int z1 = rset.getInt("x"),z2 = rset.getInt("y");
-										FastList<Integer> flx = new FastList<Integer>(), fly = new FastList<Integer>();
-
-										// Load the rest
-										while (rset.next())
+										if ( rset.next() )
 										{
-											flx.add(rset.getInt("x"));
-											fly.add(rset.getInt("y"));
+											x[i] = rset.getInt("x");
+											y[i] = rset.getInt("y");
 										}
+										else
+										{
+											_log.warning("ZoneData: Missing cuboid vertex in sql data for zone: "+zoneId);
+											rset.close();
+											statement.close();
+											successfulLoad = false;
+											break;
+										}
+									}
 
+									if (successfulLoad)
+										temp.setZone(new ZoneCuboid(x[0],x[1], y[0],y[1],minZ,maxZ));
+									else
+										continue;
+								}
+								else if (zoneShape.equals("NPoly"))
+								{
+									FastList<Integer> fl_x = new FastList<Integer>(), fl_y = new FastList<Integer>();
+
+									// Load the rest
+									while (rset.next())
+									{
+										fl_x.add(rset.getInt("x"));
+										fl_y.add(rset.getInt("y"));
+									}
+
+									// An nPoly needs to have at least 3 vertices
+									if ((fl_x.size() == fl_y.size()) && (fl_x.size() > 2))
+									{
 										// Create arrays
-										int[] aX = new int[flx.size()];
-										int[] aY = new int[fly.size()];
-
+										int[] aX = new int[fl_x.size()];
+										int[] aY = new int[fl_y.size()];
+	
 										// This runs only at server startup so dont complain :>
-										for (int i=0; i < flx.size(); i++) { aX[i] = flx.get(i); aY[i] = fly.get(i); }
-
+										for (int i=0; i < fl_x.size(); i++) { aX[i] = fl_x.get(i); aY[i] = fl_y.get(i); }
+	
 										// Create the zone
-										temp.setZone(new ZoneNPoly(aX, aY, z1, z2));
+										temp.setZone(new ZoneNPoly(aX, aY, minZ, maxZ));
 									}
 									else
 									{
-										_log.warning("ZoneData: Unknown shape: "+zoneShape);
+										_log.warning("ZoneData: Bad sql data for zone: "+zoneId);
 										rset.close();
 										statement.close();
 										continue;
@@ -234,11 +248,12 @@ public class ZoneData
 								}
 								else
 								{
-									_log.warning("ZoneData: No sql data for zone: "+zoneId);
+									_log.warning("ZoneData: Unknown shape: "+zoneShape);
 									rset.close();
 									statement.close();
 									continue;
 								}
+
 								rset.close();
 								statement.close();
 							}
