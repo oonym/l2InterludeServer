@@ -7481,7 +7481,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public void setMountType(int mountType)
 	{
-		if (checkLandingState() && mountType !=0)
+		if (checkLandingState() && mountType ==2)
 			return;
 
 		switch(mountType)
