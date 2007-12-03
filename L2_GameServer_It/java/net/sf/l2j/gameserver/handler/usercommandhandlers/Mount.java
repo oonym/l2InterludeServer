@@ -94,11 +94,13 @@ public class Mount implements IUserCommandHandler
         else if (activeChar.isMounted())
         {
         	// Dismount
-        	if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
-			Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-			Broadcast.toSelfAndKnownPlayers(activeChar, dismount);
-            activeChar.setMountType(0);
-            activeChar.setMountObjectID(0);
+        	if(activeChar.setMountType(0))
+        	{
+	        	if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+				Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
+				Broadcast.toSelfAndKnownPlayers(activeChar, dismount);
+	            activeChar.setMountObjectID(0);
+        	}
         }
 
         return true;

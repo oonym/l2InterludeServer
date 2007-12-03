@@ -76,9 +76,11 @@ public class AdminRideWyvern implements IAdminCommandHandler
         }
         else if(command.startsWith("admin_unride"))
         {
-            Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT,0);
-            activeChar.broadcastPacket(dismount);
-            activeChar.setMountType(0);
+        	if (activeChar.setMountType(0))
+        	{
+        		Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT,0);
+        		activeChar.broadcastPacket(dismount);
+        	}
         }
         return true;
     }

@@ -345,9 +345,27 @@ public class CursedWeapon
 	}
 	public void activate(L2PcInstance player, L2ItemInstance item)
 	{
+		// if the player is mounted, attempt to unmount first.  Only allow picking up 
+		// the zariche if unmounting is successful.
+		if (player.isMounted())
+		{
+			if (_player.setMountType(0))
+			{
+				Ride dismount = new Ride(_player.getObjectId(), Ride.ACTION_DISMOUNT, 0);
+				_player.broadcastPacket(dismount);
+				_player.setMountObjectID(0);
+			}
+			else
+			{
+				// TODO: correct this custom message.
+				player.sendMessage("You may not pick up this item while riding in this territory");
+				return;
+			}
+		}
+			
 		_isActivated = true;
 
-		// Player holding it datas
+		// Player holding it data
 		_player = player;
 		_playerId = _player.getObjectId();
 		_playerKarma = _player.getKarma();
@@ -361,13 +379,6 @@ public class CursedWeapon
 		if (_player.isInParty())
 			_player.getParty().oustPartyMember(_player);
 
-		if (_player.isMounted())
-		{
-			Ride dismount = new Ride(_player.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-			_player.broadcastPacket(dismount);
-			_player.setMountType(0);
-			_player.setMountObjectID(0);
-		}
 
 		// Add skill
 		giveSkill();

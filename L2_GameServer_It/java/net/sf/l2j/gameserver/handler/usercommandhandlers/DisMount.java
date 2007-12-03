@@ -46,11 +46,13 @@ public class DisMount implements IUserCommandHandler
         }
         else if (activeChar.isMounted())
         {
-        	if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
-			Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-			Broadcast.toSelfAndKnownPlayersInRadius(activeChar, dismount, 810000/*900*/);
-            activeChar.setMountType(0);
-            activeChar.setMountObjectID(0);
+        	if (activeChar.setMountType(0))
+        	{
+	        	if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+				Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
+				Broadcast.toSelfAndKnownPlayersInRadius(activeChar, dismount, 810000/*900*/);
+	            activeChar.setMountObjectID(0);
+        	}
         }
 
         return true;
