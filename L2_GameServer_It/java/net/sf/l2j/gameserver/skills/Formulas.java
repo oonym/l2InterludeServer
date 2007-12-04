@@ -1663,8 +1663,8 @@ public final class Formulas
 		}
 
 		// TODO: Temporary fix for skills with Power = 0 or LevelDepend not set
-		if (value == 0) value = (type == SkillType.PARALYZE) ? 50 : 80;
-		if (lvlDepend == 0) lvlDepend = (type == SkillType.PARALYZE) ? 1 : 2;
+		if (value == 0) value = (type == SkillType.PARALYZE) ? 50 : (type == SkillType.FEAR)? 40 : 80;
+		if (lvlDepend == 0) lvlDepend = (type == SkillType.PARALYZE || type == SkillType.FEAR) ? 1 : 2;
 
 		// TODO: Temporary fix for NPC skills with MagicLevel not set
 		// int lvlmodifier = (skill.getMagicLevel() - target.getLevel()) * lvlDepend;
@@ -1680,8 +1680,8 @@ public final class Formulas
 
 		int rate = (int) ((value * statmodifier + lvlmodifier) * resmodifier);
 		if (skill.isMagic())
-			rate += (int) (Math.pow((double) attacker.getMAtk(target, skill)
-				/ target.getMDef(attacker, skill), 0.2) * 100) - 100;
+			rate = (int) (rate * Math.pow((double) attacker.getMAtk(target, skill)
+				/ target.getMDef(attacker, skill), 0.2));
 
 		if (rate > 99) rate = 99;
 		else if (rate < 1) rate = 1;
