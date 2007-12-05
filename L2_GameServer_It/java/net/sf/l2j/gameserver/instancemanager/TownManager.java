@@ -93,7 +93,7 @@ public class TownManager
 			case 11:
 				return getTown(11); // HV
 			case 12:
-				return getTown(16); // Floran
+				return getTown(9); // Giran Harbour
 			case 13:
 				return getTown(15); // Heine
 			case 14:
@@ -102,6 +102,8 @@ public class TownManager
 				return getTown(13); // Goddard
 			case 16:
 				return getTown(17); // Schuttgart
+			case 17:
+				return getTown(16); // Floran
 			case 18:
 				return getTown(19); //Primeval Isle
 		}
