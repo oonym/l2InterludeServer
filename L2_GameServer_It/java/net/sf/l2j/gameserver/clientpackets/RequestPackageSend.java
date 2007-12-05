@@ -52,6 +52,11 @@ public final class RequestPackageSend extends L2GameClientPacket
 	{
 		_objectID = readD();
 		_count = readD();
+		if (_count < 0 || _count > 500)
+		{
+			_count = -1;
+			return;
+		}
 		for(int i = 0; i<_count; i++)
 		{
 			int id = readD(); //this is some id sent in PackageSendableList
@@ -67,6 +72,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 	protected
 	void runImpl()
 	{
+		if (_count == -1) return;
 		L2PcInstance player = getClient().getActiveChar();
         if (player == null) return;
 		L2PcInstance target = L2PcInstance.load(_objectID);

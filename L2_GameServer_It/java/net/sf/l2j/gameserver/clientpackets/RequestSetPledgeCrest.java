@@ -48,6 +48,9 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 	protected void readImpl()
 	{
 		_length  = readD();
+		if (_length < 0 || _length > 256)
+			return;
+
 		_data = new byte[_length];
 		readB(_data);
 	}
@@ -70,6 +73,16 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
         	return;
 		}
 
+		if (_length < 0)
+		{
+        	activeChar.sendMessage("File transfer error.");
+        	return;
+        }
+		if (_length > 256)
+        {
+        	activeChar.sendMessage("The clan crest file size was too big (max 256 bytes).");
+        	return;
+        }
 		if (_length == 0 || _data.length == 0)
 		{
 			CrestCache.getInstance().removePledgeCrest(clan.getCrestId());
@@ -82,11 +95,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 
             return;
 		}
-		else if (_data.length > 256)
-        {
-        	activeChar.sendMessage("The clan crest file size is greater than 256 bytes.");
-        	return;
-        }
+		
 
 		if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_REGISTER_CREST) == L2Clan.CP_CL_REGISTER_CREST)
 		{

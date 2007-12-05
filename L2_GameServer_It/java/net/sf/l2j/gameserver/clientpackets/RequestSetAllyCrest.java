@@ -47,6 +47,9 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
 	protected void readImpl()
     {
         _length  = readD();
+        if (_length < 0 || _length > 192)
+			return;
+        
         _data = new byte[_length];
         readB(_data);
     }
@@ -58,12 +61,18 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
         if (activeChar == null)
         	return;
 
-        if (_data.length > 192)
-        {
-        	activeChar.sendMessage("Its more than 192 bytes");
+        
+        if (_length < 0)
+		{
+        	activeChar.sendMessage("File transfer error.");
         	return;
         }
-
+		if (_length > 192)
+        {
+        	activeChar.sendMessage("The crest file size was too big (max 192 bytes).");
+        	return;
+        }
+        
         if (activeChar.getAllyId() != 0)
         {
             L2Clan leaderclan = ClanTable.getInstance().getClan(activeChar.getAllyId());
