@@ -128,6 +128,8 @@ public class L2NpcInstance extends L2Character
     private int _isSpoiledBy = 0;
 
     protected RandomAnimationTask _rAniTask = null;
+    private int _currentLHandId;  // normally this shouldn't change from the template, but there exist exceptions
+    private int _currentRHandId;  // normally this shouldn't change from the template, but there exist exceptions
 
     /** Task launching the function onRandomAnimation() */
     protected class RandomAnimationTask implements Runnable
@@ -259,6 +261,10 @@ public class L2NpcInstance extends L2Character
         getStat();                        // init stats
         getStatus();              // init status
         initCharStatusUpdateValues();
+        
+        // initialize the "current" equipment
+        _currentLHandId = getTemplate().lhand;
+        _currentRHandId = getTemplate().rhand;
 
         if (template == null)
         {
@@ -452,7 +458,7 @@ public class L2NpcInstance extends L2Character
      */
     public int getLeftHandItem()
     {
-        return getTemplate().lhand;
+        return _currentLHandId;
     }
 
     /**
@@ -460,7 +466,7 @@ public class L2NpcInstance extends L2Character
      */
     public int getRightHandItem()
     {
-        return getTemplate().rhand;
+        return _currentRHandId;
     }
 
     /**
@@ -2109,6 +2115,11 @@ public class L2NpcInstance extends L2Character
         if (!super.doDie(killer))
         	return false;
         
+        // normally this wouldn't really be needed, but for those few exceptions, 
+        // we do need to reset the weapons back to the initial templated weapon.
+        _currentLHandId = getTemplate().lhand;
+        _currentRHandId = getTemplate().rhand;
+
     	DecayTaskManager.getInstance().addDecayTask(this);
     	return true;
     }
@@ -2222,4 +2233,15 @@ public class L2NpcInstance extends L2Character
     {
         return false; // This means we use MAX_NPC_ANIMATION instead of MAX_MONSTER_ANIMATION
     }
+    
+    // Two functions to change the appearance of the equipped weapons on the NPC
+    // This is only useful for a few NPCs and is most likely going to be called from AI
+    public void setLHandId(int newWeaponId)
+    {
+        _currentLHandId = newWeaponId;
+    }
+    public void setRHandId(int newWeaponId)
+    {
+        _currentRHandId = newWeaponId;
+    }    
 }
