@@ -391,8 +391,8 @@ public abstract class L2Character extends L2Object
 	    {
 	    	if (currentHp == getMaxHp())
 	    	{
-	    		_hpUpdateIncCheck = getMaxHp();
-	    		_hpUpdateDecCheck = _hpUpdateIncCheck - _hpUpdateInterval;
+	    		_hpUpdateIncCheck = currentHp + 1;
+	    		_hpUpdateDecCheck = currentHp - _hpUpdateInterval;
 	    	}
 	    	else
 	    	{

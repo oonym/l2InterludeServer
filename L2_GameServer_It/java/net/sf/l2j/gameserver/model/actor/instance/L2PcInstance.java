@@ -3471,8 +3471,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	    {
 	    	if (currentCp == getMaxCp())
 	    	{
-	    		_cpUpdateIncCheck = getMaxCp();
-	    		_cpUpdateDecCheck = _cpUpdateIncCheck - _cpUpdateInterval;
+	    		_cpUpdateIncCheck = currentCp + 1;
+	    		_cpUpdateDecCheck = currentCp - _cpUpdateInterval;
 	    	}
 	    	else
 	    	{
@@ -3504,8 +3504,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	    {
 	    	if (currentMp == getMaxMp())
 	    	{
-	    		_mpUpdateIncCheck = getMaxMp();
-	    		_mpUpdateDecCheck = _mpUpdateIncCheck - _mpUpdateInterval;
+	    		_mpUpdateIncCheck = currentMp + 1;
+	    		_mpUpdateDecCheck = currentMp - _mpUpdateInterval;
 	    	}
 	    	else
 	    	{
