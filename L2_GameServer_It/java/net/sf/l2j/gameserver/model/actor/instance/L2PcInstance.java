@@ -1945,7 +1945,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			getSubClasses().get(_classIndex).setClassId(Id);
 		}
-
+		doCast(SkillTable.getInstance().getInfo(5103,1));
 		setClassTemplate(Id);
 	}
 
