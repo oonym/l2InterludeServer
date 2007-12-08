@@ -41,6 +41,11 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
     {
         if (command.startsWith("RideWyvern"))
         {
+        	if (!player.isClanLeader())
+        	{
+        		player.sendMessage("Only clan leaders are allowed.");
+        		return;
+        	}
         	if(player.getPet() == null)
         	{
         		if(player.isMounted())
