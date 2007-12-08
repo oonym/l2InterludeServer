@@ -67,12 +67,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
     }
 
     @Override
-	public void onBypassFeedback(L2PcInstance player, String command)
+    public void onBypassFeedback(L2PcInstance player, String command)
     {
-        if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false)) return;
-
-        player.sendPacket(new ActionFailed());
-
         String[] commandStr = command.split(" ");
         String actualCommand = commandStr[0]; // Get actual command
 
@@ -455,14 +451,6 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         else pom = npcId + "-" + val;
 
         return "data/html/villagemaster/" + pom + ".htm";
-    }
-
-    @Override
-	public void onAction(L2PcInstance player)
-    {
-        if (Config.DEBUG) _log.fine("Village Master activated");
-        player.setLastFolkNPC(this);
-        super.onAction(player);
     }
 
     //Private stuff

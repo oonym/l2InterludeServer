@@ -32,6 +32,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.L2Event;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
@@ -99,16 +100,18 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					id = _command.substring(4, endOfId);
 				else
 					id = _command.substring(4);
-                try
-                {
-    				L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
+				try
+				{
+					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
 
-    				if (_command.substring(endOfId+1).startsWith("event_participate")) L2Event.inscribePlayer(activeChar);
-                    if (object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false))
-                    {
-    					((L2NpcInstance) object).onBypassFeedback(activeChar, _command.substring(endOfId+1));
-    				}
-                } catch (NumberFormatException nfe) {}
+					if (_command.substring(endOfId+1).startsWith("event_participate")) L2Event.inscribePlayer(activeChar);
+					else if (object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false))
+					{
+						((L2NpcInstance)object).onBypassFeedback(activeChar, _command.substring(endOfId+1));
+					}
+					activeChar.sendPacket(new ActionFailed());
+				}
+				catch (NumberFormatException nfe) {}
 			}
 			//	Draw a Symbol
 			else if (_command.equals("menu_select?ask=-16&reply=1"))
@@ -159,7 +162,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				else
 					player.processQuestEvent(p.substring(0, idx), p.substring(idx).trim());
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			_log.log(Level.WARNING, "Bad RequestBypassToServer: ", e);
 		}
 //		finally

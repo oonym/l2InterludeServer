@@ -17,6 +17,7 @@
  */
 package net.sf.l2j.gameserver.model.actor.instance;
 
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
@@ -24,6 +25,7 @@ import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.Ride;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
@@ -99,16 +101,44 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
         		return;
         	}
         }
+		else
+			super.onBypassFeedback(player, command);
     }
-    @Override
+
+	@Override
 	public void onAction(L2PcInstance player)
-    {
-    	player.sendPacket(new ActionFailed());
-    	player.setTarget(this);
-    	player.sendPacket(new MyTargetSelected(getObjectId(), -15));
-    	if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-    		showMessageWindow(player);
-    }
+	{
+		if (!canTarget(player)) return;
+
+		// Check if the L2PcInstance already target the L2NpcInstance
+		if (this != player.getTarget())
+		{
+			// Set the target of the L2PcInstance player
+			player.setTarget(this);
+
+			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
+			player.sendPacket(my);
+
+			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
+			player.sendPacket(new ValidateLocation(this));
+		}
+		else
+		{
+			// Calculate the distance between the L2PcInstance and the L2NpcInstance
+			if (!canInteract(player))
+			{
+				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+			}
+			else
+			{
+				showMessageWindow(player);
+			}
+		}
+		player.sendPacket(new ActionFailed());
+	}
+
     private void showMessageWindow(L2PcInstance player)
     {
         player.sendPacket( new ActionFailed() );

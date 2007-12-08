@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.model.actor.instance;
 
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Character;
+import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -31,8 +32,6 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public final class L2ArtefactInstance extends L2NpcInstance
 {
-    //private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
-
 	/**
 	 * Constructor of L2ArtefactInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
 	 *
@@ -80,30 +79,38 @@ public final class L2ArtefactInstance extends L2NpcInstance
 	 * @param player The L2PcInstance that start an action on the L2ArtefactInstance
 	 *
 	 */
-    @Override
+	@Override
 	public void onAction(L2PcInstance player)
-    {
-        if (getObjectId() != player.getTargetId())
-        {
-			// Set the player AI Intention to AI_INTENTION_IDLE
-			player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
+	{
+		if (!canTarget(player)) return;
 
+		if (this != player.getTarget())
+		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
 
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-			// The color to display in the select window is White
-            MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
-            player.sendPacket(my);
+			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
+			player.sendPacket(my);
 
 			// Send a Server->Client packet ValidateLocation to correct the L2ArtefactInstance position and heading on the client
-            player.sendPacket(new ValidateLocation(this));
-        }
-    }
+			player.sendPacket(new ValidateLocation(this));
+		}
+		else
+		{
+			// Calculate the distance between the L2PcInstance and the L2NpcInstance
+			if (!canInteract(player))
+			{
+				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+			}
+		}
+		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+		player.sendPacket(new ActionFailed());
+	}
 
-    @Override
+	@Override
 	public void reduceCurrentHp(double damage, L2Character attacker){}
-    @Override
+	@Override
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake){}
-
 }

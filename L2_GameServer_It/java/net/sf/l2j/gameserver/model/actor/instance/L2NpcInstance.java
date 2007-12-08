@@ -527,6 +527,31 @@ public class L2NpcInstance extends L2Character
         _busyMessage = message;
     }
 
+    protected boolean canTarget(L2PcInstance player)
+    {
+        if (player.isOutOfControl())
+        {
+            player.sendPacket(new ActionFailed());
+            return false;
+        }
+        // TODO: More checks...
+
+        return true;
+    }
+
+    protected boolean canInteract(L2PcInstance player)
+    {
+        // TODO: NPC busy check etc...
+        
+        //if (!canTarget(player))
+        //    return false;
+
+        if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+            return false;
+
+        return true;
+    }
+
     /**
      * Manage actions when a player click on the L2NpcInstance.<BR><BR>
      *
@@ -557,11 +582,8 @@ public class L2NpcInstance extends L2Character
     @Override
     public void onAction(L2PcInstance player)
     {
-        if (player.isOutOfControl())
-        {
-            player.sendPacket(new ActionFailed());
-            return;
-        }
+        if (!canTarget(player)) return;
+
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
         {
@@ -570,19 +592,25 @@ public class L2NpcInstance extends L2Character
             // Set the target of the L2PcInstance player
             player.setTarget(this);
 
-            // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-            // The player.getLevel() - getLevel() permit to display the correct color in the select window
-            MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
-            player.sendPacket(my);
-
             // Check if the player is attackable (without a forced attack)
             if (isAutoAttackable(player))
             {
+                // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+                // The player.getLevel() - getLevel() permit to display the correct color in the select window
+                MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
+                player.sendPacket(my);
+
                 // Send a Server->Client packet StatusUpdate of the L2NpcInstance to the L2PcInstance to update its HP bar
                 StatusUpdate su = new StatusUpdate(getObjectId());
                 su.addAttribute(StatusUpdate.CUR_HP, (int)getCurrentHp() );
                 su.addAttribute(StatusUpdate.MAX_HP, getMaxHp() );
                 player.sendPacket(su);
+            }
+            else
+            {
+                // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+                MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
+                player.sendPacket(my);
             }
 
             // Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
@@ -590,7 +618,7 @@ public class L2NpcInstance extends L2Character
         }
         else
         {
-        	player.sendPacket(new ValidateLocation(this));
+            player.sendPacket(new ValidateLocation(this));
             // Check if the player is attackable (without a forced attack) and isn't dead
             if (isAutoAttackable(player) && !isAlikeDead())
             {
@@ -603,22 +631,17 @@ public class L2NpcInstance extends L2Character
                 }
                 else
                 {
-                    // Send a Server->Client packet ActionFailed (target is out of attack range) to the L2PcInstance player
+                    // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
                     player.sendPacket(new ActionFailed());
                 }
             }
             else if(!isAutoAttackable(player)) 
             {
                 // Calculate the distance between the L2PcInstance and the L2NpcInstance
-                if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+                if (!canInteract(player))
                 {
-                    // player.setCurrentState(L2Character.STATE_INTERACT);
-                    // player.setInteractTarget(this);
-                    // player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
-
                     // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
                     player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-
                 }
                 else
                 {
@@ -633,14 +656,14 @@ public class L2NpcInstance extends L2Character
                     {
                         Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.NPC_FIRST_TALK);
                         if ( (qlst != null) && qlst.length == 1)
-                        	qlst[0].notifyFirstTalk(this, player);
+                            qlst[0].notifyFirstTalk(this, player);
                         else
-                        	showChatWindow(player, 0);
+                            showChatWindow(player, 0);
                     }
                 }
             }
-			else
-				player.sendPacket(new ActionFailed());
+            else
+                player.sendPacket(new ActionFailed());
         }
     }
     
@@ -663,7 +686,7 @@ public class L2NpcInstance extends L2Character
      * 
      */
     @Override
-	public void onActionShift(L2GameClient client)
+    public void onActionShift(L2GameClient client)
     {
         // Get the L2PcInstance corresponding to the thread
         L2PcInstance player = client.getActiveChar();
@@ -844,13 +867,7 @@ public class L2NpcInstance extends L2Character
      */
     public void onBypassFeedback(L2PcInstance player, String command)
     {
-        // Get the distance between the L2PcInstance and the L2NpcInstance
-        if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-        {
-            player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-            // player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
-        }
-        else
+        //if (canInteract(player))
         {
             if (isBusy() && getBusyMessage().length()>0)
             {

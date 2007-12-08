@@ -67,9 +67,10 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
         super(objectId, template);
     }
 
+    @Override
     public void onAction(L2PcInstance player)
     {
-    	player.setLastFolkNPC(this);
+        if (!canTarget(player)) return;
 
         // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
@@ -78,8 +79,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
             player.setTarget(this);
 
             // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-            // The player.getLevel() - getLevel() permit to display the correct color in the select window
-            MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
+            MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
             player.sendPacket(my);
 
             // Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
@@ -87,40 +87,24 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
         }
         else
         {
-            // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-            // The player.getLevel() - getLevel() permit to display the correct color
-            MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
-            player.sendPacket(my);
-
             // Calculate the distance between the L2PcInstance and the L2NpcInstance
-            if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+            if (!canInteract(player))
             {
-                // player.setCurrentState(L2Character.STATE_INTERACT);
-                // player.setInteractTarget(this);
-                // player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
-
                 // Notify the L2PcInstance AI with AI_INTENTION_INTERACT
                 player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-
-                // Send a Server->Client packet ActionFailed (target is out of interaction range) to the L2PcInstance player
-                player.sendPacket(new ActionFailed());
             }
             else
             {
-            	showMessageWindow(player);
-
-                // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-                player.sendPacket(new ActionFailed());
-                // player.setCurrentState(L2Character.STATE_IDLE);
+                showMessageWindow(player);
             }
         }
+        // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+        player.sendPacket(new ActionFailed());
     }
 
-    @Override
+	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
-    {
-		player.sendPacket( new ActionFailed() );
-
+	{
 		// BypassValidation Exploit plug.
 		if (player.getLastFolkNPC().getObjectId() != this.getObjectId())
 			return;
@@ -141,12 +125,12 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 
 			if (actualCommand.equalsIgnoreCase("banish_foreigner"))
             {
-                getCastle().banishForeigners();                                                      // Move non-clan members off castle area
+                getCastle().banishForeigners();                    // Move non-clan members off castle area
                 return;
             }
 			else if (actualCommand.equalsIgnoreCase("list_siege_clans"))
             {
-                getCastle().getSiege().listRegisterClan(player);                                    // List current register clan
+                getCastle().getSiege().listRegisterClan(player);   // List current register clan
                 return;
             }
 			else if (actualCommand.equalsIgnoreCase("receive_report"))
@@ -331,9 +315,12 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					player.sendPacket(html);
 				}
 				return;
-	        } else if (command.startsWith("manor_menu_select")) { // input string format:
-	        														// manor_menu_select?ask=X&state=Y&time=X
-	        	if (CastleManorManager.getInstance().isUnderMaintenance()) {
+			}
+			else if (command.startsWith("manor_menu_select"))
+			{// input string format:
+			 // manor_menu_select?ask=X&state=Y&time=X
+				if (CastleManorManager.getInstance().isUnderMaintenance())
+				{
 					player.sendPacket(new ActionFailed());
 					player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
 					return;
@@ -479,10 +466,10 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 		    if (player.getClan() != null)
 		    {
 		        if (getCastle().getSiege().getIsInProgress())
-		            return COND_BUSY_BECAUSE_OF_SIEGE;										// Busy because of siege
-		        else if (getCastle().getOwnerId() == player.getClanId()						// Clan owns castle
-		                && player.isClanLeader())			                                // Leader of clan
-		            return COND_OWNER;	// Owner
+		            return COND_BUSY_BECAUSE_OF_SIEGE;                  // Busy because of siege
+		        else if (getCastle().getOwnerId() == player.getClanId() // Clan owns castle
+		                && player.isClanLeader())                       // Leader of clan
+		            return COND_OWNER;                                  // Owner
 		    }
 		}
 

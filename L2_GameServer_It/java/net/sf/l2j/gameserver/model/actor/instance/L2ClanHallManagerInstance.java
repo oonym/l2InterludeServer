@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.TradeController;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.TeleportLocationTable;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
@@ -40,13 +41,14 @@ import net.sf.l2j.gameserver.serverpackets.ClanHallDecoration;
 import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.serverpackets.WareHouseDepositList;
 import net.sf.l2j.gameserver.serverpackets.WareHouseWithdrawalList;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2ClanHallManagerInstance extends L2FolkInstance
 {
-	protected static final int COND_OWNER_FALSE = 0;
+    protected static final int COND_OWNER_FALSE = 0;
     protected static final int COND_ALL_FALSE = 1;
     protected static final int COND_BUSY_BECAUSE_OF_SIEGE = 2;
     protected static final int COND_OWNER = 3;
@@ -62,10 +64,9 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 	}
 
     @Override
-	public void onBypassFeedback(L2PcInstance player, String command)
+    public void onBypassFeedback(L2PcInstance player, String command)
     {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        player.sendPacket( new ActionFailed() );
         int condition = validateCondition(player);
         if (condition <= COND_ALL_FALSE)
             return;
@@ -643,18 +644,41 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 	 * this is called when a player interacts with this NPC
 	 * @param player
 	 */
-    @Override
+	@Override
 	public void onAction(L2PcInstance player)
-    {
-        player.sendPacket(new ActionFailed());
-        player.setTarget(this);
-        player.sendPacket(new MyTargetSelected(getObjectId(), -15));
-        if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-        {
-        	player.setLastFolkNPC(this);
-        	showMessageWindow(player);
-        }
-    }
+	{
+		if (!canTarget(player)) return;
+
+		// Check if the L2PcInstance already target the L2NpcInstance
+		if (this != player.getTarget())
+		{
+			// Set the target of the L2PcInstance player
+			player.setTarget(this);
+
+			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
+			player.sendPacket(my);
+
+			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
+			player.sendPacket(new ValidateLocation(this));
+		}
+		else
+		{
+			// Calculate the distance between the L2PcInstance and the L2NpcInstance
+			if (!canInteract(player))
+			{
+				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+				// note: commented out so the player must stand close
+				//player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+			}
+			else
+			{
+				showMessageWindow(player);
+			}
+		}
+		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+		player.sendPacket(new ActionFailed());
+	}
 
     private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)
     {

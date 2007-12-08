@@ -361,22 +361,25 @@ public class L2DoorInstance extends L2Character
     }
 
     @Override
-	public L2Weapon getSecondaryWeaponItem()
+    public L2Weapon getSecondaryWeaponItem()
     {
         return null;
     }
 
     @Override
-	public void onAction(L2PcInstance player)
+    public void onAction(L2PcInstance player)
     {
         if (player == null)
             return;
 
+        // Check if the L2PcInstance already target the L2NpcInstance
         if (this != player.getTarget())
         {
+            // Set the target of the L2PcInstance player
             player.setTarget(this);
 
-            MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel());
+            // Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+            MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
             player.sendPacket(my);
 
 //            if (isAutoAttackable(player))
@@ -385,7 +388,7 @@ public class L2DoorInstance extends L2Character
                 player.sendPacket(su);
 //            }
 
-            // correct location
+            // Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
             player.sendPacket(new ValidateLocation(this));
         }
         else
@@ -398,31 +401,29 @@ public class L2DoorInstance extends L2Character
                 {
                     player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
                 }
-                else
-                {
-                    player.sendPacket(new ActionFailed());
-                }
-            } else if (player.getClan()!=null && getClanHall() != null && player.getClanId() == getClanHall().getOwnerId())
-    	    {
+            }
+            else if (player.getClan()!=null && getClanHall() != null && player.getClanId() == getClanHall().getOwnerId())
+            {
                 if (!isInsideRadius(player, L2NpcInstance.INTERACTION_DISTANCE, false, false))
                 {
                     player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-        		} else
+                }
+                else
                 {
-        		    //need find serverpacket which ask open/close gate. now auto
-                    	    //if (getOpen() == 1) player.sendPacket(new SystemMessage(1140));
-                    	    //else player.sendPacket(new SystemMessage(1141));
-        		    if (getOpen() == 1) openMe();
-        		    else closeMe();
-        		    player.sendPacket(new ActionFailed());
-            	}
-    	    } else
-                player.sendPacket(new ActionFailed());
+                    //need find serverpacket which ask open/close gate. now auto
+                        //if (getOpen() == 1) player.sendPacket(new SystemMessage(1140));
+                        //else player.sendPacket(new SystemMessage(1141));
+                    if (getOpen() == 1) openMe();
+                    else closeMe();
+                }
+            }
         }
+        // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+        player.sendPacket(new ActionFailed());
     }
 
     @Override
-	public void onActionShift(L2GameClient client)
+    public void onActionShift(L2GameClient client)
     {
         L2PcInstance player = client.getActiveChar();
         if (player == null) return;

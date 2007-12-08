@@ -40,11 +40,11 @@ public final class Action extends L2GameClientPacket
 	// cddddc
 	private int _objectId;
 	@SuppressWarnings("unused")
-    private int _originX;
+	private int _originX;
 	@SuppressWarnings("unused")
-    private int _originY;
+	private int _originY;
 	@SuppressWarnings("unused")
-    private int _originZ;
+	private int _originZ;
 	private int _actionId;
 
 	@Override
@@ -63,8 +63,8 @@ public final class Action extends L2GameClientPacket
 		if (Config.DEBUG) _log.fine("Action:" + _actionId);
 		if (Config.DEBUG) _log.fine("oid:" + _objectId);
 
-        // Get the current L2PcInstance of the player
-        L2PcInstance activeChar = getClient().getActiveChar();
+		// Get the current L2PcInstance of the player
+		L2PcInstance activeChar = getClient().getActiveChar();
 
 		if (activeChar == null)
 			return;
@@ -77,13 +77,15 @@ public final class Action extends L2GameClientPacket
 			obj = L2World.getInstance().findObject(_objectId);
 
 		// If object requested does not exist, add warn msg into logs
-		if (obj == null) {
+		if (obj == null)
+		{
 			// pressing e.g. pickup many times quickly would get you here
 			// _log.warning("Character: " + activeChar.getName() + " request action with non existent ObjectID:" + _objectId);
 			getClient().sendPacket(new ActionFailed());
-        	return;
-        }
-        // Check if the target is valid, if the player haven't a shop or isn't the requester of a transaction (ex : FriendInvite, JoinAlly, JoinParty...)
+			return;
+		}
+
+		// Check if the target is valid, if the player haven't a shop or isn't the requester of a transaction (ex : FriendInvite, JoinAlly, JoinParty...)
 		if (activeChar.getPrivateStoreType()==0 && activeChar.getActiveRequester()==null)
 		{
 			switch (_actionId)

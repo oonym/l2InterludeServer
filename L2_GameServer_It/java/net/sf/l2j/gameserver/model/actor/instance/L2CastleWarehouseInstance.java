@@ -24,29 +24,27 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
     /**
      * @param template
      */
-    public L2CastleWarehouseInstance(int objectId, L2NpcTemplate template) {
+    public L2CastleWarehouseInstance(int objectId, L2NpcTemplate template)
+    {
         super(objectId, template);
     }
 
-    @Override
-    public void onAction(L2PcInstance player) {
-        player.setLastFolkNPC(this);
-        super.onAction(player);
-    }
-
-    private void showRetrieveWindow(L2PcInstance player) {
+    private void showRetrieveWindow(L2PcInstance player)
+    {
         player.sendPacket(new ActionFailed());
         player.setActiveWarehouse(player.getWarehouse());
 
-        if (player.getActiveWarehouse().getSize() == 0) {
-        	player.sendPacket(new SystemMessage(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH));
-        	return;
+        if (player.getActiveWarehouse().getSize() == 0)
+        {
+            player.sendPacket(new SystemMessage(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH));
+            return;
         }
 
         player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.PRIVATE));
     }
 
-    private void showDepositWindow(L2PcInstance player) {
+    private void showDepositWindow(L2PcInstance player)
+    {
         player.sendPacket(new ActionFailed());
         player.setActiveWarehouse(player.getWarehouse());
         player.tempInvetoryDisable();
@@ -54,13 +52,19 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
         player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.PRIVATE));
     }
 
-    private void showDepositWindowClan(L2PcInstance player) {
+    private void showDepositWindowClan(L2PcInstance player)
+    {
         player.sendPacket(new ActionFailed());
-        if (player.getClan() != null) {
-            if (player.getClan().getLevel() == 0) {
+        if (player.getClan() != null)
+        {
+            if (player.getClan().getLevel() == 0)
+            {
                 player.sendPacket(new SystemMessage(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
-            } else {
-                if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE) {
+            }
+            else
+            {
+                if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
+                {
                     player.sendPacket(new SystemMessage(SystemMessageId.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE));
                 }
                 player.setActiveWarehouse(player.getClan().getWarehouse());
@@ -95,24 +99,27 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
             return;
         }
 
-        if (command.startsWith("WithdrawP")) {
+        if (command.startsWith("WithdrawP"))
             showRetrieveWindow(player);
-        } else if (command.equals("DepositP")) {
+        else if (command.equals("DepositP"))
             showDepositWindow(player);
-        } else if (command.equals("WithdrawC")) {
+        else if (command.equals("WithdrawC"))
             showWithdrawWindowClan(player);
-        } else if (command.equals("DepositC")) {
+        else if (command.equals("DepositC"))
             showDepositWindowClan(player);
-        } else if (command.startsWith("Chat")) {
+        else if (command.startsWith("Chat"))
+        {
             int val = 0;
-            try {
+            try
+            {
                val = Integer.parseInt(command.substring(5));
-            } catch (IndexOutOfBoundsException ioobe) {
-            } catch (NumberFormatException nfe) {}
+            }
+            catch (IndexOutOfBoundsException ioobe){}
+            catch (NumberFormatException nfe){}
             showChatWindow(player, val);
-        } else {
-            super.onBypassFeedback(player, command);
         }
+        else
+            super.onBypassFeedback(player, command);
     }
 
     @Override
@@ -123,14 +130,14 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
         int condition = validateCondition(player);
         if (condition > COND_ALL_FALSE) {
             if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
-                filename = "data/html/castlewarehouse/castlewarehouse-busy.htm";			// Busy because of siege
-            else if (condition == COND_OWNER) {												// Clan owns castle
-            	if (val == 0)
-            		filename = "data/html/castlewarehouse/castlewarehouse.htm";
-            	else
-            		filename = "data/html/castlewarehouse/castlewarehouse-" + val + ".htm";
+                filename = "data/html/castlewarehouse/castlewarehouse-busy.htm"; // Busy because of siege
+            else if (condition == COND_OWNER)                                    // Clan owns castle
+            {
+                if (val == 0)
+                    filename = "data/html/castlewarehouse/castlewarehouse.htm";
+                else
+                    filename = "data/html/castlewarehouse/castlewarehouse-" + val + ".htm";
             }
-
         }
 
         NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -140,13 +147,16 @@ public class L2CastleWarehouseInstance extends L2FolkInstance{
         player.sendPacket(html);
     }
 
-    protected int validateCondition(L2PcInstance player) {
+    protected int validateCondition(L2PcInstance player)
+    {
         if (player.isGM()) return COND_OWNER;
-        if (getCastle() != null && getCastle().getCastleId() > 0) {
-            if (player.getClan() != null) {
+        if (getCastle() != null && getCastle().getCastleId() > 0)
+        {
+            if (player.getClan() != null)
+            {
                 if (getCastle().getSiege().getIsInProgress())
-                    return COND_BUSY_BECAUSE_OF_SIEGE;                                      // Busy because of siege
-                else if (getCastle().getOwnerId() == player.getClanId())                    // Clan owns castle
+                    return COND_BUSY_BECAUSE_OF_SIEGE;                   // Busy because of siege
+                else if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
                     return COND_OWNER;
             }
         }

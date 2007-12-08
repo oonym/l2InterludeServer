@@ -33,15 +33,24 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
+import java.util.logging.Logger;
+
 public class L2FolkInstance extends L2NpcInstance
 {
-	//private static Logger _log = Logger.getLogger(L2FolkInstance.class.getName());
+	protected static Logger _log = Logger.getLogger(L2FolkInstance.class.getName());
 	private final ClassId[] _classesToTeach;
 
 	public L2FolkInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 		_classesToTeach = template.getTeachInfo();
+	}
+
+	@Override
+	public void onAction(L2PcInstance player)
+	{
+		player.setLastFolkNPC(this);
+		super.onAction(player);
 	}
 
 	/**

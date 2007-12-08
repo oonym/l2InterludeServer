@@ -27,17 +27,9 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class L2BlacksmithInstance extends L2FolkInstance
 {
-
 	public L2BlacksmithInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-	}
-
-	@Override
-	public void onAction(L2PcInstance player)
-	{
-		player.setLastFolkNPC(this);
-		super.onAction(player);
 	}
 
 	@Override
@@ -48,7 +40,6 @@ public class L2BlacksmithInstance extends L2FolkInstance
 			int listId = Integer.parseInt(command.substring(9).trim());
 			L2Multisell.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
 		}
-
 		super.onBypassFeedback(player,command);
 	}
 

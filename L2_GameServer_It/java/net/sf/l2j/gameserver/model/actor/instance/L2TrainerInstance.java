@@ -28,8 +28,6 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public final class L2TrainerInstance extends L2FolkInstance
 {
-    //private static Logger _log = Logger.getLogger(L2TrainerInstance.class.getName());
-
     /**
      * @param template
      */
@@ -38,20 +36,8 @@ public final class L2TrainerInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    /**
-     * this is called when a player interacts with this NPC
-     * @param player
-     */
     @Override
-	public void onAction(L2PcInstance player)
-    {
-        if (Config.DEBUG) _log.fine("Trainer activated");
-        player.setLastFolkNPC(this);
-        super.onAction(player);
-    }
-
-    @Override
-	public String getHtmlPath(int npcId, int val)
+    public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
         if (val == 0)
@@ -65,5 +51,4 @@ public final class L2TrainerInstance extends L2FolkInstance
 
         return "data/html/trainer/" + pom + ".htm";
     }
-
 }

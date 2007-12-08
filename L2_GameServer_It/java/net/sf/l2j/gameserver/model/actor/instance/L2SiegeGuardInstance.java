@@ -137,82 +137,72 @@ public final class L2SiegeGuardInstance extends L2Attackable
                 getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_homeX, _homeY, _homeZ, 0));
         }
     }
-    
-    /**
-     * Custom onAction behaviour. Note that super() is not called because guards need
-     * extra check to see if a player should interract ot ATTACK them when clicked.
-     * 
-     */
-    @Override
+
+	/**
+	* Custom onAction behaviour. Note that super() is not called because guards need
+	* extra check to see if a player should interact or ATTACK them when clicked.
+	* 
+	*/
+	@Override
 	public void onAction(L2PcInstance player)
-    {
-      //  if (player == null)
-      //      return;
-        
+	{
+		if (!canTarget(player)) return;
+
+		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
 			if (Config.DEBUG) _log.fine("new target selected:"+getObjectId());
-			//player.setNewTarget(this);
-			
-			NpcInfo npcInfo = new NpcInfo(this, player);
-			player.sendPacket(npcInfo);
-			
+
+			// Set the target of the L2PcInstance player
 			player.setTarget(this);
+
+			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
 			player.sendPacket(my);
-			
-			//if ((isAutoAttackable(player))||(this instanceof L2SiegeGuardInstance))
-			//{	
-				StatusUpdate su = new StatusUpdate(getObjectId());
-				su.addAttribute(StatusUpdate.CUR_HP, (int)getCurrentHp() );
-				su.addAttribute(StatusUpdate.MAX_HP, getMaxHp() );
-				player.sendPacket(su);
-			//}
-			
-			// correct location
+
+			// Send a Server->Client packet StatusUpdate of the L2NpcInstance to the L2PcInstance to update its HP bar
+			StatusUpdate su = new StatusUpdate(getObjectId());
+			su.addAttribute(StatusUpdate.CUR_HP, (int)getStatus().getCurrentHp() );
+			su.addAttribute(StatusUpdate.MAX_HP, getMaxHp() );
+			player.sendPacket(su);
+
+			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
 			player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
-			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
-			player.sendPacket(my);
-
 			if (isAutoAttackable(player) && !isAlikeDead())
 			{
 				if (Math.abs(player.getZ() - getZ()) < 600) // this max heigth difference might need some tweaking
 				{
 					player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-//					player.startAttack(this);
 				}
 				else
 				{
+					// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 					player.sendPacket(new ActionFailed());
 				}
 			}
 			if(!isAutoAttackable(player))
 			{
-				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-                if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-                {
-//					player.setCurrentState(L2Character.STATE_INTERACT);
-//					player.setInteractTarget(this);
-//					player.moveTo(this.getX(), this.getY(), this.getZ(), INTERACTION_DISTANCE);
-				} else
-                {
+				if (!canInteract(player))
+				{
+					// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+					player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+				}
+				else 
+				{
 					SocialAction sa = new SocialAction(getObjectId(), Rnd.nextInt(8));
 					broadcastPacket(sa);
 					sendPacket(sa);
 					showChatWindow(player, 0);
-					player.sendPacket(new ActionFailed());
-//					player.setCurrentState(L2Character.STATE_IDLE);
 				}
 			}
 		}
-		//super.onAction(player);
-    }
+	}
 
     @Override
-	public void addDamageHate(L2Character attacker, int damage, int aggro)
+    public void addDamageHate(L2Character attacker, int damage, int aggro)
     {
         if (attacker == null)
             return;

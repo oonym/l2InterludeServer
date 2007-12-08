@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.AuctionManager;
 import net.sf.l2j.gameserver.instancemanager.ClanHallManager;
@@ -33,13 +34,13 @@ import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.entity.Auction;
 import net.sf.l2j.gameserver.model.entity.Auction.Bidder;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
+import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
+import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public final class L2AuctioneerInstance extends L2FolkInstance
 {
-    //private static Logger _log = Logger.getLogger(L2AuctioneerInstance.class.getName());
-
     private static final int COND_ALL_FALSE = 0;
     private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
     private static final int COND_REGULAR = 3;
@@ -51,24 +52,46 @@ public final class L2AuctioneerInstance extends L2FolkInstance
         super(objectId, template);
     }
 
-    @Override
+	@Override
 	public void onAction(L2PcInstance player)
-    {
-    	if (Config.DEBUG) _log.warning("Auctioneer activated");
-        player.sendPacket(new ActionFailed());
-        player.setTarget(this);
-        player.setLastFolkNPC(this);
-        super.onAction(player);
-        if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-            showMessageWindow(player);
-    }
+	{
+		if (!canTarget(player)) return;
+
+		player.setLastFolkNPC(this);
+
+		// Check if the L2PcInstance already target the L2NpcInstance
+		if (this != player.getTarget())
+		{
+			// Set the target of the L2PcInstance player
+			player.setTarget(this);
+
+			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
+			player.sendPacket(my);
+
+			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
+			player.sendPacket(new ValidateLocation(this));
+		}
+		else
+		{
+			// Calculate the distance between the L2PcInstance and the L2NpcInstance
+			if (!canInteract(player))
+			{
+				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
+				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+			}
+			else
+			{
+				showMessageWindow(player);
+			}
+		}
+		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+		player.sendPacket(new ActionFailed());
+	}
 
     @Override
-	public void onBypassFeedback(L2PcInstance player, String command)
+    public void onBypassFeedback(L2PcInstance player, String command)
     {
-        if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false)) return;
-        player.sendPacket(new ActionFailed());
-
         int condition = validateCondition(player);
         if (condition == COND_ALL_FALSE)
         {

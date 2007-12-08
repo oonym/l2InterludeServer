@@ -25,12 +25,14 @@ import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.SevenSignsFestival;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Party;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
@@ -59,7 +61,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31132:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_31;
                 _festivalOracle = SevenSigns.CABAL_DAWN;
-		_blueStonesNeeded = 900;
+                _blueStonesNeeded = 900;
                 _greenStonesNeeded = 540;
                 _redStonesNeeded = 270;
                 break;
@@ -67,7 +69,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31133:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_42;
                 _festivalOracle = SevenSigns.CABAL_DAWN;
-		_blueStonesNeeded = 1500;
+                _blueStonesNeeded = 1500;
                 _greenStonesNeeded = 900;
                 _redStonesNeeded = 450;
                 break;
@@ -75,7 +77,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31134:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_53;
                 _festivalOracle = SevenSigns.CABAL_DAWN;
-		_blueStonesNeeded = 3000;
+                _blueStonesNeeded = 3000;
                 _greenStonesNeeded = 1800;
                 _redStonesNeeded = 900;
                 break;
@@ -83,7 +85,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31135:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_64;
                 _festivalOracle = SevenSigns.CABAL_DAWN;
-		_blueStonesNeeded = 4500;
+                _blueStonesNeeded = 4500;
                 _greenStonesNeeded = 2700;
                 _redStonesNeeded = 1350;
                 break;
@@ -91,7 +93,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31136:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_NONE;
                 _festivalOracle = SevenSigns.CABAL_DAWN;
-		_blueStonesNeeded = 6000;
+                _blueStonesNeeded = 6000;
                 _greenStonesNeeded = 3600;
                 _redStonesNeeded = 1800;
                 break;
@@ -100,7 +102,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31142:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_31;
                 _festivalOracle = SevenSigns.CABAL_DUSK;
-		_blueStonesNeeded = 900;
+                _blueStonesNeeded = 900;
                 _greenStonesNeeded = 540;
                 _redStonesNeeded = 270;
                 break;
@@ -108,7 +110,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31143:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_42;
                 _festivalOracle = SevenSigns.CABAL_DUSK;
-		_blueStonesNeeded = 1500;
+                _blueStonesNeeded = 1500;
                 _greenStonesNeeded = 900;
                 _redStonesNeeded = 450;
                 break;
@@ -116,7 +118,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31144:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_53;
                 _festivalOracle = SevenSigns.CABAL_DUSK;
-		_blueStonesNeeded = 3000;
+                _blueStonesNeeded = 3000;
                 _greenStonesNeeded = 1800;
                 _redStonesNeeded = 900;
                 break;
@@ -124,7 +126,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31145:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_64;
                 _festivalOracle = SevenSigns.CABAL_DUSK;
-		_blueStonesNeeded = 4500;
+                _blueStonesNeeded = 4500;
                 _greenStonesNeeded = 2700;
                 _redStonesNeeded = 1350;
                 break;
@@ -132,7 +134,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
             case 31146:
                 _festivalType = SevenSignsFestival.FESTIVAL_LEVEL_MAX_NONE;
                 _festivalOracle = SevenSigns.CABAL_DUSK;
-		_blueStonesNeeded = 6000;
+                _blueStonesNeeded = 6000;
                 _greenStonesNeeded = 3600;
                 _redStonesNeeded = 1800;
                 break;
@@ -140,7 +142,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
     }
 
     @Override
-	public void onBypassFeedback(L2PcInstance player, String command)
+    public void onBypassFeedback(L2PcInstance player, String command)
     {
         if (command.startsWith("FestivalDesc"))
         {

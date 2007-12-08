@@ -46,12 +46,8 @@ public final class L2ObservationInstance extends L2FolkInstance
     }
 
     @Override
-	public void onBypassFeedback(L2PcInstance player, String command)
+    public void onBypassFeedback(L2PcInstance player, String command)
     {
-        // first do the common stuff
-        // and handle the commands that all NPC classes know
-        super.onBypassFeedback(player, command);
-
         if (command.startsWith("observeSiege"))
         {
             String val = command.substring(13);
@@ -62,7 +58,7 @@ public final class L2ObservationInstance extends L2FolkInstance
                                                          Integer.parseInt(st.nextToken()),
                                                          Integer.parseInt(st.nextToken())) != null)
             {
-            	doObserve(player, val);
+                doObserve(player, val);
             }
             else player.sendPacket(new SystemMessage(SystemMessageId.ONLY_VIEW_SIEGE));
         }
@@ -70,10 +66,12 @@ public final class L2ObservationInstance extends L2FolkInstance
         {
             doObserve(player, command.substring(8));
         }
+        else
+            super.onBypassFeedback(player, command);
     }
 
     @Override
-	public String getHtmlPath(int npcId, int val)
+    public String getHtmlPath(int npcId, int val)
     {
         String pom = "";
         if (val == 0)
@@ -86,13 +84,6 @@ public final class L2ObservationInstance extends L2FolkInstance
         }
 
         return "data/html/observation/" + pom + ".htm";
-    }
-
-    @Override
-	public void onAction(L2PcInstance player)
-    {
-        if (Config.DEBUG) _log.fine("Teleporter activated");
-        super.onAction(player);
     }
 
     private void doObserve(L2PcInstance player, String val)
