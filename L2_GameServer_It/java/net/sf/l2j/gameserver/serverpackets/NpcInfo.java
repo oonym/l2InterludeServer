@@ -172,8 +172,8 @@ public class NpcInfo extends L2GameServerPacket
 		writeC(0000);  // C2
 
 		writeC(0x00);  // C3  team circle 1-blue, 2-red
-		writeF(0x00);  // C4 i think it is collisionRadius a second time
-		writeF(0x00);  // C4      "        collisionHeight     "
+		writeF(_collisionRadius);  // C4 collisionRadius a second time
+		writeF(_collisionHeight);  // C4 collisionHeight     "
 		writeD(0x00);  // C4
 		writeD(0x00);  // C6
 	}
