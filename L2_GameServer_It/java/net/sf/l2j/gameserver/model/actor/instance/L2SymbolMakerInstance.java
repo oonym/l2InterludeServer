@@ -38,47 +38,6 @@ public class L2SymbolMakerInstance extends L2FolkInstance
 {
 	//private static Logger _log = Logger.getLogger(L2SymbolMakerInstance.class.getName());
 
-	private double _collisionRadius;
-	private double _collisionHeight; // this is  positioning the model relative to the ground
-
-	/**
-	 * @return Returns the zOffset.
-	 */
-	public double getCollisionHeight()
-	{
-		return _collisionHeight;
-	}
-
-	/**
-	 * @param offset The zOffset to set.
-	 */
-	public void setCollisionHeight(double offset)
-	{
-		_collisionHeight = offset;
-	}
-
-
-
-	/**
-	 * @return Returns the collisionRadius.
-	 */
-	public double getCollisionRadius()
-	{
-		return _collisionRadius;
-	}
-
-	/**
-	 * @param collisionRadius The collisionRadius to set.
-	 */
-	public void setCollisionRadius(double collisionRadius)
-	{
-		_collisionRadius = collisionRadius;
-	}
-
-	/**
-	 * @return Returns the unknown1.
-	 */
-
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
