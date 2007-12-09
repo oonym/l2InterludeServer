@@ -1228,24 +1228,4 @@ public abstract class Inventory extends ItemContainer
 	        try { con.close(); } catch (Exception e) {}
 	    }
 	}
-	
-	/**
-	 * Renotify to paperdoll listeners every equipped item
-	 */
-	public void reloadEquippedItems() {
-		
-		L2ItemInstance item;
-		
-		for (int i = 0; i < _paperdoll.length; i++)
-		{
-			item = _paperdoll[i];
-			if (item == null) continue;
-			
-			for (PaperdollListener listener : _paperdollListeners)
-			{
-				if (listener == null) continue;
-				listener.notifyEquiped(item.getEquipSlot(), item);
-			}
-		}
-	}
 }

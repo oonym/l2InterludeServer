@@ -2154,10 +2154,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					addSkill(sk, false);
 			}
 		}
-		
-		// Reload passive skills from armors / jewels / weapons
-		getInventory().reloadEquippedItems();
-		
 	}
 
 	/**
