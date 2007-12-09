@@ -2278,7 +2278,7 @@ public class L2NpcInstance extends L2Character
     {
     	return _currentCollisionHeight;
     }
-    public int getColisionRadius()
+    public int getCollisionRadius()
     {
     	return _currentCollisionRadius;
     }

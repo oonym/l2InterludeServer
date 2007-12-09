@@ -59,7 +59,7 @@ public class NpcInfo extends L2GameServerPacket
 		_lhand = cha.getLeftHandItem(); 
 		_isSummoned = false;
         _collisionHeight = cha.getCollisionHeight();
-        _collisionRadius = cha.getColisionRadius();
+        _collisionRadius = cha.getCollisionRadius();
         if (cha.getTemplate().serverSideName)
         	_name = cha.getTemplate().name;
 

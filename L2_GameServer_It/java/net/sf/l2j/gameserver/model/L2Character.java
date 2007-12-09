@@ -1979,7 +1979,7 @@ public abstract class L2Character extends L2Object
 	public static final int ABNORMAL_EFFECT_BIG_HEAD		= 0x002000;
 	public static final int ABNORMAL_EFFECT_FLAME			= 0x004000;
 	public static final int ABNORMAL_EFFECT_UNKNOWN_16		= 0x008000;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_17		= 0x010000;
+	public static final int ABNORMAL_EFFECT_GROW			= 0x010000;
 	public static final int ABNORMAL_EFFECT_FLOATING_ROOT	= 0x020000;
 	public static final int ABNORMAL_EFFECT_DANCE_STUNNED	= 0x040000;
 	public static final int ABNORMAL_EFFECT_FIREROOT_STUN	= 0x080000;
