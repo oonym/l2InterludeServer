@@ -25,11 +25,14 @@ import net.sf.l2j.gameserver.datatables.NpcTable;
 import net.sf.l2j.gameserver.datatables.SpawnTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Spawn;
+import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.PcInventory;
 import net.sf.l2j.gameserver.model.actor.instance.L2DoorInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2SummonInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
@@ -559,15 +562,30 @@ public class TvTEvent
 	/**
 	 * Is called when a player is killed<br><br>
 	 *
-	 * @param kilerCharacter<br>
+	 * @param killerCharacter<br>
 	 * @param killedPlayerInstance<br>
 	 */
 	public static void onKill(L2Character killerCharacter, L2PcInstance killedPlayerInstance)
 	{
-		if (killerCharacter == null || killedPlayerInstance == null || !(killerCharacter instanceof L2PcInstance) || !isStarted())
+		if (killerCharacter == null || killedPlayerInstance == null ||
+			(!(killerCharacter instanceof L2PcInstance) &&
+			 !(killerCharacter instanceof L2PetInstance) &&
+			 !(killerCharacter instanceof L2SummonInstance)) ||
+			!isStarted())
 			return;
 
-		L2PcInstance killerPlayerInstance = (L2PcInstance)killerCharacter;
+		L2PcInstance killerPlayerInstance = null;
+
+		if (killerCharacter instanceof L2PetInstance || killerCharacter instanceof L2SummonInstance)
+		{
+			killerPlayerInstance = ((L2Summon)killerCharacter).getOwner();
+
+			if (killerPlayerInstance == null)
+				return;
+		}
+		else
+			killerPlayerInstance = (L2PcInstance)killerCharacter;
+
 		String playerName = killerPlayerInstance.getName();
 		byte killerTeamId = getParticipantTeamId(playerName);
 
