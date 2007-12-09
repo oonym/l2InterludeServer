@@ -21,6 +21,8 @@ package net.sf.l2j.gameserver.clientpackets;
 import net.sf.l2j.gameserver.RecipeController;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.network.SystemMessageId;
+import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * @author Administrator
@@ -72,6 +74,11 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
             activeChar.sendMessage("Currently in Craft Mode");
             return;
         }
+        if (manufacturer.isInDuel() || activeChar.isInDuel())
+		{
+        	activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_CRAFT_DURING_COMBAT));
+			return;
+		}
 		RecipeController.getInstance().requestManufactureItem(manufacturer, _recipeId,activeChar);
 	}
 
