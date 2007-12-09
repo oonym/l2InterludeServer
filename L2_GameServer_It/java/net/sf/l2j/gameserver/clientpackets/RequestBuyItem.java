@@ -27,6 +27,7 @@ import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2TradeList;
+import net.sf.l2j.gameserver.model.actor.instance.L2CastleChamberlainInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ClanHallManagerInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2FishermanInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MercManagerInstance;
@@ -90,7 +91,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 
         L2Object target = player.getTarget();
         if (!player.isGM() && (target == null								// No target (ie GM Shop)
-        		|| !(target instanceof L2MerchantInstance || target instanceof L2FishermanInstance || target instanceof L2MercManagerInstance || target instanceof L2ClanHallManagerInstance)	// Target not a merchant, fisherman or mercmanager
+        		|| !(target instanceof L2MerchantInstance || target instanceof L2FishermanInstance || target instanceof L2MercManagerInstance || target instanceof L2ClanHallManagerInstance)|| target instanceof L2CastleChamberlainInstance	// Target not a merchant, fisherman or mercmanager
 			    || !player.isInsideRadius(target, L2NpcInstance.INTERACTION_DISTANCE, false, false) 	// Distance is too far
 			        )) return;
 
@@ -106,6 +107,8 @@ public final class RequestBuyItem extends L2GameClientPacket
         	else if (target instanceof L2MercManagerInstance)
         		ok = true;
         	else if (target instanceof L2ClanHallManagerInstance)
+        		ok = true;
+        	else if (target instanceof L2CastleChamberlainInstance)
         		ok = true;
         	else
         		ok = false;
