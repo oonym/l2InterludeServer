@@ -726,7 +726,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 			adminReply.replace("%rHand%", String.valueOf(npc.rhand));
 			adminReply.replace("%lHand%", String.valueOf(npc.lhand));
 			adminReply.replace("%armor%", String.valueOf(npc.armor));
-			adminReply.replace("%walkSpd%", String.valueOf(Util.roundTo((float)(npc.baseRunSpd*0.7),3)));
+			adminReply.replace("%walkSpd%", String.valueOf(npc.baseWalkSpd));
 			adminReply.replace("%runSpd%", String.valueOf(npc.baseRunSpd));
 			adminReply.replace("%factionId%", npc.factionId == null ? "" : npc.factionId);
 			adminReply.replace("%factionRange%", String.valueOf(npc.factionRange));

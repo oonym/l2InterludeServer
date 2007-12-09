@@ -75,6 +75,7 @@ public enum Stats
 	// walk & escape speed are calculated proportionally,
 	// magic speed is a buff
 	RUN_SPEED 			("runSpd"),
+	WALK_SPEED			("walkSpd"),
 
 	//
 	// Player-only stats

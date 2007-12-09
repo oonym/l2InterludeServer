@@ -53,7 +53,9 @@ public class L2CharTemplate
 	public final int baseAtkRange;
 	public final int baseShldRate;
 	public final int baseCritRate;
+	public final int baseWalkSpd;
 	public final int baseRunSpd;
+
 	// SpecialStats
 	public final int baseBreath;
 	public final int baseAggression;
@@ -119,7 +121,9 @@ public class L2CharTemplate
 		baseAtkRange       = set.getInteger("baseAtkRange");
 		baseShldRate       = set.getInteger("baseShldRate");
 		baseCritRate       = set.getInteger("baseCritRate");
+		baseWalkSpd 	   = set.getInteger("baseWalkSpd");
 		baseRunSpd         = set.getInteger("baseRunSpd");
+		
 		// SpecialStats
 		baseBreath         = set.getInteger("baseBreath",         100);
 		baseAggression     = set.getInteger("baseAggression",     0);

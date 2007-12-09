@@ -20,6 +20,8 @@ package net.sf.l2j.gameserver.model.actor.stat;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Skill;
+import net.sf.l2j.gameserver.model.actor.instance.L2NpcWalkerInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.skills.Calculator;
 import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.gameserver.skills.Stats;
@@ -540,7 +542,7 @@ public class CharStat
 
 		// err we should be adding TO the persons run speed
 		// not making it a constant
-		int val = (int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null);
+		int val =(int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null);
 
 		if (_activeChar.isFlying())
 		{
@@ -584,10 +586,19 @@ public class CharStat
 	/** Return the WalkSpeed (base+modifier) of the L2Character. */
 	public final int getWalkSpeed()
 	{
-    	if (_activeChar == null)
+    	
+		if (_activeChar == null)
     		return 1;
 
-		return (getRunSpeed() * 70) / 100;
+		if(_activeChar instanceof L2PcInstance )
+		{
+			return (getRunSpeed() * 70) / 100;	
+		}
+		else
+		{	
+			return (int) calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
+		}
+		
 	}
 
 	/** Return the WIT of the L2Character (base+modifier). */

@@ -50,6 +50,7 @@ import net.sf.l2j.gameserver.datatables.LevelUpData;
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.datatables.NobleSkillTable;
 import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.datatables.NpcWalkerRoutesTable;
 import net.sf.l2j.gameserver.datatables.SkillSpellbookTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
@@ -58,6 +59,7 @@ import net.sf.l2j.gameserver.datatables.StaticObjects;
 import net.sf.l2j.gameserver.datatables.SummonItemsData;
 import net.sf.l2j.gameserver.datatables.TeleportLocationTable;
 import net.sf.l2j.gameserver.datatables.ZoneData;
+
 import net.sf.l2j.gameserver.geoeditorcon.GeoEditorListener;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
@@ -330,6 +332,12 @@ public class GameServer
 		    throw new Exception("Could not initialize the skill table");
 		}
 
+		
+//		L2EMU_ADD by Rayan. L2J - BigBro
+		if(Config.ALLOW_NPC_WALKERS)
+			NpcWalkerRoutesTable.getInstance().load();
+		//L2EMU_ADD by Rayan. L2J - BigBro
+		
 		RecipeController.getInstance();
 
 		SkillTreeTable.getInstance();
@@ -587,6 +595,8 @@ public class GameServer
 
 		_log.config("VoicedCommandHandler: Loaded " + _voicedCommandHandler.size() + " handlers.");
 
+		
+						
 		if(Config.L2JMOD_ALLOW_WEDDING)
 			CoupleManager.getInstance();
 

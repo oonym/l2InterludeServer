@@ -618,6 +618,9 @@ public final class Config
     /** Allow cursed weapons ? */
     public static boolean           ALLOW_CURSED_WEAPONS;
 
+    //WALKER NPC
+    public static boolean          ALLOW_NPC_WALKERS;
+    
     /** Time after which a packet is considered as lost */
     public static int             PACKET_LIFETIME;
 
@@ -644,6 +647,8 @@ public final class Config
     public static int MIN_MONSTER_ANIMATION;
     /** Maximal time between animations of a MONSTER */
     public static int MAX_MONSTER_ANIMATION;
+
+
 
     /** Activate position recorder ? */
     public static boolean ACTIVATE_POSITION_RECORDER;
@@ -1270,6 +1275,7 @@ public final class Config
                 ALLOWFISHING                    = Boolean.valueOf(optionsSettings.getProperty("AllowFishing", "False"));
                 ALLOW_MANOR                     = Boolean.parseBoolean(optionsSettings.getProperty("AllowManor", "False"));
                 ALLOW_BOAT                      = Boolean.valueOf(optionsSettings.getProperty("AllowBoat", "False"));
+                ALLOW_NPC_WALKERS               = Boolean.valueOf(optionsSettings.getProperty("AllowNpcWalkers", "true"));
                 ALLOW_CURSED_WEAPONS            = Boolean.valueOf(optionsSettings.getProperty("AllowCursedWeapons", "False"));
 
                 ALLOW_L2WALKER_CLIENT           = L2WalkerAllowed.valueOf(optionsSettings.getProperty("AllowL2Walker", "False"));
@@ -1301,7 +1307,8 @@ public final class Config
                 MAX_NPC_ANIMATION               = Integer.parseInt(optionsSettings.getProperty("MaxNPCAnimation", "20"));
                 MIN_MONSTER_ANIMATION           = Integer.parseInt(optionsSettings.getProperty("MinMonsterAnimation", "5"));
                 MAX_MONSTER_ANIMATION           = Integer.parseInt(optionsSettings.getProperty("MaxMonsterAnimation", "20"));
-
+ 
+                
                 SERVER_NEWS                     = Boolean.valueOf(optionsSettings.getProperty("ShowServerNews", "False"));
                 SHOW_NPC_LVL                    = Boolean.valueOf(optionsSettings.getProperty("ShowNpcLevel", "False"));
 

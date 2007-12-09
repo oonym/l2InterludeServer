@@ -26,6 +26,7 @@ import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.datatables.NpcTable;
+import net.sf.l2j.gameserver.datatables.NpcWalkerRoutesTable;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.TeleportLocationTable;
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
@@ -217,6 +218,13 @@ public class AdminAdmin implements IAdminCommandHandler {
 					Manager.reloadAll();
 					activeChar.sendMessage("All instance manager has been reloaded");
 				}
+				else if(type.startsWith("npcwalkers"))
+				{
+					NpcWalkerRoutesTable.getInstance().load();
+					activeChar.sendMessage("All NPC walker routes have been reloaded");
+					
+				}
+				
 			}
 			catch(Exception e)
 			{
