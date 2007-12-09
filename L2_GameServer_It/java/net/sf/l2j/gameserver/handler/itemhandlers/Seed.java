@@ -24,6 +24,7 @@ import net.sf.l2j.gameserver.handler.IItemHandler;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Manor;
+import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.actor.instance.L2BossInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2ChestInstance;
@@ -83,14 +84,14 @@ public class Seed implements IItemHandler {
         	return;
 
         _activeChar = (L2PcInstance)playable;
+        L2Object target = _activeChar.getTarget();
 
-        if(!(_activeChar.getTarget() instanceof L2NpcInstance)) {
+        if(!(target instanceof L2NpcInstance)) 
+        {
             _activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
             _activeChar.sendPacket(new ActionFailed());
             return;
         }
-
-        L2NpcInstance target = (L2NpcInstance) _activeChar.getTarget();
 
         if ( !(target instanceof L2MonsterInstance)  ||
         		(target instanceof L2ChestInstance)  ||
