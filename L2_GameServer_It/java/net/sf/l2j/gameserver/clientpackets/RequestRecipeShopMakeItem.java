@@ -23,6 +23,7 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
+import net.sf.l2j.gameserver.util.Util;
 
 /**
  * @author Administrator
@@ -79,7 +80,8 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_CRAFT_DURING_COMBAT));
 			return;
 		}
-		RecipeController.getInstance().requestManufactureItem(manufacturer, _recipeId,activeChar);
+        if (Util.checkIfInRange(150, activeChar, manufacturer, true))
+        	RecipeController.getInstance().requestManufactureItem(manufacturer, _recipeId, activeChar);
 	}
 
     /* (non-Javadoc)
