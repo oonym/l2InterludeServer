@@ -133,7 +133,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance {
 	public void onBypassFeedback(L2PcInstance player, String command) 
     {
 		// BypassValidation Exploit plug.
-		if (player.getLastFolkNPC().getObjectId() != this.getObjectId())
+    	if (player.getLastFolkNPC() == null || player.getLastFolkNPC().getObjectId() != this.getObjectId())
 			return;
 		
     	if (command.startsWith("manor_menu_select")) 
