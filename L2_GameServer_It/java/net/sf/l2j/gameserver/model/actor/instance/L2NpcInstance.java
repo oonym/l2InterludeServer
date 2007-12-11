@@ -1226,7 +1226,9 @@ public class L2NpcInstance extends L2Character
     {
         String content;
         
-        if (player.getWeightPenalty()>=3){	
+        Quest q = QuestManager.getInstance().getQuest(questId);
+
+        if (player.getWeightPenalty()>=3 && q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000 ){	
             player.sendPacket(new SystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT));
             return;
         }
@@ -1244,7 +1246,6 @@ public class L2NpcInstance extends L2Character
         }
         else
         {
-            Quest q = QuestManager.getInstance().getQuest(questId);
             if (q != null) 
             {
                 // check for start point

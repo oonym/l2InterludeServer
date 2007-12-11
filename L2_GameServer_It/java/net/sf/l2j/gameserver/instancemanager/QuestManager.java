@@ -17,10 +17,11 @@
  */
 package net.sf.l2j.gameserver.instancemanager;
 
-import java.util.List;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
+import java.util.Map;
+import javolution.util.FastMap;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.quest.Quest;
 import net.sf.l2j.gameserver.model.quest.jython.QuestJython;
@@ -47,7 +48,7 @@ public class QuestManager
 
     // =========================================================
     // Data Field
-    private List<Quest> _quests = new FastList<Quest>();
+    private Map<String, Quest> _quests = new FastMap<String, Quest>();
 
     // =========================================================
     // Constructor
@@ -59,7 +60,9 @@ public class QuestManager
     // Method - Public
     public final boolean reload(String questFolder)
     {
-    	getQuest(questFolder).saveGlobalData();
+    	Quest q = getQuest(questFolder);
+    	if (q!=null)
+    		q.saveGlobalData();
     	return QuestJython.reloadQuest(questFolder);
     }
     
@@ -89,7 +92,7 @@ public class QuestManager
     }
     public final void save()
     {
-    	for(Quest q:_quests)
+    	for(Quest q: getQuests().values())
     		q.saveGlobalData();
     }
 
@@ -97,59 +100,33 @@ public class QuestManager
     // Property - Public
     public final Quest getQuest(String name)
     {
-        int index = getQuestIndex(name);
-        if (index >= 0) return getQuests().get(index);
-        return null;
+        return getQuests().get(name);
     }
 
     public final Quest getQuest(int questId)
     {
-        int index = getQuestIndex(questId);
-        if (index >= 0) return getQuests().get(index);
-        return null;
+    	for (Quest q: getQuests().values())
+    	{
+    		if (q.getQuestIntId() == questId)
+    			return q;
+    	}
+    	return null;
     }
     
-    public final int getQuestIndex(String name)
-    {
-        Quest quest;
-        for (int i = 0; i < getQuests().size(); i++)
-        {
-            quest = getQuests().get(i);
-            if (quest != null && quest.getName().equalsIgnoreCase(name)) return i;
-        }
-        return -1;
-    }
-    
-    public final int getQuestIndex(int questId)
-    {
-        Quest quest;
-        for (int i = 0; i < getQuests().size(); i++)
-        {
-            quest = getQuests().get(i);
-            if (quest != null && quest.getQuestIntId() == questId) return i;
-        }
-        return -1;
-    }
-    
+
     public final void addQuest(Quest newQuest)
     {
-    	for (Quest quest : getQuests())
-        {
-    		if (quest.getName().equalsIgnoreCase(newQuest.getName()))
-    		{
-    			_log.info("Replaced: "+quest.getName()+" with "+newQuest.getName());
-    			getQuests().remove(quest);
-    			getQuests().add(newQuest);
-    			return;
-    		}
-        }
+    	if (getQuests().containsKey(newQuest.getName()))
+			_log.info("Replaced: "+newQuest.getName()+" with a new version");
     	
-    	getQuests().add(newQuest);
+    	// Note: FastMap will replace the old value if the key already exists
+    	// so there is no need to explicitly try to remove the old reference.
+    	getQuests().put(newQuest.getName(), newQuest);
     }
     
-    public final List<Quest> getQuests()
+    public final FastMap<String, Quest> getQuests()
     {
-        if (_quests == null) _quests = new FastList<Quest>();
-        return _quests;
+        if (_quests == null) _quests = new FastMap<String, Quest>();
+        return (FastMap<String, Quest>) _quests;
     }
 }

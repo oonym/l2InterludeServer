@@ -310,11 +310,25 @@ public final class L2NpcTemplate extends L2CharTemplate
 			// if only one registration per npc is allowed for this event type
 			// then only register this NPC if not already registered for the specified event.
 			// if a quest allows multiple registrations, then register regardless of count
-			if (EventType.isMultipleRegistrationAllowed() || (len < 1))
+			// In all cases, check if this new registration is replacing an older copy of the SAME quest
+			if (!EventType.isMultipleRegistrationAllowed())
 			{
+				if (_quests[0].getName().equals(q.getName()))
+					_quests[0] = q;
+				else 
+					_log.warning("Quest event not allowed in multiple quests.  Skipped addition of Event Type \""+EventType+"\" for NPC \""+name +"\" and quest \""+q.getName()+"\".");
+			}
+			else
+			{
+				// be ready to add a new quest to a new copy of the list, with larger size than previously.
 				Quest[] tmp = new Quest[len+1];
+				// loop through the existing quests and copy them to the new list.  While doing so, also 
+				// check if this new quest happens to be just a replacement for a previously loaded quest.  
+				// If so, just save the updated reference and do NOT use the new list. Else, add the new
+				// quest to the end of the new list
 				for (int i=0; i < len; i++) {
-					if (_quests[i].getName().equals(q.getName())) {
+					if (_quests[i].getName().equals(q.getName())) 
+					{
 						_quests[i] = q;
 						return;
 		            }
@@ -322,10 +336,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 		        }
 				tmp[len] = q;
 				_questEvents.put(EventType, tmp);
-			}
-			else
-			{
-				_log.warning("Quest event not allowed in multiple quests.  Skipped addition of Event Type \""+EventType+"\" for NPC \""+name +"\" and quest \""+q.getName()+"\".");
 			}
 		}
     }

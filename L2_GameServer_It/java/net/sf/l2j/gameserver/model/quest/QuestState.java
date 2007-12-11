@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.instancemanager.QuestManager;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2DropData;
@@ -50,7 +51,7 @@ public final class QuestState
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 
 	/** Quest associated to the QuestState */
-	private final Quest _quest;
+	private final String _questName;
 
 	/** Player who engaged the quest */
 	private final L2PcInstance _player;
@@ -85,7 +86,7 @@ public final class QuestState
 	 */
     QuestState(Quest quest, L2PcInstance player, State state, boolean completed)
     {
-		_quest = quest;
+    	_questName = quest.getName();
 		_player = player;
 
 		// Save the state of the quest for the player in the player's list of quest onwed
@@ -108,13 +109,17 @@ public final class QuestState
 		}
     }
 
+    public String getQuestName()
+    {
+    	return _questName;
+    }
     /**
      * Return the quest
      * @return Quest
      */
 	public Quest getQuest()
     {
-		return _quest;
+		return QuestManager.getInstance().getQuest(_questName);
 	}
 
 	/**
@@ -306,7 +311,7 @@ public final class QuestState
 	        }
 	        catch (Exception e)
 	        {
-	            _log.finer(getPlayer().getName()+", "+getQuest().getName()+" cond ["+val+"] is not an integer.  Value stored, but no packet was sent: " + e);
+	            _log.finer(getPlayer().getName()+", "+getQuestName()+" cond ["+val+"] is not an integer.  Value stored, but no packet was sent: " + e);
 	        }
 		}
 
@@ -501,7 +506,7 @@ public final class QuestState
 		L2DropData d = new L2DropData();
 		d.setItemId(itemId);
 		d.setChance(chance);
-		d.setQuestID(getQuest().getName());
+		d.setQuestID(getQuestName());
 		d.addStates(new String[]{getState().getName()});
 		List<L2DropData> lst = getDrops().get(npcId);
 
@@ -593,11 +598,10 @@ public final class QuestState
 		if (count <= 0)
             return;
 
+		
+		int questId = getQuest().getQuestIntId();
 		// If item for reward is gold (ID=57), modify count with rate for quest reward
-		if (itemId == 57
-		    && !(getQuest().getQuestIntId()>=217 && getQuest().getQuestIntId()<=233)
-		    && !(getQuest().getQuestIntId()>=401 && getQuest().getQuestIntId()<=418)
-		    )
+		if (itemId == 57 && !(questId>=217 && questId<=233) && !(questId>=401 && questId<=418) )
 			count=(int)(count*Config.RATE_QUESTS_REWARD);
 		// Set quantity of item
 
@@ -952,7 +956,7 @@ public final class QuestState
 		// If quest is repeatable, delete quest from list of quest of the player and from database (quest CAN be created again => repeatable)
 		if (repeatable)
         {
-            getPlayer().delQuestState(getQuest().getName());
+            getPlayer().delQuestState(getQuestName());
 			Quest.deleteQuestInDb(this);
 
 			_vars = null;

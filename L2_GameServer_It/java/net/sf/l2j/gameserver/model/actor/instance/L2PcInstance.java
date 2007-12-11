@@ -1165,7 +1165,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void setQuestState(QuestState qs)
 	{
-		_quests.put(qs.getQuest().getName(), qs);
+		_quests.put(qs.getQuestName(), qs);
 	}
 
 

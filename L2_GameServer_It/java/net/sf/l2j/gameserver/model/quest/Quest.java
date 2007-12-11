@@ -608,7 +608,7 @@ public abstract class Quest
             PreparedStatement statement;
             statement = con.prepareStatement("INSERT INTO character_quests (char_id,name,var,value) VALUES (?,?,?,?)");
             statement.setInt   (1, qs.getPlayer().getObjectId());
-            statement.setString(2, qs.getQuest().getName());
+            statement.setString(2, qs.getQuestName());
             statement.setString(3, var);
             statement.setString(4, value);
 	    statement.executeUpdate();
@@ -643,7 +643,7 @@ public abstract class Quest
             statement = con.prepareStatement("UPDATE character_quests SET value=? WHERE char_id=? AND name=? AND var = ?");
             statement.setString(1, value);
             statement.setInt   (2, qs.getPlayer().getObjectId());
-            statement.setString(3, qs.getQuest().getName());
+            statement.setString(3, qs.getQuestName());
             statement.setString(4, var);
 			statement.executeUpdate();
             statement.close();
@@ -667,7 +667,7 @@ public abstract class Quest
             PreparedStatement statement;
             statement = con.prepareStatement("DELETE FROM character_quests WHERE char_id=? AND name=? AND var=?");
             statement.setInt   (1, qs.getPlayer().getObjectId());
-            statement.setString(2, qs.getQuest().getName());
+            statement.setString(2, qs.getQuestName());
             statement.setString(3, var);
 	    statement.executeUpdate();
             statement.close();
@@ -690,7 +690,7 @@ public abstract class Quest
             PreparedStatement statement;
             statement = con.prepareStatement("DELETE FROM character_quests WHERE char_id=? AND name=?");
             statement.setInt   (1, qs.getPlayer().getObjectId());
-            statement.setString(2, qs.getQuest().getName());
+            statement.setString(2, qs.getQuestName());
 			statement.executeUpdate();
             statement.close();
         } catch (Exception e) {
