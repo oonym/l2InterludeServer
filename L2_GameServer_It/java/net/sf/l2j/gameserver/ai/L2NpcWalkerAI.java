@@ -25,12 +25,9 @@ import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2NpcWalkerNode;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcWalkerInstance;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 {
-	private static final Log _log = LogFactory.getLog(L2NpcWalkerAI.class);
 	private static final int DEFAULT_MOVE_DELAY = 0;
 
 	private long _nextMoveTime;
@@ -92,7 +89,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	 */
 	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
 	{
-		_log.error("NpcWalker ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
+		_log.warning("NpcWalker ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
 
 		int destinationX = _route.get(_currentPos).getMoveX();
 		int destinationY = _route.get(_currentPos).getMoveY();
@@ -131,7 +128,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 			{
 				delay = DEFAULT_MOVE_DELAY;
 				if(Config.DEVELOPER)
-					_log.warn("Wrong Delay Set in Npc Walker Functions = " + delay + " secs, using default delay: " + DEFAULT_MOVE_DELAY + " secs instead.");
+					_log.warning("Wrong Delay Set in Npc Walker Functions = " + delay + " secs, using default delay: " + DEFAULT_MOVE_DELAY + " secs instead.");
 			}
 
 			_nextMoveTime = System.currentTimeMillis() + delay;

@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveWarList;
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
     private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
+    @SuppressWarnings("unused")
     private int _unk1;
     private int _tab;
 

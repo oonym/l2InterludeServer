@@ -45,6 +45,7 @@ public class AdminMammon implements IAdminCommandHandler
 
 	private boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();
 
+	@SuppressWarnings("deprecation")
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)

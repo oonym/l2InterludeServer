@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class L2ArenaZone extends L2ZoneType
 {
+	@SuppressWarnings("unused")
 	private String _arenaName;
 	private int[] _spawnLoc;
 

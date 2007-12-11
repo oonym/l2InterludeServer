@@ -38,7 +38,6 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Spawn;
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
-import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import net.sf.l2j.gameserver.model.entity.DimensionalRift;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
@@ -362,8 +361,8 @@ public class DimensionalRiftManager
 
     public class DimensionalRiftRoom
     {
-        private final byte _type;
-        private final byte _room;
+        protected final byte _type;
+        protected final byte _room;
         private final int _xMin;
         private final int _xMax;
         private final int _yMin;
@@ -374,7 +373,7 @@ public class DimensionalRiftManager
         private final Shape _s;
         private final boolean _isBossRoom;
         private final FastList<L2Spawn> _roomSpawns;
-        private final FastList<L2NpcInstance> _roomMobs;
+        protected final FastList<L2NpcInstance> _roomMobs;
 
         public DimensionalRiftRoom(byte type, byte room, int xMin, int xMax, int yMin, int yMax, int zMin, int zMax, int xT, int yT, int zT, boolean isBossRoom)
         {

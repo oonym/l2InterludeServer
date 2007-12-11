@@ -23,8 +23,6 @@ import net.sf.l2j.gameserver.ai.L2CharacterAI;
 import net.sf.l2j.gameserver.serverpackets.CreatureSay;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.model.L2Character;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
 
@@ -37,8 +35,6 @@ import java.util.Map;
  */
 public class L2NpcWalkerInstance extends L2NpcInstance
 {
-	private static Log _log = LogFactory.getLog(L2NpcWalkerInstance.class.getName());
-
 	/**
 	 * Constructor of L2NpcWalkerInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
 	 */
@@ -118,7 +114,7 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 		return  super.getAI();
 	}
 
-	private class L2NpcWalkerAIAccessor extends L2Character.AIAccessor
+	protected class L2NpcWalkerAIAccessor extends L2Character.AIAccessor
 	{
 		/**
 		 * AI can't be deattached.

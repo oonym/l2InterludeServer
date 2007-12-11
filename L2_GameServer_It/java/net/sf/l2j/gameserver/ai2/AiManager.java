@@ -71,6 +71,7 @@ public class AiManager
 		try
 		{
 			//TODO redo all the SpecificAiManger loading it's completely messed up:
+			@SuppressWarnings("unused")
 			JarFile jar = new JarFile("./l2jserver.jar");
 			URL url = Class.class.getResource("/net/sf/l2j/gameserver/ai/managers");
 			//jar.getJarEntry("/net/sf/l2j/gameserver/ai/managers").get;

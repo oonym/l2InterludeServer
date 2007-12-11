@@ -74,6 +74,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
 			//Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers();
 			//L2PcInstance[] allPlayers = players.toArray(new L2PcInstance[players.size()]);
 			L2PcInstance[] empty = new L2PcInstance[] { };
+			@SuppressWarnings("unused")
 			PartyMatchList matchList = new PartyMatchList(empty);
 			//sendPacket(matchList);
 		}
