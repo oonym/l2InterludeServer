@@ -334,8 +334,8 @@ public class GameServer
 
 		
 //		L2EMU_ADD by Rayan. L2J - BigBro
-		if(Config.ALLOW_NPC_WALKERS)
-			NpcWalkerRoutesTable.getInstance().load();
+		//if(Config.ALLOW_NPC_WALKERS)
+		NpcWalkerRoutesTable.getInstance().load();
 		//L2EMU_ADD by Rayan. L2J - BigBro
 		
 		RecipeController.getInstance();
