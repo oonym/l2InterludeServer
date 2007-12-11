@@ -51,12 +51,18 @@ public class AdminQuest implements IAdminCommandHandler
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
 
+        // syntax will either be:
+        // For scripts in the quests folder:  //quest_reload <id>
+        //                                    //quest_reload <questName>
+        // For all scripts (including those in the quests folder):  //quest_reload <path>.<questName>
+        // Example:  //quest_reload village_master.orc_occupation_change_1
+        // Example:  //quest_reload ai.group_template.chests
         if (command.startsWith("admin_quest_reload"))
         {
         	String[] parts = command.split(" ");
         	if (parts.length < 2)
         	{
-        		activeChar.sendMessage("Syntax: //quest_reload <questFolder> or //quest_reload <id>");
+        		activeChar.sendMessage("Syntax: //quest_reload <questFolder>.<questSubFolders...>.questName> or //quest_reload <id>");
         	}
         	else
         	{

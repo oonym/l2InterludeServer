@@ -57,7 +57,7 @@ public abstract class QuestJython extends Quest
 	{
 		try
 		{
-			_bsf.exec("jython", "quest", 0, 0, "reload(data.jscript.quests."+questFolder+");");
+			_bsf.exec("jython", "quest", 0, 0, "reload(data.jscript."+questFolder+");");
 			return true;
 		}
 		catch (Exception e)

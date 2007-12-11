@@ -60,6 +60,9 @@ public class QuestManager
     // Method - Public
     public final boolean reload(String questFolder)
     {
+    	if(questFolder.indexOf('.') < 0)
+    		questFolder = "quests."+questFolder;
+    	
     	Quest q = getQuest(questFolder);
     	if (q!=null)
     		q.saveGlobalData();
@@ -80,7 +83,7 @@ public class QuestManager
     		return false;
     	}
     	q.saveGlobalData();
-    	return QuestJython.reloadQuest(q.getName());
+    	return QuestJython.reloadQuest("quests."+q.getName());
     }
     
     // =========================================================
@@ -100,7 +103,10 @@ public class QuestManager
     // Property - Public
     public final Quest getQuest(String name)
     {
-        return getQuests().get(name);
+    	if(name.indexOf('.') < 0)
+    		return getQuests().get("quests."+name);
+    	else
+    		return getQuests().get(name);
     }
 
     public final Quest getQuest(int questId)
@@ -119,9 +125,20 @@ public class QuestManager
     	if (getQuests().containsKey(newQuest.getName()))
 			_log.info("Replaced: "+newQuest.getName()+" with a new version");
     	
+    	// Given the quest instance, create a string representing the path and questName 
+    	// like a simplified version of a canonical class name.  That is, if a script is in 
+    	// DATAPACK_PATH/jscript/quests/abc the result will be quests.abc
+    	// Similarly, for a script in DATAPACK_PATH/jscript/ai/individual/myClass.py
+    	// the result will be ai.individual.myClass
+    	// All quests are to be indexed, processed, and reloaded by this form of pathname.
+    	StringBuffer a = new StringBuffer(newQuest.getClass().getCanonicalName());
+    	a.delete(0, a.indexOf(".jscript.")+9);
+    	a.delete(a.indexOf(newQuest.getClass().getSimpleName()), a.length());
+    	a.append(newQuest.getName());
+
     	// Note: FastMap will replace the old value if the key already exists
     	// so there is no need to explicitly try to remove the old reference.
-    	getQuests().put(newQuest.getName(), newQuest);
+    	getQuests().put(a.toString(), newQuest);
     }
     
     public final FastMap<String, Quest> getQuests()
