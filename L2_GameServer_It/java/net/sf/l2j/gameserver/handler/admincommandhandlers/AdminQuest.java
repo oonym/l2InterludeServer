@@ -52,11 +52,14 @@ public class AdminQuest implements IAdminCommandHandler
             if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
 
         // syntax will either be:
-        // For scripts in the quests folder:  //quest_reload <id>
-        //                                    //quest_reload <questName>
-        // For all scripts (including those in the quests folder):  //quest_reload <path>.<questName>
-        // Example:  //quest_reload village_master.orc_occupation_change_1
-        // Example:  //quest_reload ai.group_template.chests
+        //                           //quest_reload <id>
+        //                           //quest_reload <questName>
+        // The questName MUST start with a non-numeric character for this to work, 
+        // regardless which of the two formats is used.
+        // Example:  //quest_reload orc_occupation_change_1
+        // Example:  //quest_reload chests
+        // Example:  //quest_reload SagasSuperclass
+        // Example:  //quest_reload 12
         if (command.startsWith("admin_quest_reload"))
         {
         	String[] parts = command.split(" ");

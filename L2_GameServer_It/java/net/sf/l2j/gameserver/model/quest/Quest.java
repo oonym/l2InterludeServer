@@ -64,6 +64,7 @@ public abstract class Quest
 
 	private final int _questId;
 	private final String _name;
+	private final String _prefixPath;	// used only for admin_quest_reload
 	private final String _descr;
     private State _initialState;
     private Map<String, State> _states;
@@ -89,6 +90,17 @@ public abstract class Quest
 		_name = name;
 		_descr = descr;
         _states = new FastMap<String, State>();
+        
+    	// Given the quest instance, create a string representing the path and questName 
+    	// like a simplified version of a canonical class name.  That is, if a script is in 
+    	// DATAPACK_PATH/jscript/quests/abc the result will be quests.abc
+    	// Similarly, for a script in DATAPACK_PATH/jscript/ai/individual/myClass.py
+    	// the result will be ai.individual.myClass
+    	// All quests are to be indexed, processed, and reloaded by this form of pathname.
+    	StringBuffer temp = new StringBuffer(getClass().getCanonicalName());
+    	temp.delete(0, temp.indexOf(".jscript.")+9);
+    	temp.delete(temp.indexOf(getClass().getSimpleName()), temp.length());
+    	_prefixPath = temp.toString();
 		if (questId != 0)
 		{
 			QuestManager.getInstance().addQuest(Quest.this);
@@ -185,6 +197,15 @@ public abstract class Quest
 	 */
 	public String getName() {
 		return _name;
+	}
+	
+	/**
+	 * Return name of the prefix path for the quest, down to the last "."
+	 * For example "quests." or "ai.individual."
+	 * @return String
+	 */
+	public String getPrefixPath() {
+		return _prefixPath;
 	}
 	
 	/**
