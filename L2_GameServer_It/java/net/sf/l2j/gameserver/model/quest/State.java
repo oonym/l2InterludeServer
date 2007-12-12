@@ -18,12 +18,7 @@
  */
 package net.sf.l2j.gameserver.model.quest;
 
-import java.util.List;
-import java.util.Map;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
-import net.sf.l2j.gameserver.model.L2DropData;
+import net.sf.l2j.gameserver.instancemanager.QuestManager;
 
 /**
  * @author Luis Arias
@@ -32,16 +27,8 @@ import net.sf.l2j.gameserver.model.L2DropData;
  */
 public class State
 {
-	// TODO - Begins
-	/** Prototype of empty String list */
-	private static final String[] _emptyStrList = new String[0];
-	// TODO - End
-
 	/** Name of the quest */
-    /** Quest object associated to the state */
-	private final Quest _quest;
-	private Map<Integer, List<L2DropData>> _drops;
-	private String[] _events = _emptyStrList;
+    private String _questName;
     private String _name;
 
 
@@ -53,7 +40,7 @@ public class State
     public State(String name, Quest quest)
     {
         _name = name;
-		_quest = quest;
+        _questName = quest.getName();
 		quest.addState(this);
     }
 
@@ -64,47 +51,16 @@ public class State
      * @param npcId : int designating the ID of the NPC
      * @param itemId : int designating the ID of the item dropped
      * @param chance : int designating the chance the item dropped
+     * 
+     * DEPRECATING THIS...only the itemId is really needed, and even 
+     * that is only here for backwards compatibility
      */
     public void addQuestDrop(int npcId, int itemId, int chance) {
-        try {
-            if (_drops == null)
-                _drops = new FastMap<Integer, List<L2DropData>>();
-            L2DropData d = new L2DropData();
-            d.setItemId(itemId);
-            d.setChance(chance);
-            d.setQuestID(_quest.getName());
-            d.addStates(new String[]{_name});
-            List<L2DropData> lst = _drops.get(npcId);
-            if (lst != null) {
-                lst.add(d);
-            } else {
-                lst = new FastList<L2DropData>();
-                lst.add(d);
-                _drops.put(npcId, lst);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	QuestManager.getInstance().getQuest(_questName).registerItem(itemId);
     }
 
     // =========================================================
-    // Proeprty
-
-    /**
-     * Return list of drops at this step/state of the quest.
-     * @return HashMap
-     */
-    Map<Integer, List<L2DropData>> getDrops() {
-        return _drops;
-    }
-
-    /**
-     * Return list of events
-     * @return String[]
-     */
-    String[] getEvents() {
-        return _events;
-    }
+    // Property
 
     /**
      * Return name of the quest
@@ -122,10 +78,5 @@ public class State
     @Override
 	public String toString() {
         return _name;
-    }
-
-    public Quest getQuest()
-    {
-        return _quest;
     }
 }

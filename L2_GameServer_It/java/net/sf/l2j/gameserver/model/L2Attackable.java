@@ -1244,23 +1244,6 @@ public class L2Attackable extends L2NpcInstance
 
          int levelModifier = calculateLevelModifierForDrop(player);          // level modifier in %'s (will be subtracted from drop chance)
 
-         // Add Quest drops to the table containing all possible drops of this L2Attackable
-         FastList<L2DropData> questDrops = new FastList<L2DropData>();
-         player.fillQuestDrops(this, questDrops);
-
-         // First, throw possible quest drops of this L2Attackable
-         for (L2DropData drop : questDrops)
-         {
-             if (drop == null) continue;
-
-             RewardItem item = calculateRewardItem(player, drop, levelModifier, false);
-             if (item == null) continue;
-
-             // Check if the autoLoot mode is active
-             if (Config.AUTO_LOOT) player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
-             else DropItem(player, item); // drop the item on the ground
-         }
-
          // Check the drop of a cursed weapon
          if (levelModifier == 0 && player.getLevel() > 20) // Not deep blue mob
          	CursedWeaponsManager.getInstance().checkDrop(this, player);

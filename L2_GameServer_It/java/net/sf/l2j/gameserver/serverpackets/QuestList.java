@@ -18,12 +18,8 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-import java.util.List;
-
-import javolution.util.FastList;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.quest.Quest;
-import net.sf.l2j.gameserver.model.quest.QuestDropInfo;
 import net.sf.l2j.gameserver.model.quest.QuestState;
 
 
@@ -38,28 +34,6 @@ import net.sf.l2j.gameserver.model.quest.QuestState;
  * 39 01 00 00
  * 04 01 00 00
  * a2 00 00 00
- *
- * 04 00 		number of quest items
- *
- * 85 45 13 40 	item obj id
- * 36 05 00 00 	item id
- * 02 00 00 00 	count
- * 00 00 		?? bodyslot
- *
- * 23 bd 12 40
- * 86 04 00 00
- * 0a 00 00 00
- * 00 00
- *
- * 1f bd 12 40
- * 5a 04 00 00
- * 09 00 00 00
- * 00 00
- *
- * 1b bd 12 40
- * 5b 04 00 00
- * 39 00 00 00
- * 00 00                                                 .
  *
  * format h (d) h (dddh)   rev 377
  * format h (dd) h (dddd)  rev 417
@@ -101,14 +75,6 @@ public class QuestList extends L2GameServerPacket
 	     * 		{
 	     * 			4 byte - Quest ID
 	     * 			4 byte - Quest Status
-	     * 		}
-	     * 		2 byte - Number of All Quests Item
-	     * 		for Item in AllQuestsItem
-	     * 		{
-	     * 			4 byte - Item.ObjID
-	     * 			4 byte - Item.ID
-	     * 			4 byte - Item.Count
-	     * 			4 byte - 5
 	     * 		}
 	     * }
 	     *
@@ -154,30 +120,6 @@ public class QuestList extends L2GameServerPacket
 				writeD(states);
 			else
 				writeD(qs.getInt("cond"));
-		}
-
-		//Prepare info about all quests
-		List<QuestDropInfo> questDrops = new FastList<QuestDropInfo>();
-		int FullCountDropItems = 0;
-		for(Quest q : _quests)
-		{
-			QuestDropInfo newQDrop = new QuestDropInfo(_activeChar, q.getName());
-			//Calculate full count drop items
-			FullCountDropItems += newQDrop.dropList.size();
-
-			questDrops.add(newQDrop);
-		}
-
-		writeH(FullCountDropItems);
-		for(QuestDropInfo currQDropInfo : questDrops)
-		{
-			for(QuestDropInfo.DropInfo itemDropInfo : currQDropInfo.dropList)
-			{
-				writeD(itemDropInfo.dropItemObjID);
-				writeD(itemDropInfo.dropItemID);
-				writeD(itemDropInfo.dropItemCount);
-				writeD(5);							//<<<<---- what is that?
-			}
 		}
 	}
 

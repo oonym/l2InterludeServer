@@ -18,8 +18,6 @@
  */
 package net.sf.l2j.gameserver.model.quest;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -65,9 +63,6 @@ public final class QuestState
 	/** List of couples (variable for quest,value of the variable for quest) */
 	private Map<String, String> _vars;
 
-	/** List of drops needed for quest according to the mob */
-	private Map<Integer, List<L2DropData>> _drops;
-
     /** Boolean flag letting QuestStateManager know to exit quest when cleaning up */
     private boolean _isExitQuestOnCleanUp = false;
 
@@ -95,18 +90,6 @@ public final class QuestState
 		_isCompleted = completed;
 		// set the state of the quest
 		_state = state;
-
-		// add drops from state of the quest
-		if (state != null && !isCompleted())
-        {
-			Map<Integer, List<L2DropData>> new_drops = state.getDrops();
-
-			if (new_drops != null)
-            {
-				_drops = new FastMap<Integer, List<L2DropData>>();
-				_drops.putAll(new_drops);
-			}
-		}
     }
 
     public String getQuestName()
@@ -138,15 +121,6 @@ public final class QuestState
 	public State getState()
     {
 		return _state;
-	}
-
-	/**
-	 * Return list of drops needed for the quest in concordance with mobs
-	 * @return FastMap
-	 */
-	public Map<Integer, List<L2DropData>> getDrops()
-	{
-		return _drops;
 	}
 
 	/**
@@ -183,33 +157,6 @@ public final class QuestState
 	 */
 	public Object setState(State state)
     {
-		// remove drops from previous state
-		if (getDrops() != null)
-        {
-			for (Iterator<List<L2DropData>> i = getDrops().values().iterator(); i.hasNext();)
-            {
-				List<L2DropData> lst = i.next();
-
-				for (Iterator<L2DropData> ds = lst.iterator(); ds.hasNext();)
-                {
-					L2DropData d = ds.next();
-					String[] states = d.getStateIDs();
-
-					for (int k=0; k < states.length; k++)
-                    {
-						if (getState().getName().equals(states[k]))
-                        {
-							ds.remove();
-							break;
-						}
-					}
-				}
-
-				if (lst == null || lst.size() == 0)
-					i.remove();
-			}
-		}
-
         // set new state
 		_state = state;
 
@@ -217,20 +164,6 @@ public final class QuestState
 
 		if(getStateId().equals("Completed")) _isCompleted = true;
 		else _isCompleted = false;
-
-		// add drops from new state
-		if (!isCompleted())
-        {
-			Map<Integer, List<L2DropData>> newDrops = state.getDrops();
-
-			if (newDrops != null)
-            {
-				if (getDrops() == null)
-					_drops = new FastMap<Integer, List<L2DropData>>();
-
-				_drops.putAll(newDrops);
-			}
-		}
 
 		Quest.updateQuestInDb(this);
 		QuestList ql = new QuestList();
@@ -471,15 +404,6 @@ public final class QuestState
         return varint;
     }
 
-	public boolean waitsForEvent(String event)
-    {
-		for (String se : getState().getEvents())
-			if (se.equals(event))
-				return true;
-
-        return false;
-	}
-
     /**
      * Add player to get notification of characters death
      * @param character : L2Character of the character to get notification of death
@@ -491,66 +415,6 @@ public final class QuestState
 
         character.addNotifyQuestOfDeath(this);
     }
-
-	/**
-	 * Add drop to the list of drops for the quest
-	 * @param npcId : int pointing out the NPC given the drop
-	 * @param itemId : int pointing out the ID of the item dropped
-	 * @param chance : int pointing out the chance to get the drop
-	 */
-	public void addQuestDrop(int npcId, int itemId, int chance)
-    {
-		if (getDrops() == null)
-			_drops = new FastMap<Integer, List<L2DropData>>();
-
-		L2DropData d = new L2DropData();
-		d.setItemId(itemId);
-		d.setChance(chance);
-		d.setQuestID(getQuestName());
-		d.addStates(new String[]{getState().getName()});
-		List<L2DropData> lst = getDrops().get(npcId);
-
-		if (lst != null)
-        {
-			lst.add(d);
-		}
-        else
-        {
-			lst = new FastList<L2DropData>();
-			lst.add(d);
-			_drops.put(npcId, lst);
-		}
-	}
-
-	/**
-	 * Clear all drops from the class variable "drops"
-	 */
-	public void clearQuestDrops()
-    {
-		_drops = null;
-	}
-
-	/**
-	 * Add quest drops to the parameter "drops"
-	 * @param npc : L2Attackable killed
-	 * @param drops : List of drops of the L2Attackable
-	 */
-	public void fillQuestDrops(L2NpcInstance npc, List<L2DropData> drops)
-	{
-		if (getDrops() == null)
-			return;
-
-		// Get drops of the NPC recorded in class variable "drops"
-		List<L2DropData> lst = getDrops().get(npc.getTemplate().npcId);
-		// If drops of the NPC in class variable "drops" exist, add them to parameter "drops"
-		if (lst != null)
-			drops.addAll(lst);
-		// Get drops for all NPC recorded in class variable "drops"
-		lst = getDrops().get(0); // all mobs
-		// If drops for all NPC in class variable "drops" exist, add them to parameter "drops"
-		if (lst != null)
-			drops.addAll(lst);
-	}
 
 	/**
 	 * Return the quantity of one sort of item hold by the player
@@ -923,34 +787,15 @@ public final class QuestState
 
 		// Say quest is completed
 		_isCompleted = true;
-		// Clean drops
-		if (getDrops() != null)
-        {
-			// Go through values of class variable "drops" pointing out mobs that drop for quest
-		    for (Iterator<List<L2DropData>> i = getDrops().values().iterator(); i.hasNext();)
-            {
-		    	List<L2DropData> lst = i.next();
+		// Clean registered quest items
 
-		    	// Go through values of mobs that drop for quest pointing out drops of the mob
-		    	for (Iterator<L2DropData> ds = lst.iterator(); ds.hasNext();)
-                {
-					L2DropData d = ds.next();
-					int itemId = d.getItemId();
-
-					// Get [item from] / [presence of the item in] the inventory of the player
-					L2ItemInstance item = getPlayer().getInventory().getItemByItemId(itemId);
-
-				    	if (item == null || itemId == 57)
-						continue;
-
-					int count = item.getCount();
-					// If player has the item in inventory, destroy it (if not gold)
-
-					getPlayer().destroyItemByItemId("Quest", itemId, count, getPlayer(), true);
-				}
+		FastList<Integer> itemIdList = getQuest().getRegisteredItemIds();
+		if (itemIdList != null)
+		{
+			for (FastList.Node<Integer> n = itemIdList.head(), end = itemIdList.tail(); (n = n.getNext()) != end;) 
+			{
+	    		takeItems(n.getValue().intValue(), -1);
 		    }
-
-		    _drops = null;
 		}
 
 		// If quest is repeatable, delete quest from list of quest of the player and from database (quest CAN be created again => repeatable)

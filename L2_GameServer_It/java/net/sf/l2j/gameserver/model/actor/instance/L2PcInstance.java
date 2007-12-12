@@ -1134,19 +1134,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Add Quest drops to the table containing all possible drops of a L2NpcInstance.<BR><BR>
-	 *
-	 * @param npc The L2NpcInstance killed by the L2PcInstance
-	 * @param drops The table containing all possible drops of the L2NpcInstance
-	 *
-	 */
-	public void fillQuestDrops(L2NpcInstance npc, List<L2DropData> drops)
-	{
-		for (QuestState qs : _quests.values())
-			qs.fillQuestDrops(npc, drops);
-	}
-
-	/**
 	 * Return the QuestState object corresponding to the quest name.<BR><BR>
 	 *
 	 * @param quest The name of the quest

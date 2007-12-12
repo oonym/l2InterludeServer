@@ -67,6 +67,7 @@ public abstract class Quest
 	private final String _descr;
     private State _initialState;
     private Map<String, State> _states;
+    private FastList<Integer> _questItemIds;
 
 	/**
 	 * Return collection view of the values contains in the allEventS
@@ -1065,5 +1066,17 @@ public abstract class Quest
         }
           
         return null;
+    }
+    
+    public void registerItem(int itemId)
+    {
+    	if (_questItemIds == null)
+    		_questItemIds = new FastList<Integer>();
+    	_questItemIds.add(itemId);
+    }
+    
+    public FastList<Integer> getRegisteredItemIds()
+    {
+    	return _questItemIds;
     }
 }
