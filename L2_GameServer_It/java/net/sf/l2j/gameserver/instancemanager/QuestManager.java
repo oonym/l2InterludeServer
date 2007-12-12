@@ -61,9 +61,13 @@ public class QuestManager
     public final boolean reload(String questFolder)
     {
     	Quest q = getQuest(questFolder);
+    	String path = "";
     	if (q!=null)
+    	{
     		q.saveGlobalData();
-    	return QuestJython.reloadQuest(q.getPrefixPath()+questFolder);
+    		path = q.getPrefixPath();
+    	}
+    	return QuestJython.reloadQuest(path+questFolder);
     }
     
     /**
