@@ -205,10 +205,7 @@ public class L2BoatInstance extends L2Character
 				}
 				return bp.time;
 			}
-			else
-			{
-				return 0;
-			}
+			return 0;
 		}
 
 	}

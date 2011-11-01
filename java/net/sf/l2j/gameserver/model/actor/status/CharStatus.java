@@ -52,7 +52,7 @@ public class CharStatus
     /** Array containing all clients that need to be notified about hp/mp updates of the L2Character */
     private Set<L2Character> _StatusListener;
 
-    private Future _regTask;
+    private Future<?> _regTask;
     private byte _flagsRegenActive           = 0;
     private static final byte REGEN_FLAG_CP  = 4;
     private static final byte REGEN_FLAG_HP  = 1;

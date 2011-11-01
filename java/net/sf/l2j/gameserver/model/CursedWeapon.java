@@ -58,7 +58,7 @@ public class CursedWeapon
 
 	private boolean _isDropped = false;
 	private boolean _isActivated = false;
-	private ScheduledFuture _removeTask;
+	private ScheduledFuture<?> _removeTask;
 
 	private int _nbKills = 0;
 	private long _endTime = 0;
@@ -637,10 +637,8 @@ public class CursedWeapon
 		if (_nbKills > _stageKills*_skillMaxLevel)
 		{
 			return _skillMaxLevel;
-		} else
-		{
-			return (_nbKills / _stageKills);
 		}
+		return (_nbKills / _stageKills);
 	}
     public long getTimeLeft()
     {

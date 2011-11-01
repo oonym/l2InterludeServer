@@ -75,7 +75,7 @@ public class L2PetInstance extends L2Summon
 	private boolean _respawned;
     private boolean _mountable;
 
-	private Future _feedTask;
+	private Future<?> _feedTask;
     private int _feedTime;
     protected boolean _feedMode;
 

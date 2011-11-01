@@ -45,41 +45,48 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
-		L2Object target = player.getTarget();
-		if(getClient() != null && player != null)
+		if(getClient() == null)
 		{
-			if (player.isOutOfControl())
-			{
-				player.sendPacket(new ActionFailed());
-				return;
-			}
-
-			if (player.getMountType() != 0) //prevent sit/stand if you riding
-				return;
-			if (target != null
-					&& !player.isSitting()
-					&& target instanceof L2StaticObjectInstance
-					&& ((L2StaticObjectInstance)target).getType() == 1
-					&& CastleManager.getInstance().getCastle(target) != null
-					&& player.isInsideRadius(target, L2StaticObjectInstance.INTERACTION_DISTANCE, false, false)
-			)
-			{
-				ChairSit cs = new ChairSit(player,((L2StaticObjectInstance)target).getStaticObjectId());
-				player.sendPacket(cs);
-				player.sitDown();
-				player.broadcastPacket(cs);
-			}
-			if (_typeStand)
-				player.standUp();
-			else
-				player.sitDown();
+			return;
 		}
-	}
+		final L2PcInstance player = getClient().getActiveChar();
+		if (player == null)
+		{
+			return;
+		}
+		
+		if (player.isOutOfControl())
+		{
+			player.sendPacket(new ActionFailed());
+			return;
+		}
 
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+		if (player.getMountType() != 0) //prevent sit/stand if you riding
+		{
+			return;
+		}
+		
+		final L2Object target = player.getTarget();
+		if (target != null
+				&& !player.isSitting()
+				&& target instanceof L2StaticObjectInstance
+				&& ((L2StaticObjectInstance)target).getType() == 1
+				&& CastleManager.getInstance().getCastle(target) != null
+				&& player.isInsideRadius(target, L2StaticObjectInstance.INTERACTION_DISTANCE, false, false)
+		)
+		{
+			ChairSit cs = new ChairSit(player,((L2StaticObjectInstance)target).getStaticObjectId());
+			player.sendPacket(cs);
+			player.sitDown();
+			player.broadcastPacket(cs);
+		}
+		
+		if (_typeStand)
+			player.standUp();
+		else
+			player.sitDown();
+	}
+	
 	@Override
 	public String getType()
 	{

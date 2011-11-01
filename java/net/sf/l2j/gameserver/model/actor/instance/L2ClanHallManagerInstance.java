@@ -713,8 +713,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
         {
             if (getClanHall().getOwnerId() == player.getClanId())
                 return COND_OWNER;
-            else
-                return COND_OWNER_FALSE;
+			return COND_OWNER_FALSE;
         }
         return COND_ALL_FALSE;
     }

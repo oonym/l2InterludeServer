@@ -79,7 +79,7 @@ public class L2DoorInstance extends L2Character
     private ClanHall _clanHall;
 
     protected int _autoActionDelay = -1;
-    private ScheduledFuture _autoActionTask;
+    private ScheduledFuture<?> _autoActionTask;
 
 
     /** This class may be created only by L2Character and only for AI */
@@ -89,20 +89,15 @@ public class L2DoorInstance extends L2Character
         @Override
 		public L2DoorInstance getActor() { return L2DoorInstance.this; }
         @Override
-		@SuppressWarnings("unused")
-        public void moveTo(int x, int y, int z, int offset) {}
+		public void moveTo(int x, int y, int z, int offset) {}
         @Override
-		@SuppressWarnings("unused")
-        public void moveTo(int x, int y, int z) {}
+		public void moveTo(int x, int y, int z) {}
         @Override
-		@SuppressWarnings("unused")
-        public void stopMove(L2CharPosition pos) {}
+		public void stopMove(L2CharPosition pos) {}
         @Override
-		@SuppressWarnings("unused")
-        public void doAttack(L2Character target) {}
+		public void doAttack(L2Character target) {}
         @Override
-		@SuppressWarnings("unused")
-        public void doCast(L2Skill skill) {}
+		public void doCast(L2Skill skill) {}
     }
 
     @Override
@@ -287,7 +282,7 @@ public class L2DoorInstance extends L2Character
 	return _clanHall;
     }
 
-    public boolean isEnemyOf(@SuppressWarnings("unused") L2Character cha)
+    public boolean isEnemyOf(L2Character cha)
     {
         return true;
     }

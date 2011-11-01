@@ -659,7 +659,7 @@ public abstract class L2Skill
     {
         if (_skillType == SkillType.DEATHLINK && activeChar != null) return _power
             * Math.pow(1.7165 - activeChar.getCurrentHp() / activeChar.getMaxHp(), 2) * 0.577;
-        else return _power;
+		return _power;
     }
 
     public final double getPower()
@@ -1582,14 +1582,10 @@ public abstract class L2Skill
 						// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
 						return new L2Character[]{target};
 					}
-					else
-						return null;
-				}
-				else
-				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 					return null;
 				}
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+				return null;
 			}
 			case TARGET_PARTY_OTHER:
 			{
@@ -1602,14 +1598,10 @@ public abstract class L2Skill
 						// If a target is found, return it in a table else send a system message TARGET_IS_INCORRECT
 						return new L2Character[]{target};
 					}
-					else
-						return null;
-				}
-				else
-				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 					return null;
 				}
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+				return null;
 			}
             case TARGET_CORPSE_ALLY:
             case TARGET_ALLY:
@@ -1785,7 +1777,7 @@ public abstract class L2Skill
                                 targetList.add(target);
                                 return targetList.toArray(new L2Object[targetList.size()]);
                             }
-                            else return new L2Character[] {target};
+							return new L2Character[] {target};
 
                         }
                     }
@@ -1806,7 +1798,7 @@ public abstract class L2Skill
                     targetList.add(target);
                     return targetList.toArray(new L2Object[targetList.size()]);
                 }
-                else return new L2Character[] {target};
+				return new L2Character[] {target};
 
             }
             case TARGET_AREA_CORPSE_MOB:
@@ -1909,7 +1901,7 @@ public abstract class L2Skill
                     targetList.add(target);
                     return targetList.toArray(new L2Object[targetList.size()]);
                 }
-                else return new L2Character[] {target};
+				return new L2Character[] {target};
 
             }
             case TARGET_ITEM:
@@ -1934,11 +1926,8 @@ public abstract class L2Skill
 
                     return targetList.toArray(new L2Object[targetList.size()]);
                 }
-                else
-                {
-                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
-                    return null;
-                }
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+				return null;
             }
             case TARGET_AREA_UNDEAD:
             {
@@ -1953,9 +1942,10 @@ public abstract class L2Skill
                     else return new L2Character[] {cha};
 
                 }
-                else cha = activeChar;
+                else
+                	cha = activeChar;
 
-                if (cha != null && cha.getKnownList() != null)
+                if (cha.getKnownList() != null)
                     for (L2Object obj : cha.getKnownList().getKnownObjects().values())
                     {
                         if (obj == null) continue;
@@ -2015,12 +2005,12 @@ public abstract class L2Skill
 
         targets = getTargetList(activeChar, true);
 
-        if (targets == null || targets.length == 0) return null;
-        else return targets[0];
+        if (targets == null || targets.length == 0)
+        	return null;
+		return targets[0];
     }
 
-    public final Func[] getStatFuncs(@SuppressWarnings("unused")
-    L2Effect effect, L2Character player)
+    public final Func[] getStatFuncs(L2Effect effect, L2Character player)
     {
         if (!(player instanceof L2PcInstance) && !(player instanceof L2Attackable)
             && !(player instanceof L2Summon)) return _emptyFunctionSet;

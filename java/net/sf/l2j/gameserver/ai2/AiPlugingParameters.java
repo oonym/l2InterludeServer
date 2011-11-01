@@ -31,13 +31,13 @@ public class AiPlugingParameters
 {
 	//here is order of priority
 	private Set<String> _npcClassTypes;
-	private Set<Class> _npcL2jClasses;
+	private Set<Class<?>> _npcL2jClasses;
 	private Set<String> _aiTypes;
 	private Set<Integer> _npcIDs;
 	private boolean _converted;
 	private AiPlugingParameters _but;
 
-	public AiPlugingParameters(Set<String> npcClassTypes, Set<Class> npcL2jClasses, Set<String> aiTypes, Set<Integer> npcIDs, AiPlugingParameters but)
+	public AiPlugingParameters(Set<String> npcClassTypes, Set<Class<?>> npcL2jClasses, Set<String> aiTypes, Set<Integer> npcIDs, AiPlugingParameters but)
 	{
 		_npcClassTypes = npcClassTypes;
 		_npcL2jClasses = npcL2jClasses;
@@ -60,7 +60,7 @@ public class AiPlugingParameters
 				_npcIDs.addAll(NpcTable.getInstance().getAllNpcOfClassType(classType));
 			}
 		if(_npcL2jClasses != null)
-			for(Class l2jClass : _npcL2jClasses)
+			for(Class<?> l2jClass : _npcL2jClasses)
 			{
 				_npcIDs.addAll(NpcTable.getInstance().getAllNpcOfL2jClass(l2jClass));
 			}

@@ -34,7 +34,7 @@ import net.sf.l2j.util.Rnd;
  */
 public class L2XmassTreeInstance extends L2NpcInstance
 {
-    private ScheduledFuture _aiTask;
+    private ScheduledFuture<?> _aiTask;
 
     class XmassAI implements Runnable
     {
@@ -98,8 +98,7 @@ public class L2XmassTreeInstance extends L2NpcInstance
      * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
      */
     @Override
-	public boolean isAutoAttackable(@SuppressWarnings("unused")
-    L2Character attacker)
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return false;
     }

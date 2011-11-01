@@ -40,7 +40,7 @@ public class FaenorEventParser extends FaenorParser
     private DateRange _eventDates = null;
 
     @Override
-	public void parseScript(Node eventNode, @SuppressWarnings("unused") BSFManager context)
+	public void parseScript(Node eventNode, BSFManager context)
     {
         String ID = attribute(eventNode, "ID");
 

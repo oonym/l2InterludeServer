@@ -50,7 +50,7 @@ public class GameTimeController
 	private static List<L2Character> _movingObjects = new FastList<L2Character>();
 
 	protected static TimerThread _timer;
-	private ScheduledFuture _timerWatcher;
+	private ScheduledFuture<?> _timerWatcher;
 
 	/**
 	 * one ingame day is 240 real minutes

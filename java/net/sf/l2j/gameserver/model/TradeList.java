@@ -225,8 +225,11 @@ public class TradeList
         if (item.isStackable())
             for (TradeItem exclItem : _items)
                 if (exclItem.getItem().getItemId() == item.getItemId())
-                    if (item.getCount() <= exclItem.getCount()) return null;
-                    else return new TradeItem(item, item.getCount() - exclItem.getCount(), item.getReferencePrice());
+				{
+					if (item.getCount() <= exclItem.getCount())
+						return null;
+					return new TradeItem(item, item.getCount() - exclItem.getCount(), item.getReferencePrice());
+				}
         return new TradeItem(item, item.getCount(), item.getReferencePrice());
     }
 

@@ -81,7 +81,7 @@ public class AugmentationData
 	private static final int BASESTAT_MEN = 16344;
 
 
-	private FastList _augmentationStats[];
+	private FastList<?> _augmentationStats[];
 	private FastList<augmentationSkill> _activeSkills;
 	private FastList<augmentationSkill> _passiveSkills;
 	private FastList<augmentationSkill> _chanceSkills;
@@ -92,7 +92,7 @@ public class AugmentationData
 	{
 		_log.info("Initializing AugmentationData.");
 
-		_augmentationStats = new FastList[4];
+		_augmentationStats = new FastList<?>[4];
 		_augmentationStats[0] = new FastList<augmentationStat>();
 		_augmentationStats[1] = new FastList<augmentationStat>();
 		_augmentationStats[2] = new FastList<augmentationStat>();

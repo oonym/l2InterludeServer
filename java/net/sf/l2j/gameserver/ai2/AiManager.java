@@ -87,7 +87,7 @@ public class AiManager
 				{
 					try
 					{
-						Class managerClass = Class.forName("net.sf.l2j.gameserver.ai.managers."+file.substring(0, file.length() - 6));
+						Class<?> managerClass = Class.forName("net.sf.l2j.gameserver.ai.managers."+file.substring(0, file.length() - 6));
 						Object managerObject = managerClass.newInstance();
 						if(!(managerObject instanceof ISpecificAiManager))
 						{
@@ -173,7 +173,6 @@ public class AiManager
 		}
 		catch (IOException e1)
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// build a mighty map

@@ -54,12 +54,10 @@ import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.util.Rnd;
 
 /**
- * This class manages AI of L2Attackable.<BR><BR>
- *
+ * This class manages AI of L2Attackable.
  */
 public class L2AttackableAI extends L2CharacterAI implements Runnable
 {
-
     //protected static final Logger _log = Logger.getLogger(L2AttackableAI.class.getName());
 
     private static final int RANDOM_WALK_RATE = 30; // confirmed
@@ -67,7 +65,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
     private static final int MAX_ATTACK_TIMEOUT = 300; // int ticks, i.e. 30 seconds
 
     /** The L2Attackable AI task executed every 1s (call onEvtThink method)*/
-    private Future _aiTask;
+    private Future<?> _aiTask;
 
     /** The delay after wich the attacked is stopped */
     private int _attackTimeout;
@@ -214,8 +212,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
             if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
                 // Los Check
                return GeoData.getInstance().canSeeTarget(me, target);
-            else
-                return false;
+			return false;
         }
         else
         { //The actor is a L2MonsterInstance
@@ -542,8 +539,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                     if (obj instanceof L2NpcInstance)
                     {
                         L2NpcInstance npc = (L2NpcInstance) obj;
-
-                        if (npc == null || getAttackTarget() == null || faction_id != npc.getFactionId())
+                        if (getAttackTarget() == null || faction_id != npc.getFactionId())
                             continue;
 
                         // Check if the L2Object is inside the Faction Range of the actor
@@ -697,7 +693,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 // Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
                 if (hated.isMoving()) range -= 100; if (range < 5) range = 5;
                 moveToPawn(getAttackTarget(), range);
-                return;
             }
             // Else, if this is close enough to attack
             else

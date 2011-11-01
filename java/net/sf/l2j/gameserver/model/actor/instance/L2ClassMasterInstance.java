@@ -160,7 +160,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	}
 
 	@Override
-	public String getHtmlPath(@SuppressWarnings("unused") int npcId, int val)
+	public String getHtmlPath(int npcId, int val)
 	{
 		return "data/html/classmaster/" + val + ".htm";
 	}

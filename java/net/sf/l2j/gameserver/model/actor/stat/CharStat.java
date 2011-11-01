@@ -593,10 +593,7 @@ public class CharStat
 		{
 			return (getRunSpeed() * 70) / 100;	
 		}
-		else
-		{	
-			return (int) calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
-		}
+		return (int) calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
 		
 	}
 

@@ -258,7 +258,7 @@ public class PcKnownList extends PlayableKnownList
         if (knownlistSize <= 25) return 4200;
         if (knownlistSize <= 35) return 3600;
         if (knownlistSize <= 70) return 2910;
-        else return 2310;
+		return 2310;
     }
 
     @Override
@@ -269,6 +269,6 @@ public class PcKnownList extends PlayableKnownList
         if (knownlistSize <= 25) return 3500; // empty field
         if (knownlistSize <= 35) return 2900;
         if (knownlistSize <= 70) return 2300;
-        else return 1700; // Siege, TOI, city
+		return 1700; // Siege, TOI, city
     }
 }

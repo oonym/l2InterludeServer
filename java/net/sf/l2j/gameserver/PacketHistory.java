@@ -36,7 +36,7 @@ import javolution.xml.stream.XMLStreamException;
 
 class PacketHistory
 {
-    protected Map<Class, Long> _info;
+    protected Map<Class<?>, Long> _info;
     protected long _timeStamp;
 
     protected static final XMLFormat<PacketHistory> PACKET_HISTORY_XML = new XMLFormat<PacketHistory>(PacketHistory.class)
@@ -49,7 +49,7 @@ class PacketHistory
 		{
 			// TODO Auto-generated method stub
 			packetHistory._timeStamp = xml.getAttribute("time-stamp", 0);
-			packetHistory._info = xml.<Map<Class, Long>> get("info");
+			packetHistory._info = xml.<Map<Class<?>, Long>> get("info");
 		}
 
 		/**
@@ -61,7 +61,7 @@ class PacketHistory
 			// TODO Auto-generated method stub
 			xml.setAttribute("time-stamp", new Date(packetHistory._timeStamp).toString());
 
-			for (Class cls : packetHistory._info.keySet())
+			for (Class<?> cls : packetHistory._info.keySet())
 				xml.setAttribute(cls.getSimpleName(), packetHistory._info.get(cls));
 		}
 

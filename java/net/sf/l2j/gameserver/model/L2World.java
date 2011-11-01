@@ -86,8 +86,8 @@ public final class L2World
     private L2World()
     {
         //_allGms     = new FastMap<String, L2PcInstance>();
-        _allPlayers   = new FastMap<String, L2PcInstance>().setShared(true);
-        _petsInstance = new FastMap<Integer,L2PetInstance>().setShared(true);
+        _allPlayers   = new FastMap<String, L2PcInstance>().shared();
+        _petsInstance = new FastMap<Integer,L2PetInstance>().shared();
         _allObjects   = L2ObjectMap.createL2ObjectMap();
 
         initRegions();
@@ -332,7 +332,7 @@ public final class L2World
      * @param dropper L2Character who has dropped the object (if necessary)
      *
      */
-    public void addVisibleObject(L2Object object, @SuppressWarnings("unused") L2WorldRegion newRegion, L2Character dropper)
+    public void addVisibleObject(L2Object object, L2WorldRegion newRegion, L2Character dropper)
     {
         // If selected L2Object is a L2PcIntance, add it in L2ObjectHashSet(L2PcInstance) _allPlayers of L2World
     	// XXX TODO: this code should be obsoleted by protection in putObject func...

@@ -438,8 +438,7 @@ public abstract class L2Summon extends L2PlayableInstance
 	{
 		if (_owner == null)
 			return null;
-		else
-			return _owner.getParty();
+		return _owner.getParty();
 	}
 
 	/**
@@ -450,8 +449,7 @@ public abstract class L2Summon extends L2PlayableInstance
 	{
     	if (_owner == null)
     		return false;
-    	else
-    		return _owner.getParty() != null;
+		return _owner.getParty() != null;
 	}
 
 	/**

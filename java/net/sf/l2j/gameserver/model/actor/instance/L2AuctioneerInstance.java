@@ -331,8 +331,7 @@ public final class L2AuctioneerInstance extends L2FolkInstance
                 {
                     if (player.getClan().getAuctionBiddedAt() <= 0)
                         return;
-                    else
-                        auctionId = player.getClan().getAuctionBiddedAt();
+					auctionId = player.getClan().getAuctionBiddedAt();
                 }
                 else
                     auctionId = Integer.parseInt(val);
@@ -579,8 +578,9 @@ public final class L2AuctioneerInstance extends L2FolkInstance
     {
         if (getCastle() != null && getCastle().getCastleId() > 0)
         {
-            if (getCastle().getSiege().getIsInProgress()) return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
-            else return COND_REGULAR;
+            if (getCastle().getSiege().getIsInProgress())
+            	return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
+			return COND_REGULAR;
         }
 
         return COND_ALL_FALSE;

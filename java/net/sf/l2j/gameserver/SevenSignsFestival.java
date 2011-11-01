@@ -763,7 +763,7 @@ public class SevenSignsFestival implements SpawnListener
     //////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\\
 
     protected FestivalManager _managerInstance;
-    protected ScheduledFuture _managerScheduledTask;
+    protected ScheduledFuture<?> _managerScheduledTask;
 
     protected int _signsCycle = SevenSigns.getInstance().getCurrentCycle();
     protected int _festivalCycle;
@@ -926,7 +926,7 @@ public class SevenSignsFestival implements SpawnListener
      *
      * @return ScheduledFuture festManagerScheduler
      */
-    protected final ScheduledFuture getFestivalManagerSchedule()
+    protected final ScheduledFuture<?> getFestivalManagerSchedule()
     {
         if (_managerScheduledTask == null)
             startFestivalManager();
@@ -1998,7 +1998,8 @@ public class SevenSignsFestival implements SpawnListener
          *
          * @return int Count
          */
-        public final int getInstanceCount()
+        @SuppressWarnings("unused")
+		public final int getInstanceCount()
         {
             return _festivalInstances.size();
         }
@@ -2198,7 +2199,8 @@ public class SevenSignsFestival implements SpawnListener
             }
         }
 
-        public void setSpawnRate(int respawnDelay)
+        @SuppressWarnings("unused")
+		public void setSpawnRate(int respawnDelay)
         {
             if (Config.DEBUG)
                 _log.info("SevenSignsFestival: Modifying spawn rate of festival mobs to " + respawnDelay + " ms for festival " + SevenSigns.getCabalShortName(_cabal) + " (" + getFestivalName(_levelRange) + ")");

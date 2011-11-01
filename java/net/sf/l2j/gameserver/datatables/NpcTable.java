@@ -483,7 +483,7 @@ public class NpcTable
 	 * @param class1
 	 * @return
 	 */
-	public Set<Integer> getAllNpcOfL2jClass(Class clazz)
+	public Set<Integer> getAllNpcOfL2jClass(Class<?> clazz)
 	{
 		// TODO Auto-generated method stub
 		return null;

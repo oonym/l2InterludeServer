@@ -34,9 +34,13 @@ public class L2FastMap<K extends Object, V extends Object> extends FastMap<K,V>
 
 	public final boolean ForEach(I2ForEach<K,V> func, boolean sync) {
 		if (sync)
-			synchronized (this) { return forEachP(func); }
-		else
-			return forEachP(func);
+		{
+			synchronized (this)
+			{
+				return forEachP(func);
+			}
+		}
+		return forEachP(func);
 	}
 	
 	private boolean forEachP(I2ForEach<K,V> func) {

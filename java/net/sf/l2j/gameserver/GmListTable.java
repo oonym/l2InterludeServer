@@ -77,7 +77,7 @@ public class GmListTable
 	
 	private GmListTable()
 	{
-		_gmList = new FastMap<L2PcInstance,Boolean>().setShared(true);
+		_gmList = new FastMap<L2PcInstance,Boolean>().shared();
 	}
 	
 	/**

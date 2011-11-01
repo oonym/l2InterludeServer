@@ -68,8 +68,7 @@ public class DayNightSpawnManager {
             _log.warning("DayNightSpawnManager: Spawn already added into day map");
             return;
         }
-        else
-            _dayCreatures.put(spawnDat, null);
+		_dayCreatures.put(spawnDat, null);
     }
 
     public void addNightCreature(L2Spawn spawnDat)
@@ -79,8 +78,7 @@ public class DayNightSpawnManager {
             _log.warning("DayNightSpawnManager: Spawn already added into night map");
             return;
         }
-        else
-            _nightCreatures.put(spawnDat, null);
+		_nightCreatures.put(spawnDat, null);
     }
     /*
      * Spawn Day Creatures, and Unspawn Night Creatures
@@ -241,8 +239,7 @@ public class DayNightSpawnManager {
 
             return raidboss;
         }
-        else
-            _bosses.put(spawnDat, null);
+		_bosses.put(spawnDat, null);
 
        return null;
     }

@@ -262,7 +262,7 @@ public class RequestProcureCropList extends L2GameClientPacket
 				continue;
 			}
 
-			if (itemDel == null || itemAdd == null)
+			if (itemAdd == null)
 				continue;
 
 

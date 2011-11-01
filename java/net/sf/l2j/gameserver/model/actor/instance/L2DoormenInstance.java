@@ -225,8 +225,9 @@ public class L2DoormenInstance extends L2FolkInstance
             // Prepare doormen for clan hall
             if (getClanHall() != null)
             {
-                if (player.getClanId() == getClanHall().getOwnerId()) return COND_HALL_OWNER;
-                else return COND_ALL_FALSE;
+                if (player.getClanId() == getClanHall().getOwnerId())
+                	return COND_HALL_OWNER;
+				return COND_ALL_FALSE;
             }
             if (getCastle() != null && getCastle().getCastleId() > 0)
             {

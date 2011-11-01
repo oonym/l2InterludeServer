@@ -89,7 +89,6 @@ import net.sf.l2j.gameserver.model.L2CharPosition;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
-import net.sf.l2j.gameserver.model.L2DropData;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Fishing;
 import net.sf.l2j.gameserver.model.L2HennaInstance;
@@ -367,7 +366,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
     private boolean _inJail = false;
     private long _jailTimer = 0;
-    private ScheduledFuture _jailTask;
+    private ScheduledFuture<?> _jailTask;
 
     /** Olympiad */
     private boolean _inOlympiadMode = false;
@@ -531,7 +530,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _accessLevel;
 
 	private boolean _chatBanned = false; 		// Chat Banned
-    private ScheduledFuture _chatUnbanTask = null;
+    private ScheduledFuture<?> _chatUnbanTask = null;
 	private boolean _messageRefusal = false;    // message refusal mode
 	private boolean _dietMode = false;          // ignore weight penalty
 	private boolean _tradeRefusal = false;       // Trade refusal
@@ -570,7 +569,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	protected Map<Integer, L2CubicInstance> _cubics = new FastMap<Integer, L2CubicInstance>();
 
 	/** Active shots. A FastSet variable would actually suffice but this was changed to fix threading stability... */
-	protected Map<Integer, Integer> _activeSoulShots = new FastMap<Integer, Integer>().setShared(true);
+	protected Map<Integer, Integer> _activeSoulShots = new FastMap<Integer, Integer>().shared();
 
 	public final ReentrantLock soulShotLock = new ReentrantLock();
 
@@ -607,8 +606,8 @@ public final class L2PcInstance extends L2PlayableInstance
     private int _fishy = 0;
     private int _fishz = 0;
 
-    private ScheduledFuture _taskRentPet;
-    private ScheduledFuture _taskWater;
+    private ScheduledFuture<?> _taskRentPet;
+    private ScheduledFuture<?> _taskWater;
 
 	/** Bypass validations */
 	private List<String> _validBypass = new FastList<String>();
@@ -3616,8 +3615,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (_clan == null)
 			return 0;
-		else
-			return _clan.getAllyId();
+		return _clan.getAllyId();
 	}
 
 	public int getAllyCrestId()
@@ -5024,10 +5022,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			return false;
 		}
-		else
-		{
-			return getObjectId() == getClan().getLeaderId();
-		}
+		return getObjectId() == getClan().getLeaderId();
 	}
 
 	/**
@@ -6224,8 +6219,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (store)
 			return removeSkill(skill);
-		else
-			return super.removeSkill(skill);
+		return super.removeSkill(skill);
 	}
 
 	/**
@@ -6835,8 +6829,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (attacker instanceof L2PcInstance && ((L2PcInstance)attacker).isInOlympiadMode() ){
 			if (isInOlympiadMode() && isOlympiadStart() && ((L2PcInstance)attacker).getOlympiadGameId()==getOlympiadGameId())
 				return true;
-			else
-				return false;
+			return false;
 		}
 
 		// Check if the attacker is not in the same clan
@@ -7111,14 +7104,13 @@ public final class L2PcInstance extends L2PlayableInstance
             		sm.addItemName(skill.getItemConsumeId());
             		sm.addNumber(skill.getItemConsume());
             		sendPacket(sm);
-            		return;
                 }
             	else
                 {
             		// Send a System Message to the caster
             		sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
-            		return;
                 }
+            	return;
             }
         }
 
@@ -7736,7 +7728,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 
 
-	private ScheduledFuture _taskWarnUserTakeBreak;
+	private ScheduledFuture<?> _taskWarnUserTakeBreak;
 
 	class WarnUserTakeBreak implements Runnable
 	{
@@ -7760,7 +7752,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 	}
 
-    public ScheduledFuture _taskforfish;
+    public ScheduledFuture<?> _taskforfish;
 
 	class WaterTask implements Runnable
 	{
@@ -8042,11 +8034,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _chatBanned;
 	}
 
-    public void setChatUnbanTask(ScheduledFuture task)
+    public void setChatUnbanTask(ScheduledFuture<?> task)
     {
          _chatUnbanTask = task;
     }
-    public ScheduledFuture getChatUnbanTask()
+    public ScheduledFuture<?> getChatUnbanTask()
     {
         return _chatUnbanTask;
     }
@@ -9967,7 +9959,8 @@ public final class L2PcInstance extends L2PlayableInstance
     private class JailTask implements Runnable
     {
         L2PcInstance _player;
-        protected long _startedAt;
+        @SuppressWarnings("unused")
+		protected long _startedAt;
 
         protected JailTask(L2PcInstance player)
         {
@@ -10110,7 +10103,7 @@ public final class L2PcInstance extends L2PlayableInstance
     	// sendPacket(new EtcStatusUpdate(this));
     }
 
-	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>().setShared(true);
+	private FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>().shared();
 
 	/**
 	 * Simple class containing all neccessary information to maintain

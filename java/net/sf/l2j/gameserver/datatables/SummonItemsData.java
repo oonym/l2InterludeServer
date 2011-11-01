@@ -27,12 +27,15 @@ package net.sf.l2j.gameserver.datatables;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2SummonItem;
 
 public class SummonItemsData
 {
+	private static final Logger _log = Logger.getLogger(SummonItemsData.class.getName());
 	private FastMap<Integer, L2SummonItem> _summonitems;
 
 	private static SummonItemsData _instance;
@@ -57,12 +60,11 @@ public class SummonItemsData
 		}
 		catch (Exception e)
 		{
-			System.out.println("Summon items data: Can not find './data/summon_items.csv'");
+			_log.warning("Summon items data: Can not find './data/summon_items.csv'");
 			return;
 		}
 
-		int lineCount = 0,
-			commentLinesCount = 0;
+		int lineCount = 0, commentLinesCount = 0;
 
         while (s.hasNextLine())
         {
@@ -92,8 +94,8 @@ public class SummonItemsData
             }
             catch (Exception e)
             {
-           		System.out.println("Summon items data: Error in line " + lineCount + " -> incomplete/invalid data or wrong seperator!");
-           		System.out.println("		" + line);
+            	_log.warning("Summon items data: Error in line " + lineCount + " -> incomplete/invalid data or wrong seperator!");
+            	_log.warning("		" + line);
             	ok = false;
             }
 
@@ -103,8 +105,12 @@ public class SummonItemsData
             L2SummonItem summonitem = new L2SummonItem(itemID, npcID, summonType);
             _summonitems.put(itemID, summonitem);
         }
-
-        System.out.println("Summon items data: Loaded " + _summonitems.size() + " summon items.");
+        
+        _log.warning("Summon items data: Loaded " + _summonitems.size() + " summon items.");
+        if (Config.DEBUG)
+        {
+        	_log.warning("Summon items data: " + commentLinesCount + " comments skipped.");
+        }
 	}
 
 	public L2SummonItem getSummonItem(int itemId)

@@ -71,7 +71,7 @@ public final class TaskManager
         Task task;
         TaskTypes type;
         String[] params;
-        ScheduledFuture scheduled;
+        ScheduledFuture<?> scheduled;
 
         public ExecutedTask(Task ptask, TaskTypes ptype, ResultSet rset) throws SQLException
         {
@@ -292,7 +292,7 @@ public final class TaskManager
         }
         else if (type == TYPE_SPECIAL)
         {
-            ScheduledFuture result = task.getTask().launchSpecial(task);
+            ScheduledFuture<?> result = task.getTask().launchSpecial(task);
             if (result != null)
             {
                 task.scheduled = result;

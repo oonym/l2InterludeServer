@@ -493,7 +493,7 @@ public final class StatsSet  {
 	 * @param name : String designating the key in the set
 	 * @param value : Enum corresponding to the value associated with the key
 	 */
-	public void set(String name, Enum value)
+	public void set(String name, Enum<?> value)
 	{
 		_set.put(name, value);
 	}

@@ -128,21 +128,18 @@ public class LoginStatusThread extends Thread
 				_cSocket.close();
 				return;
 			}
-			else {
-				if (!validLogin(tmpLine))
-				{
-					_print.println("Incorrect Login!");
-					_print.println("Disconnected...");
-					_print.flush();
-					_cSocket.close();
-					return;
-				}
-				else
-				{
-					_print.println("Login Correct!");
-					_print.flush();
-				}
+			
+			if (!validLogin(tmpLine))
+			{
+				_print.println("Incorrect Login!");
+				_print.println("Disconnected...");
+				_print.flush();
+				_cSocket.close();
+				return;
 			}
+			
+			_print.println("Login Correct!");
+			_print.flush();
 			_print.println("Please Insert Your Password!");
 			_print.print("Password: ");
 			_print.flush();

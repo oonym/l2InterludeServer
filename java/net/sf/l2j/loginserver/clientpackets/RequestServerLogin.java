@@ -71,10 +71,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 			_serverId = readC();
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/**

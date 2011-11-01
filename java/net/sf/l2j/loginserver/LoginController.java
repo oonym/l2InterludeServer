@@ -64,9 +64,9 @@ public class LoginController
 	protected FastSet<L2LoginClient> _clients = new FastSet<L2LoginClient>();
 
 	/** Authed Clients on LoginServer*/
-	protected FastMap<String, L2LoginClient> _loginServerClients = new FastMap<String, L2LoginClient>().setShared(true);
+	protected FastMap<String, L2LoginClient> _loginServerClients = new FastMap<String, L2LoginClient>().shared();
 
-	private Map<InetAddress, BanInfo> _bannedIps = new FastMap<InetAddress, BanInfo>().setShared(true);
+	private Map<InetAddress, BanInfo> _bannedIps = new FastMap<InetAddress, BanInfo>().shared();
 
 	private Map<InetAddress, FailedLoginAttempt> _hackProtection;
 
@@ -196,7 +196,7 @@ public class LoginController
 
 	public static enum AuthLoginResult { INVALID_PASSWORD, ACCOUNT_BANNED, ALREADY_ON_LS, ALREADY_ON_GS, AUTH_SUCCESS };
 
-	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException
+	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client)
 	{
 		AuthLoginResult ret = AuthLoginResult.INVALID_PASSWORD;
 		// check auth
@@ -267,10 +267,7 @@ public class LoginController
 				_bannedIps.remove(address);
 				return false;
 			}
-			else
-			{
-				return true;
-			}
+			return true;
 		}
 		return false;
 	}
@@ -583,24 +580,22 @@ public class LoginController
 				_log.warning("account missing for user " + user);
 				return false;
 			}
-			else
+			
+			// is this account banned?
+			if (access < 0)
 			{
-				// is this account banned?
-				if (access < 0)
-				{
-					client.setAccessLevel(access);
-					return false;
-				}
+				client.setAccessLevel(access);
+				return false;
+			}
 
-				// check password hash
-				ok = true;
-				for (int i = 0; i < expected.length; i++)
+			// check password hash
+			ok = true;
+			for (int i = 0; i < expected.length; i++)
+			{
+				if (hash[i] != expected[i])
 				{
-					if (hash[i] != expected[i])
-					{
-						ok = false;
-						break;
-					}
+					ok = false;
+					break;
 				}
 			}
 

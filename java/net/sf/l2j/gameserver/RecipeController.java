@@ -330,6 +330,7 @@ public class RecipeController
 		protected double _manaRequired;
 		protected int _price;
 		protected int _totalItems;
+		@SuppressWarnings("unused")
 		protected int _materialsRefPrice;
 		protected int _delay;
 
@@ -657,9 +658,7 @@ public class RecipeController
 
 			for (L2RecipeInstance recipe : recipes)
 			{
-				int quantity = _recipeList.isConsumable() ? (int) (recipe.getQuantity() * Config.RATE_CONSUMABLE_COST)
-				                                         : (int) recipe.getQuantity();
-
+				int quantity = _recipeList.isConsumable() ? (int) (recipe.getQuantity() * Config.RATE_CONSUMABLE_COST) : recipe.getQuantity();
 				if (quantity > 0)
 				{
 					L2ItemInstance item = inv.getItemByItemId(recipe.getItemId());
@@ -761,6 +760,7 @@ public class RecipeController
 			/**
 			 * @return Returns the ownerId.
 			 */
+			@SuppressWarnings("unused")
 			public int getOwnerId()
 			{
 				return _ownerId;

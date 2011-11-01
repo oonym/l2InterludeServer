@@ -54,7 +54,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
     private static final int MAX_ATTACK_TIMEOUT = 300; // int ticks, i.e. 30 seconds
 
     /** The L2Attackable AI task executed every 1s (call onEvtThink method)*/
-    private Future _aiTask;
+    private Future<?> _aiTask;
 
     /** The delay after wich the attacked is stopped */
     private int _attackTimeout;
@@ -727,9 +727,9 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
         		_globalAggro = -25;
         		return;
         	}
-        	else
-        		for(L2Character aggroed : me.getAggroListRP().keySet())
-        			me.addDamageHate(aggroed, 0, aggro);
+        	
+			for(L2Character aggroed : me.getAggroListRP().keySet())
+				me.addDamageHate(aggroed, 0, aggro);
 
         	aggro = me.getHating(mostHated);
         	if (aggro <= 0)

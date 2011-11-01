@@ -38,7 +38,7 @@ public final class L2BabyPetInstance extends L2PetInstance
 {
 	protected L2Skill _weakHeal;
 	protected L2Skill _strongHeal;
-    private Future _healingTask;
+    private Future<?> _healingTask;
 
 	public L2BabyPetInstance(int objectId, L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)
 	{

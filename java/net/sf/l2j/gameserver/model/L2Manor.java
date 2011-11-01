@@ -44,7 +44,7 @@ public class L2Manor
     private static FastMap<Integer,SeedData> _seeds;
 
     public L2Manor() {
-		_seeds = new FastMap<Integer, SeedData>().setShared(true);
+		_seeds = new FastMap<Integer, SeedData>().shared();
 		parseData();
 	}
 
@@ -72,9 +72,8 @@ public class L2Manor
 
     	if (seedItem != null) {
     		return seedItem.getReferencePrice();
-    	} else {
-    		return 0;
     	}
+		return 0;
     }
 
     public int getSeedBasicPriceByCrop (int cropId) {
@@ -90,8 +89,7 @@ public class L2Manor
 
     	if (cropItem != null)
     		return cropItem.getReferencePrice();
-    	else
-    		return 0;
+		return 0;
     }
 
     public int getMatureCrop (int cropId) {

@@ -56,7 +56,7 @@ public class MinionList
 
     /** List containing the current spawned minions for this L2MonsterInstance */
     private final List<L2MinionInstance> minionReferences;
-    protected FastMap<Long,Integer> _respawnTasks = new FastMap<Long,Integer>().setShared(true);
+    protected FastMap<Long,Integer> _respawnTasks = new FastMap<Long,Integer>().shared();
     private final L2MonsterInstance master;
 
     public MinionList(L2MonsterInstance pMaster)

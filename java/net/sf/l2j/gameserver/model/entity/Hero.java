@@ -27,7 +27,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -68,9 +68,24 @@ public class Hero
             "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) " +
             "AND owner_id NOT IN (SELECT obj_id FROM characters WHERE accesslevel > 0)";
 
-    private static final int[] _heroItems = {6842, 6611, 6612, 6613, 6614, 6615, 6616,
-                                             6617, 6618, 6619, 6620, 6621
+    private static final List<Integer> _heroItems = new ArrayList<Integer>();
+    
+    static
+    {
+    	_heroItems.add(6842);
+    	_heroItems.add(6611);
+    	_heroItems.add(6612);
+    	_heroItems.add(6613);
+    	_heroItems.add(6614);
+    	_heroItems.add(6615);
+    	_heroItems.add(6616);
+    	_heroItems.add(6617);
+    	_heroItems.add(6618);
+    	_heroItems.add(6619);
+    	_heroItems.add(6620);
+    	_heroItems.add(6621);
     };
+    
     private static Map<Integer, StatsSet> _heroes;
     private static Map<Integer, StatsSet> _completeHeroes;
 
@@ -234,8 +249,6 @@ public class Hero
     public synchronized void computeNewHeroes(List<StatsSet> newHeroes)
     {
         updateHeroes(true);
-
-        List heroItems = Arrays.asList(_heroItems);
         L2ItemInstance[] items;
         InventoryUpdate iu;
 
@@ -295,7 +308,8 @@ public class Hero
                     for(L2ItemInstance item : player.getInventory().getAvailableItems(false))
                     {
                         if (item == null) continue;
-                        if (!heroItems.contains(item.getItemId())) continue;
+                        if (_heroItems.contains(item.getItemId())) 
+                        	continue;
 
                         player.destroyItem("Hero", item, null, true);
                         iu = new InventoryUpdate();
@@ -512,7 +526,7 @@ public class Hero
         }
     }
 
-    public int[] getHeroItems()
+    public List<Integer> getHeroItems()
     {
         return _heroItems;
     }

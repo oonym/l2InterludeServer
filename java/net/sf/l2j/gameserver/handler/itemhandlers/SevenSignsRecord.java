@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.SSQStatus;
 public class SevenSignsRecord implements IItemHandler {
 private static final int[] ITEM_IDS = {5707};
 
-	public void useItem(L2PlayableInstance playable, @SuppressWarnings("unused") L2ItemInstance item)
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
 

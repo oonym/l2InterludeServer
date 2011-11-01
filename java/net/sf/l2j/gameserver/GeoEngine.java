@@ -130,8 +130,7 @@ public class GeoEngine extends GeoData
     	if(target instanceof L2SiegeGuardInstance) z2 += 30; // well they don't move closer to balcony fence at the moment :(
     	if(cha.getZ() >= target.getZ())
     		return canSeeTarget(cha.getX(),cha.getY(),z,target.getX(),target.getY(),z2);
-    	else
-    		return canSeeTarget(target.getX(),target.getY(),z2, cha.getX(),cha.getY(),z);
+		return canSeeTarget(target.getX(),target.getY(),z2, cha.getX(),cha.getY(),z);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#canSeeTargetDebug(net.sf.l2j.gameserver.model.actor.instance.L2PcInstance, net.sf.l2j.gameserver.model.L2Object)
@@ -150,8 +149,7 @@ public class GeoEngine extends GeoData
 
     	if(gm.getZ() >= target.getZ())
     		return canSeeDebug(gm,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,z,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,z2);
-    	else
-    		return canSeeDebug(gm,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,z2,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,z);
+		return canSeeDebug(gm,(target.getX() - L2World.MAP_MIN_X) >> 4,(target.getY() - L2World.MAP_MIN_Y) >> 4,z2,(gm.getX() - L2World.MAP_MIN_X) >> 4,(gm.getY() - L2World.MAP_MIN_Y) >> 4,z);
     }
     /**
      * @see net.sf.l2j.gameserver.GeoData#getNSWE(int, int, int)
@@ -500,7 +498,7 @@ public class GeoEngine extends GeoData
             		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE)
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
-            		else z = tempz;
+					z = tempz;
             	}
             	else
             	{
@@ -510,7 +508,7 @@ public class GeoEngine extends GeoData
             		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE)
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
-            		else z = tempz;
+					z = tempz;
             	}
             }
         }
@@ -532,7 +530,7 @@ public class GeoEngine extends GeoData
             		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE)
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
-            		else z = tempz;
+					z = tempz;
             	}
             	else
             	{
@@ -542,7 +540,7 @@ public class GeoEngine extends GeoData
             		tempz = nCanMoveNext(x,y,(int)z,next_x,next_y,tz);
             		if (tempz == Double.MIN_VALUE)
             			return new Location((x << 4) + L2World.MAP_MIN_X,(y << 4) + L2World.MAP_MIN_Y,(int)z);
-            		else z = tempz;
+					z = tempz;
             	}
             }
         }
@@ -553,8 +551,7 @@ public class GeoEngine extends GeoData
     {
     	if (x >= 0)
     		return +1;
-        else
-        	return -1;
+		return -1;
     }
 
 	//GeoEngine
@@ -604,6 +601,8 @@ public class GeoEngine extends GeoData
 		_geodataIndex.remove(regionoffset);
 		_geodata.remove(regionoffset);
 	}
+	
+	@Deprecated
 	public static boolean loadGeodataFile(byte rx, byte ry)
 	{
 		String fname = "./data/geodata/"+rx+"_"+ry+".l2j";
@@ -923,8 +922,9 @@ public class GeoEngine extends GeoData
 			NSWE = (short)(height&0x0F);
 			height = (short)(height&0x0fff0);
 			height = (short)(height >> 1); //height / 2
-			if(checkNSWE(NSWE,x,y,tx,ty)) return height;
-			else return Double.MIN_VALUE;
+			if(checkNSWE(NSWE,x,y,tx,ty))
+				return height;
+			return Double.MIN_VALUE;
 	    }
 	    else //multilevel, type == 2
 	    {
@@ -964,8 +964,9 @@ public class GeoEngine extends GeoData
 	            layers--;
 	            index += 2;
 	        }
-	        if(checkNSWE(NSWE,x,y,tx,ty)) return tempz;
-	        else return Double.MIN_VALUE;
+	        if(checkNSWE(NSWE,x,y,tx,ty))
+	        	return tempz;
+			return Double.MIN_VALUE;
 	    }
 	}
 	/**
@@ -1098,9 +1099,9 @@ public class GeoEngine extends GeoData
 	        		if(nextheight-tempz>5 && nextheight-tempz<20) return true;
 	        		return false;
 	        	}
-	        	else return true;
+				return true;
 	        }
-	        else return true;
+			return true;
 	    }
 	    return checkNSWE(NSWE,x,y,x+inc_x,y+inc_y);
 	}

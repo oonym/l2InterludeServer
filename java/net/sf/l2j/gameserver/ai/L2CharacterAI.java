@@ -515,9 +515,7 @@ public class L2CharacterAI extends AbstractAI
      * Do nothing.<BR><BR>
      */
     @Override
-	protected void onEvtAggression(@SuppressWarnings("unused")
-    L2Character target, @SuppressWarnings("unused")
-    int aggro)
+	protected void onEvtAggression(L2Character target, int aggro)
     {
         // do nothing
     }
@@ -562,8 +560,7 @@ public class L2CharacterAI extends AbstractAI
      *
      */
     @Override
-	protected void onEvtSleeping(@SuppressWarnings("unused")
-    L2Character attacker)
+	protected void onEvtSleeping(L2Character attacker)
     {
         // Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
         _actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
@@ -651,9 +648,7 @@ public class L2CharacterAI extends AbstractAI
      * Do nothing.<BR><BR>
      */
     @Override
-	protected void onEvtUserCmd(@SuppressWarnings("unused")
-    Object arg0, @SuppressWarnings("unused")
-    Object arg1)
+	protected void onEvtUserCmd(Object arg0, Object arg1)
     {
         // do nothing
     }

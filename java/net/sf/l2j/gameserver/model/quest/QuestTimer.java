@@ -51,7 +51,7 @@ public class QuestTimer
     private Quest _quest;
     private L2NpcInstance _npc;
     private L2PcInstance _player;
-    private ScheduledFuture _schedular;
+    private ScheduledFuture<?> _schedular;
 
     // =========================================================
     // Constructor

@@ -41,14 +41,14 @@ public class ForceBuff
 	private L2PcInstance _target;
 	private L2Skill _skill;
 	private L2Skill _force;
-	private Future _task;
+	private Future<?> _task;
 	private boolean _applied;
 
 	public L2PcInstance getCaster() { return _caster; }
 	public L2PcInstance getTarget() { return _target; }
 	public L2Skill getSkill() { return _skill; }
 	public L2Skill getForce() { return _force; }
-	protected void setTask(Future task) { _task = task; }
+	protected void setTask(Future<?> task) { _task = task; }
 	protected void setApplied(boolean applied) { _applied = applied; }
 
 	public ForceBuff(L2PcInstance caster, L2PcInstance target, L2Skill skill)

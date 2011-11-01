@@ -78,14 +78,13 @@ public class L2CastleWarehouseInstance extends L2FolkInstance
         if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE) {
         	player.sendPacket(new SystemMessage(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
         	return;
-        } else {
-            if (player.getClan().getLevel() == 0) {
-                player.sendPacket(new SystemMessage(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
-            } else {
-                player.setActiveWarehouse(player.getClan().getWarehouse());
-                player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN));
-            }
         }
+		if (player.getClan().getLevel() == 0) {
+		    player.sendPacket(new SystemMessage(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
+		} else {
+		    player.setActiveWarehouse(player.getClan().getWarehouse());
+		    player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN));
+		}
     }
 
     @Override

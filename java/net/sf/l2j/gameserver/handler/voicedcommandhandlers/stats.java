@@ -48,7 +48,7 @@ public class stats implements IVoicedCommandHandler
                 replyMSG.append("<br>Statistics for player <font color=\"LEVEL\">" + pc.getName() + "</font><br>");
                 replyMSG.append("Total kills <font color=\"FF0000\">" + pc.kills.size() + "</font><br>");
                 replyMSG.append("<br>Detailed list: <br>");
-                Iterator it = pc.kills.iterator();
+                Iterator<String> it = pc.kills.iterator();
                 while(it.hasNext()){
                     replyMSG.append("<font color=\"FF0000\">" + it.next() + "</font><br>");
                 }

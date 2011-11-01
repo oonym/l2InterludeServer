@@ -66,10 +66,7 @@ public class RequestServerList extends L2LoginClientPacket
 			_skey2  = readD(); // loginOk 2
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/**

@@ -31,7 +31,7 @@ public class MonsterRace
 {
     private L2NpcInstance[] _monsters;
     private static MonsterRace _instance;
-    private Constructor _constructor;
+    private Constructor<?> _constructor;
     private int[][] _speeds;
     private int[] _first, _second;
 
@@ -49,7 +49,6 @@ public class MonsterRace
         {
             _instance = new MonsterRace();
         }
-
         return _instance;
     }
 

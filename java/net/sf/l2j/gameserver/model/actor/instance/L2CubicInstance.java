@@ -56,8 +56,8 @@ public class L2CubicInstance
 
     protected List<Integer> _skills = new FastList<Integer>();
 
-    private Future _disappearTask;
-    private Future _actionTask;
+    private Future<?> _disappearTask;
+    private Future<?> _actionTask;
 
     public L2CubicInstance(L2PcInstance owner, int id, int level)
     {

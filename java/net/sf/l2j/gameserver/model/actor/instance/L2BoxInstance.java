@@ -59,16 +59,13 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 public class L2BoxInstance extends L2NpcInstance {
 
-	private class L2BoxItem implements Comparable {
+	private class L2BoxItem implements Comparable<Object> {
 		public int itemid;
 		public int id;
 		public int count;
-		public int enchant;
+		@SuppressWarnings("unused")
+		private int enchant;
 		public String name;
-		public L2BoxItem()
-		{
-			//
-		}
 		public L2BoxItem(int _itemid, int _count, String _name, int _id, int _enchant)
 		{
 			itemid = _itemid;
@@ -178,7 +175,7 @@ public class L2BoxInstance extends L2NpcInstance {
 		return result;
 	}
 
-	public List getAccess()
+	public List<String> getAccess()
 	{
 		java.sql.Connection con = null;
 		List<String> acl = new FastList<String>();

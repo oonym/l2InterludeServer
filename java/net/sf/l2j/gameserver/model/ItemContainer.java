@@ -409,7 +409,7 @@ public abstract class ItemContainer
 			return item;
 		}
 		// Directly drop entire item
-		else return destroyItem(process, item, actor, reference);
+		return destroyItem(process, item, actor, reference);
 	}
 
 	/**

@@ -335,16 +335,15 @@ public abstract class Quest
 
 
 	// these are methods that java calls to invoke scripts
-    @SuppressWarnings("unused") public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet) { return null; } 
-    @SuppressWarnings("unused") public String onDeath (L2Character killer, L2Character victim, QuestState qs) 
+    public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet) { return null; } 
+    public String onDeath (L2Character killer, L2Character victim, QuestState qs) 
     { 	
     	if (killer instanceof L2NpcInstance)
-    		return onAdvEvent("", (L2NpcInstance)killer,qs.getPlayer()); 
-    	else 
-    		return onAdvEvent("", null,qs.getPlayer());
+    		return onAdvEvent("", (L2NpcInstance)killer,qs.getPlayer());
+		return onAdvEvent("", null,qs.getPlayer());
     }
     
-    @SuppressWarnings("unused") public String onAdvEvent(String event, L2NpcInstance npc, L2PcInstance player) 
+    public String onAdvEvent(String event, L2NpcInstance npc, L2PcInstance player) 
     {
     	// if not overriden by a subclass, then default to the returned value of the simpler (and older) onEvent override
     	// if the player has a state, use it as parameter in the next call, else return null
@@ -355,11 +354,11 @@ public abstract class Quest
     	return null; 
     } 
     
-    @SuppressWarnings("unused") public String onEvent(String event, QuestState qs) { return null; } 
-    @SuppressWarnings("unused") public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) { return null; }
-    @SuppressWarnings("unused") public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
-    @SuppressWarnings("unused") public String onFirstTalk(L2NpcInstance npc, L2PcInstance player) { return null; } 
-    @SuppressWarnings("unused") public String onSkillUse (L2NpcInstance npc, L2PcInstance caster, L2Skill skill) { return null; }
+    public String onEvent(String event, QuestState qs) { return null; } 
+    public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) { return null; }
+    public String onTalk (L2NpcInstance npc, L2PcInstance talker) { return null; }
+    public String onFirstTalk(L2NpcInstance npc, L2PcInstance player) { return null; } 
+    public String onSkillUse (L2NpcInstance npc, L2PcInstance caster, L2Skill skill) { return null; }
 	
 	/**
 	 * Show message error to player who has an access level greater than 0

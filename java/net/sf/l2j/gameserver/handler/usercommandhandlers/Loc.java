@@ -35,7 +35,7 @@ public class Loc implements IUserCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
-    public boolean useUserCommand(@SuppressWarnings("unused") int id, L2PcInstance activeChar)
+    public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
     	int _nearestTown=MapRegionTable.getInstance().getClosestTownNumber(activeChar);
     	SystemMessageId msg;

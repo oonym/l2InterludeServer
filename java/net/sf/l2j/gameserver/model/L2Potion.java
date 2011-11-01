@@ -39,8 +39,8 @@ public class L2Potion extends L2Object
     @SuppressWarnings("unused")
 	private L2Character _target;
 
-	private Future _potionhpRegTask;
-	private Future _potionmpRegTask;
+	private Future<?> _potionhpRegTask;
+	private Future<?> _potionmpRegTask;
 	protected int _milliseconds;
     protected double _effect;
     protected int _duration;
@@ -220,7 +220,7 @@ public class L2Potion extends L2Object
      * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
      */
     @Override
-	public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return false;
     }

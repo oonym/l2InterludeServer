@@ -42,7 +42,7 @@ public class TakeCastle implements ISkillHandler
     //private static Logger _log = Logger.getLogger(TakeCastle.class.getName());
 	private static final SkillType[] SKILL_IDS = {SkillType.TAKECASTLE};
 
-    public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
+    public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance)) return;
 

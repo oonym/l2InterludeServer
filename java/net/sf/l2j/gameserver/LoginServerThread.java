@@ -122,7 +122,7 @@ public class LoginServerThread extends Thread
 		_gameExternalHost = Config.EXTERNAL_HOSTNAME;
 		_gameInternalHost = Config.INTERNAL_HOSTNAME;
 		_waitingClients = new FastList<WaitingClient>();
-		_accountsInGameServer = new FastMap<String, L2GameClient>().setShared(true);
+		_accountsInGameServer = new FastMap<String, L2GameClient>().shared();
 		_maxPlayer = Config.MAXIMUM_ONLINE_USERS;
 	}
 

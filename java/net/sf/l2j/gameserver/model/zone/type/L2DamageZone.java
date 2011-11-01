@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 public class L2DamageZone extends L2ZoneType
 {
 	private int _damagePerSec;
-	private Future _task;
+	private Future<?> _task;
 
 	public L2DamageZone()
 	{

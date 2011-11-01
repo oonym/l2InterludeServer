@@ -138,8 +138,7 @@ public abstract class Inventory extends ItemContainer
     	/**
     	 * Add alteration in inventory when item equiped
     	 */
-        @SuppressWarnings("unused")
-    	public void notifyEquiped(int slot, L2ItemInstance item) {
+        public void notifyEquiped(int slot, L2ItemInstance item) {
     		if (!_changed.contains(item))
     			_changed.add(item);
     	}
@@ -147,8 +146,7 @@ public abstract class Inventory extends ItemContainer
     	/**
     	 * Add alteration in inventory when item unequiped
     	 */
-        @SuppressWarnings("unused")
-    	public void notifyUnequiped(int slot, L2ItemInstance item) {
+        public void notifyUnequiped(int slot, L2ItemInstance item) {
     		if (!_changed.contains(item))
     			_changed.add(item);
     	}
@@ -564,7 +562,7 @@ public abstract class Inventory extends ItemContainer
 			return item;
 		}
 		// Directly drop entire item
-		else return dropItem(process, item, actor, reference);
+		return dropItem(process, item, actor, reference);
 	}
 
     /**
@@ -674,16 +672,9 @@ public abstract class Inventory extends ItemContainer
 	public int getPaperdollAugmentationId(int slot)
 	{
 		L2ItemInstance item = _paperdoll[slot];
-		if (item != null)
+		if ((item != null) && (item.getAugmentation() != null))
 		{
-			if (item.getAugmentation() != null)
-			{
-				return item.getAugmentation().getAugmentationId();
-			}
-			else
-			{
-				return 0;
-			}
+			return item.getAugmentation().getAugmentationId();
 		}
 		return 0;
 	}

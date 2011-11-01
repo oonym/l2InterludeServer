@@ -154,7 +154,7 @@ public abstract class L2Effect
         }
     }
 
-    private ScheduledFuture _currentFuture;
+    private ScheduledFuture<?> _currentFuture;
     private EffectTask _currentTask;
 
     /** The Identifier of the stack group */
@@ -472,7 +472,7 @@ public abstract class L2Effect
     public final void addIcon(MagicEffectIcons mi)
     {
         EffectTask task = _currentTask;
-        ScheduledFuture future = _currentFuture;
+        ScheduledFuture<?> future = _currentFuture;
         if (task == null || future == null) return;
         if (_state == EffectState.FINISHING || _state == EffectState.CREATED) return;
         L2Skill sk = getSkill();
@@ -487,7 +487,7 @@ public abstract class L2Effect
     public final void addPartySpelledIcon(PartySpelled ps)
     {
         EffectTask task = _currentTask;
-        ScheduledFuture future = _currentFuture;
+        ScheduledFuture<?> future = _currentFuture;
         if (task == null || future == null) return;
         if (_state == EffectState.FINISHING || _state == EffectState.CREATED) return;
         L2Skill sk = getSkill();
@@ -497,7 +497,7 @@ public abstract class L2Effect
     public final void addOlympiadSpelledIcon(ExOlympiadSpelledInfo os)
     {
         EffectTask task = _currentTask;
-        ScheduledFuture future = _currentFuture;
+        ScheduledFuture<?> future = _currentFuture;
         if (task == null || future == null) return;
         if (_state == EffectState.FINISHING || _state == EffectState.CREATED) return;
         L2Skill sk = getSkill();

@@ -194,8 +194,7 @@ public class DimensionalRift
 			DimensionalRiftManager.getInstance().showHtmlFile(player, "data/html/seven_signs/rift/AlreadyTeleported.htm", npc);
 			return;
 		}
-		else
-			_hasJumped = true;
+		_hasJumped = true;
 
 		DimensionalRiftManager.getInstance().getRoom(_type, _choosenRoom).unspawn();
 		_completedRooms.add(_choosenRoom);
@@ -302,8 +301,7 @@ public class DimensionalRift
 
 		if(isBossRoom)
 			return (long)(time * Config.RIFT_BOSS_ROOM_TIME_MUTIPLY);
-		else
-			return time;
+		return time;
 	}
 
 	public void memberDead(L2PcInstance player)
@@ -363,7 +361,6 @@ public class DimensionalRift
 	{
 		if(Config.RIFT_MAX_JUMPS <= 8 && Config.RIFT_MAX_JUMPS >= 1)
 			return (byte) Config.RIFT_MAX_JUMPS;
-		else
-			return 4;
+		return 4;
 	}
 }

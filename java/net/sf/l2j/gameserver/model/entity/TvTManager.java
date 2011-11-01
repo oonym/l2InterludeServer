@@ -76,8 +76,7 @@ public class TvTManager implements Runnable
 				System.out.println("TvTEventEngine[TvTManager.run()]: Error spawning event npc for participation.");
 				continue;
 			}
-			else
-				Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
+			Announcements.getInstance().announceToAll("TvT Event: Registration opened for " + Config.TVT_EVENT_PARTICIPATION_TIME +  " minute(s).");
 
 			waiter(Config.TVT_EVENT_PARTICIPATION_TIME * 60); // in config given as minutes
 
@@ -87,8 +86,7 @@ public class TvTManager implements Runnable
 				System.out.println("TvTEventEngine[TvTManager.run()]: Lack of registration, abort event.");
 				continue;
 			}
-			else
-				TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting participants to an arena in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
+			TvTEvent.sysMsgToAllParticipants("TvT Event: Teleporting participants to an arena in " + Config.TVT_EVENT_START_LEAVE_TELEPORT_DELAY + " second(s).");
 
 			waiter(Config.TVT_EVENT_RUNNING_TIME * 60); // in config given as minutes
 			Announcements.getInstance().announceToAll(TvTEvent.calculateRewards());

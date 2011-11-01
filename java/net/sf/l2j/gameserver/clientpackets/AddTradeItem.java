@@ -39,7 +39,6 @@ public final class AddTradeItem extends L2GameClientPacket
     private static final String _C__16_ADDTRADEITEM = "[C] 16 AddTradeItem";
     private static Logger _log = Logger.getLogger(AddTradeItem.class.getName());
 
-    @SuppressWarnings("unused")
     private int _tradeId;
     private int _objectId;
     private int _count;

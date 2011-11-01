@@ -33,7 +33,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 public class DecayTaskManager
 {
     protected static final Logger _log = Logger.getLogger(DecayTaskManager.class.getName());
-	protected Map<L2Character,Long> _decayTasks = new FastMap<L2Character,Long>().setShared(true);
+	protected Map<L2Character,Long> _decayTasks = new FastMap<L2Character,Long>().shared();
 
     private static DecayTaskManager _instance;
 

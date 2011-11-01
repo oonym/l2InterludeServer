@@ -76,7 +76,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	private List<Integer> _charSlotMapping = new FastList<Integer>();
 
 	// Task
-	protected /*final*/ ScheduledFuture _autoSaveInDB;
+	protected /*final*/ ScheduledFuture<?> _autoSaveInDB;
 
 	// Crypt
 	public GameCrypt crypt;

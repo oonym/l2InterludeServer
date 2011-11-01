@@ -51,9 +51,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 {
 	private static final String _C__D0_07_REQUESTEXENCHANTSKILL = "[C] D0:07 RequestExEnchantSkill";
 	private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
-	@SuppressWarnings("unused")
 	private int _skillId;
-	@SuppressWarnings("unused")
 	private int _skillLvl;
 
 
@@ -63,10 +61,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 		_skillId = readD();
 		_skillLvl = readD();
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -82,7 +77,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 
         int npcid = trainer.getNpcId();
 
-        if ((trainer == null || !player.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM())
+        if (!player.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false) && !player.isGM())
             return;
 
         if (player.getSkillLevel(_skillId) >= _skillLvl)// already knows the skill with this level

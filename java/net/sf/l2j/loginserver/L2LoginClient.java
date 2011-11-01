@@ -273,9 +273,6 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		{
 			return "["+getAccount()+" ("+(address == null ? "disconnected" : address.getHostAddress())+")]";
 		}
-		else
-		{
-			return "["+(address == null ? "disconnected" : address.getHostAddress())+"]";
-		}
+		return "["+(address == null ? "disconnected" : address.getHostAddress())+"]";
 	}
 }

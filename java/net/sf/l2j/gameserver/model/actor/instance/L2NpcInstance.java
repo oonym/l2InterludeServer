@@ -452,7 +452,7 @@ public class L2NpcInstance extends L2Character
      * <li> L2PcInstance</li><BR><BR>
      */
     @Override
-	public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return false;
     }

@@ -222,8 +222,7 @@ public class RegionBBSManager extends BaseBBSManager
             		_logChat.log(record);
 				}
             	CreatureSay cs = new CreatureSay(activeChar.getObjectId(), Say2.TELL, activeChar.getName(), ar3);
-            	if (receiver != null &&
-            			!BlockList.isBlocked(receiver, activeChar))
+            	if (!BlockList.isBlocked(receiver, activeChar))
 				{
             		if (!receiver.getMessageRefusal())
             		{
@@ -265,8 +264,8 @@ public class RegionBBSManager extends BaseBBSManager
 	private static RegionBBSManager _instance = null;
 	private int _onlineCount = 0;
 	private int _onlineCountGm = 0;
-	private static FastMap<Integer, FastList<L2PcInstance>> _onlinePlayers = new FastMap<Integer, FastList<L2PcInstance>>().setShared(true);
-	private static FastMap<Integer, FastMap<String, String>> _communityPages = new FastMap<Integer, FastMap<String, String>>().setShared(true);
+	private static FastMap<Integer, FastList<L2PcInstance>> _onlinePlayers = new FastMap<Integer, FastList<L2PcInstance>>().shared();
+	private static FastMap<Integer, FastMap<String, String>> _communityPages = new FastMap<Integer, FastMap<String, String>>().shared();
 	/**
 	 * @return
 	 */
@@ -590,8 +589,7 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		if (type.equalsIgnoreCase("gm"))
 			return _onlineCountGm;
-		else
-			return _onlineCount;
+		return _onlineCount;
 	}
 
 	private FastList<L2PcInstance> getOnlinePlayers(int page)
@@ -603,6 +601,6 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		if (_communityPages.get(page) != null)
 			return _communityPages.get(page).get(type);
-		else return null;
+		return null;
 	}
 }

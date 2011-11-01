@@ -27,8 +27,7 @@ import net.sf.l2j.gameserver.templates.L2WeaponType;
 public class FuncEnchant extends Func
 {
 
-    public FuncEnchant(Stats pStat, int pOrder, Object owner, @SuppressWarnings("unused")
-    Lambda lambda)
+    public FuncEnchant(Stats pStat, int pOrder, Object owner, Lambda lambda)
     {
         super(pStat, pOrder, owner);
     }
@@ -39,7 +38,7 @@ public class FuncEnchant extends Func
         if (cond != null && !cond.test(env)) return;
         L2ItemInstance item = (L2ItemInstance) funcOwner;
         int cristall = item.getItem().getCrystalType();
-        Enum itemType = item.getItemType();
+        Enum<?> itemType = item.getItemType();
 
         if (cristall == L2Item.CRYSTAL_NONE) return;
         int enchant = item.getEnchantLevel();

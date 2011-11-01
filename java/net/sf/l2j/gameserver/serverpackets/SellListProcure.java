@@ -28,7 +28,6 @@ import net.sf.l2j.gameserver.instancemanager.CastleManorManager.CropProcure;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
-@SuppressWarnings("unused")
 public class SellListProcure extends L2GameServerPacket
 {
     private static final String _S__E9_SELLLISTPROCURE = "[S] E9 SellListProcure";

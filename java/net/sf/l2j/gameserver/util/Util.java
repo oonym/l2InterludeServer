@@ -76,8 +76,7 @@ public final class Util
             double dz = z1 - z2;
             return Math.sqrt((dx*dx) + (dy*dy) + (dz*dz));
         }
-        else
-            return Math.sqrt((dx*dx) + (dy*dy));
+		return Math.sqrt((dx*dx) + (dy*dy));
     }
 
     public static double calculateDistance(L2Object obj1, L2Object obj2, boolean includeZAxis)
@@ -177,12 +176,9 @@ public final class Util
 
             return d <= range*range + 2*range*rad + rad*rad;
         }
-        else
-        {
-        	double d = dx*dx + dy*dy;
+		double d = dx*dx + dy*dy;
 
-            return d <= range*range + 2*range*rad +rad*rad;
-        }
+		return d <= range*range + 2*range*rad +rad*rad;
     }
     public static double convertHeadingToDegree(int heading)
     {

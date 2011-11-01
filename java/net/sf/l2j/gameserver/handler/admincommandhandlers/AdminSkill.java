@@ -465,7 +465,6 @@ public class AdminSkill implements IAdminCommandHandler {
 		{
 			activeChar.sendMessage("Usage: //add_clan_skill <skill_id> <level>");
 			showMainPage(activeChar);
-			return;
 		}
 		else
 		{
@@ -484,17 +483,13 @@ public class AdminSkill implements IAdminCommandHandler {
 				for(L2PcInstance member: activeChar.getClan().getOnlineMembers(""))  
 				{  
 					member.sendSkillList();  
-				}  
-
+				}
 				showMainPage(activeChar);
-				return;
 			}
 			else
 			{
 				activeChar.sendMessage("Error: there is no such skill.");
-				return;
 			}
-
 		}
 	}
 

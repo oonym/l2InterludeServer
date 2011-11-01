@@ -119,7 +119,7 @@ public class ThreadPoolManager
 		_aiScheduledThreadPool = new ScheduledThreadPoolExecutor(Config.AI_MAX_THREAD, new PriorityThreadFactory("AISTPool", Thread.NORM_PRIORITY));
 	}
 
-	public ScheduledFuture scheduleEffect(Runnable r, long delay)
+	public ScheduledFuture<?> scheduleEffect(Runnable r, long delay)
 	{
 		try
 		{
@@ -128,7 +128,7 @@ public class ThreadPoolManager
 		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
 	}
 
-	public ScheduledFuture scheduleEffectAtFixedRate(Runnable r, long initial, long delay)
+	public ScheduledFuture<?> scheduleEffectAtFixedRate(Runnable r, long initial, long delay)
 	{
 		try
 		{
@@ -138,7 +138,7 @@ public class ThreadPoolManager
 		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
 	}
 
-	public ScheduledFuture scheduleGeneral(Runnable r, long delay)
+	public ScheduledFuture<?> scheduleGeneral(Runnable r, long delay)
 	{
 		try
 		{
@@ -147,7 +147,7 @@ public class ThreadPoolManager
 		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
 	}
 
-	public ScheduledFuture scheduleGeneralAtFixedRate(Runnable r, long initial, long delay)
+	public ScheduledFuture<?> scheduleGeneralAtFixedRate(Runnable r, long initial, long delay)
 	{
 		try
 		{
@@ -157,7 +157,7 @@ public class ThreadPoolManager
 		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
 	}
 
-	public ScheduledFuture scheduleAi(Runnable r, long delay)
+	public ScheduledFuture<?> scheduleAi(Runnable r, long delay)
 	{
 		try
 		{
@@ -166,7 +166,7 @@ public class ThreadPoolManager
 		} catch (RejectedExecutionException e) { return null; /* shutdown, ignore */ }
 	}
 
-	public ScheduledFuture scheduleAiAtFixedRate(Runnable r, long initial, long delay)
+	public ScheduledFuture<?> scheduleAiAtFixedRate(Runnable r, long initial, long delay)
 	{
 		try
 		{
@@ -311,7 +311,6 @@ public class ThreadPoolManager
 		}
 		catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

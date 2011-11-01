@@ -234,7 +234,7 @@ public class L2Attackable extends L2NpcInstance
     /** The table containing all autoAttackable L2Character in its Aggro Range and L2Character that attacked the L2Attackable
      * This Map is Thread Safe, but Removing Object While Interating Over It Will Result NPE
      * */
-    private FastMap<L2Character, AggroInfo> _aggroList = new FastMap<L2Character, AggroInfo>().setShared(true);
+    private FastMap<L2Character, AggroInfo> _aggroList = new FastMap<L2Character, AggroInfo>().shared();
     /** Use this to Read or Put Object to this Map */
     public final FastMap<L2Character, AggroInfo> getAggroListRP()
     {
@@ -277,7 +277,7 @@ public class L2Attackable extends L2NpcInstance
     private boolean _absorbed;
 
     /** The table containing all L2PcInstance that successfuly absorbed the soul of this L2Attackable */
-    private FastMap<L2PcInstance, AbsorberInfo> _absorbersList = new FastMap<L2PcInstance, AbsorberInfo>().setShared(true);
+    private FastMap<L2PcInstance, AbsorberInfo> _absorbersList = new FastMap<L2PcInstance, AbsorberInfo>().shared();
 
     /** Have this L2Attackable to reward Exp and SP on Die? **/
     private boolean _mustGiveExpSp;
@@ -495,7 +495,7 @@ public class L2Attackable extends L2NpcInstance
     protected void calculateRewards(L2Character lastAttacker)
     {
         // Creates an empty list of rewards
-        FastMap<L2Character, RewardInfo> rewards = new FastMap<L2Character, RewardInfo>().setShared(true);
+        FastMap<L2Character, RewardInfo> rewards = new FastMap<L2Character, RewardInfo>().shared();
 
         try
         {
@@ -508,7 +508,8 @@ public class L2Attackable extends L2NpcInstance
 
         	if (!getMustRewardExpSP()) return;
 
-        	int rewardCount = 0;
+        	@SuppressWarnings("unused")
+			int rewardCount = 0;
         	int damage;
         	L2Character attacker, ddealer;
         	RewardInfo reward;
@@ -851,15 +852,13 @@ public class L2Attackable extends L2NpcInstance
         		((L2AttackableAI)getAI()).setGlobalAggro(-25);
         		return;
         	}
-        	else
-        	{
-        		for(L2Character aggroed : getAggroListRP().keySet())
-        		{
-        			AggroInfo ai = getAggroListRP().get(aggroed);
-        	    	if (ai == null) return;
-        	    	ai._hate -= amount;
-        		}
-        	}
+        	
+			for(L2Character aggroed : getAggroListRP().keySet())
+			{
+				AggroInfo ai = getAggroListRP().get(aggroed);
+				if (ai == null) return;
+				ai._hate -= amount;
+			}
 
         	amount = getHating(mostHated);
         	if (amount <= 0)

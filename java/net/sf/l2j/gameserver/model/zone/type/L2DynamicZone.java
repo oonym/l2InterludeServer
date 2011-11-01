@@ -36,10 +36,10 @@ public class L2DynamicZone extends L2ZoneType
 {
 	private L2WorldRegion _region;
 	private L2Character _owner;
-	private Future _task;
+	private Future<?> _task;
 	private L2Skill _skill;
 
-	protected void setTask(Future task) { _task = task; }
+	protected void setTask(Future<?> task) { _task = task; }
 
 	public L2DynamicZone(L2WorldRegion region, L2Character owner, L2Skill skill)
 	{

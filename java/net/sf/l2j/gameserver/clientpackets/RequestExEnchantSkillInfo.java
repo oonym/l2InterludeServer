@@ -41,9 +41,7 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 {
 	//private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
 	private static final String _C__D0_06_REQUESTEXENCHANTSKILLINFO = "[C] D0:06 RequestExEnchantSkillInfo";
-	@SuppressWarnings("unused")
 	private int _skillId;
-	@SuppressWarnings("unused")
 	private int _skillLvl;
 
 	@Override
@@ -52,15 +50,11 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 		_skillId = readD();
 		_skillLvl = readD();
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-
         if (activeChar == null)
             return;
 
@@ -68,7 +62,6 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
             return;
 
         L2FolkInstance trainer = activeChar.getLastFolkNPC();
-
         if ((trainer == null || !activeChar.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !activeChar.isGM())
             return;
 

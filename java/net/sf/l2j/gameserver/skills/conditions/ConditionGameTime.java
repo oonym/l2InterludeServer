@@ -41,7 +41,7 @@ public class ConditionGameTime extends Condition {
 	}
 
 	@Override
-	public boolean testImpl(@SuppressWarnings("unused") Env env) {
+	public boolean testImpl(Env env) {
 		switch (_check)
 		{
 		case NIGHT:

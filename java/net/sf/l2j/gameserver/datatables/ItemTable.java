@@ -648,8 +648,7 @@ public class ItemTable
 	{
 		if (id > _allTemplates.length)
 			return null;
-		else
-			return _allTemplates[id];
+		return _allTemplates[id];
 	}
 
 	/**
@@ -674,7 +673,7 @@ public class ItemTable
 
         if (process.equalsIgnoreCase("loot") && !Config.AUTO_LOOT)
         {
-        	ScheduledFuture itemLootShedule;
+        	ScheduledFuture<?> itemLootShedule;
         	long delay = 0;
         	// if in CommandChannel and was killing a World/RaidBoss
             if (reference != null && reference instanceof L2BossInstance || reference instanceof L2RaidBossInstance)

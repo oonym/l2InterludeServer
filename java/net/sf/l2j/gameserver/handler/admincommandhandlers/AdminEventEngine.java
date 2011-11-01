@@ -494,7 +494,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
    }
 
    String getMaxLeveledPlayer(){
-       Iterator it = L2Event.participatingPlayers.iterator();
+       Iterator<String> it = L2Event.participatingPlayers.iterator();
        L2PcInstance pc = null;
        int max = 0;
        String name = "";
@@ -530,8 +530,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
        }
    }
    void teleportTeam(L2PcInstance activeChar, int team){
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
            try{L2PcInstance pc = L2World.getInstance().getPlayer(it.next().toString());
            pc.setTitle(L2Event.names.get(team));
@@ -540,8 +540,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
 
    }
    void sitTeam(int team){
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
            try{L2PcInstance pc = L2World.getInstance().getPlayer(it.next().toString());
            pc.eventSitForced = !pc.eventSitForced;
@@ -551,8 +551,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
 
    }
    void killTeam(L2PcInstance activeChar, int team){
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
            try{L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
            target.reduceCurrentHp(target.getMaxHp() + target.getMaxCp() + 1, activeChar);}catch(Exception e){}
@@ -560,8 +560,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
 
    }
    void resTeam(int team){
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
            try{L2PcInstance character = L2World.getInstance().getPlayer(it.next().toString());
            character.setCurrentHpMp(character.getMaxHp(), character.getMaxMp());
@@ -577,8 +577,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
    }
 
    void polyTeam(int team, String id){
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
         try{   L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
         target.getPoly().setPolyInfo("npc", id);
@@ -591,8 +591,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
 
    }
    void unpolyTeam(int team){
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
           try{ L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
 
@@ -623,9 +623,9 @@ public class AdminEventEngine implements IAdminCommandHandler {
     }
 
    void regardTeam(L2PcInstance activeChar, int team, int n, int id, String type){
-       LinkedList linked = L2Event.players.get(team);
+       LinkedList<String> linked = L2Event.players.get(team);
        int temp = n;
-       Iterator it = linked.iterator();
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
           try{ L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
            if(type.equalsIgnoreCase("level")) temp = n * target.getLevel();
@@ -638,8 +638,8 @@ public class AdminEventEngine implements IAdminCommandHandler {
    void telePlayersBack(int team){
        resTeam(team);
        unpolyTeam(team);
-       LinkedList linked = L2Event.players.get(team);
-       Iterator it = linked.iterator();
+       LinkedList<String> linked = L2Event.players.get(team);
+       Iterator<String> it = linked.iterator();
        while(it.hasNext()){
          try{ L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
           target.setTitle(target.eventTitle);

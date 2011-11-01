@@ -76,16 +76,14 @@ public class L2DropCategory
     {
     	if (getCategoryType() >= 0)
     		return _categoryChance;
-    	else
-    		return L2DropData.MAX_CHANCE;
+		return L2DropData.MAX_CHANCE;
     }
 
     public int getCategoryBalancedChance()
     {
     	if (getCategoryType() >= 0)
     		return _categoryBalancedChance;
-    	else
-    		return L2DropData.MAX_CHANCE;
+		return L2DropData.MAX_CHANCE;
     }
 
     public int getCategoryType()

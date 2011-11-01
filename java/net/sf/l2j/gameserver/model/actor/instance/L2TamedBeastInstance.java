@@ -53,8 +53,8 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 	private int _remainingTime = MAX_DURATION;
 	private int _homeX, _homeY, _homeZ;
 	private L2PcInstance _owner;
-	private Future _buffTask = null;
-	private Future _durationCheckTask = null;
+	private Future<?> _buffTask = null;
+	private Future<?> _durationCheckTask = null;
 
 	public L2TamedBeastInstance(int objectId, L2NpcTemplate template)
 	{

@@ -78,7 +78,7 @@ public class Universe implements java.io.Serializable
         u.implode(false);
     }
 
-    private class Position implements Comparable, java.io.Serializable
+    private class Position implements Comparable<Object>, java.io.Serializable
     {
         /**
          * Comment for <code>serialVersionUID</code>
@@ -89,7 +89,8 @@ public class Universe implements java.io.Serializable
         protected int _y;
         protected int _z;
 
-        public Position(int x, int y, int z, int flag)
+        @SuppressWarnings("unused")
+		public Position(int x, int y, int z, int flag)
         {
             _x = x;
             _y = y;
@@ -97,18 +98,13 @@ public class Universe implements java.io.Serializable
             _flag = flag;
         }
 
-        public Position(L2CharPosition pos)
+        @SuppressWarnings("unused")
+		public Position(L2CharPosition pos)
         {
             _x = pos.x;
             _y = pos.y;
             _z = pos.z;
             _flag = 0;
-        }
-
-        @Deprecated
-        public L2CharPosition l2CP()
-        {
-            return new L2CharPosition(_x, _y, _z, 0);
         }
 
         public int compareTo(Object obj)
@@ -129,7 +125,7 @@ public class Universe implements java.io.Serializable
         }
     }
 
-    private class Coord implements Comparable, java.io.Serializable
+    private class Coord implements Comparable<Object>, java.io.Serializable
     {
         /**
          * Comment for <code>serialVersionUID</code>
@@ -146,7 +142,8 @@ public class Universe implements java.io.Serializable
             _z = z;
         }
 
-        public Coord(L2CharPosition pos)
+        @SuppressWarnings("unused")
+		public Coord(L2CharPosition pos)
         {
             _x = pos.x;
             _y = pos.y;
@@ -302,8 +299,7 @@ public class Universe implements java.io.Serializable
         /* (non-Javadoc)
          * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
          */
-        public boolean accept(@SuppressWarnings("unused")
-        File arg0, String name)
+        public boolean accept(File arg0, String name)
         {
             return name.startsWith("universe") && name.endsWith("." + _ext);
         }
@@ -460,12 +456,12 @@ public class Universe implements java.io.Serializable
             if (b) pad = "" + System.currentTimeMillis();
             FileOutputStream fos = new FileOutputStream("data/universe" + pad + ".fin"); // Save to file
             DataOutputStream data = new DataOutputStream(fos);
-            int count = _map.size();
-            //System.out.println("Size of dump: "+count);
-            data.writeInt(count);
-
+            
             if (_map != null)
             {
+            	int count = _map.size();
+                //System.out.println("Size of dump: "+count);
+                data.writeInt(count);
                 for (Coord p : _map)
                 {
                     if (p != null)

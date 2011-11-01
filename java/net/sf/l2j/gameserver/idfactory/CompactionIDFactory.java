@@ -140,7 +140,7 @@ public class CompactionIDFactory extends IdFactory
     }
 
     @Override
-	public synchronized void releaseId(@SuppressWarnings("unused") int id)
+	public synchronized void releaseId(int id)
     {
     	//dont release ids until we are sure it isnt messing up
        /* if (_freeSize >= _freeOIDs.length)

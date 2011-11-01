@@ -92,9 +92,12 @@ public class MultiSellChoose extends L2GameClientPacket
         // given the template entry and information about maintaining enchantment and applying taxes
         // re-create the instance of the entry that will be used for this exchange
     	// i.e. change the enchantment level of select ingredient/products and adena amount appropriately.
-        L2NpcInstance merchant = (player.getTarget() instanceof L2NpcInstance)? (L2NpcInstance) player.getTarget() : null;
-        if (merchant == null) return;
-
+        final L2NpcInstance merchant = (player.getTarget() instanceof L2NpcInstance)? (L2NpcInstance) player.getTarget() : null;
+        if (merchant == null)
+        {
+        	return;
+        }
+        
         MultiSellEntry entry = prepareEntry(merchant, templateEntry, applyTaxes, maintainEnchantment, enchantment);
 
         // Generate a list of distinct ingredients and counts in order to check if the correct item-counts
@@ -347,7 +350,7 @@ public class MultiSellChoose extends L2GameClientPacket
         su = null;
 
         // finally, give the tax to the castle...
-		if (merchant != null && merchant.getIsInTown() && merchant.getCastle().getOwnerId() > 0)
+		if (merchant.getIsInTown() && merchant.getCastle().getOwnerId() > 0)
 		    merchant.getCastle().addToTreasury(_transactionTax * _amount);
     }
 

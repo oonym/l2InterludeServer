@@ -36,7 +36,7 @@ public final class FuncTemplate {
 	public Condition attachCond;
 	public Condition applayCond;
 	public final Class<?> func;
-	public final Constructor constructor;
+	public final Constructor<?> constructor;
 	public final Stats stat;
 	public final int order;
 	public final Lambda lambda;
@@ -55,7 +55,7 @@ public final class FuncTemplate {
 		}
 		try {
 			constructor = func.getConstructor(
-				new Class[]{
+				new Class<?>[]{
 						Stats.class, // stats to update
 						Integer.TYPE, // order of execution
 						Object.class, // owner

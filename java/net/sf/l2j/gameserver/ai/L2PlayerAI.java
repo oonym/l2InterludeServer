@@ -184,17 +184,16 @@ public class L2PlayerAI extends L2CharacterAI
     private void thinkAttack()
     {
     	L2Character target = getAttackTarget();
-    	if (target == null) return;
+    	if (target == null)
+    		return;
         if (checkTargetLostOrDead(target))
         {
-            if (target != null)
-            {
-                // Notify the target
-                setAttackTarget(null);
-            }
+        	//Notify the target
+        	setAttackTarget(null);
             return;
         }
-        if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange())) return;
+        if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
+        	return;
 
         _accessor.doAttack(target);
         return;

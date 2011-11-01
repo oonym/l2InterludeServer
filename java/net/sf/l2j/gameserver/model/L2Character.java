@@ -248,7 +248,7 @@ public abstract class L2Character extends L2Object
 		else
 		{
 			// Initialize the FastMap _skills to null
-			_skills = new FastMap<Integer,L2Skill>().setShared(true);
+			_skills = new FastMap<Integer,L2Skill>().shared();
 
 			// If L2Character is a L2PcInstance or a L2Summon, create the basic calculator set
 			_calculators = new Calculator[Stats.NUM_STATS];
@@ -459,7 +459,7 @@ public abstract class L2Character extends L2Object
 	 * <B><U> Overriden in </U> :</B><BR><BR>
 	 * <li> L2PcInstance</li><BR><BR>
 	 */
-	public void sendPacket(@SuppressWarnings("unused") L2GameServerPacket mov)
+	public void sendPacket(L2GameServerPacket mov)
 	{
 		// default implementation
 	}
@@ -2094,7 +2094,6 @@ public abstract class L2Character extends L2Object
 			if (stackQueue.size() > 0)
 			{
 				// Get the first stacked effect of the Stack group selected
-				tempEffect = null;
 				for (int i=0; i<_effects.size(); i++)
 				{
 					if (_effects.get(i) == stackQueue.get(0))
@@ -2867,8 +2866,9 @@ public abstract class L2Character extends L2Object
             e = effects.get(i);
             if (e.getSkill().getId() == index)
             {
-            	if (e.getInUse()) return e;
-            	else eventNotInUse = e;
+            	if (e.getInUse())
+            		return e;
+				eventNotInUse = e;
             }
         }
         return eventNotInUse;
@@ -2896,8 +2896,9 @@ public abstract class L2Character extends L2Object
             e = effects.get(i);
             if (e.getSkill() == skill)
             {
-            	if (e.getInUse()) return e;
-            	else eventNotInUse = e;
+            	if (e.getInUse())
+            		return e;
+				eventNotInUse = e;
             }
         }
         return eventNotInUse;
@@ -2926,8 +2927,9 @@ public abstract class L2Character extends L2Object
             e = effects.get(i);
             if (e.getEffectType() == tp)
             {
-            	if (e.getInUse()) return e;
-            	else eventNotInUse = e;
+            	if (e.getInUse())
+            		return e;
+				eventNotInUse = e;
             }
         }
         return eventNotInUse;
@@ -3116,7 +3118,7 @@ public abstract class L2Character extends L2Object
 	protected L2CharacterAI _ai;
 
 	/** Future Skill Cast */
-	protected Future _skillCast;
+	protected Future<?> _skillCast;
 
 	/** Char Coords from Client */
 	private int _clientX;
@@ -4020,8 +4022,7 @@ public abstract class L2Character extends L2Object
 				{
 					if (gtx == _move.geoPathGtx && gty == _move.geoPathGty)
 						return;
-					else
-						_move.onGeodataPathIndex = -1; // Set not on geodata path
+					_move.onGeodataPathIndex = -1; // Set not on geodata path
 				}
 				
 				if (curX < L2World.MAP_MIN_X || curX > L2World.MAP_MAX_X || curY < L2World.MAP_MIN_Y  || curY > L2World.MAP_MAX_Y)
@@ -4066,13 +4067,10 @@ public abstract class L2Character extends L2Object
                 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
                 			return;
                 		}
-                		else
-                		{
-                			x = originalX;
-                			y = originalY;
-                			z = originalZ;
-                			distance = originalDistance;
-                		}
+						x = originalX;
+						y = originalY;
+						z = originalZ;
+						distance = originalDistance;
                 	}
                 	else
                 	{
@@ -4439,15 +4437,11 @@ public abstract class L2Character extends L2Object
         {
             if (checkZ)
                 return (dx*dx + dy*dy + dz*dz) < radius * radius;
-            else
-                return (dx*dx + dy*dy) < radius * radius;
-        } else
-        {
-            if (checkZ)
-                return (dx*dx + dy*dy + dz*dz) <= radius * radius;
-            else
-                return (dx*dx + dy*dy) <= radius * radius;
+			return (dx*dx + dy*dy) < radius * radius;
         }
+		if (checkZ)
+		    return (dx*dx + dy*dy + dz*dz) <= radius * radius;
+		return (dx*dx + dy*dy) <= radius * radius;
     }
 
 //	/**
@@ -4574,7 +4568,7 @@ public abstract class L2Character extends L2Object
 	 * <li> L2PetInstance</li><BR><BR>
 	 *
 	 */
-	public void addExpAndSp(@SuppressWarnings("unused") long addToExp, @SuppressWarnings("unused") int addToSp)
+	public void addExpAndSp(long addToExp, int addToSp)
 	{
 		// Dummy method (overridden by players and pets)
 	}
@@ -5390,7 +5384,7 @@ public abstract class L2Character extends L2Object
 				abortCast();
 				return;
 			}
-			else targets = targetList.toArray(new L2Character[targetList.size()]);
+			targets = targetList.toArray(new L2Character[targetList.size()]);
 		}
 
 		// Ensure that a cast is in progress
@@ -5582,7 +5576,7 @@ public abstract class L2Character extends L2Object
 	 * <li> L2PcInstance</li><BR><BR>
 	 *
 	 */
-	public void consumeItem(@SuppressWarnings("unused") int itemConsumeId, @SuppressWarnings("unused") int itemCount)
+	public void consumeItem(int itemConsumeId, int itemCount)
 	{
 	}
 
@@ -5935,7 +5929,7 @@ public abstract class L2Character extends L2Object
 		return 1;
 	}
 
-	public final void setSkillCast(Future newSkillCast)
+	public final void setSkillCast(Future<?> newSkillCast)
 	{
 		_skillCast = newSkillCast;
 	}
@@ -5946,7 +5940,7 @@ public abstract class L2Character extends L2Object
 		_castInterruptTime = newSkillCastEndTime-12; 
 	}
 
-	private Future _PvPRegTask;
+	private Future<?> _PvPRegTask;
 
 	private long _pvpFlagLasts;
 
@@ -6009,7 +6003,7 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Return a Random Damage in function of the weapon.<BR><BR>
 	 */
-	public final int getRandomDamage(@SuppressWarnings("unused") L2Character target)
+	public final int getRandomDamage(L2Character target)
 	{
 		L2Weapon weaponItem = getActiveWeaponItem();
 
@@ -6175,7 +6169,7 @@ public abstract class L2Character extends L2Object
 	 * <li> L2PetInstance</li><BR><BR>
 	 *
 	 */
-	public void sendDamageMessage(@SuppressWarnings("unused") L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
+	public void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
 	{
 	}
 

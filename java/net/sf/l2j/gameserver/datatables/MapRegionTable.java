@@ -333,8 +333,7 @@ public class MapRegionTable
                 int closest =  getMapRegion(activeChar.getX(), activeChar.getY());
                 if(closest >= 0 && closest < _pointsWithKarmas.length)
                 	return new Location(_pointsWithKarmas[closest][0], _pointsWithKarmas[closest][1], _pointsWithKarmas[closest][2]);
-                else
-                	return new Location(17817, 170079, -3530);
+				return new Location(17817, 170079, -3530);
             }
 
             // Checking if in arena

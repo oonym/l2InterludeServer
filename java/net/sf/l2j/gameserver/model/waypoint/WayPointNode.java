@@ -70,8 +70,7 @@ public class WayPointNode extends L2Object
      * @see net.sf.l2j.gameserver.model.L2Object#isAutoAttackable(net.sf.l2j.gameserver.model.L2Character)
      */
     @Override
-	public boolean isAutoAttackable(@SuppressWarnings("unused")
-    L2Character attacker)
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return false;
     }

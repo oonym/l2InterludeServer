@@ -31,7 +31,6 @@ public final class RequestRecipeShopMakeInfo extends L2GameClientPacket
     private static final String _C__B5_RequestRecipeShopMakeInfo = "[C] b5 RequestRecipeShopMakeInfo";
     //private static Logger _log = Logger.getLogger(RequestRecipeShopMakeInfo.class.getName());
 
-    @SuppressWarnings("unused")
     private int _playerObjectId;
     private int _recipeId;
 

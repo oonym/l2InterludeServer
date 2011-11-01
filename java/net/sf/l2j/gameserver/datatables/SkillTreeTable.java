@@ -382,7 +382,7 @@ public class SkillTreeTable
 
         skills.addAll(_fishingSkillTrees);
 
-	    if (skills == null)
+	    if (skills.isEmpty())
 	    {
 	        // the skilltree for this class is undefined, so we give an empty list
 	        _log.warning("Skilltree for fishing is not defined !");
@@ -434,7 +434,7 @@ public class SkillTreeTable
 
         skills.addAll(_enchantSkillTrees);
 
-        if (skills == null)
+        if (skills.isEmpty())
         {
             // the skilltree for this class is undefined, so we give an empty list
             _log.warning("Skilltree for enchanting is not defined !");
@@ -555,7 +555,7 @@ public class SkillTreeTable
 
         skills.addAll(_fishingSkillTrees);
 
-        if (skills == null)
+        if (skills.isEmpty())
         {
             // the skilltree for this class is undefined, so we give an empty list
             _log.warning("SkillTree for fishing is not defined !");

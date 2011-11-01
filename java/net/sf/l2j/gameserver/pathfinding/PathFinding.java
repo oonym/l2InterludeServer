@@ -42,10 +42,10 @@ public abstract class PathFinding
 				//Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
 				return GeoPathFinding.getInstance();
 			}
-			else // WORLD_PATHFINDING
-			{
+			//else // WORLD_PATHFINDING
+			//{
 				//Higher Memoru Usage, Lower Cpu Usage (PreCalculated)
-			}
+			//}
 		}
 		return _instance;
 	}
@@ -82,20 +82,18 @@ public abstract class PathFinding
 			}
 			if (node.equals(end)) //path found!
 				return constructPath(node);
-			else
+			
+			i++;
+			visited.add(node);
+			node.attacheNeighbors();
+			Node[] neighbors = node.getNeighbors();
+			if (neighbors == null) continue;
+			for (Node n : neighbors)
 			{
-				i++;
-				visited.add(node);
-				node.attacheNeighbors();
-				Node[] neighbors = node.getNeighbors();
-				if (neighbors == null) continue;
-				for (Node n : neighbors)
+				if (!visited.contains(n) && !to_visit.contains(n))
 				{
-					if (!visited.contains(n) && !to_visit.contains(n))
-					{
-						n.setParent(node);
-						to_visit.add(n);
-					}
+					n.setParent(node);
+					to_visit.add(n);
 				}
 			}
 		}
@@ -139,34 +137,32 @@ public abstract class PathFinding
 			}
 			if (node.equals(end)) //path found!
 				return constructPath(node);
-			else
+			
+			i++;
+			visited.add(node);
+			node.attacheNeighbors();
+			Node[] neighbors = node.getNeighbors();
+			if (neighbors == null) continue;
+			for (Node n : neighbors)
 			{
-				i++;
-				visited.add(node);
-				node.attacheNeighbors();
-				Node[] neighbors = node.getNeighbors();
-				if (neighbors == null) continue;
-				for (Node n : neighbors)
+				if (!visited.containsRev(n) && !to_visit.contains(n))
 				{
-					if (!visited.containsRev(n) && !to_visit.contains(n))
+					added = false;
+					n.setParent(node);
+					dx = targetx - n.getLoc().getNodeX();
+					dy = targety - n.getLoc().getNodeY();
+					n.setCost(dx*dx+dy*dy);
+					for (int index = 0; index < to_visit.size(); index++)
 					{
-						added = false;
-						n.setParent(node);
-						dx = targetx - n.getLoc().getNodeX();
-						dy = targety - n.getLoc().getNodeY();
-						n.setCost(dx*dx+dy*dy);
-						for (int index = 0; index < to_visit.size(); index++)
+						// supposed to find it quite early..
+						if (to_visit.get(index).getCost() > n.getCost())
 						{
-							// supposed to find it quite early..
-							if (to_visit.get(index).getCost() > n.getCost())
-							{
-								to_visit.add(index, n);
-								added = true;
-								break;
-							}
+							to_visit.add(index, n);
+							added = true;
+							break;
 						}
-						if (!added) to_visit.addLast(n);
 					}
+					if (!added) to_visit.addLast(n);
 				}
 			}
 		}
@@ -204,20 +200,18 @@ public abstract class PathFinding
 			}
 			if (node.equals(end)) //path found!
 				return constructPath(node);
-			else
+			
+			visited.add(node);
+			node.attacheNeighbors();
+			for (Node n : node.getNeighbors())
 			{
-				visited.add(node);
-				node.attacheNeighbors();
-				for (Node n : node.getNeighbors())
+				if (!visited.contains(n) && !to_visit.contains(n))
 				{
-					if (!visited.contains(n) && !to_visit.contains(n))
-					{
-						i++;
-						n.setParent(node);
-						n.setCost(Math.abs(start_x - n.getLoc().getNodeX())+Math.abs(start_y - n.getLoc().getNodeY())
-								+Math.abs(end_x - n.getLoc().getNodeX())+Math.abs(end_y - n.getLoc().getNodeY()));
-						to_visit.add(n);
-					}
+					i++;
+					n.setParent(node);
+					n.setCost(Math.abs(start_x - n.getLoc().getNodeX())+Math.abs(start_y - n.getLoc().getNodeY())
+							+Math.abs(end_x - n.getLoc().getNodeX())+Math.abs(end_y - n.getLoc().getNodeY()));
+					to_visit.add(n);
 				}
 			}
 		}

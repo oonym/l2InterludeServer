@@ -150,7 +150,6 @@ public class L2StaticObjectInstance extends L2Object
      * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
      */
     @Override
-    @SuppressWarnings("unused")
     public boolean isAutoAttackable(L2Character attacker)
     {
         return false;

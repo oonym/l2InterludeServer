@@ -112,14 +112,12 @@ public class EnergyStone implements IItemHandler
             SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
             sm.addNumber(_effect.getLevel());
             activeChar.sendPacket(sm);
-            return;
         }
         else
         {
              SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
              sm.addItemName(5589);
              activeChar.sendPacket(sm);
-             return;
         }
     }
 

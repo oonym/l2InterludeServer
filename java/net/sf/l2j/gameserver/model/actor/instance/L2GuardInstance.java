@@ -45,7 +45,6 @@ import net.sf.l2j.util.Rnd;
  */
 public final class L2GuardInstance extends L2Attackable
 {
-	@SuppressWarnings("hiding")
 	private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
 
 	private int _homeX;

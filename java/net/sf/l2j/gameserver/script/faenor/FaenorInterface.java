@@ -62,7 +62,7 @@ public class FaenorInterface implements EngineInterface
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.script.EngineInterface#getAllPlayers()
      */
-    public List getAllPlayers()
+    public List<?> getAllPlayers()
     {
         // TODO Auto-generated method stub
         return null;
@@ -158,7 +158,7 @@ public class FaenorInterface implements EngineInterface
     /**
      * @return Returns the _questDrops.
      */
-    public List getQuestDrops(int npcID)
+    public List<L2DropData> getQuestDrops(int npcID)
     {
         L2NpcTemplate npc = npcTable.getTemplate(npcID);
         if (npc == null)

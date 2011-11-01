@@ -48,7 +48,7 @@ public class Sow implements ISkillHandler {
     private L2MonsterInstance _target;
     private int _seedId;
 
-    public void useSkill(L2Character activeChar, L2Skill skill, @SuppressWarnings("unused") L2Object[] targets) {
+    public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets) {
         if (!(activeChar instanceof L2PcInstance))
             return;
 

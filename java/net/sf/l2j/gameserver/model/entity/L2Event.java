@@ -62,8 +62,8 @@ public class L2Event
     {
         for (int i = 1; i <= players.size(); i++)
         {
-            LinkedList temp = players.get(i);
-            Iterator it = temp.iterator();
+            LinkedList<String> temp = players.get(i);
+            Iterator<String> it = temp.iterator();
             while (it.hasNext())
             {
                 if (it.next().equals(name)) return i;
@@ -84,13 +84,13 @@ public class L2Event
             kills = 0;
             for (int i = 1; i <= teamsNumber; i++)
             {
-                LinkedList temp = players.get(i);
-                Iterator it = temp.iterator();
+                LinkedList<String> temp = players.get(i);
+                Iterator<String> it = temp.iterator();
                 while (it.hasNext())
                 {
                     try
                     {
-                        L2PcInstance player = L2World.getInstance().getPlayer((String) it.next());
+                        L2PcInstance player = L2World.getInstance().getPlayer(it.next());
                         if (!killersTemp.contains(player.getName()))
                         {
                             if (player.kills.size() > kills)
@@ -111,12 +111,12 @@ public class L2Event
         for (int i = 0; i < N; i++)
         {
             kills = 0;
-            Iterator it = killersTemp.iterator();
+            Iterator<String> it = killersTemp.iterator();
             while (it.hasNext())
             {
                 try
                 {
-                    L2PcInstance player = L2World.getInstance().getPlayer((String) it.next());
+                    L2PcInstance player = L2World.getInstance().getPlayer(it.next());
                     if (player.kills.size() > kills)
                     {
                         kills = player.kills.size();
@@ -225,7 +225,7 @@ public class L2Event
 
         for (int k = 0; k < L2Event.teamsNumber; k++)
         {
-            Iterator it = L2Event.players.get(k + 1).iterator();
+            Iterator<String> it = L2Event.players.get(k + 1).iterator();
             boolean temp = false;
             while (it.hasNext())
             {

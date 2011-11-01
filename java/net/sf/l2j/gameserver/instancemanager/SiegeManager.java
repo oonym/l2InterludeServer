@@ -257,16 +257,14 @@ public class SiegeManager
     {
     	if (_artefactSpawnList.containsKey(_castleId))
     		return _artefactSpawnList.get(_castleId);
-    	else
-    		return null;
+		return null;
     }
 
     public final FastList<SiegeSpawn> getControlTowerSpawnList(int _castleId)
     {
     	if (_controlTowerSpawnList.containsKey(_castleId))
     		return _controlTowerSpawnList.get(_castleId);
-    	else
-    		return null;
+		return null;
     }
 
     public final int getAttackerMaxClans() { return _attackerMaxClans; }

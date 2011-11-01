@@ -32,7 +32,7 @@ import org.w3c.dom.Node;
 public class FaenorQuestParser extends FaenorParser
 {
     @Override
-	public void parseScript(Node questNode, @SuppressWarnings("unused") BSFManager context)
+	public void parseScript(Node questNode, BSFManager context)
     {
         if (DEBUG) System.out.println("Parsing Quest.");
 

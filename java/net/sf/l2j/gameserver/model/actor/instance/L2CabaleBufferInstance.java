@@ -80,7 +80,7 @@ public class L2CabaleBufferInstance extends L2NpcInstance
 		player.sendPacket(new ActionFailed());
 	}
 
-    private ScheduledFuture _aiTask;
+    private ScheduledFuture<?> _aiTask;
 
     private class CabalaAI implements Runnable
     {

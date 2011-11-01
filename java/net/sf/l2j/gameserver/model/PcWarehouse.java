@@ -36,8 +36,8 @@ public class PcWarehouse extends Warehouse
 	@Override
 	public ItemLocation getBaseLocation() { return ItemLocation.WAREHOUSE; }
 	public String getLocationId() { return "0"; }
-	public int getLocationId(@SuppressWarnings("unused") boolean dummy) { return 0; }
-	public void setLocationId(@SuppressWarnings("unused") L2PcInstance dummy) { return; }
+	public int getLocationId(boolean dummy) { return 0; }
+	public void setLocationId(L2PcInstance dummy) { return; }
 
 	@Override
 	public boolean validateCapacity(int slots)

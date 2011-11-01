@@ -92,10 +92,8 @@ public class AdminKill implements IAdminCommandHandler
 							activeChar.sendMessage("Invalid radius.");
 							return false;
 						}
-					} else
-					{
-						kill(activeChar, plyr);
 					}
+					kill(activeChar, plyr);
 				}
 				else
 				{

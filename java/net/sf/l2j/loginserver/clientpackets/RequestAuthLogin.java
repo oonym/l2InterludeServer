@@ -18,14 +18,10 @@
  */
 package net.sf.l2j.loginserver.clientpackets;
 
-import java.net.InetAddress;
 import java.security.GeneralSecurityException;
-import java.util.logging.Logger;
-
 import javax.crypto.Cipher;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.loginserver.HackingException;
 import net.sf.l2j.loginserver.L2LoginClient;
 import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
@@ -44,8 +40,6 @@ import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
  */
 public class RequestAuthLogin extends L2LoginClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestAuthLogin.class.getName());
-
 	private byte[] _raw = new byte[128];
 
 	private String _user;
@@ -81,10 +75,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 			readB(_raw);
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	@Override
@@ -113,60 +104,51 @@ public class RequestAuthLogin extends L2LoginClientPacket
 
 		LoginController lc = LoginController.getInstance();
 		L2LoginClient client = getClient();
-		try
-		{
-			AuthLoginResult result = lc.tryAuthLogin(_user, _password, getClient());
+		AuthLoginResult result = lc.tryAuthLogin(_user, _password, getClient());
 
-			switch (result)
-			{
-				case AUTH_SUCCESS:
-					client.setAccount(_user);
-					client.setState(LoginClientState.AUTHED_LOGIN);
-					client.setSessionKey(lc.assignSessionKeyToClient(_user, client));
-					if (Config.SHOW_LICENCE)
-					{
-						client.sendPacket(new LoginOk(getClient().getSessionKey()));
-					}
-					else
-					{
-						getClient().sendPacket(new ServerList(getClient()));
-					}
-					break;
-				case INVALID_PASSWORD:
-					client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
-					break;
-				case ACCOUNT_BANNED:
-					client.close(new AccountKicked(AccountKickedReason.REASON_PERMANENTLY_BANNED));
-					break;
-				case ALREADY_ON_LS:
-					L2LoginClient oldClient;
-					if ((oldClient = lc.getAuthedClient(_user)) != null)
-					{
-						// kick the other client
-						oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
-						lc.removeAuthedLoginClient(_user);
-					}
-					break;
-				case ALREADY_ON_GS:
-					GameServerInfo gsi;
-					if ((gsi = lc.getAccountOnGameServer(_user)) != null)
-					{
-						client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
-
-						// kick from there
-						if (gsi.isAuthed())
-						{
-							gsi.getGameServerThread().kickPlayer(_user);
-						}
-					}
-					break;
-			}
-		}
-		catch (HackingException e)
+		switch (result)
 		{
-			InetAddress address = getClient().getConnection().getSocketChannel().socket().getInetAddress();
-			lc.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
-			_log.info("Banned ("+address+") for "+Config.LOGIN_BLOCK_AFTER_BAN+" seconds, due to "+e.getConnects()+" incorrect login attempts.");
+			case AUTH_SUCCESS:
+				client.setAccount(_user);
+				client.setState(LoginClientState.AUTHED_LOGIN);
+				client.setSessionKey(lc.assignSessionKeyToClient(_user, client));
+				if (Config.SHOW_LICENCE)
+				{
+					client.sendPacket(new LoginOk(getClient().getSessionKey()));
+				}
+				else
+				{
+					getClient().sendPacket(new ServerList(getClient()));
+				}
+				break;
+			case INVALID_PASSWORD:
+				client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
+				break;
+			case ACCOUNT_BANNED:
+				client.close(new AccountKicked(AccountKickedReason.REASON_PERMANENTLY_BANNED));
+				break;
+			case ALREADY_ON_LS:
+				L2LoginClient oldClient;
+				if ((oldClient = lc.getAuthedClient(_user)) != null)
+				{
+					// kick the other client
+					oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+					lc.removeAuthedLoginClient(_user);
+				}
+				break;
+			case ALREADY_ON_GS:
+				GameServerInfo gsi;
+				if ((gsi = lc.getAccountOnGameServer(_user)) != null)
+				{
+					client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
+
+					// kick from there
+					if (gsi.isAuthed())
+					{
+						gsi.getGameServerThread().kickPlayer(_user);
+					}
+				}
+				break;
 		}
 	}
 }

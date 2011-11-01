@@ -199,7 +199,7 @@ public class ObjectKnownList
     /** Return the _knownObjects containing all L2Object known by the L2Character. */
     public final Map<Integer, L2Object> getKnownObjects()
     {
-        if (_knownObjects == null) _knownObjects = new FastMap<Integer, L2Object>().setShared(true);
+        if (_knownObjects == null) _knownObjects = new FastMap<Integer, L2Object>().shared();
         return _knownObjects;
     }
 

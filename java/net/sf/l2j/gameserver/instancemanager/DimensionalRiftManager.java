@@ -253,8 +253,7 @@ public class DimensionalRiftManager
     {
         if(ignorePeaceZone)
             return _rooms.get((byte) 0).get((byte) 1).checkIfInZone(x, y, z);
-        else
-            return _rooms.get((byte) 0).get((byte) 1).checkIfInZone(x, y, z) && !_rooms.get((byte) 0).get((byte) 0).checkIfInZone(x, y, z);
+		return _rooms.get((byte) 0).get((byte) 1).checkIfInZone(x, y, z) && !_rooms.get((byte) 0).get((byte) 0).checkIfInZone(x, y, z);
     }
 
     public boolean checkIfInPeaceZone(int x, int y, int z)

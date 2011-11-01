@@ -36,7 +36,7 @@ public class FishingSkill implements ISkillHandler
     //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
 	private static final SkillType[] SKILL_IDS = {SkillType.PUMPING, SkillType.REELING};
 
-    public void useSkill(L2Character activeChar, @SuppressWarnings("unused") L2Skill skill, @SuppressWarnings("unused") L2Object[] targets)
+    public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
     {
         if (activeChar == null || !(activeChar instanceof L2PcInstance)) return;
 
@@ -64,7 +64,7 @@ public class FishingSkill implements ISkillHandler
 			return;
 		int SS = 1;
 		int pen = 0;
-		if (weaponInst != null && weaponInst.getChargedFishshot()) SS = 2;
+		if (weaponInst.getChargedFishshot()) SS = 2;
 		double gradebonus = 1 + weaponItem.getCrystalType() * 0.1;
 		int dmg = (int)(skill.getPower()*gradebonus*SS);
 		if (player.getSkillLevel(1315) <= skill.getLevel()-2) //1315 - Fish Expertise

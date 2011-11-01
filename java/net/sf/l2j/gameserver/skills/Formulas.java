@@ -1391,21 +1391,20 @@ public final class Formulas
 	}
 
 	/** Calculate delay (in milliseconds) before next ATTACK */
-	public final int calcPAtkSpd(@SuppressWarnings("unused")
-	L2Character attacker, @SuppressWarnings("unused")
-	L2Character target, double rate)
+	public final int calcPAtkSpd(L2Character attacker, L2Character target, double rate)
 	{
 		// measured Oct 2006 by Tank6585, formula by Sami
 		// attack speed 312 equals 1500 ms delay... (or 300 + 40 ms delay?)
-		if(rate < 2) return 2700;
-	    else return (int)(470000/rate);
+		if(rate < 2)
+			return 2700;
+		return (int)(470000/rate);
 	}
 
 	/** Calculate delay (in milliseconds) for skills cast */
-	public final int calcMAtkSpd(L2Character attacker, @SuppressWarnings("unused")
-	L2Character target, L2Skill skill, double skillTime)
+	public final int calcMAtkSpd(L2Character attacker, L2Character target, L2Skill skill, double skillTime)
 	{
-		if (skill.isMagic()) return (int) (skillTime * 333 / attacker.getMAtkSpd());
+		if (skill.isMagic())
+			return (int) (skillTime * 333 / attacker.getMAtkSpd());
 		return (int) (skillTime * 333 / attacker.getPAtkSpd());
 	}
 

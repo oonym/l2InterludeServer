@@ -70,9 +70,9 @@ public class CastleManorManager {
     private boolean _underMaintenance;
     private boolean _disabled;
 
-    protected ScheduledFuture _scheduledManorRefresh;
-    protected ScheduledFuture _scheduledMaintenanceEnd;
-    protected ScheduledFuture _scheduledNextPeriodapprove;
+    protected ScheduledFuture<?> _scheduledManorRefresh;
+    protected ScheduledFuture<?> _scheduledMaintenanceEnd;
+    protected ScheduledFuture<?> _scheduledNextPeriodapprove;
 
 	public static final CastleManorManager getInstance() {
 		if (_instance == null) {
@@ -373,9 +373,7 @@ public class CastleManorManager {
 			}
 
 			// Sending notification to a clan leader
-			L2PcInstance clanLeader = null;
-			if (clan != null)
-				clanLeader = L2World.getInstance().getPlayer(clan.getLeader().getName());
+			L2PcInstance clanLeader = L2World.getInstance().getPlayer(clan.getLeader().getName());
 			if (clanLeader != null)
 				clanLeader.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_INFORMATION_HAS_BEEN_UPDATED));
 

@@ -130,12 +130,12 @@ public class Olympiad
     protected static boolean _isOlympiadEnd;
     protected static boolean _compStarted;
     protected static boolean _battleStarted;
-    protected ScheduledFuture _scheduledCompStart;
-    protected ScheduledFuture _scheduledCompEnd;
-    protected ScheduledFuture _scheduledOlympiadEnd;
-    protected ScheduledFuture _scheduledManagerTask;
-    protected ScheduledFuture _scheduledWeeklyTask;
-    protected ScheduledFuture _scheduledValdationTask;
+    protected ScheduledFuture<?> _scheduledCompStart;
+    protected ScheduledFuture<?> _scheduledCompEnd;
+    protected ScheduledFuture<?> _scheduledOlympiadEnd;
+    protected ScheduledFuture<?> _scheduledManagerTask;
+    protected ScheduledFuture<?> _scheduledWeeklyTask;
+    protected ScheduledFuture<?> _scheduledValdationTask;
 
     protected static final int[][] STADIUMS =
     {
@@ -188,15 +188,11 @@ public class Olympiad
         {
             e.printStackTrace();
         }
-        catch(SQLException s)
-        {
-            s.printStackTrace();
-        }
-
-        if (_period == 0) init();
+        if (_period == 0)
+        	init();
     }
 
-    private void load() throws IOException, SQLException
+    private void load() throws IOException
     {
         _nobles = new FastMap<Integer, StatsSet>();
 
@@ -513,14 +509,11 @@ public class Olympiad
             {
         		return false;
             }
-            else
-            {
-                List<L2PcInstance> classed = _classBasedRegisters.get(noble.getClassId().getId());
-                if (!classed.contains(noble))
-                {
-                    return false;
-                }
-            }
+			final List<L2PcInstance> classed = _classBasedRegisters.get(noble.getClassId().getId());
+			if ((classed == null) || !classed.contains(noble))
+			{
+			    return false;
+			}
         }
         return true;
     }
@@ -1399,7 +1392,8 @@ public class Olympiad
 
     private class L2OlympiadGame
     {
-    	protected COMP_TYPE _type;
+    	@SuppressWarnings("unused")
+		protected COMP_TYPE _type;
     	private boolean _aborted;
     	private String _playerOneName;
     	private String _playerTwoName;
@@ -1891,7 +1885,8 @@ public class Olympiad
      		}
      	}
     	
-    	protected boolean makePlayersVisible()
+    	@SuppressWarnings("unused")
+		protected boolean makePlayersVisible()
     	{
             _sm = new SystemMessage(SystemMessageId.STARTS_THE_GAME);
             try {

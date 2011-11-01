@@ -89,7 +89,7 @@ public class L2Spawn
 	private int _respawnMaxDelay;
 
 	/** The generic constructor of L2NpcInstance managed by this L2Spawn */
-	private Constructor _constructor;
+	private Constructor<?> _constructor;
 
 	/** If True a L2NpcInstance is respawned each time that another is killed */
     private boolean _doRespawn;
@@ -168,7 +168,7 @@ public class L2Spawn
             implementationName = "L2SymbolMaker";
 
 		// Create the generic constructor of L2NpcInstance managed by this L2Spawn
-		Class[] parameters = {int.class, Class.forName("net.sf.l2j.gameserver.templates.L2NpcTemplate")};
+		Class<?>[] parameters = {int.class, Class.forName("net.sf.l2j.gameserver.templates.L2NpcTemplate")};
 		_constructor = Class.forName("net.sf.l2j.gameserver.model.actor.instance." + implementationName + "Instance").getConstructor(parameters);
 	}
 

@@ -126,8 +126,9 @@ public class L2Party {
 			if (member.getInventory().validateCapacityByItemId(ItemId) &&
                     Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true)) availableMembers.add(member);
 		}
-		if (availableMembers.size() > 0) return availableMembers.get(Rnd.get(availableMembers.size()));
-		else return null;
+		if (availableMembers.size() > 0)
+			return availableMembers.get(Rnd.get(availableMembers.size()));
+		return null;
 	}
 
 	/**
@@ -540,7 +541,8 @@ public class L2Party {
 		}
 
         // Avoid null exceptions, if any
-        if (ToReward == null || ToReward.isEmpty()) return;
+        if (ToReward.isEmpty())
+        	return;
 
         // Now we can actually distribute the adena reward
         // (Total adena splitted by the number of party members that are in range and must be rewarded)
@@ -601,8 +603,7 @@ public class L2Party {
 				{
 					if (((L2PetInstance)member).getPetData().getOwnerExpTaken() > 0)
 						continue;
-					else // TODO: This is a temporary fix while correct pet xp in party is figured out
-						penalty = (float)0.85;
+					penalty = (float) 0.85;
 				}
 
 
@@ -718,10 +719,7 @@ public class L2Party {
 			//not is a valid party
 			return getBaseExpSpBonus(membersCount);
 		}
-		else
-		{
-			return getBaseExpSpBonus(membersCount) * Config.RATE_PARTY_XP;
-		}
+		return getBaseExpSpBonus(membersCount) * Config.RATE_PARTY_XP;
 	}
 
 	private double getSpBonus(int membersCount)
@@ -731,10 +729,7 @@ public class L2Party {
 			//not is a valid party
 			return getBaseExpSpBonus(membersCount);
 		}
-		else
-		{
-			return getBaseExpSpBonus(membersCount) * Config.RATE_PARTY_SP;
-		}
+		return getBaseExpSpBonus(membersCount) * Config.RATE_PARTY_SP;
 	}
 
 	public int getLevel() { return _partyLvl; }

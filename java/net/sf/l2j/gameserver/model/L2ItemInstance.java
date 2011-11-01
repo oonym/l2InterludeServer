@@ -142,7 +142,7 @@ public final class L2ItemInstance extends L2Object
 	private boolean _storedInDb; // if DB data is up-to-date.
 
 
-	private ScheduledFuture itemLootShedule = null;
+	private ScheduledFuture<?> itemLootShedule = null;
 	/**
 	 * Constructor of the L2ItemInstance from the objectId and the itemId.
 	 * @param objectId : int designating the ID of the object in the world
@@ -384,7 +384,7 @@ public final class L2ItemInstance extends L2Object
 	 * Returns the type of item
 	 * @return Enum
 	 */
-	public Enum getItemType()
+	public Enum<?> getItemType()
 	{
 		return _item.getItemType();
 	}
@@ -821,7 +821,7 @@ public final class L2ItemInstance extends L2Object
 	 * @return boolean false
 	 */
     @Override
-	public boolean isAutoAttackable(@SuppressWarnings("unused") L2Character attacker)
+	public boolean isAutoAttackable(L2Character attacker)
     {
         return false;
     }
@@ -1176,11 +1176,11 @@ public final class L2ItemInstance extends L2Object
     		itemLootShedule.cancel(true);
     	itemLootShedule = null;
     }
-    public void setItemLootShedule(ScheduledFuture sf)
+    public void setItemLootShedule(ScheduledFuture<?> sf)
     {
     	itemLootShedule = sf;
     }
-    public ScheduledFuture getItemLootShedule()
+    public ScheduledFuture<?> getItemLootShedule()
     {
     	return itemLootShedule;
     }

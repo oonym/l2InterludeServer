@@ -184,6 +184,7 @@ public final class PetitionManager
 			return _responder;
 		}
 
+		@SuppressWarnings("unused")
 		public long getEndTime()
 		{
 			return _endTime;

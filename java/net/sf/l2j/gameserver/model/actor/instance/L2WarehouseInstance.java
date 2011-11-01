@@ -113,7 +113,6 @@ public final class L2WarehouseInstance extends L2FolkInstance
     	if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
     	{
     		player.sendPacket(new SystemMessage(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
-    		return;
     	}
     	else
     	{
