@@ -42,7 +42,8 @@ public class BeastSpiritShot implements IItemHandler
     // All the item IDs that this handler knows.
     private static final int[] ITEM_IDS = {6646, 6647};
 
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
     	if (playable == null) return;
 
@@ -152,7 +153,8 @@ public class BeastSpiritShot implements IItemHandler
         Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, isBlessed? 2009:2008, 1, 0, 0), 360000/*600*/);
     }
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

@@ -26,10 +26,8 @@ import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.entity.Castle;
 
 /**
- *
  * Thorgrim - 2005
  * Class managing periodical events with castle
- *
  */
 public class CastleUpdater implements Runnable
 {
@@ -43,6 +41,7 @@ public class CastleUpdater implements Runnable
             _runCount = runCount;
 		}
 
+		@Override
 		public void run()
 		{
 			try

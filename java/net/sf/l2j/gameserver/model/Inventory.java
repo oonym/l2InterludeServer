@@ -85,7 +85,8 @@ public abstract class Inventory extends ItemContainer
 
 	final class FormalWearListener implements PaperdollListener
 	{
-	    public void notifyUnequiped(int slot, L2ItemInstance item)
+	    @Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
 	    {
 	        if (!(getOwner() != null
 	                && getOwner() instanceof L2PcInstance))
@@ -96,7 +97,8 @@ public abstract class Inventory extends ItemContainer
 	        if (item.getItemId() == 6408)
 	            owner.setIsWearingFormalWear(false);
 	    }
-	    public void notifyEquiped(int slot, L2ItemInstance item)
+	    @Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
 	    {
 	        if (!(getOwner() != null
 	                && getOwner() instanceof L2PcInstance))
@@ -138,7 +140,8 @@ public abstract class Inventory extends ItemContainer
     	/**
     	 * Add alteration in inventory when item equiped
     	 */
-        public void notifyEquiped(int slot, L2ItemInstance item) {
+        @Override
+		public void notifyEquiped(int slot, L2ItemInstance item) {
     		if (!_changed.contains(item))
     			_changed.add(item);
     	}
@@ -146,7 +149,8 @@ public abstract class Inventory extends ItemContainer
     	/**
     	 * Add alteration in inventory when item unequiped
     	 */
-        public void notifyUnequiped(int slot, L2ItemInstance item) {
+        @Override
+		public void notifyUnequiped(int slot, L2ItemInstance item) {
     		if (!_changed.contains(item))
     			_changed.add(item);
     	}
@@ -162,7 +166,8 @@ public abstract class Inventory extends ItemContainer
 
     final class BowListener implements PaperdollListener
     {
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		if (slot != PAPERDOLL_LRHAND)
     			return;
@@ -174,7 +179,8 @@ public abstract class Inventory extends ItemContainer
     				setPaperdollItem(PAPERDOLL_LHAND, null);
     		}
     	}
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
     		if (slot != PAPERDOLL_LRHAND)
     			return;
@@ -190,13 +196,15 @@ public abstract class Inventory extends ItemContainer
 
     final class StatsListener implements PaperdollListener
     {
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		if (slot == PAPERDOLL_LRHAND)
     			return;
     		getOwner().removeStatsOwner(item);
     	}
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
     		if (slot == PAPERDOLL_LRHAND)
     			return;
@@ -206,7 +214,8 @@ public abstract class Inventory extends ItemContainer
 
     final class ItemPassiveSkillsListener implements PaperdollListener
     {
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		L2PcInstance player;
 
@@ -241,7 +250,8 @@ public abstract class Inventory extends ItemContainer
 				player.sendSkillList(); 
 			}
     	}
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
 			L2PcInstance player;
 			
@@ -282,7 +292,8 @@ public abstract class Inventory extends ItemContainer
     }
     final class ArmorSetListener implements PaperdollListener
     {
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
     		if(!(getOwner() instanceof L2PcInstance))
     			return;
@@ -356,7 +367,8 @@ public abstract class Inventory extends ItemContainer
     			}
     		}
     	}
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		if(!(getOwner() instanceof L2PcInstance))
     			return;

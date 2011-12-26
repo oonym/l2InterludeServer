@@ -32,6 +32,7 @@ public class AdminBBS implements IAdminCommandHandler
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
 	 */
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		 if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -49,6 +50,7 @@ public class AdminBBS implements IAdminCommandHandler
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
 	 */
+	@Override
 	public String[] getAdminCommandList() {
         return ADMIN_COMMANDS;
     }

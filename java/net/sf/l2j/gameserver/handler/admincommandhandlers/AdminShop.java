@@ -44,6 +44,7 @@ public class AdminShop implements IAdminCommandHandler {
 	};
 	private static final int REQUIRED_LEVEL = Config.GM_CREATE_ITEM;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		if (!Config.ALT_PRIVILEGES_ADMIN)
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
@@ -69,6 +70,7 @@ public class AdminShop implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

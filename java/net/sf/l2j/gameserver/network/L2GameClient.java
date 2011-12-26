@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantLock;
@@ -31,8 +32,8 @@ import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread;
-import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.LoginServerThread.SessionKey;
+import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.communitybbs.Manager.RegionBBSManager;
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.CharSelectInfoPackage;
@@ -40,11 +41,12 @@ import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.entity.L2Event;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
+import net.sf.l2j.gameserver.serverpackets.ServerClose;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.util.EventData;
 
-import com.l2jserver.mmocore.network.MMOClient;
-import com.l2jserver.mmocore.network.MMOConnection;
+import org.mmocore.network.MMOClient;
+import org.mmocore.network.MMOConnection;
 
 /**
  * Represents a client connected on Game Server
@@ -77,10 +79,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	// Task
 	protected /*final*/ ScheduledFuture<?> _autoSaveInDB;
-
+	protected ScheduledFuture<?> _cleanupTask = null;
+	
 	// Crypt
 	public GameCrypt crypt;
-
+	
 	// Flood protection
 	public byte packetsSentInSec = 0;
 	public int packetsSentStartTick = 0;
@@ -476,21 +479,91 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     {
     	_log.info("Client "+toString()+" disconnected abnormally.");
     }
-
-    @Override
-    protected void onDisconection()
+    
+    /**
+	 * @see org.mmocore.network.MMOClient#onDisconnection()
+	 */
+	@Override
+	protected void onDisconnection()
 	{
-    	// no long running tasks here, do it async
-    	try
-    	{
-    		ThreadPoolManager.getInstance().executeTask(new DisconnectTask());
-    	}
-    	catch (RejectedExecutionException e)
-    	{
-    		// server is closing
-    	}
-    }
-
+		// no long running tasks here, do it async
+		try
+		{
+			ThreadPoolManager.getInstance().executeTask(new DisconnectTask());
+		}
+		catch (RejectedExecutionException e)
+		{
+			// server is closing
+		}
+	}
+	
+	/**
+	 * Close client connection with {@link ServerClose} packet
+	 */
+	public void closeNow()
+	{
+		close(ServerClose.STATIC_PACKET);
+		synchronized (this)
+		{
+			if (_cleanupTask != null)
+			{
+				cancelCleanup();
+			}
+			_cleanupTask = ThreadPoolManager.getInstance().scheduleGeneral(new CleanupTask(), 0); //instant
+		}
+	}
+	
+	private boolean cancelCleanup()
+	{
+		final Future<?> task = _cleanupTask;
+		if (task != null)
+		{
+			_cleanupTask = null;
+			return task.cancel(true);
+		}
+		return false;
+	}
+	
+	private class CleanupTask implements Runnable
+	{
+		/**
+		 * @see java.lang.Runnable#run()
+		 */
+		@Override
+		public void run()
+		{
+			try
+			{
+				// we are going to manually save the char bellow thus we can force the cancel
+				if (_autoSaveInDB != null)
+				{
+					_autoSaveInDB.cancel(true);
+					//ThreadPoolManager.getInstance().removeGeneral((Runnable) _autoSaveInDB);
+				}
+				
+				if (getActiveChar() != null) // this should only happen on connection loss
+				{
+					// prevent closing again
+					getActiveChar().setClient(null);
+					
+					if (getActiveChar().isOnline() == 1)
+					{
+						getActiveChar().deleteMe();
+					}
+				}
+				setActiveChar(null);
+			}
+			catch (Exception e1)
+			{
+				_log.log(Level.WARNING, "Error while cleanup client.", e1);
+			}
+			finally
+			{
+				LoginServerThread.getInstance().sendLogout(getAccountName());
+			}
+		}
+	}
+	
     /**
      * Produces the best possible string representation of this client.
      */
@@ -499,7 +572,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	{
 		try
 		{
-			InetAddress address = getConnection().getSocketChannel().socket().getInetAddress();
+			InetAddress address = getConnection().getInetAddress();
 			switch (getState())
 			{
 				case CONNECTED:
@@ -524,6 +597,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		/**
 		 * @see java.lang.Runnable#run()
 		 */
+		@Override
 		public void run()
 		{
 			try
@@ -579,6 +653,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	class AutoSaveTask implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			try

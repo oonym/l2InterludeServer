@@ -59,6 +59,7 @@ public class AdminSiege implements IAdminCommandHandler
 	};
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -281,6 +282,7 @@ public class AdminSiege implements IAdminCommandHandler
 		activeChar.sendPacket(adminReply);
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

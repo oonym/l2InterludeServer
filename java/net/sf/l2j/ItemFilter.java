@@ -25,7 +25,6 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 
 /**
  * @author Advi
- *
  */
 public class ItemFilter implements Filter
 {
@@ -36,6 +35,7 @@ public class ItemFilter implements Filter
 //	private String _excludeProcess = "Consume";
 //	private String _excludeItemType = "Arrow, Shot";
 
+	@Override
 	public boolean isLoggable(LogRecord record)
 	{
 		if (record.getLoggerName() != "item") return false;

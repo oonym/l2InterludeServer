@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.network.L2GameClient;
 
-import com.l2jserver.mmocore.network.SendablePacket;
+import org.mmocore.network.SendablePacket;
 
 /**
  *

@@ -39,7 +39,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PlayableInstance;
  *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
-
 public abstract class L2ObjectSet<T extends L2Object> implements Iterable<T>
 {
     public static L2ObjectSet<L2Object> createL2ObjectSet()
@@ -76,6 +75,7 @@ public abstract class L2ObjectSet<T extends L2Object> implements Iterable<T>
 
     public abstract boolean contains(T obj);
 
-    public abstract Iterator<T> iterator();
+    @Override
+	public abstract Iterator<T> iterator();
 
 }

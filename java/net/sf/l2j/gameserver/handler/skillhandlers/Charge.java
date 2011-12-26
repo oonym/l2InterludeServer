@@ -42,6 +42,7 @@ public class Charge implements ISkillHandler
 	 */
 	private static final SkillType[] SKILL_IDS = {/*SkillType.CHARGE*/};
 
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 
@@ -62,6 +63,7 @@ public class Charge implements ISkillHandler
         skill.getEffectsSelf(activeChar);
 	}
 
+	@Override
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

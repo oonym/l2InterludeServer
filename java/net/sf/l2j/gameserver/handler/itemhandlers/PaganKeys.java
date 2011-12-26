@@ -39,6 +39,7 @@ public class PaganKeys implements IItemHandler
 	private static final int[] ITEM_IDS = {8273, 8274, 8275};
 	public static final int INTERACTION_DISTANCE = 100;
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 
@@ -134,6 +135,7 @@ public class PaganKeys implements IItemHandler
 		}
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

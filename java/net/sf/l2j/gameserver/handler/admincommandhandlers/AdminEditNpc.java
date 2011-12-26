@@ -73,6 +73,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 	private static final int REQUIRED_LEVEL2 = Config.GM_NPC_VIEW;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{//TODO: Tokenize and protect arguments parsing. Externalize HTML.
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -679,6 +680,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 		return (level >= REQUIRED_LEVEL2);
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

@@ -56,6 +56,7 @@ public class AdminManor implements IAdminCommandHandler {
 
 	private static final int REQUIRED_LEVEL = Config.GM_MENU;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		if (!Config.ALT_PRIVILEGES_ADMIN) {
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
@@ -135,6 +136,7 @@ public class AdminManor implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return _adminCommands;
 	}

@@ -42,7 +42,8 @@ public class AdminRideWyvern implements IAdminCommandHandler
     private static final int REQUIRED_LEVEL = Config.GM_RIDER;
     private int _petRideId;
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar) {
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
@@ -85,7 +86,8 @@ public class AdminRideWyvern implements IAdminCommandHandler
         return true;
     }
 
-    public String[] getAdminCommandList() {
+    @Override
+	public String[] getAdminCommandList() {
         return ADMIN_COMMANDS;
     }
 

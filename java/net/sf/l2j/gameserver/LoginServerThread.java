@@ -438,9 +438,10 @@ public class LoginServerThread extends Thread
 
 	public void doKickPlayer(String account)
 	{
-		if(_accountsInGameServer.get(account) != null)
+		final L2GameClient client = _accountsInGameServer.get(account);
+		if (client != null)
 		{
-			_accountsInGameServer.get(account).closeNow();
+			client.closeNow();
 			LoginServerThread.getInstance().sendLogout(account);
 		}
 	}

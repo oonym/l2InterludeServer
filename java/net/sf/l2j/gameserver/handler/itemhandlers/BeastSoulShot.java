@@ -42,7 +42,8 @@ public class BeastSoulShot implements IItemHandler
     // All the item IDs that this handler knows.
     private static final int[] ITEM_IDS = { 6645 };
 
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
     	if (playable == null) return;
 
@@ -145,7 +146,8 @@ public class BeastSoulShot implements IItemHandler
         Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUser(activePet, activePet, 2033, 1, 0, 0), 360000/*600*/);
     }
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

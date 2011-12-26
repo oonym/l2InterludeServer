@@ -40,7 +40,8 @@ public class EnergyStone implements IItemHandler
     private EffectCharge _effect;
     private L2SkillCharge _skill;
 
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
 
     	L2PcInstance activeChar;
@@ -132,7 +133,8 @@ public class EnergyStone implements IItemHandler
     return null;
     }
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

@@ -44,7 +44,8 @@ public class AdminMonsterRace implements IAdminCommandHandler
     private static final int REQUIRED_LEVEL = Config.GM_MONSTERRACE;
     protected static int state = -1;
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
         {
@@ -61,7 +62,8 @@ public class AdminMonsterRace implements IAdminCommandHandler
         return true;
     }
 
-    public String[] getAdminCommandList()
+    @Override
+	public String[] getAdminCommandList()
     {
         return ADMIN_COMMANDS;
     }
@@ -130,7 +132,8 @@ public class AdminMonsterRace implements IAdminCommandHandler
             activeChar = pActiveChar;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             //int[][] speeds1 = MonsterRace.getInstance().getSpeeds();
             //MonsterRace.getInstance().newSpeeds();
@@ -165,7 +168,8 @@ public class AdminMonsterRace implements IAdminCommandHandler
             activeChar = pActiveChar;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             DeleteObject obj = null;
             for (int i = 0; i < 8; i++)

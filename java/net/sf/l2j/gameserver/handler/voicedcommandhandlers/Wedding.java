@@ -30,7 +30,6 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author evill33t
- *
  */
 public class Wedding implements IVoicedCommandHandler
 {
@@ -40,7 +39,8 @@ public class Wedding implements IVoicedCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
-    public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
+    @Override
+	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
         if(command.startsWith("engage"))
             return Engage(activeChar);
@@ -369,7 +369,8 @@ public class Wedding implements IVoicedCommandHandler
             _to7sDungeon = to7sDungeon;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (_activeChar.isDead())
                 return;
@@ -388,7 +389,8 @@ public class Wedding implements IVoicedCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
      */
-    public String[] getVoicedCommandList()
+    @Override
+	public String[] getVoicedCommandList()
     {
         return _voicedCommands;
     }

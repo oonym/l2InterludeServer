@@ -129,7 +129,8 @@ public class Lottery
     		// Do nothing
     	}
 
-        public void run()
+        @Override
+		public void run()
         {
             java.sql.Connection con = null;
             PreparedStatement statement;
@@ -258,7 +259,8 @@ public class Lottery
     		// Do nothing
     	}
 
-        public void run()
+        @Override
+		public void run()
         {
             if (Config.DEBUG) _log.info("Lottery: Stopping ticket sell for lottery #" + getId() + ".");
             _isSellingTickets = false;
@@ -274,7 +276,8 @@ public class Lottery
     		// Do nothing
     	}
 
-        public void run()
+        @Override
+		public void run()
         {
             if (Config.DEBUG) _log.info("Lottery: Ending lottery #" + getId() + ".");
 

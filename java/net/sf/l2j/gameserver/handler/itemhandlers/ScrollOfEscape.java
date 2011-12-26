@@ -56,7 +56,8 @@ public class ScrollOfEscape implements IItemHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
      */
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
         if (!(playable instanceof L2PcInstance)) return;
         L2PcInstance activeChar = (L2PcInstance)playable;
@@ -146,7 +147,8 @@ public class ScrollOfEscape implements IItemHandler
             _itemId = itemId;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
         	if (_activeChar.isDead()) return;
         	_activeChar.enableAllSkills();
@@ -271,7 +273,8 @@ public class ScrollOfEscape implements IItemHandler
         }
     }
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

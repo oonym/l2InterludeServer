@@ -35,6 +35,7 @@ public class AdminHelpPage implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = {"admin_help"};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!checkLevel(activeChar.getAccessLevel())) return false;
@@ -55,6 +56,7 @@ public class AdminHelpPage implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

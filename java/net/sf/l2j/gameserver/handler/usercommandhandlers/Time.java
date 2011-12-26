@@ -33,7 +33,8 @@ public class Time implements IUserCommandHandler
     /* (non-Javadoc)
      *
      */
-    public boolean useUserCommand(int id, L2PcInstance activeChar)
+    @Override
+	public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
         if (COMMAND_IDS[0] != id) return false;
 
@@ -61,7 +62,8 @@ public class Time implements IUserCommandHandler
         activeChar.sendPacket(sm);
         return true;
     }
-    public int[] getUserCommandList()
+    @Override
+	public int[] getUserCommandList()
     {
         return COMMAND_IDS;
     }

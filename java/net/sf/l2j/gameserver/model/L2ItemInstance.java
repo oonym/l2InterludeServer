@@ -669,6 +669,7 @@ public final class L2ItemInstance extends L2Object
 			_shadowItem = item;
 		}
 
+		@Override
 		public void run()
 		{
 			try

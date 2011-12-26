@@ -51,6 +51,7 @@ public class L2Fishing implements Runnable
 	private boolean _isUpperGrade;
 	private int _lureType;
 
+	@Override
 	public void run()
 	{
 		if (_fishCurHp >= _fishMaxHp * 2)

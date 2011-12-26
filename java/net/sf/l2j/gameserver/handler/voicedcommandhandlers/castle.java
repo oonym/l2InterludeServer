@@ -33,7 +33,8 @@ public class castle implements IVoicedCommandHandler
 {
     private static final String[] VOICED_COMMANDS = { "open doors", "close doors", "ride wyvern" };
 
-    public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
+    @Override
+	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
     	if(command.startsWith("open doors")&&target.equals("castle")&&(activeChar.isClanLeader())){
             L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
@@ -69,7 +70,8 @@ public class castle implements IVoicedCommandHandler
     }
 
 
-    public String[] getVoicedCommandList()
+    @Override
+	public String[] getVoicedCommandList()
     {
         return VOICED_COMMANDS;
     }

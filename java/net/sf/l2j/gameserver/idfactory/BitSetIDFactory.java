@@ -40,7 +40,6 @@ import net.sf.l2j.util.PrimeFinder;
  *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
-
 public class BitSetIDFactory extends IdFactory
 {
     private static Logger _log = Logger.getLogger(BitSetIDFactory.class.getName());
@@ -55,7 +54,8 @@ public class BitSetIDFactory extends IdFactory
         /* (non-Javadoc)
          * @see java.lang.Runnable#run()
          */
-        public void run()
+        @Override
+		public void run()
         {
             if (reachingBitSetCapacity())
             {

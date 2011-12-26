@@ -51,6 +51,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
 	//TODO: remove from gm list etc etc
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         try
@@ -71,6 +72,7 @@ public class AdminFightCalculator implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

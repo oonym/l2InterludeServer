@@ -47,7 +47,8 @@ public class AdminUnblockIp implements IAdminCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
      */
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
@@ -76,7 +77,8 @@ public class AdminUnblockIp implements IAdminCommandHandler
         return true;
     }
 
-    public String[] getAdminCommandList()
+    @Override
+	public String[] getAdminCommandList()
     {
         return ADMIN_COMMANDS;
     }

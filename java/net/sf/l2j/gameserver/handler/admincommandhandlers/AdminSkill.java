@@ -73,6 +73,7 @@ public class AdminSkill implements IAdminCommandHandler {
 
 	private static L2Skill[] adminSkills;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		if (!Config.ALT_PRIVILEGES_ADMIN)
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
@@ -217,6 +218,7 @@ public class AdminSkill implements IAdminCommandHandler {
 		player.sendSkillList();
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

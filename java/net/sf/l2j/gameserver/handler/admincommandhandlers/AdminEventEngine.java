@@ -77,6 +77,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
  private static String tempName2 = "";
  private static boolean npcsDeleted = false;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
         	if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
@@ -349,6 +350,7 @@ public class AdminEventEngine implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

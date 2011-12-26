@@ -117,7 +117,8 @@ public class ClanHall
         private class FunctionTask implements Runnable
         {
             public FunctionTask(){}
-            public void run()
+            @Override
+			public void run()
             {
                 try
                 {
@@ -529,7 +530,8 @@ public class ClanHall
     private class FeeTask implements Runnable
     {
         public FeeTask() {}
-        public void run()
+        @Override
+		public void run()
         {
             try
             {

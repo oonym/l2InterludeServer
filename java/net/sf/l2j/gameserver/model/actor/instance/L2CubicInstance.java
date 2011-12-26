@@ -176,7 +176,8 @@ public class L2CubicInstance
             // run task
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (_owner.isDead() || _target.isDead() || _owner.getTarget() != _target)
             {
@@ -247,7 +248,8 @@ public class L2CubicInstance
             // run task
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (_owner.isDead())
             {
@@ -343,7 +345,8 @@ public class L2CubicInstance
             // run task
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             stopAction();
             _owner.delCubic(_id);

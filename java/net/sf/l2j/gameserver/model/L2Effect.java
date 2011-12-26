@@ -139,7 +139,8 @@ public abstract class L2Effect
             _rate = pRate;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             try
             {

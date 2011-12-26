@@ -40,7 +40,8 @@ public class Firework implements IItemHandler
     //Modified by Baghak (Prograsso): Added Firework support
     private static final int[] ITEM_IDS = { 6403, 6406, 6407 };
 
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
     	if(!(playable instanceof L2PcInstance)) return; // prevent Class cast exception
         L2PcInstance activeChar = (L2PcInstance)playable;
@@ -95,7 +96,8 @@ public class Firework implements IItemHandler
             activeChar.useMagic(skill, false, false);
         }
     }
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

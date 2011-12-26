@@ -25,7 +25,6 @@ import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 /**
  * @author -Wooden-
  * Format: ddddd
- *
  */
 public class AuthGameGuard extends L2LoginClientPacket
 {
@@ -66,7 +65,7 @@ public class AuthGameGuard extends L2LoginClientPacket
 	@Override
 	protected boolean readImpl()
 	{
-		if (getAvaliableBytes() >= 20)
+		if (_buf.remaining() >= 20)
 		{
 			_sessionId = readD();
 			_data1 = readD();

@@ -93,6 +93,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	private static final int REQUIRED_LEVEL2 = Config.GM_CHAR_EDIT_OTHER;
 	private static final int REQUIRED_LEVEL_VIEW = Config.GM_CHAR_VIEW;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -372,6 +373,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
@@ -669,7 +671,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		adminReply.setFile("data/html/admin/ipfind.htm");
 		for (int i = 0; i < players.length; i++)
 		{
-			ip=players[i].getClient().getConnection().getSocketChannel().socket().getInetAddress().getHostAddress();
+			ip=players[i].getClient().getConnection().getInetAddress().getHostAddress();
 			if (ip.equals(IpAdress))
 			{
 				name = players[i].getName();

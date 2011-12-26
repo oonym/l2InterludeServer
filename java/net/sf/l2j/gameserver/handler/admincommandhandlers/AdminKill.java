@@ -53,6 +53,7 @@ public class AdminKill implements IAdminCommandHandler
 		return (level >= REQUIRED_LEVEL);
 	}
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -146,6 +147,7 @@ public class AdminKill implements IAdminCommandHandler
 					" killed character "+target.getObjectId());
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

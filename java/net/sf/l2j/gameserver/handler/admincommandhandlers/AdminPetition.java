@@ -38,6 +38,7 @@ public class AdminPetition implements IAdminCommandHandler
 
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -90,6 +91,7 @@ public class AdminPetition implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

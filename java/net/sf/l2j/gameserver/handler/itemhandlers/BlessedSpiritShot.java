@@ -45,6 +45,7 @@ public class BlessedSpiritShot implements IItemHandler
 	/* (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
+	@Override
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
         if (!(playable instanceof L2PcInstance)) return;
@@ -111,6 +112,7 @@ public class BlessedSpiritShot implements IItemHandler
         Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUser(activeChar, activeChar, SKILL_IDS[weaponGrade], 1, 0, 0), 360000/*600*/);
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

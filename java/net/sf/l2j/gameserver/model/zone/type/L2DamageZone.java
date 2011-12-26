@@ -89,6 +89,7 @@ public class L2DamageZone extends L2ZoneType
 			_dmgZone = zone;
 		}
 
+		@Override
 		public void run()
 		{
 			for (L2Character temp : _dmgZone.getCharacterList())

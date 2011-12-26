@@ -42,6 +42,7 @@ public class AdminShutdown implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = {"admin_server_shutdown", "admin_server_restart", "admin_server_abort"};
 	private static final int REQUIRED_LEVEL = Config.GM_RESTART;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
@@ -76,6 +77,7 @@ public class AdminShutdown implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

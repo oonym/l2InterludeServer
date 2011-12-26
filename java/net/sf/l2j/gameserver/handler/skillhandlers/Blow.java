@@ -48,6 +48,7 @@ public class Blow implements ISkillHandler
 	public final static int SIDE = 60;
 	public final static int BEHIND = 70;
 
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets){
 		if(activeChar.isAlikeDead())
 			return;
@@ -187,6 +188,7 @@ public class Blow implements ISkillHandler
         }
 	}
 
+	@Override
 	public SkillType[] getSkillIds()
     {
         return SKILL_IDS;

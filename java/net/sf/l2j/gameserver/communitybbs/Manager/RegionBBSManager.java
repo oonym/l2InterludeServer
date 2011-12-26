@@ -287,6 +287,7 @@ public class RegionBBSManager extends BaseBBSManager
 
 		Collections.sort(sortedPlayers, new Comparator<L2PcInstance>()
 				{
+					@Override
 					public int compare(L2PcInstance p1, L2PcInstance p2)
 					{
 						return p1.getName().compareToIgnoreCase(p2.getName());

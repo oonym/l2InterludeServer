@@ -36,6 +36,7 @@ public class AdminGm implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = { "admin_gm" };
 	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		//don't check for gm status ;)
         if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -50,6 +51,7 @@ public class AdminGm implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

@@ -24,9 +24,7 @@ import java.util.logging.Logger;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 
-
 /**
- *
  * This class ...
  *
  * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
@@ -58,6 +56,7 @@ public class L2Potion extends L2Object
 			_instance = instance;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -151,6 +150,7 @@ public class L2Potion extends L2Object
 			_instance = instance;
 		}
 
+		@Override
 		public void run()
 		{
 			try

@@ -70,7 +70,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 	@Override
 	public boolean readImpl()
 	{
-		if (getAvaliableBytes() >= 128)
+		if (_buf.remaining() >= 128)
 		{
 			readB(_raw);
 			return true;

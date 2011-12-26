@@ -50,6 +50,7 @@ public class L2DynamicZone extends L2ZoneType
 
 		Runnable r = new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				remove();

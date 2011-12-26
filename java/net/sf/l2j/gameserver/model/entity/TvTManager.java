@@ -62,6 +62,7 @@ public class TvTManager implements Runnable
 	 *
 	 * @see java.lang.Runnable#run()<br>
 	 */
+	@Override
 	public void run()
 	{
 		TvTEvent.init();

@@ -45,6 +45,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 
 	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -57,6 +58,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

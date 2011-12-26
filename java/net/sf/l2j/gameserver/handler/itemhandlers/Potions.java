@@ -58,6 +58,8 @@ public class Potions implements IItemHandler
 			_magicId = magicId;
 			_level = level;
 		}
+		
+		@Override
 		public void run()
 		{
 			try
@@ -83,6 +85,7 @@ public class Potions implements IItemHandler
 				//elixir of cp
 				8634, 8635, 8636, 8637, 8638, 8639};
 
+	@Override
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
@@ -441,6 +444,7 @@ public class Potions implements IItemHandler
 		return false;
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

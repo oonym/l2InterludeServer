@@ -43,7 +43,8 @@ public class AdminDelete implements IAdminCommandHandler
 
     private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
         {
@@ -56,7 +57,8 @@ public class AdminDelete implements IAdminCommandHandler
         return true;
     }
 
-    public String[] getAdminCommandList()
+    @Override
+	public String[] getAdminCommandList()
     {
         return ADMIN_COMMANDS;
     }

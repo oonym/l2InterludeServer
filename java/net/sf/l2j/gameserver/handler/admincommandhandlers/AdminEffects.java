@@ -82,6 +82,7 @@ public class AdminEffects implements IAdminCommandHandler
 
 	private static final int REQUIRED_LEVEL = Config.GM_GODMODE;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -669,6 +670,7 @@ public class AdminEffects implements IAdminCommandHandler
 	}
 
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

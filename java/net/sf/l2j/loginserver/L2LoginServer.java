@@ -28,6 +28,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -36,11 +37,10 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.Server;
 import net.sf.l2j.status.Status;
 
-import com.l2jserver.mmocore.network.SelectorServerConfig;
-import com.l2jserver.mmocore.network.SelectorThread;
+import org.mmocore.network.SelectorConfig;
+import org.mmocore.network.SelectorThread;
 
 /**
- *
  * @author  KenM
  */
 public class L2LoginServer
@@ -177,21 +177,23 @@ public class L2LoginServer
 			}
 		}
 
-		SelectorServerConfig ssc = new SelectorServerConfig(bindAddress, Config.PORT_LOGIN);
-		L2LoginPacketHandler loginPacketHandler = new L2LoginPacketHandler();
-		SelectorHelper sh = new SelectorHelper();
+		// TODO: Unhardcode this configuration options
+		final SelectorConfig sc = new SelectorConfig();
+		sc.MAX_READ_PER_PASS = 12; //Config.MMO_MAX_READ_PER_PASS;
+		sc.MAX_SEND_PER_PASS = 12; //Config.MMO_MAX_SEND_PER_PASS;
+		sc.SLEEP_TIME = 20; //Config.MMO_SELECTOR_SLEEP_TIME;
+		sc.HELPER_BUFFER_COUNT = 20; //Config.MMO_HELPER_BUFFER_COUNT;
+		sc.TCP_NODELAY = false; //Config.MMO_TCP_NODELAY;
+		
+		final L2LoginPacketHandler lph = new L2LoginPacketHandler();
+		final SelectorHelper sh = new SelectorHelper();
 		try
 		{
-			_selectorThread = new SelectorThread<L2LoginClient>(ssc, loginPacketHandler, sh, sh);
-			_selectorThread.setAcceptFilter(sh);
+			_selectorThread = new SelectorThread<L2LoginClient>(sc, sh, lph, sh, sh);
 		}
 		catch (IOException e)
 		{
-			_log.severe("FATAL: Failed to open Selector. Reason: "+e.getMessage());
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			_log.log(Level.SEVERE, "FATAL: Failed to open Selector. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
 
@@ -231,18 +233,14 @@ public class L2LoginServer
 		{
 		    System.out.println("Telnet server is currently disabled.");
 		}
-
+		
 		try
 		{
-			_selectorThread.openServerSocket();
+			_selectorThread.openServerSocket(bindAddress, Config.PORT_LOGIN);
 		}
 		catch (IOException e)
 		{
-			_log.severe("FATAL: Failed to open server socket. Reason: "+e.getMessage());
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			_log.log(Level.SEVERE, "FATAL: Failed to open server socket. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
 		_selectorThread.start();

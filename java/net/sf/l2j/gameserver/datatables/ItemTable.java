@@ -829,7 +829,8 @@ public class ItemTable
             _item = item;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             _item.setOwnerId(0);
             _item.setItemLootShedule(null);

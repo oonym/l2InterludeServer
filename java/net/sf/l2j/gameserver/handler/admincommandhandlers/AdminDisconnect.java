@@ -39,6 +39,7 @@ public class AdminDisconnect implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = {"admin_character_disconnect"};
 	private static final int REQUIRED_LEVEL = Config.GM_KICK;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
         if (!Config.ALT_PRIVILEGES_ADMIN)
             if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
@@ -53,6 +54,7 @@ public class AdminDisconnect implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

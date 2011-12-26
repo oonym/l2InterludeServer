@@ -34,14 +34,13 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.util.Rnd;
 
 /**
- *
  * @author FBIagent 11/12/2006
- *
  */
-
 public class ExtractableItems implements IItemHandler
 {
 	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
+	
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -117,7 +116,8 @@ public class ExtractableItems implements IItemHandler
 				.getTarget(), true);
 	}
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
     	return ExtractableItemsData.getInstance().itemIDs();
     }

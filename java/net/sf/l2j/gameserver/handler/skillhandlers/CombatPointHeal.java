@@ -44,7 +44,8 @@ public class CombatPointHeal implements ISkillHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
      */
-    public void useSkill(L2Character actChar, L2Skill skill, L2Object[] targets)
+    @Override
+	public void useSkill(L2Character actChar, L2Skill skill, L2Object[] targets)
     {
 //      L2Character activeChar = actChar;
 
@@ -68,7 +69,8 @@ public class CombatPointHeal implements ISkillHandler
     }
 
 
-    public SkillType[] getSkillIds()
+    @Override
+	public SkillType[] getSkillIds()
     {
         return SKILL_IDS;
     }

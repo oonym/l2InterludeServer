@@ -58,6 +58,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 	private static final int REQUIRED_LEVEL2 = Config.GM_TELEPORT_OTHER;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -164,6 +165,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

@@ -57,7 +57,8 @@ public class AdminEnchant implements IAdminCommandHandler
                                               "admin_enchant"};
     private static final int REQUIRED_LEVEL = Config.GM_ENCHANT;
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
         	if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
@@ -195,7 +196,8 @@ public class AdminEnchant implements IAdminCommandHandler
     	AdminHelpPage.showHelpPage(activeChar, "enchant.htm");
     }
 
-    public String[] getAdminCommandList()
+    @Override
+	public String[] getAdminCommandList()
     {
         return ADMIN_COMMANDS;
     }

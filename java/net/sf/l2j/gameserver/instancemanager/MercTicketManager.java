@@ -35,21 +35,19 @@ import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.model.entity.Castle;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
-
 /**
- * @author yellowperil & Fulminus
  * This class is similar to the SiegeGuardManager, except it handles
  * the loading of the mercenary tickets that are dropped on castle floors
  * by the castle lords.
- * These tickets (aka badges) need to be readded after each server reboot
- * except when the server crashed in the middle of an ongoig siege.
+ * These tickets (aka badges) need to be read after each server reboot
+ * except when the server crashed in the middle of an ongoing siege.
  * In addition, this class keeps track of the added tickets, in order to
  * properly limit the number of mercenaries in each castle and the
  * number of mercenaries from each mercenary type.
- * Finally, we provide auxilary functions to identify the castle in
+ * Finally, we provide auxiliary functions to identify the castle in
  * which each item (and its corresponding NPC) belong to, in order to
  * help avoid mixing them up.
- *
+ * @author yellowperil & Fulminus
  */
 public class MercTicketManager
 {
@@ -348,7 +346,8 @@ public class MercTicketManager
             if (despawnDelay > 0)
             {
 	            ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-	                public void run()
+	                @Override
+					public void run()
 	                {
 	                	npc.deleteMe();
 	                }

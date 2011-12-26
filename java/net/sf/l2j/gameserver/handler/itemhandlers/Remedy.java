@@ -39,6 +39,7 @@ public class Remedy implements IItemHandler
 {
 	private static int[] ITEM_IDS = { 1831, 1832, 1833, 1834, 3889 };
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
@@ -135,6 +136,7 @@ public class Remedy implements IItemHandler
             playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
        }
 	}
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

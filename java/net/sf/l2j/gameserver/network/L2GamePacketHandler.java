@@ -27,11 +27,11 @@ import net.sf.l2j.gameserver.clientpackets.*;
 import net.sf.l2j.gameserver.network.L2GameClient.GameClientState;
 import net.sf.l2j.util.Util;
 
-import com.l2jserver.mmocore.network.IClientFactory;
-import com.l2jserver.mmocore.network.IMMOExecutor;
-import com.l2jserver.mmocore.network.IPacketHandler;
-import com.l2jserver.mmocore.network.MMOConnection;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import org.mmocore.network.IClientFactory;
+import org.mmocore.network.IMMOExecutor;
+import org.mmocore.network.IPacketHandler;
+import org.mmocore.network.MMOConnection;
+import org.mmocore.network.ReceivablePacket;
 
 /**
  * Stateful Packet Handler<BR>
@@ -47,6 +47,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 	private static final Logger _log = Logger.getLogger(L2GamePacketHandler.class.getName());
 
 	// implementation
+	@Override
 	public ReceivablePacket<L2GameClient> handlePacket(ByteBuffer buf, L2GameClient client)
 	{
 		int opcode = buf.get() & 0xFF;
@@ -830,11 +831,13 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 	}
 
 	// impl
+	@Override
 	public L2GameClient create(MMOConnection<L2GameClient> con)
 	{
 		return new L2GameClient(con);
 	}
 
+	@Override
 	public void execute(ReceivablePacket<L2GameClient> rp)
 	{
 		try

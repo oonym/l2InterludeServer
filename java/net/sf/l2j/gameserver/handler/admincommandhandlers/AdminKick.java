@@ -32,6 +32,7 @@ public class AdminKick implements IAdminCommandHandler {
     private static final String[] ADMIN_COMMANDS = {"admin_kick" ,"admin_kick_non_gm"};
     private static final int REQUIRED_LEVEL = Config.GM_KICK;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -75,7 +76,8 @@ public class AdminKick implements IAdminCommandHandler {
         return true;
     }
 
-    public String[] getAdminCommandList() {
+    @Override
+	public String[] getAdminCommandList() {
         return ADMIN_COMMANDS;
     }
 

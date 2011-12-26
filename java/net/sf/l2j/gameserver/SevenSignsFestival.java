@@ -1756,7 +1756,8 @@ public class SevenSignsFestival implements SpawnListener
      *
      * @param npc
      */
-    public void npcSpawned(L2NpcInstance npc)
+    @Override
+	public void npcSpawned(L2NpcInstance npc)
     {
         if (npc == null)
             return;
@@ -1805,7 +1806,8 @@ public class SevenSignsFestival implements SpawnListener
             setNextFestivalStart(Config.ALT_FESTIVAL_CYCLE_LENGTH - FESTIVAL_SIGNUP_TIME);
         }
 
-        public synchronized void run()
+        @Override
+		public synchronized void run()
         {
             // The manager shouldn't be running if Seal Validation is in effect.
             if (SevenSigns.getInstance().isSealValidationPeriod())

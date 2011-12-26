@@ -89,7 +89,8 @@ public final class L2RaidBossInstance extends L2MonsterInstance
     {
         _minionList.spawnMinions();
         _minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
-            public void run()
+            @Override
+			public void run()
             {
                 // teleport raid boss home if it's too far from home location
                 L2Spawn bossSpawn = getSpawn();

@@ -38,7 +38,8 @@ public class DrainSoul implements ISkillHandler
     private static Logger _log = Logger.getLogger(DrainSoul.class.getName());
     private static final SkillType[] SKILL_IDS = {SkillType.DRAIN_SOUL};
 
-    public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+    @Override
+	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
     {
         if (!(activeChar instanceof L2PcInstance))
 			return;
@@ -57,7 +58,8 @@ public class DrainSoul implements ISkillHandler
 
     }
 
-    public SkillType[] getSkillIds()
+    @Override
+	public SkillType[] getSkillIds()
     {
         return SKILL_IDS;
     }

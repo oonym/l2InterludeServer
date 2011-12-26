@@ -25,7 +25,7 @@ import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import org.mmocore.network.ReceivablePacket;
 
 /**
  * Packets received by the game server from clients

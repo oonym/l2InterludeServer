@@ -37,6 +37,7 @@ public class Unlock implements ISkillHandler
 	//private static Logger _log = Logger.getLogger(Unlock.class.getName());
 	private static final SkillType[] SKILL_IDS = {SkillType.UNLOCK};
 
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Object[] targetList = skill.getTargetList(activeChar);
@@ -160,6 +161,7 @@ public class Unlock implements ISkillHandler
 		}
 	}
 
+	@Override
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

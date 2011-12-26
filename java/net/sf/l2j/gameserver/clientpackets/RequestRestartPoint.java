@@ -64,6 +64,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 			activeChar = _activeChar;
 		}
 
+		@Override
 		public void run()
 		{
 			try

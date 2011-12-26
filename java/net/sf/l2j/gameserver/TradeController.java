@@ -58,7 +58,8 @@ public class TradeController
     	public RestoreCount(int time){
     		_timer = time;
     	}
-        public void run()
+        @Override
+		public void run()
         {
         	try {
             	restoreCount(_timer);

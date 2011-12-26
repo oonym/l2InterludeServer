@@ -48,6 +48,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -551,6 +552,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

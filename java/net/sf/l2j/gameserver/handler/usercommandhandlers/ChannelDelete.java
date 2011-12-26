@@ -23,7 +23,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- *
  * @author  Chris
  */
 public class ChannelDelete implements IUserCommandHandler
@@ -33,7 +32,8 @@ public class ChannelDelete implements IUserCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
-    public boolean useUserCommand(int id, L2PcInstance activeChar)
+    @Override
+	public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
         if (id != COMMAND_IDS[0]) return false;
 
@@ -59,7 +59,8 @@ public class ChannelDelete implements IUserCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
      */
-    public int[] getUserCommandList()
+    @Override
+	public int[] getUserCommandList()
     {
         return COMMAND_IDS;
     }

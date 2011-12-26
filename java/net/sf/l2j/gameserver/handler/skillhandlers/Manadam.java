@@ -41,6 +41,7 @@ public class Manadam implements ISkillHandler
 	private static final SkillType[] SKILL_IDS =
 		{ SkillType.MANADAM };
 
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Character target = null;
@@ -117,6 +118,7 @@ public class Manadam implements ISkillHandler
 		}
 	}
 
+	@Override
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

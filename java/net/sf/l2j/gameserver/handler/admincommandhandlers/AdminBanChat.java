@@ -44,6 +44,7 @@ public class AdminBanChat implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = {"admin_banchat", "admin_unbanchat"};
 	private static final int REQUIRED_LEVEL = Config.GM_BAN_CHAT;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -112,6 +113,7 @@ public class AdminBanChat implements IAdminCommandHandler {
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
@@ -132,6 +134,7 @@ public class AdminBanChat implements IAdminCommandHandler {
 			_banner = banner;
 		}
 
+		@Override
 		public void run()
 		{
 			_player.setChatBanned(false);

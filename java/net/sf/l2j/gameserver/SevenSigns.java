@@ -1316,7 +1316,8 @@ public class SevenSigns
 	 */
 	protected class SevenSignsPeriodChange implements Runnable
 	{
-        public void run()
+        @Override
+		public void run()
         {
             /*
              * Remember the period check here refers to the period just ENDED!

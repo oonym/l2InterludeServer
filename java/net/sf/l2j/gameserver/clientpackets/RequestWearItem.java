@@ -72,7 +72,8 @@ public final class RequestWearItem extends L2GameClientPacket
 
     class RemoveWearItemsTask implements Runnable
     {
-        public void run()
+        @Override
+		public void run()
         {
             try
             {

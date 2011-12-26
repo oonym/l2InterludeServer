@@ -31,7 +31,8 @@ public class set implements IVoicedCommandHandler
 {
     private static final String[] VOICED_COMMANDS = { "set name", "set home", "set group" };
 
-    public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
+    @Override
+	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
     	if(command.startsWith("set privileges")){
     		int n = Integer.parseInt(command.substring(15));
@@ -52,7 +53,8 @@ public class set implements IVoicedCommandHandler
     }
 
 
-    public String[] getVoicedCommandList()
+    @Override
+	public String[] getVoicedCommandList()
     {
         return VOICED_COMMANDS;
     }

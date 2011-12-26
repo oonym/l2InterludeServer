@@ -297,6 +297,7 @@ public class ClanTable
 	{
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				if (getClan(clanId) == null)

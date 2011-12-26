@@ -19,9 +19,8 @@
 package net.sf.l2j.gameserver.instancemanager;
 
 /**
-@author godson
-**/
-
+ * @author godson
+ */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -141,7 +140,8 @@ public class RaidBossSpawnManager {
         	bossId = npcId;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             L2RaidBossInstance raidboss = null;
 

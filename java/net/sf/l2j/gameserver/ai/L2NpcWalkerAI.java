@@ -63,6 +63,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 0, 1000);
 	}
 
+	@Override
 	public void run()
 	{
 		onEvtThink();

@@ -44,6 +44,7 @@ public class AdminRes implements IAdminCommandHandler
 	private static final String[] ADMIN_COMMANDS = {"admin_res", "admin_res_monster"};
 	private static final int REQUIRED_LEVEL = Config.GM_RES;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -65,6 +66,7 @@ public class AdminRes implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

@@ -39,6 +39,7 @@ public class AdminGmChat implements IAdminCommandHandler {
 	private static final String[] ADMIN_COMMANDS = {"admin_gmchat", "admin_snoop", "admin_gmchat_menu"};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
 		if (!Config.ALT_PRIVILEGES_ADMIN)
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM())) return false;
@@ -74,6 +75,7 @@ public class AdminGmChat implements IAdminCommandHandler {
 		activeChar.addSnooped(player);
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

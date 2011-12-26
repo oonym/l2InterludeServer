@@ -120,7 +120,8 @@ public class L2DoorInstance extends L2Character
 
     class CloseTask implements Runnable
     {
-        public void run()
+        @Override
+		public void run()
         {
             try
             {
@@ -138,7 +139,8 @@ public class L2DoorInstance extends L2Character
      */
     class AutoOpenClose implements Runnable
     {
-        public void run()
+        @Override
+		public void run()
         {
             try {
                 String doorAction;

@@ -47,6 +47,7 @@ public class SoulCrystals implements IItemHandler
 									  4651, 4652, 4653, 4654, 4655, 4656, 4657, 4658, 4659, 4660, 4661, 5579, 5582, 5914};
 
 	// Our main method, where everything goes on
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -101,6 +102,7 @@ public class SoulCrystals implements IItemHandler
 		    _crystalId = crystalId;
 		}
 
+		@Override
 		public void run()
 		{
         	if (_activeChar.isDead() || _target.isDead())
@@ -115,6 +117,7 @@ public class SoulCrystals implements IItemHandler
 		}
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

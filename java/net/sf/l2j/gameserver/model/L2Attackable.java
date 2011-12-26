@@ -2255,6 +2255,7 @@ public class L2Attackable extends L2NpcInstance
 		/**
 		 * @see java.lang.Runnable#run()
 		 */
+		@Override
 		public void run()
 		{
 			_monster.setCommandChannelTimer(null);

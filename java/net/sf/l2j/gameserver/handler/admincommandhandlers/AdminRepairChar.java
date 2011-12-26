@@ -42,7 +42,8 @@ public class AdminRepairChar implements IAdminCommandHandler
 
     private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (!Config.ALT_PRIVILEGES_ADMIN)
         {
@@ -57,7 +58,8 @@ public class AdminRepairChar implements IAdminCommandHandler
         return true;
     }
 
-    public String[] getAdminCommandList()
+    @Override
+	public String[] getAdminCommandList()
     {
         return ADMIN_COMMANDS;
     }

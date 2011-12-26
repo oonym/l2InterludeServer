@@ -39,7 +39,8 @@ public class Harvester implements IItemHandler {
     L2PcInstance _activeChar;
     L2MonsterInstance _target;
 
-    public void useItem(L2PlayableInstance playable, L2ItemInstance _item) {
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance _item) {
     	if (!(playable instanceof L2PcInstance))
             return;
 
@@ -65,7 +66,8 @@ public class Harvester implements IItemHandler {
     	_activeChar.useMagic(skill,false,false);
     }
 
-    public int[] getItemIds() {
+    @Override
+	public int[] getItemIds() {
         return ITEM_IDS;
     }
 }

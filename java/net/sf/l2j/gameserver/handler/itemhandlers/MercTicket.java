@@ -46,7 +46,8 @@ public class MercTicket implements IItemHandler
      * 2) If allowed, call the MercTicketManager to add the item and spawn in the world
      * 3) Remove the item from the person's inventory
      */
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
     	int itemId = item.getItemId();
     	L2PcInstance activeChar = (L2PcInstance)playable;
@@ -102,7 +103,8 @@ public class MercTicket implements IItemHandler
     }
 
     // left in here for backward compatibility
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return MercTicketManager.getInstance().getItemIds();
     }

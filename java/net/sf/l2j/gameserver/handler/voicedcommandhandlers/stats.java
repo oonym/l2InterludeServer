@@ -34,7 +34,8 @@ public class stats implements IVoicedCommandHandler
 {
     private static final String[] VOICED_COMMANDS = { "stats" };
 
-    public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
+    @Override
+	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
     {
         if (command.equalsIgnoreCase("stats"))
         {
@@ -64,7 +65,8 @@ public class stats implements IVoicedCommandHandler
     }
 
 
-    public String[] getVoicedCommandList()
+    @Override
+	public String[] getVoicedCommandList()
     {
         return VOICED_COMMANDS;
     }

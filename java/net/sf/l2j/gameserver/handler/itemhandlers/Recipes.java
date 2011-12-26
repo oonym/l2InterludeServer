@@ -47,6 +47,7 @@ public class Recipes implements IItemHandler
         }
     }
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -127,7 +128,8 @@ public class Recipes implements IItemHandler
         }
     }
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

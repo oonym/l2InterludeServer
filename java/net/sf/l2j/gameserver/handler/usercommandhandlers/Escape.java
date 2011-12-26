@@ -45,7 +45,8 @@ public class Escape implements IUserCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
      */
-    public boolean useUserCommand(int id, L2PcInstance activeChar)
+    @Override
+	public boolean useUserCommand(int id, L2PcInstance activeChar)
     {
     	// Thanks nbd
     	if (!TvTEvent.onEscapeUse(activeChar.getName()))
@@ -105,7 +106,8 @@ public class Escape implements IUserCommandHandler
             _activeChar = activeChar;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (_activeChar.isDead())
                 return;
@@ -124,7 +126,8 @@ public class Escape implements IUserCommandHandler
     /* (non-Javadoc)
      * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
      */
-    public int[] getUserCommandList()
+    @Override
+	public int[] getUserCommandList()
     {
         return COMMAND_IDS;
     }

@@ -130,7 +130,8 @@ public class L2MonsterInstance extends L2Attackable
     protected void manageMinions ()
     {
         _minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-            public void run()
+            @Override
+			public void run()
             {
                 _minionList.spawnMinions();
             }

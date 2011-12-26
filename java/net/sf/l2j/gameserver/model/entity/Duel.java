@@ -181,6 +181,7 @@ public class Duel
 			_duel = duel;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -216,6 +217,7 @@ public class Duel
 			_duel = duel;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -256,6 +258,7 @@ public class Duel
 			_result = result;
 		}
 
+		@Override
 		public void run()
 		{
 			try

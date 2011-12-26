@@ -43,7 +43,8 @@ public class ChristmasTree implements IItemHandler
     										13007
     									 };
 
-    public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+    @Override
+	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
     {
         L2PcInstance activeChar = (L2PcInstance)playable;
         L2NpcTemplate template1 = null;
@@ -88,7 +89,8 @@ public class ChristmasTree implements IItemHandler
         }
     }
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
     {
         return ITEM_IDS;
     }

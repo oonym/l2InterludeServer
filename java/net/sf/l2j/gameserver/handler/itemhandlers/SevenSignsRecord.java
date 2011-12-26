@@ -33,6 +33,7 @@ import net.sf.l2j.gameserver.serverpackets.SSQStatus;
 public class SevenSignsRecord implements IItemHandler {
 private static final int[] ITEM_IDS = {5707};
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
@@ -48,6 +49,7 @@ private static final int[] ITEM_IDS = {5707};
 		activeChar.sendPacket(ssqs);
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
        return ITEM_IDS;

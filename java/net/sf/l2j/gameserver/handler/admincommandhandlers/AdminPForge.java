@@ -39,7 +39,7 @@ public class AdminPForge implements IAdminCommandHandler
 	private static final String[] ADMIN_COMMANDS = {"admin_forge","admin_forge2","admin_forge3" };
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
-
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 
@@ -197,6 +197,7 @@ public class AdminPForge implements IAdminCommandHandler
 		activeChar.sendPacket(adminReply);
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}

@@ -31,7 +31,7 @@ import javolution.text.TextBuilder;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.network.L2GameClient;
 
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import org.mmocore.network.ReceivablePacket;
 
 /**
  * <p>This class is made to handle all the ThreadPools used in L2j.</p>
@@ -272,6 +272,7 @@ public class ThreadPoolManager
 		/* (non-Javadoc)
 		 * @see java.util.concurrent.ThreadFactory#newThread(java.lang.Runnable)
 		 */
+		@Override
 		public Thread newThread(Runnable r)
 		{
 			Thread t = new Thread(_group,r);

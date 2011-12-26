@@ -47,8 +47,7 @@ import net.sf.l2j.gameserver.model.L2Object;
  *
  * @param <T> type of values stored in this hashtable
  */
-public final class L2ObjectHashMap<T extends L2Object>
-	extends L2ObjectMap<T>
+public final class L2ObjectHashMap<T extends L2Object> extends L2ObjectMap<T>
 {
 
 	private static final boolean TRACE = false;
@@ -350,10 +349,14 @@ public final class L2ObjectHashMap<T extends L2Object>
 					return;
 			}
 		}
+		
+		@Override
 		public boolean hasNext()
 		{
 			return _nextObj != null;
 		}
+		
+		@Override
 		public T next()
 		{
 			if (_nextObj == null)
@@ -369,6 +372,8 @@ public final class L2ObjectHashMap<T extends L2Object>
 				_nextObj = null;
 			return _lastRet;
 		}
+		
+		@Override
 		public void remove()
 		{
 			if (_lastRet == null)

@@ -24,14 +24,13 @@ import java.util.concurrent.TimeUnit;
 
 import net.sf.l2j.loginserver.serverpackets.Init;
 
-import com.l2jserver.mmocore.network.IAcceptFilter;
-import com.l2jserver.mmocore.network.IClientFactory;
-import com.l2jserver.mmocore.network.IMMOExecutor;
-import com.l2jserver.mmocore.network.MMOConnection;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import org.mmocore.network.IAcceptFilter;
+import org.mmocore.network.IClientFactory;
+import org.mmocore.network.IMMOExecutor;
+import org.mmocore.network.MMOConnection;
+import org.mmocore.network.ReceivablePacket;
 
 /**
- *
  * @author  KenM
  */
 public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFactory<L2LoginClient>, IAcceptFilter
@@ -46,6 +45,7 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 	/**
 	 * @see com.l2jserver.mmocore.network.IMMOExecutor#execute(com.l2jserver.mmocore.network.ReceivablePacket)
 	 */
+	@Override
 	public void execute(ReceivablePacket<L2LoginClient> packet)
 	{
 		_generalPacketsThreadPool.execute(packet);
@@ -54,6 +54,7 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 	/**
 	 * @see com.l2jserver.mmocore.network.IClientFactory#create(com.l2jserver.mmocore.network.MMOConnection)
 	 */
+	@Override
 	public L2LoginClient create(MMOConnection<L2LoginClient> con)
 	{
 		L2LoginClient client = new L2LoginClient(con);
@@ -64,9 +65,9 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 	/**
 	 * @see com.l2jserver.mmocore.network.IAcceptFilter#accept(java.nio.channels.SocketChannel)
 	 */
+	@Override
 	public boolean accept(SocketChannel sc)
 	{
 		return !LoginController.getInstance().isBannedAddress(sc.socket().getInetAddress());
 	}
-
 }

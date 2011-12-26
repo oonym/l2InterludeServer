@@ -45,7 +45,8 @@ public class L2XmassTreeInstance extends L2NpcInstance
             _caster = caster;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             for (L2PcInstance player : getKnownList().getKnownPlayers().values())
             {

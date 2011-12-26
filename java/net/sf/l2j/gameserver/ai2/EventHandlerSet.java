@@ -104,6 +104,7 @@ public class EventHandlerSet implements Comparable<EventHandlerSet>
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(T)
 	 */
+	@Override
 	public int compareTo(EventHandlerSet es)
 	{
 		return (int)( (System.currentTimeMillis() - _insertionTime)/1000) + _comparatorPrio - es.getComparatorPriority();

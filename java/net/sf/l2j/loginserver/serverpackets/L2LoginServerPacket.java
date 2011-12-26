@@ -19,7 +19,7 @@ package net.sf.l2j.loginserver.serverpackets;
 
 import net.sf.l2j.loginserver.L2LoginClient;
 
-import com.l2jserver.mmocore.network.SendablePacket;
+import org.mmocore.network.SendablePacket;
 
 /**
  *

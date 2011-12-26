@@ -107,7 +107,8 @@ public class Universe implements java.io.Serializable
             _flag = 0;
         }
 
-        public int compareTo(Object obj)
+        @Override
+		public int compareTo(Object obj)
         {
             Position o = (Position) obj;
             int res = Integer.valueOf(_x).compareTo(o._x);
@@ -150,7 +151,8 @@ public class Universe implements java.io.Serializable
             _z = pos.z;
         }
 
-        public int compareTo(Object obj)
+        @Override
+		public int compareTo(Object obj)
         {
             Position o = (Position) obj;
             int res = Integer.valueOf(_x).compareTo(o._x);
@@ -299,7 +301,8 @@ public class Universe implements java.io.Serializable
         /* (non-Javadoc)
          * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
          */
-        public boolean accept(File arg0, String name)
+        @Override
+		public boolean accept(File arg0, String name)
         {
             return name.startsWith("universe") && name.endsWith("." + _ext);
         }
@@ -420,7 +423,8 @@ public class Universe implements java.io.Serializable
         /* (non-Javadoc)
          * @see java.lang.Runnable#run()
          */
-        public void run()
+        @Override
+		public void run()
         {
             int size = _coordList.size();
             //System.out.println("Univere Map has " + _map.size() + " nodes.");

@@ -36,6 +36,7 @@ public class CompSpiritShotPacks implements IItemHandler
 {
 	private static final int[] ITEM_IDS = { 5140, 5141, 5142, 5143, 5144, 5145, 5256, 5257, 5258, 5259, 5260, 5261 };
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -65,6 +66,7 @@ public class CompSpiritShotPacks implements IItemHandler
         ItemList playerUI = new ItemList(activeChar, false);
 		activeChar.sendPacket(playerUI);
 	}
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

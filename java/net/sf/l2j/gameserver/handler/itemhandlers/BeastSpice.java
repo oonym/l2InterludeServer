@@ -33,6 +33,7 @@ public class BeastSpice implements IItemHandler
 	// Golden Spice, Crystal Spice
     private static final int[] ITEM_IDS = { 6643, 6644 };
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -58,7 +59,8 @@ public class BeastSpice implements IItemHandler
 		}
 	}
 
-    public int[] getItemIds()
+    @Override
+	public int[] getItemIds()
 	{
 		return ITEM_IDS;
 	}

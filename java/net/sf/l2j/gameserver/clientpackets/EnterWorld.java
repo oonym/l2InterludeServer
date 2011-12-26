@@ -72,6 +72,7 @@ import net.sf.l2j.gameserver.serverpackets.SignsSky;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.gameserver.util.FloodProtector;
+
 /**
  * Enter World Packet Handler<p>
  * <p>

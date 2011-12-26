@@ -43,6 +43,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
+	@Override
 	@SuppressWarnings("deprecation")
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -152,6 +153,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

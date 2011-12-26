@@ -61,6 +61,7 @@ public class ForceBuff
 
 		Runnable r = new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				setApplied(true);

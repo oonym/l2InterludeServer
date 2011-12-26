@@ -20,7 +20,10 @@ package net.sf.l2j.gameserver;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -59,7 +62,6 @@ import net.sf.l2j.gameserver.datatables.StaticObjects;
 import net.sf.l2j.gameserver.datatables.SummonItemsData;
 import net.sf.l2j.gameserver.datatables.TeleportLocationTable;
 import net.sf.l2j.gameserver.datatables.ZoneData;
-
 import net.sf.l2j.gameserver.geoeditorcon.GeoEditorListener;
 import net.sf.l2j.gameserver.handler.AdminCommandHandler;
 import net.sf.l2j.gameserver.handler.ItemHandler;
@@ -134,6 +136,7 @@ import net.sf.l2j.gameserver.handler.itemhandlers.ExtractableItems;
 import net.sf.l2j.gameserver.handler.itemhandlers.Firework;
 import net.sf.l2j.gameserver.handler.itemhandlers.FishShots;
 import net.sf.l2j.gameserver.handler.itemhandlers.Harvester;
+import net.sf.l2j.gameserver.handler.itemhandlers.Maps;
 import net.sf.l2j.gameserver.handler.itemhandlers.MercTicket;
 import net.sf.l2j.gameserver.handler.itemhandlers.MysteryPotion;
 import net.sf.l2j.gameserver.handler.itemhandlers.PaganKeys;
@@ -151,7 +154,6 @@ import net.sf.l2j.gameserver.handler.itemhandlers.SoulShots;
 import net.sf.l2j.gameserver.handler.itemhandlers.SpecialXMas;
 import net.sf.l2j.gameserver.handler.itemhandlers.SpiritShot;
 import net.sf.l2j.gameserver.handler.itemhandlers.SummonItems;
-import net.sf.l2j.gameserver.handler.itemhandlers.Maps;
 import net.sf.l2j.gameserver.handler.skillhandlers.BalanceLife;
 import net.sf.l2j.gameserver.handler.skillhandlers.BeastFeed;
 import net.sf.l2j.gameserver.handler.skillhandlers.Blow;
@@ -228,10 +230,11 @@ import net.sf.l2j.gameserver.script.faenor.FaenorScriptEngine;
 import net.sf.l2j.gameserver.taskmanager.TaskManager;
 import net.sf.l2j.gameserver.util.DynamicExtension;
 import net.sf.l2j.gameserver.util.FloodProtector;
+import net.sf.l2j.gameserver.util.IPv4Filter;
 import net.sf.l2j.status.Status;
 
-import com.l2jserver.mmocore.network.SelectorServerConfig;
-import com.l2jserver.mmocore.network.SelectorThread;
+import org.mmocore.network.SelectorConfig;
+import org.mmocore.network.SelectorThread;
 
 /**
  * This class ...
@@ -656,11 +659,40 @@ public class GameServer
 
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
-
-		SelectorServerConfig ssc = new SelectorServerConfig(Config.PORT_GAME);
+		
+		// TODO: Unhardcode this configuration options
+		final SelectorConfig sc = new SelectorConfig();
+		sc.MAX_READ_PER_PASS = 12; //Config.MMO_MAX_READ_PER_PASS;
+		sc.MAX_SEND_PER_PASS = 12; //Config.MMO_MAX_SEND_PER_PASS;
+		sc.SLEEP_TIME = 20; //Config.MMO_SELECTOR_SLEEP_TIME;
+		sc.HELPER_BUFFER_COUNT = 20; //Config.MMO_HELPER_BUFFER_COUNT;
+		sc.TCP_NODELAY = false; //Config.MMO_TCP_NODELAY;
+		
 		L2GamePacketHandler gph = new L2GamePacketHandler();
-		_selectorThread = new SelectorThread<L2GameClient>(ssc, gph, gph, gph);
-		_selectorThread.openServerSocket();
+		_selectorThread = new SelectorThread<L2GameClient>(sc, gph, gph, gph, new IPv4Filter());
+		InetAddress bindAddress = null;
+		if (!Config.GAMESERVER_HOSTNAME.equals("*"))
+		{
+			try
+			{
+				bindAddress = InetAddress.getByName(Config.GAMESERVER_HOSTNAME);
+			}
+			catch (UnknownHostException e1)
+			{
+				_log.log(Level.SEVERE, "WARNING: The GameServer bind address is invalid, using all avaliable IPs. Reason: " + e1.getMessage(), e1);
+			}
+		}
+		
+		try
+		{
+			_selectorThread.openServerSocket(bindAddress, Config.PORT_GAME);
+		}
+		catch (IOException e)
+		{
+			_log.log(Level.SEVERE, "FATAL: Failed to open server socket. Reason: " + e.getMessage(), e);
+			System.exit(1);
+		}
+		
 		_selectorThread.start();
 		_log.config("Maximum Numbers of Connected Players: " + Config.MAXIMUM_ONLINE_USERS);
 	}

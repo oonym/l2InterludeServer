@@ -44,7 +44,6 @@ import net.sf.l2j.util.Rnd;
  * Handles all schedule for manor
  * @author l3x
  */
-
 public class CastleManorManager {
 	protected static Logger _log = Logger.getLogger(CastleManorManager.class.getName());
 
@@ -237,13 +236,15 @@ public class CastleManorManager {
 	public void updateManorRefresh() {
 		_log.info("Manor System: Manor refresh updated");
 		_scheduledManorRefresh = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable(){
-            public void run() {
+            @Override
+			public void run() {
             	if (!isDisabled()) {
 	        		setUnderMaintenance(true);
 	            	_log.info("Manor System: Under maintenance mode started");
 
 	            	_scheduledMaintenanceEnd = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable(){
-	                    public void run() {
+	                    @Override
+						public void run() {
 	                        _log.info("Manor System: Next period started");
 	                        setNextPeriod();
 	                        try {
@@ -265,7 +266,8 @@ public class CastleManorManager {
 	public void updatePeriodApprove() {
 		_log.info("Manor System: Manor period approve updated");
 		_scheduledNextPeriodapprove = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable(){
-            public void run() {
+            @Override
+			public void run() {
             	if (!isDisabled()) {
             		approveNextPeriod();
             		_log.info("Manor System: Next period approved");

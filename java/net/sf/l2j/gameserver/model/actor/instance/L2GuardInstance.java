@@ -55,7 +55,8 @@ public final class L2GuardInstance extends L2Attackable
 
     public class ReturnTask implements Runnable
     {
-        public void run()
+        @Override
+		public void run()
         {
             if(getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
                 returnHome();

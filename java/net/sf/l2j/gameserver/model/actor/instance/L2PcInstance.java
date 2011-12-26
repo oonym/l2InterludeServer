@@ -656,6 +656,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			_reference = reference;
 			_sendMessage = sendMessage;
 		}
+		@Override
 		@SuppressWarnings("synthetic-access")
 		public void run()
 		{
@@ -2345,6 +2346,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			_player = player;
 		}
+		@Override
 		public void run()
 		{
 			_player.setIsParalyzed(false);
@@ -2361,6 +2363,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			_player = player;
 		}
+		@Override
 		public void run()
 		{
 			_player.setIsSitting(false);
@@ -7544,6 +7547,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	class InventoryEnable implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			_inventoryDisable = false;
@@ -7732,6 +7736,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	class WarnUserTakeBreak implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			if (L2PcInstance.this.isOnline() == 1)
@@ -7746,6 +7751,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	class RentPetTask implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			stopRentPet();
@@ -7756,6 +7762,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	class WaterTask implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			double reduceHp = getMaxHp()/100.0;
@@ -7787,7 +7794,8 @@ public final class L2PcInstance extends L2PlayableInstance
     		_isUpperGrade = isUpperGrade;
     	}
 
-        public void run()
+        @Override
+		public void run()
         {
             if (System.currentTimeMillis() >= _endTaskTime) {
             	EndFishing(false);
@@ -9968,7 +9976,8 @@ public final class L2PcInstance extends L2PlayableInstance
             _startedAt = System.currentTimeMillis();
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             _player.setInJail(false, 0);
         }

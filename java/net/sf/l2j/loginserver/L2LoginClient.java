@@ -28,13 +28,14 @@ import net.sf.l2j.loginserver.crypt.LoginCrypt;
 import net.sf.l2j.loginserver.crypt.ScrambledKeyPair;
 import net.sf.l2j.loginserver.serverpackets.L2LoginServerPacket;
 import net.sf.l2j.loginserver.serverpackets.LoginFail;
-import net.sf.l2j.loginserver.serverpackets.PlayFail;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.serverpackets.PlayFail;
 import net.sf.l2j.loginserver.serverpackets.PlayFail.PlayFailReason;
 import net.sf.l2j.util.Rnd;
 
-import com.l2jserver.mmocore.network.MMOClient;
-import com.l2jserver.mmocore.network.MMOConnection;
+import org.mmocore.network.MMOClient;
+import org.mmocore.network.MMOConnection;
+import org.mmocore.network.SendablePacket;
 
 /**
  * Represents a client connected into the LoginServer
@@ -71,7 +72,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	{
 		super(con);
 		_state = LoginClientState.CONNECTED;
-		String ip = getConnection().getSocketChannel().socket().getInetAddress().getHostAddress();
+		String ip = getConnection().getInetAddress().getHostAddress();
 
 		// TODO unhardcode this
 		if (ip.startsWith("192.168") || ip.startsWith("10.0") || ip.equals("127.0.0.1"))
@@ -106,7 +107,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			closeNow();
+			super.getConnection().close((SendablePacket<L2LoginClient>) null);
 			return false;
 		}
 
@@ -115,7 +116,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 			byte[] dump = new byte[size];
 			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
 			_log.warning("Wrong checksum from client: "+toString());
-			closeNow();
+			super.getConnection().close((SendablePacket<L2LoginClient>) null);
 		}
 
 		return ret;
@@ -246,9 +247,12 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	{
 		getConnection().close(lsp);
 	}
-
+	
+	/**
+	 * @see org.mmocore.network.MMOClient#onDisconnection()
+	 */
 	@Override
-	public void onDisconection()
+	protected void onDisconnection()
 	{
 		if (Config.DEBUG)
 		{
@@ -264,11 +268,21 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 			LoginController.getInstance().removeAuthedLoginClient(getAccount());
 		}
 	}
-
+	
+	/**
+	 * @see org.mmocore.network.MMOClient#onForcedDisconnection()
+	 */
+	@Override
+	protected void onForcedDisconnection()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public String toString()
 	{
-		InetAddress address = getConnection().getSocketChannel().socket().getInetAddress();
+		InetAddress address = getConnection().getInetAddress();
 		if (getState() == LoginClientState.AUTHED_LOGIN)
 		{
 			return "["+getAccount()+" ("+(address == null ? "disconnected" : address.getHostAddress())+")]";

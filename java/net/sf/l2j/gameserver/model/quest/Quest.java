@@ -1018,7 +1018,8 @@ public abstract class Quest
         	_npc = npc;
         }
         
-        public void run()
+        @Override
+		public void run()
         {
            _npc.onDecay();
         }

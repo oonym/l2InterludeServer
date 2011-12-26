@@ -46,6 +46,7 @@ public class Scrolls implements IItemHandler
 											9146, 9147, 9148, 9149, 9150, 9151, 9152, 9153, 9154, 9155
                                    		  };
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
    	{
 		L2PcInstance activeChar;
@@ -278,6 +279,7 @@ public class Scrolls implements IItemHandler
 			activeChar.doCast(skill);
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

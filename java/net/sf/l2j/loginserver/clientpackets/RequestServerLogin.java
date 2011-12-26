@@ -64,7 +64,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	@Override
 	public boolean readImpl()
 	{
-		if (getAvaliableBytes() >= 9)
+		if (_buf.remaining() >= 9)
 		{
 			_skey1 = readD();
 			_skey2 = readD();

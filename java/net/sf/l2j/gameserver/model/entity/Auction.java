@@ -109,7 +109,8 @@ public class Auction
     public class AutoEndTask implements Runnable
     {
         public AutoEndTask(){}
-        public void run()
+        @Override
+		public void run()
         {
             try
             {

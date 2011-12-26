@@ -18,13 +18,13 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- *
  * @author  devScarlet & mrTJO
  */
 public class ServerClose extends L2GameServerPacket
 {
 	private static final String _S__26_SERVERCLOSE = "[S] 26 ServerClose";
-
+	public static final ServerClose STATIC_PACKET = new ServerClose();
+	
 	/**
 	 * @see net.sf.l2j.gameserver.serverpackets.L2GameServerPacket#writeImpl()
 	 */

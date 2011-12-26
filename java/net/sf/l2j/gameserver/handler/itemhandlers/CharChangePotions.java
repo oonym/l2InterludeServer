@@ -39,6 +39,7 @@ public class CharChangePotions implements IItemHandler {
 											5242, 5243, 5244, 5245, 5246, 5247, 5248 	// Hair Style
 										  };
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		int itemId = item.getItemId();
@@ -119,6 +120,7 @@ public class CharChangePotions implements IItemHandler {
 		activeChar.broadcastPacket(ui);
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
        return ITEM_IDS;

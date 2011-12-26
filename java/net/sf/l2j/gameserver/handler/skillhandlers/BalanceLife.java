@@ -41,8 +41,8 @@ public class BalanceLife implements ISkillHandler
 	private static final SkillType[] SKILL_IDS =
 		{ SkillType.BALANCE_LIFE };
 
-	public void useSkill(L2Character activeChar, L2Skill skill,
-			L2Object[] targets)
+	@Override
+	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		// L2Character activeChar = activeChar;
 		// check for other effects
@@ -113,6 +113,7 @@ public class BalanceLife implements ISkillHandler
 		}
 	}
 
+	@Override
 	public SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

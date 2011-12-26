@@ -103,6 +103,7 @@ public class L2DoorAI extends L2CharacterAI {
 			_attacker = attacker;
 		}
 		
+		@Override
 		public void run()
 		{
 			_door.getKnownList().updateKnownObjects();

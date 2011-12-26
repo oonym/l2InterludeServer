@@ -228,7 +228,8 @@ public class CursedWeapon
         {
         }
 
-        public void run()
+        @Override
+		public void run()
         {
         	if (System.currentTimeMillis() >= getEndTime())
         		endOfLife();

@@ -38,6 +38,7 @@ public class EnchantScrolls implements IItemHandler
 	};
 
 
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance)) return;
@@ -50,6 +51,7 @@ public class EnchantScrolls implements IItemHandler
 		return;
 	}
 
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;
