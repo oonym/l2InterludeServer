@@ -22,7 +22,6 @@ package net.sf.l2j.gameserver.clientpackets;
  * Format: (ch)
  * this is just a trigger : no data
  * @author  -Wooden-
- *
  */
 public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
 {
@@ -33,24 +32,17 @@ public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
     {
     	// trigger
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
+    
     @Override
 	protected void runImpl()
     {
         // TODO
         System.out.println("C5: RequestListPartyMatchingWaitingRoom");
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
+    
     @Override
     public String getType()
     {
         return _C__D0_16_REQUESTLISTPARTYMATCHINGWAITINGROOM;
     }
-
 }

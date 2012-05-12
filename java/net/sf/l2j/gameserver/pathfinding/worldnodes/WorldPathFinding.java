@@ -28,7 +28,6 @@ import net.sf.l2j.gameserver.pathfinding.Node;
 import net.sf.l2j.gameserver.pathfinding.PathFinding;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class WorldPathFinding extends PathFinding
@@ -47,7 +46,7 @@ public class WorldPathFinding extends PathFinding
 	}
 
 	/**
-	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#PathNodesExist(short)
+	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#pathNodesExist(short)
 	 */
 	@Override
 	public boolean pathNodesExist(short regionoffset)
@@ -57,7 +56,7 @@ public class WorldPathFinding extends PathFinding
 
     //TODO! [Nemesiss]
 	/**
-	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
+	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#findPath(int, int, short, int, int, short)
 	 */
 	@Override
 	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx,	int gtz, short tz)
@@ -66,7 +65,7 @@ public class WorldPathFinding extends PathFinding
 	}
 
 	/**
-	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
+	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#readNeighbors(short, short, int)
 	 */
 	@Override
 	public Node[] readNeighbors(short node_x,short node_y, int idx)

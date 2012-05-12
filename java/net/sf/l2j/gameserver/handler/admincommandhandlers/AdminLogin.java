@@ -34,16 +34,11 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
  */
 public class AdminLogin implements IAdminCommandHandler
 {
-	//private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
-
 	private static final String[] ADMIN_COMMANDS = { "admin_server_gm_only", "admin_server_all",
 		"admin_server_max_player", "admin_server_list_clock", "admin_server_login"};
 
 	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
-	 */
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -127,7 +122,7 @@ public class AdminLogin implements IAdminCommandHandler
 	}
 
 	/**
-	 *
+	 * @param activeChar 
 	 */
 	private void showMainPage(L2PcInstance activeChar)
 	{
@@ -158,14 +153,10 @@ public class AdminLogin implements IAdminCommandHandler
 		LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_GM_ONLY);
 		Config.SERVER_GMONLY = true;
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
-	 */
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
 }

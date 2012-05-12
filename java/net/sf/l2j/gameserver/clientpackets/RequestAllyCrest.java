@@ -35,10 +35,9 @@ public final class RequestAllyCrest extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(RequestAllyCrest.class.getName());
 
 	private int _crestId;
+	
 	/**
 	 * packet type id 0x88 format: cd
-	 *
-	 * @param rawPacket
 	 */
 	@Override
 	protected void readImpl()
@@ -63,10 +62,7 @@ public final class RequestAllyCrest extends L2GameClientPacket
 			if (Config.DEBUG) _log.fine("allycrest is missing:" + _crestId);
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

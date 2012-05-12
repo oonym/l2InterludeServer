@@ -33,10 +33,15 @@ public class Dice extends L2GameServerPacket
 	private int _x;
 	private int _y;
 	private int _z;
-
+	
 	/**
 	 * 0xd4 Dice         dddddd
-	 * @param _characters
+	 * @param charObjId 
+	 * @param itemId 
+	 * @param number 
+	 * @param x 
+	 * @param y 
+	 * @param z 
 	 */
 	public Dice(int charObjId, int itemId, int number, int x , int y , int z)
 	{
@@ -47,7 +52,7 @@ public class Dice extends L2GameServerPacket
 		_y =y;
 		_z =z;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -59,10 +64,7 @@ public class Dice extends L2GameServerPacket
 		writeD(_y);       //y
 		writeD(_z);     //z
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

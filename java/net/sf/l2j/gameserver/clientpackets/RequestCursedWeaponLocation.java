@@ -40,10 +40,7 @@ public final class RequestCursedWeaponLocation extends L2GameClientPacket
 	{
 		//nothing to read it's just a trigger
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -70,14 +67,10 @@ public final class RequestCursedWeaponLocation extends L2GameClientPacket
 			activeChar.sendPacket(new ExCursedWeaponLocation(list));
 		}
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_23_REQUESTCURSEDWEAPONLOCATION;
 	}
-
 }

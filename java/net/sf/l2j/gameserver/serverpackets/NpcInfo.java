@@ -33,8 +33,6 @@ public class NpcInfo extends L2GameServerPacket
 {
 	//   ddddddddddddddddddffffdddcccccSSddd dddddc
 	//   ddddddddddddddddddffffdddcccccSSddd dddddccffd
-
-
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
 	private L2Character _activeChar;
 	private int _x, _y, _z, _heading;
@@ -48,7 +46,8 @@ public class NpcInfo extends L2GameServerPacket
     private String _title = "";
 
 	/**
-	 * @param _characters
+	 * @param cha 
+	 * @param attacker 
 	 */
 	public NpcInfo(L2NpcInstance cha, L2Character attacker)
 	{
@@ -177,10 +176,7 @@ public class NpcInfo extends L2GameServerPacket
 		writeD(0x00);  // C4
 		writeD(0x00);  // C6
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

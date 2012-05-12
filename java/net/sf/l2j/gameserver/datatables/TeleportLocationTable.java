@@ -93,10 +93,9 @@ public class TeleportLocationTable
 			try { con.close(); } catch (Exception e) {}
 		}
 	}
-
-
+	
 	/**
-	 * @param template id
+	 * @param id 
 	 * @return
 	 */
 	public L2TeleportLocation getTemplate(int id)

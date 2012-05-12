@@ -30,10 +30,7 @@ public class ExRedSky extends L2GameServerPacket
 	{
 		_duration = duration;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected
 	void writeImpl()
@@ -42,14 +39,10 @@ public class ExRedSky extends L2GameServerPacket
 		writeH(0x40);
 		writeD(_duration);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_40_EXREDSKYPACKET;
 	}
-
 }

@@ -1,30 +1,16 @@
 /*
- * $Header: MinionList.java, 25/10/2005 18:42:48 luisantonioa Exp $
- *
- * $Author: luisantonioa $
- * $Date: 25/10/2005 18:42:48 $
- * $Revision: 1 $
- * $Log: MinionList.java,v $
- * Revision 1  25/10/2005 18:42:48  luisantonioa
- * Added copyright notice
- *
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package net.sf.l2j.gameserver.util;
 
@@ -177,10 +163,7 @@ public class MinionList
      *
      * <B><U> Actions</U> :</B><BR><BR>
      * <li>Get the Minion data of all Minions that must be spawn </li>
-     * <li>For each Minion type, spawn the amount of Minion needed </li><BR><BR>
-     *
-     * @param player The L2PcInstance to attack
-     *
+     * <li>For each Minion type, spawn the amount of Minion needed </li>
      */
     public void spawnMinions()
     {

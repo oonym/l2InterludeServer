@@ -53,7 +53,8 @@ public class CharSelectInfoPackage
 
 
     /**
-     * @param int1
+     * @param objectId 
+     * @param name 
      */
     public CharSelectInfoPackage(int objectId, String name)
     {

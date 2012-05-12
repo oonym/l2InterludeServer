@@ -38,21 +38,14 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 
 	private int _targetItemObjId;
 	private int _refinerItemObjId;
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
 		_targetItemObjId = readD();
 		_refinerItemObjId = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -140,14 +133,10 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 		itemId -= 8722;
 		return itemId;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_2A_REQUESTCONFIRMREFINERITEM;
 	}
-
 }

@@ -53,6 +53,7 @@ public class L2FolkInstance extends L2NpcInstance
 	/**
 	 * this displays SkillList to the player.
 	 * @param player
+	 * @param classId 
 	 */
 	public void showSkillList(L2PcInstance player, ClassId classId)
 	{
@@ -131,6 +132,7 @@ public class L2FolkInstance extends L2NpcInstance
 	/**
      * this displays EnchantSkillList to the player.
      * @param player
+	 * @param classId 
      */
     public void showEnchantSkillList(L2PcInstance player, ClassId classId)
     {

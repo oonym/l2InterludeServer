@@ -46,14 +46,10 @@ public class ExPCCafePointInfo extends L2GameServerPacket
 		writeD(_unk4);
 		writeC(_unk5);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_31_EXPCCAFEPOINTINFO;
 	}
-
 }

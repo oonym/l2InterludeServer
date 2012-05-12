@@ -111,6 +111,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 
 	/**
 	 * @param activeChar
+	 * @param command 
 	 */
 	private void showMainPage(L2PcInstance activeChar, String command)
 	{

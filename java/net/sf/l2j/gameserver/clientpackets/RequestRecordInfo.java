@@ -47,8 +47,14 @@ public class RequestRecordInfo extends L2GameClientPacket
 {
 	private static final String _0__CF_REQUEST_RECORD_INFO = "[0] CF RequestRecordInfo";
 
-	/** urgent messages, execute immediatly */
-	public TaskPriority getPriority() { return TaskPriority.PR_NORMAL; }
+	/**
+	 * Urgent messages, execute immediately.
+	 * @return 
+	 */
+	public TaskPriority getPriority()
+	{
+		return TaskPriority.PR_NORMAL;
+	}
 
 	@Override
 	protected void readImpl()

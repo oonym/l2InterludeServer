@@ -28,19 +28,15 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.util.Point3D;
 
-
 public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 {
+	private static final String _C__5C_REQUESTPACKAGESEND = "[C] 5C RequestMoveToLocationInVehicle";
 	private final Point3D _pos = new Point3D(0,0,0);
 	private final Point3D _origin_pos = new Point3D(0,0,0);
 	private int _boatId;
 
 	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
@@ -55,10 +51,7 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 		_z = readD();
 		_origin_pos.setXYZ(_x, _y, _z);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -81,22 +74,11 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 			activeChar.setInBoatPosition(_pos);
 			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT, new L2CharPosition(_pos.getX(),_pos.getY(), _pos.getZ(), 0), new L2CharPosition(_origin_pos.getX(),_origin_pos.getY(),_origin_pos.getZ(), 0));
 		}
-
 	}
-
-	/**
-	 * @return
-	 */
-
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return _C__5C_REQUESTPACKAGESEND;
 	}
-
 }

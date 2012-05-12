@@ -718,7 +718,10 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
         return COND_ALL_FALSE;
     }
 
-    /** Return the L2ClanHall this L2NpcInstance belongs to. */
+    /**
+     * Return the L2ClanHall this L2NpcInstance belongs to. 
+     * @return
+     */
     public final ClanHall getClanHall()
     {
         if (_clanHallId < 0)

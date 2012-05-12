@@ -44,9 +44,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 public class RegionBBSManager extends BaseBBSManager
 {
 	private static Logger _logChat = Logger.getLogger("chat");
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.communitybbs.Manager.BaseBBSManager#parsecmd(java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
-	 */
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -167,15 +165,13 @@ public class RegionBBSManager extends BaseBBSManager
 
 	/**
 	 * @param activeChar
+	 * @param page 
 	 */
-	private void showOldCommunity(L2PcInstance activeChar,int page)
+	private void showOldCommunity(L2PcInstance activeChar, int page)
 	{
         separateAndSend(getCommunityPage(page, activeChar.isGM() ? "gm" : "pl"),activeChar);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.communitybbs.Manager.BaseBBSManager#parsewrite(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
-	 */
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{

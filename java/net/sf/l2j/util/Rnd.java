@@ -17,9 +17,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 /**
- * 
  * @author Forsaiken
- *
  */
 public final class Rnd
 {
@@ -82,7 +80,7 @@ public final class Rnd
 		 * Get a random double number from 0 to 1
 		 * 
 		 * @return A random double number from 0 to 1
-		 * @see com.l2jserver.util.Rnd#nextDouble()
+		 * @see #nextDouble()
 		 */
 		public final double get()
 		{
@@ -230,19 +228,19 @@ public final class Rnd
 		UNSECURE_ATOMIC,
 
 		/**
-		 * Like {@link com.l2jserver.util.Rnd.RandomType#UNSECURE_ATOMIC}.<br>
+		 * Like {@link RandomType#UNSECURE_ATOMIC}.<br>
 		 * Each thread has it`s own random instance.<br>
 		 * Provides best parallel access speed.
 		 * 
-		 * @see com.l2jserver.util.Rnd.ThreadLocalRandom
+		 * @see ThreadLocalRandom
 		 */
 		UNSECURE_THREAD_LOCAL,
 
 		/**
-		 * Like {@link com.l2jserver.util.Rnd.RandomType#UNSECURE_ATOMIC}.<br>
+		 * Like {@link #UNSECURE_ATOMIC}.<br>
 		 * Provides much faster parallel access speed.
 		 * 
-		 * @see com.l2jserver.util.Rnd.NonAtomicRandom
+		 * @see NonAtomicRandom
 		 */
 		UNSECURE_VOLATILE
 	}
@@ -338,7 +336,7 @@ public final class Rnd
 	 * Get a random double number from 0 to 1
 	 * 
 	 * @return A random double number from 0 to 1
-	 * @see com.l2jserver.util.Rnd#nextDouble()
+	 * @see #nextDouble()
 	 */
 	public static final double get()
 	{
@@ -475,7 +473,7 @@ public final class Rnd
 	/**
 	 * @param n 
 	 * @return 
-	 * @see com.l2jserver.util.Rnd#get(int n)
+	 * @see #get(int n)
 	 */
 	public static final int nextInt(final int n)
 	{

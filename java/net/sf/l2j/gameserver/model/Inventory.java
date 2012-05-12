@@ -607,6 +607,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the item in the paperdoll slot
+	 * @param slot 
 	 * @return L2ItemInstance
 	 */
 	public L2ItemInstance getPaperdollItem(int slot)
@@ -616,7 +617,7 @@ public abstract class Inventory extends ItemContainer
 	
 	/**
 	 * Returns the item in the paperdoll L2Item slot
-	 * @param L2Item slot identifier
+	 * @param slot 
 	 * @return L2ItemInstance
 	 */
 	public L2ItemInstance getPaperdollItemByL2ItemId(int slot)
@@ -712,7 +713,7 @@ public abstract class Inventory extends ItemContainer
 
 	/** 
 	 * Adds new inventory's paperdoll listener
-	 * @param PaperdollListener pointing out the listener
+	 * @param listener 
 	 */
 	public synchronized void addPaperdollListener(PaperdollListener listener)
 	{
@@ -722,7 +723,7 @@ public abstract class Inventory extends ItemContainer
 	
 	/** 
 	 * Removes a paperdoll listener
-	 * @param PaperdollListener pointing out the listener to be deleted 
+	 * @param listener 
 	 */
 	public synchronized void removePaperdollListener(PaperdollListener listener)
 	{

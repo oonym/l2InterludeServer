@@ -33,20 +33,13 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 {
 	private static final String _C__D0_29_REQUESTCONFIRMTARGETITEM = "[C] D0:29 RequestConfirmTargetItem";
 	private int _itemObjId;
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
 		_itemObjId = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
@@ -108,14 +101,10 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 		activeChar.sendPacket(new ExConfirmVariationItem(_itemObjId));
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_CATALYST_FOR_AUGMENTATION));
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_29_REQUESTCONFIRMTARGETITEM;
 	}
-
 }

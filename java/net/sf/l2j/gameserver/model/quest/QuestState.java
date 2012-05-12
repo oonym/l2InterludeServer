@@ -228,7 +228,8 @@ public final class QuestState
 		else
 			Quest.createQuestVarInDb(this, var, val);
 
-		if (var == "cond") {
+		if (var.equalsIgnoreCase("cond"))
+		{
 	        try
 	        {
 	        	int previousVal = 0;
@@ -265,7 +266,6 @@ public final class QuestState
 	 * @param old : int indicating the previously noted step
 	 *
 	 * For more info on the variable communicating the progress steps to the client, please see
-	 * @link net.sf.l2j.loginserver.serverpacket.QuestList
 	 */
 	private void setCond(int cond, int old)
 	{
@@ -510,7 +510,7 @@ public final class QuestState
     /**
      * Drop Quest item using Config.RATE_DROP_QUEST
      * @param itemId : int Item Identifier of the item to be dropped
-     * @param count(minCount, maxCount) : int Quantity of items to be dropped
+     * @param count (minCount, maxCount) : int Quantity of items to be dropped
      * @param neededCount : Quantity of items needed for quest
      * @param dropChance : int Base chance of drop, same as in droplist
      * @param sound : boolean indicating whether to play sound
@@ -646,6 +646,7 @@ public final class QuestState
 
 	/**
 	 * Return number of ticks from GameTimeController
+	 * @param loc 
 	 * @return int
 	 */
 	public int getItemEquipped(int loc)
@@ -672,8 +673,7 @@ public final class QuestState
     }
 
     /**
-     * Return the QuestTimer object with the specified name
-     * @return QuestTimer<BR> Return null if name does not exist
+     * @param isExitQuestOnCleanUp 
      */
     public void setIsExitQuestOnCleanUp(boolean isExitQuestOnCleanUp)
     {
@@ -682,8 +682,8 @@ public final class QuestState
 
     /**
      * Start a timer for quest.<BR><BR>
-     * @param name<BR> The name of the timer. Will also be the value for event of onEvent
-     * @param time<BR> The milisecond value the timer will elapse
+     * @param name the name of the timer. Will also be the value for event of onEvent
+     * @param time the millisecond value the timer will elapse
      */
     public void startQuestTimer(String name, long time)
     {
@@ -697,6 +697,7 @@ public final class QuestState
 
     /**
      * Return the QuestTimer object with the specified name
+     * @param name 
      * @return QuestTimer<BR> Return null if name does not exist
      */
     public final QuestTimer getQuestTimer(String name)
@@ -707,6 +708,8 @@ public final class QuestState
     /**
      * Add spawn for player instance
      * Return object id of newly spawned npc
+     * @param npcId 
+     * @return 
      */
     public L2NpcInstance addSpawn(int npcId)
     {
@@ -729,6 +732,9 @@ public final class QuestState
      * Uses player's coords and heading.
      * Adds a little randomization in the x y coords
      * Return object id of newly spawned npc
+     * @param npcId 
+     * @param cha 
+     * @return 
      */
 	public L2NpcInstance addSpawn(int npcId, L2Character cha)
 	{
@@ -744,6 +750,12 @@ public final class QuestState
      * Add spawn for player instance
      * Will despawn after the spawn length expires
      * Return object id of newly spawned npc
+     * @param npcId 
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param despawnDelay 
+     * @return 
      */
     public L2NpcInstance addSpawn(int npcId, int x, int y, int z, int despawnDelay)
     {
@@ -755,6 +767,11 @@ public final class QuestState
      * Inherits coords and heading from specified L2Character instance.
      * It could be either the player, or any killed/attacked mob
      * Return object id of newly spawned npc
+     * @param npcId 
+     * @param cha 
+     * @param randomOffset 
+     * @param despawnDelay 
+     * @return 
      */
     public L2NpcInstance addSpawn(int npcId, L2Character cha, boolean randomOffset, int despawnDelay)
     {
@@ -764,6 +781,14 @@ public final class QuestState
     /**
      * Add spawn for player instance
      * Return object id of newly spawned npc
+     * @param npcId 
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param heading 
+     * @param randomOffset 
+     * @param despawnDelay 
+     * @return 
      */
     public L2NpcInstance addSpawn(int npcId, int x, int y, int z,int heading, boolean randomOffset, int despawnDelay)
     {

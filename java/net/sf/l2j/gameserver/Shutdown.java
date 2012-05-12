@@ -59,8 +59,8 @@ public class Shutdown extends Thread
     /**
      * This function starts a shutdown countdown from Telnet (Copied from Function startShutdown())
      *
-     * @param ip            IP Which Issued shutdown command
-     * @param seconds       seconds untill shutdown
+     * @param IP            IP Which Issued shutdown command
+     * @param seconds       seconds until shutdown
      * @param restart       true if the server will restart after shutdown
      */
 

@@ -64,10 +64,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 			_items.add(new Item(id, count));
 		}
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -180,10 +177,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

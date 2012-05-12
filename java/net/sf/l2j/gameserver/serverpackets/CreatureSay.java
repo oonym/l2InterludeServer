@@ -34,7 +34,10 @@ public class CreatureSay extends L2GameServerPacket
 	private String _text;
 
 	/**
-	 * @param _characters
+	 * @param objectId 
+	 * @param messageType 
+	 * @param charName 
+	 * @param text 
 	 */
 	public CreatureSay(int objectId, int messageType, String charName, String text)
 	{
@@ -60,14 +63,10 @@ public class CreatureSay extends L2GameServerPacket
 			_pci.broadcastSnoop(_textType,_charName,_text);
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__4A_CREATURESAY;
 	}
-
 }

@@ -32,10 +32,7 @@ public class ExDuelUpdateUserInfo extends L2GameServerPacket
 	{
 		_activeChar = cha;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected
 	void writeImpl()
@@ -53,14 +50,10 @@ public class ExDuelUpdateUserInfo extends L2GameServerPacket
 		writeD((int)_activeChar.getCurrentCp());
 		writeD(_activeChar.getMaxCp());
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_4F_EXDUELUPDATEUSERINFO;
 	}
-
 }

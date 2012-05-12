@@ -73,6 +73,8 @@ public class TakeCastle implements ISkillHandler
      * Return true if character clan place a flag<BR><BR>
      *
      * @param activeChar The L2Character of the character placing the flag
+     * @param isCheckOnly 
+     * @return 
      *
      */
     public static boolean checkIfOkToCastSealOfRule(L2Character activeChar, boolean isCheckOnly)

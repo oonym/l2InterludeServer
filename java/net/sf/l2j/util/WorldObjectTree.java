@@ -23,9 +23,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.sf.l2j.gameserver.model.L2Object;
+
 /**
- *
- * @author  dishkols
+ * @author dishkols
+ * @param <T> 
  */
 public class WorldObjectTree<T extends L2Object> extends L2ObjectMap<T>
 {
@@ -74,7 +75,7 @@ public class WorldObjectTree<T extends L2Object> extends L2ObjectMap<T>
 	}
 
 	/**
-	 * @see net.sf.l2j.util.L2ObjectMap#put(T)
+	 * @see L2ObjectMap#put(L2Object)
 	 */
 	@Override
 	public void put(T obj)
@@ -89,7 +90,7 @@ public class WorldObjectTree<T extends L2Object> extends L2ObjectMap<T>
 	}
 
 	/**
-	 * @see net.sf.l2j.util.L2ObjectMap#remove(T)
+	 * @see net.sf.l2j.util.L2ObjectMap#remove(L2Object)
 	 */
 	@Override
 	public void remove(T obj)
@@ -117,7 +118,7 @@ public class WorldObjectTree<T extends L2Object> extends L2ObjectMap<T>
 	}
 
 	/**
-	 * @see net.sf.l2j.util.L2ObjectMap#contains(T)
+	 * @see net.sf.l2j.util.L2ObjectMap#contains(L2Object)
 	 */
 	@Override
 	public boolean contains(T obj)
@@ -142,5 +143,4 @@ public class WorldObjectTree<T extends L2Object> extends L2ObjectMap<T>
 		}
 		finally { _r.unlock(); }
 	}
-
 }

@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.gameserverpackets;
 
-import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.logging.Logger;
@@ -54,14 +53,10 @@ public class BlowFishKey extends GameServerBasePacket
 		writeD(encrypted.length);
 		writeB(encrypted);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

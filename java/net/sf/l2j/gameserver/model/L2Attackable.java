@@ -81,25 +81,26 @@ public class L2Attackable extends L2NpcInstance
      * This class contains all AggroInfo of the L2Attackable against the attacker L2Character.<BR><BR>
      *
      * <B><U> Data</U> :</B><BR><BR>
-     * <li>attacker : The attaker L2Character concerned by this AggroInfo of this L2Attackable </li>
-     * <li>hate : Hate level of this L2Attackable against the attaker L2Character (hate = damage) </li>
-     * <li>damage : Number of damages that the attaker L2Character gave to this L2Attackable </li><BR><BR>
+     * <li>attacker : The attacker L2Character concerned by this AggroInfo of this L2Attackable </li>
+     * <li>hate : Hate level of this L2Attackable against the attacker L2Character (hate = damage) </li>
+     * <li>damage : Number of damages that the attacker L2Character gave to this L2Attackable </li><BR><BR>
      *
      */
     public final class AggroInfo
     {
-        /** The attaker L2Character concerned by this AggroInfo of this L2Attackable */
+        /** The attacker L2Character concerned by this AggroInfo of this L2Attackable */
     	protected L2Character _attacker;
 
-        /** Hate level of this L2Attackable against the attaker L2Character (hate = damage) */
+        /** Hate level of this L2Attackable against the attacker L2Character (hate = damage) */
         protected int _hate;
 
-        /** Number of damages that the attaker L2Character gave to this L2Attackable */
+        /** Number of damages that the attacker L2Character gave to this L2Attackable */
         protected int _damage;
 
 
         /**
-         * Constructor of AggroInfo.<BR><BR>
+         * Constructor of AggroInfo.
+         * @param pAttacker 
          */
         AggroInfo(L2Character pAttacker)
         {
@@ -107,7 +108,7 @@ public class L2Attackable extends L2NpcInstance
         }
 
         /**
-         * Verify is object is equal to this AggroInfo.<BR><BR>
+         * Verify is object is equal to this AggroInfo.
          */
         @Override
 		public boolean equals(Object obj)
@@ -118,7 +119,7 @@ public class L2Attackable extends L2NpcInstance
         }
 
         /**
-         * Return the Identifier of the attaker L2Character.<BR><BR>
+         * Return the Identifier of the attacker L2Character.
          */
         @Override
 		public int hashCode()
@@ -133,9 +134,8 @@ public class L2Attackable extends L2NpcInstance
      * This class contains all RewardInfo of the L2Attackable against the any attacker L2Character, based on amount of damage done.<BR><BR>
      *
      * <B><U> Data</U> :</B><BR><BR>
-     * <li>attacker : The attaker L2Character concerned by this RewardInfo of this L2Attackable </li>
+     * <li>attacker : The attacker L2Character concerned by this RewardInfo of this L2Attackable </li>
      * <li>dmg : Total amount of damage done by the attacker to this L2Attackable (summon + own) </li>
-     *
      */
     protected final class RewardInfo
     {
@@ -172,18 +172,21 @@ public class L2Attackable extends L2NpcInstance
      * This class contains all AbsorberInfo of the L2Attackable against the absorber L2Character.<BR><BR>
      *
      * <B><U> Data</U> :</B><BR><BR>
-     * <li>absorber : The attaker L2Character concerned by this AbsorberInfo of this L2Attackable </li>
+     * <li>absorber : The attacker L2Character concerned by this AbsorberInfo of this L2Attackable </li>
      *
      */
     public final class AbsorberInfo
     {
-        /** The attaker L2Character concerned by this AbsorberInfo of this L2Attackable */
+        /** The attacker L2Character concerned by this AbsorberInfo of this L2Attackable */
     	protected L2PcInstance _absorber;
     	protected int _crystalId;
     	protected double _absorbedHP;
 
         /**
-         * Constructor of AbsorberInfo.<BR><BR>
+         * Constructor of AbsorberInfo.
+         * @param attacker 
+         * @param pCrystalId 
+         * @param pAbsorbedHP 
          */
         AbsorberInfo(L2PcInstance attacker, int pCrystalId, double pAbsorbedHP)
         {
@@ -193,7 +196,7 @@ public class L2Attackable extends L2NpcInstance
         }
 
         /**
-         * Verify is object is equal to this AbsorberInfo.<BR><BR>
+         * Verify is object is equal to this AbsorberInfo.
          */
         @Override
 		public boolean equals(Object obj)
@@ -204,7 +207,7 @@ public class L2Attackable extends L2NpcInstance
         }
 
         /**
-         * Return the Identifier of the absorber L2Character.<BR><BR>
+         * Return the Identifier of the absorber L2Character.
          */
         @Override
 		public int hashCode()
@@ -214,7 +217,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * This class is used to create item reward lists instead of creating item instances.<BR><BR>
+     * This class is used to create item reward lists instead of creating item instances.
      */
     public final class RewardItem
     {
@@ -231,17 +234,25 @@ public class L2Attackable extends L2NpcInstance
         public int getCount() { return _count;}
     }
 
-    /** The table containing all autoAttackable L2Character in its Aggro Range and L2Character that attacked the L2Attackable
-     * This Map is Thread Safe, but Removing Object While Interating Over It Will Result NPE
+    /**
+     * The table containing all autoAttackable L2Character in its Aggro Range and L2Character that attacked the L2Attackable
+     * This Map is Thread Safe, but Removing Object While Iterating Over It Will Result NPE
      * */
     private FastMap<L2Character, AggroInfo> _aggroList = new FastMap<L2Character, AggroInfo>().shared();
-    /** Use this to Read or Put Object to this Map */
+    
+    /** 
+     * Use this to Read or Put Object to this Map 
+     * @return
+     */
     public final FastMap<L2Character, AggroInfo> getAggroListRP()
     {
     	return _aggroList;
     }
-    /** Use this to Remove Object from this Map
-     * This Should be Synchronized While Interating over This Map - ie u cant interating and removing object at once*/
+    /** 
+     * Use this to Remove Object from this Map
+     * This Should be Synchronized While Iterating over This Map - ie you can't iterating and removing object at once.
+     * @return 
+     */
     public final FastMap<L2Character, AggroInfo> getAggroList()
     {
     	return _aggroList;
@@ -273,10 +284,10 @@ public class L2Attackable extends L2NpcInstance
     private L2CommandChannel _firstCommandChannelAttacked = null;
     private CommandChannelTimer _commandChannelTimer = null;
 
-    /** True if a Soul Crystal was successfuly used on the L2Attackable */
+    /** True if a Soul Crystal was successfully used on the L2Attackable */
     private boolean _absorbed;
 
-    /** The table containing all L2PcInstance that successfuly absorbed the soul of this L2Attackable */
+    /** The table containing all L2PcInstance that successfully absorbed the soul of this L2Attackable */
     private FastMap<L2PcInstance, AbsorberInfo> _absorbersList = new FastMap<L2PcInstance, AbsorberInfo>().shared();
 
     /** Have this L2Attackable to reward Exp and SP on Die? **/
@@ -290,7 +301,7 @@ public class L2Attackable extends L2NpcInstance
      * <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it </li><BR><BR>
      *
      * @param objectId Identifier of the object to initialized
-     * @param L2NpcTemplate Template to apply to the NPC
+     * @param template the template to apply to the NPC
      */
     public L2Attackable(int objectId, L2NpcTemplate template)
     {
@@ -308,7 +319,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return the L2Character AI of the L2Attackable and if its null create a new one.<BR><BR>
+     * Return the L2Character AI of the L2Attackable and if its null create a new one.
      */
     @Override
 	public L2CharacterAI getAI()
@@ -325,12 +336,12 @@ public class L2Attackable extends L2NpcInstance
     }
 
     // get condition to hate, actually isAggressive() is checked
-    // by monster and karma by guards in motheds that overwrite this one.
+    // by monster and karma by guards in methods that overwrite this one.
     /**
-     * Not used.<BR><BR>
-     *
+     * Not used.
+     * @param target 
+     * @return 
      * @deprecated
-     *
      */
     @Deprecated
     public boolean getCondition2(L2Character target)
@@ -361,9 +372,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR>
-     *
-     * @param i The HP decrease value
+     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.
      * @param attacker The L2Character who attacks
      * @param awake The awake state (If True : stop sleeping)
      *
@@ -887,7 +896,8 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Clears _aggroList hate of the L2Character without removing from the list.<BR><BR>
+     * Clears _aggroList hate of the L2Character without removing from the list.
+     * @param target 
      */
     public void stopHating(L2Character target)
     {
@@ -898,7 +908,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return the most hated L2Character of the L2Attackable _aggroList.<BR><BR>
+     * @return the most hated L2Character of the L2Attackable _aggroList.
      */
     public L2Character getMostHated()
     {
@@ -907,7 +917,7 @@ public class L2Attackable extends L2NpcInstance
         L2Character mostHated = null;
         int maxHate = 0;
 
-        // While Interating over This Map Removing Object is Not Allowed
+        // While Iterating over This Map Removing Object is Not Allowed
         synchronized (getAggroList())
         {
             // Go through the aggroList of the L2Attackable
@@ -927,9 +937,8 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return the hate level of the L2Attackable against this L2Character contained in _aggroList.<BR><BR>
-     *
      * @param target The L2Character whose hate level must be returned
+     * @return the hate level of the L2Attackable against this L2Character contained in _aggroList.
      *
      */
     public int getHating(L2Character target)
@@ -958,12 +967,12 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Calculates quantity of items for specific drop acording to current situation <br>
-     *
+     * Calculates quantity of items for specific drop according to current situation.
      * @param drop The L2DropData count is being calculated for
      * @param lastAttacker The L2PcInstance that has killed the L2Attackable
-     * @param deepBlueDrop Factor to divide the drop chance
      * @param levelModifier level modifier in %'s (will be subtracted from drop chance)
+     * @param isSweep 
+     * @return 
      */
      private RewardItem calculateRewardItem(L2PcInstance lastAttacker, L2DropData drop, int levelModifier, boolean isSweep)
      {
@@ -1041,13 +1050,12 @@ public class L2Attackable extends L2NpcInstance
 	 }
 
      /**
-      * Calculates quantity of items for specific drop CATEGORY according to current situation <br>
+      * Calculates quantity of items for specific drop CATEGORY according to current situation.<br>
       * Only a max of ONE item from a category is allowed to be dropped.
-      *
-      * @param drop The L2DropData count is being calculated for
       * @param lastAttacker The L2PcInstance that has killed the L2Attackable
-      * @param deepBlueDrop Factor to divide the drop chance
+     * @param categoryDrops 
       * @param levelModifier level modifier in %'s (will be subtracted from drop chance)
+     * @return 
       */
       private RewardItem calculateCategorizedRewardItem(L2PcInstance lastAttacker, L2DropCategory categoryDrops, int levelModifier)
       {
@@ -1190,6 +1198,7 @@ public class L2Attackable extends L2NpcInstance
       * Calculates the level modifier for drop<br>
       *
       * @param lastAttacker The L2PcInstance that has killed the L2Attackable
+     * @return 
       */
      private int calculateLevelModifierForDrop(L2PcInstance lastAttacker)
      {
@@ -1220,7 +1229,7 @@ public class L2Attackable extends L2NpcInstance
       * <B><U> Concept</U> :</B><BR><BR>
       * During a Special Event all L2Attackable can drop extra Items.
       * Those extra Items are defined in the table <B>allNpcDateDrops</B> of the EventDroplist.
-      * Each Special Event has a start and end date to stop to drop extra Items automaticaly. <BR><BR>
+      * Each Special Event has a start and end date to stop to drop extra Items automatically. <BR><BR>
       *
       * <B><U> Actions</U> : </B><BR><BR>
       * <li>Manage drop of Special Events created by GM for a defined period </li>
@@ -1230,6 +1239,7 @@ public class L2Attackable extends L2NpcInstance
       * <li>Create this or these L2ItemInstance corresponding to each Item Identifier dropped</li>
       * <li>If the autoLoot mode is actif and if the L2Character that has killed the L2Attackable is a L2PcInstance, give this or these Item(s) to the L2PcInstance that has killed the L2Attackable</li>
       * <li>If the autoLoot mode isn't actif or if the L2Character that has killed the L2Attackable is not a L2PcInstance, add this or these Item(s) in the world as a visible object at the position where mob was last</li><BR><BR>
+     * @param npcTemplate 
       *
       * @param lastAttacker The L2Character that has killed the L2Attackable
       */
@@ -1471,7 +1481,7 @@ public class L2Attackable extends L2NpcInstance
       * <B><U> Concept</U> :</B><BR><BR>
       * During a Special Event all L2Attackable can drop extra Items.
       * Those extra Items are defined in the table <B>allNpcDateDrops</B> of the EventDroplist.
-      * Each Special Event has a start and end date to stop to drop extra Items automaticaly. <BR><BR>
+      * Each Special Event has a start and end date to stop to drop extra Items automatically. <BR><BR>
       *
       * <B><U> Actions</U> : <I>If an extra drop must be generated</I></B><BR><BR>
       * <li>Get an Item Identifier (random) from the DateDrop Item table of this Event </li>
@@ -1490,7 +1500,7 @@ public class L2Attackable extends L2NpcInstance
          else if (lastAttacker instanceof L2Summon)
              player = ((L2Summon)lastAttacker).getOwner();
 
-         if (player == null) return; // Don't drop anything if the last attacker or ownere isn't L2PcInstance
+         if (player == null) return; // Don't drop anything if the last attacker or owner isn't L2PcInstance
 
          if (player.getLevel() - getLevel() > 9) return;
 
@@ -1507,7 +1517,10 @@ public class L2Attackable extends L2NpcInstance
      }
 
      /**
-      * Drop reward item.<BR><BR>
+      * Drop reward item.
+     * @param lastAttacker 
+     * @param item 
+     * @return 
       */
      public L2ItemInstance DropItem(L2PcInstance lastAttacker, RewardItem item)
      {
@@ -1544,7 +1557,7 @@ public class L2Attackable extends L2NpcInstance
 	}
 
     /**
-     * Return the active weapon of this L2Attackable (= null).<BR><BR>
+     * @return the active weapon of this L2Attackable (= null)
      */
     public L2ItemInstance getActiveWeapon()
     {
@@ -1552,7 +1565,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return True if the _aggroList of this L2Attackable is Empty.<BR><BR>
+     * @return {@code true} if the _aggroList of this L2Attackable is empty, {@code false} otherwise
      */
     public boolean noTarget()
     {
@@ -1560,10 +1573,8 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return True if the _aggroList of this L2Attackable contains the L2Character.<BR><BR>
-     *
      * @param player The L2Character searched in the _aggroList of the L2Attackable
-     *
+     * @return {@code true} if the _aggroList of this L2Attackable contains the L2Character, {@code false} otherwise
      */
     public boolean containsTarget(L2Character player)
     {
@@ -1571,7 +1582,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Clear the _aggroList of the L2Attackable.<BR><BR>
+     * Clear the _aggroList of the L2Attackable.
      */
     public void clearAggroList()
     {
@@ -1579,7 +1590,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return True if a Dwarf use Sweep on the L2Attackable and if item can be spoiled.<BR><BR>
+     * @return {@code true} if a Dwarf use Sweep on the L2Attackable and if item can be spoiled, {@code false} otherwise
      */
     public boolean isSweepActive()
     {
@@ -1587,7 +1598,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return table containing all L2ItemInstance that can be spoiled.<BR><BR>
+     * @return an array containing all L2ItemInstance that can be spoiled
      */
     public synchronized RewardItem[] takeSweep()
     {
@@ -1599,7 +1610,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return table containing all L2ItemInstance that can be harvested.<BR><BR>
+     * @return an array containing all L2ItemInstance that can be harvested
      */
     public synchronized RewardItem[] takeHarvest()
     {
@@ -1609,10 +1620,8 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Set the over-hit flag on the L2Attackable.<BR><BR>
-     *
+     * Set the over-hit flag on the L2Attackable.
      * @param status The status of the over-hit flag
-     *
      */
     public void overhitEnabled(boolean status)
     {
@@ -1620,11 +1629,9 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Set the over-hit values like the attacker who did the strike and the ammount of damage done by the skill.<BR><BR>
-     *
+     * Set the over-hit values like the attacker who did the strike and the amount of damage done by the skill.
      * @param attacker The L2Character who hit on the L2Attackable using the over-hit enabled skill
-     * @param damage The ammount of damage done by the over-hit enabled skill on the L2Attackable
-     *
+     * @param damage The amount of damage done by the over-hit enabled skill on the L2Attackable
      */
     public void setOverhitValues(L2Character attacker, double damage)
     {
@@ -1646,8 +1653,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return the L2Character who hit on the L2Attackable using an over-hit enabled skill.<BR><BR>
-     *
+     * Return the L2Character who hit on the L2Attackable using an over-hit enabled skill.
      * @return L2Character attacker
      */
     public L2Character getOverhitAttacker()
@@ -1656,8 +1662,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return the ammount of damage done on the L2Attackable using an over-hit enabled skill.<BR><BR>
-     *
+     * Return the amount of damage done on the L2Attackable using an over-hit enabled skill.
      * @return double damage
      */
     public double getOverhitDamage()
@@ -1667,6 +1672,7 @@ public class L2Attackable extends L2NpcInstance
 
     /**
      * Return True if the L2Attackable was hit by an over-hit enabled skill.<BR><BR>
+     * @return 
      */
     public boolean isOverhit()
     {
@@ -1683,7 +1689,7 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Return True if the L2Attackable had his soul absorbed.<BR><BR>
+     * @return {@code true} if the L2Attackable had his soul absorbed, {@code false} otherwise
      */
     public boolean isAbsorbed()
     {
@@ -1691,15 +1697,14 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Adds an attacker that successfully absorbed the soul of this L2Attackable into the _absorbersList.<BR><BR>
-     *
-     * params:  attacker    - a valid L2PcInstance
-     *          condition   - an integer indicating the event when mob dies. This should be:
+     * Adds an attacker that successfully absorbed the soul of this L2Attackable into the _absorbersList.
+     * @param attacker a valid L2PcInstance
+     * @param crystalId an integer indicating the event when mob dies. This should be:
      *                          = 0     - "the crystal scatters";
      *                          = 1     - "the crystal failed to absorb. nothing happens";
      *                          = 2     - "the crystal resonates because you got more than 1 crystal on you";
      *                          = 3     - "the crystal cannot absorb the soul because the mob level is too low";
-     *                          = 4     - "the crystal successfuly absorbed the soul";
+     *                          = 4     - "the crystal successfully absorbed the soul";
      */
     public void addAbsorber(L2PcInstance attacker, int crystalId)
     {
@@ -1772,7 +1777,7 @@ public class L2Attackable extends L2NpcInstance
 
         L2PcInstance killer = (attacker instanceof L2Summon)? ((L2Summon)attacker).getOwner() : (L2PcInstance)attacker;
 
-        // If this mob is a boss, then skip some checkings
+        // If this mob is a boss, then skip some checking
         if (!isBossMob)
         {
             // Fail if this L2Attackable isn't absorbed or there's no one in its _absorbersList
@@ -1873,7 +1878,7 @@ public class L2Attackable extends L2NpcInstance
 	                                // Get Name
 	                                crystalNME  = crystalNFO[0].toLowerCase();
                             	}
-                                // Allocate current and levelup ids' for higher level crystals
+                                // Allocate current and level up ids' for higher level crystals
                                 if(crystalLVL > 9)
                                 {
                                     for(int i = 0; i < SoulCrystal.HighSoulConvert.length; i++)
@@ -2009,11 +2014,10 @@ public class L2Attackable extends L2NpcInstance
     }
 
     /**
-     * Calculate the Experience and SP to distribute to attacker (L2PcInstance, L2SummonInstance or L2Party) of the L2Attackable.<BR><BR>
-     *
+     * Calculate the Experience and SP to distribute to attacker (L2PcInstance, L2SummonInstance or L2Party) of the L2Attackable.
      * @param diff The difference of level between attacker (L2PcInstance, L2SummonInstance or L2Party) and the L2Attackable
      * @param damage The damages given by the attacker (L2PcInstance, L2SummonInstance or L2Party)
-     *
+     * @return 
      */
     private int[] calculateExpAndSp(int diff, int damage)
     {

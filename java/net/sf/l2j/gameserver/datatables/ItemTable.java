@@ -762,7 +762,7 @@ public class ItemTable
 	 * <li>Logs Item delettion according to log settings</li><BR><BR>
 	 *
 	 * @param process : String Identifier of process triggering this action
-     * @param itemId : int Item Identifier of the item to be created
+	 * @param item 
 	 * @param actor : L2PcInstance Player requesting the item destroy
 	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
 	 */

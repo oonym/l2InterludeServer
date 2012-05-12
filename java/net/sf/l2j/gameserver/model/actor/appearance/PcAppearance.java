@@ -53,25 +53,25 @@ public class PcAppearance
     // Property - Public
     public final byte getFace() { return _face; }
     /**
-     * @param byte value
+     * @param value 
      */
     public final void setFace(int value) { _face = (byte)value; }
 
     public final byte getHairColor() { return _hairColor; }
     /**
-     * @param byte value
+     * @param value
      */
     public final void setHairColor(int value) { _hairColor = (byte)value; }
 
     public final byte getHairStyle() { return _hairStyle; }
     /**
-     * @param byte value
+     * @param value
      */
     public final void setHairStyle(int value) { _hairStyle = (byte)value; }
 
     public final boolean getSex() { return _sex; }
     /**
-     * @param boolean isfemale
+     * @param isfemale
      */
     public final void setSex(boolean isfemale) { _sex = isfemale; }
 

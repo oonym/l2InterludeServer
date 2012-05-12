@@ -35,7 +35,6 @@ import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
  * @author Advi
- *
  */
 public class TradeList
 {
@@ -184,6 +183,7 @@ public class TradeList
 
     /**
      * Retrieves items from TradeList
+     * @return 
      */
     public TradeItem[] getItems()
     {
@@ -192,6 +192,7 @@ public class TradeList
 
     /**
      * Returns the list of items in inventory available for transaction
+     * @param inventory 
      * @return L2ItemInstance : items in inventory
      */
     public TradeList.TradeItem[] getAvailableItems(PcInventory inventory)
@@ -209,6 +210,7 @@ public class TradeList
 
     /**
      * Returns Item List size
+     * @return 
      */
     public int getItemCount()
     {
@@ -322,7 +324,7 @@ public class TradeList
 
     /**
      * Add item to TradeList
-     * @param objectId : int
+     * @param itemId int
      * @param count : int
      * @param price : int
      * @return
@@ -361,6 +363,7 @@ public class TradeList
     /**
      * Remove item from TradeList
      * @param objectId : int
+     * @param itemId 
      * @param count : int
      * @return
      */
@@ -483,6 +486,7 @@ public class TradeList
 
     /**
      * Validates TradeList with owner inventory
+     * @return 
      */
     private boolean validate()
     {
@@ -509,9 +513,12 @@ public class TradeList
 
     /**
      * Transfers all TradeItems from inventory to partner
+     * @param partner 
+     * @param ownerIU 
+     * @param partnerIU 
+     * @return 
      */
-    private boolean TransferItems(L2PcInstance partner, InventoryUpdate ownerIU,
-                                  InventoryUpdate partnerIU)
+    private boolean TransferItems(L2PcInstance partner, InventoryUpdate ownerIU, InventoryUpdate partnerIU)
     {
         for (TradeItem titem : _items)
         {
@@ -538,8 +545,9 @@ public class TradeList
 
     /**
      * Count items slots
+     * @param partner 
+     * @return 
      */
-
     public int countItemsSlots(L2PcInstance partner)
     {
         int slots = 0;
@@ -559,8 +567,8 @@ public class TradeList
 
     /**
      * Calc weight of items in tradeList
+     * @return 
      */
-
     public int calcItemsWeight()
     {
         int weight = 0;
@@ -578,6 +586,7 @@ public class TradeList
 
     /**
      * Proceeds with trade
+     * @param partnerList 
      */
     private void doExchange(TradeList partnerList)
     {
@@ -629,6 +638,9 @@ public class TradeList
 
     /**
      * Buy items from this PrivateStore list
+     * @param player 
+     * @param items 
+     * @param price 
      * @return : boolean true if success
      */
     public synchronized boolean PrivateStoreBuy(L2PcInstance player, ItemRequest[] items, int price)
@@ -678,7 +690,7 @@ public class TradeList
             lock();
             return false;
         }
-        ;
+        
         L2ItemInstance adenaItem = playerInventory.getAdenaInstance();
         playerInventory.reduceAdena("PrivateStore", price, player, _owner);
         playerIU.addItem(adenaItem);
@@ -748,6 +760,9 @@ public class TradeList
 
     /**
      * Sell items to this PrivateStore list
+     * @param player 
+     * @param items 
+     * @param price 
      * @return : boolean true if success
      */
     public synchronized boolean PrivateStoreSell(L2PcInstance player, ItemRequest[] items, int price)
@@ -757,7 +772,7 @@ public class TradeList
         PcInventory ownerInventory = _owner.getInventory();
         PcInventory playerInventory = player.getInventory();
 
-        //we must check item are available before begining transaction, TODO: should we remove that check when transfering items as it's done here? (there might be synchro problems if player clicks fast if we remove it)
+        //we must check item are available before beginning transaction, TODO: should we remove that check when transfering items as it's done here? (there might be synchro problems if player clicks fast if we remove it)
         // also check if augmented items are traded. If so, cancel it...
         for (ItemRequest item : items)
         {

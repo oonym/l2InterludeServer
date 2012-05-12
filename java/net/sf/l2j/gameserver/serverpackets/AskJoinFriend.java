@@ -18,10 +18,7 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-
-
 /**
- *
  * sample
  * <p>
  * 7d
@@ -37,20 +34,15 @@ package net.sf.l2j.gameserver.serverpackets;
 public class AskJoinFriend extends L2GameServerPacket
 {
 	private static final String _S__7d_ASKJoinFriend_0X7d = "[S] 7d AskJoinFriend 0x7d";
-	//private static Logger _log = Logger.getLogger(AskJoinFriend.class.getName());
-
+	
 	private String _requestorName;
-	//private int _itemDistribution;
-
+	
 	/**
-	 * @param int objectId of the target
-	 * @param int
+	 * @param requestorName 
 	 */
-//	public AskJoinFriend(String requestorName, int itemDistribution)
 	public AskJoinFriend(String requestorName)
 	{
 		_requestorName = requestorName;
-//		_itemDistribution = itemDistribution;
 	}
 
 	@Override
@@ -60,14 +52,10 @@ public class AskJoinFriend extends L2GameServerPacket
 		writeS(_requestorName);
 		writeD(0);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__7d_ASKJoinFriend_0X7d;
 	}
-
 }

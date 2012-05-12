@@ -1335,7 +1335,7 @@ public class Olympiad
     		return (_olympiadInstances == null)? null : _olympiadInstances;
     	}
 
-    	private Map<Integer, List<L2PcInstance>> pickOpponents(List<L2PcInstance> list) throws Exception
+    	private Map<Integer, List<L2PcInstance>> pickOpponents(List<L2PcInstance> list)
     	{
     		Map<Integer, List<L2PcInstance>> result =
     			new FastMap<Integer, List<L2PcInstance>>();
@@ -1662,10 +1662,15 @@ public class Olympiad
                 _sm = new SystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
             
             _sm.addNumber(nsecond);
-            try {    		
+            try
+            {    		
             	for (L2PcInstance player : _players)
             		player.sendPacket(_sm);
-            } catch (Exception e) {};
+            }
+            catch (Exception e)
+            {
+            	
+            }
     	}
     	
     	protected void portPlayersBack()

@@ -38,7 +38,7 @@ public class TargetUnselected extends L2GameServerPacket
 	private int _z;
 
 	/**
-	 * @param _characters
+	 * @param character 
 	 */
 	public TargetUnselected(L2Character character)
 	{
@@ -58,10 +58,7 @@ public class TargetUnselected extends L2GameServerPacket
 		writeD(_z);
 //		writeD(_target.getTargetId()); //??  probably not used in client
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

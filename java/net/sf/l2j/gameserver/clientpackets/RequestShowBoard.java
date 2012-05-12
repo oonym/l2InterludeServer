@@ -42,7 +42,6 @@ public final class RequestShowBoard extends L2GameClientPacket
 	 * 01 00 00 00		// unknown (always 1?)
 	 *
 	 * format:		cd
-	 * @param decrypt
 	 */
 	@Override
 	protected void readImpl()
@@ -55,10 +54,7 @@ public final class RequestShowBoard extends L2GameClientPacket
 	{
 		CommunityBoard.getInstance().handleCommands(getClient(), Config.BBS_DEFAULT);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

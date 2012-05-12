@@ -34,7 +34,7 @@ public class L2NpcWalkerNode
 	private String _chatText;
 	private int _moveX;
 	private int _moveY;
-	private int _moveZ;;
+	private int _moveZ;
 	private int _delay;
 	
 	private boolean _running;
@@ -129,25 +129,15 @@ public class L2NpcWalkerNode
 		return _running;
 	}
 	
-	/**
-	 * Constructor of L2NpcWalker.<BR><BR>
-	 * 
-	 * @param set The StatsSet object to transfert data to the method
-	 * 
-	 */
-	
 	public L2NpcWalkerNode()
 	{
 		
 	}
 	
 	/**
-	 * Constructor of L2NpcWalker.<BR><BR>
-	 * 
-	 * @param set The StatsSet object to transfert data to the method
-	 * 
+	 * Constructor of L2NpcWalker.
+	 * @param set The StatsSet object to transfer data to the method
 	 */
-		
 	public L2NpcWalkerNode(StatsSet set)
 	{		
 		_npcId       = set.getInteger("npc_id");

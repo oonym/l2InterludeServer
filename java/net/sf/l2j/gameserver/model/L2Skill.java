@@ -630,6 +630,7 @@ public abstract class L2Skill
 
     /**
      * Return the target type of the skill : SELF, PARTY, CLAN, PET...<BR><BR>
+     * @return 
      *
      */
     public final SkillTargetType getTargetType()
@@ -653,7 +654,9 @@ public abstract class L2Skill
     }
 
     /**
-     * Return the power of the skill.<BR><BR>
+     * Return the power of the skill.
+     * @param activeChar 
+     * @return 
      */
     public final double getPower(L2Character activeChar)
     {
@@ -698,7 +701,8 @@ public abstract class L2Skill
     }
 
     /**
-     * Return the additional effect power or base probability.<BR><BR>
+     * Return the additional effect power or base probability.
+     * @return 
      */
     public final int getEffectPower()
     {
@@ -706,7 +710,8 @@ public abstract class L2Skill
     }
 
     /**
-     * Return the additional effect level.<BR><BR>
+     * Return the additional effect level.
+     * @return 
      */
     public final int getEffectLvl()
     {
@@ -714,7 +719,8 @@ public abstract class L2Skill
     }
 
     /**
-     * Return the additional effect skill type (ex : STUN, PARALYZE,...).<BR><BR>
+     * Return the additional effect skill type (ex : STUN, PARALYZE,...).
+     * @return 
      */
     public final SkillType getEffectType()
     {
@@ -777,7 +783,8 @@ public abstract class L2Skill
     }
 
     /**
-     * Return the skill type (ex : BLEED, SLEEP, WATER...).<BR><BR>
+     * Return the skill type (ex : BLEED, SLEEP, WATER...).
+     * @return 
      */
     public final Stats getStat()
     {
@@ -1216,7 +1223,8 @@ public abstract class L2Skill
      * <li>ITEM</li><BR><BR>
      *
      * @param activeChar The L2Character who use the skill
-     *
+     * @param onlyFirst 
+     * @return 
      */
     public final L2Object[] getTargetList(L2Character activeChar, boolean onlyFirst)
     {

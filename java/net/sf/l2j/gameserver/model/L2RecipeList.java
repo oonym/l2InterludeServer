@@ -57,6 +57,15 @@ public class L2RecipeList
 
 	/**
 	 * Constructor of L2RecipeList (create a new Recipe).<BR><BR>
+	 * @param id 
+	 * @param level 
+	 * @param recipeId 
+	 * @param recipeName 
+	 * @param successRate 
+	 * @param mpCost 
+	 * @param itemId 
+	 * @param count 
+	 * @param isDwarvenRecipe 
 	 */
 	public L2RecipeList(int id, int level, int recipeId, String recipeName, int successRate, int mpCost, int itemId, int count, boolean isDwarvenRecipe)
 	{
@@ -74,6 +83,7 @@ public class L2RecipeList
 
 	/**
 	 * Add a L2RecipeInstance to the L2RecipeList (add a line Item-Quantity needed to the Recipe).<BR><BR>
+	 * @param recipe 
 	 */
 	public void addRecipe(L2RecipeInstance recipe)
 	{
@@ -87,6 +97,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the Identifier of the Instance.<BR><BR>
+	 * @return 
 	 */
 	public int getId()
 	{
@@ -95,6 +106,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the crafting level needed to use this L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public int getLevel()
 	{
@@ -103,6 +115,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the Identifier of the L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public int getRecipeId()
 	{
@@ -111,6 +124,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the name of the L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public String getRecipeName()
 	{
@@ -118,7 +132,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the crafting succes rate when using the L2RecipeList.<BR><BR>
+	 * Return the crafting success rate when using the L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public int getSuccessRate()
 	{
@@ -127,6 +142,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the crafting MP cost of this L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public int getMpCost()
 	{
@@ -134,7 +150,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return rue if the Item crafted with this L2RecipeList is consubable (shot, arrow,...).<BR><BR>
+	 * Return rue if the Item crafted with this L2RecipeList is consumable (shot, arrow,...).<BR><BR>
+	 * @return 
 	 */
 	public boolean isConsumable()
 	{
@@ -147,6 +164,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the Identifier of the Item crafted with this L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public int getItemId()
 	{
@@ -155,6 +173,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the quantity of Item crafted when using this L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public int getCount()
 	{
@@ -163,6 +182,7 @@ public class L2RecipeList
 
 	/**
 	 * Return <B>true</B> if this a Dwarven recipe or <B>false</B> if its a Common recipe
+	 * @return 
 	 */
 	public boolean isDwarvenRecipe()
 	{
@@ -171,6 +191,7 @@ public class L2RecipeList
 
 	/**
 	 * Return the table containing all L2RecipeInstance (1 line of the recipe : Item-Quantity needed) of the L2RecipeList.<BR><BR>
+	 * @return 
 	 */
 	public L2RecipeInstance[] getRecipes()
 	{

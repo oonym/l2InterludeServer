@@ -49,10 +49,7 @@ public final class RequestRefine extends L2GameClientPacket
 		_gemstoneItemObjId = readD();
 		_gemstoneCount = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -232,10 +229,7 @@ public final class RequestRefine extends L2GameClientPacket
 		itemId -= 8722;
 		return itemId;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

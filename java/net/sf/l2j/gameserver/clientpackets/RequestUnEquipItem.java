@@ -44,7 +44,6 @@ public class RequestUnEquipItem extends L2GameClientPacket
 	/**
 	 * packet type id 0x11
 	 * format:		cd
-	 * @param decrypt
 	 */
 	@Override
 	protected void readImpl()
@@ -130,10 +129,7 @@ public class RequestUnEquipItem extends L2GameClientPacket
             sm = null;
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

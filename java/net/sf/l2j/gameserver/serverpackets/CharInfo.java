@@ -65,7 +65,7 @@ public class CharInfo extends L2GameServerPacket
     private int _maxCp;
 
 	/**
-	 * @param _characters
+	 * @param cha 
 	 */
     public CharInfo(L2PcInstance cha)
     {
@@ -349,10 +349,7 @@ public class CharInfo extends L2GameServerPacket
 	        	writeD(0x00);
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

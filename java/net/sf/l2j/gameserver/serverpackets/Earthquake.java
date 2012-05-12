@@ -20,7 +20,6 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * format   dddddd
- *
  */
 public class Earthquake extends L2GameServerPacket
 {
@@ -30,9 +29,13 @@ public class Earthquake extends L2GameServerPacket
 	private int _z;
 	private int _intensity;
     private int _duration;
-
+    
 	/**
-	 * @param
+	 * @param x 
+	 * @param y 
+	 * @param z 
+	 * @param intensity 
+	 * @param duration 
 	 */
 	public Earthquake(int x, int y, int z, int intensity, int duration)
 	{
@@ -42,7 +45,7 @@ public class Earthquake extends L2GameServerPacket
 		_intensity = intensity;
 		_duration = duration;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -54,10 +57,7 @@ public class Earthquake extends L2GameServerPacket
 		writeD(_duration);
 		writeD(0x00);       // Unknown
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

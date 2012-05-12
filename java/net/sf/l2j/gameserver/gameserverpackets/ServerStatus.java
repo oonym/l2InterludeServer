@@ -18,12 +18,10 @@
  */
 package net.sf.l2j.gameserver.gameserverpackets;
 
-import java.io.IOException;
 import java.util.Vector;
 
 /**
  * @author -Wooden-
- *
  */
 public class ServerStatus extends GameServerBasePacket
 {
@@ -68,12 +66,9 @@ public class ServerStatus extends GameServerBasePacket
     {
         _attributes.add(new Attribute(id, value));
     }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-     */
+    
     @Override
-    public byte[] getContent() throws IOException
+    public byte[] getContent()
     {
         writeC(0x06);
         writeD(_attributes.size());
@@ -84,8 +79,6 @@ public class ServerStatus extends GameServerBasePacket
             writeD(temp.id);
             writeD(temp.value);
         }
-
         return getBytes();
     }
-
 }

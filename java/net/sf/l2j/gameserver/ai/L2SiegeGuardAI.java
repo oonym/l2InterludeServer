@@ -43,14 +43,10 @@ import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.util.Rnd;
 
 /**
- * This class manages AI of L2Attackable.<BR><BR>
- *
+ * This class manages AI of L2Attackable.
  */
 public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 {
-
-    //protected static final Logger _log = Logger.getLogger(L2SiegeGuardAI.class.getName());
-
     private static final int MAX_ATTACK_TIMEOUT = 300; // int ticks, i.e. 30 seconds
 
     /** The L2Attackable AI task executed every 1s (call onEvtThink method)*/
@@ -121,7 +117,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
      * <li>The actor is Aggressive</li><BR><BR>
      *
      * @param target The targeted L2Object
-     *
+     * @return 
      */
     private boolean autoAttackCondition(L2Character target)
     {
@@ -673,9 +669,8 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
      * <li>Add the target to the actor _aggroList or update hate if already present </li>
      * <li>Set the actor Intention to AI_INTENTION_ATTACK (if actor is L2GuardInstance check if it isn't too far from its home location)</li><BR><BR>
      *
-     * @param attacker The L2Character that attacks
+     * @param target The L2Character that attacks
      * @param aggro The value of hate to add to the actor against the target
-     *
      */
     @Override
 	protected void onEvtAggression(L2Character target, int aggro)

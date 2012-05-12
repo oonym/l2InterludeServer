@@ -41,11 +41,11 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public final class L2ClassMasterInstance extends L2FolkInstance
 {
-	//private static Logger _log = Logger.getLogger(L2ClassMasterInstance.class.getName());
 	private static final int[] SECONDN_CLASS_IDS = {2,3,5,6,9,8,12,13,14,16,17,20,21,23,24,27,
 													28,30,33,34,36,37,40,41,43,46,48,51,52,55,57};
 
 	/**
+	 * @param objectId 
 	 * @param template
 	 */
 	public L2ClassMasterInstance(int objectId, L2NpcTemplate template)

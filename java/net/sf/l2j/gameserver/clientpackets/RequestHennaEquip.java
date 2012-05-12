@@ -35,14 +35,12 @@ import net.sf.l2j.gameserver.templates.L2Henna;
 public final class RequestHennaEquip extends L2GameClientPacket
 {
 	private static final String _C__BC_RequestHennaEquip = "[C] bc RequestHennaEquip";
-	//private static Logger _log = Logger.getLogger(RequestHennaEquip.class.getName());
 	private int _symbolId;
 	// format  cd
 
 	/**
 	 * packet type id 0xbb
 	 * format:		cd
-	 * @param decrypt
 	 */
 	@Override
 	protected void readImpl()
@@ -96,10 +94,7 @@ public final class RequestHennaEquip extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_DRAW_SYMBOL));
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

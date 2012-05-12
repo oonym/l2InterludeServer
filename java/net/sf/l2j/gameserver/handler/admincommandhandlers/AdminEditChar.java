@@ -441,6 +441,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	/**
 	 * @param activeChar
 	 * @param player
+	 * @param filename 
 	 */
 	private void gatherCharacterInfo(L2PcInstance activeChar, L2PcInstance player, String filename)
 	{

@@ -46,11 +46,15 @@ public class Post
 		public String postTxt;
 	}
 	private List<CPost> _post;
+	
 	/**
-	 * @param restore
-	 * @param t
+	 * @param _PostOwner
+	 * @param _PostOwnerID
+	 * @param date
+	 * @param tid
+	 * @param _PostForumID
+	 * @param txt
 	 */
-	//public enum ConstructorType {REPLY, CREATE };
 	public Post(String _PostOwner,int _PostOwnerID,long date,int tid,int _PostForumID,String txt)
 	{
 			_post = new FastList<CPost>();

@@ -118,8 +118,11 @@ public class Auction
             } catch (Throwable t) { }
         }
     }
-    /** Constructor */
-
+    
+    /**
+     * Constructor
+     * @param auctionId 
+     */
 	public Auction(int auctionId)
 	{
 		_id = auctionId;
@@ -247,7 +250,11 @@ public class Auction
         }
         finally {try { con.close(); } catch (Exception e) {}}
     }
-    /** Set a bid */
+    /**
+     * Set a bid 
+     * @param bidder 
+     * @param bid
+     */
 	public void setBid(L2PcInstance bidder, int bid)
 	{
 	    int requiredAdena = bid;
@@ -265,14 +272,26 @@ public class Auction
 	    }
 		bidder.sendMessage("Invalid bid!");
 	}
-	/** Return Item in WHC */
+	/**
+	 * Return Item in WHC 
+	 * @param Clan 
+	 * @param itemId 
+	 * @param quantity 
+	 * @param penalty
+	 */
 	private void returnItem(String Clan, int itemId, int quantity, boolean penalty)
 	{
         if (penalty)
             quantity *= 0.9; //take 10% tax fee if needed
         ClanTable.getInstance().getClanByName(Clan).getWarehouse().addItem("Outbidded", _adenaId, quantity, null, null);
 	}
-	/** Take Item in WHC */
+	/**
+	 * Take Item in WHC 
+	 * @param bidder 
+	 * @param itemId 
+	 * @param quantity 
+	 * @return
+	 */
 	private boolean takeItem(L2PcInstance bidder, int itemId, int quantity)
 	{
     	if (bidder.getClan() != null && bidder.getClan().getWarehouse().getAdena() >= quantity)
@@ -283,7 +302,11 @@ public class Auction
 		bidder.sendMessage("You do not have enough adena");
         return false;
 	}
-	/** Update auction in DB */
+	/**
+	 * Update auction in DB 
+	 * @param bidder 
+	 * @param bid
+	 */
 	private void updateInDB(L2PcInstance bidder, int bid)
 	{
 		java.sql.Connection con = null;
@@ -377,7 +400,7 @@ public class Auction
         }
         _bidders.clear();
     }
-    /** Remove auctions */
+    /** Remove auction */
     public void deleteAuctionFromDB()
     {
         AuctionManager.getInstance().getAuctions().remove(this);
@@ -433,7 +456,10 @@ public class Auction
             ThreadPoolManager.getInstance().scheduleGeneral(new AutoEndTask(), 3000);
     	}
     }
-    /** Cancel bid */
+    /**
+     * Cancel bid 
+     * @param bidder
+     */
     public void cancelBid(int bidder)
     {
         java.sql.Connection con = null;
@@ -501,7 +527,7 @@ public class Auction
         }
         finally {try { con.close(); } catch (Exception e) {}}
     }
-    /** Get var auction */
+    
 	public final int getId() { return _id; }
 	public final int getCurrentBid() { return _currentBid; }
 	public final long getEndDate() { return _endDate; }
@@ -517,5 +543,6 @@ public class Auction
 	public final String getSellerName() { return _sellerName; }
     public final String getSellerClanName() { return _sellerClanName; }
 	public final int getStartingBid() { return _startingBid; }
-    public final Map<Integer, Bidder> getBidders(){ return _bidders; };
+    public final Map<Integer, Bidder> getBidders(){ return _bidders;
+    }
 }

@@ -42,20 +42,14 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 		_ctrlPressed = readD();
 		_shiftPressed = readC();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
 		// TODO: remove me
 		System.out.println("C6: RequestExMagicSkillUseGround. x: "+_x+" y: "+_y+" z: "+_z+" skill: "+_skillId+" crtl: "+_ctrlPressed+" shift: "+_shiftPressed);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

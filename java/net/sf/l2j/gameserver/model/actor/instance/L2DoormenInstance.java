@@ -45,6 +45,7 @@ public class L2DoormenInstance extends L2FolkInstance
     private static int COND_HALL_OWNER = 3;
 
     /**
+     * @param objectID 
      * @param template
      */
     public L2DoormenInstance(int objectID, L2NpcTemplate template)

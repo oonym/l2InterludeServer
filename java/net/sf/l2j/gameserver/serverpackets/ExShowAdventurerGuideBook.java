@@ -24,24 +24,17 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExShowAdventurerGuideBook extends L2GameServerPacket
 {
 	private static final String _S__FE_37_EXSHOWADVENTURERGUIDEBOOK = "[S] FE:37 ExShowAdventurerGuideBook";
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xFE);
 		writeH(0x37);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_37_EXSHOWADVENTURERGUIDEBOOK;
 	}
-
 }

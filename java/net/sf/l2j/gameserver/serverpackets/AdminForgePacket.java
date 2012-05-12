@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * This class is made to create packets with any format
  * @author Maktakien
- *
  */
 public class AdminForgePacket extends L2GameServerPacket
 {
@@ -47,10 +46,7 @@ public class AdminForgePacket extends L2GameServerPacket
 	{
 
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -60,10 +56,7 @@ public class AdminForgePacket extends L2GameServerPacket
 		}
 
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
@@ -72,10 +65,10 @@ public class AdminForgePacket extends L2GameServerPacket
 	/**
 	 * @param b
 	 * @param string
+	 * @return 
 	 */
 	public boolean generate(byte b, String string)
 	{
-		// TODO Auto-generated method stub
 		if((b == 'C')||(b == 'c'))
 		{
 			writeC(Integer.decode(string));
@@ -113,5 +106,4 @@ public class AdminForgePacket extends L2GameServerPacket
 	{
 		_parts.add(new Part(b, string));
 	}
-
 }

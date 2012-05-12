@@ -35,7 +35,6 @@ import net.sf.l2j.gameserver.serverpackets.ShowBoard;
 
 public class PostBBSManager extends BaseBBSManager
 {
-
 	private Map<Topic,Post> _postByTopic;
 	private static PostBBSManager _instance;
 	public static PostBBSManager getInstance()
@@ -135,7 +134,7 @@ public class PostBBSManager extends BaseBBSManager
 	}
 	/**
 	 * @param topic
-	 * @param forumByID
+	 * @param forum 
 	 * @param activeChar
 	 * @param idp
 	 */
@@ -156,11 +155,10 @@ public class PostBBSManager extends BaseBBSManager
 	}
 
 	/**
-	 * @param posttByTopic
-	 * @param forumByID
+	 * @param topic 
+	 * @param forum 
 	 * @param activeChar
 	 * @param ind
-	 * @param idf
 	 */
 	private void showPost(Topic topic, Forum forum, L2PcInstance activeChar, int ind)
 	{

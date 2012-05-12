@@ -56,6 +56,10 @@ public class QuestStateManager
     // Method - Public
     /**
      * Add QuestState for the specified player instance
+     * @param quest 
+     * @param player 
+     * @param state 
+     * @param completed 
      */
     public void addQuestState(Quest quest, L2PcInstance player, State state, boolean completed)
     {
@@ -83,6 +87,7 @@ public class QuestStateManager
     // Method - Private
     /**
      * Remove QuestState instance
+     * @param qs 
      */
     private void removeQuestState(QuestState qs)
     {
@@ -100,6 +105,8 @@ public class QuestStateManager
 
     /**
      * Return QuestState for specified player instance
+     * @param player 
+     * @return 
      */
     public QuestState getQuestState(L2PcInstance player)
     {
@@ -115,6 +122,7 @@ public class QuestStateManager
 
     /**
      * Return all QuestState
+     * @return 
      */
     public List<QuestState> getQuestStates()
     {

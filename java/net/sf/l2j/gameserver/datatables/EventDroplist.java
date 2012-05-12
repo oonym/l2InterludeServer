@@ -28,7 +28,7 @@ import net.sf.l2j.gameserver.script.DateRange;
  * This class manage drop of Special Events created by GM for a defined period.
  * During a Special Event all L2Attackable can drop extra Items.
  * Those extra Items are defined in the table <B>allNpcDateDrops</B>.
- * Each Special Event has a start and end date to stop to drop extra Items automaticaly.<BR><BR>
+ * Each Special Event has a start and end date to stop to drop extra Items automatically.<BR><BR>
  */
 
 public class EventDroplist
@@ -105,7 +105,7 @@ public class EventDroplist
 	}
 
 	/**
-	 * Return all DateDrop of EventDroplist allNpcDateDrops within the date range.<BR><BR>
+	 * @return all DateDrop of EventDroplist allNpcDateDrops within the date range.
 	 */
 	public List<DateDrop> getAllDrops()
 	{

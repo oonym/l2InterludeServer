@@ -143,8 +143,12 @@ public class AuctionManager
     {
         return _auctions;
     }
-    /** Init Clan NPC aution */
-	public void initNPC(int id){
+    /**
+     * Init Clan NPC auction 
+     * @param id 
+     */
+	public void initNPC(int id)
+	{
         java.sql.Connection con = null;
         int i = 0;
         for(i=0;i<ItemInitDataId.length;i++)

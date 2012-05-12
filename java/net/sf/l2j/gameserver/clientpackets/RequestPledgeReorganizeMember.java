@@ -46,10 +46,7 @@ public final class RequestPledgeReorganizeMember extends L2GameClientPacket
 		_newPledgeType = readD();
 		_unk2 = readS();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
@@ -66,14 +63,10 @@ public final class RequestPledgeReorganizeMember extends L2GameClientPacket
 		  member.setPledgeType(_newPledgeType);
 		  clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(member));
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_24_REQUESTPLEDGEREORGANIZEMEMBER;
 	}
-
 }

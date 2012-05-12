@@ -25,7 +25,6 @@ import net.sf.l2j.gameserver.model.Location;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
  * @author  -Nemesiss-
  */
 public class GeoData
@@ -102,7 +101,7 @@ public class GeoData
         return (Math.abs(target.getZ() - cha.getZ()) < 1000);
     }
     /**
-     * @param cha
+     * @param gm 
      * @param target
      * @return True if cha can see target (LOS) and send usful info to PC
      */

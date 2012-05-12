@@ -32,23 +32,16 @@ public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 	{
 		_unk = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
 		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: "+_unk);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_26_REQUESTMPCCSHOWPARTYMEMBERINFO;
 	}
-
 }

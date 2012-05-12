@@ -330,7 +330,7 @@ public class AugmentationData
 	 * Generate a new random augmentation
 	 * @param item
 	 * @param lifeStoneLevel
-	 * @param lifeSoneGrade
+	 * @param lifeStoneGrade 
 	 * @return L2Augmentation
 	 */
 	public L2Augmentation generateRandomAugmentation(L2ItemInstance item, int lifeStoneLevel, int lifeStoneGrade)

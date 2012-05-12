@@ -25,12 +25,12 @@ public class ExDuelEnd extends L2GameServerPacket
 {
 	private static final String _S__FE_4E_EXDUELEND = "[S] FE:4E ExDuelEnd";
 	private int _unk1;
-
+	
 	public ExDuelEnd(int unk1)
 	{
 		_unk1 = unk1;
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -39,14 +39,10 @@ public class ExDuelEnd extends L2GameServerPacket
 
 		writeD(_unk1);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_4E_EXDUELEND;
 	}
-
 }

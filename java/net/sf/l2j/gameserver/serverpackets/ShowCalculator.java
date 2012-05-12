@@ -30,24 +30,22 @@ public class ShowCalculator extends L2GameServerPacket
 {
 	private static final String _S__DC_SHOWCALCULATOR = "[S] dc ShowCalculator";
 	private int _calculatorId;
-
+	
 	/**
+	 * @param calculatorId 
 	 */
 	public ShowCalculator(int calculatorId)
 	{
 		_calculatorId = calculatorId;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xdc);
 		writeD(_calculatorId);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

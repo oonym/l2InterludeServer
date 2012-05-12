@@ -36,12 +36,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 	private int _refinerItemObjId;
 	private int _gemstoneItemObjId;
 	private int _gemstoneCount;
-
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
@@ -50,10 +45,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 		_gemstoneItemObjId = readD();
 		_gemstoneCount= readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -110,14 +102,10 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 		activeChar.sendPacket(new ExConfirmVariationGemstone(_gemstoneItemObjId, _gemstoneCount));
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.PRESS_THE_AUGMENT_BUTTON_TO_BEGIN));
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_2B_REQUESTCONFIRMGEMSTONE;
 	}
-
 }

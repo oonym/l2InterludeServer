@@ -85,7 +85,6 @@ public class PcKnownList extends PlayableKnownList
      * <li> Send Server->Client packet MoveToPawn/CharMoveToLocation and AutoAttackStart to the L2PcInstance </li><BR><BR>
      *
      * @param object The L2Object to add to _knownObjects and _knownPlayer
-     * @param dropper The L2Character who dropped the L2Object
      */
     @Override
 	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }

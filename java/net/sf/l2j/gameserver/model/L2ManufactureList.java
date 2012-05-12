@@ -55,7 +55,7 @@ public class L2ManufactureList
     }
 
     /**
-     * @param _manufactureStoreName The _manufactureStoreName to set.
+     * @param manufactureStoreName The _manufactureStoreName to set.
      */
     public void setStoreName(String manufactureStoreName)
     {

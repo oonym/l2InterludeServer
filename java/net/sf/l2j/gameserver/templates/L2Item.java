@@ -289,6 +289,7 @@ public abstract class L2Item
 
     /**
      * Returns the quantity of crystals for crystallization on specific enchant level
+     * @param enchantLevel 
      * @return int
      */
     public final int getCrystalCount(int enchantLevel)

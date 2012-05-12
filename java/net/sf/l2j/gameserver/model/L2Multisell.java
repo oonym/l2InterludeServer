@@ -101,8 +101,11 @@ public class L2Multisell
      * 		* If false, then any level ingredient will be considered equal and product will always
      * 		  be at +0
      * 3) apply taxes: Uses the "taxIngredient" entry in order to add a certain amount of adena to the ingredients
-     *
-     * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#runImpl()
+     * @param listId 
+     * @param inventoryOnly 
+     * @param player 
+     * @param taxRate 
+     * @return 
      */
     private MultiSellListContainer generateMultiSell(int listId, boolean inventoryOnly, L2PcInstance player, double taxRate)
     {
@@ -290,7 +293,7 @@ public class L2Multisell
         }
 
         /**
-         * @param ingredients The ingredients to set.
+         * @param ingredient 
          */
         public void addIngredient(MultiSellIngredient ingredient)
         {
@@ -366,7 +369,7 @@ public class L2Multisell
         }
 
         /**
-         * @param itemCount The itemCount to set.
+         * @param enchantmentLevel 
          */
         public void setEnchantmentLevel(int enchantmentLevel)
         {

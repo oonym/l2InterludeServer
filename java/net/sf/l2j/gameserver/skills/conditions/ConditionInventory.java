@@ -20,16 +20,14 @@ package net.sf.l2j.gameserver.skills.conditions;
 
 import net.sf.l2j.gameserver.skills.Env;
 
-
-
 /**
  * @author mkizub
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class ConditionInventory extends Condition implements ConditionListener {
-
+public abstract class ConditionInventory extends Condition
+{
 	protected final int _slot;
 
 	public ConditionInventory(int slot)

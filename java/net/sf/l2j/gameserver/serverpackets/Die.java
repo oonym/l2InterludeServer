@@ -48,7 +48,7 @@ public class Die extends L2GameServerPacket
     L2Character _activeChar;
 
     /**
-     * @param _characters
+     * @param cha 
      */
     public Die(L2Character cha)
     {
@@ -115,10 +115,7 @@ public class Die extends L2GameServerPacket
         writeD(_sweepable ? 0x01 : 0x00);                               // sweepable  (blue glow)
         writeD(_access >= REQUIRED_LEVEL? 0x01: 0x00);                  // 6d 04 00 00 00 - to FIXED
     }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-     */
+    
     @Override
 	public String getType()
     {

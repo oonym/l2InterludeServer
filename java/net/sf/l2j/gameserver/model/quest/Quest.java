@@ -48,10 +48,8 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Rnd;
 
-
 /**
  * @author Luis Arias
- *
  */
 public abstract class Quest
 {
@@ -118,7 +116,7 @@ public abstract class Quest
 	 */
 	protected void init_LoadGlobalData()
 	{
-		;
+		
 	}
 	
 	/**
@@ -129,7 +127,7 @@ public abstract class Quest
 	 */
 	public void saveGlobalData()
 	{
-		;
+		
 	}
 
 	public static enum QuestEventType 
@@ -229,10 +227,10 @@ public abstract class Quest
     
     /**
      * Add a timer to the quest, if it doesn't exist already
-     * @param name: name of the timer (also passed back as "event" in onAdvEvent)
-     * @param time: time in ms for when to fire the timer
-     * @param npc:  npc associated with this timer (can be null)
-     * @param player: player associated with this timer (can be null)
+     * @param name name of the timer (also passed back as "event" in onAdvEvent)
+     * @param time time in ms for when to fire the timer
+     * @param npc  npc associated with this timer (can be null)
+     * @param player player associated with this timer (can be null)
      */
     public void startQuestTimer(String name, long time, L2NpcInstance npc, L2PcInstance player)
     {
@@ -386,11 +384,12 @@ public abstract class Quest
 	 * <LI><U>"res" ends with string ".html" :</U> an HTML is opened in order to be shown in a dialog box</LI>
 	 * <LI><U>"res" starts with "<html>" :</U> the message hold in "res" is shown in a dialog box</LI>
 	 * <LI><U>otherwise :</U> the message hold in "res" is shown in chat box</LI>
-	 * @param qs : QuestState 
+	 * @param player 
 	 * @param res : String pointing out the message to show at the player
 	 * @return boolean
 	 */
-	private boolean showResult(L2PcInstance player, String res) {
+	private boolean showResult(L2PcInstance player, String res)
+	{
 		if (res == null)
 			return true;
 		if (res.endsWith(".htm")) {
@@ -848,11 +847,11 @@ public abstract class Quest
     }
 
     /**
-     * Auxilary function for party quests. 
+     * Auxiliary function for party quests. 
      * Note: This function is only here because of how commonly it may be used by quest developers.
      * For any variations on this function, the quest script can always handle things on its own
-     * @param player: the instance of a player whose party is to be searched
-     * @param value: the value of the "cond" variable that must be matched
+     * @param player the instance of a player whose party is to be searched
+     * @param value the value of the "cond" variable that must be matched
      * @return L2PcInstance: L2PcInstance for a random party member that matches the specified 
      * 			condition, or null if no match.
      */
@@ -862,11 +861,12 @@ public abstract class Quest
     }
 
     /**
-     * Auxilary function for party quests. 
+     * Auxiliary function for party quests. 
      * Note: This function is only here because of how commonly it may be used by quest developers.
      * For any variations on this function, the quest script can always handle things on its own
-     * @param player: the instance of a player whose party is to be searched
-     * @param var/value: a tuple specifying a quest condition that must be satisfied for
+     * @param player the instance of a player whose party is to be searched
+     * @param var 
+     * @param value 
      *     a party member to be considered.
      * @return L2PcInstance: L2PcInstance for a random party member that matches the specified 
      * 				condition, or null if no match.  If the var is null, any random party 
@@ -922,11 +922,11 @@ public abstract class Quest
     }
 
     /**
-     * Auxilary function for party quests. 
+     * Auxiliary function for party quests. 
      * Note: This function is only here because of how commonly it may be used by quest developers.
      * For any variations on this function, the quest script can always handle things on its own
-     * @param player: the instance of a player whose party is to be searched
-     * @param state: the state in which the party member's queststate must be in order to be considered.
+     * @param player the instance of a player whose party is to be searched
+     * @param state the state in which the party member's queststate must be in order to be considered.
      * @return L2PcInstance: L2PcInstance for a random party member that matches the specified 
      * 				condition, or null if no match.  If the var is null, any random party 
      * 				member is returned (i.e. no condition is applied).
@@ -978,6 +978,7 @@ public abstract class Quest
 
 	/**
 	 * Show HTML file to client
+	 * @param player 
 	 * @param fileName
 	 * @return String : message sent to client 
 	 */
@@ -1029,6 +1030,9 @@ public abstract class Quest
     /**
      * Add a temporary (quest) spawn
      * Return instance of newly spawned npc
+     * @param npcId 
+     * @param cha 
+     * @return 
      */
 	public L2NpcInstance addSpawn(int npcId, L2Character cha)
 	{

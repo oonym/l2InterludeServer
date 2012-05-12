@@ -354,7 +354,9 @@ public abstract class L2Effect
         }
     }
 
-    /** returns effect type */
+    /**
+     * @return the effect type
+     */
     public abstract EffectType getEffectType();
 
     /** Notify started */
@@ -371,7 +373,9 @@ public abstract class L2Effect
         if (_abnormalEffect != 0) getEffected().stopAbnormalEffect(_abnormalEffect);
     }
 
-    /** Return true for continueation of this effect */
+    /**
+     * @return {@code true} for the continuation of this effect
+     */
     public abstract boolean onActionTime();
 
     public final void rescheduleEffect()

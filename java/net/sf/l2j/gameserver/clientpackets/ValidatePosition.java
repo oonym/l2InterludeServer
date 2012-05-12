@@ -39,8 +39,14 @@ public class ValidatePosition extends L2GameClientPacket
     private static Logger _log = Logger.getLogger(ValidatePosition.class.getName());
     private static final String _C__48_VALIDATEPOSITION = "[C] 48 ValidatePosition";
 
-    /** urgent messages, execute immediatly */
-    public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
+    /**
+     * Urgent messages, execute immediately.
+     * @return 
+     */
+    public TaskPriority getPriority()
+    {
+    	return TaskPriority.PR_HIGH;
+    }
 
     private int _x;
     private int _y;

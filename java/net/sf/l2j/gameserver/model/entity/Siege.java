@@ -513,13 +513,23 @@ public class Siege
         loadSiegeClan();
     }
 
-    /** Return true if object is inside the zone */
+    /**
+     * Return true if object is inside the zone 
+     * @param object 
+     * @return
+     */
     public boolean checkIfInZone(L2Object object)
     {
         return checkIfInZone(object.getX(), object.getY(), object.getZ());
     }
 
-    /** Return true if object is inside the zone */
+    /**
+     * Return true if object is inside the zone 
+     * @param x 
+     * @param y 
+     * @param z 
+     * @return
+     */
     public boolean checkIfInZone(int x, int y, int z)
     {
         return (getIsInProgress() && (getCastle().checkIfInZone(x, y, z))); // Castle zone during siege
@@ -528,6 +538,7 @@ public class Siege
     /**
      * Return true if clan is attacker<BR><BR>
      * @param clan The L2Clan of the player
+     * @return 
      */
     public boolean checkIsAttacker(L2Clan clan)
     {
@@ -537,6 +548,7 @@ public class Siege
     /**
      * Return true if clan is defender<BR><BR>
      * @param clan The L2Clan of the player
+     * @return 
      */
     public boolean checkIsDefender(L2Clan clan)
     {
@@ -546,6 +558,7 @@ public class Siege
     /**
      * Return true if clan is defender waiting approval<BR><BR>
      * @param clan The L2Clan of the player
+     * @return 
      */
     public boolean checkIsDefenderWaiting(L2Clan clan)
     {
@@ -624,7 +637,10 @@ public class Siege
         }
     }
 
-    /** Return list of L2PcInstance registered as attacker in the zone. */
+    /**
+     * Return list of L2PcInstance registered as attacker in the zone. 
+     * @return
+     */
     public List<L2PcInstance> getAttackersInZone()
     {
     	List<L2PcInstance> players = new FastList<L2PcInstance>();
@@ -640,7 +656,10 @@ public class Siege
     	return players;
     }
 
-    /** Return list of L2PcInstance registered as defender but not owner in the zone. */
+    /**
+     * Return list of L2PcInstance registered as defender but not owner in the zone. 
+     * @return
+     */
     public List<L2PcInstance> getDefendersButNotOwnersInZone()
     {
         List<L2PcInstance> players = new FastList<L2PcInstance>();
@@ -657,13 +676,19 @@ public class Siege
     	return players;
     }
 
-    /** Return list of L2PcInstance in the zone. */
+    /**
+     * Return list of L2PcInstance in the zone. 
+     * @return
+     */
     public List<L2PcInstance> getPlayersInZone()
     {
         return getCastle().getZone().getAllPlayers();
     }
 
-    /** Return list of L2PcInstance owning the castle in the zone. */
+    /**
+     * Return list of L2PcInstance owning the castle in the zone. 
+     * @return
+     */
     public List<L2PcInstance> getOwnersInZone()
     {
         List<L2PcInstance> players = new FastList<L2PcInstance>();
@@ -680,7 +705,10 @@ public class Siege
     	return players;
     }
 
-    /** Return list of L2PcInstance not registered as attacker or defender in the zone. */
+    /**
+     * Return list of L2PcInstance not registered as attacker or defender in the zone. 
+     * @return
+     */
     public List<L2PcInstance> getSpectatorsInZone()
     {
         List<L2PcInstance> players = new FastList<L2PcInstance>();
@@ -696,13 +724,19 @@ public class Siege
        return players;
     }
 
-    /** Control Tower was skilled */
+    /**
+     * Control Tower was skilled 
+     * @param ct
+     */
     public void killedCT(L2NpcInstance ct)
     {
         _defenderRespawnDelayPenalty += SiegeManager.getInstance().getControlTowerLosePenalty(); // Add respawn penalty to defenders for each control tower lose
     }
 
-    /** Remove the flag that was killed */
+    /**
+     * Remove the flag that was killed
+     * @param flag 
+     */
     public void killedFlag(L2NpcInstance flag)
     {
         if (flag == null) return;
@@ -712,7 +746,10 @@ public class Siege
         }
     }
 
-    /** Display list of registered clans */
+    /**
+     * Display list of registered clans
+     * @param player 
+     */
     public void listRegisterClan(L2PcInstance player)
     {
         player.sendPacket(new SiegeInfo(getCastle()));
@@ -798,7 +835,7 @@ public class Siege
 
     /**
      * Remove clan from siege<BR><BR>
-     * @param player The L2PcInstance of player/clan being removed
+     * @param clan 
      */
     public void removeSiegeClan(L2Clan clan)
     {
@@ -840,9 +877,10 @@ public class Siege
 
     /**
      * Teleport players
+     * @param teleportWho 
+     * @param teleportWhere 
      */
-    public void teleportPlayer(TeleportWhoType teleportWho,
-                               MapRegionTable.TeleportWhereType teleportWhere)
+    public void teleportPlayer(TeleportWhoType teleportWho, MapRegionTable.TeleportWhereType teleportWhere)
     {
         List<L2PcInstance> players;
         switch (teleportWho)
@@ -862,7 +900,6 @@ public class Siege
             default:
                 players = getPlayersInZone();
         }
-        ;
 
         for (L2PcInstance player : players)
         {
@@ -913,6 +950,7 @@ public class Siege
     /**
      * Return true if the player can register.<BR><BR>
      * @param player The L2PcInstance of the player trying to register
+     * @return 
      */
     private boolean checkIfCanRegister(L2PcInstance player)
     {
@@ -934,7 +972,6 @@ public class Siege
 
     /**
      * Return the correct siege date as Calendar.<BR><BR>
-     * @param siegeDate The Calendar siege date and time
      */
     private void correctSiegeDateTime()
     {
@@ -1110,6 +1147,7 @@ public class Siege
      * Save registration to database.<BR><BR>
      * @param clan The L2Clan of player
      * @param typeId -1 = owner 0 = defender, 1 = attacker, 2 = defender waiting
+     * @param isUpdateRegistration 
      */
     private void saveSiegeClan(L2Clan clan, int typeId, boolean isUpdateRegistration)
     {
@@ -1198,10 +1236,13 @@ public class Siege
         _isRegistrationOver = false; // Allow registration for next siege
     }
 
-    /** Spawn artifact. */
+    /**
+     * Spawn artifact. 
+     * @param Id
+     */
     private void spawnArtifact(int Id)
     {
-        //Set artefact array size if one does not exist
+        //Set artifact array size if one does not exist
         if (_artifacts == null)
             _artifacts = new FastList<L2ArtefactInstance>();
 
@@ -1218,7 +1259,10 @@ public class Siege
         }
     }
 
-    /** Spawn control tower. */
+    /**
+     * Spawn control tower. 
+     * @param Id
+     */
     private void spawnControlTower(int Id)
     {
         //Set control tower array size if one does not exist

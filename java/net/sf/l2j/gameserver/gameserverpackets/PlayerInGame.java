@@ -18,13 +18,10 @@
  */
 package net.sf.l2j.gameserver.gameserverpackets;
 
-import java.io.IOException;
-
 import javolution.util.FastList;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerInGame extends GameServerBasePacket
 {
@@ -42,14 +39,10 @@ public class PlayerInGame extends GameServerBasePacket
 		for(String pc : players)
 			writeS(pc);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

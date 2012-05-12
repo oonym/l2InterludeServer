@@ -32,7 +32,7 @@ import net.sf.l2j.gameserver.serverpackets.GetItem;
 
 
 /**
- * Mother class of all objects in the world wich ones is it possible
+ * Mother class of all objects in the world which ones is it possible
  * to interact (PC, NPC, Item...)<BR><BR>
  *
  * L2Object :<BR><BR>
@@ -320,10 +320,11 @@ public abstract class L2Object
     }
 
     /**
-     * Return the visibilty state of the L2Object. <BR><BR>
+     * Return the visibility state of the L2Object. <BR><BR>
      *
      * <B><U> Concept</U> :</B><BR><BR>
-     * A L2Object is visble if <B>__IsVisible</B>=true and <B>_worldregion</B>!=null <BR><BR>
+     * A L2Object is visible if <B>__IsVisible</B>=true and <B>_worldregion</B>!=null <BR><BR>
+     * @return 
      */
     public final boolean isVisible()
     {
@@ -371,6 +372,7 @@ public abstract class L2Object
 
     /**
      * returns reference to region this object is in
+     * @return 
      */
     public L2WorldRegion getWorldRegion()
     {

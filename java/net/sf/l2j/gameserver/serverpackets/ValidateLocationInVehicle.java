@@ -28,11 +28,10 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
 {
     private static final String _S__73_ValidateLocationInVehicle = "[S] 73 ValidateLocationInVehicle";
     private L2Character _activeChar;
-
-
+    
     /**
      * 0x73 ValidateLocationInVehicle         hdd
-     * @param _characters
+     * @param player 
      */
     public ValidateLocationInVehicle(L2Character player)
     {
@@ -50,10 +49,7 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
         writeD(_activeChar.getZ());
         writeD(_activeChar.getHeading());
     }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-     */
+    
     @Override
 	public String getType()
     {

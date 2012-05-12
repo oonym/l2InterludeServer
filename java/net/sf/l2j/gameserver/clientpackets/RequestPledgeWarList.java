@@ -40,10 +40,7 @@ public final class RequestPledgeWarList extends L2GameClientPacket
         _unk1 = readD();
         _tab = readD();
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
+    
     @Override
 	protected void runImpl()
     {
@@ -57,14 +54,10 @@ public final class RequestPledgeWarList extends L2GameClientPacket
         //do we need powers to do that??
         activeChar.sendPacket(new PledgeReceiveWarList(activeChar.getClan(),_tab));
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
+    
     @Override
     public String getType()
     {
         return _C__D0_1E_REQUESTPLEDGEWARLIST;
     }
-
 }

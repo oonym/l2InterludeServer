@@ -18,9 +18,10 @@
 package net.sf.l2j.util;
 
 import javolution.util.FastList;
+
 /**
- *
  * @author  Julian
+ * @param <T> 
  */
 public class L2FastList<T extends Object> extends FastList<T>
 {

@@ -34,7 +34,8 @@ public class CharSelected extends L2GameServerPacket
 	private int _sessionId;
 
 	/**
-	 * @param _characters
+	 * @param cha 
+	 * @param sessionId 
 	 */
 	public CharSelected(L2PcInstance cha, int sessionId)
 	{
@@ -78,9 +79,9 @@ public class CharSelected extends L2GameServerPacket
 		{
 			writeD(0x00);
 		}
-//		writeD(0); //c3
-//writeD(0); //c3
-//		writeD(0); //c3
+		// writeD(0); //c3
+		// writeD(0); //c3
+		// writeD(0); //c3
 
 
 		writeD(0x00);       //c3  work
@@ -106,16 +107,11 @@ public class CharSelected extends L2GameServerPacket
 		writeD(0x00);       //c3
 		writeD(0x00);       //c3
 		writeD(0x00);       //c3
-
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__21_CHARSELECTED;
 	}
-
 }

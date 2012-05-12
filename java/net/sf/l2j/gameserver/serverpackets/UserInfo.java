@@ -74,7 +74,7 @@ public class UserInfo extends L2GameServerPacket
     private float _moveMultiplier;
 
     /**
-     * @param _characters
+     * @param character 
      */
     public UserInfo(L2PcInstance character)
     {

@@ -62,7 +62,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	 * IN_GAME		- client has selected a char and is in game
 	 * @author  KenM
 	 */
-	public static enum GameClientState { CONNECTED, AUTHED, IN_GAME };
+	public static enum GameClientState
+	{
+		CONNECTED,
+		AUTHED,
+		IN_GAME
+	}
 
 	public GameClientState state;
 
@@ -186,7 +191,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		gsp.runImpl();
 	}
 
-	public L2PcInstance markToDeleteChar(int charslot) throws Exception
+	public L2PcInstance markToDeleteChar(int charslot)
 	{
 		//have to make sure active character must be nulled
 		/*if (getActiveChar() != null)
@@ -228,7 +233,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	    return null;
 	}
 
-	public L2PcInstance deleteChar(int charslot) throws Exception
+	public L2PcInstance deleteChar(int charslot)
 	{
 		//have to make sure active character must be nulled
 		/*if (getActiveChar() != null)
@@ -252,6 +257,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	/**
 	 * Save the L2PcInstance to the database.
+	 * @param cha 
 	 */
 	public static void saveCharToDisk(L2PcInstance cha)
 	{
@@ -265,7 +271,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
         }
 	}
 
-	public void markRestoredChar(int charslot) throws Exception
+	public void markRestoredChar(int charslot)
 	{
 		//have to make sure active character must be nulled
 		/*if (getActiveChar() != null)

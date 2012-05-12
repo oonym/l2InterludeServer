@@ -312,6 +312,7 @@ public final class L2WorldRegion
      * If L2Object is a L2PcInstance, Add the L2PcInstance in the L2ObjectHashSet(L2PcInstance) _allPlayable
      * containing L2PcInstance of all player in game in this L2WorldRegion <BR>
      * Assert : object.getCurrentWorldRegion() == this
+     * @param object 
      */
     public void addVisibleObject(L2Object object)
     {
@@ -335,6 +336,7 @@ public final class L2WorldRegion
      *
      * If L2Object is a L2PcInstance, remove it from the L2ObjectHashSet(L2PcInstance) _allPlayable of this L2WorldRegion <BR>
      * Assert : object.getCurrentWorldRegion() == this || object.getCurrentWorldRegion() == null
+     * @param object 
      */
     public void removeVisibleObject(L2Object object)
     {
@@ -359,6 +361,7 @@ public final class L2WorldRegion
 
     /**
      * Return the FastList _surroundingRegions containing all L2WorldRegion around the current L2WorldRegion
+     * @return 
      */
     public FastList<L2WorldRegion> getSurroundingRegions()
     {

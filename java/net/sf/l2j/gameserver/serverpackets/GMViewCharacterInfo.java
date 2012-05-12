@@ -35,7 +35,7 @@ public class GMViewCharacterInfo extends L2GameServerPacket
 	private L2PcInstance _activeChar;
 
 	/**
-	 * @param _characters
+	 * @param character 
 	 */
 	public GMViewCharacterInfo(L2PcInstance character)
 	{
@@ -213,10 +213,7 @@ public class GMViewCharacterInfo extends L2GameServerPacket
         writeD(_activeChar.getAppearance().getNameColor());
         writeD(_activeChar.getAppearance().getTitleColor());
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

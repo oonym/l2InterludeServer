@@ -61,6 +61,7 @@ public class CharKnownList extends ObjectKnownList
     /**
      * Return True if the L2PcInstance is in _knownPlayer of the L2Character.<BR><BR>
      * @param player The L2PcInstance to search in _knownPlayer
+     * @return 
      */
     public final boolean knowsThePlayer(L2PcInstance player) { return getActiveChar() == player || getKnownPlayers().containsKey(player.getObjectId()); }
 

@@ -31,10 +31,7 @@ public class ExGetBossRecord extends L2GameServerPacket
 		_unk1 = val1;
 		_unk2 = val2;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -44,14 +41,10 @@ public class ExGetBossRecord extends L2GameServerPacket
 		writeD(_unk2);
 		writeD(0x00); //list size
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_33_EXGETBOSSRECORD;
 	}
-
 }

@@ -26,9 +26,7 @@ import javolution.util.FastMap;
 import net.sf.l2j.gameserver.TaskPriority;
 
 /**
- *
  * @author -Wooden-
- *
  */
 public class AiInstance
 {
@@ -107,8 +105,7 @@ public class AiInstance
 	}
 
 	/**
-	 * @param _aiParams
-	 *
+	 * @param aiParams
 	 */
 	public void launchNextEvent(AiParameters aiParams)
 	{

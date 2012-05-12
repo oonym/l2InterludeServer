@@ -33,20 +33,13 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 {
 	private static final String _C__D0_2D_REQUESTCONFIRMCANCELITEM = "[C] D0:2D RequestConfirmCancelItem";
 	private int _itemId;
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
 		_itemId = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected
 	void runImpl()
@@ -96,14 +89,10 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 
 		activeChar.sendPacket(new ExConfirmCancelItem(_itemId, price));
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_2D_REQUESTCONFIRMCANCELITEM;
 	}
-
 }

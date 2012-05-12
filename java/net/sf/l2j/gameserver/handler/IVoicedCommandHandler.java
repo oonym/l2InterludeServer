@@ -31,6 +31,7 @@ public interface IVoicedCommandHandler
 	 * this is the worker method that is called when someone uses an admin command.
 	 * @param activeChar
 	 * @param command
+	 * @param target 
 	 * @return command success
 	 */
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target);

@@ -84,7 +84,7 @@ public class Hero
     	_heroItems.add(6619);
     	_heroItems.add(6620);
     	_heroItems.add(6621);
-    };
+    }
     
     private static Map<Integer, StatsSet> _heroes;
     private static Map<Integer, StatsSet> _completeHeroes;
@@ -424,7 +424,14 @@ public class Hero
             	}
             	finally
             	{
-            		try { con.close(); } catch (Exception e) {}
+            		try
+            		{
+            			con.close();
+            		}
+            		catch(Exception e)
+            		{
+            			
+            		}
             	}
             }
         }
@@ -548,7 +555,14 @@ public class Hero
         }
         finally
         {
-            try{con.close();}catch(SQLException e){e.printStackTrace();}
+            try
+            {
+            	con.close();
+            }
+            catch(SQLException e)
+            {
+            	e.printStackTrace();
+            }
         }
     }
 }

@@ -18,13 +18,10 @@
  */
 package net.sf.l2j.gameserver.gameserverpackets;
 
-import java.io.IOException;
-
 import net.sf.l2j.gameserver.LoginServerThread.SessionKey;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerAuthRequest extends GameServerBasePacket
 {
@@ -37,14 +34,10 @@ public class PlayerAuthRequest extends GameServerBasePacket
 		writeD(key.loginOkID1);
 		writeD(key.loginOkID2);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

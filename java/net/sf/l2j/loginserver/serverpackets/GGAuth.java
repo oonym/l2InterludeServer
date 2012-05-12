@@ -41,10 +41,7 @@ public final class GGAuth extends L2LoginServerPacket
             _log.warning("Reason Hex: "+(Integer.toHexString(response)));
         }
     }
-
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
+    
 	@Override
 	protected void write()
 	{

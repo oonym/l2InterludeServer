@@ -50,6 +50,8 @@ public class SiegeGuardManager {
     // Method - Public
     /**
      * Add guard.<BR><BR>
+     * @param activeChar 
+     * @param npcId 
      */
     public void addSiegeGuard(L2PcInstance activeChar, int npcId)
     {
@@ -59,6 +61,11 @@ public class SiegeGuardManager {
 
     /**
      * Add guard.<BR><BR>
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param heading 
+     * @param npcId 
      */
     public void addSiegeGuard(int x, int y, int z, int heading, int npcId)
     {
@@ -67,6 +74,8 @@ public class SiegeGuardManager {
 
     /**
      * Hire merc.<BR><BR>
+     * @param activeChar 
+     * @param npcId 
      */
     public void hireMerc(L2PcInstance activeChar, int npcId)
     {
@@ -76,6 +85,11 @@ public class SiegeGuardManager {
 
     /**
      * Hire merc.<BR><BR>
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param heading 
+     * @param npcId 
      */
     public void hireMerc(int x, int y, int z, int heading, int npcId)
     {
@@ -85,6 +99,10 @@ public class SiegeGuardManager {
     /**
      * Remove a single mercenary, identified by the npcId and location.
      * Presumably, this is used when a castle lord picks up a previously dropped ticket
+     * @param npcId 
+     * @param x 
+     * @param y 
+     * @param z 
      */
     public void removeMerc(int npcId, int x, int y, int z)
     {
@@ -219,6 +237,12 @@ public class SiegeGuardManager {
 
     /**
      * Save guards.<BR><BR>
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param heading 
+     * @param npcId 
+     * @param isHire 
      */
     private void saveSiegeGuard(int x, int y, int z, int heading, int npcId, int isHire)
     {

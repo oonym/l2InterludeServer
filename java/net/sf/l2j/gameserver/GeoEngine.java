@@ -44,7 +44,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class GeoEngine extends GeoData
@@ -676,7 +675,7 @@ public class GeoEngine extends GeoData
 	}
 
 	/**
-	 * @param pos
+	 * @param geo_pos 
 	 * @return Block Index: 0-255
 	 */
 	private  static int getBlock(int geo_pos)
@@ -685,7 +684,7 @@ public class GeoEngine extends GeoData
 	}
 
 	/**
-	 * @param pos
+	 * @param geo_pos 
 	 * @return Cell Index: 0-7
 	 */
 	private static int getCell(int geo_pos)
@@ -721,8 +720,8 @@ public class GeoEngine extends GeoData
 		return geo.get(index);
 	}
 	/**
-	 * @param x
-	 * @param y
+	 * @param geox 
+	 * @param geoy 
 	 * @param z
 	 * @return Nearlest Z
 	 */
@@ -793,10 +792,11 @@ public class GeoEngine extends GeoData
 	    }
 	}
 	/**
-	 * @param x
-	 * @param y
+	 * @param geox 
+	 * @param geoy 
 	 * @param zmin
 	 * @param zmax
+	 * @param spawnid 
 	 * @return Z betwen zmin and zmax
 	 */
 	private static short nGetSpawnHeight(int geox, int geoy, int zmin, int zmax, int spawnid)
@@ -976,6 +976,7 @@ public class GeoEngine extends GeoData
 	 * @param inc_x
 	 * @param inc_y
 	 * @param tz
+	 * @param debug 
 	 * @return True if Char can see target
 	 */
 	private static boolean nLOS(int x, int y, int z, int inc_x, int inc_y, int tz, boolean debug)

@@ -18,18 +18,14 @@
  */
 package net.sf.l2j.loginserver.loginserverpackets;
 
-import java.io.IOException;
-
 import net.sf.l2j.loginserver.GameServerTable;
 import net.sf.l2j.loginserver.serverpackets.ServerBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class AuthResponse extends ServerBasePacket
 {
-
 	/**
 	 * @param serverId
 	 */
@@ -39,14 +35,10 @@ public class AuthResponse extends ServerBasePacket
 		writeC(serverId);
 		writeS(GameServerTable.getInstance().getServerNameById(serverId));
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.loginserver.serverpackets.ServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

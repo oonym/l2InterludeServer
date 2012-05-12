@@ -34,24 +34,17 @@ public final class AnswerJoinPartyRoom extends L2GameClientPacket
     {
         _requesterID = readD();
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
+    
     @Override
     protected void runImpl()
     {
         // TODO
         //System.out.println("C5:AnswerJoinPartyRoom: d: "+_requesterID);
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
+    
     @Override
     public String getType()
     {
         return _C__D0_15_ANSWERJOINPARTYROOM;
     }
-
 }

@@ -50,8 +50,8 @@ final class DocumentItem extends DocumentBase
     private Map<Integer, Item> _itemData = new FastMap<Integer, Item>();
 
     /**
-     * @param armorData
-     * @param f
+     * @param pItemData 
+     * @param file 
      */
     public DocumentItem(Map<Integer, Item> pItemData, File file)
     {

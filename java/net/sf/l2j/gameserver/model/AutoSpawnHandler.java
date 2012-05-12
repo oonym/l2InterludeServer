@@ -169,24 +169,15 @@ public class AutoSpawnHandler
 
 	/**
 	 * Registers a spawn with the given parameters with the spawner, and marks
-	 * it as active. Returns a AutoSpawnInstance containing info about the
-	 * spawn.
-	 *
-	 * @param int
-	 *            npcId
-	 * @param int[][]
-	 *            spawnPoints
-	 * @param int
-	 *            initialDelay (If < 0 = default value)
-	 * @param int
-	 *            respawnDelay (If < 0 = default value)
-	 * @param int
-	 *            despawnDelay (If < 0 = default value or if = 0, function
-	 *            disabled)
+	 * it as active. Returns a AutoSpawnInstance containing info about the spawn.
+	 * @param npcId 
+	 * @param spawnPoints 
+	 * @param initialDelay If < 0 = default value
+	 * @param respawnDelay If < 0 = default value
+	 * @param despawnDelay If < 0 = default value
 	 * @return AutoSpawnInstance spawnInst
 	 */
-	public AutoSpawnInstance registerSpawn(int npcId, int[][] spawnPoints, int initialDelay, int respawnDelay,
-			int despawnDelay)
+	public AutoSpawnInstance registerSpawn(int npcId, int[][] spawnPoints, int initialDelay, int respawnDelay, int despawnDelay)
 	{
 		if (initialDelay < 0)
 			initialDelay = DEFAULT_INITIAL_SPAWN;
@@ -217,20 +208,13 @@ public class AutoSpawnHandler
 
 	/**
 	 * Registers a spawn with the given parameters with the spawner, and marks
-	 * it as active. Returns a AutoSpawnInstance containing info about the
-	 * spawn. <BR>
+	 * it as active. Returns a AutoSpawnInstance containing info about the spawn.<br>
 	 * <B>Warning:</B> Spawn locations must be specified separately using
 	 * addSpawnLocation().
-	 *
-	 * @param int
-	 *            npcId
-	 * @param int
-	 *            initialDelay (If < 0 = default value)
-	 * @param int
-	 *            respawnDelay (If < 0 = default value)
-	 * @param int
-	 *            despawnDelay (If < 0 = default value or if = 0, function
-	 *            disabled)
+	 * @param npcId 
+	 * @param initialDelay If < 0 = default value
+	 * @param respawnDelay If < 0 = default value
+	 * @param despawnDelay If < 0 = default value
 	 * @return AutoSpawnInstance spawnInst
 	 */
 	public AutoSpawnInstance registerSpawn(int npcId, int initialDelay,	int respawnDelay, int despawnDelay)
@@ -239,11 +223,8 @@ public class AutoSpawnHandler
 	}
 
 	/**
-	 * Remove a registered spawn from the list, specified by the given spawn
-	 * instance.
-	 *
-	 * @param AutoSpawnInstance
-	 *            spawnInst
+	 * Remove a registered spawn from the list, specified by the given spawn instance.
+	 * @param spawnInst 
 	 * @return boolean removedSuccessfully
 	 */
 	public boolean removeSpawn(AutoSpawnInstance spawnInst)
@@ -254,7 +235,7 @@ public class AutoSpawnHandler
 		try
 		{
 			// Try to remove from the list of registered spawns if it exists.
-			_registeredSpawns.remove(spawnInst);
+			_registeredSpawns.remove(spawnInst.getNpcId());
 
 			// Cancel the currently associated running scheduled task.
 			ScheduledFuture<?> respawnTask = _runningSpawns.remove(spawnInst._objectId);
@@ -278,10 +259,7 @@ public class AutoSpawnHandler
 	/**
 	 * Remove a registered spawn from the list, specified by the given spawn
 	 * object ID.
-	 *
-	 * @param int
-	 *            objectId
-	 * @return boolean removedSuccessfully
+	 * @param objectId 
 	 */
 	public void removeSpawn(int objectId)
 	{
@@ -290,11 +268,8 @@ public class AutoSpawnHandler
 
 	/**
 	 * Sets the active state of the specified spawn.
-	 *
-	 * @param AutoSpawnInstance
-	 *            spawnInst
-	 * @param boolean
-	 *            isActive
+	 * @param spawnInst 
+	 * @param isActive 
 	 */
 	public void setSpawnActive(AutoSpawnInstance spawnInst, boolean isActive)
 	{
@@ -336,9 +311,7 @@ public class AutoSpawnHandler
 	/**
 	 * Sets the active state of all auto spawn instances to that specified, and
 	 * cancels the scheduled spawn task if necessary.
-	 *
-	 * @param boolean
-	 *            isActive
+	 * @param isActive 
 	 */
 	public void setAllActive(boolean isActive)
 	{
@@ -352,13 +325,8 @@ public class AutoSpawnHandler
 	}
 
 	/**
-	 * Returns the number of milliseconds until the next occurrance of the given
-	 * spawn.
-	 *
-	 * @param AutoSpawnInstance
-	 *            spawnInst
-	 * @param long
-	 *            milliRemaining
+	 * @param spawnInst 
+	 * @return the number of milliseconds until the next occurrence of the given spawn.
 	 */
 	public final long getTimeToNextSpawn(AutoSpawnInstance spawnInst)
 	{
@@ -371,15 +339,10 @@ public class AutoSpawnHandler
 	}
 
 	/**
-	 * Attempts to return the AutoSpawnInstance associated with the given NPC or
-	 * Object ID type. <BR>
-	 * Note: If isObjectId == false, returns first instance for the specified
-	 * NPC ID.
-	 *
-	 * @param int
-	 *            id
-	 * @param boolean
-	 *            isObjectId
+	 * Attempts to return the AutoSpawnInstance associated with the given NPC or Object ID type.<br>
+	 * Note: If isObjectId == false, returns first instance for the specified NPC ID.
+	 * @param id 
+	 * @param isObjectId 
 	 * @return AutoSpawnInstance spawnInst
 	 */
 	public final AutoSpawnInstance getAutoSpawnInstance(int id,	boolean isObjectId)
@@ -411,9 +374,7 @@ public class AutoSpawnHandler
 
 	/**
 	 * Tests if the specified object ID is assigned to an auto spawn.
-	 *
-	 * @param int
-	 *            objectId
+	 * @param objectId 
 	 * @return boolean isAssigned
 	 */
 	public final boolean isSpawnRegistered(int objectId)
@@ -423,9 +384,7 @@ public class AutoSpawnHandler
 
 	/**
 	 * Tests if the specified spawn instance is assigned to an auto spawn.
-	 *
-	 * @param AutoSpawnInstance
-	 *            spawnInst
+	 * @param spawnInst 
 	 * @return boolean isAssigned
 	 */
 	public final boolean isSpawnRegistered(AutoSpawnInstance spawnInst)

@@ -55,7 +55,12 @@ public class L2Macro
     }
 
     /**
-     *
+     * @param pId 
+     * @param pIcon 
+     * @param pName 
+     * @param pDescr 
+     * @param pAcronym 
+     * @param pCommands 
      */
     public L2Macro(int pId, int pIcon, String pName, String pDescr, String pAcronym, L2MacroCmd[] pCommands)
     {

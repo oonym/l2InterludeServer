@@ -39,14 +39,13 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public final class L2TeleporterInstance extends L2FolkInstance
 {
-    //private static Logger _log = Logger.getLogger(L2TeleporterInstance.class.getName());
-
     private static final int COND_ALL_FALSE = 0;
     private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
     private static final int COND_OWNER = 2;
     private static final int COND_REGULAR = 3;
 
     /**
+     * @param objectId 
      * @param template
      */
     public L2TeleporterInstance(int objectId, L2NpcTemplate template)

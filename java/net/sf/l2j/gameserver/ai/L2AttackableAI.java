@@ -128,7 +128,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
      * <li>The actor is Aggressive</li><BR><BR>
      *
      * @param target The targeted L2Object
-     *
+     * @return 
      */
     private boolean autoAttackCondition(L2Character target)
     {
@@ -703,7 +703,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
                 // check for close combat skills && heal/buff skills
                 if (!_actor.isMuted() /*&& _rnd.nextInt(100) <= 5*/)
                 {
-                	boolean useSkillSelf = true;;
+                	boolean useSkillSelf = true;
                     for (L2Skill sk : skills)
                     {
                         if (/*sk.getCastRange() >= dist && sk.getCastRange() <= 70 && */!sk.isPassive()
@@ -833,7 +833,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
      * <li>Add the target to the actor _aggroList or update hate if already present </li>
      * <li>Set the actor Intention to AI_INTENTION_ATTACK (if actor is L2GuardInstance check if it isn't too far from its home location)</li><BR><BR>
      *
-     * @param attacker The L2Character that attacks
+     * @param target The L2Character that attacks
      * @param aggro The value of hate to add to the actor against the target
      *
      */

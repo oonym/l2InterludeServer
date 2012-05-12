@@ -30,34 +30,23 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	private static final String _C__FE_0C_REQUESTWRITEHEROWORDS = "[C] D0:0C RequestWriteHeroWords";
 	@SuppressWarnings("unused")
 	private String _heroWords;
-
-	/**
-	 * @param buf
-	 * @param client
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
 		_heroWords = readS();
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
 
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__FE_0C_REQUESTWRITEHEROWORDS;
 	}
-
 }

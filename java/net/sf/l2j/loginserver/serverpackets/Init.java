@@ -51,10 +51,7 @@ public final class Init extends L2LoginServerPacket
     	_publicKey = publickey;
     	_blowfishKey = blowfishkey;
     }
-
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
+    
 	@Override
 	protected void write()
 	{

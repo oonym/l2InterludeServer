@@ -28,8 +28,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PetInstance;
  */
 public class PetInfo extends L2GameServerPacket
 {
-	//private static Logger _log = Logger.getLogger(PetInfo.class.getName());
-
 	private static final String _S__CA_PETINFO = "[S] b1 PetInfo";
 	private L2Summon _summon;
 	private int _x, _y, _z, _heading;
@@ -41,7 +39,7 @@ public class PetInfo extends L2GameServerPacket
 
 	/**
 	 * rev 478  dddddddddddddddddddffffdddcccccSSdddddddddddddddddddddddddddhc
-	 * @param _characters
+	 * @param summon 
 	 */
 	public PetInfo(L2Summon summon)
 	{
@@ -149,14 +147,10 @@ public class PetInfo extends L2GameServerPacket
 		writeD(_summon.getSoulShotsPerHit()); // How many soulshots this servitor uses per hit
         writeD(_summon.getSpiritShotsPerHit()); // How many spiritshots this servitor uses per hit
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__CA_PETINFO;
 	}
-
 }

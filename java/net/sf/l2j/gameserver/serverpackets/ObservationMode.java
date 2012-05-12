@@ -18,8 +18,6 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-
-
 /**
  * This class ...
  *
@@ -30,10 +28,11 @@ public class ObservationMode extends L2GameServerPacket
 	// ddSS
 	private static final String _S__DF_OBSERVMODE = "[S] DF ObservationMode";
 	private int _x, _y, _z;
-
-
+	
 	/**
-	 * @param _characters
+	 * @param x 
+	 * @param y 
+	 * @param z 
 	 */
 	public ObservationMode(int x, int y, int z)
 	{
@@ -41,8 +40,7 @@ public class ObservationMode extends L2GameServerPacket
 		_y = y;
 		_z = z;
 	}
-
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -54,10 +52,7 @@ public class ObservationMode extends L2GameServerPacket
 		writeC( 0xc0);
 		writeC( 0x00);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

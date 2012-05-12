@@ -35,10 +35,10 @@ public class TvTEventTeleporter implements Runnable
 
 	/**
 	 * Initialize the teleporter and start the delayed task
-	 *
 	 * @param playerInstance
 	 * @param coordinates
-	 * @param reAdd
+	 * @param fastSchedule 
+	 * @param adminRemove 
 	 */
 	public TvTEventTeleporter(L2PcInstance playerInstance, int[] coordinates, boolean fastSchedule, boolean adminRemove)
 	{

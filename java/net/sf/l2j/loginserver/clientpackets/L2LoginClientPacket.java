@@ -24,16 +24,12 @@ import net.sf.l2j.loginserver.L2LoginClient;
 import org.mmocore.network.ReceivablePacket;
 
 /**
- *
  * @author  KenM
  */
 public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient>
 {
 	private static Logger _log = Logger.getLogger(L2LoginClientPacket.class.getName());
-
-	/**
-	 * @see com.l2jserver.mmocore.network.ReceivablePacket#read()
-	 */
+	
 	@Override
 	protected final boolean read()
 	{

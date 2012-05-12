@@ -99,8 +99,6 @@ import net.sf.l2j.util.Rnd;
  */
 public class L2NpcInstance extends L2Character
 {
-    //private static Logger _log = Logger.getLogger(L2NpcInstance.class.getName());
-
     /** The interaction distance of the L2NpcInstance(is used as offset in MovetoLocation method) */
     public static final int INTERACTION_DISTANCE = 150;
 
@@ -196,6 +194,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Check if the server allows Random Animation.<BR><BR>
+     * @return 
      */
     public boolean hasRandomAnimation()
     {
@@ -317,6 +316,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the generic Identifier of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
+     * @return 
      */
     public int getNpcId()
     {
@@ -333,8 +333,8 @@ public class L2NpcInstance extends L2Character
      * Return the faction Identifier of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
      *
      * <B><U> Concept</U> :</B><BR><BR>
-     * If a NPC belows to a Faction, other NPC of the faction inside the Faction range will help it if it's attacked<BR><BR>
-     *
+     * If a NPC belongs to a Faction, other NPC of the faction inside the Faction range will help it if it's attacked<BR><BR>
+     * @return 
      */
     public final String getFactionId()
     {
@@ -351,7 +351,8 @@ public class L2NpcInstance extends L2Character
     }
 
     /**
-     * Return True if the L2NpcInstance is agressive (ex : L2MonsterInstance in function of aggroRange).<BR><BR>
+     * Return True if the L2NpcInstance is aggressive (ex : L2MonsterInstance in function of aggroRange).<BR><BR>
+     * @return 
      */
     public boolean isAggressive()
     {
@@ -360,6 +361,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the Aggro Range of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
+     * @return 
      */
     public int getAggroRange()
     {
@@ -368,6 +370,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the Faction Range of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
+     * @return 
      */
     public int getFactionRange()
     {
@@ -407,10 +410,11 @@ public class L2NpcInstance extends L2Character
      * <li> object is a L2PlayableInstance : 1500 </li>
      * <li> others : 500 </li><BR><BR>
      *
-     * <B><U> Overriden in </U> :</B><BR><BR>
+     * <B><U> Overridden in </U> :</B><BR><BR>
      * <li> L2Attackable</li><BR><BR>
      *
      * @param object The Object to add to _knownObject
+     * @return 
      *
      */
     public int getDistanceToWatchObject(L2Object object)
@@ -436,10 +440,11 @@ public class L2NpcInstance extends L2Character
      * <li> object is a L2PlayableInstance : 3000 </li>
      * <li> others : 1000 </li><BR><BR>
      *
-     * <B><U> Overriden in </U> :</B><BR><BR>
+     * <B><U> Overridden in </U> :</B><BR><BR>
      * <li> L2Attackable</li><BR><BR>
      *
      * @param object The Object to remove from _knownObject
+     * @return 
      *
      */
     public int getDistanceToForgetObject(L2Object object)
@@ -450,7 +455,7 @@ public class L2NpcInstance extends L2Character
     /**
      * Return False.<BR><BR>
      *
-     * <B><U> Overriden in </U> :</B><BR><BR>
+     * <B><U> Overridden in </U> :</B><BR><BR>
      * <li> L2MonsterInstance : Check if the attacker is not another L2MonsterInstance</li>
      * <li> L2PcInstance</li><BR><BR>
      */
@@ -462,6 +467,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the Identifier of the item in the left hand of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
+     * @return 
      */
     public int getLeftHandItem()
     {
@@ -470,6 +476,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the Identifier of the item in the right hand of this L2NpcInstance contained in the L2NpcTemplate.<BR><BR>
+     * @return 
      */
     public int getRightHandItem()
     {
@@ -478,6 +485,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return True if this L2NpcInstance has drops that can be sweeped.<BR><BR>
+     * @return 
      */
     public boolean isSpoil()
     {
@@ -486,6 +494,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Set the spoil state of this L2NpcInstance.<BR><BR>
+     * @param isSpoil 
      */
     public void setSpoil(boolean isSpoil)
     {
@@ -504,6 +513,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the busy status of this L2NpcInstance.<BR><BR>
+     * @return 
      */
     public final boolean isBusy()
     {
@@ -512,6 +522,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Set the busy status of this L2NpcInstance.<BR><BR>
+     * @param isBusy 
      */
     public void setBusy(boolean isBusy)
     {
@@ -520,6 +531,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Return the busy message of this L2NpcInstance.<BR><BR>
+     * @return 
      */
     public final String getBusyMessage()
     {
@@ -528,6 +540,7 @@ public class L2NpcInstance extends L2Character
 
     /**
      * Set the busy message of this L2NpcInstance.<BR><BR>
+     * @param message 
      */
     public void setBusyMessage(String message)
     {
@@ -834,7 +847,10 @@ public class L2NpcInstance extends L2Character
         player.sendPacket(new ActionFailed());
     }
 
-    /** Return the L2Castle this L2NpcInstance belongs to. */
+    /**
+     * Return the L2Castle this L2NpcInstance belongs to. 
+     * @return
+     */
     public final Castle getCastle()
     {
         // Get castle this NPC belongs to (excluding L2Attackable)
@@ -868,6 +884,7 @@ public class L2NpcInstance extends L2Character
      *
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Client packet : RequestBypassToServer</li><BR><BR>
+     * @param player 
      *
      * @param command The command string received from client
      *
@@ -1150,11 +1167,12 @@ public class L2NpcInstance extends L2Character
      * <li> if the file exists on the server (page number > 0) : <B>data/html/default/12006-1.htm</B> (npcId-page number)</li>
      * <li> if the file doesn't exist on the server : <B>data/html/npcdefault.htm</B> (message : "I have nothing to say to you")</li><BR><BR>
      * 
-     * <B><U> Overriden in </U> :</B><BR><BR>
+     * <B><U> Overridden in </U> :</B><BR><BR>
      * <li> L2GuardInstance : Set the pathfile to data/html/guard/12006-1.htm (npcId-page number)</li><BR><BR>
      * 
      * @param npcId The Identifier of the L2NpcInstance whose text must be display
      * @param val The number of the page to display
+     * @return 
      * 
      */
     public String getHtmlPath(int npcId, int val)
@@ -2100,6 +2118,7 @@ public class L2NpcInstance extends L2Character
     
     /**
      * Return the Exp Reward of this L2NpcInstance contained in the L2NpcTemplate (modified by RATE_XP).<BR><BR>
+     * @return 
      */
     public int getExpReward()
     {
@@ -2109,6 +2128,7 @@ public class L2NpcInstance extends L2Character
     
     /**
      * Return the SP Reward of this L2NpcInstance contained in the L2NpcTemplate (modified by RATE_SP).<BR><BR>
+     * @return 
      */
     public int getSpReward()
     {
@@ -2224,6 +2244,7 @@ public class L2NpcInstance extends L2Character
     
     /**
      * Return the L2Spawn object that manage this L2NpcInstance.<BR><BR>
+     * @return 
      */
     public L2Spawn getSpawn()
     {

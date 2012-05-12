@@ -212,7 +212,7 @@ public class L2Clan
         return _leader;
     }
 	/**
-	 * @param leaderId The leaderId to set.
+	 * @param leader 
 	 */
 	public void setLeader(L2ClanMember leader)
 	{
@@ -608,7 +608,7 @@ public class L2Clan
 	}
 
 	/**
-	 * @param player name
+	 * @param name 
 	 * @return
 	 */
 	public boolean isMember(String name)
@@ -868,7 +868,10 @@ public class L2Clan
         }
     }
 
-    /** used to retrieve all skills */
+    /**
+     * Used to retrieve all skills 
+     * @return 
+     */
     public final L2Skill[] getAllSkills()
     {
         if (_skills == null)
@@ -878,7 +881,11 @@ public class L2Clan
     }
 
 
-    /** used to add a skill to skill list of this L2Clan */
+    /**
+     * Used to add a skill to skill list of this L2Clan
+     * @param newSkill 
+     * @return 
+     */
     public L2Skill addSkill(L2Skill newSkill)
     {
         L2Skill oldSkill    = null;
@@ -892,7 +899,11 @@ public class L2Clan
         return oldSkill;
     }
 
-    /** used to add a new skill to the list, send a packet to all online clan members, update their stats and store it in db*/
+    /**
+     * Used to add a new skill to the list, send a packet to all online clan members, update their stats and store it in db
+     * @param newSkill 
+     * @return
+     */
     public L2Skill addNewSkill(L2Skill newSkill)
     {
         L2Skill oldSkill    = null;
@@ -939,7 +950,6 @@ public class L2Clan
                 try { con.close(); } catch (Exception e) {}
             }
 
-
             for (L2ClanMember temp : _members.values())
             {
                 try {
@@ -954,11 +964,9 @@ public class L2Clan
                 } catch (NullPointerException e) {}
             }
         }
-
         return oldSkill;
     }
-
-
+    
     public void addSkillEffects()
     {
         for(L2Skill skill : _skills.values())
@@ -1253,7 +1261,11 @@ public class L2Clan
         }
     }
 
-    /** used to retrieve subPledge by type */
+    /** 
+     * Used to retrieve subPledge by type 
+     * @param pledgeType 
+     * @return
+     */
     public final SubPledge getSubPledge(int pledgeType)
     {
         if (_subPledges == null)
@@ -1262,7 +1274,11 @@ public class L2Clan
         return _subPledges.get(pledgeType);
     }
 
-    /** used to retrieve subPledge by type */
+    /**
+     * Used to retrieve subPledge by type 
+     * @param pledgeName 
+     * @return 
+     */
     public final SubPledge getSubPledge(String pledgeName)
     {
         if (_subPledges == null)
@@ -1278,7 +1294,10 @@ public class L2Clan
         return null;
     }
 
-    /** used to retrieve all subPledges */
+    /**
+     * Used to retrieve all subPledges 
+     * @return 
+     */
     public final SubPledge[] getAllSubPledges()
     {
         if (_subPledges == null)
@@ -1537,7 +1556,10 @@ public class L2Clan
         }
     }
 
-    /** used to retrieve all RankPrivs */
+    /**
+     * Used to retrieve all RankPrivs 
+     * @return
+     */
     public final RankPrivs[] getAllRankPrivs()
     {
         if (_privs == null)

@@ -38,7 +38,7 @@ public class Territory
 {
 	private static Logger _log = Logger.getLogger(TradeController.class.getName());
 	private static final Territory _instance = new Territory();
-	private static Map<Integer,L2Territory> _territory;
+	private static final Map<Integer,L2Territory> _territory = new FastMap<Integer,L2Territory>();
 
 	public static Territory getInstance()
 	{
@@ -63,8 +63,7 @@ public class Territory
 
 	public void reload_data()
 	{
-		_territory = new FastMap<Integer,L2Territory>();
-
+		_territory.clear();
 		Integer[][] point = SqlUtils.get2DIntArray(new String[]{"loc_id","loc_x","loc_y","loc_zmin","loc_zmax","proc"}, "locations", "loc_id > 0");
 		for(Integer[] row : point)
 		{

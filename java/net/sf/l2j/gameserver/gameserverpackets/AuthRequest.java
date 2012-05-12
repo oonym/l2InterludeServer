@@ -18,8 +18,6 @@
  */
 package net.sf.l2j.gameserver.gameserverpackets;
 
-import java.io.IOException;
-
 public class AuthRequest extends GameServerBasePacket
 {
 	/**
@@ -38,6 +36,7 @@ public class AuthRequest extends GameServerBasePacket
 	 * @param hexid
 	 * @param externalHost
 	 * @param internalHost
+	 * @param port 
 	 * @param reserveHost
 	 * @param maxplayer
 	 */
@@ -54,14 +53,10 @@ public class AuthRequest extends GameServerBasePacket
 		writeD(hexid.length);
 		writeB(hexid);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

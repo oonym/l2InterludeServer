@@ -33,10 +33,7 @@ public class ExVariationCancelResult extends L2GameServerPacket
 		_closeWindow = 1;
 		_unk1 = result;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -45,14 +42,10 @@ public class ExVariationCancelResult extends L2GameServerPacket
 		writeD(_closeWindow);
 		writeD(_unk1);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_57_EXVARIATIONCANCELRESULT;
 	}
-
 }

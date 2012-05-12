@@ -34,19 +34,17 @@ public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
 	private static final String _S__FE_29_OLYMPIADUSERINFOSPECTATOR = "[S] FE:29 OlympiadUserInfoSpectator";
 	private static int _side;
 	private static L2PcInstance _player;
-
-
+	
 	/**
-	 * @param _player
-	 * @param _side (1 = right, 2 = left)
+	 * @param player 
+	 * @param side 1 = right, 2 = left
 	 */
 	public ExOlympiadUserInfoSpectator(L2PcInstance player, int side)
 	{
 		_player = player;
 		_side = side;
 	}
-
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -61,10 +59,7 @@ public class ExOlympiadUserInfoSpectator extends L2GameServerPacket
 		writeD((int)_player.getCurrentCp());
 		writeD(_player.getMaxCp());
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

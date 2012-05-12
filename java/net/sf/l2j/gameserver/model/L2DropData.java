@@ -139,7 +139,7 @@ public class L2DropData
 
     /**
      * Sets the questID
-     * @param String designating the questID to set.
+     * @param questID designating the questID to set
      */
     public void setQuestID(String questID)
     {
@@ -174,7 +174,7 @@ public class L2DropData
 
     /**
      * Returns if parameter "o" is a L2DropData and has the same itemID that the current object
-     * @param Object to compare to the current one
+     * @param o the Object to compare to the current one
      * @return boolean
      */
     @Override

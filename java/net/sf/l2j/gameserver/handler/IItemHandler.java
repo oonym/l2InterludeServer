@@ -32,7 +32,7 @@ public interface IItemHandler
 {
 	/**
 	 * Launch task associated to the item.
-	 * @param activeChar : L2PlayableInstance designating the player
+	 * @param playable 
 	 * @param item : L2ItemInstance designating the item to use
 	 */
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item);

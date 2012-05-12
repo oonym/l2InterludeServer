@@ -31,15 +31,12 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 {
 	private static final String _S__FE_46_EXCURSEDWEAPONLOCATION = "[S] FE:46 ExCursedWeaponLocation";
 	private List<CursedWeaponInfo> _cursedWeaponInfo;
-
+	
 	public ExCursedWeaponLocation(List<CursedWeaponInfo> cursedWeaponInfo)
 	{
 		_cursedWeaponInfo = cursedWeaponInfo;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -65,16 +62,13 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 			writeD(0);
 		}
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_46_EXCURSEDWEAPONLOCATION;
 	}
-
+	
 	public static class CursedWeaponInfo
 	{
 		public Point3D pos;
@@ -87,6 +81,5 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 			id = ID;
 			activated = status;
 		}
-
 	}
 }

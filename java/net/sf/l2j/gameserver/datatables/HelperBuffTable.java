@@ -29,12 +29,9 @@ import net.sf.l2j.gameserver.templates.L2HelperBuff;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
 /**
- * This class represents the Newbie Helper Buff list
- *
- * Author: Ayor
- *
+ * This class represents the Newbie Helper Buff list.
+ * @author Ayor
  */
-
 public class HelperBuffTable
 {
 
@@ -112,6 +109,8 @@ public class HelperBuffTable
 
     /**
      * Load the Newbie Helper Buff list from SQL Table helper_buff_list
+     * @param HelperBuffData 
+     * @throws Exception 
      */
     private void fillHelperBuffTable(ResultSet HelperBuffData) throws Exception
     {
@@ -169,7 +168,7 @@ public class HelperBuffTable
 
 
     /**
-     * Return the Helper Buff List
+     * @return the Helper Buff List.
      */
     public List<L2HelperBuff> getHelperBuffTable()
     {

@@ -635,8 +635,6 @@ public class SevenSigns
 
     /**
      * Restores all Seven Signs data and settings, usually called at server startup.
-     *
-     * @throws Exception
      */
     protected void restoreSevenSignsData()
 	{
@@ -737,7 +735,6 @@ public class SevenSigns
      *
 	 * @param player
 	 * @param updateSettings
-	 * @throws Exception
 	 */
 	public void saveSevenSignsData(L2PcInstance player, boolean updateSettings)
 	{
@@ -1280,6 +1277,7 @@ public class SevenSigns
      * necropolises, who belong to the losing cabal.
      * <BR><BR>
      * Should only ever called at the beginning of Seal Validation.
+     * @param compWinner 
      */
     protected void teleLosingCabalFromDungeons(String compWinner)
     {

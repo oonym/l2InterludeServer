@@ -254,7 +254,7 @@ public abstract class PathFinding
 
 	/**
 	 * Convert node position to pathnode block position
-	 * @param geo_pos
+	 * @param node_pos 
 	 * @return pathnode block position (0...255)
 	 */
 	public short getNodeBlock(int node_pos)
@@ -279,7 +279,7 @@ public abstract class PathFinding
 
 	/**
 	 * Convert pathnode x to World x position
-	 * @param node_x, rx
+	 * @param node_x 
 	 * @return
 	 */
 	public int calculateWorldX(short node_x)

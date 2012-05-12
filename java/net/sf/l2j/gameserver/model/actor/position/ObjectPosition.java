@@ -56,6 +56,9 @@ public class ObjectPosition
      *
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Update position during and after movement, or after teleport </li><BR>
+     * @param x 
+     * @param y 
+     * @param z 
      */
     public final void setXYZ(int x, int y, int z)
     {
@@ -86,7 +89,7 @@ public class ObjectPosition
      * Set the x,y,z position of the L2Object and make it invisible.<BR><BR>
      *
      * <B><U> Concept</U> :</B><BR><BR>
-     * A L2Object is invisble if <B>_hidden</B>=true or <B>_worldregion</B>==null <BR><BR>
+     * A L2Object is invisible if <B>_hidden</B>=true or <B>_worldregion</B>==null <BR><BR>
      *
      * <B><U> Assert </U> :</B><BR><BR>
      * <li> _worldregion==null <I>(L2Object is invisible)</I></li><BR><BR>
@@ -94,6 +97,9 @@ public class ObjectPosition
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Create a Door</li>
      * <li> Restore L2PcInstance</li><BR>
+     * @param x 
+     * @param y 
+     * @param z 
      */
     public final void setXYZInvisible(int x, int y, int z)
     {
@@ -139,15 +145,24 @@ public class ObjectPosition
     public final int getHeading() { return _heading; }
     public final void setHeading(int value) { _heading = value; }
 
-    /** Return the x position of the L2Object. */
+    /**
+     * Return the x position of the L2Object. 
+     * @return
+     */
     public final int getX() { return getWorldPosition().getX(); }
     public final void setX(int value) { getWorldPosition().setX(value); }
 
-    /** Return the y position of the L2Object. */
+    /**
+     * Return the y position of the L2Object. 
+     * @return
+     */
     public final int getY() { return getWorldPosition().getY(); }
     public final void setY(int value) { getWorldPosition().setY(value); }
 
-    /** Return the z position of the L2Object. */
+    /**
+     * Return the z position of the L2Object. 
+     * @return
+     */
     public final int getZ() { return getWorldPosition().getZ(); }
     public final void setZ(int value) { getWorldPosition().setZ(value); }
 

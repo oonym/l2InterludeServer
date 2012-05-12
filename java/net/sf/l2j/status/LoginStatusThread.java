@@ -17,7 +17,6 @@
  */
 package net.sf.l2j.status;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +41,6 @@ import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.loginserver.GameServerTable;
 import net.sf.l2j.loginserver.L2LoginServer;
 import net.sf.l2j.loginserver.LoginController;
-
 
 public class LoginStatusThread extends Thread
 {
@@ -175,7 +173,7 @@ public class LoginStatusThread extends Thread
 	}
 
 	/**
-	 * @param tmpLine
+	 * @param password 
 	 * @return
 	 */
 	private boolean validPassword(String password)
@@ -209,7 +207,7 @@ public class LoginStatusThread extends Thread
 	}
 
 	/**
-	 * @param tmpLine
+	 * @param login 
 	 * @return
 	 */
 	private boolean validLogin(String login)

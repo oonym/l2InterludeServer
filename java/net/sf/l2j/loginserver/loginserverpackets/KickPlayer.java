@@ -18,13 +18,10 @@
  */
 package net.sf.l2j.loginserver.loginserverpackets;
 
-import java.io.IOException;
-
 import net.sf.l2j.loginserver.serverpackets.ServerBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class KickPlayer extends ServerBasePacket
 {
@@ -33,14 +30,10 @@ public class KickPlayer extends ServerBasePacket
 		writeC(0x04);
 		writeS(account);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.loginserver.serverpackets.ServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

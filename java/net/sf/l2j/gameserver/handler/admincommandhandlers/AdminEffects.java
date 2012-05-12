@@ -633,6 +633,7 @@ public class AdminEffects implements IAdminCommandHandler
 	 *
 	 * @param type - atmosphere type (signssky,sky)
 	 * @param state - atmosphere state(night,day)
+	 * @param activeChar 
 	 */
 	private void adminAtmosphere(String type, String state, L2PcInstance activeChar)
 	{

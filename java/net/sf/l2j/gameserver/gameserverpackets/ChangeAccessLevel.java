@@ -18,11 +18,8 @@
  */
 package net.sf.l2j.gameserver.gameserverpackets;
 
-import java.io.IOException;
-
 /**
  * @author -Wooden-
- *
  */
 public class ChangeAccessLevel extends GameServerBasePacket
 {
@@ -32,14 +29,10 @@ public class ChangeAccessLevel extends GameServerBasePacket
 		writeD(access);
 		writeS(player);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-	 */
+	
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		return getBytes();
 	}
-
 }

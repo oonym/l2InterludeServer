@@ -102,6 +102,7 @@ public class ClanBBSManager extends BaseBBSManager
 
 	/**
 	 * @param activeChar
+	 * @param index 
 	 */
 	private void clanlist(L2PcInstance activeChar, int index)
 	{

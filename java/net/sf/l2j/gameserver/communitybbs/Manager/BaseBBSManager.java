@@ -55,6 +55,7 @@ public abstract class BaseBBSManager
 	}
 	/**
 	 * @param html
+	 * @param acha 
 	 */
 	protected void send1001(String html, L2PcInstance acha)
 	{
@@ -64,7 +65,7 @@ public abstract class BaseBBSManager
 		}
 	}
 	/**
-	 * @param i
+	 * @param acha 
 	 */
 	protected void send1002(L2PcInstance acha)
 	{
@@ -74,8 +75,9 @@ public abstract class BaseBBSManager
 	 * @param activeChar
 	 * @param string
 	 * @param string2
+	 * @param string3 
 	 */
-	protected void send1002(L2PcInstance activeChar, String string, String string2,String string3)
+	protected void send1002(L2PcInstance activeChar, String string, String string2, String string3)
 	{
 		List<String> _arg = new FastList<String>();
 		_arg.add("0");

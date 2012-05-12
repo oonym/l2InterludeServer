@@ -26,7 +26,6 @@ import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class ServerStatus extends ClientBasePacket
 {
@@ -53,6 +52,7 @@ public class ServerStatus extends ClientBasePacket
 
 	/**
 	 * @param decrypt
+	 * @param serverId 
 	 */
 	public ServerStatus(byte[] decrypt, int serverId)
 	{

@@ -39,6 +39,8 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 {
 	/**
 	* @author evill33t & squeezed
+	 * @param objectId 
+	 * @param template 
 	*/
 	public L2WeddingManagerInstance(int objectId, L2NpcTemplate template)
 	{

@@ -41,10 +41,11 @@ public class L2Manor
 	private static Logger _log = Logger.getLogger(L2Manor.class.getName());
     private static L2Manor _instance;
 
-    private static FastMap<Integer,SeedData> _seeds;
+    private static FastMap<Integer,SeedData> _seeds = new FastMap<Integer, SeedData>().shared();
 
-    public L2Manor() {
-		_seeds = new FastMap<Integer, SeedData>().shared();
+    public L2Manor()
+    {
+    	_seeds.clear();
 		parseData();
 	}
 

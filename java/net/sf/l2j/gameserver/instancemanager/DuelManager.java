@@ -151,7 +151,7 @@ public class DuelManager
 	/**
 	 * Registers a debuff which will be removed if the duel ends
 	 * @param player
-	 * @param debuff
+	 * @param buff 
 	 */
 	public void onBuff(L2PcInstance player, L2Effect buff)
 	{

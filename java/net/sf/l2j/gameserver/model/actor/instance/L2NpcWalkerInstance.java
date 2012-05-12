@@ -37,6 +37,8 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 {
 	/**
 	 * Constructor of L2NpcWalkerInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
+	 * @param objectId 
+	 * @param template 
 	 */
 	public L2NpcWalkerInstance(int objectId, L2NpcTemplate template)
 	{

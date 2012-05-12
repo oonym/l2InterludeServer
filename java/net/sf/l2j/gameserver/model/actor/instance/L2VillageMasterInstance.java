@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.datatables.ClanTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.SiegeManager;
+import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Clan;
 import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.L2PledgeSkillLearn;
@@ -59,6 +60,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
     //private static Logger _log = Logger.getLogger(L2VillageMasterInstance.class.getName());
 
     /**
+     * @param objectId 
      * @param template
      */
     public L2VillageMasterInstance(int objectId, L2NpcTemplate template)
@@ -489,7 +491,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 return;
             }
         }
-        if (player.isInsideZone(L2PcInstance.ZONE_SIEGE))
+        if (player.isInsideZone(L2Character.ZONE_SIEGE))
         {
             player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_SIEGE));
             return;

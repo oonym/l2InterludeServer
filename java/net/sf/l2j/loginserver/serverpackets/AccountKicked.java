@@ -18,7 +18,6 @@
 package net.sf.l2j.loginserver.serverpackets;
 
 /**
- *
  * @author  KenM
  */
 public final class AccountKicked extends L2LoginServerPacket
@@ -49,15 +48,11 @@ public final class AccountKicked extends L2LoginServerPacket
 	{
 		_reason = reason;
 	}
-
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
+	
 	@Override
 	protected void write()
 	{
 		writeC(0x02);
 		writeD(_reason.getCode());
 	}
-
 }

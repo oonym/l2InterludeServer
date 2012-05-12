@@ -35,10 +35,7 @@ public class PledgeSkillList extends L2GameServerPacket
 	{
 		_clan = clan;
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -53,10 +50,7 @@ public class PledgeSkillList extends L2GameServerPacket
 			writeD(sk.getLevel());
 		}
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

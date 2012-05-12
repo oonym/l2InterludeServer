@@ -31,8 +31,6 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 public class NpcInfoPoly extends L2GameServerPacket
 {
 	//   ddddddddddddddddddffffdddcccccSSddd dddddc
-
-
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
 	private L2Character _activeChar;
 	private L2Object _obj;
@@ -49,7 +47,8 @@ public class NpcInfoPoly extends L2GameServerPacket
     private int _collisionHeight;
 
 	/**
-	 * @param _characters
+	 * @param obj 
+	 * @param attacker 
 	 */
 	public NpcInfoPoly(L2Object obj, L2Character attacker)
 	{
@@ -105,10 +104,9 @@ public class NpcInfoPoly extends L2GameServerPacket
 			_name = _activeChar.getName();
 			_title = _activeChar.getTitle();
 			_abnormalEffect = _activeChar.getAbnormalEffect();
-
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -157,10 +155,7 @@ public class NpcInfoPoly extends L2GameServerPacket
 		writeD(0000);  // C2
 		writeC(0000);  // C2
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

@@ -48,11 +48,9 @@ import net.sf.l2j.util.Rnd;
  * @author nuocnam
  * @version $Revision: 1.6.2.2.2.6 $ $Date: 2005/04/11 19:12:16 $
  */
-public class L2Party {
+public class L2Party
+{
 	private static final double[] BONUS_EXP_SP = {1, 1.30, 1.39, 1.50, 1.54, 1.58, 1.63, 1.67, 1.71};
-
-	//private static Logger _log = Logger.getLogger(L2Party.class.getName());
-
 	private List<L2PcInstance> _members = null;
     private int _pendingInvitation = 0;       // Number of players that already have been invited (but not replied yet)
 	private int _partyLvl = 0;
@@ -71,7 +69,7 @@ public class L2Party {
 	/**
 	 * constructor ensures party has always one member - leader
 	 * @param leader
-	 * @param itemDistributionMode
+	 * @param itemDistribution 
 	 */
 	public L2Party(L2PcInstance leader, int itemDistribution)
 	{
@@ -114,10 +112,10 @@ public class L2Party {
 	}
 
 	/**
-	 * get random member from party
+	 * @param ItemId 
+	 * @param target 
 	 * @return
 	 */
-	//private L2PcInstance getRandomMember() { return getPartyMembers().get(Rnd.get(getPartyMembers().size())); }
 	private L2PcInstance getCheckedRandomMember(int ItemId, L2Character target)
 	{
 		List<L2PcInstance> availableMembers = new FastList<L2PcInstance>();
@@ -130,18 +128,7 @@ public class L2Party {
 			return availableMembers.get(Rnd.get(availableMembers.size()));
 		return null;
 	}
-
-	/**
-	 * get next item looter
-	 * @return
-	 */
-	/*private L2PcInstance getNextLooter()
-	{
-		_itemLastLoot++;
-		if (_itemLastLoot > getPartyMembers().size() -1) _itemLastLoot = 0;
-
-		return (getPartyMembers().size() > 0) ? getPartyMembers().get(_itemLastLoot) : null;
-	}*/
+	
 	private L2PcInstance getCheckedNextLooter(int ItemId, L2Character target)
 	{
 		for (int i = 0; i < getMemberCount(); i++)
@@ -166,6 +153,10 @@ public class L2Party {
 
 	/**
 	 * get next item looter
+	 * @param player 
+	 * @param ItemId 
+	 * @param spoil 
+	 * @param target 
 	 * @return
 	 */
 	private L2PcInstance getActualLooter(L2PcInstance player, int ItemId, boolean spoil, L2Character target)
@@ -220,6 +211,8 @@ public class L2Party {
 
 	/**
 	 * Send a Server->Client packet to all other L2PcInstance of the Party.<BR><BR>
+	 * @param player 
+	 * @param msg 
 	 */
 	public void broadcastToPartyMembers(L2PcInstance player, L2GameServerPacket msg)
 	{
@@ -487,6 +480,8 @@ public class L2Party {
 	 * distribute item(s) to party members
 	 * @param player
 	 * @param item
+	 * @param spoil 
+	 * @param target 
 	 */
 	public void distributeItem(L2PcInstance player, L2Attackable.RewardItem item, boolean spoil, L2Attackable target)
 	{
@@ -524,7 +519,9 @@ public class L2Party {
 
 	/**
 	 * distribute adena to party members
+	 * @param player 
 	 * @param adena
+	 * @param target 
 	 */
 	public void distributeAdena(L2PcInstance player, int adena, L2Character target)
 	{
@@ -565,6 +562,7 @@ public class L2Party {
 	 * @param xpReward The Experience reward to distribute
 	 * @param spReward The SP reward to distribute
 	 * @param rewardedMembers The list of L2PcInstance to reward
+	 * @param topLvl 
 	 *
 	 */
 	public void distributeXpAndSp(long xpReward, int spReward, List<L2PlayableInstance> rewardedMembers, int topLvl)

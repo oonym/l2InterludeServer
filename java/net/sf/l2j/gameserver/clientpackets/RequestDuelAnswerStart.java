@@ -41,10 +41,7 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 		_unk1 = readD();
 		_response = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
@@ -107,14 +104,10 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 		player.setActiveRequester(null);
     	requestor.onTransactionResponse();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_28_REQUESTDUELANSWERSTART;
 	}
-
 }

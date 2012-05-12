@@ -18,10 +18,8 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-
 /**
  * format  d   rev 417
- *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class AuthLoginFail extends L2GameServerPacket
@@ -42,7 +40,7 @@ public class AuthLoginFail extends L2GameServerPacket
 	private int _reason;
 
 	/**
-	 * @param _characters
+	 * @param reason 
 	 */
 	public AuthLoginFail(int reason)
 	{
@@ -55,10 +53,7 @@ public class AuthLoginFail extends L2GameServerPacket
 		writeC(0x14);
 		writeD(_reason);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

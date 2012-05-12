@@ -43,9 +43,8 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
  */
 public class L2MerchantInstance extends L2FolkInstance
 {
-    //private static Logger _log = Logger.getLogger(L2MerchantInstance.class.getName());
-
     /**
+     * @param objectId 
      * @param template
      */
     public L2MerchantInstance(int objectId, L2NpcTemplate template)

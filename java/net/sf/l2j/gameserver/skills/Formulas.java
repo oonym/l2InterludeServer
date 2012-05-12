@@ -56,7 +56,6 @@ import net.sf.l2j.util.Rnd;
  */
 public final class Formulas
 {
-
 	/** Regen Task period */
 	protected static final Logger _log = Logger.getLogger(L2Character.class.getName());
 	private static final int HP_REGENERATE_PERIOD = 3000; // 3 secs
@@ -148,6 +147,8 @@ public final class Formulas
 
 		/**
 		 * Return the Func object corresponding to the state concerned.<BR><BR>
+		 * @param stat 
+		 * @return 
 		 */
 		static Func getInstance(Stats stat)
 		{
@@ -160,6 +161,7 @@ public final class Formulas
 
 		/**
 		 * Constructor of the FuncMultRegenResting.<BR><BR>
+		 * @param pStat 
 		 */
 		private FuncMultRegenResting(Stats pStat)
 		{
@@ -748,6 +750,8 @@ public final class Formulas
 
 	/**
 	 * Return the period between 2 regenerations task (3s for L2Character, 5 min for L2DoorInstance).<BR><BR>
+	 * @param cha 
+	 * @return 
 	 */
 	public int getRegeneratePeriod(L2Character cha)
 	{
@@ -766,7 +770,7 @@ public final class Formulas
 	 * FuncAtkAccuracy -> Math.sqrt(_player.getDEX())*6+_player.getLevel()<BR><BR>
 	 *
 	 * To reduce cache memory use, L2NPCInstances who don't have skills share the same Calculator set called <B>NPC_STD_CALCULATOR</B>.<BR><BR>
-	 *
+	 * @return 
 	 */
 	public Calculator[] getStdNPCCalculators()
 	{
@@ -848,6 +852,8 @@ public final class Formulas
 
 	/**
 	 * Calculate the HP regen rate (base + modifiers).<BR><BR>
+	 * @param cha 
+	 * @return 
 	 */
 	public final double calcHpRegen(L2Character cha)
 	{
@@ -905,6 +911,8 @@ public final class Formulas
 
 	/**
 	 * Calculate the MP regen rate (base + modifiers).<BR><BR>
+	 * @param cha 
+	 * @return 
 	 */
 	public final double calcMpRegen(L2Character cha)
 	{
@@ -954,6 +962,8 @@ public final class Formulas
 
 	/**
 	 * Calculate the CP regen rate (base + modifiers).<BR><BR>
+	 * @param cha 
+	 * @return 
 	 */
 	public final double calcCpRegen(L2Character cha)
 	{
@@ -1025,7 +1035,15 @@ public final class Formulas
 
 		return 1.5; // If all is true, then modifer will be 50% more
 	}
-	/** Calculate blow damage based on cAtk */
+	/**
+	 * Calculate blow damage based on cAtk 
+	 * @param attacker 
+	 * @param target 
+	 * @param skill 
+	 * @param shld 
+	 * @param ss 
+	 * @return
+	 */
 	public double calcBlowDamage(L2Character attacker, L2Character target, L2Skill skill, boolean shld, boolean ss)
 	{
 		double power = skill.getPower();
@@ -1076,14 +1094,14 @@ public final class Formulas
 	 *
 	 * @param attacker player or NPC that makes ATTACK
 	 * @param target player or NPC, target of ATTACK
-	 * @param miss one of ATTACK_XXX constants
+	 * @param skill 
+	 * @param shld 
 	 * @param crit if the ATTACK have critical success
 	 * @param dual if dual weapon is used
 	 * @param ss if weapon item was charged by soulshot
 	 * @return damage points
 	 */
-	public final double calcPhysDam(L2Character attacker, L2Character target, L2Skill skill,
-									boolean shld, boolean crit, boolean dual, boolean ss)
+	public final double calcPhysDam(L2Character attacker, L2Character target, L2Skill skill, boolean shld, boolean crit, boolean dual, boolean ss)
 	{
 		if (attacker instanceof L2PcInstance)
 		{
@@ -1340,27 +1358,51 @@ public final class Formulas
 		return damage;
 	}
 
-	/** Returns true in case of critical hit */
+	/**
+	 * Returns true in case of critical hit 
+	 * @param rate 
+	 * @return
+	 */
 	public final boolean calcCrit(double rate)
 	{
 		return rate > Rnd.get(1000);
 	}
-	/** Calcul value of blow success */
+	
+	/**
+	 * Calcul value of blow success 
+	 * @param activeChar 
+	 * @param target 
+	 * @param chance 
+	 * @return
+	 */
 	public final boolean calcBlow(L2Character activeChar, L2Character target, int chance)
 	{
 		return activeChar.calcStat(Stats.BLOW_RATE, chance*(1.0+(activeChar.getDEX()-20)/100), target, null)>Rnd.get(100);
 	}
-	/** Calcul value of lethal chance */
+	
+	/**
+	 * Calcul value of lethal chance 
+	 * @param activeChar 
+	 * @param target 
+	 * @param baseLethal 
+	 * @return
+	 */
 	public final double calcLethal(L2Character activeChar, L2Character target, int baseLethal)
 	{
 		return activeChar.calcStat(Stats.LETHAL_RATE, (baseLethal*((double)activeChar.getLevel()/target.getLevel())), target, null);
 	}
+	
 	public final boolean calcMCrit(double mRate)
 	{
 		return mRate > Rnd.get(1000);
 	}
 
-	/** Returns true in case when ATTACK is canceled due to hit */
+	/**
+	 * Returns true in case when ATTACK is canceled due to hit 
+	 * @param target 
+	 * @param dmg 
+	 * @return
+	 */
 	public final boolean calcAtkBreak(L2Character target, double dmg)
 	{
         double init = 0;
@@ -1390,7 +1432,13 @@ public final class Formulas
         return Rnd.get(100) < rate;
 	}
 
-	/** Calculate delay (in milliseconds) before next ATTACK */
+	/**
+	 * Calculate delay (in milliseconds) before next ATTACK 
+	 * @param attacker 
+	 * @param target 
+	 * @param rate 
+	 * @return
+	 */
 	public final int calcPAtkSpd(L2Character attacker, L2Character target, double rate)
 	{
 		// measured Oct 2006 by Tank6585, formula by Sami
@@ -1400,7 +1448,14 @@ public final class Formulas
 		return (int)(470000/rate);
 	}
 
-	/** Calculate delay (in milliseconds) for skills cast */
+	/**
+	 * Calculate delay (in milliseconds) for skills cast 
+	 * @param attacker 
+	 * @param target 
+	 * @param skill 
+	 * @param skillTime 
+	 * @return
+	 */
 	public final int calcMAtkSpd(L2Character attacker, L2Character target, L2Skill skill, double skillTime)
 	{
 		if (skill.isMagic())
@@ -1408,14 +1463,25 @@ public final class Formulas
 		return (int) (skillTime * 333 / attacker.getPAtkSpd());
 	}
 
-	/** Calculate delay (in milliseconds) for skills cast */
+	/**
+	 * Calculate delay (in milliseconds) for skills cast 
+	 * @param attacker 
+	 * @param skill 
+	 * @param skillTime 
+	 * @return
+	 */
 	public final int calcMAtkSpd(L2Character attacker, L2Skill skill, double skillTime)
 	{
 		if (skill.isMagic()) return (int) (skillTime * 333 / attacker.getMAtkSpd());
 		return (int) (skillTime * 333 / attacker.getPAtkSpd());
 	}
 
-	/** Returns true if hit missed (taget evaded) */
+	/**
+	 * Returns true if hit missed (target evaded) 
+	 * @param attacker 
+	 * @param target 
+	 * @return
+	 */
 	public boolean calcHitMiss(L2Character attacker, L2Character target)
 	{
 		// accuracy+dexterity => probability to hit in percents
@@ -1427,7 +1493,12 @@ public final class Formulas
 		return d < Rnd.get(100);
 	}
 
-	/** Returns true if shield defence successfull */
+	/**
+	 * Returns true if shield defense successful 
+	 * @param attacker 
+	 * @param target 
+	 * @return
+	 */
 	public boolean calcShldUse(L2Character attacker, L2Character target)
 	{
 		L2Weapon at_weapon = attacker.getActiveWeaponItem();
@@ -1586,8 +1657,6 @@ public final class Formulas
 					case WEAKNESS:
 						multiplier = target.calcStat(Stats.DEBUFF_VULN, multiplier, target, null);
 						break;
-					default:
-						;
 				}
 			}
 			

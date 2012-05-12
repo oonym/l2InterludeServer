@@ -25,16 +25,12 @@ import net.sf.l2j.gameserver.network.L2GameClient;
 import org.mmocore.network.SendablePacket;
 
 /**
- *
  * @author  KenM
  */
 public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 {
 	private static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
-
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
+	
 	@Override
 	protected void write()
 	{
@@ -57,7 +53,7 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 	protected abstract void writeImpl();
 
 	/**
-	 * @return A String with this packet name for debuging purposes
+	 * @return A String with this packet name for debugging purposes
 	 */
 	public abstract String getType();
 }

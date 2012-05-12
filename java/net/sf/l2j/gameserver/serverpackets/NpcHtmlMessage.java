@@ -140,7 +140,8 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	private String _html;
 
 	/**
-	 * @param _characters
+	 * @param npcObjId 
+	 * @param text 
 	 */
 	public NpcHtmlMessage(int npcObjId, String text)
 	{
@@ -213,10 +214,9 @@ public class NpcHtmlMessage extends L2GameServerPacket
                 activeChar.addBypass2(_html.substring(start, finish2));
 			else
                 activeChar.addBypass(_html.substring(start, finish));
-			//System.err.println("["+_html.substring(start, finish)+"]");
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -226,14 +226,10 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		writeS(_html);
 		writeD(0x00);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__1B_NPCHTMLMESSAGE;
 	}
-
 }

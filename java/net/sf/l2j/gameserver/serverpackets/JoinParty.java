@@ -36,12 +36,11 @@ package net.sf.l2j.gameserver.serverpackets;
 public class JoinParty extends L2GameServerPacket
 {
 	private static final String _S__4C_JOINPARTY = "[S] 3a JoinParty";
-	//private static Logger _log = Logger.getLogger(JoinParty.class.getName());
-
+	
 	private int _response;
 
 	/**
-	 * @param int
+	 * @param response 
 	 */
 	public JoinParty(int response)
 	{
@@ -55,14 +54,10 @@ public class JoinParty extends L2GameServerPacket
 
 		writeD(_response);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__4C_JOINPARTY;
 	}
-
 }

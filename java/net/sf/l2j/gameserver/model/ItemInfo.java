@@ -50,7 +50,7 @@ public class ItemInfo
     /** If True the L2ItemInstance is equipped */
     private int _equipped;
 
-    /** The action to do clientside (1=ADD, 2=MODIFY, 3=REMOVE) */
+    /** The action to do client side (1=ADD, 2=MODIFY, 3=REMOVE) */
     private int _change;
 
 	/** The mana of this item */
@@ -58,8 +58,8 @@ public class ItemInfo
 
 
     /**
-     * Get all information from L2ItemInstance to generate ItemInfo.<BR><BR>
-     *
+     * Get all information from L2ItemInstance to generate ItemInfo.
+     * @param item 
      */
 	public ItemInfo(L2ItemInstance item)
 	{

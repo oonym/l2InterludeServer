@@ -164,6 +164,11 @@ public class L2DoorInstance extends L2Character
     }
 
     /**
+     * @param objectId 
+     * @param template 
+     * @param doorId 
+     * @param name 
+     * @param unlockable 
      */
     public L2DoorInstance(int objectId, L2CharTemplate template, int doorId, String name, boolean unlockable)
     {
@@ -239,8 +244,7 @@ public class L2DoorInstance extends L2Character
      * of this door instance.
      * <BR>
      * <B>Note:</B> A value of -1 cancels the auto open/close task.
-     *
-     * @param int actionDelay
+     * @param actionDelay 
      */
     public void setAutoActionDelay(int actionDelay)
     {
@@ -326,7 +330,8 @@ public class L2DoorInstance extends L2Character
      * <B><U> Values </U> :</B><BR><BR>
      * <li> object is a L2PcInstance : 4000</li>
      * <li> object is not a L2PcInstance : 0 </li><BR><BR>
-     *
+     * @param object 
+     * @return 
      */
     public int getDistanceToForgetObject(L2Object object)
      {

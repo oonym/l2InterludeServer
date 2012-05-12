@@ -58,9 +58,8 @@ public class TvTManager implements Runnable
 	}
 
 	/**
-	 * The task method to handle cycles of the event<br><br>
-	 *
-	 * @see java.lang.Runnable#run()<br>
+	 * The task method to handle cycles of the event
+	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run()
@@ -97,9 +96,8 @@ public class TvTManager implements Runnable
 	}
 
 	/**
-	 * This method waits for a period time delay<br><br>
-	 *
-	 * @param interval<br>
+	 * This method waits for a period time delay
+	 * @param seconds 
 	 */
 	void waiter(int seconds)
 	{

@@ -28,6 +28,7 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 public final class L2TrainerInstance extends L2FolkInstance
 {
     /**
+     * @param objectId 
      * @param template
      */
     public L2TrainerInstance(int objectId, L2NpcTemplate template)

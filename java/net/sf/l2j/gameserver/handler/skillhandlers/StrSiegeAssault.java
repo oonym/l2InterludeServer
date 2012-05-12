@@ -118,6 +118,7 @@ public class StrSiegeAssault implements ISkillHandler
      * @param activeChar The L2Character of the character placing the flag
      * @param isCheckOnly if false, it will send a notification to the player telling him
      * why it failed
+     * @return 
      */
     public static boolean checkIfOkToUseStriderSiegeAssault(L2Character activeChar, boolean isCheckOnly)
     {

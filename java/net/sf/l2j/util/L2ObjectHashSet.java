@@ -48,7 +48,6 @@ import net.sf.l2j.gameserver.model.L2Object;
  * @param <T> type of values stored in this hashtable
  */
 public final class L2ObjectHashSet<T extends L2Object> extends L2ObjectSet<T>
-	implements Iterable<T>
 {
 
 	private static final boolean TRACE = false;

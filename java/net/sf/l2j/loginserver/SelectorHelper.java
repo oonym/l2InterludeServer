@@ -41,19 +41,13 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 	{
 		_generalPacketsThreadPool = new ThreadPoolExecutor(4, 6, 15L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	}
-
-	/**
-	 * @see com.l2jserver.mmocore.network.IMMOExecutor#execute(com.l2jserver.mmocore.network.ReceivablePacket)
-	 */
+	
 	@Override
 	public void execute(ReceivablePacket<L2LoginClient> packet)
 	{
 		_generalPacketsThreadPool.execute(packet);
 	}
-
-	/**
-	 * @see com.l2jserver.mmocore.network.IClientFactory#create(com.l2jserver.mmocore.network.MMOConnection)
-	 */
+	
 	@Override
 	public L2LoginClient create(MMOConnection<L2LoginClient> con)
 	{
@@ -61,10 +55,7 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 		client.sendPacket(new Init(client));
 		return client;
 	}
-
-	/**
-	 * @see com.l2jserver.mmocore.network.IAcceptFilter#accept(java.nio.channels.SocketChannel)
-	 */
+	
 	@Override
 	public boolean accept(SocketChannel sc)
 	{

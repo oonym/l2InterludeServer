@@ -41,7 +41,6 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class SiegeFlag implements ISkillHandler
 {
-    //private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
 	private static final SkillType[] SKILL_IDS = {SkillType.SIEGEFLAG};
 
     @Override
@@ -85,6 +84,7 @@ public class SiegeFlag implements ISkillHandler
      * @param activeChar The L2Character of the character placing the flag
      * @param isCheckOnly if false, it will send a notification to the player telling him
      * why it failed
+     * @return 
      */
     public static boolean checkIfOkToPlaceFlag(L2Character activeChar, boolean isCheckOnly)
     {

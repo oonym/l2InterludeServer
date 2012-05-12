@@ -35,7 +35,6 @@ import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
  * @author Advi
- *
  */
 public abstract class ItemContainer
 {
@@ -283,11 +282,12 @@ public abstract class ItemContainer
 
     /**
      * Transfers item to another inventory
-	 * @param process : String Identifier of process triggering this action
-     * @param itemId : int Item Identifier of the item to be transfered
-     * @param count : int Quantity of items to be transfered
-	 * @param actor : L2PcInstance Player requesting the item transfer
-	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+	 * @param process string identifier of process triggering this action
+     * @param objectId the item object Id of the item to be transfered
+     * @param count the quantity of items to be transfered
+     * @param target 
+	 * @param actor L2PcInstance Player requesting the item transfer
+	 * @param reference L2Object Object referencing current action like NPC selling item or previous item in transformation
      * @return L2ItemInstance corresponding to the new item or the updated item in inventory
      */
     public L2ItemInstance transferItem(String process, int objectId, int count, ItemContainer target, L2PcInstance actor, L2Object reference)
@@ -456,7 +456,8 @@ public abstract class ItemContainer
 	}
 
 	/**
-	 * Get warehouse adena
+	 * Get warehouse Adena.
+	 * @return 
 	 */
 	public int getAdena()
     {

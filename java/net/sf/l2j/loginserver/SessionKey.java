@@ -22,8 +22,8 @@ import net.sf.l2j.Config;
 
 /**
  * <p>This class is used to represent session keys used by the client to authenticate in the gameserver</p>
- * <p>A SessionKey is made up of two 8 bytes keys. One is send in the {@link net.sf.l2j.loginserver.serverpacket.LoginOk LoginOk}
- * packet and the other is sent in {@link net.sf.l2j.loginserver.serverpacket.PlayOk PlayOk}</p>
+ * <p>A SessionKey is made up of two 8 bytes keys. One is send in the {@link net.sf.l2j.loginserver.serverpackets.LoginOk}
+ * packet and the other is sent in {@link net.sf.l2j.loginserver.serverpackets.PlayOk}</p>
  * @author -Wooden-
  *
  */
@@ -58,6 +58,7 @@ public class SessionKey
 	 * <p>Returns true if keys are equal.</p>
 	 * <p>Only checks the PlayOk part of the session key if server doesnt show the licence when player logs in.</p>
 	 * @param key
+	 * @return 
 	 */
 	public boolean equals(SessionKey key)
 	{

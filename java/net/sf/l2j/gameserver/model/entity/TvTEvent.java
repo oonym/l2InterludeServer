@@ -298,10 +298,9 @@ public class TvTEvent
 	/**
 	 * Adds a player to a TvTEvent team<br>
 	 * 1. Calculate the id of the team in which the player should be added<br>
-	 * 2. Add the player to the calculated team<br><br>
-	 *
-	 * @param playerInstance<br>
-	 * @return boolean<br>
+	 * 2. Add the player to the calculated team
+	 * @param playerInstance
+	 * @return boolean
 	 */
 	public static synchronized boolean addParticipant(L2PcInstance playerInstance)
 	{
@@ -321,10 +320,9 @@ public class TvTEvent
 	/**
 	 * Removes a TvTEvent player from it's team<br>
 	 * 1. Get team id of the player<br>
-	 * 2. Remove player from it's team<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return boolean<br>
+	 * 2. Remove player from it's team
+	 * @param playerName
+	 * @return boolean
 	 */
 	public static boolean removeParticipant(String playerName)
 	{
@@ -340,9 +338,8 @@ public class TvTEvent
 	/**
 	 * Send a SystemMessage to all participated players<br>
 	 * 1. Send the message to all players of team number one<br>
-	 * 2. Send the message to all players of team number two<br><br>
-	 *
-	 * @param message<br>
+	 * 2. Send the message to all players of team number two
+	 * @param message
 	 */
 	public static void sysMsgToAllParticipants(String message)
 	{
@@ -399,9 +396,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called when a player logs in<br><br>
-	 *
-	 * @param playerInstance<br>
+	 * Called when a player logs in
+	 * @param playerInstance
 	 */
 	public static void onLogin(L2PcInstance playerInstance)
 	{
@@ -418,9 +414,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called when a player logs out<br><br>
-	 *
-	 * @param playerInstance<br>
+	 * Called when a player logs out
+	 * @param playerInstance
 	 */
 	public static void onLogout(L2PcInstance playerInstance)
 	{
@@ -432,10 +427,9 @@ public class TvTEvent
 
 	/**
 	 * Called on every bypass by npc of type L2TvTEventNpc<br>
-	 * Needs synchronization cause of the max player check<br><br>
-	 *
-	 * @param command<br>
-	 * @param playerInstance<br>
+	 * Needs synchronization cause of the max player check
+	 * @param command
+	 * @param playerInstance
 	 */
 	public static synchronized void onBypass(String command, L2PcInstance playerInstance)
 	{
@@ -476,11 +470,10 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called on every onAction in L2PcIstance<br><br>
-	 *
-	 * @param playerName<br>
-	 * @param targetPlayerName<br>
-	 * @return boolean<br>
+	 * Called on every onAction in L2PcIstance
+	 * @param playerName
+	 * @param targetPlayerName
+	 * @return boolean
 	 */
 	public static boolean onAction(String playerName, String targetPlayerName)
 	{
@@ -509,10 +502,9 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called on every potion use<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return boolean<br>
+	 * Called on every potion use
+	 * @param playerName
+	 * @return boolean
 	 */
 	public static boolean onPotionUse(String playerName)
 	{
@@ -526,10 +518,9 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called on every escape use(thanks to nbd)<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return boolean<br>
+	 * Called on every escape use(thanks to nbd)
+	 * @param playerName
+	 * @return boolean
 	 */
 	public static boolean onEscapeUse(String playerName)
 	{
@@ -543,10 +534,9 @@ public class TvTEvent
 	}
 
 	/**
-	 * Called on every summon item use<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return boolean<br>
+	 * Called on every summon item use
+	 * @param playerName
+	 * @return boolean
 	 */
 	public static boolean onItemSummon(String playerName)
 	{
@@ -560,10 +550,9 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is called when a player is killed<br><br>
-	 *
-	 * @param killerCharacter<br>
-	 * @param killedPlayerInstance<br>
+	 * Is called when a player is killed
+	 * @param killerCharacter
+	 * @param killedPlayerInstance
 	 */
 	public static void onKill(L2Character killerCharacter, L2PcInstance killedPlayerInstance)
 	{
@@ -601,9 +590,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Sets the TvTEvent state<br><br>
-	 *
-	 * @param state<br>
+	 * Sets the TvTEvent state
+	 * @param state
 	 */
 	private static void setState(EventState state)
 	{
@@ -614,9 +602,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is TvTEvent inactive?<br><br>
-	 *
-	 * @return boolean<br>
+	 * Is TvTEvent inactive?
+	 * @return boolean
 	 */
 	public static boolean isInactive()
 	{
@@ -631,9 +618,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is TvTEvent in inactivating?<br><br>
-	 *
-	 * @return boolean<br>
+	 * Is TvTEvent in inactivating?
+	 * @return boolean
 	 */
 	public static boolean isInactivating()
 	{
@@ -648,9 +634,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is TvTEvent in participation?<br><br>
-	 *
-	 * @return boolean<br>
+	 * Is TvTEvent in participation?
+	 * @return boolean
 	 */
 	public static boolean isParticipating()
 	{
@@ -665,9 +650,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is TvTEvent starting?<br><br>
-	 *
-	 * @return boolean<br>
+	 * Is TvTEvent starting?
+	 * @return boolean
 	 */
 	public static boolean isStarting()
 	{
@@ -682,9 +666,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is TvTEvent started?<br><br>
-	 *
-	 * @return boolean<br>
+	 * Is TvTEvent started?
+	 * @return boolean
 	 */
 	public static boolean isStarted()
 	{
@@ -699,9 +682,8 @@ public class TvTEvent
 	}
 
 	/**
-	 * Is TvTEvent rewadrding?<br><br>
-	 *
-	 * @return boolean<br>
+	 * Is TvTEvent rewarding?
+	 * @return boolean
 	 */
 	public static boolean isRewarding()
 	{
@@ -716,10 +698,9 @@ public class TvTEvent
 	}
 
 	/**
-	 * Returns the team id of a player, if player is not participant it returns -1<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return byte<br>
+	 * Returns the team id of a player, if player is not participant it returns -1
+	 * @param playerName
+	 * @return byte
 	 */
 	public static byte getParticipantTeamId(String playerName)
 	{
@@ -727,10 +708,9 @@ public class TvTEvent
 	}
 
 	/**
-	 * Returns the team coordinates in which the player is in, if player is not in a team return null<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return int[]<br>
+	 * Returns the team coordinates in which the player is in, if player is not in a team return null
+	 * @param playerName
+	 * @return int[]
 	 */
 	public static int[] getParticipantTeamCoordinates(String playerName)
 	{
@@ -739,10 +719,9 @@ public class TvTEvent
 
 
 	/**
-	 * Is given player participant of the event?<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return boolean<br>
+	 * Is given player participant of the event?
+	 * @param playerName
+	 * @return boolean
 	 */
 	public static boolean isPlayerParticipant(String playerName)
 	{

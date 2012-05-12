@@ -36,10 +36,7 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 	{
 		_objectID = readD();
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	public void runImpl()
 	{
@@ -52,14 +49,10 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 		// build list...
 		sendPacket(new PackageSendableList(items, _objectID));
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C_9E_REQUESTPACKAGESENDABLEITEMLIST;
 	}
-
 }

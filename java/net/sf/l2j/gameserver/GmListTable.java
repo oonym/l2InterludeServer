@@ -82,6 +82,8 @@ public class GmListTable
 	
 	/**
 	 * Add a L2PcInstance player to the Set _gmList
+	 * @param player 
+	 * @param hidden 
 	 */
 	public void addGm(L2PcInstance player, boolean hidden)
 	{

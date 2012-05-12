@@ -194,6 +194,9 @@ public final class RequestPetUseItem extends L2GameClientPacket
 	 * When fed by owner double click on food from pet inventory. <BR><BR>
 	 *
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : 1 food = 100 points of currentFed</B></FONT><BR><BR>
+	 * @param player 
+	 * @param pet 
+	 * @param item 
 	 */
 	private void feed(L2PcInstance player, L2PetInstance pet, L2ItemInstance item)
 	{
@@ -202,10 +205,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
             pet.setCurrentFed(pet.getCurrentFed() + 100);
 		pet.broadcastStatusUpdate();
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

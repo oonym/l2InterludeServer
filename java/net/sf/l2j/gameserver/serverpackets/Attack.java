@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Object;
 
-
 /**
  * sample
  * 06 8f19904b 2522d04b 00000000 80 950c0000 4af50000 08f2ffff 0000    - 0 damage (missed 0x80)
@@ -65,7 +64,8 @@ public class Attack extends L2GameServerPacket
 
 	/**
 	 * @param attacker the attacker L2Character
-	 * @param ss true if useing SoulShots
+	 * @param ss true if using SoulShots
+	 * @param grade 
 	 */
 	public Attack(L2Character attacker, boolean ss, int grade)
 	{
@@ -80,6 +80,11 @@ public class Attack extends L2GameServerPacket
 
 	/**
 	 * Add this hit (target, damage, miss, critical, shield) to the Server-Client packet Attack.<BR><BR>
+	 * @param target 
+	 * @param damage 
+	 * @param miss 
+	 * @param crit 
+	 * @param shld 
 	 */
 	public void addHit(L2Object target, int damage, boolean miss, boolean crit, boolean shld)
 	{
@@ -97,7 +102,7 @@ public class Attack extends L2GameServerPacket
 	}
 
 	/**
-	 * Return True if the Server-Client packet Attack conatins at least 1 hit.<BR><BR>
+	 * @return {@code true} if the Server-Client packet Attack contains at least 1 hit, {@code false} otherwise
 	 */
 	public boolean hasHits()
 	{
@@ -124,10 +129,7 @@ public class Attack extends L2GameServerPacket
 			writeC(_hits[i]._flags);
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

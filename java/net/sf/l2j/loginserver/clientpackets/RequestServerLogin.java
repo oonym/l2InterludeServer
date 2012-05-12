@@ -73,16 +73,13 @@ public class RequestServerLogin extends L2LoginClientPacket
 		}
 		return false;
 	}
-
-	/**
-	 * @see com.l2jserver.mmocore.network.ReceivablePacket#run()
-	 */
+	
 	@Override
 	public void run()
 	{
 		SessionKey sk = getClient().getSessionKey();
 
-		// if we didnt showed the license we cant check these values
+		// If we didn't showed the license we can't check these values
 		if (!Config.SHOW_LICENCE || sk.checkLoginPair(_skey1, _skey2))
 		{
 			if (LoginController.getInstance().isLoginPossible(getClient(), _serverId))

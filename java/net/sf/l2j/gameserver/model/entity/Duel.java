@@ -318,6 +318,7 @@ public class Duel
 
 	/**
 	 * Check if a player engaged in pvp combat (only for 1on1 duels)
+	 * @param sendMessage 
 	 * @return returns true if a duelist is engaged in Pvp combat
 	 */
 	public boolean isDuelistInPvp(boolean sendMessage)
@@ -446,7 +447,7 @@ public class Duel
 
 	/**
 	 * Restore player conditions
-	 * @param was the duel canceled?
+	 * @param abnormalDuelEnd was the duel canceled?
 	 */
 	public void restorePlayerConditions(boolean abnormalDuelEnd)
 	{
@@ -567,8 +568,8 @@ public class Duel
 	}
 
 	/**
-	 * Broadcast a packet to the challanger team
-	 *
+	 * Broadcast a packet to the challenger team
+	 * @param packet 
 	 */
 	public void broadcastToTeam1(L2GameServerPacket packet)
 	{
@@ -584,7 +585,7 @@ public class Duel
 
 	/**
 	 * Broadcast a packet to the challenged team
-	 *
+	 * @param packet 
 	 */
 	public void broadcastToTeam2(L2GameServerPacket packet)
 	{
@@ -667,7 +668,7 @@ public class Duel
 
 	/**
 	 * The duel has reached a state in which it can no longer continue
-	 * @param duel result
+	 * @param result 
 	 */
 	public void endDuel(DuelResultEnum result)
 	{
@@ -822,11 +823,11 @@ public class Duel
 
 	/**
 	 * Register a surrender request
-	 * @param surrendering player
+	 * @param player the surrendering player
 	 */
 	public void doSurrender(L2PcInstance player)
 	{
-		// already recived a surrender request
+		// already received a surrender request
 		if (_surrenderRequest != 0) return;
 
 		// stop the fight
@@ -858,7 +859,6 @@ public class Duel
 				{
 					temp.setDuelState(DUELSTATE_WINNER);
 				}
-
 			}
 		}
 		else
@@ -880,7 +880,7 @@ public class Duel
 
 	/**
 	 * This function is called whenever a player was defeated in a duel
-	 * @param dieing player
+	 * @param player 
 	 */
 	public void onPlayerDefeat(L2PcInstance player)
 	{
@@ -921,11 +921,11 @@ public class Duel
 
 	/**
 	 * This function is called whenever a player leaves a party
-	 * @param leaving player
+	 * @param player 
 	 */
 	public void onRemoveFromParty(L2PcInstance player)
 	{
-		// if it isnt a party duel ignore this
+		// if it isn't a party duel ignore this
 		if (!_partyDuel) return;
 
 		// this player is leaving his party during party duel

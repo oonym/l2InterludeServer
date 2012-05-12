@@ -34,8 +34,10 @@ public class BlowFishKey extends ClientBasePacket
 {
 	byte[] _key;
 	protected static final Logger _log = Logger.getLogger(BlowFishKey.class.getName());
+	
 	/**
 	 * @param decrypt
+	 * @param privateKey 
 	 */
 	public BlowFishKey(byte[] decrypt, RSAPrivateKey privateKey)
 	{
@@ -68,12 +70,10 @@ public class BlowFishKey extends ClientBasePacket
 		{
 			//TODO: manage
 		}*/
-
 	}
 
 	public byte[] getKey()
 	{
 		return _key;
 	}
-
 }

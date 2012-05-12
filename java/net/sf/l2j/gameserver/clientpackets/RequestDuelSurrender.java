@@ -33,23 +33,16 @@ public final class RequestDuelSurrender extends L2GameClientPacket
 	{
 		// trigger
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
+	
 	@Override
 	protected void runImpl()
 	{
 		DuelManager.getInstance().doSurrender(getClient().getActiveChar());
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _C__D0_30_REQUESTDUELSURRENDER;
 	}
-
 }

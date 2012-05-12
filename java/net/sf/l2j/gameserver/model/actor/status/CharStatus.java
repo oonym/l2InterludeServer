@@ -41,9 +41,7 @@ import net.sf.l2j.util.Rnd;
 public class CharStatus
 {
     protected static final Logger _log = Logger.getLogger(CharStatus.class.getName());
-
-    // =========================================================
-    // Data Field
+    
     private L2Character _activeChar;
     private double _currentCp               = 0; //Current CP of the L2Character
     private double _currentHp               = 0; //Current HP of the L2Character
@@ -57,9 +55,7 @@ public class CharStatus
     private static final byte REGEN_FLAG_CP  = 4;
     private static final byte REGEN_FLAG_HP  = 1;
     private static final byte REGEN_FLAG_MP  = 2;
-
-    // =========================================================
-    // Constructor
+    
     public CharStatus(L2Character activeChar)
     {
         _activeChar = activeChar;
@@ -100,13 +96,10 @@ public class CharStatus
     /**
      * Reduce the current HP of the L2Character and launch the doDie Task if necessary.<BR><BR>
      *
-     * <B><U> Overriden in </U> :</B><BR><BR>
+     * <B><U> Overridden in </U> :</B><BR><BR>
      * <li> L2Attackable : Update the attacker AggroInfo of the L2Attackable _aggroList</li><BR><BR>
-     *
-     * @param i The HP decrease value
+     * @param value 
      * @param attacker The L2Character who attacks
-     * @param awake The awake state (If True : stop sleeping)
-     *
      */
     public void reduceHp(double value, L2Character attacker) { reduceHp(value, attacker, true); }
 

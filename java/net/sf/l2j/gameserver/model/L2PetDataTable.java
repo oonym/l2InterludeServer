@@ -140,6 +140,8 @@ public class L2PetDataTable
 
 	/**
 	 * Pets stuffs
+	 * @param npcId 
+	 * @return 
 	 */
     public static boolean isWolf(int npcId)
     {

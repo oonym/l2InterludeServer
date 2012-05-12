@@ -24,10 +24,7 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_4A_EXMPCCSHOWPARTYMEMBERINFO = "[S] FE:4A ExMPCCShowPartyMemberInfo";
-
-	/**
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -36,14 +33,10 @@ public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 
 		//TODO this packet has a list, so im not going to add temp vars ^^
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_4A_EXMPCCSHOWPARTYMEMBERINFO;
 	}
-
 }

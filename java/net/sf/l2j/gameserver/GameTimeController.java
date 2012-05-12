@@ -53,7 +53,8 @@ public class GameTimeController
 	private ScheduledFuture<?> _timerWatcher;
 
 	/**
-	 * one ingame day is 240 real minutes
+	 * One in-game day is 240 real minutes.
+	 * @return 
 	 */
 	public static GameTimeController getInstance()
 	{
@@ -244,10 +245,7 @@ public class GameTimeController
 			}
 		}
 	}
-
-	/**
-	 * @param rise
-	 */
+	
 	class BroadcastSunState implements Runnable
 	{
 		@Override
@@ -257,7 +255,7 @@ public class GameTimeController
 			boolean tempIsNight = (h < 6);
 
 			if (tempIsNight != _isNight) { // If diff day/night state
-                _isNight = tempIsNight; // Set current day/night varible to value of temp varible
+                _isNight = tempIsNight; // Set current day/night variable to value of temp variable
 
                 DayNightSpawnManager.getInstance().notifyChangeMode();
             }

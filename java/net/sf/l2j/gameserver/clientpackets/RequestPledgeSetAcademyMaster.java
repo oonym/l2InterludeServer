@@ -27,7 +27,6 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * Format: (ch) dSS
  * @author  -Wooden-
- *
  */
 public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
 {
@@ -43,10 +42,7 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
         _currPlayerName = readS();
         _targetPlayerName = readS();
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
+    
     @Override
 	protected void runImpl()
     {
@@ -126,15 +122,10 @@ public final class RequestPledgeSetAcademyMaster extends L2GameClientPacket
     	if (sponsor != null) sponsor.sendPacket(sm);
     	if (apprentice != null) apprentice.sendPacket(sm);
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
+    
     @Override
     public String getType()
     {
         return _C__D0_19_REQUESTSETPLEADGEACADEMYMASTER;
     }
-
-
 }

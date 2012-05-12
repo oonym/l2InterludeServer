@@ -43,8 +43,7 @@ import net.sf.l2j.gameserver.util.Util;
 public final class RequestSellItem extends L2GameClientPacket
 {
 	private static final String _C__1E_REQUESTSELLITEM = "[C] 1E RequestSellItem";
-	//private static Logger _log = Logger.getLogger(RequestSellItem.class.getName());
-
+	
 	private int _listId;
 	private int _count;
 	private int[] _items; // count*3
@@ -67,7 +66,6 @@ public final class RequestSellItem extends L2GameClientPacket
 	 * 01 00 00 00		// item count
 	 *
 	 * format:		cdd (ddd)
-	 * @param decrypt
 	 */
 	@Override
 	protected void readImpl()

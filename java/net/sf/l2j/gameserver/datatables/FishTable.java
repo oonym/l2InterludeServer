@@ -100,9 +100,9 @@ public class FishTable
         _log.config("FishTable: Loaded " + count + " Fishes.");
 	}
 	/**
-	 * @param Fish - lvl
-	 * @param Fish - type
-	 * @param Fish - group
+	 * @param lvl 
+	 * @param type 
+	 * @param group 
 	 * @return List of Fish that can be fished
 	 */
 	public List<FishData> getfish(int lvl, int type, int group)

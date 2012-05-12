@@ -66,8 +66,7 @@ public class LoginServerThread extends Thread
 
 	/** The LoginServerThread singleton */
 	private static LoginServerThread	_instance;
-
-	/** {@see net.sf.l2j.loginserver.LoginServer#PROTOCOL_REV } */
+	
 	private static final int			REVISION = 0x0102;
 	private RSAPublicKey				_publicKey;
 	private String						_hostname;
@@ -493,7 +492,8 @@ public class LoginServerThread extends Thread
 	}
 
 	/**
-	 * @param server_gm_only
+	 * @param id 
+	 * @param value 
 	 */
 	public void sendServerStatus(int id, int value)
 	{

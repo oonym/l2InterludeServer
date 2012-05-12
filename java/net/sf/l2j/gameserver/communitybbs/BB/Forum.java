@@ -56,8 +56,10 @@ public class Forum
 	private Forum _fParent;
 	private int _ownerID;
 	private boolean _loaded = false;
+	
 	/**
-	 * @param i
+	 * @param Forumid 
+	 * @param FParent 
 	 */
 	public Forum(int Forumid, Forum FParent)
 	{
@@ -77,6 +79,7 @@ public class Forum
 	 * @param parent
 	 * @param type
 	 * @param perm
+	 * @param OwnerID 
 	 */
 	public Forum(String name, Forum parent, int type, int perm, int OwnerID)
 	{

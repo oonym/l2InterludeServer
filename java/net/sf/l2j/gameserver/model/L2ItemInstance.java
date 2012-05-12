@@ -530,6 +530,8 @@ public final class L2ItemInstance extends L2Object
 
     /**
      * Returns if item is available for manipulation
+     * @param player 
+     * @param allowAdena 
      * @return boolean
      */
     public boolean isAvailable(L2PcInstance player, boolean allowAdena)
@@ -592,7 +594,7 @@ public final class L2ItemInstance extends L2Object
 
 	/**
 	 * Sets the level of enchantment of the item
-	 * @param int
+	 * @param enchantLevel 
 	 */
 	public void setEnchantLevel(int enchantLevel)
 	{
@@ -718,7 +720,7 @@ public final class L2ItemInstance extends L2Object
 	 * sends a inventory update
 	 * schedules a new consumption task if non is running
 	 * optionally one could force a new task
-	 * @param forces a new consumption task if item is equipped
+	 * @param resetConsumingMana 
 	 */
 	public void decreaseMana(boolean resetConsumingMana)
 	{
@@ -1027,7 +1029,10 @@ public final class L2ItemInstance extends L2Object
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Drop item</li>
      * <li> Call Pet</li><BR>
-     *
+     * @param dropper 
+     * @param x 
+     * @param y 
+     * @param z 
      */
     public final void dropMe(L2Character dropper, int x, int y, int z)
     {

@@ -25,25 +25,20 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 /**
  * Format: (ch) Sd
  * @author  -Wooden-
- *
  */
 public final class RequestPledgeSetMemberPowerGrade extends L2GameClientPacket
 {
     private static final String _C__D0_1C_REQUESTPLEDGESETMEMBERPOWERGRADE = "[C] D0:1C RequestPledgeSetMemberPowerGrade";
     private int _powerGrade;
     private String _member;
-
-
+    
     @Override
 	protected void readImpl()
     {
         _member = readS();
         _powerGrade = readD();
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
+    
     @Override
 	protected void runImpl()
     {
@@ -65,14 +60,10 @@ public final class RequestPledgeSetMemberPowerGrade extends L2GameClientPacket
         member.setPowerGrade(_powerGrade);
         clan.broadcastClanStatus();
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
+    
     @Override
     public String getType()
     {
         return _C__D0_1C_REQUESTPLEDGESETMEMBERPOWERGRADE;
     }
-
 }

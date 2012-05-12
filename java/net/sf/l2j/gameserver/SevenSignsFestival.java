@@ -836,8 +836,7 @@ public class SevenSignsFestival implements SpawnListener
 
     /**
      * Returns the associated name (level range) to a given festival ID.
-     *
-     * @param int festivalID
+     * @param festivalID 
      * @return String festivalName
      */
     public static final String getFestivalName(int festivalID)
@@ -951,8 +950,6 @@ public class SevenSignsFestival implements SpawnListener
     /**
      * Restores saved festival data, basic settings from the properties file
      * and past high score data from the database.
-     *
-     * @throws Exception
      */
     protected void restoreFestivalData()
     {
@@ -1051,7 +1048,6 @@ public class SevenSignsFestival implements SpawnListener
      * If updateSettings = true, then all Seven Signs data is updated in the database.
      *
      * @param updateSettings
-     * @throws Exception
      */
     public void saveFestivalData(boolean updateSettings)
     {
@@ -1240,6 +1236,7 @@ public class SevenSignsFestival implements SpawnListener
 
     /**
      * Used to reset all festival data at the beginning of a new quest event period.
+     * @param updateSettings 
      */
     protected void resetFestivalData(boolean updateSettings)
     {

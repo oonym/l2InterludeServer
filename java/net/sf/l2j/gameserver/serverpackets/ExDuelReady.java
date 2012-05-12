@@ -30,7 +30,7 @@ public class ExDuelReady extends L2GameServerPacket
 	{
 		_unk1 = unk1;
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -39,14 +39,10 @@ public class ExDuelReady extends L2GameServerPacket
 
 		writeD(_unk1);
 	}
-
-	/**
-	 * @see net.sf.l2j.gameserver.BasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_4C_EXDUELREADY;
 	}
-
 }

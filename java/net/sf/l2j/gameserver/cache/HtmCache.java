@@ -30,7 +30,6 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * @author Layane
- *
  */
 public class HtmCache
 {
@@ -166,7 +165,13 @@ public class HtmCache
             }
             finally
             {
-                try { fis.close(); } catch (Exception e1) { }
+                try
+                {
+                	fis.close();
+                } catch (Exception e1)
+                {
+                	
+                }
             }
         }
 
@@ -203,8 +208,8 @@ public class HtmCache
 
     /**
      * Check if an HTM exists and can be loaded
-     * @param
-     * path The path to the HTM
+     * @param path The path to the HTM
+     * @return 
      * */
     public boolean isLoadable(String path)
     {

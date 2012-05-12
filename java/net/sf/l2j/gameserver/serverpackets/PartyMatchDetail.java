@@ -40,7 +40,7 @@ public class PartyMatchDetail extends L2GameServerPacket
 	private L2PcInstance _activeChar;
 
 	/**
-	 * @param allPlayers
+	 * @param player 
 	 */
 	public PartyMatchDetail(L2PcInstance player)
 	{
@@ -75,10 +75,7 @@ public class PartyMatchDetail extends L2GameServerPacket
 
 		writeS("  " + _activeChar.getPartyMatchingMemo()); // seems to be bugged.. first 2 chars get stripped away
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.clientpackets;
 /**
  * Format: (ch) S
  * @author  -Wooden-
- *
  */
 public final class RequestPCCafeCouponUse extends L2GameClientPacket
 {
@@ -34,24 +33,17 @@ public final class RequestPCCafeCouponUse extends L2GameClientPacket
     {
         _str = readS();
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
+    
     @Override
 	protected void runImpl()
     {
         // TODO
         System.out.println("C5: RequestPCCafeCouponUse: S: "+_str);
     }
-
-    /**
-     * @see net.sf.l2j.gameserver.BasePacket#getType()
-     */
+    
     @Override
     public String getType()
     {
         return _C__D0_20_REQUESTPCCAFECOUPONUSE;
     }
-
 }

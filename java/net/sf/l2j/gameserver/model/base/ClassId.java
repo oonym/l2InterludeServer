@@ -135,7 +135,11 @@ public enum ClassId {
     private final ClassId _parent;
 
     /**
-     * Constructor of ClassId.<BR><BR>
+     * Constructor of ClassId.
+     * @param pId 
+     * @param pIsMage 
+     * @param pRace 
+     * @param pParent 
      */
     private ClassId(int pId, boolean pIsMage, Race pRace, ClassId pParent)
     {
@@ -147,6 +151,7 @@ public enum ClassId {
 
     /**
      * Return the Identifier of the Class.<BR><BR>
+     * @return 
      */
     public final int getId()
     {
@@ -154,7 +159,7 @@ public enum ClassId {
     }
 
     /**
-     * Return True if the class is a mage class.<BR><BR>
+     * @return {@code true} if the class is a mage class
      */
     public final boolean isMage()
     {
@@ -162,18 +167,16 @@ public enum ClassId {
     }
 
     /**
-     * Return the Race object of the class.<BR><BR>
+     * @return the Race object of the class
      */
     public final Race getRace()
     {
         return _race;
     }
-
+    
     /**
-     * Return True if this Class is a child of the selected ClassId.<BR><BR>
-     *
      * @param cid The parent ClassId to check
-     *
+     * @return {@code true} if this Class is a child of the selected ClassId
      */
     public final boolean childOf(ClassId cid)
     {
@@ -186,10 +189,8 @@ public enum ClassId {
     }
 
     /**
-     * Return True if this Class is equal to the selected ClassId or a child of the selected ClassId.<BR><BR>
-     *
      * @param cid The parent ClassId to check
-     *
+     * @return {@code true} if this Class is equal to the selected ClassId or a child of the selected ClassId
      */
     public final boolean equalsOrChildOf(ClassId cid)
     {
@@ -197,10 +198,7 @@ public enum ClassId {
     }
 
     /**
-     * Return the child level of this Class (0=root, 1=child leve 1...).<BR><BR>
-     *
-     * @param cid The parent ClassId to check
-     *
+     * @return {@code true} if the child level of this Class (0=root, 1=child leve 1...)
      */
     public final int level()
     {
@@ -210,12 +208,10 @@ public enum ClassId {
     }
 
     /**
-     * Return its parent ClassId<BR><BR>
-     *
+     * @return its parent ClassId
      */
     public final ClassId getParent()
     {
         return _parent;
     }
-
 }

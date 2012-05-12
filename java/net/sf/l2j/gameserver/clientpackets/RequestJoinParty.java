@@ -120,8 +120,6 @@ public final class RequestJoinParty extends L2GameClientPacket
     }
 
 	/**
-	 * @param client
-	 * @param itemDistribution
 	 * @param target
 	 * @param requestor
 	 */
@@ -168,8 +166,6 @@ public final class RequestJoinParty extends L2GameClientPacket
 
 
 	/**
-	 * @param client
-	 * @param itemDistribution
 	 * @param target
 	 * @param requestor
 	 */
@@ -202,10 +198,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 		        _log.warning(requestor.getName() + " already received a party invitation");
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

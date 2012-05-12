@@ -18,11 +18,12 @@
 package net.sf.l2j.util;
 
 import javolution.util.FastMap;
-/**
- *
- * @author  Julian
- */
 
+/**
+ * @author  Julian
+ * @param <K> 
+ * @param <V> 
+ */
 public class L2FastMap<K extends Object, V extends Object> extends FastMap<K,V>
 {
 	static final long serialVersionUID = 1L;

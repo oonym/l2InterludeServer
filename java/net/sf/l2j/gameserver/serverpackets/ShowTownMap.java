@@ -32,8 +32,11 @@ public class ShowTownMap extends L2GameServerPacket
 	private String _texture;
 	private int _x;
 	private int _y;
-
+	
 	/**
+	 * @param texture 
+	 * @param x 
+	 * @param y 
 	 */
 	public ShowTownMap(String texture, int x, int y)
 	{
@@ -41,7 +44,7 @@ public class ShowTownMap extends L2GameServerPacket
 		_x = x;
 		_y = y;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -50,10 +53,7 @@ public class ShowTownMap extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{

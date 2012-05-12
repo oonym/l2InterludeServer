@@ -41,10 +41,9 @@ public class TvTEventTeam
 	private Vector<String> _participatedPlayerNames = new Vector<String>();
 
 	/**
-	 * C'tor initialize the team<br><br>
-	 *
-	 * @param name<br>
-	 * @param coordinates<br>
+	 * C'tor initialize the team
+	 * @param name
+	 * @param coordinates
 	 */
 	public TvTEventTeam(String name, int[] coordinates)
 	{
@@ -54,10 +53,10 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Adds a player to the team<br><br>
+	 * Adds a player to the team
 	 *
-	 * @param playerInstance<br>
-	 * @return boolean<br>
+	 * @param playerInstance
+	 * @return boolean
 	 */
 	public boolean addPlayer(L2PcInstance playerInstance)
 	{
@@ -78,9 +77,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Removes a player from the team<br><br>
-	 *
-	 * @param playerName<br>
+	 * Removes a player from the team
+	 * @param playerName
 	 */
 	public void removePlayer(String playerName)
 	{
@@ -112,10 +110,9 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Is given player in this team?<br><br>
-	 *
-	 * @param playerName<br>
-	 * @return boolean<br>
+	 * Is given player in this team?
+	 * @param playerName
+	 * @return boolean
 	 */
 	public boolean containsPlayer(String playerName)
 	{
@@ -130,9 +127,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Returns the name of the team<br><br>
-	 *
-	 * @return String<br>
+	 * Returns the name of the team
+	 * @return String
 	 */
 	public String getName()
 	{
@@ -140,9 +136,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Returns the coordinates of the team spot<br><br>
-	 *
-	 * @return int[]<br>
+	 * Returns the coordinates of the team spot
+	 * @return int[]
 	 */
 	public int[] getCoordinates()
 	{
@@ -150,9 +145,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Returns the points of the team<br><br>
-	 *
-	 * @return short<br>
+	 * Returns the points of the team
+	 * @return short
 	 */
 	public short getPoints()
 	{
@@ -160,9 +154,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Returns name and instance of all participated players in FastMap<br><br>
-	 *
-	 * @return Map<String, L2PcInstance><br>
+	 * Returns name and instance of all participated players in FastMap
+	 * @return Map<String, L2PcInstance>
 	 */
 	public Map<String, L2PcInstance> getParticipatedPlayers()
 	{
@@ -177,9 +170,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Returns name of all participated players in Vector<br><br>
-	 *
-	 * @return Vector<String><br>
+	 * Returns name of all participated players in Vector
+	 * @return Vector<String>
 	 */
 	public Vector<String> getParticipatedPlayerNames()
 	{
@@ -194,9 +186,8 @@ public class TvTEventTeam
 	}
 
 	/**
-	 * Returns player count of this team<br><br>
-	 *
-	 * @return int<br>
+	 * Returns player count of this team
+	 * @return int
 	 */
 	public int getParticipatedPlayerCount()
 	{

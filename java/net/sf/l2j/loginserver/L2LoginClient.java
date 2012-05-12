@@ -46,7 +46,12 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 {
 	private static Logger _log = Logger.getLogger(L2LoginClient.class.getName());
 
-	public static enum LoginClientState { CONNECTED, AUTHED_GG, AUTHED_LOGIN};
+	public static enum LoginClientState
+	{
+		CONNECTED,
+		AUTHED_GG,
+		AUTHED_LOGIN
+	}
 
 	private LoginClientState _state;
 
@@ -94,7 +99,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	}
 
 	/**
-	 * @see com.l2jserver.mmocore.interfaces.MMOClient#decrypt(java.nio.ByteBuffer, int)
+	 * @see #decrypt(java.nio.ByteBuffer, int)
 	 */
 	@Override
 	public boolean decrypt(ByteBuffer buf, int size)
@@ -123,7 +128,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	}
 
 	/**
-	 * @see com.l2jserver.mmocore.interfaces.MMOClient#encrypt(java.nio.ByteBuffer, int)
+	 * @see #encrypt(java.nio.ByteBuffer, int)
 	 */
 	@Override
 	public boolean encrypt(ByteBuffer buf, int size)

@@ -1167,7 +1167,7 @@ public final class Config
     /**
      * This class initializes all global variables for configuration.<br>
      * If key doesn't appear in properties file, a default value is setting on by this class.
-     * @see CONFIGURATION_FILE (propertie file) for configuring your server.
+     * @see #CONFIGURATION_FILE for configuring your server.
      */
     public static void load()
     {
@@ -2170,7 +2170,6 @@ public final class Config
      * @param pName (String) : name of the parameter to change
      * @param pValue (String) : new value of the parameter
      * @return boolean : true if modification has been made
-     * @link useAdminCommand
      */
     public static boolean setParameterValue(String pName, String pValue)
     {
@@ -2424,10 +2423,10 @@ public final class Config
 
     /**
      * Save hexadecimal ID of the server in the properties file.
+     * @param serverId 
      * @param string (String) : hexadecimal ID of the server to store
-     * @see HEXID_FILE
-     * @see saveHexid(String string, String fileName)
-     * @link LoginServerThread
+     * @see #HEXID_FILE
+     * @see #saveHexid(int, String, String)
      */
     public static void saveHexid(int serverId, String string)
     {
@@ -2436,6 +2435,7 @@ public final class Config
 
     /**
      * Save hexadecimal ID of the server in the properties file.
+     * @param serverId 
      * @param hexId (String) : hexadecimal ID of the server to store
      * @param fileName (String) : name of the properties file
      */

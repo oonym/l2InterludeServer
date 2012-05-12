@@ -70,7 +70,15 @@ public class SQLAccountManager
 			while (_uname.length() == 0)
 			{
 				System.out.print("Username: ");
-				_uname = _in.readLine().toLowerCase();
+				String line = _in.readLine();
+				if ((line != null) && !line.isEmpty())
+		        {
+					_uname = line.toLowerCase();
+		        }
+		        else
+		        {
+		        	// TODO: Handle null pointer exception. 
+		        }
 			}
 
 			if (_mode.equals("1"))
@@ -99,7 +107,7 @@ public class SQLAccountManager
 			// Delete
 			System.out.print("Do you really want to delete this account ? Y/N : ");
 			String yesno = _in.readLine();
-			if (yesno.equals("Y"))
+			if ((yesno != null) && yesno.equals("Y"))
 			{
 				// Yes
 				deleteAccount(_uname);

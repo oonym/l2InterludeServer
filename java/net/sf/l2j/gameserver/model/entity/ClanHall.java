@@ -210,68 +210,102 @@ public class ClanHall
         }
 	}
 
-	/** Return if clanHall is paid or not */
+	/**
+	 * Return if clanHall is paid or not 
+	 * @return
+	 */
 	public final boolean getPaid()
 	{
 		return _paid;
 	}
 
-	/** Return Id Of Clan hall */
+	/**
+	 * Return Id Of Clan hall 
+	 * @return
+	 */
 	public final int getId()
 	{
 		return _clanHallId;
 	}
 
-	/** Return name */
+	/**
+	 * Return name 
+	 * @return
+	 */
     public final String getName()
     {
     	return _name;
     }
 
-    /** Return OwnerId */
+    /**
+     * Return OwnerId 
+     * @return
+     */
 	public final int getOwnerId()
 	{
 		return _ownerId;
 	}
 
-    /** Return lease*/
+    /**
+     * Return lease
+     * @return
+     */
     public final int getLease()
     {
         return _lease;
     }
 
-    /** Return Desc */
+    /** 
+     * Return Desc 
+     * @return
+     */
     public final String getDesc()
     {
         return _desc;
     }
 
-    /** Return Location */
+    /**
+     * Return Location 
+     * @return
+     */
     public final String getLocation()
     {
         return _location;
     }
 
-    /** Return PaidUntil */
+    /**
+     * Return PaidUntil 
+     * @return
+     */
     public final long getPaidUntil()
     {
         return _paidUntil;
     }
 
-    /** Return Grade */
+    /**
+     * Return Grade 
+     * @return
+     */
     public final int getGrade()
     {
         return _grade;
     }
 
-    /** Return all DoorInstance */
+    /**
+     * Return all DoorInstance 
+     * @return
+     */
 	public final List<L2DoorInstance> getDoors()
 	{
         if (_doors == null) _doors = new FastList<L2DoorInstance>();
 		return _doors;
 	}
 
-	/** Return Door */
+	/**
+	 * Return Door 
+	 * @param doorId 
+	 * @return
+	 */
 	public final L2DoorInstance getDoor(int doorId)
 	{
 	    if (doorId <= 0) return null;
@@ -283,7 +317,11 @@ public class ClanHall
 		return null;
 	}
 
-	/** Return function with id */
+	/**
+	 * Return function with id 
+	 * @param type 
+	 * @return
+	 */
     public ClanHallFunction getFunction(int type)
     {
         if(_functions.get(type) != null)
@@ -300,7 +338,10 @@ public class ClanHall
     	_zone = zone;
     }
 
-    /** Returns the zone of this clan hall */
+    /**
+     * Returns the zone of this clan hall 
+     * @return
+     */
     public L2ClanHallZone getZone()
     {
     	return _zone;
@@ -319,7 +360,10 @@ public class ClanHall
         updateDb();
 	}
 
-	/** Set owner if clan hall is free */
+	/**
+	 * Set owner if clan hall is free 
+	 * @param clan
+	 */
 	public void setOwner(L2Clan clan)
 	{
 		// Verify that this ClanHall is Free and Clan isn't null
@@ -329,7 +373,7 @@ public class ClanHall
 	    _isFree = false;
 	    _paidUntil = System.currentTimeMillis();
 	    initialyzeTask(true);
-	    // Annonce to Online member new ClanHall
+	    // Announce to Online member new ClanHall
 		clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 		updateDb();
 	}
@@ -340,7 +384,10 @@ public class ClanHall
 		spawnDoor(false);
 	}
 
-	/** Respawn all doors */
+	/**
+	 * Respawn all doors 
+	 * @param isDoorWeak
+	 */
 	public void spawnDoor(boolean isDoorWeak)
     {
 	    for (int i = 0; i < getDoors().size(); i++)
@@ -359,7 +406,12 @@ public class ClanHall
         }
     }
 
-    /** Open or Close Door */
+    /**
+     * Open or Close Door 
+     * @param activeChar 
+     * @param doorId 
+     * @param open
+     */
 	public void openCloseDoor(L2PcInstance activeChar, int doorId, boolean open)
 	{
 	    if (activeChar != null && activeChar.getClanId() == getOwnerId())
@@ -425,7 +477,10 @@ public class ClanHall
         finally {try { con.close(); } catch (Exception e) {}}
     }
 
-    /** Remove function In List and in DB */
+    /**
+     * Remove function In List and in DB 
+     * @param functionType
+     */
     public void removeFunction(int functionType)
     {
     	_functions.remove(functionType);
@@ -447,7 +502,15 @@ public class ClanHall
         finally {try { con.close(); } catch (Exception e) {}}
     }
 
-    /** Update Function */
+    /**
+     * Update Function 
+     * @param type 
+     * @param lvl 
+     * @param lease 
+     * @param rate 
+     * @param addNew 
+     * @return
+     */
     public boolean updateFunctions(int type, int lvl, int lease, long rate, boolean addNew)
     {
         if (Config.DEBUG)
@@ -511,7 +574,10 @@ public class ClanHall
         }
 	}
 
-    /** Initialize Fee Task */
+    /**
+     * Initialize Fee Task 
+     * @param forced
+     */
 	private void initialyzeTask(boolean forced)
     {
     	long currentTime = System.currentTimeMillis();

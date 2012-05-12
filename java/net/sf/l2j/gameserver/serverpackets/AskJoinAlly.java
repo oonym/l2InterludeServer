@@ -18,10 +18,7 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-
-
 /**
- *
  * sample
  * <p>
  * 7d
@@ -43,7 +40,8 @@ public class AskJoinAlly extends L2GameServerPacket
     private int _requestorObjId;
 
 	/**
-	 *
+	 * @param requestorObjId 
+	 * @param requestorName 
 	 */
 	public AskJoinAlly(int requestorObjId, String requestorName)
 	{
@@ -58,14 +56,10 @@ public class AskJoinAlly extends L2GameServerPacket
     		writeD(_requestorObjId);
 		writeS(_requestorName);
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
+	
 	@Override
 	public String getType()
 	{
 		return _S__A8_ASKJOINALLY_0XA8;
 	}
-
 }

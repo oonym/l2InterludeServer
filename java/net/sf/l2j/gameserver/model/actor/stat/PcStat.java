@@ -190,7 +190,7 @@ public class PcStat extends PlayableStat
 
 							getActiveChar().setNewbie(true);
 							if (Config.DEBUG) _log.info("New newbie character: " + getActiveChar().getCharId());
-						};
+						}
 						rset.close();
 						statement.close();
 					}
@@ -202,14 +202,14 @@ public class PcStat extends PlayableStat
 					{
 						try { con.close(); } catch (Exception e) {}
 					}
-	        	};
+	        	}
 
 	        	if (getActiveChar().getLevel() >= 25 && getActiveChar().isNewbie())
 	        	{
 	        		getActiveChar().setNewbie(false);
 					if (Config.DEBUG) _log.info("Newbie character ended: " + getActiveChar().getCharId());
-	        	};
-        	};
+	        	}
+        	}
 
         	getActiveChar().setCurrentCp(getMaxCp());
             getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15));

@@ -82,16 +82,18 @@ public class L2BoatInstance extends L2Character
 			public int time;
 		}
 		/**
-		 * @param idWaypoint1
-		 * @param idWTicket1
-		 * @param ntx1
-		 * @param nty1
-		 * @param ntz1
-		 * @param idnpc1
-		 * @param sysmess10_1
-		 * @param sysmess5_1
-		 * @param sysmess1_1
-		 * @param sysmessb_1
+		 * @param pIdWaypoint1 
+		 * @param pIdWTicket1 
+		 * @param pNtx1 
+		 * @param pNty1 
+		 * @param pNtz1 
+		 * @param pNpc1 
+		 * @param pSysmess10_1 
+		 * @param pSysmess5_1 
+		 * @param pSysmess1_1 
+		 * @param pSysmess0_1 
+		 * @param pSysmessb_1 
+		 * @param pBoatname 
 		 */
 		public L2BoatTrajet(int pIdWaypoint1, int pIdWTicket1, int pNtx1, int pNty1, int pNtz1, String pNpc1, String pSysmess10_1, String pSysmess5_1, String pSysmess1_1,String pSysmess0_1, String pSysmessb_1,String pBoatname)
 		{
@@ -111,7 +113,6 @@ public class L2BoatInstance extends L2Character
 		}
 		/**
 		 * @param line
-		 * @return
 		 */
 		public void parseLine(String line)
 		{
@@ -133,9 +134,7 @@ public class L2BoatInstance extends L2Character
 			}
 			return;
 		}
-		/**
-		 *
-		 */
+		
 		private void loadBoatPath()
 		{
 			LineNumberReader lnr = null;
@@ -170,6 +169,7 @@ public class L2BoatInstance extends L2Character
 
 		/**
 		 * @param state
+		 * @param _boat 
 		 * @return
 		 */
 		public int state(int state,L2BoatInstance _boat)
@@ -228,6 +228,7 @@ public class L2BoatInstance extends L2Character
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @param speed 
 	 */
 	public void moveToLocation(int x, int y, int z,float speed)
 	{
@@ -444,11 +445,7 @@ public class L2BoatInstance extends L2Character
 		BoatCaptain bc = new BoatCaptain(1,this);
 		ThreadPoolManager.getInstance().scheduleGeneral(bc, 300000);
 	}
-	   /**
-	 * @param destination
-	 * @param destination2
-	 * @param destination3
-	 */
+	
 	private int lastx = -1;
 	private int lasty= -1;
 	protected boolean needOnVehicleCheckLocation= false;
@@ -494,9 +491,7 @@ public class L2BoatInstance extends L2Character
 		}
 
 	}
-	/**
-	 * @param i
-	 */
+	
 	public void begin()
 	{
 		if(_cycle == 1)
@@ -705,6 +700,7 @@ public class L2BoatInstance extends L2Character
 	 * @param sysmess10_1
 	 * @param sysmess5_1
 	 * @param sysmess1_1
+	 * @param sysmess0_1 
 	 * @param sysmessb_1
 	 */
 	public void setTrajet1(int idWaypoint1, int idWTicket1, int ntx1, int nty1, int ntz1, String idnpc1, String sysmess10_1, String sysmess5_1, String sysmess1_1, String sysmess0_1, String sysmessb_1)
