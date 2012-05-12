@@ -18,6 +18,7 @@
 package net.sf.l2j.gameserver.instancemanager;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.model.zone.type.L2FishingZone;
 
 public class FishingZoneManager

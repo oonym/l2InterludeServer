@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.skills;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.skills.funcs.Func;
 
 

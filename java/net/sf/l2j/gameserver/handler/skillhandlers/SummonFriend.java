@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Character;

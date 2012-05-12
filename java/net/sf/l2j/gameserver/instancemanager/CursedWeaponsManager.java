@@ -31,6 +31,11 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastMap;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.CursedWeapon;
@@ -44,10 +49,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  *

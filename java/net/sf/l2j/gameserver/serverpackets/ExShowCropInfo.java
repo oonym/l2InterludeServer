@@ -18,6 +18,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager.CropProcure;
 import net.sf.l2j.gameserver.model.L2Manor;
 

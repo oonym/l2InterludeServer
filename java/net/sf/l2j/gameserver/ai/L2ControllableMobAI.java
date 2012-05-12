@@ -24,6 +24,7 @@ import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Character.AIAccessor;

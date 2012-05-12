@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.network.SystemMessageId;

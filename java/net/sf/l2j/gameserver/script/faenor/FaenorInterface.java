@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import javolution.util.FastList;
+
+import org.apache.bsf.BSFException;
+import org.apache.bsf.BSFManager;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.Announcements;
 import net.sf.l2j.gameserver.datatables.EventDroplist;
@@ -32,9 +36,6 @@ import net.sf.l2j.gameserver.script.DateRange;
 import net.sf.l2j.gameserver.script.EngineInterface;
 import net.sf.l2j.gameserver.script.Expression;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
-
-import org.apache.bsf.BSFException;
-import org.apache.bsf.BSFManager;
 
 /**
  * @author Luis Arias

@@ -24,11 +24,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import net.sf.l2j.gameserver.script.Parser;
-
 import org.apache.bsf.BSFManager;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import net.sf.l2j.gameserver.script.Parser;
 
 /**
  * @author Luis Arias

@@ -19,10 +19,10 @@ package net.sf.l2j.gameserver.serverpackets;
 
 import java.util.logging.Logger;
 
+import org.mmocore.network.SendablePacket;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.network.L2GameClient;
-
-import org.mmocore.network.SendablePacket;
 
 /**
  * @author  KenM

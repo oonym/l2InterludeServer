@@ -4,6 +4,9 @@ package net.sf.l2j.gameserver.handler.voicedcommandhandlers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.GameTimeController;
@@ -24,9 +27,6 @@ import net.sf.l2j.gameserver.serverpackets.MagicSkillUser;
 import net.sf.l2j.gameserver.serverpackets.SetupGauge;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.util.Broadcast;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author evill33t

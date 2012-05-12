@@ -29,6 +29,9 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.mmocore.network.SelectorConfig;
+import org.mmocore.network.SelectorThread;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.Server;
@@ -232,9 +235,6 @@ import net.sf.l2j.gameserver.util.DynamicExtension;
 import net.sf.l2j.gameserver.util.FloodProtector;
 import net.sf.l2j.gameserver.util.IPv4Filter;
 import net.sf.l2j.status.Status;
-
-import org.mmocore.network.SelectorConfig;
-import org.mmocore.network.SelectorThread;
 
 /**
  * This class ...

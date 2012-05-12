@@ -25,6 +25,10 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastList;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.ItemTable;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -32,9 +36,6 @@ import net.sf.l2j.gameserver.serverpackets.MultiSellList;
 import net.sf.l2j.gameserver.templates.L2Armor;
 import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.L2Weapon;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * Multisell list manager

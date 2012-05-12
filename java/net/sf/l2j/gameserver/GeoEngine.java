@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.datatables.DoorTable;
 import net.sf.l2j.gameserver.model.L2Object;

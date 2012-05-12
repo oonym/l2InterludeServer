@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.model;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 
 public class L2SiegeClan

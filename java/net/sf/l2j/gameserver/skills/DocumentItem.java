@@ -24,6 +24,10 @@ import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.gameserver.Item;
 import net.sf.l2j.gameserver.templates.L2Armor;
 import net.sf.l2j.gameserver.templates.L2ArmorType;
@@ -33,9 +37,6 @@ import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.gameserver.templates.StatsSet;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 /**
  * @author mkizub

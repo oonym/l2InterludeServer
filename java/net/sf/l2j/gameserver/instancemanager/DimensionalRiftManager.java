@@ -30,6 +30,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.NpcTable;
@@ -43,12 +50,6 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.gameserver.util.Util;
 import net.sf.l2j.util.Rnd;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
 * Thanks to L2Fortress and balancer.ru - kombat

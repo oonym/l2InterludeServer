@@ -29,6 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+
+import org.mmocore.network.MMOClient;
+import org.mmocore.network.MMOConnection;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.LoginServerThread;
@@ -44,9 +48,6 @@ import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.serverpackets.ServerClose;
 import net.sf.l2j.gameserver.serverpackets.UserInfo;
 import net.sf.l2j.util.EventData;
-
-import org.mmocore.network.MMOClient;
-import org.mmocore.network.MMOConnection;
 
 /**
  * Represents a client connected on Game Server

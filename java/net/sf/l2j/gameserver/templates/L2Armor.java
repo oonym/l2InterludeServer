@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.templates;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2ItemInstance;

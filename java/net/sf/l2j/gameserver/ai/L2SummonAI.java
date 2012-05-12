@@ -24,6 +24,7 @@ import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_INTERACT;
 import static net.sf.l2j.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
+
 import net.sf.l2j.gameserver.model.L2Character.AIAccessor;
 import net.sf.l2j.gameserver.model.L2Summon;
 

@@ -18,6 +18,9 @@
  */
 package net.sf.l2j.gameserver.handler.skillhandlers;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.model.L2Attackable;
@@ -33,9 +36,6 @@ import net.sf.l2j.gameserver.serverpackets.InventoryUpdate;
 import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.util.Rnd;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author  l3x

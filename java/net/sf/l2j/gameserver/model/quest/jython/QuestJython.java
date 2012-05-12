@@ -17,11 +17,11 @@
  */
 package net.sf.l2j.gameserver.model.quest.jython;
 
-import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.model.quest.Quest;
-
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
+
+import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.model.quest.Quest;
 
 public abstract class QuestJython extends Quest
 {

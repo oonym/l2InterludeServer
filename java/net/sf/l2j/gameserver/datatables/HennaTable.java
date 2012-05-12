@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.templates.L2Henna;
 import net.sf.l2j.gameserver.templates.StatsSet;

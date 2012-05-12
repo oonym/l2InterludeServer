@@ -30,6 +30,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import javolution.util.FastMap;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Skill;
@@ -71,10 +76,6 @@ import net.sf.l2j.gameserver.templates.L2Item;
 import net.sf.l2j.gameserver.templates.L2Weapon;
 import net.sf.l2j.gameserver.templates.L2WeaponType;
 import net.sf.l2j.gameserver.templates.StatsSet;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * @author mkizub

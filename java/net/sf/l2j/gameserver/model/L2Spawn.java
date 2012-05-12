@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GeoData;
 import net.sf.l2j.gameserver.Territory;

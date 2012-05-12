@@ -18,6 +18,7 @@
 package net.sf.l2j.gameserver.model.zone.type;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.datatables.MapRegionTable;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.model.L2Character;

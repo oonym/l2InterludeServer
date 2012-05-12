@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.ArmorSetsTable;

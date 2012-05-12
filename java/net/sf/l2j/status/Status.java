@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.Server;
 import net.sf.l2j.util.Rnd;

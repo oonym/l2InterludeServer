@@ -18,6 +18,7 @@
 package net.sf.l2j.gameserver.instancemanager;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.zone.type.L2ArenaZone;
 

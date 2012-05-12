@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.instancemanager.CastleManager;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;

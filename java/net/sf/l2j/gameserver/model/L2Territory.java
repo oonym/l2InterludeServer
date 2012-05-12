@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.util.Rnd;
 
 public class L2Territory

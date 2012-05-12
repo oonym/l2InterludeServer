@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.clientpackets.Say2;

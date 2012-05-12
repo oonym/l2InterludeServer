@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
 import net.sf.l2j.gameserver.model.L2Character;

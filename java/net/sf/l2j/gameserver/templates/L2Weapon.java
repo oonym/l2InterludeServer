@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.handler.ISkillHandler;
 import net.sf.l2j.gameserver.handler.SkillHandler;

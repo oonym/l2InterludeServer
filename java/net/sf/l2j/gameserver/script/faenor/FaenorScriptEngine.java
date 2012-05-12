@@ -27,6 +27,10 @@ import java.util.logging.Logger;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import org.apache.bsf.BSFException;
+import org.apache.bsf.BSFManager;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameServer;
 import net.sf.l2j.gameserver.script.Parser;
@@ -34,10 +38,6 @@ import net.sf.l2j.gameserver.script.ParserNotCreatedException;
 import net.sf.l2j.gameserver.script.ScriptDocument;
 import net.sf.l2j.gameserver.script.ScriptEngine;
 import net.sf.l2j.gameserver.script.ScriptPackage;
-
-import org.apache.bsf.BSFException;
-import org.apache.bsf.BSFManager;
-import org.w3c.dom.Node;
 
 /**
  * @author Luis Arias

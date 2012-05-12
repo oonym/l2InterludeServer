@@ -26,6 +26,11 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastList;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.instancemanager.ArenaManager;
@@ -50,10 +55,6 @@ import net.sf.l2j.gameserver.model.zone.type.L2NoLandingZone;
 import net.sf.l2j.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import net.sf.l2j.gameserver.model.zone.type.L2PeaceZone;
 import net.sf.l2j.gameserver.model.zone.type.L2TownZone;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * This class manages the augmentation data and can also create new augmentations.

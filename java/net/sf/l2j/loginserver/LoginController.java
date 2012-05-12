@@ -36,6 +36,7 @@ import javax.crypto.Cipher;
 import javolution.util.FastCollection.Record;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
+
 import net.sf.l2j.Base64;
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;

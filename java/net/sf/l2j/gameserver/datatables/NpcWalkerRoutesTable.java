@@ -22,11 +22,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javolution.util.FastList;
-import net.sf.l2j.L2DatabaseFactory;
-import net.sf.l2j.gameserver.model.L2NpcWalkerNode;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.model.L2NpcWalkerNode;
 
 /**
  * Main Table to Load Npc Walkers Routes and Chat SQL Table.<br>

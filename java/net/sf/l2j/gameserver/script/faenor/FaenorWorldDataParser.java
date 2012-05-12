@@ -22,14 +22,15 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+
+import org.apache.bsf.BSFManager;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.script.IntList;
 import net.sf.l2j.gameserver.script.Parser;
 import net.sf.l2j.gameserver.script.ParserFactory;
 import net.sf.l2j.gameserver.script.ScriptEngine;
-
-import org.apache.bsf.BSFManager;
-import org.w3c.dom.Node;
 
 /**
  * @author Luis Arias

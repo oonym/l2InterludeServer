@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.skills.effects;
 import java.util.List;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.ai.CtrlIntention;
 import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;

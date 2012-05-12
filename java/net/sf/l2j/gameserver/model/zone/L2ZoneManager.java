@@ -18,6 +18,7 @@
 package net.sf.l2j.gameserver.model.zone;
 
 import javolution.util.FastList;
+
 import net.sf.l2j.gameserver.model.L2Character;
 
 /**

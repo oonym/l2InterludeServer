@@ -28,10 +28,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javolution.text.TextBuilder;
-import net.sf.l2j.Config;
-import net.sf.l2j.gameserver.network.L2GameClient;
 
 import org.mmocore.network.ReceivablePacket;
+
+import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.network.L2GameClient;
 
 /**
  * <p>This class is made to handle all the ThreadPools used in L2j.</p>

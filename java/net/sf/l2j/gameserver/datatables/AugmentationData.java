@@ -26,16 +26,17 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import javolution.util.FastList;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2Augmentation;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.skills.Stats;
 import net.sf.l2j.util.Rnd;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  * This class manages the augmentation data and can also create new augmentations.

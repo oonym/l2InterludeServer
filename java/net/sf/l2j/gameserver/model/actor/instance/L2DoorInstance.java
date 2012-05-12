@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.ai.CtrlIntention;

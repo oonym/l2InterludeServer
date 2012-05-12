@@ -23,6 +23,10 @@ import java.nio.ByteBuffer;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
 
+import org.mmocore.network.MMOClient;
+import org.mmocore.network.MMOConnection;
+import org.mmocore.network.SendablePacket;
+
 import net.sf.l2j.Config;
 import net.sf.l2j.loginserver.crypt.LoginCrypt;
 import net.sf.l2j.loginserver.crypt.ScrambledKeyPair;
@@ -32,10 +36,6 @@ import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 import net.sf.l2j.loginserver.serverpackets.PlayFail;
 import net.sf.l2j.loginserver.serverpackets.PlayFail.PlayFailReason;
 import net.sf.l2j.util.Rnd;
-
-import org.mmocore.network.MMOClient;
-import org.mmocore.network.MMOConnection;
-import org.mmocore.network.SendablePacket;
 
 /**
  * Represents a client connected into the LoginServer
