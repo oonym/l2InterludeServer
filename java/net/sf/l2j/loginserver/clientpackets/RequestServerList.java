@@ -18,8 +18,8 @@
  */
 package net.sf.l2j.loginserver.clientpackets;
 
-import net.sf.l2j.loginserver.serverpackets.ServerList;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.serverpackets.ServerList;
 
 /**
  * Format: ddc

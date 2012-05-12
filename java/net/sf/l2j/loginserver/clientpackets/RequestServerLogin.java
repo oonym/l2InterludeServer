@@ -21,9 +21,9 @@ package net.sf.l2j.loginserver.clientpackets;
 import net.sf.l2j.Config;
 import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.SessionKey;
-import net.sf.l2j.loginserver.serverpackets.PlayOk;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 import net.sf.l2j.loginserver.serverpackets.PlayFail.PlayFailReason;
+import net.sf.l2j.loginserver.serverpackets.PlayOk;
 
 /**
  * Fromat is ddc

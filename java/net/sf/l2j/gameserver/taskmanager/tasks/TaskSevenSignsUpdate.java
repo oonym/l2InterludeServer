@@ -23,8 +23,8 @@ import net.sf.l2j.gameserver.SevenSigns;
 import net.sf.l2j.gameserver.SevenSignsFestival;
 import net.sf.l2j.gameserver.taskmanager.Task;
 import net.sf.l2j.gameserver.taskmanager.TaskManager;
-import net.sf.l2j.gameserver.taskmanager.TaskTypes;
 import net.sf.l2j.gameserver.taskmanager.TaskManager.ExecutedTask;
+import net.sf.l2j.gameserver.taskmanager.TaskTypes;
 
 /**
  * Updates all data for the Seven Signs and Festival of Darkness engines,

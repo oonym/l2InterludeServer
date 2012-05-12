@@ -25,8 +25,8 @@ import java.util.List;
 import javolution.util.FastList;
 import net.sf.l2j.Config;
 import net.sf.l2j.loginserver.GameServerTable;
-import net.sf.l2j.loginserver.L2LoginClient;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
+import net.sf.l2j.loginserver.L2LoginClient;
 import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
 
 /**

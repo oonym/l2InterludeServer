@@ -22,8 +22,8 @@ import java.util.logging.Logger;
 import net.sf.l2j.gameserver.Olympiad;
 import net.sf.l2j.gameserver.taskmanager.Task;
 import net.sf.l2j.gameserver.taskmanager.TaskManager;
-import net.sf.l2j.gameserver.taskmanager.TaskTypes;
 import net.sf.l2j.gameserver.taskmanager.TaskManager.ExecutedTask;
+import net.sf.l2j.gameserver.taskmanager.TaskTypes;
 
 /**
  * Updates all data of Olympiad nobles in db

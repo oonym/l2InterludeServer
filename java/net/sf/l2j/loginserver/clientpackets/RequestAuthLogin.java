@@ -19,19 +19,20 @@
 package net.sf.l2j.loginserver.clientpackets;
 
 import java.security.GeneralSecurityException;
+
 import javax.crypto.Cipher;
 
 import net.sf.l2j.Config;
-import net.sf.l2j.loginserver.L2LoginClient;
-import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
+import net.sf.l2j.loginserver.L2LoginClient;
 import net.sf.l2j.loginserver.L2LoginClient.LoginClientState;
+import net.sf.l2j.loginserver.LoginController;
 import net.sf.l2j.loginserver.LoginController.AuthLoginResult;
 import net.sf.l2j.loginserver.serverpackets.AccountKicked;
-import net.sf.l2j.loginserver.serverpackets.LoginOk;
-import net.sf.l2j.loginserver.serverpackets.ServerList;
 import net.sf.l2j.loginserver.serverpackets.AccountKicked.AccountKickedReason;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
+import net.sf.l2j.loginserver.serverpackets.LoginOk;
+import net.sf.l2j.loginserver.serverpackets.ServerList;
 
 /**
  * Format: x
