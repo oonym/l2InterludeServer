@@ -21,23 +21,15 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Character;
 
 /**
- * Format (ch)dddcccd
- * d: cahacter oid
- * d: time left
- * d: fish hp
- * c:
- * c:
- * c: 00 if fish gets damage 02 if fish regens
- * d:
+ * Format (ch)dddcccd d: cahacter oid d: time left d: fish hp c: c: c: 00 if fish gets damage 02 if fish regens d:
  * @author -Wooden-
- *
  */
 public class ExFishingHpRegen extends L2GameServerPacket
 {
 	private static final String _S__FE_16_EXFISHINGHPREGEN = "[S] FE:16 ExFishingHPRegen";
-	private L2Character _activeChar;
-	private int _time, _fishHP, _hpMode, _anim, _goodUse, _penalty, _hpBarColor;
-
+	private final L2Character _activeChar;
+	private final int _time, _fishHP, _hpMode, _anim, _goodUse, _penalty, _hpBarColor;
+	
 	public ExFishingHpRegen(L2Character character, int time, int fishHP, int HPmode, int GoodUse, int anim, int penalty, int hpBarColor)
 	{
 		_activeChar = character;
@@ -49,8 +41,9 @@ public class ExFishingHpRegen extends L2GameServerPacket
 		_penalty = penalty;
 		_hpBarColor = hpBarColor;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
 	@Override
@@ -58,7 +51,7 @@ public class ExFishingHpRegen extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x16);
-
+		
 		writeD(_activeChar.getObjectId());
 		writeD(_time);
 		writeD(_fishHP);
@@ -67,10 +60,11 @@ public class ExFishingHpRegen extends L2GameServerPacket
 		writeC(_anim); // Anim: 0 = none, 1 = reeling, 2 = pumping
 		writeD(_penalty); // Penalty
 		writeC(_hpBarColor); // 0 = normal hp bar, 1 = purple hp bar
-
+		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -78,5 +72,5 @@ public class ExFishingHpRegen extends L2GameServerPacket
 	{
 		return _S__FE_16_EXFISHINGHPREGEN;
 	}
-
+	
 }

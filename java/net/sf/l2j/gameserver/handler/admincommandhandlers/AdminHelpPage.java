@@ -25,21 +25,29 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
- * This class handles following admin commands:
- * - help path = shows /data/html/admin/path file to char, should not be used by GM's directly
- *
+ * This class handles following admin commands: - help path = shows /data/html/admin/path file to char, should not be used by GM's directly
  * @version $Revision: 1.2.4.3 $ $Date: 2005/04/11 10:06:02 $
  */
-public class AdminHelpPage implements IAdminCommandHandler {
-
-	private static final String[] ADMIN_COMMANDS = {"admin_help"};
+public class AdminHelpPage implements IAdminCommandHandler
+{
+	
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_help"
+	};
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
-
+	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
-        if (!Config.ALT_PRIVILEGES_ADMIN)
-            if (!checkLevel(activeChar.getAccessLevel())) return false;
-
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	{
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
+			if (!checkLevel(activeChar.getAccessLevel()))
+			{
+				return false;
+			}
+		}
+		
 		if (command.startsWith("admin_help"))
 		{
 			try
@@ -49,29 +57,31 @@ public class AdminHelpPage implements IAdminCommandHandler {
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
-				//case of empty filename
+				// case of empty filename
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
-	public String[] getAdminCommandList() {
+	public String[] getAdminCommandList()
+	{
 		return ADMIN_COMMANDS;
 	}
-
-	private boolean checkLevel(int level) {
+	
+	private boolean checkLevel(int level)
+	{
 		return (level >= REQUIRED_LEVEL);
 	}
-
-	//FIXME: implement method to send html to player in L2PcInstance directly
-	//PUBLIC & STATIC so other classes from package can include it directly
+	
+	// FIXME: implement method to send html to player in L2PcInstance directly
+	// PUBLIC & STATIC so other classes from package can include it directly
 	public static void showHelpPage(L2PcInstance targetChar, String filename)
 	{
-        String content = HtmCache.getInstance().getHtmForce("data/html/admin/" + filename);
-        NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-        adminReply.setHtml(content);
-        targetChar.sendPacket(adminReply);
+		String content = HtmCache.getInstance().getHtmForce("data/html/admin/" + filename);
+		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		adminReply.setHtml(content);
+		targetChar.sendPacket(adminReply);
 	}
 }

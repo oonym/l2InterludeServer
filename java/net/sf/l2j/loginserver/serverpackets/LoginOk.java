@@ -21,20 +21,12 @@ package net.sf.l2j.loginserver.serverpackets;
 import net.sf.l2j.loginserver.SessionKey;
 
 /**
- * Format: dddddddd
- * f: the session key
- * d: ?
- * d: ?
- * d: ?
- * d: ?
- * d: ?
- * d: ?
- * b: 16 bytes - unknown
+ * Format: dddddddd f: the session key d: ? d: ? d: ? d: ? d: ? d: ? b: 16 bytes - unknown
  */
 public final class LoginOk extends L2LoginServerPacket
 {
-	private int _loginOk1, _loginOk2;
-
+	private final int _loginOk1, _loginOk2;
+	
 	public LoginOk(SessionKey sessionKey)
 	{
 		_loginOk1 = sessionKey.loginOkID1;

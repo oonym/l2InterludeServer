@@ -27,66 +27,70 @@ import net.sf.l2j.gameserver.model.entity.TvTEvent;
 import net.sf.l2j.gameserver.model.entity.TvTEventTeleporter;
 
 /**
- * @author FBIagent
- *
- * The class handles administrator commands for the TvT Engine which was first implemented by FBIagent
+ * @author FBIagent The class handles administrator commands for the TvT Engine which was first implemented by FBIagent
  */
 public class AdminTvTEvent implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {"admin_tvt_add", "admin_tvt_remove"};
-
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_tvt_add",
+		"admin_tvt_remove"
+	};
+	
 	private static final int REQUIRED_LEVEL = Config.GM_MIN;
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance adminInstance)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
 		{
 			if (!(checkLevel(adminInstance.getAccessLevel()) && adminInstance.isGM()))
+			{
 				return false;
+			}
 		}
-
+		
 		GMAudit.auditGMAction(adminInstance.getName(), command, (adminInstance.getTarget() != null ? adminInstance.getTarget().getName() : "no-target"), "");
-
+		
 		if (command.equals("admin_tvt_add"))
 		{
 			L2Object target = adminInstance.getTarget();
-
-			if (target == null || !(target instanceof L2PcInstance))
+			
+			if ((target == null) || !(target instanceof L2PcInstance))
 			{
 				adminInstance.sendMessage("You should select a player!");
 				return true;
 			}
-
-			add(adminInstance, (L2PcInstance)target);
+			
+			add(adminInstance, (L2PcInstance) target);
 		}
 		else if (command.equals("admin_tvt_remove"))
 		{
 			L2Object target = adminInstance.getTarget();
-
-			if (target == null || !(target instanceof L2PcInstance))
+			
+			if ((target == null) || !(target instanceof L2PcInstance))
 			{
 				adminInstance.sendMessage("You should select a player!");
 				return true;
 			}
-
-			remove(adminInstance, (L2PcInstance)target);
+			
+			remove(adminInstance, (L2PcInstance) target);
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	private boolean checkLevel(int level)
 	{
 		return level >= REQUIRED_LEVEL;
 	}
-
+	
 	private void add(L2PcInstance adminInstance, L2PcInstance playerInstance)
 	{
 		if (TvTEvent.isPlayerParticipant(playerInstance.getName()))
@@ -94,18 +98,20 @@ public class AdminTvTEvent implements IAdminCommandHandler
 			adminInstance.sendMessage("Player already participated in the event!");
 			return;
 		}
-
+		
 		if (!TvTEvent.addParticipant(playerInstance))
 		{
 			adminInstance.sendMessage("Player instance could not be added, it seems to be null!");
 			return;
 		}
-
+		
 		if (TvTEvent.isStarted())
+		{
 			// we don't need to check return value of TvTEvent.getParticipantTeamCoordinates() for null, TvTEvent.addParticipant() returned true so target is in event
 			new TvTEventTeleporter(playerInstance, TvTEvent.getParticipantTeamCoordinates(playerInstance.getName()), true, false);
+		}
 	}
-
+	
 	private void remove(L2PcInstance adminInstance, L2PcInstance playerInstance)
 	{
 		if (!TvTEvent.removeParticipant(playerInstance.getName()))
@@ -113,7 +119,7 @@ public class AdminTvTEvent implements IAdminCommandHandler
 			adminInstance.sendMessage("Player is not part of the event!");
 			return;
 		}
-
+		
 		new TvTEventTeleporter(playerInstance, Config.TVT_EVENT_PARTICIPATION_NPC_COORDINATES, true, true);
 	}
 }

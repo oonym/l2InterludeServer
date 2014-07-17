@@ -23,20 +23,19 @@ import net.sf.l2j.util.Rnd;
 
 /**
  * @author Advi
- *
  */
 public class ConditionGameChance extends Condition
 {
-    private final int _chance;
-
-    public ConditionGameChance(int chance)
-    {
-        _chance = chance;
-    }
-
-    @Override
+	private final int _chance;
+	
+	public ConditionGameChance(int chance)
+	{
+		_chance = chance;
+	}
+	
+	@Override
 	public boolean testImpl(Env env)
-    {
-        return Rnd.get(100) < _chance;
-    }
+	{
+		return Rnd.get(100) < _chance;
+	}
 }

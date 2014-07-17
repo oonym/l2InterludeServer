@@ -22,29 +22,35 @@ import net.sf.l2j.gameserver.skills.Stats;
 
 public class NpcStat extends CharStat
 {
-    // =========================================================
-    // Data Field
-
-    // =========================================================
-    // Constructor
-    public NpcStat(L2NpcInstance activeChar)
-    {
-        super(activeChar);
-
-        setLevel(getActiveChar().getTemplate().level);
-    }
-
-    // =========================================================
-    // Method - Public
-
-    // =========================================================
-    // Method - Private
-
-    // =========================================================
-    // Property - Public
-    @Override
-	public L2NpcInstance getActiveChar() { return (L2NpcInstance)super.getActiveChar(); }
-
-    @Override
-	public final int getMaxHp() { return (int)calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax , null, null); }
+	// =========================================================
+	// Data Field
+	
+	// =========================================================
+	// Constructor
+	public NpcStat(L2NpcInstance activeChar)
+	{
+		super(activeChar);
+		
+		setLevel(getActiveChar().getTemplate().level);
+	}
+	
+	// =========================================================
+	// Method - Public
+	
+	// =========================================================
+	// Method - Private
+	
+	// =========================================================
+	// Property - Public
+	@Override
+	public L2NpcInstance getActiveChar()
+	{
+		return (L2NpcInstance) super.getActiveChar();
+	}
+	
+	@Override
+	public final int getMaxHp()
+	{
+		return (int) calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax, null, null);
+	}
 }

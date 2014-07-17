@@ -20,78 +20,79 @@ package net.sf.l2j.gameserver.model;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2.4.1 $ $Date: 2005/03/27 15:29:32 $
  */
 public final class TradeItem
 {
-    private int _objectId;
-    private int _itemId;
-    private int _price;
-    private int _storePrice;
-    private int _count;
+	private int _objectId;
+	private int _itemId;
+	private int _price;
+	private int _storePrice;
+	private int _count;
 	private int _enchantLevel;
-
-	public TradeItem() {}
-
-    public void setObjectId(int id)
-    {
-        _objectId = id;
-    }
-
-    public int getObjectId()
-    {
-        return _objectId;
-    }
-
-    public void setItemId(int id)
-    {
-        _itemId = id;
-    }
-
-    public int getItemId()
-    {
-        return _itemId;
-    }
-
-    public void setOwnersPrice(int price)
-    {
-        _price = price;
-    }
-
-    public int getOwnersPrice()
-    {
-        return _price;
-    }
-
-    public void setstorePrice(int price)
-    {
-        _storePrice = price;
-    }
-
-    public int getStorePrice()
-    {
-        return _storePrice;
-    }
-
-    public void setCount(int count)
-    {
-        _count = count;
-    }
-
-    public int getCount()
-    {
-        return _count;
-    }
-
-    public void setEnchantLevel(int enchant)
-    {
+	
+	public TradeItem()
+	{
+	}
+	
+	public void setObjectId(int id)
+	{
+		_objectId = id;
+	}
+	
+	public int getObjectId()
+	{
+		return _objectId;
+	}
+	
+	public void setItemId(int id)
+	{
+		_itemId = id;
+	}
+	
+	public int getItemId()
+	{
+		return _itemId;
+	}
+	
+	public void setOwnersPrice(int price)
+	{
+		_price = price;
+	}
+	
+	public int getOwnersPrice()
+	{
+		return _price;
+	}
+	
+	public void setstorePrice(int price)
+	{
+		_storePrice = price;
+	}
+	
+	public int getStorePrice()
+	{
+		return _storePrice;
+	}
+	
+	public void setCount(int count)
+	{
+		_count = count;
+	}
+	
+	public int getCount()
+	{
+		return _count;
+	}
+	
+	public void setEnchantLevel(int enchant)
+	{
 		_enchantLevel = enchant;
-    }
-
-    public int getEnchantLevel()
-    {
-        return _enchantLevel;
-    }
-
+	}
+	
+	public int getEnchantLevel()
+	{
+		return _enchantLevel;
+	}
+	
 }

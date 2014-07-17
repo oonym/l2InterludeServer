@@ -23,15 +23,14 @@ import net.sf.l2j.gameserver.model.L2Character;
 /**
  * Format (ch)dddcc
  * @author -Wooden-
- *
  */
 public class ExFishingStartCombat extends L2GameServerPacket
 {
 	private static final String _S__FE_15_EXFISHINGSTARTCOMBAT = "[S] FE:15 ExFishingStartCombat";
-	private L2Character _activeChar;
-	private int _time,_hp;
-	private int _lureType, _deceptiveMode, _mode;
-
+	private final L2Character _activeChar;
+	private final int _time, _hp;
+	private final int _lureType, _deceptiveMode, _mode;
+	
 	public ExFishingStartCombat(L2Character character, int time, int hp, int mode, int lureType, int deceptiveMode)
 	{
 		_activeChar = character;
@@ -41,17 +40,17 @@ public class ExFishingStartCombat extends L2GameServerPacket
 		_lureType = lureType;
 		_deceptiveMode = deceptiveMode;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x15);
-
+		
 		writeD(_activeChar.getObjectId());
 		writeD(_time);
 		writeD(_hp);
@@ -59,8 +58,9 @@ public class ExFishingStartCombat extends L2GameServerPacket
 		writeC(_lureType); // 0 = newbie lure, 1 = normal lure, 2 = night lure
 		writeC(_deceptiveMode); // Fish Deceptive Mode: 0 = no, 1 = yes
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -68,5 +68,5 @@ public class ExFishingStartCombat extends L2GameServerPacket
 	{
 		return _S__FE_15_EXFISHINGSTARTCOMBAT;
 	}
-
+	
 }

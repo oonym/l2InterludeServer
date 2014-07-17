@@ -20,35 +20,35 @@ package net.sf.l2j.gameserver.clientpackets;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.serverpackets.ExCursedWeaponList;
 
 /**
  * Format: (ch)
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class RequestCursedWeaponList extends L2GameClientPacket
 {
 	private static final String _C__D0_22_REQUESTCURSEDWEAPONLIST = "[C] D0:22 RequestCursedWeaponList";
-
+	
 	@Override
 	protected void readImpl()
 	{
-		//nothing to read it's just a trigger
+		// nothing to read it's just a trigger
 	}
 	
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
 		L2Character activeChar = getClient().getActiveChar();
 		if (activeChar == null)
+		{
 			return;
-
-		//send a ExCursedWeaponList :p
-		List<Integer> list = new FastList<Integer>();
+		}
+		
+		// send a ExCursedWeaponList :p
+		List<Integer> list = new FastList<>();
 		for (int id : CursedWeaponsManager.getInstance().getCursedWeaponsIds())
 		{
 			list.add(id);

@@ -33,7 +33,6 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.GameTimeController;
@@ -476,10 +475,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private boolean _inCraftMode;
 	
 	/** The table containing all L2RecipeList of the L2PcInstance. */
-	private final Map<Integer, L2RecipeList> _dwarvenRecipeBook = new FastMap<Integer, L2RecipeList>();
+	private final Map<Integer, L2RecipeList> _dwarvenRecipeBook = new FastMap<>();
 	
 	/** The _common recipe book. */
-	private final Map<Integer, L2RecipeList> _commonRecipeBook = new FastMap<Integer, L2RecipeList>();
+	private final Map<Integer, L2RecipeList> _commonRecipeBook = new FastMap<>();
 	
 	/** True if the L2PcInstance is sitting. */
 	private boolean _waitTypeSitting;
@@ -515,7 +514,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private long _lastRecomUpdate;
 	
 	/** List with the recommendations that I've give. */
-	private final List<Integer> _recomChars = new FastList<Integer>();
+	private final List<Integer> _recomChars = new FastList<>();
 	
 	private final PcInventory _inventory = new PcInventory(this);
 	
@@ -559,7 +558,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private int _questNpcObject = 0;
 	
 	/** The table containing all Quests began by the L2PcInstance. */
-	private final Map<String, QuestState> _quests = new FastMap<String, QuestState>();
+	private final Map<String, QuestState> _quests = new FastMap<>();
 	
 	/** The list containing all shortCuts of this L2PcInstance. */
 	private final ShortCuts _shortCuts = new ShortCuts(this);
@@ -568,10 +567,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private final MacroList _macroses = new MacroList(this);
 	
 	/** The _snoop listener. */
-	private final List<L2PcInstance> _snoopListener = new FastList<L2PcInstance>();
+	private final List<L2PcInstance> _snoopListener = new FastList<>();
 	
 	/** The _snooped player. */
-	private final List<L2PcInstance> _snoopedPlayer = new FastList<L2PcInstance>();
+	private final List<L2PcInstance> _snoopedPlayer = new FastList<>();
 	
 	/** The _skill learning class id. */
 	private ClassId _skillLearningClassId;
@@ -717,7 +716,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private L2Weapon _fistsWeaponItem;
 	
 	/** The _chars. */
-	private final Map<Integer, String> _chars = new FastMap<Integer, String>();
+	private final Map<Integer, String> _chars = new FastMap<>();
 	
 	// private byte _updateKnownCounter = 0;
 	
@@ -734,7 +733,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	protected boolean _inventoryDisable = false;
 	
 	/** The _cubics. */
-	protected Map<Integer, L2CubicInstance> _cubics = new FastMap<Integer, L2CubicInstance>();
+	protected Map<Integer, L2CubicInstance> _cubics = new FastMap<>();
 	
 	/** Active shots. A FastSet variable would actually suffice but this was changed to fix threading stability... */
 	protected Map<Integer, Integer> _activeSoulShots = new FastMap<Integer, Integer>().shared();
@@ -764,7 +763,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public String eventTitle;
 	
 	/** The kills. */
-	public LinkedList<String> kills = new LinkedList<String>();
+	public LinkedList<String> kills = new LinkedList<>();
 	
 	/** The event sit forced. */
 	public boolean eventSitForced = false;
@@ -809,10 +808,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	private ScheduledFuture<?> _taskWater;
 	
 	/** Bypass validations. */
-	private final List<String> _validBypass = new FastList<String>();
+	private final List<String> _validBypass = new FastList<>();
 	
 	/** The _valid bypass2. */
-	private final List<String> _validBypass2 = new FastList<String>();
+	private final List<String> _validBypass2 = new FastList<>();
 	
 	/** The _forum mail. */
 	private Forum _forumMail;
@@ -1590,7 +1589,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public Quest[] getAllActiveQuests()
 	{
-		FastList<Quest> quests = new FastList<Quest>();
+		FastList<Quest> quests = new FastList<>();
 		
 		for (QuestState qs : _quests.values())
 		{
@@ -5304,8 +5303,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			while ((dropPercent > 0) && (Rnd.get(100) < dropPercent) && (dropCount < dropLimit))
 			{
 				int itemDropPercent = 0;
-				List<Integer> nonDroppableList = new FastList<Integer>();
-				List<Integer> nonDroppableListPet = new FastList<Integer>();
+				List<Integer> nonDroppableList = new FastList<>();
+				List<Integer> nonDroppableListPet = new FastList<>();
 				
 				nonDroppableList = Config.KARMA_LIST_NONDROPPABLE_ITEMS;
 				nonDroppableListPet = Config.KARMA_LIST_NONDROPPABLE_ITEMS;
@@ -10334,7 +10333,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			return true;
 		}
 		
-		Map<Integer, L2Skill> prevSkillList = new FastMap<Integer, L2Skill>();
+		Map<Integer, L2Skill> prevSkillList = new FastMap<>();
 		
 		for (L2SkillLearn skillInfo : skillTree)
 		{
@@ -10460,7 +10459,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (_subClasses == null)
 		{
-			_subClasses = new FastMap<Integer, SubClass>();
+			_subClasses = new FastMap<>();
 		}
 		
 		return _subClasses;

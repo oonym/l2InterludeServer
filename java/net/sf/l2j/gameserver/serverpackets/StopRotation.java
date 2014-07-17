@@ -22,21 +22,20 @@ import net.sf.l2j.gameserver.model.L2Character;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/27 15:29:57 $
  */
 public class StopRotation extends L2GameServerPacket
 {
 	private static final String _S__78_STOPROTATION = "[S] 63 StopRotation";
-	private int _charObjId;
-	private int _degree;
-
+	private final int _charObjId;
+	private final int _degree;
+	
 	public StopRotation(L2Character player, int degree)
 	{
 		_charObjId = player.getObjectId();
 		_degree = degree;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -44,8 +43,9 @@ public class StopRotation extends L2GameServerPacket
 		writeD(_charObjId);
 		writeD(_degree);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

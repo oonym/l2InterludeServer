@@ -20,25 +20,22 @@ package net.sf.l2j.gameserver.skills.conditions;
 
 import net.sf.l2j.gameserver.skills.Env;
 
-
-
 /**
- * @author mr
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mr TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionPlayerHp extends Condition {
-
+public class ConditionPlayerHp extends Condition
+{
+	
 	private final int _hp;
-
+	
 	public ConditionPlayerHp(int hp)
 	{
 		_hp = hp;
 	}
-
+	
 	@Override
-	public boolean testImpl(Env env) {
-		return env.player.getCurrentHp()*100/env.player.getMaxHp() <= _hp;
+	public boolean testImpl(Env env)
+	{
+		return ((env.player.getCurrentHp() * 100) / env.player.getMaxHp()) <= _hp;
 	}
 }

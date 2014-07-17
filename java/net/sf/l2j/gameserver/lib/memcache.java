@@ -24,70 +24,76 @@ import java.util.logging.Logger;
 public class memcache
 {
 	private static Logger _log = Logger.getLogger(memcache.class.getName());
-	private HashMap<Integer,String> _hms;
-	private HashMap<Integer,Integer> _hmi;
-	private HashMap<Integer,Long> _lastAccess;
-
+	private final HashMap<Integer, String> _hms;
+	private final HashMap<Integer, Integer> _hmi;
+	private final HashMap<Integer, Long> _lastAccess;
+	
 	private static final memcache _instance = new memcache();
-
+	
 	public static memcache getInstance()
 	{
 		return _instance;
 	}
-
+	
 	private memcache()
 	{
-		_hms = new HashMap<Integer,String>();
-		_hmi = new HashMap<Integer,Integer>();
-		_lastAccess = new HashMap<Integer,Long>();
+		_hms = new HashMap<>();
+		_hmi = new HashMap<>();
+		_lastAccess = new HashMap<>();
 	}
-
+	
 	private void checkExpired()
 	{
-		for(Integer k : _hmi.keySet())
-			if(_lastAccess.get(k) + 3600000 < System.currentTimeMillis())
+		for (Integer k : _hmi.keySet())
+		{
+			if ((_lastAccess.get(k) + 3600000) < System.currentTimeMillis())
 			{
-//				_hmi.remove(k);
-//				_last_access.remove(k);
-		   	}
-
-		for(Integer k : _hms.keySet())
-			if(_lastAccess.get(k) + 3600000 < System.currentTimeMillis())
+				// _hmi.remove(k);
+				// _last_access.remove(k);
+			}
+		}
+		
+		for (Integer k : _hms.keySet())
+		{
+			if ((_lastAccess.get(k) + 3600000) < System.currentTimeMillis())
 			{
-//				_hms.remove(k);
-//				_last_access.remove(k);
-		   	}
+				// _hms.remove(k);
+				// _last_access.remove(k);
+			}
+		}
 	}
-
+	
 	public void set(String type, String key, int value)
 	{
-		int hash = (type+"->"+key).hashCode();
-//	    _log.fine("Set memcache "+type+"("+key+")["+hash+"] to "+value);
+		int hash = (type + "->" + key).hashCode();
+		// _log.fine("Set memcache "+type+"("+key+")["+hash+"] to "+value);
 		_hmi.put(hash, value);
 		_lastAccess.put(hash, System.currentTimeMillis());
 		checkExpired();
 	}
-
+	
 	@Deprecated
 	public boolean isSet(String type, String key)
 	{
-		int hash = (type+"->"+key).hashCode();
+		int hash = (type + "->" + key).hashCode();
 		boolean exists = _hmi.containsKey(hash) || _hms.containsKey(hash);
-		if(exists)
+		if (exists)
+		{
 			_lastAccess.put(hash, System.currentTimeMillis());
-
+		}
+		
 		checkExpired();
-	    _log.fine("Check exists memcache "+type+"("+key+")["+hash+"] is "+exists);
+		_log.fine("Check exists memcache " + type + "(" + key + ")[" + hash + "] is " + exists);
 		return exists;
 	}
-
+	
 	@Deprecated
 	public Integer getInt(String type, String key)
 	{
-		int hash = (type+"->"+key).hashCode();
+		int hash = (type + "->" + key).hashCode();
 		_lastAccess.put(hash, System.currentTimeMillis());
 		checkExpired();
-	    _log.fine("Get memcache "+type+"("+key+")["+hash+"] = "+_hmi.get(hash));
+		_log.fine("Get memcache " + type + "(" + key + ")[" + hash + "] = " + _hmi.get(hash));
 		return _hmi.get(hash);
 	}
 }

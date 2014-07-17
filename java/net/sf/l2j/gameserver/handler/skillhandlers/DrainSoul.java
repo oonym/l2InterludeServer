@@ -28,39 +28,41 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * @author _drunk_
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author _drunk_ TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class DrainSoul implements ISkillHandler
 {
-    private static Logger _log = Logger.getLogger(DrainSoul.class.getName());
-    private static final SkillType[] SKILL_IDS = {SkillType.DRAIN_SOUL};
-
-    @Override
+	private static Logger _log = Logger.getLogger(DrainSoul.class.getName());
+	private static final SkillType[] SKILL_IDS =
+	{
+		SkillType.DRAIN_SOUL
+	};
+	
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
-    {
-        if (!(activeChar instanceof L2PcInstance))
+	{
+		if (!(activeChar instanceof L2PcInstance))
+		{
 			return;
-
+		}
+		
 		L2Object[] targetList = skill.getTargetList(activeChar);
-
-        if (targetList == null)
-        {
-            return;
-        }
-
-        _log.fine("Soul Crystal casting succeded.");
-
-        // This is just a dummy skill handler for the soul crystal skill,
-        // since the Soul Crystal item handler already does everything.
-
-    }
-
-    @Override
+		
+		if (targetList == null)
+		{
+			return;
+		}
+		
+		_log.fine("Soul Crystal casting succeded.");
+		
+		// This is just a dummy skill handler for the soul crystal skill,
+		// since the Soul Crystal item handler already does everything.
+		
+	}
+	
+	@Override
 	public SkillType[] getSkillIds()
-    {
-        return SKILL_IDS;
-    }
+	{
+		return SKILL_IDS;
+	}
 }

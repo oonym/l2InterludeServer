@@ -27,52 +27,51 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestJoinAlly extends L2GameClientPacket
 {
-
+	
 	private static final String _C__82_REQUESTJOINALLY = "[C] 82 RequestJoinAlly";
-	//private static Logger _log = Logger.getLogger(RequestJoinAlly.class.getName());
-
+	// private static Logger _log = Logger.getLogger(RequestJoinAlly.class.getName());
+	
 	private int _id;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_id = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		{
-		    return;
+			return;
 		}
 		if (!(L2World.getInstance().findObject(_id) instanceof L2PcInstance))
 		{
-        	activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
-		    return;
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
+			return;
 		}
-		if(activeChar.getClan() == null)
-        {
+		if (activeChar.getClan() == null)
+		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
-            return;
-        }
+			return;
+		}
 		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_id);
-        L2Clan clan = activeChar.getClan();
-        if (!clan.checkAllyJoinCondition(activeChar, target))
-        {
-        	return;
-        }
-        if (!activeChar.getRequest().setRequest(target, this))
-        {
-        	return;
-        }
-
+		L2Clan clan = activeChar.getClan();
+		if (!clan.checkAllyJoinCondition(activeChar, target))
+		{
+			return;
+		}
+		if (!activeChar.getRequest().setRequest(target, this))
+		{
+			return;
+		}
+		
 		SystemMessage sm = new SystemMessage(SystemMessageId.S2_ALLIANCE_LEADER_OF_S1_REQUESTED_ALLIANCE);
 		sm.addString(activeChar.getClan().getAllyName());
 		sm.addString(activeChar.getName());
@@ -80,14 +79,12 @@ public final class RequestJoinAlly extends L2GameClientPacket
 		sm = null;
 		AskJoinAlly aja = new AskJoinAlly(activeChar.getObjectId(), activeChar.getClan().getAllyName());
 		target.sendPacket(aja);
-	    return;
+		return;
 	}
-
-
+	
 	@Override
 	public String getType()
 	{
 		return _C__82_REQUESTJOINALLY;
 	}
 }
-

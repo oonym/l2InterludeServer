@@ -23,17 +23,16 @@ import java.util.TreeMap;
 
 /**
  * This class manages handlers of items
- *
  * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:30:09 $
  */
 public class ItemHandler
 {
-	//private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
-
+	// private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
+	
 	private static ItemHandler _instance;
-
-	private Map<Integer, IItemHandler> _datatable;
-
+	
+	private final Map<Integer, IItemHandler> _datatable;
+	
 	/**
 	 * Create ItemHandler if doesn't exist and returns ItemHandler
 	 * @return ItemHandler
@@ -46,29 +45,29 @@ public class ItemHandler
 		}
 		return _instance;
 	}
-
+	
 	/**
 	 * Returns the number of elements contained in datatable
 	 * @return int : Size of the datatable
 	 */
-    public int size()
-    {
-        return _datatable.size();
-    }
-
-    /**
-     * Constructor of ItemHandler
-     */
+	public int size()
+	{
+		return _datatable.size();
+	}
+	
+	/**
+	 * Constructor of ItemHandler
+	 */
 	private ItemHandler()
 	{
-		_datatable = new TreeMap<Integer, IItemHandler>();
+		_datatable = new TreeMap<>();
 	}
-
+	
 	/**
-	 * Adds handler of item type in <I>datatable</I>.<BR><BR>
+	 * Adds handler of item type in <I>datatable</I>.<BR>
+	 * <BR>
 	 * <B><I>Concept :</I></U><BR>
-	 * This handler is put in <I>datatable</I> Map &lt;Integer ; IItemHandler &gt; for each ID corresponding to an item type
-	 * (existing in classes of package itemhandlers) sets as key of the Map.
+	 * This handler is put in <I>datatable</I> Map &lt;Integer ; IItemHandler &gt; for each ID corresponding to an item type (existing in classes of package itemhandlers) sets as key of the Map.
 	 * @param handler (IItemHandler)
 	 */
 	public void registerItemHandler(IItemHandler handler)
@@ -76,12 +75,12 @@ public class ItemHandler
 		// Get all ID corresponding to the item type of the handler
 		int[] ids = handler.getItemIds();
 		// Add handler for each ID found
-		for (int i = 0; i < ids.length; i++)
+		for (int id : ids)
 		{
-			_datatable.put(new Integer(ids[i]), handler);
+			_datatable.put(new Integer(id), handler);
 		}
 	}
-
+	
 	/**
 	 * Returns the handler of the item
 	 * @param itemId : int designating the itemID

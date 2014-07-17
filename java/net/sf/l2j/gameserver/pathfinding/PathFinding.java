@@ -26,68 +26,74 @@ import net.sf.l2j.gameserver.pathfinding.utils.BinaryNodeHeap;
 import net.sf.l2j.gameserver.pathfinding.utils.FastNodeList;
 
 /**
- *
  * @author -Nemesiss-
  */
 public abstract class PathFinding
 {
 	private static PathFinding _instance;
-
+	
 	public static PathFinding getInstance()
 	{
 		if (_instance == null)
 		{
-			if (true /*Config.GEODATA_PATHFINDING*/)
+			if (true /* Config.GEODATA_PATHFINDING */)
 			{
-				//Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
+				// Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
 				return GeoPathFinding.getInstance();
 			}
-			//else // WORLD_PATHFINDING
-			//{
-				//Higher Memoru Usage, Lower Cpu Usage (PreCalculated)
-			//}
+			// else // WORLD_PATHFINDING
+			// {
+			// Higher Memoru Usage, Lower Cpu Usage (PreCalculated)
+			// }
 		}
 		return _instance;
 	}
-
+	
 	public abstract boolean pathNodesExist(short regionoffset);
+	
 	public abstract List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gtz, short tz);
-	public abstract Node[] readNeighbors(short node_x,short node_y, int idx);
-
+	
+	public abstract Node[] readNeighbors(short node_x, short node_y, int idx);
+	
 	public List<AbstractNodeLoc> search(Node start, Node end)
 	{
 		// The simplest grid-based pathfinding.
 		// Drawback is not having higher cost for diagonal movement (means funny routes)
 		// Could be optimized e.g. not to calculate backwards as far as forwards.
-
+		
 		// List of Visited Nodes
-		LinkedList<Node> visited = new LinkedList<Node>();
-
+		LinkedList<Node> visited = new LinkedList<>();
+		
 		// List of Nodes to Visit
-		LinkedList<Node> to_visit = new LinkedList<Node>();
+		LinkedList<Node> to_visit = new LinkedList<>();
 		to_visit.add(start);
-
+		
 		int i = 0;
-		while (i < 800)//TODO! Add limit to cfg. Worst case max distance is 1810..
+		while (i < 800)// TODO! Add limit to cfg. Worst case max distance is 1810..
 		{
 			Node node;
 			try
 			{
-				 node = to_visit.removeFirst();
+				node = to_visit.removeFirst();
 			}
 			catch (Exception e)
 			{
 				// No Path found
 				return null;
 			}
-			if (node.equals(end)) //path found!
+			if (node.equals(end))
+			{
 				return constructPath(node);
+			}
 			
 			i++;
 			visited.add(node);
 			node.attacheNeighbors();
 			Node[] neighbors = node.getNeighbors();
-			if (neighbors == null) continue;
+			if (neighbors == null)
+			{
+				continue;
+			}
 			for (Node n : neighbors)
 			{
 				if (!visited.contains(n) && !to_visit.contains(n))
@@ -97,10 +103,10 @@ public abstract class PathFinding
 				}
 			}
 		}
-		//No Path found
+		// No Path found
 		return null;
 	}
-
+	
 	public List<AbstractNodeLoc> searchByClosest(Node start, Node end)
 	{
 		// Always continues checking from the closest to target non-blocked
@@ -111,12 +117,12 @@ public abstract class PathFinding
 		// Generally returns a bit (only a bit) more intelligent looking routes than
 		// the basic version. Not a true distance image (which would increase CPU
 		// load) level of intelligence though.
-
+		
 		// List of Visited Nodes
 		FastNodeList visited = new FastNodeList(550);
-
+		
 		// List of Nodes to Visit
-		LinkedList<Node> to_visit = new LinkedList<Node>();
+		LinkedList<Node> to_visit = new LinkedList<>();
 		to_visit.add(start);
 		short targetx = end.getLoc().getNodeX();
 		short targety = end.getLoc().getNodeY();
@@ -128,21 +134,26 @@ public abstract class PathFinding
 			Node node;
 			try
 			{
-				 node = to_visit.removeFirst();
+				node = to_visit.removeFirst();
 			}
 			catch (Exception e)
 			{
 				// No Path found
 				return null;
 			}
-			if (node.equals(end)) //path found!
+			if (node.equals(end))
+			{
 				return constructPath(node);
+			}
 			
 			i++;
 			visited.add(node);
 			node.attacheNeighbors();
 			Node[] neighbors = node.getNeighbors();
-			if (neighbors == null) continue;
+			if (neighbors == null)
+			{
+				continue;
+			}
 			for (Node n : neighbors)
 			{
 				if (!visited.containsRev(n) && !to_visit.contains(n))
@@ -151,7 +162,7 @@ public abstract class PathFinding
 					n.setParent(node);
 					dx = targetx - n.getLoc().getNodeX();
 					dy = targety - n.getLoc().getNodeY();
-					n.setCost(dx*dx+dy*dy);
+					n.setCost((dx * dx) + (dy * dy));
 					for (int index = 0; index < to_visit.size(); index++)
 					{
 						// supposed to find it quite early..
@@ -162,15 +173,17 @@ public abstract class PathFinding
 							break;
 						}
 					}
-					if (!added) to_visit.addLast(n);
+					if (!added)
+					{
+						to_visit.addLast(n);
+					}
 				}
 			}
 		}
-		//No Path found
+		// No Path found
 		return null;
 	}
-
-
+	
 	public List<AbstractNodeLoc> searchAStar(Node start, Node end)
 	{
 		// Not operational yet?
@@ -178,28 +191,30 @@ public abstract class PathFinding
 		int start_y = start.getLoc().getY();
 		int end_x = end.getLoc().getX();
 		int end_y = end.getLoc().getY();
-		//List of Visited Nodes
-		FastNodeList visited = new FastNodeList(800);//TODO! Add limit to cfg
-
+		// List of Visited Nodes
+		FastNodeList visited = new FastNodeList(800);// TODO! Add limit to cfg
+		
 		// List of Nodes to Visit
 		BinaryNodeHeap to_visit = new BinaryNodeHeap(800);
 		to_visit.add(start);
-
+		
 		int i = 0;
-		while (i < 800)//TODO! Add limit to cfg
+		while (i < 800)// TODO! Add limit to cfg
 		{
 			Node node;
 			try
 			{
-				 node = to_visit.removeFirst();
+				node = to_visit.removeFirst();
 			}
 			catch (Exception e)
 			{
 				// No Path found
 				return null;
 			}
-			if (node.equals(end)) //path found!
+			if (node.equals(end))
+			{
 				return constructPath(node);
+			}
 			
 			visited.add(node);
 			node.attacheNeighbors();
@@ -209,19 +224,18 @@ public abstract class PathFinding
 				{
 					i++;
 					n.setParent(node);
-					n.setCost(Math.abs(start_x - n.getLoc().getNodeX())+Math.abs(start_y - n.getLoc().getNodeY())
-							+Math.abs(end_x - n.getLoc().getNodeX())+Math.abs(end_y - n.getLoc().getNodeY()));
+					n.setCost(Math.abs(start_x - n.getLoc().getNodeX()) + Math.abs(start_y - n.getLoc().getNodeY()) + Math.abs(end_x - n.getLoc().getNodeX()) + Math.abs(end_y - n.getLoc().getNodeY()));
 					to_visit.add(n);
 				}
 			}
 		}
-		//No Path found
+		// No Path found
 		return null;
 	}
-
+	
 	public List<AbstractNodeLoc> constructPath(Node node)
 	{
-		LinkedList<AbstractNodeLoc> path = new LinkedList<AbstractNodeLoc>();
+		LinkedList<AbstractNodeLoc> path = new LinkedList<>();
 		int previousdirectionx = -1000;
 		int previousdirectiony = -1000;
 		int directionx;
@@ -231,7 +245,7 @@ public abstract class PathFinding
 			// only add a new route point if moving direction changes
 			directionx = node.getLoc().getNodeX() - node.getParent().getLoc().getNodeX();
 			directiony = node.getLoc().getNodeY() - node.getParent().getLoc().getNodeY();
-			if(directionx != previousdirectionx || directiony != previousdirectiony)
+			if ((directionx != previousdirectionx) || (directiony != previousdirectiony))
 			{
 				previousdirectionx = directionx;
 				previousdirectiony = directiony;
@@ -241,7 +255,7 @@ public abstract class PathFinding
 		}
 		return path;
 	}
-
+	
 	/**
 	 * Convert geodata position to pathnode position
 	 * @param geo_pos
@@ -249,44 +263,44 @@ public abstract class PathFinding
 	 */
 	public short getNodePos(int geo_pos)
 	{
-		return (short)(geo_pos >> 3); //OK?
+		return (short) (geo_pos >> 3); // OK?
 	}
-
+	
 	/**
 	 * Convert node position to pathnode block position
-	 * @param node_pos 
+	 * @param node_pos
 	 * @return pathnode block position (0...255)
 	 */
 	public short getNodeBlock(int node_pos)
 	{
-		return (short)(node_pos % 256);
+		return (short) (node_pos % 256);
 	}
-
+	
 	public byte getRegionX(int node_pos)
 	{
-		return (byte)((node_pos >> 8) + 16);
+		return (byte) ((node_pos >> 8) + 16);
 	}
-
+	
 	public byte getRegionY(int node_pos)
 	{
-		return (byte)((node_pos >> 8) + 10);
+		return (byte) ((node_pos >> 8) + 10);
 	}
-
+	
 	public short getRegionOffset(byte rx, byte ry)
 	{
-		return (short)((rx << 5) + ry);
+		return (short) ((rx << 5) + ry);
 	}
-
+	
 	/**
 	 * Convert pathnode x to World x position
-	 * @param node_x 
+	 * @param node_x
 	 * @return
 	 */
 	public int calculateWorldX(short node_x)
 	{
-		return   L2World.MAP_MIN_X  + node_x * 128 + 48 ;
+		return L2World.MAP_MIN_X + (node_x * 128) + 48;
 	}
-
+	
 	/**
 	 * Convert pathnode y to World y position
 	 * @param node_y
@@ -294,6 +308,6 @@ public abstract class PathFinding
 	 */
 	public int calculateWorldY(short node_y)
 	{
-		return  L2World.MAP_MIN_Y + node_y * 128 + 48 ;
+		return L2World.MAP_MIN_Y + (node_y * 128) + 48;
 	}
 }

@@ -28,46 +28,47 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.1.2.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public class RequestUserCommand extends L2GameClientPacket
 {
 	private static final String _C__AA_REQUESTUSERCOMMAND = "[C] aa RequestUserCommand";
 	static Logger _log = Logger.getLogger(RequestUserCommand.class.getName());
-
+	
 	private int _command;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_command = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
-        L2PcInstance player = getClient().getActiveChar();
-	if (player == null)
-	    return;
-
-        IUserCommandHandler handler = UserCommandHandler.getInstance().getUserCommandHandler(_command);
-
-        if (handler == null)
-        {
-            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-            sm.addString("user commandID "+_command+" not implemented yet");
-            player.sendPacket(sm);
-            sm = null;
-        }
-        else
-        {
-            handler.useUserCommand(_command, getClient().getActiveChar());
-        }
+		L2PcInstance player = getClient().getActiveChar();
+		if (player == null)
+		{
+			return;
+		}
+		
+		IUserCommandHandler handler = UserCommandHandler.getInstance().getUserCommandHandler(_command);
+		
+		if (handler == null)
+		{
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			sm.addString("user commandID " + _command + " not implemented yet");
+			player.sendPacket(sm);
+			sm = null;
+		}
+		else
+		{
+			handler.useUserCommand(_command, getClient().getActiveChar());
+		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

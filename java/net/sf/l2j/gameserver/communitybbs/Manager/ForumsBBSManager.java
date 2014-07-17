@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.BB.Forum;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -34,11 +33,11 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class ForumsBBSManager extends BaseBBSManager
 {
 	private static Logger _log = Logger.getLogger(ForumsBBSManager.class.getName());
-	private Map<Integer, Forum> _root;
-	private List<Forum> _table;
+	private final Map<Integer, Forum> _root;
+	private final List<Forum> _table;
 	private static ForumsBBSManager _instance;
 	private int _lastid = 1;
-
+	
 	/**
 	 * @return
 	 */
@@ -51,23 +50,23 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 		return _instance;
 	}
-
+	
 	public ForumsBBSManager()
 	{
-		_root = new FastMap<Integer, Forum>();
-		_table = new FastList<Forum>();
+		_root = new FastMap<>();
+		_table = new FastList<>();
 	}
-
+	
 	public void addForum(Forum ff)
 	{
 		_table.add(ff);
-
+		
 		if (ff.getID() > _lastid)
 		{
 			_lastid = ff.getID();
 		}
 	}
-
+	
 	/**
 	 *
 	 */
@@ -81,7 +80,7 @@ public class ForumsBBSManager extends BaseBBSManager
 			ResultSet result = statement.executeQuery();
 			while (result.next())
 			{
-
+				
 				Forum f = new Forum(Integer.parseInt(result.getString("forum_id")), null);
 				_root.put(Integer.parseInt(result.getString("forum_id")), f);
 			}
@@ -104,8 +103,9 @@ public class ForumsBBSManager extends BaseBBSManager
 			}
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.communitybbs.Manager.BaseBBSManager#parsecmd(java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
 	 */
 	@Override
@@ -113,9 +113,9 @@ public class ForumsBBSManager extends BaseBBSManager
 	{
 		// TODO Auto-generated method stub
 	}
-
+	
 	/**
-	 * @param Name 
+	 * @param Name
 	 * @return
 	 */
 	public Forum getForumByName(String Name)
@@ -127,16 +127,16 @@ public class ForumsBBSManager extends BaseBBSManager
 				return f;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @param name
-	 * @param parent 
-	 * @param type 
-	 * @param perm 
-	 * @param oid 
+	 * @param parent
+	 * @param type
+	 * @param perm
+	 * @param oid
 	 * @return
 	 */
 	public Forum createNewForum(String name, Forum parent, int type, int perm, int oid)
@@ -146,7 +146,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		forum.insertindb();
 		return forum;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -155,7 +155,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		_lastid++;
 		return _lastid;
 	}
-
+	
 	/**
 	 * @param idf
 	 * @return

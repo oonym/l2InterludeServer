@@ -21,16 +21,14 @@ import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.serverpackets.PackageSendableList;
 
 /**
- * Format: (c)d
- * d: char object id (?)
- * @author  -Wooden-
+ * Format: (c)d d: char object id (?)
+ * @author -Wooden-
  */
 public final class RequestPackageSendableItemList extends L2GameClientPacket
 {
 	private static final String _C_9E_REQUESTPACKAGESENDABLEITEMLIST = "[C] 9E RequestPackageSendableItemList";
 	private int _objectID;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -41,10 +39,8 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 	public void runImpl()
 	{
 		/*
-		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_objectID);
-		if(target == null)
-			return;
-		*/
+		 * L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_objectID); if(target == null) return;
+		 */
 		L2ItemInstance[] items = getClient().getActiveChar().getInventory().getAvailableItems(true);
 		// build list...
 		sendPacket(new PackageSendableList(items, _objectID));

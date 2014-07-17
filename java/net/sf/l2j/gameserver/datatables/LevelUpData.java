@@ -24,38 +24,36 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.model.L2LvlupData;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /**
  * This class ...
- *
  * @author NightMarez
  * @version $Revision: 1.3.2.4.2.3 $ $Date: 2005/03/27 15:29:18 $
  */
 public class LevelUpData
 {
-    private static final String SELECT_ALL = "SELECT classid, defaulthpbase, defaulthpadd, defaulthpmod, defaultcpbase, defaultcpadd, defaultcpmod, defaultmpbase, defaultmpadd, defaultmpmod, class_lvl FROM lvlupgain";
-    private static final String CLASS_LVL = "class_lvl";
-    private static final String MP_MOD = "defaultmpmod";
-    private static final String MP_ADD = "defaultmpadd";
-    private static final String MP_BASE = "defaultmpbase";
-    private static final String HP_MOD = "defaulthpmod";
-    private static final String HP_ADD = "defaulthpadd";
-    private static final String HP_BASE = "defaulthpbase";
-    private static final String CP_MOD = "defaultcpmod";
-    private static final String CP_ADD = "defaultcpadd";
-    private static final String CP_BASE = "defaultcpbase";
-    private static final String CLASS_ID = "classid";
-
-    private static Logger _log = Logger.getLogger(LevelUpData.class.getName());
-
+	private static final String SELECT_ALL = "SELECT classid, defaulthpbase, defaulthpadd, defaulthpmod, defaultcpbase, defaultcpadd, defaultcpmod, defaultmpbase, defaultmpadd, defaultmpmod, class_lvl FROM lvlupgain";
+	private static final String CLASS_LVL = "class_lvl";
+	private static final String MP_MOD = "defaultmpmod";
+	private static final String MP_ADD = "defaultmpadd";
+	private static final String MP_BASE = "defaultmpbase";
+	private static final String HP_MOD = "defaulthpmod";
+	private static final String HP_ADD = "defaulthpadd";
+	private static final String HP_BASE = "defaulthpbase";
+	private static final String CP_MOD = "defaultcpmod";
+	private static final String CP_ADD = "defaultcpadd";
+	private static final String CP_BASE = "defaultcpbase";
+	private static final String CLASS_ID = "classid";
+	
+	private static Logger _log = Logger.getLogger(LevelUpData.class.getName());
+	
 	private static LevelUpData _instance;
-
-	private Map<Integer, L2LvlupData> _lvlTable;
-
+	
+	private final Map<Integer, L2LvlupData> _lvlTable;
+	
 	public static LevelUpData getInstance()
 	{
 		if (_instance == null)
@@ -64,10 +62,10 @@ public class LevelUpData
 		}
 		return _instance;
 	}
-
+	
 	private LevelUpData()
 	{
-		_lvlTable = new FastMap<Integer, L2LvlupData>();
+		_lvlTable = new FastMap<>();
 		java.sql.Connection con = null;
 		try
 		{
@@ -75,7 +73,7 @@ public class LevelUpData
 			PreparedStatement statement = con.prepareStatement(SELECT_ALL);
 			ResultSet rset = statement.executeQuery();
 			L2LvlupData lvlDat;
-
+			
 			while (rset.next())
 			{
 				lvlDat = new L2LvlupData();
@@ -84,39 +82,46 @@ public class LevelUpData
 				lvlDat.setClassHpBase(rset.getFloat(HP_BASE));
 				lvlDat.setClassHpAdd(rset.getFloat(HP_ADD));
 				lvlDat.setClassHpModifier(rset.getFloat(HP_MOD));
-                lvlDat.setClassCpBase(rset.getFloat(CP_BASE));
-                lvlDat.setClassCpAdd(rset.getFloat(CP_ADD));
-                lvlDat.setClassCpModifier(rset.getFloat(CP_MOD));
+				lvlDat.setClassCpBase(rset.getFloat(CP_BASE));
+				lvlDat.setClassCpAdd(rset.getFloat(CP_ADD));
+				lvlDat.setClassCpModifier(rset.getFloat(CP_MOD));
 				lvlDat.setClassMpBase(rset.getFloat(MP_BASE));
 				lvlDat.setClassMpAdd(rset.getFloat(MP_ADD));
 				lvlDat.setClassMpModifier(rset.getFloat(MP_MOD));
-
+				
 				_lvlTable.put(new Integer(lvlDat.getClassid()), lvlDat);
 			}
-
+			
 			rset.close();
 			statement.close();
-
+			
 			_log.config("LevelUpData: Loaded " + _lvlTable.size() + " Character Level Up Templates.");
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while creating Lvl up data table "+e);
+			_log.warning("error while creating Lvl up data table " + e);
 		}
 		finally
 		{
-			try { con.close(); } catch (Exception e) {}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
-
+	
 	/**
-	 * @param classId 
+	 * @param classId
 	 * @return
 	 */
 	public L2LvlupData getTemplate(int classId)
 	{
 		return _lvlTable.get(classId);
 	}
+	
 	public L2LvlupData getTemplate(ClassId classId)
 	{
 		return _lvlTable.get(classId.getId());

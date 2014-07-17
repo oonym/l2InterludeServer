@@ -19,7 +19,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: ch d[Sdd]
- * @author  KenM
+ * @author KenM
  */
 public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 {
@@ -30,8 +30,8 @@ public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x4a);
-
-		//TODO this packet has a list, so im not going to add temp vars ^^
+		
+		// TODO this packet has a list, so im not going to add temp vars ^^
 	}
 	
 	@Override

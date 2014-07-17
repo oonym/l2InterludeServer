@@ -16,39 +16,38 @@
  *
  * http://www.gnu.org/copyleft/gpl.html
  */
- package net.sf.l2j.gameserver.clientpackets;
+package net.sf.l2j.gameserver.clientpackets;
 
- import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
+import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ShowMiniMap;
- /**
- * sample
 
- * format
- * d
- *
+/**
+ * sample format d
  * @version $Revision: 1 $ $Date: 2005/04/10 00:17:44 $
  */
 public final class RequestShowMiniMap extends L2GameClientPacket
 {
 	private static final String _C__cd_REQUESTSHOWMINIMAP = "[C] cd RequestShowMiniMap";
-
-
+	
 	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
-
+	
 	@Override
 	protected final void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
+		{
+			return;
+		}
 		activeChar.sendPacket(new ShowMiniMap(1665));
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

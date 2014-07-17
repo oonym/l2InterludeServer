@@ -22,8 +22,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * The Monster Derby Track Zone
- *
- * @author  durgus
+ * @author durgus
  */
 public class L2DerbyTrackZone extends L2PeaceZone
 {
@@ -31,7 +30,7 @@ public class L2DerbyTrackZone extends L2PeaceZone
 	{
 		super();
 	}
-
+	
 	@Override
 	protected void onEnter(L2Character character)
 	{
@@ -41,7 +40,7 @@ public class L2DerbyTrackZone extends L2PeaceZone
 		}
 		super.onEnter(character);
 	}
-
+	
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -51,11 +50,15 @@ public class L2DerbyTrackZone extends L2PeaceZone
 		}
 		super.onExit(character);
 	}
-
+	
 	@Override
-	protected void onDieInside(L2Character character) {}
-
+	protected void onDieInside(L2Character character)
+	{
+	}
+	
 	@Override
-	protected void onReviveInside(L2Character character) {}
-
+	protected void onReviveInside(L2Character character)
+	{
+	}
+	
 }

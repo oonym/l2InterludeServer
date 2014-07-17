@@ -19,31 +19,27 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.ExSendManorList;
 
 /**
- * Format: ch
- * c (id) 0xD0
- * h (subid) 0x08
+ * Format: ch c (id) 0xD0 h (subid) 0x08
  * @author l3x
- *
  */
 public class RequestManorList extends L2GameClientPacket
 {
 	private static final String _C__FE_08_REQUESTMANORLIST = "[S] FE:08 RequestManorList";
-
+	
 	@Override
 	protected void readImpl()
 	{
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		FastList<String> manorsName = new FastList<String>();
+		FastList<String> manorsName = new FastList<>();
 		manorsName.add("gludio");
 		manorsName.add("dion");
 		manorsName.add("giran");
@@ -55,9 +51,9 @@ public class RequestManorList extends L2GameClientPacket
 		manorsName.add("schuttgart");
 		ExSendManorList manorlist = new ExSendManorList(manorsName);
 		player.sendPacket(manorlist);
-
+		
 	}
-
+	
 	@Override
 	public String getType()
 	{

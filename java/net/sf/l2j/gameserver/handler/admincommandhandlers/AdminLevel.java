@@ -28,90 +28,109 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class AdminLevel implements IAdminCommandHandler
 {
-    private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
-    private static final String[] ADMIN_COMMANDS =
-    {
-        "admin_add_level",
-        "admin_set_level"
-    };
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
-     */
-    @Override
+	private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_add_level",
+		"admin_set_level"
+	};
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
+	 */
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
-    {
-        if (activeChar == null) return false;
-
-        if (!Config.ALT_PRIVILEGES_ADMIN)
-            if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
-
+	{
+		if (activeChar == null)
+		{
+			return false;
+		}
+		
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
+			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
+			{
+				return false;
+			}
+		}
+		
 		L2Object targetChar = activeChar.getTarget();
 		String target = (targetChar != null ? targetChar.getName() : "no-target");
-        GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
-        StringTokenizer st = new StringTokenizer(command, " ");
-        String actualCommand = st.nextToken(); // Get actual command
-
-        String val = "";
-        if (st.countTokens() >= 1) { val = st.nextToken(); }
-
-        if (actualCommand.equalsIgnoreCase("admin_add_level"))
-        {
-            try
-            {
-                if (targetChar instanceof L2PlayableInstance)
-                	((L2PlayableInstance)targetChar).getStat().addLevel(Byte.parseByte(val));
-            }
-            catch (NumberFormatException e) { activeChar.sendMessage("Wrong Number Format"); }
-        }
-        else if(actualCommand.equalsIgnoreCase("admin_set_level"))
-        {
-            try
-            {
-        		if (targetChar == null || !(targetChar instanceof L2PcInstance))
-                {
-                    activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));	// incorrect target!
-                    return false;
-        		}
-        		L2PcInstance targetPlayer = (L2PcInstance)targetChar;
-
-                byte lvl = Byte.parseByte(val);
-            	if(lvl >= 1 && lvl <= Experience.MAX_LEVEL)
-            	{
-            		long pXp = targetPlayer.getExp();
-            		long tXp = Experience.LEVEL[lvl];
-
-            		if (pXp > tXp)
-            		{
-            			targetPlayer.removeExpAndSp(pXp - tXp, 0);
-            		} else if (pXp < tXp)
-            		{
-            			targetPlayer.addExpAndSp(tXp - pXp, 0);
-            		}
-            	}
-            	else
-            	{
-                    activeChar.sendMessage("You must specify level between 1 and "+ Experience.MAX_LEVEL+".");
-                    return false;
-            	}
-            }
-            catch (NumberFormatException  e)
-            {
-                activeChar.sendMessage("You must specify level between 1 and "+ Experience.MAX_LEVEL+".");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
-     */
-    @Override
+		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
+		
+		StringTokenizer st = new StringTokenizer(command, " ");
+		String actualCommand = st.nextToken(); // Get actual command
+		
+		String val = "";
+		if (st.countTokens() >= 1)
+		{
+			val = st.nextToken();
+		}
+		
+		if (actualCommand.equalsIgnoreCase("admin_add_level"))
+		{
+			try
+			{
+				if (targetChar instanceof L2PlayableInstance)
+				{
+					((L2PlayableInstance) targetChar).getStat().addLevel(Byte.parseByte(val));
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				activeChar.sendMessage("Wrong Number Format");
+			}
+		}
+		else if (actualCommand.equalsIgnoreCase("admin_set_level"))
+		{
+			try
+			{
+				if ((targetChar == null) || !(targetChar instanceof L2PcInstance))
+				{
+					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT)); // incorrect target!
+					return false;
+				}
+				L2PcInstance targetPlayer = (L2PcInstance) targetChar;
+				
+				byte lvl = Byte.parseByte(val);
+				if ((lvl >= 1) && (lvl <= Experience.MAX_LEVEL))
+				{
+					long pXp = targetPlayer.getExp();
+					long tXp = Experience.LEVEL[lvl];
+					
+					if (pXp > tXp)
+					{
+						targetPlayer.removeExpAndSp(pXp - tXp, 0);
+					}
+					else if (pXp < tXp)
+					{
+						targetPlayer.addExpAndSp(tXp - pXp, 0);
+					}
+				}
+				else
+				{
+					activeChar.sendMessage("You must specify level between 1 and " + Experience.MAX_LEVEL + ".");
+					return false;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				activeChar.sendMessage("You must specify level between 1 and " + Experience.MAX_LEVEL + ".");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
+	 */
+	@Override
 	public String[] getAdminCommandList()
-    {
-        return ADMIN_COMMANDS;
-    }
-
+	{
+		return ADMIN_COMMANDS;
+	}
+	
 }

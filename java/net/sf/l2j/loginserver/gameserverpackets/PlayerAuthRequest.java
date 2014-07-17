@@ -23,15 +23,13 @@ import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerAuthRequest extends ClientBasePacket
 {
-
-	private String _account;
-	private SessionKey _sessionKey;
-
-
+	
+	private final String _account;
+	private final SessionKey _sessionKey;
+	
 	/**
 	 * @param decrypt
 	 */
@@ -45,7 +43,7 @@ public class PlayerAuthRequest extends ClientBasePacket
 		int loginKey2 = readD();
 		_sessionKey = new SessionKey(loginKey1, loginKey2, playKey1, playKey2);
 	}
-
+	
 	/**
 	 * @return Returns the account.
 	 */
@@ -53,7 +51,7 @@ public class PlayerAuthRequest extends ClientBasePacket
 	{
 		return _account;
 	}
-
+	
 	/**
 	 * @return Returns the key.
 	 */
@@ -61,5 +59,5 @@ public class PlayerAuthRequest extends ClientBasePacket
 	{
 		return _sessionKey;
 	}
-
+	
 }

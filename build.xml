@@ -48,7 +48,7 @@
 		<mkdir dir="${build.dist.game}" />
 	</target>
 	<target name="compile" depends="version" description="Compile the source.">
-		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="off" includeantruntime="false" deprecation="yes">
+		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.8" target="1.8" nowarn="off" includeantruntime="false" deprecation="yes">
 			<src path="${src}" />
 			<classpath refid="classpath" />
 			<compilerarg value="-Xlint" />

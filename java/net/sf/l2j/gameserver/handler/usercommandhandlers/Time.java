@@ -29,42 +29,54 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class Time implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = { 77 };
-    /* (non-Javadoc)
-     *
-     */
-    @Override
+	private static final int[] COMMAND_IDS =
+	{
+		77
+	};
+	
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
-    {
-        if (COMMAND_IDS[0] != id) return false;
-
+	{
+		if (COMMAND_IDS[0] != id)
+		{
+			return false;
+		}
+		
 		int t = GameTimeController.getInstance().getGameTime();
-		String h = "" + (t/60)%24;
+		String h = "" + ((t / 60) % 24);
 		String m;
-		if (t%60 < 10)
-			m = "0" + t%60;
+		if ((t % 60) < 10)
+		{
+			m = "0" + (t % 60);
+		}
 		else
-			m = "" + t%60;
-
-
-
+		{
+			m = "" + (t % 60);
+		}
+		
 		SystemMessage sm;
-		if (GameTimeController.getInstance().isNowNight()) {
+		if (GameTimeController.getInstance().isNowNight())
+		{
 			sm = new SystemMessage(SystemMessageId.TIME_S1_S2_IN_THE_NIGHT);
-        	sm.addString(h);
-        	sm.addString(m);
+			sm.addString(h);
+			sm.addString(m);
 		}
-		else {
+		else
+		{
 			sm = new SystemMessage(SystemMessageId.TIME_S1_S2_IN_THE_DAY);
-	       	sm.addString(h);
-        	sm.addString(m);
+			sm.addString(h);
+			sm.addString(m);
 		}
-        activeChar.sendPacket(sm);
-        return true;
-    }
-    @Override
+		activeChar.sendPacket(sm);
+		return true;
+	}
+	
+	@Override
 	public int[] getUserCommandList()
-    {
-        return COMMAND_IDS;
-    }
+	{
+		return COMMAND_IDS;
+	}
 }

@@ -21,33 +21,28 @@ package net.sf.l2j.gameserver.serverpackets;
 /**
  * sample
  * <p>
- * 4b
- * c1 b2 e0 4a
- * 00 00 00 00
+ * 4b c1 b2 e0 4a 00 00 00 00
  * <p>
- *
- * format
- * cdd
- *
+ * format cdd
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class AskJoinParty extends L2GameServerPacket
 {
 	private static final String _S__4B_ASKJOINPARTY_0X4B = "[S] 39 AskJoinParty 0x4b";
 	
-	private String _requestorName;
-	private int _itemDistribution;
-
+	private final String _requestorName;
+	private final int _itemDistribution;
+	
 	/**
-	 * @param requestorName 
-	 * @param itemDistribution 
+	 * @param requestorName
+	 * @param itemDistribution
 	 */
 	public AskJoinParty(String requestorName, int itemDistribution)
 	{
 		_requestorName = requestorName;
 		_itemDistribution = itemDistribution;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{

@@ -22,22 +22,20 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.Config;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.4.5 $ $Date: 2005/03/27 15:30:09 $
  */
 public class VoicedCommandHandler
 {
 	private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
-
+	
 	private static VoicedCommandHandler _instance;
-
-	private Map<String, IVoicedCommandHandler> _datatable;
-
+	
+	private final Map<String, IVoicedCommandHandler> _datatable;
+	
 	public static VoicedCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -46,39 +44,44 @@ public class VoicedCommandHandler
 		}
 		return _instance;
 	}
-
+	
 	private VoicedCommandHandler()
 	{
-		_datatable = new FastMap<String, IVoicedCommandHandler>();
+		_datatable = new FastMap<>();
 	}
-
+	
 	public void registerVoicedCommandHandler(IVoicedCommandHandler handler)
 	{
 		String[] ids = handler.getVoicedCommandList();
-		for (int i = 0; i < ids.length; i++)
+		for (String id : ids)
 		{
-			if (Config.DEBUG) _log.fine("Adding handler for command "+ids[i]);
-			_datatable.put(ids[i], handler);
+			if (Config.DEBUG)
+			{
+				_log.fine("Adding handler for command " + id);
+			}
+			_datatable.put(id, handler);
 		}
 	}
-
+	
 	public IVoicedCommandHandler getVoicedCommandHandler(String voicedCommand)
 	{
 		String command = voicedCommand;
-		if (voicedCommand.indexOf(" ") != -1) {
+		if (voicedCommand.indexOf(" ") != -1)
+		{
 			command = voicedCommand.substring(0, voicedCommand.indexOf(" "));
 		}
 		if (Config.DEBUG)
-			_log.fine("getting handler for command: "+command+
-					" -> "+(_datatable.get(command) != null));
+		{
+			_log.fine("getting handler for command: " + command + " -> " + (_datatable.get(command) != null));
+		}
 		return _datatable.get(command);
 	}
-
-    /**
-     * @return
-     */
-    public int size()
-    {
-        return _datatable.size();
-    }
+	
+	/**
+	 * @return
+	 */
+	public int size()
+	{
+		return _datatable.size();
+	}
 }

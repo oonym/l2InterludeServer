@@ -34,78 +34,94 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * Admin Command Handler for Mammon NPCs
- *
  * @author Tempy
  */
 public class AdminMammon implements IAdminCommandHandler
 {
-
-	private static final String[] ADMIN_COMMANDS = {"admin_mammon_find", "admin_mammon_respawn", "admin_list_spawns", "admin_msg"};
+	
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_mammon_find",
+		"admin_mammon_respawn",
+		"admin_list_spawns",
+		"admin_msg"
+	};
 	private static final int REQUIRED_LEVEL = Config.GM_MENU;
-
-	private boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();
-
+	
+	private final boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();
+	
 	@Override
 	@SuppressWarnings("deprecation")
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
+			{
 				return false;
-
+			}
+		}
+		
 		int npcId = 0;
 		int teleportIndex = -1;
-		AutoSpawnInstance blackSpawnInst = AutoSpawnHandler.getInstance().getAutoSpawnInstance(
-				SevenSigns.MAMMON_BLACKSMITH_ID,
-				false);
-		AutoSpawnInstance merchSpawnInst = AutoSpawnHandler.getInstance().getAutoSpawnInstance(
-				SevenSigns.MAMMON_MERCHANT_ID,
-				false);
-
+		AutoSpawnInstance blackSpawnInst = AutoSpawnHandler.getInstance().getAutoSpawnInstance(SevenSigns.MAMMON_BLACKSMITH_ID, false);
+		AutoSpawnInstance merchSpawnInst = AutoSpawnHandler.getInstance().getAutoSpawnInstance(SevenSigns.MAMMON_MERCHANT_ID, false);
+		
 		if (command.startsWith("admin_mammon_find"))
 		{
 			try
 			{
-				if (command.length() > 17) teleportIndex = Integer.parseInt(command.substring(18));
+				if (command.length() > 17)
+				{
+					teleportIndex = Integer.parseInt(command.substring(18));
+				}
 			}
 			catch (Exception NumberFormatException)
 			{
 				activeChar.sendMessage("Usage: //mammon_find [teleportIndex] (where 1 = Blacksmith, 2 = Merchant)");
 			}
-
+			
 			if (!_isSealValidation)
 			{
 				activeChar.sendMessage("The competition period is currently in effect.");
 				return true;
 			}
-			if (blackSpawnInst!=null)
+			if (blackSpawnInst != null)
 			{
 				L2NpcInstance[] blackInst = blackSpawnInst.getNPCInstanceList();
 				if (blackInst.length > 0)
 				{
-					int x1=blackInst[0].getX(),y1=blackInst[0].getY(),z1=blackInst[0].getZ();
-					activeChar.sendMessage("Blacksmith of Mammon: "+x1+" "+y1+" "+z1);
+					int x1 = blackInst[0].getX(), y1 = blackInst[0].getY(), z1 = blackInst[0].getZ();
+					activeChar.sendMessage("Blacksmith of Mammon: " + x1 + " " + y1 + " " + z1);
 					if (teleportIndex == 1)
+					{
 						activeChar.teleToLocation(x1, y1, z1, true);
+					}
 				}
 			}
 			else
+			{
 				activeChar.sendMessage("Blacksmith of Mammon isn't registered for spawn.");
-			if (merchSpawnInst!=null)
+			}
+			if (merchSpawnInst != null)
 			{
 				L2NpcInstance[] merchInst = merchSpawnInst.getNPCInstanceList();
 				if (merchInst.length > 0)
 				{
-					int x2=merchInst[0].getX(),y2=merchInst[0].getY(),z2=merchInst[0].getZ();
-					activeChar.sendMessage("Merchant of Mammon: "+x2+" "+y2+" "+z2);
+					int x2 = merchInst[0].getX(), y2 = merchInst[0].getY(), z2 = merchInst[0].getZ();
+					activeChar.sendMessage("Merchant of Mammon: " + x2 + " " + y2 + " " + z2);
 					if (teleportIndex == 2)
+					{
 						activeChar.teleToLocation(x2, y2, z2, true);
+					}
 				}
 			}
 			else
+			{
 				activeChar.sendMessage("Merchant of Mammon isn't registered for spawn.");
+			}
 		}
-
+		
 		else if (command.startsWith("admin_mammon_respawn"))
 		{
 			if (!_isSealValidation)
@@ -113,22 +129,26 @@ public class AdminMammon implements IAdminCommandHandler
 				activeChar.sendMessage("The competition period is currently in effect.");
 				return true;
 			}
-			if (merchSpawnInst!=null)
+			if (merchSpawnInst != null)
 			{
 				long merchRespawn = AutoSpawnHandler.getInstance().getTimeToNextSpawn(merchSpawnInst);
-				activeChar.sendMessage("The Merchant of Mammon will respawn in "+(merchRespawn/60000)+" minute(s).");
+				activeChar.sendMessage("The Merchant of Mammon will respawn in " + (merchRespawn / 60000) + " minute(s).");
 			}
 			else
+			{
 				activeChar.sendMessage("Merchant of Mammon isn't registered for spawn.");
-			if (blackSpawnInst!=null)
+			}
+			if (blackSpawnInst != null)
 			{
 				long blackRespawn = AutoSpawnHandler.getInstance().getTimeToNextSpawn(blackSpawnInst);
-				activeChar.sendMessage("The Blacksmith of Mammon will respawn in "+(blackRespawn/60000)+" minute(s).");
+				activeChar.sendMessage("The Blacksmith of Mammon will respawn in " + (blackRespawn / 60000) + " minute(s).");
 			}
 			else
+			{
 				activeChar.sendMessage("Blacksmith of Mammon isn't registered for spawn.");
+			}
 		}
-
+		
 		else if (command.startsWith("admin_list_spawns"))
 		{
 			try
@@ -137,27 +157,32 @@ public class AdminMammon implements IAdminCommandHandler
 				Pattern pattern = Pattern.compile("[0-9]*");
 				Matcher regexp = pattern.matcher(params[1]);
 				if (regexp.matches())
+				{
 					npcId = Integer.parseInt(params[1]);
+				}
 				else
 				{
 					params[1] = params[1].replace('_', ' ');
 					npcId = NpcTable.getInstance().getTemplateByName(params[1]).npcId;
 				}
-				if (params.length > 2) teleportIndex = Integer.parseInt(params[2]);
+				if (params.length > 2)
+				{
+					teleportIndex = Integer.parseInt(params[2]);
+				}
 			}
 			catch (Exception e)
 			{
 				activeChar.sendPacket(SystemMessage.sendString("Command format is //list_spawns <npcId|npc_name> [tele_index]"));
 			}
-
+			
 			SpawnTable.getInstance().findNPCInstances(activeChar, npcId, teleportIndex);
 		}
-
-		// Used for testing SystemMessage IDs	- Use //msg <ID>
+		
+		// Used for testing SystemMessage IDs - Use //msg <ID>
 		else if (command.startsWith("admin_msg"))
 		{
 			int msgId = -1;
-
+			
 			try
 			{
 				msgId = Integer.parseInt(command.substring(10).trim());
@@ -169,16 +194,16 @@ public class AdminMammon implements IAdminCommandHandler
 			}
 			activeChar.sendPacket(new SystemMessage(msgId));
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);

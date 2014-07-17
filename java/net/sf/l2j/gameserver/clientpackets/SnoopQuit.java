@@ -23,45 +23,44 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author -Wooden-
- *
  */
 public final class SnoopQuit extends L2GameClientPacket
 {
 	private static final String _C__AB_SNOOPQUIT = "[C] AB SnoopQuit";
-
+	
 	private int _snoopID;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_snoopID = readD();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
 	 */
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = (L2PcInstance) L2World.getInstance().findObject(
-				_snoopID);
+		L2PcInstance player = (L2PcInstance) L2World.getInstance().findObject(_snoopID);
 		if (player == null)
+		{
 			return;
+		}
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
+		{
 			return;
-
+		}
+		
 		player.removeSnooper(activeChar);
 		activeChar.removeSnooped(player);
-
+		
 	}
-
+	
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -69,5 +68,5 @@ public final class SnoopQuit extends L2GameClientPacket
 	{
 		return _C__AB_SNOOPQUIT;
 	}
-
+	
 }

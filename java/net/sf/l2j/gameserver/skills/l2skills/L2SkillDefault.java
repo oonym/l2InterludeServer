@@ -25,18 +25,21 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
-public class L2SkillDefault extends L2Skill {
-
-	public L2SkillDefault(StatsSet set) {
+public class L2SkillDefault extends L2Skill
+{
+	
+	public L2SkillDefault(StatsSet set)
+	{
 		super(set);
 	}
-
+	
 	@Override
-	public void useSkill(L2Character caster, L2Object[] targets) {
+	public void useSkill(L2Character caster, L2Object[] targets)
+	{
 		caster.sendPacket(new ActionFailed());
 		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 		sm.addString("Skill not implemented.  Skill ID: " + getId() + " " + getSkillType());
 		caster.sendPacket(sm);
 	}
-
+	
 }

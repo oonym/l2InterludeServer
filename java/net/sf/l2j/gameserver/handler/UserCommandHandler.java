@@ -22,22 +22,20 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.Config;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:09 $
  */
 public class UserCommandHandler
 {
 	private static Logger _log = Logger.getLogger(UserCommandHandler.class.getName());
-
+	
 	private static UserCommandHandler _instance;
-
-	private Map<Integer, IUserCommandHandler> _datatable;
-
+	
+	private final Map<Integer, IUserCommandHandler> _datatable;
+	
 	public static UserCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -46,33 +44,39 @@ public class UserCommandHandler
 		}
 		return _instance;
 	}
-
+	
 	private UserCommandHandler()
 	{
-		_datatable = new FastMap<Integer, IUserCommandHandler>();
+		_datatable = new FastMap<>();
 	}
-
+	
 	public void registerUserCommandHandler(IUserCommandHandler handler)
 	{
 		int[] ids = handler.getUserCommandList();
-		for (int i = 0; i < ids.length; i++)
+		for (int id : ids)
 		{
-			if (Config.DEBUG) _log.fine("Adding handler for user command "+ids[i]);
-			_datatable.put(new Integer(ids[i]), handler);
+			if (Config.DEBUG)
+			{
+				_log.fine("Adding handler for user command " + id);
+			}
+			_datatable.put(new Integer(id), handler);
 		}
 	}
-
+	
 	public IUserCommandHandler getUserCommandHandler(int userCommand)
 	{
-		if (Config.DEBUG) _log.fine("getting handler for user command: "+userCommand);
+		if (Config.DEBUG)
+		{
+			_log.fine("getting handler for user command: " + userCommand);
+		}
 		return _datatable.get(new Integer(userCommand));
 	}
-
-    /**
-     * @return
-     */
-    public int size()
-    {
-        return _datatable.size();
-    }
+	
+	/**
+	 * @return
+	 */
+	public int size()
+	{
+		return _datatable.size();
+	}
 }

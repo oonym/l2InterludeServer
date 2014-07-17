@@ -23,23 +23,21 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.Config;
 
 /**
- *
- * @author  KenM
+ * @author KenM
  */
 public class GameServerListener extends FloodProtectedListener
 {
 	private static Logger _log = Logger.getLogger(GameServerListener.class.getName());
-	private static List<GameServerThread> _gameServers = new FastList<GameServerThread>();
-
+	private static List<GameServerThread> _gameServers = new FastList<>();
+	
 	public GameServerListener() throws IOException
 	{
 		super(Config.GAME_SERVER_LOGIN_HOST, Config.GAME_SERVER_LOGIN_PORT);
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.loginserver.FloodProtectedListener#addClient(java.net.Socket)
 	 */
@@ -48,12 +46,12 @@ public class GameServerListener extends FloodProtectedListener
 	{
 		if (Config.DEBUG)
 		{
-			_log.info("Received gameserver connection from: "+s.getInetAddress().getHostAddress());
+			_log.info("Received gameserver connection from: " + s.getInetAddress().getHostAddress());
 		}
 		GameServerThread gst = new GameServerThread(s);
 		_gameServers.add(gst);
 	}
-
+	
 	public void removeGameServer(GameServerThread gst)
 	{
 		_gameServers.remove(gst);

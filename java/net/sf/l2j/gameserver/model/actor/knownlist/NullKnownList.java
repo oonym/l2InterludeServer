@@ -23,7 +23,7 @@ import net.sf.l2j.gameserver.model.L2Object;
 
 public class NullKnownList extends ObjectKnownList
 {
-
+	
 	/**
 	 * @param activeObject
 	 */
@@ -32,8 +32,9 @@ public class NullKnownList extends ObjectKnownList
 		super(activeObject);
 		// TODO Auto-generated constructor stub
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#addKnownObject(net.sf.l2j.gameserver.model.L2Object, net.sf.l2j.gameserver.model.L2Character)
 	 */
 	@Override
@@ -41,8 +42,9 @@ public class NullKnownList extends ObjectKnownList
 	{
 		return false;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#addKnownObject(net.sf.l2j.gameserver.model.L2Object)
 	 */
 	@Override
@@ -50,8 +52,9 @@ public class NullKnownList extends ObjectKnownList
 	{
 		return false;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#getActiveObject()
 	 */
 	@Override
@@ -59,8 +62,9 @@ public class NullKnownList extends ObjectKnownList
 	{
 		return super.getActiveObject();
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#getDistanceToForgetObject(net.sf.l2j.gameserver.model.L2Object)
 	 */
 	@Override
@@ -68,8 +72,9 @@ public class NullKnownList extends ObjectKnownList
 	{
 		return 0;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#getDistanceToWatchObject(net.sf.l2j.gameserver.model.L2Object)
 	 */
 	@Override
@@ -77,17 +82,18 @@ public class NullKnownList extends ObjectKnownList
 	{
 		return 0;
 	}
-
-	/* (non-Javadoc)
-	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#removeAllKnownObjects()
-	 *
-	 * no-op
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#removeAllKnownObjects() no-op
 	 */
 	@Override
 	public void removeAllKnownObjects()
-	{ }
-
-	/* (non-Javadoc)
+	{
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.model.actor.knownlist.ObjectKnownList#removeKnownObject(net.sf.l2j.gameserver.model.L2Object)
 	 */
 	@Override

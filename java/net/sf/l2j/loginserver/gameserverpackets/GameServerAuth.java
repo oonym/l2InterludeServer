@@ -23,30 +23,21 @@ import java.util.logging.Logger;
 import net.sf.l2j.loginserver.clientpackets.ClientBasePacket;
 
 /**
- * Format: cccddb
- * c desired ID
- * c accept alternative ID
- * c reserve Host
- * s ExternalHostName
- * s InetranlHostName
- * d max players
- * d hexid size
- * b hexid
+ * Format: cccddb c desired ID c accept alternative ID c reserve Host s ExternalHostName s InetranlHostName d max players d hexid size b hexid
  * @author -Wooden-
- *
  */
 public class GameServerAuth extends ClientBasePacket
 {
 	protected static Logger _log = Logger.getLogger(GameServerAuth.class.getName());
-	private byte[] _hexId;
-	private int _desiredId;
-	private boolean _hostReserved;
-	private boolean _acceptAlternativeId;
-	private int _maxPlayers;
-	private int _port;
-	private String _externalHost;
-	private String _internalHost;
-
+	private final byte[] _hexId;
+	private final int _desiredId;
+	private final boolean _hostReserved;
+	private final boolean _acceptAlternativeId;
+	private final int _maxPlayers;
+	private final int _port;
+	private final String _externalHost;
+	private final String _internalHost;
+	
 	/**
 	 * @param decrypt
 	 */
@@ -63,7 +54,7 @@ public class GameServerAuth extends ClientBasePacket
 		int size = readD();
 		_hexId = readB(size);
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -71,22 +62,22 @@ public class GameServerAuth extends ClientBasePacket
 	{
 		return _hexId;
 	}
-
+	
 	public boolean getHostReserved()
 	{
 		return _hostReserved;
 	}
-
+	
 	public int getDesiredID()
 	{
 		return _desiredId;
 	}
-
+	
 	public boolean acceptAlternateID()
 	{
 		return _acceptAlternativeId;
 	}
-
+	
 	/**
 	 * @return Returns the max players.
 	 */
@@ -94,7 +85,7 @@ public class GameServerAuth extends ClientBasePacket
 	{
 		return _maxPlayers;
 	}
-
+	
 	/**
 	 * @return Returns the externalHost.
 	 */
@@ -102,7 +93,7 @@ public class GameServerAuth extends ClientBasePacket
 	{
 		return _externalHost;
 	}
-
+	
 	/**
 	 * @return Returns the internalHost.
 	 */
@@ -110,7 +101,7 @@ public class GameServerAuth extends ClientBasePacket
 	{
 		return _internalHost;
 	}
-
+	
 	/**
 	 * @return Returns the port.
 	 */

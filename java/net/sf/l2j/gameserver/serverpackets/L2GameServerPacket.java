@@ -19,13 +19,13 @@ package net.sf.l2j.gameserver.serverpackets;
 
 import java.util.logging.Logger;
 
-import org.mmocore.network.SendablePacket;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.network.L2GameClient;
 
+import org.mmocore.network.SendablePacket;
+
 /**
- * @author  KenM
+ * @author KenM
  */
 public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 {
@@ -40,18 +40,18 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed writing: "+getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: " + getClient().toString() + " - Failed writing: " + getType() + " - L2J Server Version: " + Config.SERVER_VERSION + " - DP Revision: " + Config.DATAPACK_VERSION);
 			t.printStackTrace();
 		}
 	}
-
+	
 	public void runImpl()
 	{
-
+		
 	}
-
+	
 	protected abstract void writeImpl();
-
+	
 	/**
 	 * @return A String with this packet name for debugging purposes
 	 */

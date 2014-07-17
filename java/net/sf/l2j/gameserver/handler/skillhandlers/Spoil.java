@@ -31,46 +31,51 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 
 /**
- * @author _drunk_
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author _drunk_ TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class Spoil implements ISkillHandler
 {
-    //private static Logger _log = Logger.getLogger(Spoil.class.getName());
-	private static final SkillType[] SKILL_IDS = {SkillType.SPOIL};
-
-    @Override
+	// private static Logger _log = Logger.getLogger(Spoil.class.getName());
+	private static final SkillType[] SKILL_IDS =
+	{
+		SkillType.SPOIL
+	};
+	
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
-    {
-        if (!(activeChar instanceof L2PcInstance))
+	{
+		if (!(activeChar instanceof L2PcInstance))
+		{
 			return;
-
+		}
+		
 		L2Object[] targetList = skill.getTargetList(activeChar);
-
-        if (targetList == null)
-        {
-            return;
-        }
-
+		
+		if (targetList == null)
+		{
+			return;
+		}
+		
 		for (int index = 0; index < targetList.length; index++)
 		{
 			if (!(targetList[index] instanceof L2MonsterInstance))
+			{
 				continue;
-
+			}
+			
 			L2MonsterInstance target = (L2MonsterInstance) targetList[index];
-
-			if (target.isSpoil()) {
+			
+			if (target.isSpoil())
+			{
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.ALREDAY_SPOILED));
 				continue;
 			}
-
+			
 			// SPOIL SYSTEM by Lbaldi
 			boolean spoil = false;
-			if ( target.isDead() == false ) 
+			if (target.isDead() == false)
 			{
-				spoil = Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character)targetList[index], skill);
+				spoil = Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character) targetList[index], skill);
 				
 				if (spoil)
 				{
@@ -78,21 +83,21 @@ public class Spoil implements ISkillHandler
 					target.setIsSpoiledBy(activeChar.getObjectId());
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.SPOIL_SUCCESS));
 				}
-				else 
+				else
 				{
 					SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
 					sm.addString(target.getName());
 					sm.addSkillName(skill.getDisplayId());
 					activeChar.sendPacket(sm);
-				}				
+				}
 				target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
 			}
 		}
-    } 
-    
-    @Override
+	}
+	
+	@Override
 	public SkillType[] getSkillIds()
-    { 
-        return SKILL_IDS; 
-    } 
+	{
+		return SKILL_IDS;
+	}
 }

@@ -37,14 +37,13 @@ import net.sf.l2j.gameserver.serverpackets.NpcHtmlMessage;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.12.4.5 $ $Date: 2005/04/11 10:06:11 $
  */
 public final class RequestBypassToServer extends L2GameClientPacket
 {
 	private static final String _C__21_REQUESTBYPASSTOSERVER = "[C] 21 RequestBypassToServer";
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
-
+	
 	// S
 	private String _command;
 	
@@ -53,32 +52,39 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	{
 		_command = readS();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-
+		
 		if (activeChar == null)
-		    return;
-
-		try {
-			if (_command.startsWith("admin_")) //&& activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL)
+		{
+			return;
+		}
+		
+		try
+		{
+			if (_command.startsWith("admin_")) // && activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL)
 			{
-                if (Config.ALT_PRIVILEGES_ADMIN && !AdminCommandHandler.getInstance().checkPrivileges(activeChar, _command))
-                {
-                    _log.info("<GM>" + activeChar + " does not have sufficient privileges for command '" + _command + "'.");
-                    return;
-                }
-
+				if (Config.ALT_PRIVILEGES_ADMIN && !AdminCommandHandler.getInstance().checkPrivileges(activeChar, _command))
+				{
+					_log.info("<GM>" + activeChar + " does not have sufficient privileges for command '" + _command + "'.");
+					return;
+				}
+				
 				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(_command);
-
+				
 				if (ach != null)
+				{
 					ach.useAdminCommand(_command, activeChar);
+				}
 				else
-					_log.warning("No handler registered for bypass '"+_command+"'");
+				{
+					_log.warning("No handler registered for bypass '" + _command + "'");
+				}
 			}
-			else if (_command.equals("come_here") && activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL)
+			else if (_command.equals("come_here") && (activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL))
 			{
 				comeHere(activeChar);
 			}
@@ -88,54 +94,65 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			}
 			else if (_command.startsWith("npc_"))
 			{
-				if(!activeChar.validateBypass(_command))
+				if (!activeChar.validateBypass(_command))
+				{
 					return;
-
+				}
+				
 				int endOfId = _command.indexOf('_', 5);
 				String id;
 				if (endOfId > 0)
+				{
 					id = _command.substring(4, endOfId);
+				}
 				else
+				{
 					id = _command.substring(4);
+				}
 				try
 				{
 					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
-
-					if (_command.substring(endOfId+1).startsWith("event_participate")) L2Event.inscribePlayer(activeChar);
-					else if (object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false))
+					
+					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 					{
-						((L2NpcInstance)object).onBypassFeedback(activeChar, _command.substring(endOfId+1));
+						L2Event.inscribePlayer(activeChar);
+					}
+					else if ((object != null) && (object instanceof L2NpcInstance) && (endOfId > 0) && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false))
+					{
+						((L2NpcInstance) object).onBypassFeedback(activeChar, _command.substring(endOfId + 1));
 					}
 					activeChar.sendPacket(new ActionFailed());
 				}
-				catch (NumberFormatException nfe) {}
+				catch (NumberFormatException nfe)
+				{
+				}
 			}
-			//	Draw a Symbol
+			// Draw a Symbol
 			else if (_command.equals("menu_select?ask=-16&reply=1"))
 			{
-                L2Object object = activeChar.getTarget();
-                if (object instanceof L2NpcInstance)
-                {
-                    ((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
-                }
+				L2Object object = activeChar.getTarget();
+				if (object instanceof L2NpcInstance)
+				{
+					((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
+				}
 			}
 			else if (_command.equals("menu_select?ask=-16&reply=2"))
 			{
-                L2Object object = activeChar.getTarget();
-                if (object instanceof L2NpcInstance)
-                {
-                    ((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
-                }
+				L2Object object = activeChar.getTarget();
+				if (object instanceof L2NpcInstance)
+				{
+					((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
+				}
 			}
 			// Navigate throught Manor windows
-            else if (_command.startsWith("manor_menu_select?"))
-            {
-            	L2Object object = activeChar.getTarget();
-                if (object instanceof L2NpcInstance)
-                {
-                    ((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
-                }
-            }
+			else if (_command.startsWith("manor_menu_select?"))
+			{
+				L2Object object = activeChar.getTarget();
+				if (object instanceof L2NpcInstance)
+				{
+					((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
+				}
+			}
 			else if (_command.startsWith("bbs_"))
 			{
 				CommunityBoard.getInstance().handleCommands(getClient(), _command);
@@ -146,60 +163,74 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			}
 			else if (_command.startsWith("Quest "))
 			{
-				if(!activeChar.validateBypass(_command))
+				if (!activeChar.validateBypass(_command))
+				{
 					return;
-
+				}
+				
 				L2PcInstance player = getClient().getActiveChar();
-				if (player == null) return;
-
+				if (player == null)
+				{
+					return;
+				}
+				
 				String p = _command.substring(6).trim();
 				int idx = p.indexOf(' ');
 				if (idx < 0)
+				{
 					player.processQuestEvent(p, "");
+				}
 				else
+				{
 					player.processQuestEvent(p.substring(0, idx), p.substring(idx).trim());
+				}
 			}
 		}
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "Bad RequestBypassToServer: ", e);
 		}
-//		finally
-//		{
-//			activeChar.clearBypass();
-//		}
+		// finally
+		// {
+		// activeChar.clearBypass();
+		// }
 	}
-
+	
 	/**
-	 * @param activeChar 
+	 * @param activeChar
 	 */
 	private void comeHere(L2PcInstance activeChar)
 	{
 		L2Object obj = activeChar.getTarget();
-		if (obj == null) return;
+		if (obj == null)
+		{
+			return;
+		}
 		if (obj instanceof L2NpcInstance)
 		{
 			L2NpcInstance temp = (L2NpcInstance) obj;
 			temp.setTarget(activeChar);
-			temp.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,
-					new L2CharPosition(activeChar.getX(),activeChar.getY(), activeChar.getZ(), 0 ));
-//			temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
+			temp.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ(), 0));
+			// temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
-
+		
 	}
-
+	
 	private void playerHelp(L2PcInstance activeChar, String path)
 	{
-        if (path.indexOf("..") != -1)
-            return;
-
-		String filename = "data/html/help/"+path;
+		if (path.indexOf("..") != -1)
+		{
+			return;
+		}
+		
+		String filename = "data/html/help/" + path;
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(filename);
 		activeChar.sendPacket(html);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

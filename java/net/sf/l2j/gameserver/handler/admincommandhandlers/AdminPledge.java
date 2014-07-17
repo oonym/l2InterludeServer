@@ -35,8 +35,7 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 /**
  * <B>Pledge Manipulation:</B><BR>
  * <LI>With target in a character without clan:<BR>
- * //pledge create clanname
- * <LI>With target in a clan leader:<BR>
+ * //pledge create clanname <LI>With target in a clan leader:<BR>
  * //pledge info<BR>
  * //pledge dismiss<BR>
  * //pledge setlevel level<BR>
@@ -44,19 +43,28 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class AdminPledge implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {"admin_pledge"};
-
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_pledge"
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!activeChar.isGM() || activeChar.getAccessLevel() < Config.GM_ACCESSLEVEL || activeChar.getTarget() == null || !(activeChar.getTarget() instanceof L2PcInstance))
+		{
+			if (!activeChar.isGM() || (activeChar.getAccessLevel() < Config.GM_ACCESSLEVEL) || (activeChar.getTarget() == null) || !(activeChar.getTarget() instanceof L2PcInstance))
+			{
 				return false;
-
+			}
+		}
+		
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
-			player = (L2PcInstance)target;
+		{
+			player = (L2PcInstance) target;
+		}
 		else
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
@@ -64,7 +72,7 @@ public class AdminPledge implements IAdminCommandHandler
 			return false;
 		}
 		String name = player.getName();
-		if(command.startsWith("admin_pledge"))
+		if (command.startsWith("admin_pledge"))
 		{
 			String action = null;
 			String parameter = null;
@@ -81,11 +89,13 @@ public class AdminPledge implements IAdminCommandHandler
 			}
 			if (action.equals("create"))
 			{
-				long cet=player.getClanCreateExpiryTime();
+				long cet = player.getClanCreateExpiryTime();
 				player.setClanCreateExpiryTime(0);
 				L2Clan clan = ClanTable.getInstance().createClan(player, parameter);
 				if (clan != null)
+				{
 					activeChar.sendMessage("Clan " + parameter + " created. Leader: " + player.getName());
+				}
 				else
 				{
 					player.setClanCreateExpiryTime(cet);
@@ -102,27 +112,35 @@ public class AdminPledge implements IAdminCommandHandler
 			{
 				ClanTable.getInstance().destroyClan(player.getClanId());
 				L2Clan clan = player.getClan();
-				if (clan==null)
+				if (clan == null)
+				{
 					activeChar.sendMessage("Clan disbanded.");
+				}
 				else
+				{
 					activeChar.sendMessage("There was a problem while destroying the clan.");
+				}
 			}
 			else if (action.equals("info"))
 			{
-				activeChar.sendPacket(new GMViewPledgeInfo(player.getClan(),player));
+				activeChar.sendPacket(new GMViewPledgeInfo(player.getClan(), player));
 			}
 			else if (parameter == null)
+			{
 				activeChar.sendMessage("Usage: //pledge <setlevel|rep> <number>");
-			else if(action.equals("setlevel"))
+			}
+			else if (action.equals("setlevel"))
 			{
 				int level = Integer.parseInt(parameter);
-				if (level>=0 && level <9)
+				if ((level >= 0) && (level < 9))
 				{
 					player.getClan().changeLevel(level);
 					activeChar.sendMessage("You set level " + level + " for clan " + player.getClan().getName());
 				}
 				else
+				{
 					activeChar.sendMessage("Level incorrect.");
+				}
 			}
 			else if (action.startsWith("rep"))
 			{
@@ -136,8 +154,8 @@ public class AdminPledge implements IAdminCommandHandler
 						showMainPage(activeChar);
 						return false;
 					}
-					clan.setReputationScore(clan.getReputationScore()+points, true);
-					activeChar.sendMessage("You "+(points>0?"add ":"remove ")+Math.abs(points)+" points "+(points>0?"to ":"from ")+clan.getName()+"'s reputation. Their current score is "+clan.getReputationScore());
+					clan.setReputationScore(clan.getReputationScore() + points, true);
+					activeChar.sendMessage("You " + (points > 0 ? "add " : "remove ") + Math.abs(points) + " points " + (points > 0 ? "to " : "from ") + clan.getName() + "'s reputation. Their current score is " + clan.getReputationScore());
 				}
 				catch (Exception e)
 				{
@@ -148,16 +166,16 @@ public class AdminPledge implements IAdminCommandHandler
 		showMainPage(activeChar);
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	private void showMainPage(L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "game_menu.htm");
 	}
-
+	
 }

@@ -44,81 +44,88 @@ public class ExtractableItems implements IItemHandler
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
+		{
 			return;
-
+		}
+		
 		L2PcInstance activeChar = (L2PcInstance) playable;
-
+		
 		int itemID = item.getItemId();
-		L2ExtractableItem exitem = ExtractableItemsData.getInstance()
-				.getExtractableItem(itemID);
-
+		L2ExtractableItem exitem = ExtractableItemsData.getInstance().getExtractableItem(itemID);
+		
 		if (exitem == null)
+		{
 			return;
-
+		}
+		
 		int createItemID = 0, createAmount = 0, rndNum = Rnd.get(100), chanceFrom = 0;
-
+		
 		// calculate extraction
 		for (L2ExtractableProductItem expi : exitem.getProductItemsArray())
 		{
 			int chance = expi.getChance();
-
-			if (rndNum >= chanceFrom && rndNum <= chance + chanceFrom)
+			
+			if ((rndNum >= chanceFrom) && (rndNum <= (chance + chanceFrom)))
 			{
 				createItemID = expi.getId();
 				createAmount = expi.getAmmount();
 				break;
 			}
-
+			
 			chanceFrom += chance;
 		}
-
+		
 		if (createItemID == 0)
 		{
 			activeChar.sendMessage("Nothing happened.");
 			return;
 		}
-
+		
 		if (createItemID > 0)
 		{
 			if (ItemTable.getInstance().createDummyItem(createItemID) == null)
 			{
-				_log.warning("createItemID "+createItemID+" doesn't have template!");
+				_log.warning("createItemID " + createItemID + " doesn't have template!");
 				activeChar.sendMessage("Nothing happened.");
 				return;
 			}
-			if (ItemTable.getInstance().createDummyItem(createItemID)
-					.isStackable())
+			if (ItemTable.getInstance().createDummyItem(createItemID).isStackable())
+			{
 				activeChar.addItem("Extract", createItemID, createAmount, item, false);
+			}
 			else
 			{
 				for (int i = 0; i < createAmount; i++)
+				{
 					activeChar.addItem("Extract", createItemID, 1, item, false);
+				}
 			}
 			SystemMessage sm;
-
+			
 			if (createAmount > 1)
 			{
 				sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 				sm.addItemName(createItemID);
 				sm.addNumber(createAmount);
-			} else
+			}
+			else
 			{
 				sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
 				sm.addItemName(createItemID);
 			}
 			activeChar.sendPacket(sm);
-		} else
+		}
+		else
 		{
 			activeChar.sendMessage("Item failed to open"); // TODO: Put a more proper message here.
 		}
-
-		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar
-				.getTarget(), true);
+		
+		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar.getTarget(), true);
 	}
-
-    @Override
+	
+	@Override
 	public int[] getItemIds()
-    {
-    	return ExtractableItemsData.getInstance().itemIDs();
-    }
+	{
+		return ExtractableItemsData.getInstance().itemIDs();
+	}
 }

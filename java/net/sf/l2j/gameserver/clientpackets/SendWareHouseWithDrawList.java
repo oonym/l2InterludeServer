@@ -35,148 +35,180 @@ import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * This class ...
- *
- * 32  SendWareHouseWithDrawList  cd (dd)
- * WootenGil rox :P
+ * This class ... 32 SendWareHouseWithDrawList cd (dd) WootenGil rox :P
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/29 23:15:16 $
  */
 public final class SendWareHouseWithDrawList extends L2GameClientPacket
 {
 	private static final String _C__32_SENDWAREHOUSEWITHDRAWLIST = "[C] 32 SendWareHouseWithDrawList";
 	private static Logger _log = Logger.getLogger(SendWareHouseWithDrawList.class.getName());
-
+	
 	private int _count;
 	private int[] _items;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_count = readD();
-		if (_count < 0  || _count * 8 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
+		if ((_count < 0) || ((_count * 8) > _buf.remaining()) || (_count > Config.MAX_ITEM_IN_PACKET))
 		{
-		    _count = 0;
-		    _items = null;
-		    return;
+			_count = 0;
+			_items = null;
+			return;
 		}
 		_items = new int[_count * 2];
-		for (int i=0; i < _count; i++)
+		for (int i = 0; i < _count; i++)
 		{
 			int objectId = readD();
-			_items[i * 2 + 0] = objectId;
-			long cnt    = readD();
-			if (cnt > Integer.MAX_VALUE || cnt < 0)
+			_items[(i * 2) + 0] = objectId;
+			long cnt = readD();
+			if ((cnt > Integer.MAX_VALUE) || (cnt < 0))
 			{
-			    _count = 0; _items = null;
-			    return;
+				_count = 0;
+				_items = null;
+				return;
 			}
-			_items[i * 2 + 1] = (int)cnt;
+			_items[(i * 2) + 1] = (int) cnt;
 		}
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-        if (player == null) return;
-        ItemContainer warehouse = player.getActiveWarehouse();
-        if (warehouse == null) return;
+		if (player == null)
+		{
+			return;
+		}
+		ItemContainer warehouse = player.getActiveWarehouse();
+		if (warehouse == null)
+		{
+			return;
+		}
 		L2FolkInstance manager = player.getLastFolkNPC();
-		if ((manager == null || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM()) return;
-
-        if (warehouse instanceof ClanWarehouse && Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
-        {
-            player.sendMessage("Transactions are disable for your Access Level");
-            return;
-        }
-
-        // Alt game - Karma punishment
-        if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && player.getKarma() > 0) return;
-
-        if (Config.ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH)
-        {
-        	if (warehouse instanceof ClanWarehouse &&
-        			((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE)
-        			!= L2Clan.CP_CL_VIEW_WAREHOUSE))
-        	{
-        		return;
-        	}
-        }
-        else
-        {
-        	if (warehouse instanceof ClanWarehouse && !player.isClanLeader())
-        	{
-        		// this msg is for depositing but maybe good to send some msg?
-        		player.sendPacket(new SystemMessage(SystemMessageId.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE));
-        		return;
-        	}
-        }
-
-        int weight = 0;
-        int slots = 0;
-
+		if (((manager == null) || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM())
+		{
+			return;
+		}
+		
+		if ((warehouse instanceof ClanWarehouse) && Config.GM_DISABLE_TRANSACTION && (player.getAccessLevel() >= Config.GM_TRANSACTION_MIN) && (player.getAccessLevel() <= Config.GM_TRANSACTION_MAX))
+		{
+			player.sendMessage("Transactions are disable for your Access Level");
+			return;
+		}
+		
+		// Alt game - Karma punishment
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && (player.getKarma() > 0))
+		{
+			return;
+		}
+		
+		if (Config.ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH)
+		{
+			if ((warehouse instanceof ClanWarehouse) && ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE))
+			{
+				return;
+			}
+		}
+		else
+		{
+			if ((warehouse instanceof ClanWarehouse) && !player.isClanLeader())
+			{
+				// this msg is for depositing but maybe good to send some msg?
+				player.sendPacket(new SystemMessage(SystemMessageId.ONLY_CLAN_LEADER_CAN_RETRIEVE_ITEMS_FROM_CLAN_WAREHOUSE));
+				return;
+			}
+		}
+		
+		int weight = 0;
+		int slots = 0;
+		
 		for (int i = 0; i < _count; i++)
 		{
-			int objectId = _items[i * 2 + 0];
-			int count = _items[i * 2 + 1];
-
-            // Calculate needed slots
-            L2ItemInstance item = warehouse.getItemByObjectId(objectId);
-            if (item == null) continue;
-            weight += weight * item.getItem().getWeight();
-			if (!item.isStackable()) slots += count;
-            else if (player.getInventory().getItemByItemId(item.getItemId()) == null) slots++;
+			int objectId = _items[(i * 2) + 0];
+			int count = _items[(i * 2) + 1];
+			
+			// Calculate needed slots
+			L2ItemInstance item = warehouse.getItemByObjectId(objectId);
+			if (item == null)
+			{
+				continue;
+			}
+			weight += weight * item.getItem().getWeight();
+			if (!item.isStackable())
+			{
+				slots += count;
+			}
+			else if (player.getInventory().getItemByItemId(item.getItemId()) == null)
+			{
+				slots++;
+			}
 		}
-
-        // Item Max Limit Check
-        if (!player.getInventory().validateCapacity(slots))
-        {
-            sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
-            return;
-        }
-
-        // Weight limit Check
-        if (!player.getInventory().validateWeight(weight))
-        {
-            sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
-            return;
-        }
-
-        // Proceed to the transfer
+		
+		// Item Max Limit Check
+		if (!player.getInventory().validateCapacity(slots))
+		{
+			sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+			return;
+		}
+		
+		// Weight limit Check
+		if (!player.getInventory().validateWeight(weight))
+		{
+			sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
+			return;
+		}
+		
+		// Proceed to the transfer
 		InventoryUpdate playerIU = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
 		for (int i = 0; i < _count; i++)
 		{
-			int objectId = _items[i * 2 + 0];
-			int count = _items[i * 2 + 1];
-
+			int objectId = _items[(i * 2) + 0];
+			int count = _items[(i * 2) + 1];
+			
 			L2ItemInstance oldItem = warehouse.getItemByObjectId(objectId);
-			if (oldItem == null || oldItem.getCount() < count)
-				player.sendMessage("Can't withdraw requested item"+(count>1?"s":""));
+			if ((oldItem == null) || (oldItem.getCount() < count))
+			{
+				player.sendMessage("Can't withdraw requested item" + (count > 1 ? "s" : ""));
+			}
 			L2ItemInstance newItem = warehouse.transferItem("Warehouse", objectId, count, player.getInventory(), player, player.getLastFolkNPC());
-            if (newItem == null)
-            {
-            	_log.warning("Error withdrawing a warehouse object for char " + player.getName());
-            	continue;
-            }
-
-            if (playerIU != null)
-            {
-	    		if (newItem.getCount() > count) playerIU.addModifiedItem(newItem);
-	        	else playerIU.addNewItem(newItem);
-            }
+			if (newItem == null)
+			{
+				_log.warning("Error withdrawing a warehouse object for char " + player.getName());
+				continue;
+			}
+			
+			if (playerIU != null)
+			{
+				if (newItem.getCount() > count)
+				{
+					playerIU.addModifiedItem(newItem);
+				}
+				else
+				{
+					playerIU.addNewItem(newItem);
+				}
+			}
 		}
-
-        // Send updated item list to the player
-		if (playerIU != null) player.sendPacket(playerIU);
-		else player.sendPacket(new ItemList(player, false));
-
+		
+		// Send updated item list to the player
+		if (playerIU != null)
+		{
+			player.sendPacket(playerIU);
+		}
+		else
+		{
+			player.sendPacket(new ItemList(player, false));
+		}
+		
 		// Update current load status on player
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

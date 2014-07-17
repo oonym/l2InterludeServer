@@ -24,42 +24,46 @@ import net.sf.l2j.gameserver.serverpackets.RecipeShopSellList;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.1.2.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestRecipeShopManagePrev extends L2GameClientPacket
 {
 	private static final String _C__B7_RequestRecipeShopPrev = "[C] b7 RequestRecipeShopPrev";
-	//private static Logger _log = Logger.getLogger(RequestPrivateStoreManage.class.getName());
-
-
+	
+	// private static Logger _log = Logger.getLogger(RequestPrivateStoreManage.class.getName());
+	
 	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null || player.getTarget() == null)
-		    return;
-
-        // Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
-        if (player.isAlikeDead())
-        {
-            sendPacket(new ActionFailed());
-            return;
-        }
-
-	if (!(player.getTarget() instanceof L2PcInstance))
-	    return;
-	L2PcInstance target = (L2PcInstance)player.getTarget();
-		player.sendPacket(new RecipeShopSellList(player,target));
+		if ((player == null) || (player.getTarget() == null))
+		{
+			return;
+		}
+		
+		// Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
+		if (player.isAlikeDead())
+		{
+			sendPacket(new ActionFailed());
+			return;
+		}
+		
+		if (!(player.getTarget() instanceof L2PcInstance))
+		{
+			return;
+		}
+		L2PcInstance target = (L2PcInstance) player.getTarget();
+		player.sendPacket(new RecipeShopSellList(player, target));
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

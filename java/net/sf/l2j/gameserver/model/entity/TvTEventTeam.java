@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -31,16 +30,16 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class TvTEventTeam
 {
 	/** The name of the team<br> */
-	private String _name;
+	private final String _name;
 	/** The team spot coordinated<br> */
 	private int[] _coordinates = new int[3];
 	/** The points of the team<br> */
 	private short _points;
 	/** Name and instance of all participated players in FastMap<br> */
-	private Map<String, L2PcInstance> _participatedPlayers = new FastMap<String, L2PcInstance>();
+	private Map<String, L2PcInstance> _participatedPlayers = new FastMap<>();
 	/** Name of all participated players in Vector<br> */
-	private Vector<String> _participatedPlayerNames = new Vector<String>();
-
+	private Vector<String> _participatedPlayerNames = new Vector<>();
+	
 	/**
 	 * C'tor initialize the team
 	 * @param name
@@ -52,31 +51,34 @@ public class TvTEventTeam
 		_coordinates = coordinates;
 		_points = 0;
 	}
-
+	
 	/**
 	 * Adds a player to the team
-	 *
 	 * @param playerInstance
 	 * @return boolean
 	 */
 	public boolean addPlayer(L2PcInstance playerInstance)
 	{
 		if (playerInstance == null)
+		{
 			return false;
-
+		}
+		
 		synchronized (_participatedPlayers)
 		{
 			String playerName = playerInstance.getName();
-
+			
 			_participatedPlayers.put(playerName, playerInstance);
-
+			
 			if (!_participatedPlayerNames.contains(playerName))
+			{
 				_participatedPlayerNames.add(playerName);
+			}
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Removes a player from the team
 	 * @param playerName
@@ -89,7 +91,7 @@ public class TvTEventTeam
 			_participatedPlayerNames.remove(playerName);
 		}
 	}
-
+	
 	/**
 	 * Increases the points of the team<br>
 	 */
@@ -97,7 +99,7 @@ public class TvTEventTeam
 	{
 		_points++;
 	}
-
+	
 	/**
 	 * Cleanup the team and make it ready for adding players again<br>
 	 */
@@ -105,11 +107,11 @@ public class TvTEventTeam
 	{
 		_participatedPlayers.clear();
 		_participatedPlayerNames.clear();
-		_participatedPlayers = new FastMap<String, L2PcInstance>();
-		_participatedPlayerNames = new Vector<String>();
+		_participatedPlayers = new FastMap<>();
+		_participatedPlayerNames = new Vector<>();
 		_points = 0;
 	}
-
+	
 	/**
 	 * Is given player in this team?
 	 * @param playerName
@@ -118,15 +120,15 @@ public class TvTEventTeam
 	public boolean containsPlayer(String playerName)
 	{
 		boolean containsPlayer;
-
+		
 		synchronized (_participatedPlayers)
 		{
 			containsPlayer = _participatedPlayerNames.contains(playerName);
 		}
-
+		
 		return containsPlayer;
 	}
-
+	
 	/**
 	 * Returns the name of the team
 	 * @return String
@@ -135,7 +137,7 @@ public class TvTEventTeam
 	{
 		return _name;
 	}
-
+	
 	/**
 	 * Returns the coordinates of the team spot
 	 * @return int[]
@@ -144,7 +146,7 @@ public class TvTEventTeam
 	{
 		return _coordinates;
 	}
-
+	
 	/**
 	 * Returns the points of the team
 	 * @return short
@@ -153,7 +155,7 @@ public class TvTEventTeam
 	{
 		return _points;
 	}
-
+	
 	/**
 	 * Returns name and instance of all participated players in FastMap
 	 * @return Map<String, L2PcInstance>
@@ -161,15 +163,15 @@ public class TvTEventTeam
 	public Map<String, L2PcInstance> getParticipatedPlayers()
 	{
 		Map<String, L2PcInstance> participatedPlayers = null;
-
+		
 		synchronized (_participatedPlayers)
 		{
 			participatedPlayers = _participatedPlayers;
 		}
-
+		
 		return participatedPlayers;
 	}
-
+	
 	/**
 	 * Returns name of all participated players in Vector
 	 * @return Vector<String>
@@ -177,15 +179,15 @@ public class TvTEventTeam
 	public Vector<String> getParticipatedPlayerNames()
 	{
 		Vector<String> participatedPlayerNames = null;
-
+		
 		synchronized (_participatedPlayers)
 		{
 			participatedPlayerNames = _participatedPlayerNames;
 		}
-
+		
 		return participatedPlayerNames;
 	}
-
+	
 	/**
 	 * Returns player count of this team
 	 * @return int
@@ -193,12 +195,12 @@ public class TvTEventTeam
 	public int getParticipatedPlayerCount()
 	{
 		int participatedPlayerCount;
-
+		
 		synchronized (_participatedPlayers)
 		{
 			participatedPlayerCount = _participatedPlayers.size();
 		}
-
+		
 		return participatedPlayerCount;
 	}
 }

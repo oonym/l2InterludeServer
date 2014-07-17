@@ -28,65 +28,73 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Stats;
+
 /**
  * This class ...
- *
  * @version $Revision: 1.1.2.2.2.1 $ $Date: 2005/03/02 15:38:36 $
  */
 
 public class ManaHeal implements ISkillHandler
 {
-	//private static Logger _log = Logger.getLogger(ManaHeal.class.getName());
-
-	/* (non-Javadoc)
+	// private static Logger _log = Logger.getLogger(ManaHeal.class.getName());
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
-	private static final SkillType[] SKILL_IDS = {SkillType.MANAHEAL, SkillType.MANARECHARGE, SkillType.MANAHEAL_PERCENT};
-
-	/* (non-Javadoc)
+	private static final SkillType[] SKILL_IDS =
+	{
+		SkillType.MANAHEAL,
+		SkillType.MANARECHARGE,
+		SkillType.MANAHEAL_PERCENT
+	};
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IItemHandler#useItem(net.sf.l2j.gameserver.model.L2PcInstance, net.sf.l2j.gameserver.model.L2ItemInstance)
 	 */
 	@Override
 	public void useSkill(L2Character actChar, L2Skill skill, L2Object[] targets)
 	{
-        L2Character target = null;
-
-        for(int index = 0;index < targets.length;index++)
-        {
-            target = (L2Character)targets[index];
-            double mp = skill.getPower();
-            if (skill.getSkillType() == SkillType.MANAHEAL_PERCENT){
-            	//double mp = skill.getPower();
-             mp = target.getMaxMp() * mp / 100.0;
-            }
-            else {
-             mp = (skill.getSkillType() == SkillType.MANARECHARGE) ? target.calcStat(Stats.RECHARGE_MP_RATE,mp, null, null) : mp;
-            }
-			//int cLev = activeChar.getLevel();
-			//hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
-            target.setLastHealAmount((int)mp);
-			target.setCurrentMp(mp+target.getCurrentMp());
+		L2Character target = null;
+		
+		for (L2Object target2 : targets)
+		{
+			target = (L2Character) target2;
+			double mp = skill.getPower();
+			if (skill.getSkillType() == SkillType.MANAHEAL_PERCENT)
+			{
+				// double mp = skill.getPower();
+				mp = (target.getMaxMp() * mp) / 100.0;
+			}
+			else
+			{
+				mp = (skill.getSkillType() == SkillType.MANARECHARGE) ? target.calcStat(Stats.RECHARGE_MP_RATE, mp, null, null) : mp;
+			}
+			// int cLev = activeChar.getLevel();
+			// hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
+			target.setLastHealAmount((int) mp);
+			target.setCurrentMp(mp + target.getCurrentMp());
 			StatusUpdate sump = new StatusUpdate(target.getObjectId());
-			sump.addAttribute(StatusUpdate.CUR_MP, (int)target.getCurrentMp());
+			sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
 			target.sendPacket(sump);
-
-            if (actChar instanceof L2PcInstance && actChar != target)
-            {
-                SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_RESTORED_BY_S1);
-                sm.addString(actChar.getName());
-                sm.addNumber((int)mp);
-                target.sendPacket(sm);
-            }
-            else
-            {
-                SystemMessage sm = new SystemMessage(SystemMessageId.S1_MP_RESTORED);
-                sm.addNumber((int)mp);
-                target.sendPacket(sm);
-            }
+			
+			if ((actChar instanceof L2PcInstance) && (actChar != target))
+			{
+				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_RESTORED_BY_S1);
+				sm.addString(actChar.getName());
+				sm.addNumber((int) mp);
+				target.sendPacket(sm);
+			}
+			else
+			{
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_MP_RESTORED);
+				sm.addNumber((int) mp);
+				target.sendPacket(sm);
+			}
 		}
 	}
-
-
+	
 	@Override
 	public SkillType[] getSkillIds()
 	{

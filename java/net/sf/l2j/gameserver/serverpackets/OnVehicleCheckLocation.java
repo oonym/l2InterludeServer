@@ -22,14 +22,14 @@ import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
 
 /**
  * @author Maktakien
- *
  */
 public class OnVehicleCheckLocation extends L2GameServerPacket
 {
-	private L2BoatInstance _boat;
-	private int _x;
-	private int _y;
-	private int _z;
+	private final L2BoatInstance _boat;
+	private final int _x;
+	private final int _y;
+	private final int _z;
+	
 	/**
 	 * @param instance
 	 * @param x
@@ -43,15 +43,15 @@ public class OnVehicleCheckLocation extends L2GameServerPacket
 		_y = y;
 		_z = z;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
-
+		
 		writeC(0x5b);
 		writeD(_boat.getObjectId());
 		writeD(_x);
@@ -59,8 +59,9 @@ public class OnVehicleCheckLocation extends L2GameServerPacket
 		writeD(_z);
 		writeD(_boat.getPosition().getHeading());
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -69,5 +70,5 @@ public class OnVehicleCheckLocation extends L2GameServerPacket
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 }

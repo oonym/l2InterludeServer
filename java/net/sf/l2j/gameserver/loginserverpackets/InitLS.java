@@ -18,21 +18,21 @@
  */
 package net.sf.l2j.gameserver.loginserverpackets;
 
-
 public class InitLS extends LoginServerBasePacket
 {
-	private int _rev;
-	private byte[] _key;
-
+	private final int _rev;
+	private final byte[] _key;
+	
 	public int getRevision()
 	{
 		return _rev;
 	}
-
+	
 	public byte[] getRSAKey()
 	{
 		return _key;
 	}
+	
 	/**
 	 * @param decrypt
 	 */
@@ -43,5 +43,5 @@ public class InitLS extends LoginServerBasePacket
 		int size = readD();
 		_key = readB(size);
 	}
-
+	
 }

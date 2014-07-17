@@ -20,16 +20,14 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: (ch)
- *
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class ExRestartClient extends L2GameServerPacket
 {
 	private static final String _S__FE_47_EXRESTARTCLIENT = "[S] FE:47 ExRestartClient";
 	
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x47);

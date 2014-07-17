@@ -24,20 +24,18 @@ import net.sf.l2j.gameserver.serverpackets.ShortCutRegister;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.3.4.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestShortCutReg extends L2GameClientPacket
 {
 	private static final String _C__33_REQUESTSHORTCUTREG = "[C] 33 RequestShortCutReg";
-
+	
 	private int _type;
 	private int _id;
 	private int _slot;
 	private int _page;
 	private int _unk;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -45,34 +43,36 @@ public final class RequestShortCutReg extends L2GameClientPacket
 		int slot = readD();
 		_id = readD();
 		_unk = readD();
-
+		
 		_slot = slot % 12;
 		_page = slot / 12;
-
+		
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
-
+		{
+			return;
+		}
+		
 		switch (_type)
 		{
-			case 0x01:	// item
-			case 0x03:	// action
-			case 0x04:	// macro
-            case 0x05:  // recipe
+			case 0x01: // item
+			case 0x03: // action
+			case 0x04: // macro
+			case 0x05: // recipe
 			{
 				L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, -1, _unk);
 				sendPacket(new ShortCutRegister(sc));
 				activeChar.registerShortCut(sc);
 				break;
 			}
-			case 0x02:	// skill
+			case 0x02: // skill
 			{
-				int level = activeChar.getSkillLevel( _id );
+				int level = activeChar.getSkillLevel(_id);
 				if (level > 0)
 				{
 					L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _unk);
@@ -82,10 +82,11 @@ public final class RequestShortCutReg extends L2GameClientPacket
 				break;
 			}
 		}
-
+		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

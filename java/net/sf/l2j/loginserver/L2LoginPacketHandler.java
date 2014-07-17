@@ -19,19 +19,18 @@ package net.sf.l2j.loginserver;
 
 import java.nio.ByteBuffer;
 
-import org.mmocore.network.IPacketHandler;
-import org.mmocore.network.ReceivablePacket;
-
 import net.sf.l2j.loginserver.L2LoginClient.LoginClientState;
 import net.sf.l2j.loginserver.clientpackets.AuthGameGuard;
 import net.sf.l2j.loginserver.clientpackets.RequestAuthLogin;
 import net.sf.l2j.loginserver.clientpackets.RequestServerList;
 import net.sf.l2j.loginserver.clientpackets.RequestServerLogin;
 
+import org.mmocore.network.IPacketHandler;
+import org.mmocore.network.ReceivablePacket;
+
 /**
  * Handler for packets received by Login Server
- *
- * @author  KenM
+ * @author KenM
  */
 public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 {
@@ -39,10 +38,10 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 	public ReceivablePacket<L2LoginClient> handlePacket(ByteBuffer buf, L2LoginClient client)
 	{
 		int opcode = buf.get() & 0xFF;
-
+		
 		ReceivablePacket<L2LoginClient> packet = null;
 		LoginClientState state = client.getState();
-
+		
 		switch (state)
 		{
 			case CONNECTED:
@@ -82,9 +81,9 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 		}
 		return packet;
 	}
-
+	
 	private void debugOpcode(int opcode, LoginClientState state)
 	{
-		System.out.println("Unknown Opcode: "+opcode+" for state: "+state.name());
+		System.out.println("Unknown Opcode: " + opcode + " for state: " + state.name());
 	}
 }

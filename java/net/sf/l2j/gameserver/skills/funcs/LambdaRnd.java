@@ -22,26 +22,28 @@ import net.sf.l2j.gameserver.skills.Env;
 import net.sf.l2j.util.Rnd;
 
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public final class LambdaRnd extends Lambda {
-
+public final class LambdaRnd extends Lambda
+{
+	
 	private final Lambda _max;
 	private final boolean _linear;
-
+	
 	public LambdaRnd(Lambda max, boolean linear)
 	{
 		_max = max;
 		_linear = linear;
 	}
+	
 	@Override
-	public double calc(Env env) {
+	public double calc(Env env)
+	{
 		if (_linear)
+		{
 			return _max.calc(env) * Rnd.nextDouble();
-        return _max.calc(env) * Rnd.nextGaussian();
+		}
+		return _max.calc(env) * Rnd.nextGaussian();
 	}
-
+	
 }

@@ -21,7 +21,6 @@ package net.sf.l2j.gameserver.model;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 
 public class L2SiegeClan
@@ -30,11 +29,11 @@ public class L2SiegeClan
 	// Instance
 	// ===============================================================
 	// Data Field
-	private int _clanId                = 0;
-	private List<L2NpcInstance> _flag  = new FastList<L2NpcInstance>();
+	private int _clanId = 0;
+	private List<L2NpcInstance> _flag = new FastList<>();
 	private int _numFlagsAdded = 0;
 	private SiegeClanType _type;
-
+	
 	public enum SiegeClanType
 	{
 		OWNER,
@@ -42,43 +41,48 @@ public class L2SiegeClan
 		ATTACKER,
 		DEFENDER_PENDING
 	}
-
+	
 	// =========================================================
 	// Constructor
-
+	
 	public L2SiegeClan(int clanId, SiegeClanType type)
 	{
 		_clanId = clanId;
 		_type = type;
 	}
-
+	
 	// =========================================================
 	// Method - Public
 	public int getNumFlags()
 	{
 		return _numFlagsAdded;
 	}
-
+	
 	public void addFlag(L2NpcInstance flag)
 	{
 		_numFlagsAdded++;
 		getFlag().add(flag);
 	}
-
+	
 	public boolean removeFlag(L2NpcInstance flag)
 	{
-		if (flag == null) return false;
+		if (flag == null)
+		{
+			return false;
+		}
 		boolean ret = getFlag().remove(flag);
-		//flag.deleteMe();
-		//check if null objects or dups remain in the list.
-		//for some reason, this might be happening sometimes...
+		// flag.deleteMe();
+		// check if null objects or dups remain in the list.
+		// for some reason, this might be happening sometimes...
 		// delete false duplicates: if this flag got deleted, delete its copies too.
 		if (ret)
+		{
 			while (getFlag().remove(flag))
 			{
 				
 			}
-
+		}
+		
 		// now delete nulls
 		int n;
 		boolean more = true;
@@ -86,37 +90,55 @@ public class L2SiegeClan
 		{
 			more = false;
 			n = getFlag().size();
-			if (n>0)
-				for(int i=0; i<n;i++)
-					if(getFlag().get(i)==null)
+			if (n > 0)
+			{
+				for (int i = 0; i < n; i++)
+				{
+					if (getFlag().get(i) == null)
 					{
 						getFlag().remove(i);
 						more = true;
 						break;
 					}
+				}
+			}
 		}
-
+		
 		flag.deleteMe();
 		return ret;
 	}
-
+	
 	public void removeFlags()
 	{
-		for (L2NpcInstance flag: getFlag())
+		for (L2NpcInstance flag : getFlag())
+		{
 			removeFlag(flag);
+		}
 	}
-
+	
 	// =========================================================
 	// Proeprty
-	public final int getClanId() { return _clanId; }
-
+	public final int getClanId()
+	{
+		return _clanId;
+	}
+	
 	public final List<L2NpcInstance> getFlag()
 	{
-		if (_flag == null) _flag  = new FastList<L2NpcInstance>();
+		if (_flag == null)
+		{
+			_flag = new FastList<>();
+		}
 		return _flag;
 	}
-
-	public SiegeClanType getType() { return _type; }
-
-    public void setType(SiegeClanType setType) { _type = setType; }
+	
+	public SiegeClanType getType()
+	{
+		return _type;
+	}
+	
+	public void setType(SiegeClanType setType)
+	{
+		_type = setType;
+	}
 }

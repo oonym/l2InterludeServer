@@ -22,100 +22,111 @@ import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.gameserver.ThreadPoolManager;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.actor.instance.L2RaidBossInstance;
 
 /**
- * @author la2
- * Lets drink to code!
+ * @author la2 Lets drink to code!
  */
 public class DecayTaskManager
 {
-    protected static final Logger _log = Logger.getLogger(DecayTaskManager.class.getName());
-	protected Map<L2Character,Long> _decayTasks = new FastMap<L2Character,Long>().shared();
-
-    private static DecayTaskManager _instance;
-
-    public DecayTaskManager()
-    {
-    	ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new DecayScheduler(),10000,5000);
-    }
-
-    public static DecayTaskManager getInstance()
-    {
-        if(_instance == null)
-            _instance = new DecayTaskManager();
-
-        return _instance;
-    }
-
-    public void addDecayTask(L2Character actor)
-    {
-        _decayTasks.put(actor,System.currentTimeMillis());
-    }
-
-    public void addDecayTask(L2Character actor, int interval)
-    {
-        _decayTasks.put(actor,System.currentTimeMillis()+interval);
-    }
-
-    public void cancelDecayTask(L2Character actor)
-    {
-    	try
-    	{
-    		_decayTasks.remove(actor);
-    	}
-    	catch(NoSuchElementException e){}
-    }
-
-    private class DecayScheduler implements Runnable
-    {
-    	protected DecayScheduler()
-    	{
-    		// Do nothing
-    	}
-
-        @Override
+	protected static final Logger _log = Logger.getLogger(DecayTaskManager.class.getName());
+	protected Map<L2Character, Long> _decayTasks = new FastMap<L2Character, Long>().shared();
+	
+	private static DecayTaskManager _instance;
+	
+	public DecayTaskManager()
+	{
+		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new DecayScheduler(), 10000, 5000);
+	}
+	
+	public static DecayTaskManager getInstance()
+	{
+		if (_instance == null)
+		{
+			_instance = new DecayTaskManager();
+		}
+		
+		return _instance;
+	}
+	
+	public void addDecayTask(L2Character actor)
+	{
+		_decayTasks.put(actor, System.currentTimeMillis());
+	}
+	
+	public void addDecayTask(L2Character actor, int interval)
+	{
+		_decayTasks.put(actor, System.currentTimeMillis() + interval);
+	}
+	
+	public void cancelDecayTask(L2Character actor)
+	{
+		try
+		{
+			_decayTasks.remove(actor);
+		}
+		catch (NoSuchElementException e)
+		{
+		}
+	}
+	
+	private class DecayScheduler implements Runnable
+	{
+		protected DecayScheduler()
+		{
+			// Do nothing
+		}
+		
+		@Override
 		public void run()
-        {
-            Long current = System.currentTimeMillis();
-            int delay;
-            try
-            {
-            	if (_decayTasks != null)
-            		for(L2Character actor : _decayTasks.keySet())
-            		{
-            			if(actor instanceof L2RaidBossInstance) delay = 30000;
-            			else delay = 8500;
-            			if((current - _decayTasks.get(actor)) > delay)
-            			{
-            				actor.onDecay();
-            				_decayTasks.remove(actor);
-            			}
-            		}
-            } catch (Throwable e) {
-				// TODO: Find out the reason for exception. Unless caught here, mob decay would stop.
-            	_log.warning(e.toString());
+		{
+			Long current = System.currentTimeMillis();
+			int delay;
+			try
+			{
+				if (_decayTasks != null)
+				{
+					for (L2Character actor : _decayTasks.keySet())
+					{
+						if (actor instanceof L2RaidBossInstance)
+						{
+							delay = 30000;
+						}
+						else
+						{
+							delay = 8500;
+						}
+						if ((current - _decayTasks.get(actor)) > delay)
+						{
+							actor.onDecay();
+							_decayTasks.remove(actor);
+						}
+					}
+				}
 			}
-        }
-    }
-
-    @Override
+			catch (Throwable e)
+			{
+				// TODO: Find out the reason for exception. Unless caught here, mob decay would stop.
+				_log.warning(e.toString());
+			}
+		}
+	}
+	
+	@Override
 	public String toString()
-    {
-        String ret = "============= DecayTask Manager Report ============\r\n";
-        ret += "Tasks count: "+_decayTasks.size()+"\r\n";
-        ret += "Tasks dump:\r\n";
-
-        Long current = System.currentTimeMillis();
-        for( L2Character actor : _decayTasks.keySet())
-        {
-            ret += "Class/Name: "+actor.getClass().getSimpleName()+"/"+actor.getName()
-            +" decay timer: "+(current - _decayTasks.get(actor))+"\r\n";
-        }
-
-        return ret;
-    }
+	{
+		String ret = "============= DecayTask Manager Report ============\r\n";
+		ret += "Tasks count: " + _decayTasks.size() + "\r\n";
+		ret += "Tasks dump:\r\n";
+		
+		Long current = System.currentTimeMillis();
+		for (L2Character actor : _decayTasks.keySet())
+		{
+			ret += "Class/Name: " + actor.getClass().getSimpleName() + "/" + actor.getName() + " decay timer: " + (current - _decayTasks.get(actor)) + "\r\n";
+		}
+		
+		return ret;
+	}
 }

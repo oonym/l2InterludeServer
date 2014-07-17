@@ -31,21 +31,23 @@ class EffectDamOverTime extends L2Effect
 	{
 		super(env, template);
 	}
-
+	
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.DMG_OVER_TIME;
 	}
-
+	
 	@Override
 	public boolean onActionTime()
 	{
 		if (getEffected().isDead())
+		{
 			return false;
-
+		}
+		
 		double damage = calc();
-
+		
 		if (damage >= getEffected().getCurrentHp())
 		{
 			if (getSkill().isToggle())
@@ -54,20 +56,20 @@ class EffectDamOverTime extends L2Effect
 				getEffected().sendPacket(sm);
 				return false;
 			}
-
-            // ** This is just hotfix, needs better solution **
-            // 1947: "DOT skills shouldn't kill"
-            // Well, some of them should ;-)
-            if (getSkill().getId() != 4082) damage = getEffected().getCurrentHp() - 1;
+			
+			// ** This is just hotfix, needs better solution **
+			// 1947: "DOT skills shouldn't kill"
+			// Well, some of them should ;-)
+			if (getSkill().getId() != 4082)
+			{
+				damage = getEffected().getCurrentHp() - 1;
+			}
 		}
-
-        boolean awake = !(getEffected() instanceof L2Attackable)
-        					&& !(getSkill().getTargetType() == SkillTargetType.TARGET_SELF
-        							&& getSkill().isToggle());
-
-
-        getEffected().reduceCurrentHp(damage, getEffector(),awake);
-
+		
+		boolean awake = !(getEffected() instanceof L2Attackable) && !((getSkill().getTargetType() == SkillTargetType.TARGET_SELF) && getSkill().isToggle());
+		
+		getEffected().reduceCurrentHp(damage, getEffector(), awake);
+		
 		return true;
 	}
 }

@@ -21,27 +21,22 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Object;
 
 /**
- * format  dddd
- *
- * sample
- * 0000: 3a  69 08 10 48  02 c1 00 00  f7 56 00 00  89 ea ff    :i..H.....V.....
- * 0010: ff  0c b2 d8 61                                     ....a
- *
+ * format dddd sample 0000: 3a 69 08 10 48 02 c1 00 00 f7 56 00 00 89 ea ff :i..H.....V..... 0010: ff 0c b2 d8 61 ....a
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class TeleportToLocation extends L2GameServerPacket
 {
 	private static final String _S__38_TELEPORTTOLOCATION = "[S] 28 TeleportToLocation";
-	private int _targetObjId;
-	private int _x;
-	private int _y;
-	private int _z;
-
+	private final int _targetObjId;
+	private final int _x;
+	private final int _y;
+	private final int _z;
+	
 	/**
-	 * @param obj 
-	 * @param x 
-	 * @param y 
-	 * @param z 
+	 * @param obj
+	 * @param x
+	 * @param y
+	 * @param z
 	 */
 	public TeleportToLocation(L2Object obj, int x, int y, int z)
 	{
@@ -50,7 +45,7 @@ public class TeleportToLocation extends L2GameServerPacket
 		_y = y;
 		_z = z;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{

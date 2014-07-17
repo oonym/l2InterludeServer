@@ -25,18 +25,17 @@ import java.util.logging.LogRecord;
 import javolution.text.TextBuilder;
 
 /**
- * @author zabbix
- * Lets drink to code!
+ * @author zabbix Lets drink to code!
  */
 public class AuditFormatter extends Formatter
 {
 	private static final String CRLF = "\r\n";
-	private SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
-
+	private final SimpleDateFormat dateFmt = new SimpleDateFormat("dd MMM H:mm:ss");
+	
 	@Override
 	public String format(LogRecord record)
 	{
-        TextBuilder output = new TextBuilder();
+		TextBuilder output = new TextBuilder();
 		output.append('[');
 		output.append(dateFmt.format(new Date(record.getMillis())));
 		output.append(']');
@@ -44,13 +43,16 @@ public class AuditFormatter extends Formatter
 		output.append(record.getMessage());
 		for (Object p : record.getParameters())
 		{
-			if (p == null) continue;
+			if (p == null)
+			{
+				continue;
+			}
 			output.append(',');
 			output.append(' ');
 			output.append(p.toString());
 		}
 		output.append(CRLF);
-
+		
 		return output.toString();
 	}
 }

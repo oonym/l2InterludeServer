@@ -19,12 +19,12 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: ch d
- * @author  KenM
+ * @author KenM
  */
 public class ExDuelEnd extends L2GameServerPacket
 {
 	private static final String _S__FE_4E_EXDUELEND = "[S] FE:4E ExDuelEnd";
-	private int _unk1;
+	private final int _unk1;
 	
 	public ExDuelEnd(int unk1)
 	{
@@ -36,7 +36,7 @@ public class ExDuelEnd extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x4e);
-
+		
 		writeD(_unk1);
 	}
 	

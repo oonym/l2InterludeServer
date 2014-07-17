@@ -19,21 +19,21 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: ch d
- * @author  KenM
+ * @author KenM
  */
 public class ExSetCompassZoneCode extends L2GameServerPacket
 {
 	private static final String _S__FE_32_EXSETCOMPASSZONECODE = "[S] FE:32 ExSetCompassZoneCode";
-
+	
 	public static final int SIEGEWARZONE1 = 0x0A;
 	public static final int SIEGEWARZONE2 = 0x0B;
 	public static final int PEACEZONE = 0x0C;
 	public static final int SEVENSIGNSZONE = 0x0D;
 	public static final int PVPZONE = 0x0E;
 	public static final int GENERALZONE = 0x0F;
-
-	private int _zoneType;
-
+	
+	private final int _zoneType;
+	
 	public ExSetCompassZoneCode(int val)
 	{
 		_zoneType = val;

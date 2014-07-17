@@ -23,41 +23,44 @@ import net.sf.l2j.gameserver.serverpackets.PledgeReceiveWarList;
 
 /**
  * Format: (ch) dd
- * @author  -Wooden-
- *
+ * @author -Wooden-
  */
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
-    private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
-    @SuppressWarnings("unused")
-    private int _unk1;
-    private int _tab;
-
-
-    @Override
+	private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
+	@SuppressWarnings("unused")
+	private int _unk1;
+	private int _tab;
+	
+	@Override
 	protected void readImpl()
-    {
-        _unk1 = readD();
-        _tab = readD();
-    }
-    
-    @Override
+	{
+		_unk1 = readD();
+		_tab = readD();
+	}
+	
+	@Override
 	protected void runImpl()
-    {
-        //System.out.println("C5: RequestPledgeWarList d:"+_unk1);
-        //System.out.println("C5: RequestPledgeWarList d:"+_tab);
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if(activeChar == null)
-        	return;
-        if (activeChar.getClan() == null) return;
-
-        //do we need powers to do that??
-        activeChar.sendPacket(new PledgeReceiveWarList(activeChar.getClan(),_tab));
-    }
-    
-    @Override
-    public String getType()
-    {
-        return _C__D0_1E_REQUESTPLEDGEWARLIST;
-    }
+	{
+		// System.out.println("C5: RequestPledgeWarList d:"+_unk1);
+		// System.out.println("C5: RequestPledgeWarList d:"+_tab);
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+		{
+			return;
+		}
+		if (activeChar.getClan() == null)
+		{
+			return;
+		}
+		
+		// do we need powers to do that??
+		activeChar.sendPacket(new PledgeReceiveWarList(activeChar.getClan(), _tab));
+	}
+	
+	@Override
+	public String getType()
+	{
+		return _C__D0_1E_REQUESTPLEDGEWARLIST;
+	}
 }

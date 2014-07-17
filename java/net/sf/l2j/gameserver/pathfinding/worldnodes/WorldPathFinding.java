@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.gameserver.pathfinding.AbstractNodeLoc;
 import net.sf.l2j.gameserver.pathfinding.Node;
 import net.sf.l2j.gameserver.pathfinding.PathFinding;
@@ -33,19 +32,21 @@ import net.sf.l2j.gameserver.pathfinding.PathFinding;
  */
 public class WorldPathFinding extends PathFinding
 {
-	//private static Logger _log = Logger.getLogger(WorldPathFinding.class.getName());
+	// private static Logger _log = Logger.getLogger(WorldPathFinding.class.getName());
 	private static WorldPathFinding _instance;
-    @SuppressWarnings("unused")
-	private static Map<Short, ByteBuffer> _pathNodes = new FastMap<Short, ByteBuffer>();
-	private static Map<Short, IntBuffer> _pathNodesIndex = new FastMap<Short, IntBuffer>();
-
+	@SuppressWarnings("unused")
+	private static Map<Short, ByteBuffer> _pathNodes = new FastMap<>();
+	private static Map<Short, IntBuffer> _pathNodesIndex = new FastMap<>();
+	
 	public static WorldPathFinding getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new WorldPathFinding();
+		}
 		return _instance;
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#pathNodesExist(short)
 	 */
@@ -54,31 +55,31 @@ public class WorldPathFinding extends PathFinding
 	{
 		return _pathNodesIndex.containsKey(regionoffset);
 	}
-
-    //TODO! [Nemesiss]
+	
+	// TODO! [Nemesiss]
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#findPath(int, int, short, int, int, short)
 	 */
 	@Override
-	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx,	int gtz, short tz)
+	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gtz, short tz)
 	{
 		return null;
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.gameserver.pathfinding.PathFinding#readNeighbors(short, short, int)
 	 */
 	@Override
-	public Node[] readNeighbors(short node_x,short node_y, int idx)
+	public Node[] readNeighbors(short node_x, short node_y, int idx)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	//Private
-
+	
+	// Private
+	
 	private WorldPathFinding()
 	{
-		//TODO! {Nemesiss] Load PathNodes.
+		// TODO! {Nemesiss] Load PathNodes.
 	}
 }

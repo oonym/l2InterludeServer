@@ -19,28 +19,27 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- * Fromat: (ch)
- * (just a trigger)
+ * Fromat: (ch) (just a trigger)
  * @author -Wooden-
- *
  */
 public class ExMailArrived extends L2GameServerPacket
 {
 	private static final String _S__FE_2D_EXMAILARRIVED = "[S] FE:2D ExMailArrived";
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x2d);
-
+		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -48,5 +47,5 @@ public class ExMailArrived extends L2GameServerPacket
 	{
 		return _S__FE_2D_EXMAILARRIVED;
 	}
-
+	
 }

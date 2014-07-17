@@ -21,77 +21,87 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminQuest implements IAdminCommandHandler
 {
-    private static final int REQUIRED_LEVEL = Config.GM_TEST;
-    private static final String[] ADMIN_COMMANDS =
-    {
-        "admin_quest_reload"
-    };
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
-     */
-    @Override
+	private static final int REQUIRED_LEVEL = Config.GM_TEST;
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_quest_reload"
+	};
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
+	 */
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
-    {
-        if (activeChar == null) return false;
-
-        if (!Config.ALT_PRIVILEGES_ADMIN)
-            if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
-
-        // syntax will either be:
-        //                           //quest_reload <id>
-        //                           //quest_reload <questName>
-        // The questName MUST start with a non-numeric character for this to work, 
-        // regardless which of the two formats is used.
-        // Example:  //quest_reload orc_occupation_change_1
-        // Example:  //quest_reload chests
-        // Example:  //quest_reload SagasSuperclass
-        // Example:  //quest_reload 12
-        if (command.startsWith("admin_quest_reload"))
-        {
-        	String[] parts = command.split(" ");
-        	if (parts.length < 2)
-        	{
-        		activeChar.sendMessage("Syntax: //quest_reload <questFolder>.<questSubFolders...>.questName> or //quest_reload <id>");
-        	}
-        	else
-        	{
-        		// try the first param as id
-        		try
-        		{
-        			int questId = Integer.parseInt(parts[1]);
-        			if (QuestManager.getInstance().reload(questId))
-            		{
-            			activeChar.sendMessage("Quest Reloaded Successfully.");
-            		}
-            		else
-            		{
-            			activeChar.sendMessage("Quest Reloaded Failed");
-            		}
-        		}
-        		catch (NumberFormatException e)
-        		{
-        			if (QuestManager.getInstance().reload(parts[1]))
-            		{
-            			activeChar.sendMessage("Quest Reloaded Successfully.");
-            		}
-            		else
-            		{
-            			activeChar.sendMessage("Quest Reloaded Failed");
-            		}
-        		}
-        	}
-        }
-        return true;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
-     */
-    @Override
+	{
+		if (activeChar == null)
+		{
+			return false;
+		}
+		
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
+			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
+			{
+				return false;
+			}
+		}
+		
+		// syntax will either be:
+		// //quest_reload <id>
+		// //quest_reload <questName>
+		// The questName MUST start with a non-numeric character for this to work,
+		// regardless which of the two formats is used.
+		// Example: //quest_reload orc_occupation_change_1
+		// Example: //quest_reload chests
+		// Example: //quest_reload SagasSuperclass
+		// Example: //quest_reload 12
+		if (command.startsWith("admin_quest_reload"))
+		{
+			String[] parts = command.split(" ");
+			if (parts.length < 2)
+			{
+				activeChar.sendMessage("Syntax: //quest_reload <questFolder>.<questSubFolders...>.questName> or //quest_reload <id>");
+			}
+			else
+			{
+				// try the first param as id
+				try
+				{
+					int questId = Integer.parseInt(parts[1]);
+					if (QuestManager.getInstance().reload(questId))
+					{
+						activeChar.sendMessage("Quest Reloaded Successfully.");
+					}
+					else
+					{
+						activeChar.sendMessage("Quest Reloaded Failed");
+					}
+				}
+				catch (NumberFormatException e)
+				{
+					if (QuestManager.getInstance().reload(parts[1]))
+					{
+						activeChar.sendMessage("Quest Reloaded Successfully.");
+					}
+					else
+					{
+						activeChar.sendMessage("Quest Reloaded Failed");
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
+	 */
+	@Override
 	public String[] getAdminCommandList()
-    {
-        return ADMIN_COMMANDS;
-    }
-
+	{
+		return ADMIN_COMMANDS;
+	}
+	
 }

@@ -29,79 +29,82 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 import net.sf.l2j.util.Rnd;
 
 /**
- * @author Drunkard Zabb0x
- * Lets drink2code!
+ * @author Drunkard Zabb0x Lets drink2code!
  */
 public class L2XmassTreeInstance extends L2NpcInstance
 {
-    private ScheduledFuture<?> _aiTask;
-
-    class XmassAI implements Runnable
-    {
-        private L2XmassTreeInstance _caster;
-
-        protected XmassAI(L2XmassTreeInstance caster)
-        {
-            _caster = caster;
-        }
-
-        @Override
+	private final ScheduledFuture<?> _aiTask;
+	
+	class XmassAI implements Runnable
+	{
+		private final L2XmassTreeInstance _caster;
+		
+		protected XmassAI(L2XmassTreeInstance caster)
+		{
+			_caster = caster;
+		}
+		
+		@Override
 		public void run()
-        {
-            for (L2PcInstance player : getKnownList().getKnownPlayers().values())
-            {
-                int i = Rnd.nextInt(3);
-                handleCast(player, (4262 + i));
-            }
-        }
-
-        private boolean handleCast(L2PcInstance player, int skillId)
-        {
-            L2Skill skill = SkillTable.getInstance().getInfo(skillId, 1);
-
-            if (player.getFirstEffect(skill) == null)
-            {
-                setTarget(player);
-                doCast(skill);
-
-                MagicSkillUser msu = new MagicSkillUser(_caster, player, skill.getId(), 1, skill.getHitTime(), 0);
-                broadcastPacket(msu);
-
-                return true;
-            }
-
-            return false;
-        }
-
-    }
-
-    public L2XmassTreeInstance(int objectId, L2NpcTemplate template)
-    {
-        super(objectId, template);
-        _aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 3000);
-    }
-
-    @Override
+		{
+			for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+			{
+				int i = Rnd.nextInt(3);
+				handleCast(player, (4262 + i));
+			}
+		}
+		
+		private boolean handleCast(L2PcInstance player, int skillId)
+		{
+			L2Skill skill = SkillTable.getInstance().getInfo(skillId, 1);
+			
+			if (player.getFirstEffect(skill) == null)
+			{
+				setTarget(player);
+				doCast(skill);
+				
+				MagicSkillUser msu = new MagicSkillUser(_caster, player, skill.getId(), 1, skill.getHitTime(), 0);
+				broadcastPacket(msu);
+				
+				return true;
+			}
+			
+			return false;
+		}
+		
+	}
+	
+	public L2XmassTreeInstance(int objectId, L2NpcTemplate template)
+	{
+		super(objectId, template);
+		_aiTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new XmassAI(this), 3000, 3000);
+	}
+	
+	@Override
 	public void deleteMe()
-    {
-        if (_aiTask != null) _aiTask.cancel(true);
-
-        super.deleteMe();
-    }
-
-    @Override
+	{
+		if (_aiTask != null)
+		{
+			_aiTask.cancel(true);
+		}
+		
+		super.deleteMe();
+	}
+	
+	@Override
 	public int getDistanceToWatchObject(L2Object object)
-    {
-        return 900;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
-     */
-    @Override
+	{
+		return 900;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.model.L2Object#isAttackable()
+	 */
+	@Override
 	public boolean isAutoAttackable(L2Character attacker)
-    {
-        return false;
-    }
-
+	{
+		return false;
+	}
+	
 }

@@ -26,58 +26,74 @@ import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * This class handles following admin commands:
- * - gm = turns gm mode on/off
- *
+ * This class handles following admin commands: - gm = turns gm mode on/off
  * @version $Revision: 1.2.4.4 $ $Date: 2005/04/11 10:06:06 $
  */
-public class AdminGm implements IAdminCommandHandler {
+public class AdminGm implements IAdminCommandHandler
+{
 	private static Logger _log = Logger.getLogger(AdminGm.class.getName());
-	private static final String[] ADMIN_COMMANDS = { "admin_gm" };
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_gm"
+	};
 	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
-
+	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
-		//don't check for gm status ;)
-        if (!Config.ALT_PRIVILEGES_ADMIN)
-        {
-    		if (!checkLevel(activeChar.getAccessLevel()))
-                return false;
-        }
-
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	{
+		// don't check for gm status ;)
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
+			if (!checkLevel(activeChar.getAccessLevel()))
+			{
+				return false;
+			}
+		}
+		
 		if (command.equals("admin_gm"))
-            handleGm(activeChar);
-
+		{
+			handleGm(activeChar);
+		}
+		
 		return true;
 	}
-
+	
 	@Override
-	public String[] getAdminCommandList() {
+	public String[] getAdminCommandList()
+	{
 		return ADMIN_COMMANDS;
 	}
-
-	private boolean checkLevel(int level) {
+	
+	private boolean checkLevel(int level)
+	{
 		return (level >= REQUIRED_LEVEL);
 	}
-
+	
 	private void handleGm(L2PcInstance activeChar)
-    {
+	{
 		if (activeChar.isGM())
 		{
-            GmListTable.getInstance().deleteGm(activeChar);
+			GmListTable.getInstance().deleteGm(activeChar);
 			activeChar.setIsGM(false);
-
-            activeChar.sendMessage("You no longer have GM status.");
-
-			if (Config.DEBUG) _log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") turned his GM status off");
+			
+			activeChar.sendMessage("You no longer have GM status.");
+			
+			if (Config.DEBUG)
+			{
+				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status off");
+			}
 		}
-        else {
-            GmListTable.getInstance().addGm(activeChar, false);
+		else
+		{
+			GmListTable.getInstance().addGm(activeChar, false);
 			activeChar.setIsGM(true);
-
+			
 			activeChar.sendMessage("You now have GM status.");
-
-			if (Config.DEBUG) _log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") turned his GM status on");
+			
+			if (Config.DEBUG)
+			{
+				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status on");
+			}
 		}
 	}
 }

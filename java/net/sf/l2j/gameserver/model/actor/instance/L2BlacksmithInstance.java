@@ -22,8 +22,7 @@ import net.sf.l2j.gameserver.model.L2Multisell;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
- * @author zabbix
- * Lets drink to code!
+ * @author zabbix Lets drink to code!
  */
 public class L2BlacksmithInstance extends L2FolkInstance
 {
@@ -31,7 +30,7 @@ public class L2BlacksmithInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -40,9 +39,9 @@ public class L2BlacksmithInstance extends L2FolkInstance
 			int listId = Integer.parseInt(command.substring(9).trim());
 			L2Multisell.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
 		}
-		super.onBypassFeedback(player,command);
+		super.onBypassFeedback(player, command);
 	}
-
+	
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -55,7 +54,7 @@ public class L2BlacksmithInstance extends L2FolkInstance
 		{
 			pom = npcId + "-" + val;
 		}
-
+		
 		return "data/html/blacksmith/" + pom + ".htm";
 	}
 }

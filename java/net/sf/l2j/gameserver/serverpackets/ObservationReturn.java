@@ -20,20 +20,18 @@ package net.sf.l2j.gameserver.serverpackets;
 
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
  * This class ...
- *
  * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class ObservationReturn extends L2GameServerPacket
 {
 	// ddSS
 	private static final String _S__E0_OBSERVRETURN = "[S] E0 ObservationReturn";
-	private L2PcInstance _activeChar;
+	private final L2PcInstance _activeChar;
 	
 	/**
-	 * @param observer 
+	 * @param observer
 	 */
 	public ObservationReturn(L2PcInstance observer)
 	{
@@ -43,10 +41,10 @@ public class ObservationReturn extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		writeC( 0xe0 );
-		writeD( _activeChar.getObsX() );
-		writeD( _activeChar.getObsY() );
-		writeD( _activeChar.getObsZ() );
+		writeC(0xe0);
+		writeD(_activeChar.getObsX());
+		writeD(_activeChar.getObsY());
+		writeD(_activeChar.getObsZ());
 	}
 	
 	@Override

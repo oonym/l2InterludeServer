@@ -17,13 +17,10 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 package net.sf.l2j.gameserver.clientpackets;
+
 /**
- * Format chS
- * c (id) 0xD0
- * h (subid) 0x0C
- * S the hero's words :)
+ * Format chS c (id) 0xD0 h (subid) 0x0C S the hero's words :)
  * @author -Wooden-
- *
  */
 public final class RequestWriteHeroWords extends L2GameClientPacket
 {
@@ -41,7 +38,7 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
-
+		
 	}
 	
 	@Override

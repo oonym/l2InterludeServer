@@ -19,26 +19,26 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import java.util.logging.Logger;
 
-import org.mmocore.network.ReceivablePacket;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.L2GameServerPacket;
 
+import org.mmocore.network.ReceivablePacket;
+
 /**
  * Packets received by the game server from clients
- * @author  KenM
+ * @author KenM
  */
 public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 {
 	private static final Logger _log = Logger.getLogger(L2GameClientPacket.class.getName());
-
+	
 	@Override
 	protected boolean read()
 	{
-		//System.out.println(this.getType());
+		// System.out.println(this.getType());
 		try
 		{
 			readImpl();
@@ -46,21 +46,21 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed reading: "+getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: " + getClient().toString() + " - Failed reading: " + getType() + " - L2J Server Version: " + Config.SERVER_VERSION + " - DP Revision: " + Config.DATAPACK_VERSION);
 			t.printStackTrace();
 		}
 		return false;
 	}
-
+	
 	protected abstract void readImpl();
-
+	
 	@Override
 	public void run()
 	{
 		try
 		{
-            // flood protection
-			if (GameTimeController.getGameTicks() - getClient().packetsSentStartTick > 10)
+			// flood protection
+			if ((GameTimeController.getGameTicks() - getClient().packetsSentStartTick) > 10)
 			{
 				getClient().packetsSentStartTick = GameTimeController.getGameTicks();
 				getClient().packetsSentInSec = 0;
@@ -68,29 +68,31 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 			else
 			{
 				getClient().packetsSentInSec++;
-				if (getClient().packetsSentInSec > 12) 
+				if (getClient().packetsSentInSec > 12)
 				{
 					if (getClient().packetsSentInSec < 100)
-						sendPacket(new ActionFailed()); 
+					{
+						sendPacket(new ActionFailed());
+					}
 					return;
 				}
 			}
 			
 			runImpl();
-            if (this instanceof MoveBackwardToLocation 
-            	|| this instanceof AttackRequest 
-            	|| this instanceof RequestMagicSkillUse)
-            	// could include pickup and talk too, but less is better
-            {
-            	// Removes onspawn protection - player has faster computer than
-            	// average
-            	if (getClient().getActiveChar() != null)
-            		getClient().getActiveChar().onActionRequest();
-            }
+			if ((this instanceof MoveBackwardToLocation) || (this instanceof AttackRequest) || (this instanceof RequestMagicSkillUse))
+			// could include pickup and talk too, but less is better
+			{
+				// Removes onspawn protection - player has faster computer than
+				// average
+				if (getClient().getActiveChar() != null)
+				{
+					getClient().getActiveChar().onActionRequest();
+				}
+			}
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed running: "+getType()+" - L2J Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: " + getClient().toString() + " - Failed running: " + getType() + " - L2J Server Version: " + Config.SERVER_VERSION + " - DP Revision: " + Config.DATAPACK_VERSION);
 			t.printStackTrace();
 		}
 	}

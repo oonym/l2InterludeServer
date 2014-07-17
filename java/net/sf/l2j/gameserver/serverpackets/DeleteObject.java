@@ -21,32 +21,29 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Object;
 
 /**
- * sample
- * 0000: 1e  9b da 12 40                                     ....@
- *
- * format  d
- *
+ * sample 0000: 1e 9b da 12 40 ....@ format d
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class DeleteObject extends L2GameServerPacket
 {
 	private static final String _S__1E_DELETEOBJECT = "[S] 12 DeleteObject";
-	private int _objectId;
-
+	private final int _objectId;
+	
 	public DeleteObject(L2Object obj)
 	{
 		_objectId = obj.getObjectId();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x12);
 		writeD(_objectId);
-		writeD(0x00); //c2
+		writeD(0x00); // c2
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override
@@ -54,5 +51,5 @@ public class DeleteObject extends L2GameServerPacket
 	{
 		return _S__1E_DELETEOBJECT;
 	}
-
+	
 }

@@ -26,31 +26,35 @@ import net.sf.l2j.gameserver.serverpackets.PledgeCrest;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPledgeCrest extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestPledgeCrest.class.getName());
 	private static final String _C__68_REQUESTPLEDGECREST = "[C] 68 RequestPledgeCrest";
-
+	
 	private int _crestId;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_crestId = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		if (_crestId == 0)
-		    return;
-		if (Config.DEBUG) _log.fine("crestid " + _crestId + " requested");
-
-        byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
-
+		{
+			return;
+		}
+		if (Config.DEBUG)
+		{
+			_log.fine("crestid " + _crestId + " requested");
+		}
+		
+		byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
+		
 		if (data != null)
 		{
 			PledgeCrest pc = new PledgeCrest(_crestId, data);
@@ -58,11 +62,15 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 		}
 		else
 		{
-			if (Config.DEBUG) _log.fine("crest is missing:" + _crestId);
+			if (Config.DEBUG)
+			{
+				_log.fine("crest is missing:" + _crestId);
+			}
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

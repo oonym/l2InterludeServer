@@ -18,7 +18,7 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- * @author  devScarlet & mrTJO
+ * @author devScarlet & mrTJO
  */
 public class ServerClose extends L2GameServerPacket
 {
@@ -33,7 +33,7 @@ public class ServerClose extends L2GameServerPacket
 	{
 		writeC(0x26);
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.gameserver.serverpackets.L2GameServerPacket#getType()
 	 */

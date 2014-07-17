@@ -18,24 +18,22 @@
  */
 package net.sf.l2j.gameserver.communitybbs.BB;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.communitybbs.Manager.PostBBSManager;
 
 /**
  * @author Maktakien
- *
  */
 public class Post
 {
 	private static Logger _log = Logger.getLogger(Post.class.getName());
+	
 	public class CPost
 	{
 		public int postId;
@@ -46,7 +44,8 @@ public class Post
 		public int postForumId;
 		public String postTxt;
 	}
-	private List<CPost> _post;
+	
+	private final List<CPost> _post;
 	
 	/**
 	 * @param _PostOwner
@@ -56,21 +55,22 @@ public class Post
 	 * @param _PostForumID
 	 * @param txt
 	 */
-	public Post(String _PostOwner,int _PostOwnerID,long date,int tid,int _PostForumID,String txt)
+	public Post(String _PostOwner, int _PostOwnerID, long date, int tid, int _PostForumID, String txt)
 	{
-			_post = new FastList<CPost>();
-			CPost cp = new CPost();
-			cp.postId = 0;
-			cp.postOwner = _PostOwner;
-			cp.postOwnerId = _PostOwnerID;
-			cp.postDate = date;
-			cp.postTopicId = tid;
-			cp.postForumId = _PostForumID;
-			cp.postTxt = txt;
-			_post.add(cp);
-			insertindb(cp);
-
+		_post = new FastList<>();
+		CPost cp = new CPost();
+		cp.postId = 0;
+		cp.postOwner = _PostOwner;
+		cp.postOwnerId = _PostOwnerID;
+		cp.postDate = date;
+		cp.postTopicId = tid;
+		cp.postForumId = _PostForumID;
+		cp.postTxt = txt;
+		_post.add(cp);
+		insertindb(cp);
+		
 	}
+	
 	public void insertindb(CPost cp)
 	{
 		java.sql.Connection con = null;
@@ -102,20 +102,21 @@ public class Post
 			{
 			}
 		}
-
+		
 	}
+	
 	public Post(Topic t)
 	{
-		_post = new FastList<CPost>();
+		_post = new FastList<>();
 		load(t);
 	}
-
+	
 	public CPost getCPost(int id)
 	{
 		int i = 0;
-		for(CPost cp : _post)
+		for (CPost cp : _post)
 		{
-			if(i == id)
+			if (i == id)
 			{
 				return cp;
 			}
@@ -123,6 +124,7 @@ public class Post
 		}
 		return null;
 	}
+	
 	public void deleteme(Topic t)
 	{
 		PostBBSManager.getInstance().delPostByTopic(t);
@@ -151,6 +153,7 @@ public class Post
 			}
 		}
 	}
+	
 	/**
 	 * @param t
 	 */
@@ -164,7 +167,7 @@ public class Post
 			statement.setInt(1, t.getForumID());
 			statement.setInt(2, t.getID());
 			ResultSet result = statement.executeQuery();
-			while(result.next())
+			while (result.next())
 			{
 				CPost cp = new CPost();
 				cp.postId = Integer.parseInt(result.getString("post_id"));
@@ -181,7 +184,7 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.warning("data error on Post " + t.getForumID() + "/"+t.getID()+" : " + e);
+			_log.warning("data error on Post " + t.getForumID() + "/" + t.getID() + " : " + e);
 			e.printStackTrace();
 		}
 		finally
@@ -195,6 +198,7 @@ public class Post
 			}
 		}
 	}
+	
 	/**
 	 * @param i
 	 */
@@ -227,14 +231,10 @@ public class Post
 			{
 			}
 		}
-
+		
 	}
 	/**
 	 *
 	 */
-
-
-
-
-
+	
 }

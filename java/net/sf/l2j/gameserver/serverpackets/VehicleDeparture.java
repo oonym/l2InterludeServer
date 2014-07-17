@@ -25,15 +25,15 @@ import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
  */
 public class VehicleDeparture extends L2GameServerPacket
 {
-	private L2BoatInstance _boat;
-	private int _speed1;
-	private int _speed2;//rotation
-	private int _x;
-	private int _y;
-	private int _z;
+	private final L2BoatInstance _boat;
+	private final int _speed1;
+	private final int _speed2;// rotation
+	private final int _x;
+	private final int _y;
+	private final int _z;
 	
 	/**
-	 * @param boat 
+	 * @param boat
 	 * @param speed1
 	 * @param speed2
 	 * @param x
@@ -51,8 +51,7 @@ public class VehicleDeparture extends L2GameServerPacket
 	}
 	
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0x5a);
 		writeD(_boat.getObjectId());
@@ -61,7 +60,7 @@ public class VehicleDeparture extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
-
+		
 	}
 	
 	@Override

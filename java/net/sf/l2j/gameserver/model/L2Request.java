@@ -26,24 +26,23 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
  * This class manages requests (transactions) between two L2PcInstance.
- *
- * @author  kriau
+ * @author kriau
  */
 public class L2Request
 {
-	private static final int REQUEST_TIMEOUT = 15; //in secs
-
+	private static final int REQUEST_TIMEOUT = 15; // in secs
+	
 	protected L2PcInstance _player;
 	protected L2PcInstance _partner;
 	protected boolean _isRequestor;
 	protected boolean _isAnswerer;
 	protected L2GameClientPacket _requestPacket;
-
+	
 	public L2Request(L2PcInstance player)
 	{
 		_player = player;
 	}
-
+	
 	protected void clear()
 	{
 		_partner = null;
@@ -51,56 +50,61 @@ public class L2Request
 		_isRequestor = false;
 		_isAnswerer = false;
 	}
-
+	
 	/**
-	 * Set the L2PcInstance member of a transaction (ex : FriendInvite, JoinAlly, JoinParty...).<BR><BR>
-	 * @param partner 
+	 * Set the L2PcInstance member of a transaction (ex : FriendInvite, JoinAlly, JoinParty...).<BR>
+	 * <BR>
+	 * @param partner
 	 */
 	private synchronized void setPartner(L2PcInstance partner)
 	{
 		_partner = partner;
 	}
-
+	
 	/**
-	 * Return the L2PcInstance member of a transaction (ex : FriendInvite, JoinAlly, JoinParty...).<BR><BR>
-	 * @return 
+	 * Return the L2PcInstance member of a transaction (ex : FriendInvite, JoinAlly, JoinParty...).<BR>
+	 * <BR>
+	 * @return
 	 */
 	public L2PcInstance getPartner()
 	{
 		return _partner;
 	}
-
+	
 	/**
-	 * Set the packet incomed from requester.<BR><BR>
-	 * @param packet 
+	 * Set the packet incomed from requester.<BR>
+	 * <BR>
+	 * @param packet
 	 */
 	private synchronized void setRequestPacket(L2GameClientPacket packet)
 	{
 		_requestPacket = packet;
 	}
-
+	
 	/**
-	 * Return the packet originally incomed from requester.<BR><BR>
-	 * @return 
+	 * Return the packet originally incomed from requester.<BR>
+	 * <BR>
+	 * @return
 	 */
 	public L2GameClientPacket getRequestPacket()
 	{
 		return _requestPacket;
 	}
-
+	
 	/**
-	 * Checks if request can be made and in success case puts both PC on request state.<BR><BR>
-	 * @param partner 
-	 * @param packet 
-	 * @return 
+	 * Checks if request can be made and in success case puts both PC on request state.<BR>
+	 * <BR>
+	 * @param partner
+	 * @param packet
+	 * @return
 	 */
 	public synchronized boolean setRequest(L2PcInstance partner, L2GameClientPacket packet)
 	{
-        if (partner == null)
-        {
-        	_player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
-            return false;
-        }
+		if (partner == null)
+		{
+			_player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
+			return false;
+		}
 		if (partner.getRequest().isProcessingRequest())
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
@@ -111,10 +115,10 @@ public class L2Request
 		}
 		if (isProcessingRequest())
 		{
-        	_player.sendPacket(new SystemMessage(SystemMessageId.WAITING_FOR_ANOTHER_REPLY));
+			_player.sendPacket(new SystemMessage(SystemMessageId.WAITING_FOR_ANOTHER_REPLY));
 			return false;
 		}
-
+		
 		_partner = partner;
 		_requestPacket = packet;
 		setOnRequestTimer(true);
@@ -123,37 +127,32 @@ public class L2Request
 		_partner.getRequest().setOnRequestTimer(false);
 		return true;
 	}
-
+	
 	private void setOnRequestTimer(boolean isRequestor)
 	{
 		_isRequestor = isRequestor ? true : false;
 		_isAnswerer = isRequestor ? false : true;
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				clear();
-			}
-		}, REQUEST_TIMEOUT * 1000);
-
+		ThreadPoolManager.getInstance().scheduleGeneral(() -> clear(), REQUEST_TIMEOUT * 1000);
+		
 	}
-
+	
 	/**
-	 * Clears PC request state. Should be called after answer packet receive.<BR><BR>
+	 * Clears PC request state. Should be called after answer packet receive.<BR>
+	 * <BR>
 	 */
 	public void onRequestResponse()
-    {
+	{
 		if (_partner != null)
 		{
 			_partner.getRequest().clear();
 		}
 		clear();
-    }
-
+	}
+	
 	/**
-	 * Return True if a transaction is in progress.<BR><BR>
-	 * @return 
+	 * Return True if a transaction is in progress.<BR>
+	 * <BR>
+	 * @return
 	 */
 	public boolean isProcessingRequest()
 	{

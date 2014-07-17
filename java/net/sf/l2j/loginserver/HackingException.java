@@ -20,7 +20,6 @@ package net.sf.l2j.loginserver;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2.4.2 $ $Date: 2005/03/27 15:30:09 $
  */
 
@@ -31,14 +30,14 @@ public class HackingException extends Exception
 	 */
 	private static final long serialVersionUID = 4050762693478463029L;
 	String _ip;
-    private int _connects;
-
+	private final int _connects;
+	
 	public HackingException(String ip, int connects)
 	{
 		_ip = ip;
-        _connects = connects;
+		_connects = connects;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -46,11 +45,10 @@ public class HackingException extends Exception
 	{
 		return _ip;
 	}
-
-    public int getConnects()
-    {
-        return _connects;
-    }
-
-
+	
+	public int getConnects()
+	{
+		return _connects;
+	}
+	
 }

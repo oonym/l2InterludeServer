@@ -20,11 +20,10 @@ package net.sf.l2j.gameserver.model.base;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2.4.1 $ $Date: 2005/03/27 15:29:32 $
  */
 public class Sex
 {
-	public static final int MALE	= 0;
-	public static final int FEMALE	= 1;
+	public static final int MALE = 0;
+	public static final int FEMALE = 1;
 }

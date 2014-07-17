@@ -23,45 +23,51 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- * @author  Chris
+ * @author Chris
  */
 public class ChannelDelete implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = { 93 };
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
-     */
-    @Override
+	private static final int[] COMMAND_IDS =
+	{
+		93
+	};
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
+	 */
+	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
-    {
-        if (id != COMMAND_IDS[0]) return false;
-
-        if (activeChar.isInParty())
-        {
-        	if (activeChar.getParty().isLeader(activeChar)
-        			&& activeChar.getParty().isInCommandChannel()
-        			&& activeChar.getParty().getCommandChannel().getChannelLeader().equals(activeChar))
-        	{
-        		L2CommandChannel channel = activeChar.getParty().getCommandChannel();
-
-        		SystemMessage sm = SystemMessage.sendString("The Command Channel was disbanded.");
-        		channel.broadcastToChannelMembers(sm);
-
-        		channel.disbandChannel();
-        		return true;
-        	}
-        }
-
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
-     */
-    @Override
+	{
+		if (id != COMMAND_IDS[0])
+		{
+			return false;
+		}
+		
+		if (activeChar.isInParty())
+		{
+			if (activeChar.getParty().isLeader(activeChar) && activeChar.getParty().isInCommandChannel() && activeChar.getParty().getCommandChannel().getChannelLeader().equals(activeChar))
+			{
+				L2CommandChannel channel = activeChar.getParty().getCommandChannel();
+				
+				SystemMessage sm = SystemMessage.sendString("The Command Channel was disbanded.");
+				channel.broadcastToChannelMembers(sm);
+				
+				channel.disbandChannel();
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
+	 */
+	@Override
 	public int[] getUserCommandList()
-    {
-        return COMMAND_IDS;
-    }
+	{
+		return COMMAND_IDS;
+	}
 }

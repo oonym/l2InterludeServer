@@ -31,48 +31,65 @@ import net.sf.l2j.gameserver.serverpackets.Ride;
  */
 public class castle implements IVoicedCommandHandler
 {
-    private static final String[] VOICED_COMMANDS = { "open doors", "close doors", "ride wyvern" };
-
-    @Override
+	private static final String[] VOICED_COMMANDS =
+	{
+		"open doors",
+		"close doors",
+		"ride wyvern"
+	};
+	
+	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
-    {
-    	if(command.startsWith("open doors")&&target.equals("castle")&&(activeChar.isClanLeader())){
-            L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
-            Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
-            if (door == null || castle == null) return false;
-            if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
-	        {
-	        	door.openMe();
-	        }
-
-    	}
-    	else if(command.startsWith("close doors")&&target.equals("castle")&&(activeChar.isClanLeader())){
-            L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
-            Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
-            if (door == null || castle == null) return false;
-            if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
-	        {
-	        	door.closeMe();
-	        }
-
-    	}
-    	else if(command.startsWith("ride wyvern")&&target.equals("castle")){
-    		if(activeChar.getClan().getHasCastle()>0&&activeChar.isClanLeader()){
-    			 if(!activeChar.disarmWeapons()) return false;
-    			 Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
-                 activeChar.sendPacket(mount);
-                 activeChar.broadcastPacket(mount);
-                 activeChar.setMountType(mount.getMountType());
-    		}
-
-    	}
-    	return true;
-    }
-
-
-    @Override
+	{
+		if (command.startsWith("open doors") && target.equals("castle") && (activeChar.isClanLeader()))
+		{
+			L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
+			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
+			if ((door == null) || (castle == null))
+			{
+				return false;
+			}
+			if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
+			{
+				door.openMe();
+			}
+			
+		}
+		else if (command.startsWith("close doors") && target.equals("castle") && (activeChar.isClanLeader()))
+		{
+			L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
+			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
+			if ((door == null) || (castle == null))
+			{
+				return false;
+			}
+			if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
+			{
+				door.closeMe();
+			}
+			
+		}
+		else if (command.startsWith("ride wyvern") && target.equals("castle"))
+		{
+			if ((activeChar.getClan().getHasCastle() > 0) && activeChar.isClanLeader())
+			{
+				if (!activeChar.disarmWeapons())
+				{
+					return false;
+				}
+				Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
+				activeChar.sendPacket(mount);
+				activeChar.broadcastPacket(mount);
+				activeChar.setMountType(mount.getMountType());
+			}
+			
+		}
+		return true;
+	}
+	
+	@Override
 	public String[] getVoicedCommandList()
-    {
-        return VOICED_COMMANDS;
-    }
+	{
+		return VOICED_COMMANDS;
+	}
 }

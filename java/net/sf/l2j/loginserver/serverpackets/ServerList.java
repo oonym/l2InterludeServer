@@ -23,7 +23,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.loginserver.GameServerTable;
 import net.sf.l2j.loginserver.GameServerTable.GameServerInfo;
@@ -31,35 +30,15 @@ import net.sf.l2j.loginserver.L2LoginClient;
 import net.sf.l2j.loginserver.gameserverpackets.ServerStatus;
 
 /**
- * ServerList
- * Format: cc [cddcchhcdc]
- *
- * c: server list size (number of servers)
- * c: ?
- * [ (repeat for each servers)
- * c: server id (ignored by client?)
- * d: server ip
- * d: server port
- * c: age limit (used by client?)
- * c: pvp or not (used by client?)
- * h: current number of players
- * h: max number of players
- * c: 0 if server is down
- * d: 2nd bit: clock
- *    3rd bit: wont dsiplay server name
- *    4th bit: test server (used by client?)
- * c: 0 if you dont want to display brackets in front of sever name
- * ]
- *
- * Server will be considered as Good when the number of  online players
- * is less than half the maximum. as Normal between half and 4/5
- * and Full when there's more than 4/5 of the maximum number of players
+ * ServerList Format: cc [cddcchhcdc] c: server list size (number of servers) c: ? [ (repeat for each servers) c: server id (ignored by client?) d: server ip d: server port c: age limit (used by client?) c: pvp or not (used by client?) h: current number of players h: max number of players c: 0 if
+ * server is down d: 2nd bit: clock 3rd bit: wont dsiplay server name 4th bit: test server (used by client?) c: 0 if you dont want to display brackets in front of sever name ] Server will be considered as Good when the number of online players is less than half the maximum. as Normal between half
+ * and 4/5 and Full when there's more than 4/5 of the maximum number of players
  */
 public final class ServerList extends L2LoginServerPacket
 {
-	private List<ServerData> _servers;
-	private int _lastServer;
-
+	private final List<ServerData> _servers;
+	private final int _lastServer;
+	
 	class ServerData
 	{
 		protected String _ip;
@@ -72,9 +51,8 @@ public final class ServerList extends L2LoginServerPacket
 		protected boolean _clock;
 		protected int _status;
 		protected int _serverId;
-
-		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers,
-				int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
+		
+		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers, int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
 		{
 			_ip = pIp;
 			_port = pPort;
@@ -88,14 +66,14 @@ public final class ServerList extends L2LoginServerPacket
 			_serverId = pServer_id;
 		}
 	}
-
+	
 	public ServerList(L2LoginClient client)
 	{
-		_servers = new FastList<ServerData>();
+		_servers = new FastList<>();
 		_lastServer = client.getLastServer();
 		for (GameServerInfo gsi : GameServerTable.getInstance().getRegisteredGameServers().values())
 		{
-			if (gsi.getStatus() == ServerStatus.STATUS_GM_ONLY && client.getAccessLevel() >= Config.GM_MIN)
+			if ((gsi.getStatus() == ServerStatus.STATUS_GM_ONLY) && (client.getAccessLevel() >= Config.GM_MIN))
 			{
 				// Server is GM-Only but you've got GM Status
 				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
@@ -112,14 +90,12 @@ public final class ServerList extends L2LoginServerPacket
 			}
 		}
 	}
-
-	public void addServer(String ip, int port, boolean pvp, boolean testServer, int currentPlayer,
-			int maxPlayer, boolean brackets, boolean clock, int status, int server_id)
+	
+	public void addServer(String ip, int port, boolean pvp, boolean testServer, int currentPlayer, int maxPlayer, boolean brackets, boolean clock, int status, int server_id)
 	{
-		_servers.add(new ServerData(ip, port, pvp, testServer, currentPlayer, maxPlayer, brackets,
-				clock, status, server_id));
+		_servers.add(new ServerData(ip, port, pvp, testServer, currentPlayer, maxPlayer, brackets, clock, status, server_id));
 	}
-
+	
 	@Override
 	public void write()
 	{
@@ -129,7 +105,7 @@ public final class ServerList extends L2LoginServerPacket
 		for (ServerData server : _servers)
 		{
 			writeC(server._serverId); // server id
-
+			
 			try
 			{
 				InetAddress i4 = InetAddress.getByName(server._ip);
@@ -147,7 +123,7 @@ public final class ServerList extends L2LoginServerPacket
 				writeC(0);
 				writeC(1);
 			}
-
+			
 			writeD(server._port);
 			writeC(0x00); // age limit
 			writeC(server._pvp ? 0x01 : 0x00);

@@ -22,39 +22,40 @@ import net.sf.l2j.gameserver.skills.Env;
 
 /**
  * @author -Nemesiss-
- *
  */
 public class EffectRemoveTarget extends L2Effect
 {
-    public EffectRemoveTarget(Env env, EffectTemplate template)
-    {
-        super(env, template);
-    }
-
-    @Override
+	public EffectRemoveTarget(Env env, EffectTemplate template)
+	{
+		super(env, template);
+	}
+	
+	@Override
 	public EffectType getEffectType()
-    {
-        return EffectType.REMOVE_TARGET;
-    }
-
-    /** Notify started */
-    @Override
-	public void onStart() {
-        getEffected().setTarget(null);
-        getEffected().abortAttack();
-        getEffected().abortCast();
-    }
-
-    /** Notify exited */
-    @Override
-	public void onExit() {
-        //nothing
-    }
-
-    @Override
+	{
+		return EffectType.REMOVE_TARGET;
+	}
+	
+	/** Notify started */
+	@Override
+	public void onStart()
+	{
+		getEffected().setTarget(null);
+		getEffected().abortAttack();
+		getEffected().abortCast();
+	}
+	
+	/** Notify exited */
+	@Override
+	public void onExit()
+	{
+		// nothing
+	}
+	
+	@Override
 	public boolean onActionTime()
-    {
-    	//nothing
-        return false;
-    }
+	{
+		// nothing
+		return false;
+	}
 }

@@ -28,12 +28,12 @@ import org.mmocore.network.IAcceptFilter;
  */
 public class IPv4Filter implements IAcceptFilter, Runnable
 {
-	private HashMap<Integer, Flood> _ipFloodMap;
+	private final HashMap<Integer, Flood> _ipFloodMap;
 	private static final long SLEEP_TIME = 5000;
 	
 	public IPv4Filter()
 	{
-		_ipFloodMap = new HashMap<Integer, Flood>();
+		_ipFloodMap = new HashMap<>();
 		Thread t = new Thread(this);
 		t.setName(getClass().getSimpleName());
 		t.setDaemon(true);
@@ -46,7 +46,7 @@ public class IPv4Filter implements IAcceptFilter, Runnable
 	 */
 	private static final int hash(byte[] ip)
 	{
-		return ip[0] & 0xFF | ip[1] << 8 & 0xFF00 | ip[2] << 16 & 0xFF0000 | ip[3] << 24 & 0xFF000000;
+		return (ip[0] & 0xFF) | ((ip[1] << 8) & 0xFF00) | ((ip[2] << 16) & 0xFF0000) | ((ip[3] << 24) & 0xFF000000);
 	}
 	
 	protected static final class Flood
@@ -81,7 +81,7 @@ public class IPv4Filter implements IAcceptFilter, Runnable
 				return false;
 			}
 			
-			if (f.lastAccess + 1000 > current)
+			if ((f.lastAccess + 1000) > current)
 			{
 				f.lastAccess = current;
 				
@@ -122,7 +122,9 @@ public class IPv4Filter implements IAcceptFilter, Runnable
 				{
 					Flood f = it.next().getValue();
 					if (f.lastAccess < reference)
+					{
 						it.remove();
+					}
 				}
 			}
 			

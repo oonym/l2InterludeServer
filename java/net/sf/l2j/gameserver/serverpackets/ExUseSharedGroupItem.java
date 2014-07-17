@@ -24,8 +24,8 @@ package net.sf.l2j.gameserver.serverpackets;
 public class ExUseSharedGroupItem extends L2GameServerPacket
 {
 	private static final String _S__FE_49_EXUSESHAREDGROUPITEM = "[S] FE:49 ExUseSharedGroupItem";
-	private int _unk1, _unk2, _unk3, _unk4;
-
+	private final int _unk1, _unk2, _unk3, _unk4;
+	
 	public ExUseSharedGroupItem(int unk1, int unk2, int unk3, int unk4)
 	{
 		_unk1 = unk1;
@@ -39,7 +39,7 @@ public class ExUseSharedGroupItem extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x49);
-
+		
 		writeD(_unk1);
 		writeD(_unk2);
 		writeD(_unk3);

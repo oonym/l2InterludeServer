@@ -20,58 +20,48 @@ package net.sf.l2j.gameserver.clientpackets;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 
 public final class RequestPartyMatchConfig extends L2GameClientPacket
 {
 	private static final String _C__6F_REQUESTPARTYMATCHCONFIG = "[C] 6F RequestPartyMatchConfig";
-	//private static Logger _log = Logger.getLogger(RequestPartyMatchConfig.class.getName());
-
+	// private static Logger _log = Logger.getLogger(RequestPartyMatchConfig.class.getName());
+	
 	private int _automaticRegistration;
 	private int _showLevel;
 	private int _showClass;
 	private String _memo;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
-		_automaticRegistration    = readD();
-		_showLevel                = readD();
-		_showClass                = readD();
-
-        /*
-         *  TODO: Check if this this part of the packet has been
-         *  removed by latest versions.
-         *
-		try
-        {
-            _memo                 = readS();
-        }
-		catch (BufferUnderflowException e)
-        {
-            _memo                 = "";
-            _log.warning("Memo field non existant in packet. Notify devs.");
-            e.printStackTrace();
-        }*/
+		_automaticRegistration = readD();
+		_showLevel = readD();
+		_showClass = readD();
+		
+		/*
+		 * TODO: Check if this this part of the packet has been removed by latest versions. try { _memo = readS(); } catch (BufferUnderflowException e) { _memo = ""; _log.warning("Memo field non existant in packet. Notify devs."); e.printStackTrace(); }
+		 */
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		// TODO: this packet is currently for creating a new party room
 		if (getClient().getActiveChar() == null)
-		    return;
-
+		{
+			return;
+		}
+		
 		getClient().getActiveChar().setPartyMatchingAutomaticRegistration(_automaticRegistration == 1);
 		getClient().getActiveChar().setPartyMatchingShowLevel(_showLevel == 1);
 		getClient().getActiveChar().setPartyMatchingShowClass(_showClass == 1);
 		getClient().getActiveChar().setPartyMatchingMemo(_memo);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

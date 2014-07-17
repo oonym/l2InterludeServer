@@ -22,7 +22,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.4.2 $ $Date: 2005/03/27 15:30:09 $
  */
 public interface IAdminCommandHandler
@@ -34,7 +33,7 @@ public interface IAdminCommandHandler
 	 * @return command success
 	 */
 	public boolean useAdminCommand(String command, L2PcInstance activeChar);
-
+	
 	/**
 	 * this method is called at initialization to register all the item ids automatically
 	 * @return all known itemIds

@@ -22,78 +22,77 @@ import net.sf.l2j.gameserver.model.L2ShortCut;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
- * ShortCutInit
- * format   d *(1dddd)/(2ddddd)/(3dddd)
- *
+ * ShortCutInit format d *(1dddd)/(2ddddd)/(3dddd)
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
 public class ShortCutInit extends L2GameServerPacket
 {
 	private static final String _S__57_SHORTCUTINIT = "[S] 45 ShortCutInit";
-
+	
 	private L2ShortCut[] _shortCuts;
-    private L2PcInstance _activeChar;
-
+	private L2PcInstance _activeChar;
+	
 	public ShortCutInit(L2PcInstance activeChar)
 	{
-        _activeChar = activeChar;
-
-        if (_activeChar == null)
+		_activeChar = activeChar;
+		
+		if (_activeChar == null)
+		{
 			return;
-
+		}
+		
 		_shortCuts = _activeChar.getAllShortCuts();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x45);
 		writeD(_shortCuts.length);
-
-		for (int i = 0; i < _shortCuts.length; i++)
+		
+		for (L2ShortCut sc : _shortCuts)
 		{
-		    L2ShortCut sc = _shortCuts[i];
-            writeD(sc.getType());
-            writeD(sc.getSlot() + sc.getPage() * 12);
-
-            switch(sc.getType())
-            {
-            case L2ShortCut.TYPE_ITEM: //1
-            	writeD(sc.getId());
-            	writeD(0x01);
-            	writeD(-1);
-            	writeD(0x00);
-            	writeD(0x00);
-            	writeH(0x00);
-            	writeH(0x00);
-            	break;
-            case L2ShortCut.TYPE_SKILL: //2
-            	writeD(sc.getId());
-            	writeD(sc.getLevel());
-            	writeC(0x00); // C5
-            	writeD(0x01); // C6
-            	break;
-            case L2ShortCut.TYPE_ACTION: //3
-            	writeD(sc.getId());
-            	writeD(0x01); // C6
-            	break;
-            case L2ShortCut.TYPE_MACRO: //4
-            	writeD(sc.getId());
-            	writeD(0x01); // C6
-            	break;
-            case L2ShortCut.TYPE_RECIPE: //5
-            	writeD(sc.getId());
-            	writeD(0x01); // C6
-            	break;
-            default:
-            	writeD(sc.getId());
-        		writeD(0x01); // C6
-            }
+			writeD(sc.getType());
+			writeD(sc.getSlot() + (sc.getPage() * 12));
+			
+			switch (sc.getType())
+			{
+				case L2ShortCut.TYPE_ITEM: // 1
+					writeD(sc.getId());
+					writeD(0x01);
+					writeD(-1);
+					writeD(0x00);
+					writeD(0x00);
+					writeH(0x00);
+					writeH(0x00);
+					break;
+				case L2ShortCut.TYPE_SKILL: // 2
+					writeD(sc.getId());
+					writeD(sc.getLevel());
+					writeC(0x00); // C5
+					writeD(0x01); // C6
+					break;
+				case L2ShortCut.TYPE_ACTION: // 3
+					writeD(sc.getId());
+					writeD(0x01); // C6
+					break;
+				case L2ShortCut.TYPE_MACRO: // 4
+					writeD(sc.getId());
+					writeD(0x01); // C6
+					break;
+				case L2ShortCut.TYPE_RECIPE: // 5
+					writeD(sc.getId());
+					writeD(0x01); // C6
+					break;
+				default:
+					writeD(sc.getId());
+					writeD(0x01); // C6
+			}
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

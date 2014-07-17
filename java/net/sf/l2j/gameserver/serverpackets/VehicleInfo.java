@@ -23,12 +23,12 @@ import net.sf.l2j.gameserver.model.actor.instance.L2BoatInstance;
 /**
  * @author Maktakien
  */
-public class VehicleInfo  extends L2GameServerPacket
+public class VehicleInfo extends L2GameServerPacket
 {
-	 private L2BoatInstance _boat;
-	 
+	private final L2BoatInstance _boat;
+	
 	/**
-	 * @param boat 
+	 * @param boat
 	 */
 	public VehicleInfo(L2BoatInstance boat)
 	{
@@ -42,9 +42,9 @@ public class VehicleInfo  extends L2GameServerPacket
 		writeD(_boat.getObjectId());
 		writeD(_boat.getX());
 		writeD(_boat.getY());
-        writeD(_boat.getZ());
-        writeD(_boat.getPosition().getHeading());
-
+		writeD(_boat.getZ());
+		writeD(_boat.getPosition().getHeading());
+		
 	}
 	
 	@Override

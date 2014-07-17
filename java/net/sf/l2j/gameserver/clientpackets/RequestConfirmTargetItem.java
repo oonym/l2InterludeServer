@@ -27,7 +27,7 @@ import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
  * Format:(ch) d
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public final class RequestConfirmTargetItem extends L2GameClientPacket
 {
@@ -44,33 +44,35 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemObjId);
-
-		if (item == null) return;
-
+		L2ItemInstance item = (L2ItemInstance) L2World.getInstance().findObject(_itemObjId);
+		
+		if (item == null)
+		{
+			return;
+		}
+		
 		if (activeChar.getLevel() < 46)
 		{
 			activeChar.sendMessage("You have to be level 46 in order to augment an item");
 			return;
 		}
-
+		
 		// check if the item is augmentable
 		int itemGrade = item.getItem().getItemGrade();
 		int itemType = item.getItem().getType2();
-
+		
 		if (item.isAugmented())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.ONCE_AN_ITEM_IS_AUGMENTED_IT_CANNOT_BE_AUGMENTED_AGAIN));
 			return;
 		}
-		//TODO: can do better? : currently: using isdestroyable() as a check for hero / cursed weapons
-		else if (itemGrade < L2Item.CRYSTAL_C || itemType != L2Item.TYPE2_WEAPON || !item.isDestroyable() ||
-				item.isShadowItem())
+		// TODO: can do better? : currently: using isdestroyable() as a check for hero / cursed weapons
+		else if ((itemGrade < L2Item.CRYSTAL_C) || (itemType != L2Item.TYPE2_WEAPON) || !item.isDestroyable() || item.isShadowItem())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;
 		}
-
+		
 		// check if the player can augment
 		if (activeChar.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_NONE)
 		{
@@ -97,7 +99,7 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_SITTING_DOWN));
 			return;
 		}
-
+		
 		activeChar.sendPacket(new ExConfirmVariationItem(_itemObjId));
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_CATALYST_FOR_AUGMENTATION));
 	}

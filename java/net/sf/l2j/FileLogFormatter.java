@@ -25,38 +25,17 @@ import java.util.logging.LogRecord;
 
 import javolution.text.TextBuilder;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.1 $ $Date: 2005/03/27 15:30:08 $
- */
-
 public class FileLogFormatter extends Formatter
 {
-
-	/* (non-Javadoc)
-	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
-	 */
 	private static final String CRLF = "\r\n";
-	private static final String _ = "\t";
-	private SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
-
+	private static final String TAB = "\t";
+	private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
+	
 	@Override
 	public String format(LogRecord record)
 	{
-        TextBuilder output = new TextBuilder();
-
-		return output
-		.append(dateFmt.format(new Date(record.getMillis())))
-		.append(_)
-		.append(record.getLevel().getName())
-		.append(_)
-		.append(record.getThreadID())
-		.append(_)
-		.append(record.getLoggerName())
-		.append(_)
-		.append(record.getMessage())
-		.append(CRLF)
-		.toString();
+		TextBuilder output = new TextBuilder();
+		
+		return output.append(dateFmt.format(new Date(record.getMillis()))).append(TAB).append(record.getLevel().getName()).append(TAB).append(record.getThreadID()).append(TAB).append(record.getLoggerName()).append(TAB).append(record.getMessage()).append(CRLF).toString();
 	}
 }

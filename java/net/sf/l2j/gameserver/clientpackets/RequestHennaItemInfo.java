@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.clientpackets;
 
-
 import net.sf.l2j.gameserver.datatables.HennaTable;
 import net.sf.l2j.gameserver.model.L2HennaInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -27,41 +26,43 @@ import net.sf.l2j.gameserver.templates.L2Henna;
 
 /**
  * This class ...
- *
  * @version $Revision$ $Date$
  */
 public final class RequestHennaItemInfo extends L2GameClientPacket
 {
 	private static final String _C__BB_RequestHennaItemInfo = "[C] bb RequestHennaItemInfo";
-	//private static Logger _log = Logger.getLogger(RequestHennaItemInfo.class.getName());
+	// private static Logger _log = Logger.getLogger(RequestHennaItemInfo.class.getName());
 	private int _symbolId;
-	// format  cd
-
-
+	
+	// format cd
+	
 	@Override
 	protected void readImpl()
 	{
-		_symbolId  = readD();
+		_symbolId = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
+		{
+			return;
+		}
 		L2Henna template = HennaTable.getInstance().getTemplate(_symbolId);
-        if(template == null)
-        {
-            return;
-        }
-    	L2HennaInstance temp = new L2HennaInstance(template);
-
-		HennaItemInfo hii = new HennaItemInfo(temp,activeChar);
+		if (template == null)
+		{
+			return;
+		}
+		L2HennaInstance temp = new L2HennaInstance(template);
+		
+		HennaItemInfo hii = new HennaItemInfo(temp, activeChar);
 		activeChar.sendPacket(hii);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

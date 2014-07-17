@@ -22,37 +22,41 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
  */
 public class RequestPrivateStoreQuitBuy extends L2GameClientPacket
 {
 	private static final String _C__93_REQUESTPRIVATESTOREQUITBUY = "[C] 93 RequestPrivateStoreQuitBuy";
-	//private static Logger _log = Logger.getLogger(RequestPrivateStoreQuitBuy.class.getName());
-
+	
+	// private static Logger _log = Logger.getLogger(RequestPrivateStoreQuitBuy.class.getName());
+	
 	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null) return;
-
+		if (player == null)
+		{
+			return;
+		}
+		
 		player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
 		player.standUp();
 		player.broadcastUserInfo();
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override
 	public String getType()
 	{
-		return _C__93_REQUESTPRIVATESTOREQUITBUY ;
+		return _C__93_REQUESTPRIVATESTOREQUITBUY;
 	}
 }

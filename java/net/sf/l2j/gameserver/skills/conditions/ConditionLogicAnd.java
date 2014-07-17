@@ -20,54 +20,66 @@ package net.sf.l2j.gameserver.skills.conditions;
 
 import net.sf.l2j.gameserver.skills.Env;
 
-
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionLogicAnd extends Condition {
-
+public class ConditionLogicAnd extends Condition
+{
+	
 	private static Condition[] _emptyConditions = new Condition[0];
 	public Condition[] conditions = _emptyConditions;
-
+	
 	public ConditionLogicAnd()
 	{
 		super();
 	}
-
+	
 	public void add(Condition condition)
 	{
 		if (condition == null)
+		{
 			return;
+		}
 		if (getListener() != null)
+		{
 			condition.setListener(this);
+		}
 		final int len = conditions.length;
-		final Condition[] tmp = new Condition[len+1];
+		final Condition[] tmp = new Condition[len + 1];
 		System.arraycopy(conditions, 0, tmp, 0, len);
 		tmp[len] = condition;
 		conditions = tmp;
 	}
-
+	
 	@Override
 	void setListener(ConditionListener listener)
 	{
-		if (listener != null) {
+		if (listener != null)
+		{
 			for (Condition c : conditions)
+			{
 				c.setListener(this);
-		} else {
+			}
+		}
+		else
+		{
 			for (Condition c : conditions)
+			{
 				c.setListener(null);
+			}
 		}
 		super.setListener(listener);
 	}
-
+	
 	@Override
-	public boolean testImpl(Env env) {
-		for (Condition c : conditions) {
+	public boolean testImpl(Env env)
+	{
+		for (Condition c : conditions)
+		{
 			if (!c.test(env))
+			{
 				return false;
+			}
 		}
 		return true;
 	}

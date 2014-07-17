@@ -19,7 +19,6 @@
 package net.sf.l2j.gameserver.skills.conditions;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.model.actor.instance.L2NpcInstance;
 import net.sf.l2j.gameserver.skills.Env;
 
@@ -40,8 +39,10 @@ public class ConditionTargetRaceId extends Condition
 	public boolean testImpl(Env env)
 	{
 		if (!(env.target instanceof L2NpcInstance))
+		{
 			return false;
+		}
 		
-		return (_raceIds.contains(((L2NpcInstance)env.target).getTemplate().race.ordinal()));
+		return (_raceIds.contains(((L2NpcInstance) env.target).getTemplate().race.ordinal()));
 	}
 }

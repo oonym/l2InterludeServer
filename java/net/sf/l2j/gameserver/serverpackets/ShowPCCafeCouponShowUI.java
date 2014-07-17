@@ -20,8 +20,7 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: (ch)
- *
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class ShowPCCafeCouponShowUI extends L2GameServerPacket
 {

@@ -21,38 +21,35 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 
 /**
- * sample
- * 0000: 17  1a 95 20 48  9b da 12 40  44 17 02 00  03 f0 fc ff  98 f1 ff ff                                     .....
- *
- * format  ddddd
- *
+ * sample 0000: 17 1a 95 20 48 9b da 12 40 44 17 02 00 03 f0 fc ff 98 f1 ff ff ..... format ddddd
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class GetItem extends L2GameServerPacket
 {
 	private static final String _S__17_GETITEM = "[S] 0d GetItem";
-	private L2ItemInstance _item;
-	private int _playerId;
-
+	private final L2ItemInstance _item;
+	private final int _playerId;
+	
 	public GetItem(L2ItemInstance item, int playerId)
 	{
-		_item=item;
+		_item = item;
 		_playerId = playerId;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x0d);
 		writeD(_playerId);
 		writeD(_item.getObjectId());
-
+		
 		writeD(_item.getX());
 		writeD(_item.getY());
 		writeD(_item.getZ());
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override
@@ -60,5 +57,5 @@ public class GetItem extends L2GameServerPacket
 	{
 		return _S__17_GETITEM;
 	}
-
+	
 }

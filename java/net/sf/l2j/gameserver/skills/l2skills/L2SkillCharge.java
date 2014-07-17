@@ -27,19 +27,22 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.effects.EffectCharge;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
-public class L2SkillCharge extends L2Skill {
-
+public class L2SkillCharge extends L2Skill
+{
+	
 	public L2SkillCharge(StatsSet set)
 	{
 		super(set);
 	}
-
+	
 	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{
 		if (caster.isAlikeDead())
+		{
 			return;
-
+		}
+		
 		// get the effect
 		EffectCharge effect = (EffectCharge) caster.getFirstEffect(this);
 		if (effect != null)
@@ -49,31 +52,31 @@ public class L2SkillCharge extends L2Skill {
 				effect.numCharges++;
 				if (caster instanceof L2PcInstance)
 				{
-					caster.sendPacket(new EtcStatusUpdate((L2PcInstance)caster));
+					caster.sendPacket(new EtcStatusUpdate((L2PcInstance) caster));
 					SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
 					sm.addNumber(effect.numCharges);
 					caster.sendPacket(sm);
 				}
 			}
 			else
-            {
-                SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_MAXIMUM);
-                caster.sendPacket(sm);
-            }
-            return;
+			{
+				SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_MAXIMUM);
+				caster.sendPacket(sm);
+			}
+			return;
 		}
 		getEffects(caster, caster);
-
-        //effect self :]
-        //L2Effect seffect = caster.getEffect(getId());
-        //TODO ?? this is always null due to a return in the if block above!
-        //if (effect != null && seffect.isSelfEffect())
-        //{
-            //Replace old effect with new one.
-        //    seffect.exit();
-        //}
-        // cast self effect if any
-        getEffectsSelf(caster);
+		
+		// effect self :]
+		// L2Effect seffect = caster.getEffect(getId());
+		// TODO ?? this is always null due to a return in the if block above!
+		// if (effect != null && seffect.isSelfEffect())
+		// {
+		// Replace old effect with new one.
+		// seffect.exit();
+		// }
+		// cast self effect if any
+		getEffectsSelf(caster);
 	}
-
+	
 }

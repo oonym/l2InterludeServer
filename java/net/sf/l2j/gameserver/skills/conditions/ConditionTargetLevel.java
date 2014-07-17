@@ -20,26 +20,26 @@ package net.sf.l2j.gameserver.skills.conditions;
 
 import net.sf.l2j.gameserver.skills.Env;
 
-
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionTargetLevel extends Condition {
-
+public class ConditionTargetLevel extends Condition
+{
+	
 	private final int _level;
-
+	
 	public ConditionTargetLevel(int level)
 	{
 		_level = level;
 	}
-
+	
 	@Override
-	public boolean testImpl(Env env) {
+	public boolean testImpl(Env env)
+	{
 		if (env.target == null)
+		{
 			return false;
+		}
 		return env.target.getLevel() >= _level;
 	}
 }

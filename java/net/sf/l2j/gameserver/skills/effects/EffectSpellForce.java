@@ -21,7 +21,6 @@ import net.sf.l2j.gameserver.skills.Env;
 
 /**
  * @author kombat
- *
  */
 public final class EffectSpellForce extends EffectForce
 {
@@ -29,7 +28,7 @@ public final class EffectSpellForce extends EffectForce
 	{
 		super(env, template);
 	}
-
+	
 	@Override
 	public EffectType getEffectType()
 	{

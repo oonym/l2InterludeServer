@@ -24,7 +24,6 @@ import net.sf.l2j.util.Point3D;
 
 /**
  * @author Maktakien
- *
  */
 public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 {
@@ -33,7 +32,7 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 	private int _z;
 	private int _heading;
 	private int _boatId;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -43,7 +42,7 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 		_z = readD();
 		_heading = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -52,22 +51,22 @@ public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 		{
 			return;
 		}
-		if(player.isInBoat())
+		if (player.isInBoat())
 		{
-			if(player.getBoat().getObjectId() == _boatId)
+			if (player.getBoat().getObjectId() == _boatId)
 			{
-				player.setInBoatPosition(new Point3D(_x,_y,_z));
+				player.setInBoatPosition(new Point3D(_x, _y, _z));
 				player.getPosition().setHeading(_heading);
-				StopMoveInVehicle msg = new StopMoveInVehicle(player,_boatId);
+				StopMoveInVehicle msg = new StopMoveInVehicle(player, _boatId);
 				player.broadcastPacket(msg);
 			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{
 		return "[C] 5D CannotMoveAnymoreInVehicle";
 	}
-
+	
 }

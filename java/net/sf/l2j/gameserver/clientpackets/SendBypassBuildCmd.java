@@ -26,7 +26,6 @@ import net.sf.l2j.gameserver.util.Util;
 
 /**
  * This class handles all GM commands triggered by //command
- *
  * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:29 $
  */
 public final class SendBypassBuildCmd extends L2GameClientPacket
@@ -34,42 +33,49 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 	private static final String _C__5B_SENDBYPASSBUILDCMD = "[C] 5b SendBypassBuildCmd";
 	public final static int GM_MESSAGE = 9;
 	public final static int ANNOUNCEMENT = 10;
-
+	
 	private String _command;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_command = readS();
 		if (_command != null)
+		{
 			_command = _command.trim();
+		}
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-        if(activeChar == null)
-            return;
-
-        if (Config.ALT_PRIVILEGES_ADMIN && !AdminCommandHandler.getInstance().checkPrivileges(activeChar,"admin_"+_command))
-            return;
-
-        if(!activeChar.isGM() && !"gm".equalsIgnoreCase(_command))
-        {
-        	Util.handleIllegalPlayerAction(activeChar,"Warning!! Non-gm character "+activeChar.getName()+" requests gm bypass handler, hack?", Config.DEFAULT_PUNISH);
-        	return;
-        }
-
-		IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler("admin_"+_command);
-
+		if (activeChar == null)
+		{
+			return;
+		}
+		
+		if (Config.ALT_PRIVILEGES_ADMIN && !AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_" + _command))
+		{
+			return;
+		}
+		
+		if (!activeChar.isGM() && !"gm".equalsIgnoreCase(_command))
+		{
+			Util.handleIllegalPlayerAction(activeChar, "Warning!! Non-gm character " + activeChar.getName() + " requests gm bypass handler, hack?", Config.DEFAULT_PUNISH);
+			return;
+		}
+		
+		IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler("admin_" + _command);
+		
 		if (ach != null)
 		{
-			ach.useAdminCommand("admin_"+_command, activeChar);
+			ach.useAdminCommand("admin_" + _command, activeChar);
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

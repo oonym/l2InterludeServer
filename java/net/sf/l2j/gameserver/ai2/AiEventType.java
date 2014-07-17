@@ -19,9 +19,7 @@
 package net.sf.l2j.gameserver.ai2;
 
 /**
- *
  * @author -Wooden-
- *
  */
 public enum AiEventType
 {
@@ -33,6 +31,6 @@ public enum AiEventType
 	SPAWNED,
 	MINION_DIED,
 	MINION_SPAWNED,
-	ARRIVED, //??
+	ARRIVED, // ??
 	ARRIVED_WAYPOINT
 }

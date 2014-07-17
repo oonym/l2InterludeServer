@@ -25,8 +25,7 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.serverpackets.PartyMatchList;
 
 /**
- * Packetformat  Rev650  cdddddS
- *
+ * Packetformat Rev650 cdddddS
  * @version $Revision: 1.1.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 
@@ -34,34 +33,19 @@ public class RequestPartyMatchList extends L2GameClientPacket
 {
 	private static final String _C__70_REQUESTPARTYMATCHLIST = "[C] 70 RequestPartyMatchList";
 	private static Logger _log = Logger.getLogger(RequestPartyMatchList.class.getName());
-
+	
 	private int _status;
-    @SuppressWarnings("unused")
-	private int _unk1;
-    @SuppressWarnings("unused")
-	private int _unk2;
-    @SuppressWarnings("unused")
-	private int _unk3;
-    @SuppressWarnings("unused")
-	private int _unk4;
-    @SuppressWarnings("unused")
-	private String _unk5;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_status = readD();
-        //TODO analyse values _unk1-unk5
+		// TODO analyse values _unk1-unk5
 		/*
-        _unk1 = readD();
-        _unk2 = readD();
-        _unk3 = readD();
-        _unk4 = readD();
-        _unk5 = readS();
-        */
+		 * _unk1 = readD(); _unk2 = readD(); _unk3 = readD(); _unk4 = readD(); _unk5 = readS();
+		 */
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -70,26 +54,31 @@ public class RequestPartyMatchList extends L2GameClientPacket
 			// window is open fill the list
 			// actually the client should get automatic updates for the list
 			// for now we only fill it once
-
-			//Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers();
-			//L2PcInstance[] allPlayers = players.toArray(new L2PcInstance[players.size()]);
-			L2PcInstance[] empty = new L2PcInstance[] { };
-			@SuppressWarnings("unused")
-			PartyMatchList matchList = new PartyMatchList(empty);
-			//sendPacket(matchList);
+			
+			// Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers();
+			// L2PcInstance[] allPlayers = players.toArray(new L2PcInstance[players.size()]);
+			L2PcInstance[] empty = new L2PcInstance[] {};
+			new PartyMatchList(empty);
 		}
 		else if (_status == 3)
 		{
 			// client does not need any more updates
-			if (Config.DEBUG) _log.fine("PartyMatch window was closed.");
+			if (Config.DEBUG)
+			{
+				_log.fine("PartyMatch window was closed.");
+			}
 		}
 		else
 		{
-			if (Config.DEBUG) _log.fine("party match status: "+_status);
+			if (Config.DEBUG)
+			{
+				_log.fine("party match status: " + _status);
+			}
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

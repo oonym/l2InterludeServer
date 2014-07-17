@@ -27,37 +27,41 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
- * @author  Julian
+ * @author Julian
  */
 public class DeluxeKey implements ISkillHandler
 {
-    private static Logger _log = Logger.getLogger(BeastFeed.class.getName());
-    private static final SkillType[] SKILL_IDS = {SkillType.DELUXE_KEY_UNLOCK};
-
-    @Override
+	private static Logger _log = Logger.getLogger(BeastFeed.class.getName());
+	private static final SkillType[] SKILL_IDS =
+	{
+		SkillType.DELUXE_KEY_UNLOCK
+	};
+	
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
-    {
-        if (!(activeChar instanceof L2PcInstance))
+	{
+		if (!(activeChar instanceof L2PcInstance))
+		{
 			return;
-
+		}
+		
 		L2Object[] targetList = skill.getTargetList(activeChar);
-
-        if (targetList == null)
-        {
-            return;
-        }
-
-        _log.fine("Delux key casting succeded.");
-
-        // This is just a dummy skill handler for the golden food and crystal food skills,
-        // since the AI responce onSkillUse handles the rest.
-
-    }
-
-    @Override
+		
+		if (targetList == null)
+		{
+			return;
+		}
+		
+		_log.fine("Delux key casting succeded.");
+		
+		// This is just a dummy skill handler for the golden food and crystal food skills,
+		// since the AI responce onSkillUse handles the rest.
+		
+	}
+	
+	@Override
 	public SkillType[] getSkillIds()
-    {
-        return SKILL_IDS;
-    }
+	{
+		return SKILL_IDS;
+	}
 }

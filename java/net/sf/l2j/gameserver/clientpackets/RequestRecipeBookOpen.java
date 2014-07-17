@@ -25,42 +25,45 @@ import net.sf.l2j.gameserver.RecipeController;
 
 public final class RequestRecipeBookOpen extends L2GameClientPacket
 {
-    private static final String _C__AC_REQUESTRECIPEBOOKOPEN = "[C] AC RequestRecipeBookOpen";
+	private static final String _C__AC_REQUESTRECIPEBOOKOPEN = "[C] AC RequestRecipeBookOpen";
 	private static Logger _log = Logger.getLogger(RequestRecipeBookOpen.class.getName());
-
-    private boolean _isDwarvenCraft;
-
+	
+	private boolean _isDwarvenCraft;
+	
 	@Override
 	protected void readImpl()
 	{
-        _isDwarvenCraft = (readD() == 0);
-        if (Config.DEBUG)
-        {
-        	_log.info("RequestRecipeBookOpen : " + (_isDwarvenCraft ? "dwarvenCraft" : "commonCraft"));
-        }
+		_isDwarvenCraft = (readD() == 0);
+		if (Config.DEBUG)
+		{
+			_log.info("RequestRecipeBookOpen : " + (_isDwarvenCraft ? "dwarvenCraft" : "commonCraft"));
+		}
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
-	    if (getClient().getActiveChar() == null)
-	        return;
-
-        if (getClient().getActiveChar().getPrivateStoreType() != 0)
-        {
-            getClient().getActiveChar().sendMessage("Cannot use recipe book while trading");
-            return;
-        }
-
-        RecipeController.getInstance().requestBookOpen(getClient().getActiveChar(), _isDwarvenCraft);
+		if (getClient().getActiveChar() == null)
+		{
+			return;
+		}
+		
+		if (getClient().getActiveChar().getPrivateStoreType() != 0)
+		{
+			getClient().getActiveChar().sendMessage("Cannot use recipe book while trading");
+			return;
+		}
+		
+		RecipeController.getInstance().requestBookOpen(getClient().getActiveChar(), _isDwarvenCraft);
 	}
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-     */
-    @Override
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
+	 */
+	@Override
 	public String getType()
-    {
-        return _C__AC_REQUESTRECIPEBOOKOPEN;
-    }
+	{
+		return _C__AC_REQUESTRECIPEBOOKOPEN;
+	}
 }

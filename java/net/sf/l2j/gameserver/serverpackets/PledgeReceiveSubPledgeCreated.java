@@ -20,15 +20,15 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Clan.SubPledge;
 
 /**
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 {
 	private static final String _S__FE_3F_PLEDGERECEIVESUBPLEDGECREATED = "[S] FE:3F PledgeReceiveSubPledgeCreated";
-	private SubPledge _subPledge;
-
+	private final SubPledge _subPledge;
+	
 	/**
-	 * @param subPledge 
+	 * @param subPledge
 	 */
 	public PledgeReceiveSubPledgeCreated(SubPledge subPledge)
 	{
@@ -40,11 +40,11 @@ public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x3f);
-
+		
 		writeD(0x01);
-        writeD(_subPledge.getId());
-        writeS(_subPledge.getName());
-        writeS(_subPledge.getLeaderName());
+		writeD(_subPledge.getId());
+		writeS(_subPledge.getName());
+		writeS(_subPledge.getLeaderName());
 	}
 	
 	@Override

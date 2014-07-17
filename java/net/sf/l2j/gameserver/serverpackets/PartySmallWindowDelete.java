@@ -22,19 +22,18 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class PartySmallWindowDelete extends L2GameServerPacket
 {
 	private static final String _S__66_PARTYSMALLWINDOWDELETE = "[S] 51 PartySmallWindowDelete";
-	private L2PcInstance _member;
-
+	private final L2PcInstance _member;
+	
 	public PartySmallWindowDelete(L2PcInstance member)
 	{
 		_member = member;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -42,8 +41,9 @@ public class PartySmallWindowDelete extends L2GameServerPacket
 		writeD(_member.getObjectId());
 		writeS(_member.getName());
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

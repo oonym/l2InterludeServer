@@ -27,34 +27,34 @@ public class EffectPetrification extends L2Effect
 {
 	public EffectPetrification(Env env, EffectTemplate template)
 	{
-        super(env, template);
-    }
-
-    @Override
+		super(env, template);
+	}
+	
+	@Override
 	public EffectType getEffectType()
-    {
-        return L2Effect.EffectType.PETRIFICATION;
-    }
-
-    @Override
+	{
+		return L2Effect.EffectType.PETRIFICATION;
+	}
+	
+	@Override
 	public void onStart()
-    {
-    	getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
-    	getEffected().setIsParalyzed(true);
-    	getEffected().setIsInvul(true);
-    }
-
-    @Override
+	{
+		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
+		getEffected().setIsParalyzed(true);
+		getEffected().setIsInvul(true);
+	}
+	
+	@Override
 	public void onExit()
-    {
-		 getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
-		 getEffected().setIsParalyzed(false);
-		 getEffected().setIsInvul(false);
-    }
-
-    @Override
+	{
+		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
+		getEffected().setIsParalyzed(false);
+		getEffected().setIsInvul(false);
+	}
+	
+	@Override
 	public boolean onActionTime()
-    {
-    	return false;
-    }
+	{
+		return false;
+	}
 }

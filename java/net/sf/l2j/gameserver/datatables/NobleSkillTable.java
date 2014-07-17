@@ -20,14 +20,13 @@ package net.sf.l2j.gameserver.datatables;
 import net.sf.l2j.gameserver.model.L2Skill;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class NobleSkillTable
 {
 	private static NobleSkillTable _instance;
 	private static L2Skill[] _nobleSkills;
-
+	
 	private NobleSkillTable()
 	{
 		_nobleSkills = new L2Skill[8];
@@ -40,14 +39,16 @@ public class NobleSkillTable
 		_nobleSkills[6] = SkillTable.getInstance().getInfo(1326, 1);
 		_nobleSkills[7] = SkillTable.getInstance().getInfo(1327, 1);
 	}
-
+	
 	public static NobleSkillTable getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new NobleSkillTable();
+		}
 		return _instance;
 	}
-
+	
 	public L2Skill[] GetNobleSkills()
 	{
 		return _nobleSkills;

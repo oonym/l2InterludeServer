@@ -20,27 +20,27 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PledgeShowMemberListDelete extends L2GameServerPacket
 {
 	private static final String _S__6B_PLEDGESHOWMEMBERLISTDELETE = "[S] 56 PledgeShowMemberListDelete";
-	private String _player;
-
+	private final String _player;
+	
 	public PledgeShowMemberListDelete(String playerName)
 	{
 		_player = playerName;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x56);
 		writeS(_player);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

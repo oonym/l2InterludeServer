@@ -35,18 +35,16 @@ import net.sf.l2j.loginserver.serverpackets.LoginOk;
 import net.sf.l2j.loginserver.serverpackets.ServerList;
 
 /**
- * Format: x
- * 0 (a leading null)
- * x: the rsa encrypted block with the login an password
+ * Format: x 0 (a leading null) x: the rsa encrypted block with the login an password
  */
 public class RequestAuthLogin extends L2LoginClientPacket
 {
-	private byte[] _raw = new byte[128];
-
+	private final byte[] _raw = new byte[128];
+	
 	private String _user;
 	private String _password;
 	private int _ncotp;
-
+	
 	/**
 	 * @return
 	 */
@@ -54,7 +52,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 	{
 		return _password;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -62,12 +60,12 @@ public class RequestAuthLogin extends L2LoginClientPacket
 	{
 		return _user;
 	}
-
+	
 	public int getOneTimePassword()
 	{
 		return _ncotp;
 	}
-
+	
 	@Override
 	public boolean readImpl()
 	{
@@ -78,7 +76,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void run()
 	{
@@ -87,26 +85,26 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		{
 			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
 			rsaCipher.init(Cipher.DECRYPT_MODE, getClient().getRSAPrivateKey());
-			decrypted = rsaCipher.doFinal(_raw, 0x00, 0x80 );
+			decrypted = rsaCipher.doFinal(_raw, 0x00, 0x80);
 		}
 		catch (GeneralSecurityException e)
 		{
 			e.printStackTrace();
 			return;
 		}
-
-		_user = new String(decrypted, 0x5E, 14 ).trim();
+		
+		_user = new String(decrypted, 0x5E, 14).trim();
 		_user = _user.toLowerCase();
 		_password = new String(decrypted, 0x6C, 16).trim();
 		_ncotp = decrypted[0x7c];
 		_ncotp |= decrypted[0x7d] << 8;
 		_ncotp |= decrypted[0x7e] << 16;
 		_ncotp |= decrypted[0x7f] << 24;
-
+		
 		LoginController lc = LoginController.getInstance();
 		L2LoginClient client = getClient();
 		AuthLoginResult result = lc.tryAuthLogin(_user, _password, getClient());
-
+		
 		switch (result)
 		{
 			case AUTH_SUCCESS:
@@ -142,7 +140,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 				if ((gsi = lc.getAccountOnGameServer(_user)) != null)
 				{
 					client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
-
+					
 					// kick from there
 					if (gsi.isAuthed())
 					{

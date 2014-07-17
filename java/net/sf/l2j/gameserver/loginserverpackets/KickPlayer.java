@@ -18,12 +18,11 @@
  */
 package net.sf.l2j.gameserver.loginserverpackets;
 
-
 public class KickPlayer extends LoginServerBasePacket
 {
-
-	private String _account;
-
+	
+	private final String _account;
+	
 	/**
 	 * @param decrypt
 	 */
@@ -32,7 +31,7 @@ public class KickPlayer extends LoginServerBasePacket
 		super(decrypt);
 		_account = readS();
 	}
-
+	
 	/**
 	 * @return Returns the account.
 	 */
@@ -40,5 +39,5 @@ public class KickPlayer extends LoginServerBasePacket
 	{
 		return _account;
 	}
-
+	
 }

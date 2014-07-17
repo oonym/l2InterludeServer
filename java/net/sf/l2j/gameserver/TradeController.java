@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
 import net.sf.l2j.gameserver.datatables.ItemTable;
@@ -41,35 +40,42 @@ import net.sf.l2j.gameserver.model.L2TradeList;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.5.4.13 $ $Date: 2005/04/06 16:13:38 $
  */
 public class TradeController
 {
 	private static Logger _log = Logger.getLogger(TradeController.class.getName());
 	private static TradeController _instance;
-
+	
 	private int _nextListId;
-	private Map<Integer, L2TradeList> _lists;
-	private Map<Integer, L2TradeList> _listsTaskItem;
-    /** Task launching the function for restore count of Item (Clan Hall) */
-    public class RestoreCount implements Runnable
-    {
-    	private int _timer;
-    	public RestoreCount(int time){
-    		_timer = time;
-    	}
-        @Override
+	private final Map<Integer, L2TradeList> _lists;
+	private final Map<Integer, L2TradeList> _listsTaskItem;
+	
+	/** Task launching the function for restore count of Item (Clan Hall) */
+	public class RestoreCount implements Runnable
+	{
+		private final int _timer;
+		
+		public RestoreCount(int time)
+		{
+			_timer = time;
+		}
+		
+		@Override
 		public void run()
-        {
-        	try {
-            	restoreCount(_timer);
-            	dataTimerSave(_timer);
-            	ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(_timer), (long)_timer*60*60*1000);
-        	}
-        	catch (Throwable t) {}
-        }
-    }
+		{
+			try
+			{
+				restoreCount(_timer);
+				dataTimerSave(_timer);
+				ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(_timer), (long) _timer * 60 * 60 * 1000);
+			}
+			catch (Throwable t)
+			{
+			}
+		}
+	}
+	
 	public static TradeController getInstance()
 	{
 		if (_instance == null)
@@ -78,11 +84,11 @@ public class TradeController
 		}
 		return _instance;
 	}
-
+	
 	private TradeController()
 	{
-		_lists = new FastMap<Integer, L2TradeList>();
-		_listsTaskItem = new FastMap<Integer, L2TradeList>();
+		_lists = new FastMap<>();
+		_listsTaskItem = new FastMap<>();
 		File buylistData = new File(Config.DATAPACK_ROOT, "data/buylists.csv");
 		if (buylistData.exists())
 		{
@@ -90,29 +96,33 @@ public class TradeController
 			String line = null;
 			LineNumberReader lnr = null;
 			int dummyItemCount = 0;
-
+			
 			try
 			{
 				lnr = new LineNumberReader(new BufferedReader(new FileReader(buylistData)));
-
+				
 				while ((line = lnr.readLine()) != null)
 				{
-					if (line.trim().length() == 0 || line.startsWith("#"))
+					if ((line.trim().length() == 0) || line.startsWith("#"))
 					{
 						continue;
 					}
-
+					
 					dummyItemCount += parseList(line);
 				}
-
+				
 				if (Config.DEBUG)
+				{
 					_log.fine("created " + dummyItemCount + " Dummy-Items for buylists");
+				}
 				_log.config("TradeController: Loaded " + _lists.size() + " Buylists.");
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				_log.log(Level.WARNING, "error while creating trade controller in linenr: " + lnr.getLineNumber(), e);
 			}
-		} else
+		}
+		else
 		{
 			_log.finer("No buylists were found in data folder, using SQL buylist instead");
 			java.sql.Connection con = null;
@@ -125,14 +135,26 @@ public class TradeController
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement1 = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
-					{ "shop_id", "npc_id" }) + " FROM merchant_shopids");
+				{
+					"shop_id",
+					"npc_id"
+				}) + " FROM merchant_shopids");
 				ResultSet rset1 = statement1.executeQuery();
 				while (rset1.next())
 				{
 					PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
-						{ "item_id", "price", "shop_id", "order", "count", "time", "currentCount" }) + " FROM merchant_buylists WHERE shop_id=? ORDER BY "
-							+ L2DatabaseFactory.getInstance().safetyString(new String[]
-								{ "order" }) + " ASC");
+					{
+						"item_id",
+						"price",
+						"shop_id",
+						"order",
+						"count",
+						"time",
+						"currentCount"
+					}) + " FROM merchant_buylists WHERE shop_id=? ORDER BY " + L2DatabaseFactory.getInstance().safetyString(new String[]
+					{
+						"order"
+					}) + " ASC");
 					statement.setString(1, String.valueOf(rset1.getInt("shop_id")));
 					ResultSet rset = statement.executeQuery();
 					if (rset.next())
@@ -152,17 +174,22 @@ public class TradeController
 							statement.close();
 							continue;
 						}
-						if(count > -1){
+						if (count > -1)
+						{
 							item.setCountDecrease(true);
 							LimitedItem = true;
 						}
 						item.setPriceToSell(price);
 						item.setTime(time);
 						item.setInitCount(count);
-						if(currentCount>-1)
+						if (currentCount > -1)
+						{
 							item.setCount(currentCount);
+						}
 						else
+						{
 							item.setCount(count);
+						}
 						buy1.addItem(item);
 						buy1.setNpcId(rset1.getString("npc_id"));
 						try
@@ -176,67 +203,89 @@ public class TradeController
 								time = rset.getInt("time");
 								currentCount = rset.getInt("currentCount");
 								L2ItemInstance item2 = ItemTable.getInstance().createDummyItem(itemId);
-								if (item2 == null) continue;
-								if(count > -1){
+								if (item2 == null)
+								{
+									continue;
+								}
+								if (count > -1)
+								{
 									item2.setCountDecrease(true);
 									LimitedItem = true;
 								}
 								item2.setPriceToSell(price);
 								item2.setTime(time);
 								item2.setInitCount(count);
-								if(currentCount>-1)
+								if (currentCount > -1)
+								{
 									item2.setCount(currentCount);
+								}
 								else
+								{
 									item2.setCount(count);
+								}
 								buy1.addItem(item2);
 							}
-						} catch (Exception e)
+						}
+						catch (Exception e)
 						{
 							_log.warning("TradeController: Problem with buylist " + buy1.getListId() + " item " + itemId);
 						}
-						if(LimitedItem)
+						if (LimitedItem)
+						{
 							_listsTaskItem.put(new Integer(buy1.getListId()), buy1);
+						}
 						else
+						{
 							_lists.put(new Integer(buy1.getListId()), buy1);
+						}
 						_nextListId = Math.max(_nextListId, buy1.getListId() + 1);
 					}
-
+					
 					rset.close();
 					statement.close();
 				}
 				rset1.close();
 				statement1.close();
-
+				
 				if (Config.DEBUG)
+				{
 					_log.fine("created " + dummyItemCount + " Dummy-Items for buylists");
+				}
 				_log.config("TradeController: Loaded " + _lists.size() + " Buylists.");
 				_log.config("TradeController: Loaded " + _listsTaskItem.size() + " Limited Buylists.");
-	            /*
-				 *  Restore Task for reinitialyze count of buy item
+				/*
+				 * Restore Task for reinitialyze count of buy item
 				 */
 				try
 				{
-					int time=0;
-					long savetimer=0;
+					int time = 0;
+					long savetimer = 0;
 					long currentMillis = System.currentTimeMillis();
 					PreparedStatement statement2 = con.prepareStatement("SELECT DISTINCT time, savetimer FROM merchant_buylists WHERE time <> 0 ORDER BY time");
 					ResultSet rset2 = statement2.executeQuery();
-					while (rset2.next()){
+					while (rset2.next())
+					{
 						time = rset2.getInt("time");
 						savetimer = rset2.getLong("savetimer");
-						if(savetimer-currentMillis>0)
-							ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(time), savetimer-System.currentTimeMillis());
+						if ((savetimer - currentMillis) > 0)
+						{
+							ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(time), savetimer - System.currentTimeMillis());
+						}
 						else
+						{
 							ThreadPoolManager.getInstance().scheduleGeneral(new RestoreCount(time), 0);
+						}
 					}
 					rset2.close();
 					statement2.close();
-				}catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					_log.warning("TradeController: Could not restore Timer for Item count.");
 					e.printStackTrace();
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				// problem with initializing spawn, go to next one
 				_log.warning("TradeController: Buylists could not be initialized.");
@@ -247,17 +296,19 @@ public class TradeController
 				try
 				{
 					con.close();
-				} catch (Exception e)
-				{}
+				}
+				catch (Exception e)
+				{
+				}
 			}
 		}
 	}
-
+	
 	private int parseList(String line)
 	{
 		int itemCreated = 0;
 		StringTokenizer st = new StringTokenizer(line, ";");
-
+		
 		int listId = Integer.parseInt(st.nextToken());
 		L2TradeList buy1 = new L2TradeList(listId);
 		while (st.hasMoreTokens())
@@ -269,47 +320,65 @@ public class TradeController
 			buy1.addItem(item);
 			itemCreated++;
 		}
-
+		
 		_lists.put(new Integer(buy1.getListId()), buy1);
 		return itemCreated;
 	}
-
+	
 	public L2TradeList getBuyList(int listId)
 	{
-		if(_lists.get(new Integer(listId)) != null)
-				return _lists.get(new Integer(listId));
+		if (_lists.get(new Integer(listId)) != null)
+		{
+			return _lists.get(new Integer(listId));
+		}
 		return _listsTaskItem.get(new Integer(listId));
 	}
-
+	
 	public List<L2TradeList> getBuyListByNpcId(int npcId)
 	{
-		List<L2TradeList> lists = new FastList<L2TradeList>();
-
+		List<L2TradeList> lists = new FastList<>();
+		
 		for (L2TradeList list : _lists.values())
 		{
 			if (list.getNpcId().startsWith("gm"))
+			{
 				continue;
+			}
 			if (npcId == Integer.parseInt(list.getNpcId()))
+			{
 				lists.add(list);
+			}
 		}
 		for (L2TradeList list : _listsTaskItem.values())
 		{
 			if (list.getNpcId().startsWith("gm"))
+			{
 				continue;
+			}
 			if (npcId == Integer.parseInt(list.getNpcId()))
+			{
 				lists.add(list);
+			}
 		}
 		return lists;
 	}
+	
 	protected void restoreCount(int time)
 	{
-		if(_listsTaskItem==null)return;
+		if (_listsTaskItem == null)
+		{
+			return;
+		}
 		for (L2TradeList list : _listsTaskItem.values())
+		{
 			list.restoreCount(time);
+		}
 	}
-	protected void dataTimerSave(int time){
+	
+	protected void dataTimerSave(int time)
+	{
 		java.sql.Connection con = null;
-		long timerSave = System.currentTimeMillis()+(long)time*60*60*1000;
+		long timerSave = System.currentTimeMillis() + ((long) time * 60 * 60 * 1000);
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -317,33 +386,50 @@ public class TradeController
 			statement.setLong(1, timerSave);
 			statement.setInt(2, time);
 			statement.executeUpdate();
-            statement.close();
-        } catch (Exception e) {
-			_log.log(Level.SEVERE, "TradeController: Could not update Timer save in Buylist" );
-		} finally {
-			try { con.close(); } catch (Exception e) {}
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.SEVERE, "TradeController: Could not update Timer save in Buylist");
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
+	
 	public void dataCountStore()
 	{
 		java.sql.Connection con = null;
 		PreparedStatement statement;
-
+		
 		int listId;
-		if (_listsTaskItem==null) return;
-
+		if (_listsTaskItem == null)
+		{
+			return;
+		}
+		
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-
+			
 			for (L2TradeList list : _listsTaskItem.values())
 			{
-				if (list==null) continue;
-				listId = list.getListId();
-
-				for (L2ItemInstance Item :list.getItems())
+				if (list == null)
 				{
-					if (Item.getCount()<Item.getInitCount()) //needed?
+					continue;
+				}
+				listId = list.getListId();
+				
+				for (L2ItemInstance Item : list.getItems())
+				{
+					if (Item.getCount() < Item.getInitCount()) // needed?
 					{
 						statement = con.prepareStatement("UPDATE merchant_buylists SET currentCount=? WHERE item_id=? AND shop_id=?");
 						statement.setInt(1, Item.getCount());
@@ -357,13 +443,21 @@ public class TradeController
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "TradeController: Could not store Count Item" );
+			_log.log(Level.SEVERE, "TradeController: Could not store Count Item");
 		}
 		finally
 		{
-			try { con.close(); } catch (Exception e) { e.printStackTrace(); }
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
+	
 	/**
 	 * @return
 	 */

@@ -21,31 +21,28 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Object;
 
 /**
- * sample
- * 0000: 0c  9b da 12 40                                     ....@
- *
- * format  d
- *
+ * sample 0000: 0c 9b da 12 40 ....@ format d
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:40 $
  */
 public class Revive extends L2GameServerPacket
 {
 	private static final String _S__0C_REVIVE = "[S] 07 Revive";
-	private int _objectId;
-
+	private final int _objectId;
+	
 	public Revive(L2Object obj)
 	{
 		_objectId = obj.getObjectId();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x07);
 		writeD(_objectId);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override
@@ -53,5 +50,5 @@ public class Revive extends L2GameServerPacket
 	{
 		return _S__0C_REVIVE;
 	}
-
+	
 }

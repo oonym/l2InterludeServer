@@ -19,15 +19,14 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: (ch)ddd
- *
  */
 public class ExConfirmCancelItem extends L2GameServerPacket
 {
 	private static final String _S__FE_56_EXCONFIRMCANCELITEM = "[S] FE:56 ExConfirmCancelItem";
 	
-	private int _itemObjId;
-	private int _price;
-
+	private final int _itemObjId;
+	private final int _price;
+	
 	public ExConfirmCancelItem(int itemObjId, int price)
 	{
 		_itemObjId = itemObjId;

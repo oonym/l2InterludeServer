@@ -20,18 +20,17 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * This class makes runImpl() and writeImpl() abstract for custom classes outside of this package
- *
  * @version $Revision: $ $Date: $
- * @author  galun
+ * @author galun
  */
 public abstract class AbstractServerBasePacket extends L2GameServerPacket
 {
-    @Override
+	@Override
 	abstract public void runImpl();
-    
-    @Override
+	
+	@Override
 	abstract protected void writeImpl();
-    
-    @Override
+	
+	@Override
 	abstract public String getType();
 }

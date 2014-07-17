@@ -26,72 +26,75 @@ import net.sf.l2j.gameserver.serverpackets.ValidateLocation;
 import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
- * This class manages all Castle Siege Artefacts.<BR><BR>
- *
+ * This class manages all Castle Siege Artefacts.<BR>
+ * <BR>
  * @version $Revision: 1.11.2.1.2.7 $ $Date: 2005/04/06 16:13:40 $
  */
 public final class L2ArtefactInstance extends L2NpcInstance
 {
 	/**
-	 * Constructor of L2ArtefactInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
-	 *
-	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Call the L2Character constructor to set the _template of the L2ArtefactInstance (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR) </li>
-	 * <li>Set the name of the L2ArtefactInstance</li>
-	 * <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it </li><BR><BR>
-	 *
+	 * Constructor of L2ArtefactInstance (use L2Character and L2NpcInstance constructor).<BR>
+	 * <BR>
+	 * <B><U> Actions</U> :</B><BR>
+	 * <BR>
+	 * <li>Call the L2Character constructor to set the _template of the L2ArtefactInstance (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li> <li>Set the name of the L2ArtefactInstance</li> <li>Create a RandomAnimation Task that will be launched after the
+	 * calculated delay if the server allow it</li><BR>
+	 * <BR>
 	 * @param objectId Identifier of the object to initialized
 	 * @param template the template to apply to the NPC
 	 */
-    public L2ArtefactInstance(int objectId, L2NpcTemplate template)
-    {
-        super(objectId, template);
-    }
-
+	public L2ArtefactInstance(int objectId, L2NpcTemplate template)
+	{
+		super(objectId, template);
+	}
+	
 	/**
-	 * Return False.<BR><BR>
+	 * Return False.<BR>
+	 * <BR>
 	 */
-    @Override
+	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
-        return false;
-    }
-
-    @Override
+		return false;
+	}
+	
+	@Override
 	public boolean isAttackable()
-    {
-        return false;
-    }
-
-
+	{
+		return false;
+	}
+	
 	/**
-	 * Manage actions when a player click on the L2ArtefactInstance.<BR><BR>
-	 *
-	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Set the L2NpcInstance as target of the L2PcInstance player (if necessary)</li>
-	 * <li>Send a Server->Client packet MyTargetSelected to the L2PcInstance player (display the select window)</li>
-	 * <li>Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client </li><BR><BR>
-	 *
-	 * <B><U> Example of use </U> :</B><BR><BR>
-	 * <li> Client packet : Action, AttackRequest</li><BR><BR>
-	 *
+	 * Manage actions when a player click on the L2ArtefactInstance.<BR>
+	 * <BR>
+	 * <B><U> Actions</U> :</B><BR>
+	 * <BR>
+	 * <li>Set the L2NpcInstance as target of the L2PcInstance player (if necessary)</li> <li>Send a Server->Client packet MyTargetSelected to the L2PcInstance player (display the select window)</li> <li>Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading
+	 * on the client</li><BR>
+	 * <BR>
+	 * <B><U> Example of use </U> :</B><BR>
+	 * <BR>
+	 * <li>Client packet : Action, AttackRequest</li><BR>
+	 * <BR>
 	 * @param player The L2PcInstance that start an action on the L2ArtefactInstance
-	 *
 	 */
 	@Override
 	public void onAction(L2PcInstance player)
 	{
-		if (!canTarget(player)) return;
-
+		if (!canTarget(player))
+		{
+			return;
+		}
+		
 		if (this != player.getTarget())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-
+			
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
-
+			
 			// Send a Server->Client packet ValidateLocation to correct the L2ArtefactInstance position and heading on the client
 			player.sendPacket(new ValidateLocation(this));
 		}
@@ -107,9 +110,14 @@ public final class L2ArtefactInstance extends L2NpcInstance
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(new ActionFailed());
 	}
-
+	
 	@Override
-	public void reduceCurrentHp(double damage, L2Character attacker){}
+	public void reduceCurrentHp(double damage, L2Character attacker)
+	{
+	}
+	
 	@Override
-	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake){}
+	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
+	{
+	}
 }

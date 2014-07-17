@@ -46,44 +46,52 @@ import net.sf.l2j.gameserver.serverpackets.VehicleInfo;
 public class RequestRecordInfo extends L2GameClientPacket
 {
 	private static final String _0__CF_REQUEST_RECORD_INFO = "[0] CF RequestRecordInfo";
-
+	
 	/**
 	 * Urgent messages, execute immediately.
-	 * @return 
+	 * @return
 	 */
 	public TaskPriority getPriority()
 	{
 		return TaskPriority.PR_NORMAL;
 	}
-
+	
 	@Override
 	protected void readImpl()
 	{
 		// trigger
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance _activeChar = getClient().getActiveChar();
-
+		
 		if (_activeChar == null)
+		{
 			return;
-
+		}
+		
 		_activeChar.getKnownList().updateKnownObjects();
 		_activeChar.sendPacket(new UserInfo(_activeChar));
-
+		
 		for (L2Object object : _activeChar.getKnownList().getKnownObjects().values())
 		{
 			if (object == null)
+			{
 				continue;
-
+			}
+			
 			if (object.getPoly().isMorphed() && object.getPoly().getPolyType().equals("item"))
+			{
 				_activeChar.sendPacket(new SpawnItemPoly(object));
+			}
 			else
 			{
 				if (object instanceof L2ItemInstance)
+				{
 					_activeChar.sendPacket(new SpawnItem((L2ItemInstance) object));
+				}
 				else if (object instanceof L2DoorInstance)
 				{
 					_activeChar.sendPacket(new DoorInfo((L2DoorInstance) object));
@@ -91,57 +99,69 @@ public class RequestRecordInfo extends L2GameClientPacket
 				}
 				else if (object instanceof L2BoatInstance)
 				{
-					if(!_activeChar.isInBoat() && object != _activeChar.getBoat())
+					if (!_activeChar.isInBoat() && (object != _activeChar.getBoat()))
 					{
 						_activeChar.sendPacket(new VehicleInfo((L2BoatInstance) object));
 						((L2BoatInstance) object).sendVehicleDeparture(_activeChar);
 					}
 				}
 				else if (object instanceof L2StaticObjectInstance)
+				{
 					_activeChar.sendPacket(new StaticObject((L2StaticObjectInstance) object));
+				}
 				else if (object instanceof L2NpcInstance)
+				{
 					_activeChar.sendPacket(new NpcInfo((L2NpcInstance) object, _activeChar));
+				}
 				else if (object instanceof L2Summon)
 				{
 					L2Summon summon = (L2Summon) object;
-
+					
 					// Check if the L2PcInstance is the owner of the Pet
 					if (_activeChar.equals(summon.getOwner()))
 					{
 						_activeChar.sendPacket(new PetInfo(summon));
-
+						
 						if (summon instanceof L2PetInstance)
+						{
 							_activeChar.sendPacket(new PetItemList((L2PetInstance) summon));
+						}
 					}
 					else
+					{
 						_activeChar.sendPacket(new NpcInfo(summon, _activeChar));
-
-					// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
+					}
+					
+					// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
 					summon.updateEffectIcons(true);
 				}
-	           	else if (object instanceof L2PcInstance)
+				else if (object instanceof L2PcInstance)
 				{
 					L2PcInstance otherPlayer = (L2PcInstance) object;
-
+					
 					if (otherPlayer.isInBoat())
 					{
 						otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
 						_activeChar.sendPacket(new CharInfo(otherPlayer));
 						int relation = otherPlayer.getRelation(_activeChar);
-						if (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation)
+						if ((otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null) && (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation))
+						{
 							_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
+						}
 						_activeChar.sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
 					}
 					else
 					{
 						_activeChar.sendPacket(new CharInfo(otherPlayer));
 						int relation = otherPlayer.getRelation(_activeChar);
-						if (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation)
+						if ((otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null) && (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation))
+						{
 							_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
+						}
 					}
 				}
-
-	           	if (object instanceof L2Character)
+				
+				if (object instanceof L2Character)
 				{
 					// Update the state of the L2Character object client side by sending Server->Client packet MoveToPawn/CharMoveToLocation and AutoAttackStart to the L2PcInstance
 					L2Character obj = (L2Character) object;
@@ -150,7 +170,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

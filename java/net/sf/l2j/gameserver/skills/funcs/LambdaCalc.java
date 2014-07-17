@@ -21,39 +21,47 @@ package net.sf.l2j.gameserver.skills.funcs;
 import net.sf.l2j.gameserver.skills.Env;
 
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public final class LambdaCalc extends Lambda {
-
+public final class LambdaCalc extends Lambda
+{
+	
 	public Func[] funcs;
+	
 	public LambdaCalc()
 	{
 		funcs = new Func[0];
 	}
+	
 	@Override
-	public double calc(Env env) {
+	public double calc(Env env)
+	{
 		double saveValue = env.value;
 		try
 		{
 			env.value = 0;
 			for (Func f : funcs)
+			{
 				f.calc(env);
+			}
 			return env.value;
-		} finally {
+		}
+		finally
+		{
 			env.value = saveValue;
 		}
 	}
+	
 	public void addFunc(Func f)
 	{
 		int len = funcs.length;
-		Func[] tmp = new Func[len+1];
-		for (int i=0; i < len; i++)
+		Func[] tmp = new Func[len + 1];
+		for (int i = 0; i < len; i++)
+		{
 			tmp[i] = funcs[i];
+		}
 		tmp[len] = f;
 		funcs = tmp;
 	}
-
+	
 }

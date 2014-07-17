@@ -25,37 +25,44 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminBBS implements IAdminCommandHandler
 {
-	 //private static Logger _log = Logger.getLogger(AdminKick.class.getName());
-    private static final String[] ADMIN_COMMANDS = {"admin_bbs"};
-    private static final int REQUIRED_LEVEL = Config.GM_MIN;
-
-	/* (non-Javadoc)
+	// private static Logger _log = Logger.getLogger(AdminKick.class.getName());
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_bbs"
+	};
+	private static final int REQUIRED_LEVEL = Config.GM_MIN;
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.actor.instance.L2PcInstance)
 	 */
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		 if (!Config.ALT_PRIVILEGES_ADMIN)
-	        {
-	    		if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-	            {
-	                //System.out.println("Not required level");
-	                return false;
-	            }
-	        }
-		 	AdminBBSManager.getInstance().parsecmd(command,activeChar);
-	        return true;
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
+			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
+			{
+				// System.out.println("Not required level");
+				return false;
+			}
+		}
+		AdminBBSManager.getInstance().parsecmd(command, activeChar);
+		return true;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
 	 */
 	@Override
-	public String[] getAdminCommandList() {
-        return ADMIN_COMMANDS;
-    }
-
-    private boolean checkLevel(int level) {
-        return (level >= REQUIRED_LEVEL);
-    }
+	public String[] getAdminCommandList()
+	{
+		return ADMIN_COMMANDS;
+	}
+	
+	private boolean checkLevel(int level)
+	{
+		return (level >= REQUIRED_LEVEL);
+	}
 }

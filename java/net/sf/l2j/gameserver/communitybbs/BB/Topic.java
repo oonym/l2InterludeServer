@@ -26,19 +26,19 @@ import net.sf.l2j.gameserver.communitybbs.Manager.TopicBBSManager;
 
 public class Topic
 {
-
+	
 	private static Logger _log = Logger.getLogger(Topic.class.getName());
 	public static final int MORMAL = 0;
 	public static final int MEMO = 1;
-
-	private int _id;
-	private int _forumId;
-	private String _topicName;
-	private long _date;
-	private String _ownerName;
-	private int _ownerId;
-	private int _type;
-	private int _cReply;
+	
+	private final int _id;
+	private final int _forumId;
+	private final String _topicName;
+	private final long _date;
+	private final String _ownerName;
+	private final int _ownerId;
+	private final int _type;
+	private final int _cReply;
 	
 	/**
 	 * @param ct
@@ -53,24 +53,23 @@ public class Topic
 	 */
 	public Topic(ConstructorType ct, int id, int fid, String name, long date, String oname, int oid, int type, int Creply)
 	{
-			_id = id;
-			_forumId = fid;
-			_topicName = name;
-			_date = date;
-			_ownerName = oname;
-			_ownerId = oid;
-			_type =  type;
-			_cReply = Creply;
-			TopicBBSManager.getInstance().addTopic(this);
-
-
-		 if(ct == ConstructorType.CREATE)
+		_id = id;
+		_forumId = fid;
+		_topicName = name;
+		_date = date;
+		_ownerName = oname;
+		_ownerId = oid;
+		_type = type;
+		_cReply = Creply;
+		TopicBBSManager.getInstance().addTopic(this);
+		
+		if (ct == ConstructorType.CREATE)
 		{
-
-			 insertindb();
+			
+			insertindb();
 		}
 	}
-
+	
 	/**
 	 *
 	 */
@@ -91,7 +90,7 @@ public class Topic
 			statement.setInt(8, _cReply);
 			statement.execute();
 			statement.close();
-
+			
 		}
 		catch (Exception e)
 		{
@@ -107,11 +106,15 @@ public class Topic
 			{
 			}
 		}
-
+		
 	}
-
-	public enum ConstructorType { RESTORE , CREATE }
-
+	
+	public enum ConstructorType
+	{
+		RESTORE,
+		CREATE
+	}
+	
 	/**
 	 * @return
 	 */
@@ -119,10 +122,12 @@ public class Topic
 	{
 		return _id;
 	}
+	
 	public int getForumID()
 	{
 		return _forumId;
 	}
+	
 	/**
 	 * @return
 	 */
@@ -131,14 +136,15 @@ public class Topic
 		// TODO Auto-generated method stub
 		return _topicName;
 	}
+	
 	public String getOwnerName()
 	{
 		// TODO Auto-generated method stub
 		return _ownerName;
 	}
-
+	
 	/**
-	 * @param f 
+	 * @param f
 	 */
 	public void deleteme(Forum f)
 	{
@@ -169,7 +175,7 @@ public class Topic
 			}
 		}
 	}
-
+	
 	/**
 	 * @return
 	 */

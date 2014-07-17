@@ -21,16 +21,14 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 
 /**
- *
- *
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class PackageSendableList extends L2GameServerPacket
 {
 	private static final String _S__C3_PACKAGESENDABLELIST = "[S] C3 PackageSendableList";
-	private L2ItemInstance[] _items;
-	private int _playerObjId;
-
+	private final L2ItemInstance[] _items;
+	private final int _playerObjId;
+	
 	public PackageSendableList(L2ItemInstance[] items, int playerObjId)
 	{
 		_items = items;
@@ -38,15 +36,14 @@ public class PackageSendableList extends L2GameServerPacket
 	}
 	
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0xC3);
-
+		
 		writeD(_playerObjId);
 		writeD(getClient().getActiveChar().getAdena());
 		writeD(_items.length);
-		for(L2ItemInstance item : _items) // format inside the for taken from SellList part use should be about the same
+		for (L2ItemInstance item : _items) // format inside the for taken from SellList part use should be about the same
 		{
 			writeH(item.getItem().getType1());
 			writeD(item.getObjectId());
@@ -60,7 +57,7 @@ public class PackageSendableList extends L2GameServerPacket
 			writeH(0x00);
 			writeD(item.getObjectId()); // some item identifier later used by client to answer (see RequestPackageSend) not item id nor object id maybe some freight system id??
 		}
-
+		
 	}
 	
 	@Override

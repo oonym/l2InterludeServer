@@ -23,28 +23,28 @@ import java.util.List;
 public class ShowBoard extends L2GameServerPacket
 {
 	private static final String _S__6E_SHOWBOARD = "[S] 6e ShowBoard";
-
-	private String _htmlCode;
-	private String _id;
+	
+	private final String _htmlCode;
+	private final String _id;
 	private List<String> _arg;
-
+	
 	public ShowBoard(String htmlCode, String id)
 	{
 		_id = id;
 		_htmlCode = htmlCode; // html code must not exceed 8192 bytes
 	}
-
+	
 	public ShowBoard(List<String> arg)
 	{
 		_id = "1002";
 		_htmlCode = null;
 		_arg = arg;
-
+		
 	}
-
+	
 	private byte[] get1002()
 	{
-		int len = _id.getBytes().length * 2 + 2;
+		int len = (_id.getBytes().length * 2) + 2;
 		for (String arg : _arg)
 		{
 			len += (arg.getBytes().length + 4) * 2;
@@ -78,12 +78,12 @@ public class ShowBoard extends L2GameServerPacket
 		}
 		return data;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x6e);
-		writeC(0x01); //c4 1 to show community 00 to hide
+		writeC(0x01); // c4 1 to show community 00 to hide
 		writeS("bypass _bbshome"); // top
 		writeS("bypass _bbsgetfav"); // favorite
 		writeS("bypass _bbsloc"); // region
@@ -97,9 +97,10 @@ public class ShowBoard extends L2GameServerPacket
 			// getBytes is a very costy operation, and should only be called once
 			byte htmlBytes[] = null;
 			if (_htmlCode != null)
+			{
 				htmlBytes = _htmlCode.getBytes();
-			byte data[] = new byte[2 + 2 + 2 + _id.getBytes().length * 2 + 2
-				* ((_htmlCode != null) ? htmlBytes.length : 0)];
+			}
+			byte data[] = new byte[2 + 2 + 2 + (_id.getBytes().length * 2) + (2 * ((_htmlCode != null) ? htmlBytes.length : 0))];
 			int i = 0;
 			for (int j = 0; j < _id.getBytes().length; j++, i += 2)
 			{
@@ -112,7 +113,7 @@ public class ShowBoard extends L2GameServerPacket
 			i++;
 			if (_htmlCode == null)
 			{
-
+				
 			}
 			else
 			{
@@ -125,7 +126,7 @@ public class ShowBoard extends L2GameServerPacket
 			data[i] = 0;
 			i++;
 			data[i] = 0;
-			//writeS(_htmlCode); // current page
+			// writeS(_htmlCode); // current page
 			writeB(data);
 		}
 		else
@@ -133,8 +134,9 @@ public class ShowBoard extends L2GameServerPacket
 			writeB(get1002());
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

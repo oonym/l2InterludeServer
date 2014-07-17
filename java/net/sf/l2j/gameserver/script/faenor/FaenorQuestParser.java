@@ -18,98 +18,111 @@
  */
 package net.sf.l2j.gameserver.script.faenor;
 
-import org.apache.bsf.BSFManager;
-import org.w3c.dom.Node;
-
 import net.sf.l2j.gameserver.script.Parser;
 import net.sf.l2j.gameserver.script.ParserFactory;
 import net.sf.l2j.gameserver.script.ScriptEngine;
 
+import org.apache.bsf.BSFManager;
+import org.w3c.dom.Node;
+
 /**
  * @author Luis Arias
- *
  */
 public class FaenorQuestParser extends FaenorParser
 {
-    @Override
+	@Override
 	public void parseScript(Node questNode, BSFManager context)
-    {
-        if (DEBUG) System.out.println("Parsing Quest.");
-
-        String questID = attribute(questNode, "ID");
-
-        for (Node node = questNode.getFirstChild(); node != null; node = node.getNextSibling()) {
-            if (isNodeName(node, "DROPLIST"))
-            {
-                parseQuestDropList(node.cloneNode(true), questID);
-            }
-            else if (isNodeName(node, "DIALOG WINDOWS"))
-            {
-                //parseDialogWindows(node.cloneNode(true));
-            }
-            else if (isNodeName(node, "INITIATOR"))
-            {
-                //parseInitiator(node.cloneNode(true));
-            }
-            else if (isNodeName(node, "STATE"))
-            {
-                //parseState(node.cloneNode(true));
-            }
-        }
-    }
-
-    private void parseQuestDropList(Node dropList, String questID) throws NullPointerException
-    {
-        if (DEBUG) System.out.println("Parsing Droplist.");
-
-        for (Node node = dropList.getFirstChild(); node != null; node = node.getNextSibling()) {
-            if (isNodeName(node, "DROP"))
-            {
-                parseQuestDrop(node.cloneNode(true), questID);
-            }
-        }
-    }
-
-    private void parseQuestDrop(Node drop, String questID)// throws NullPointerException
-    {
-        if (DEBUG) System.out.println("Parsing Drop.");
-
-        int npcID;
-        int itemID;
-        int min;
-        int max;
-        int chance;
-        String[] states;
-        try
-        {
-            npcID = getInt(attribute(drop, "NpcID"));
-            itemID = getInt(attribute(drop, "ItemID"));
-            min = getInt(attribute(drop, "Min"));
-            max = getInt(attribute(drop, "Max"));
-            chance = getInt(attribute(drop, "Chance"));
-            states = (attribute(drop, "States")).split(",");
-        }
-        catch (NullPointerException e)
-        {
-            throw new NullPointerException("Incorrect Drop Data");
-        }
-
-        if (DEBUG) System.out.println("Adding Drop to NpcID: "+npcID);
-
-        _bridge.addQuestDrop(npcID, itemID, min, max, chance, questID, states);
-    }
-
-    static class FaenorQuestParserFactory extends ParserFactory
-    {
-        @Override
+	{
+		if (DEBUG)
+		{
+			System.out.println("Parsing Quest.");
+		}
+		
+		String questID = attribute(questNode, "ID");
+		
+		for (Node node = questNode.getFirstChild(); node != null; node = node.getNextSibling())
+		{
+			if (isNodeName(node, "DROPLIST"))
+			{
+				parseQuestDropList(node.cloneNode(true), questID);
+			}
+			else if (isNodeName(node, "DIALOG WINDOWS"))
+			{
+				// parseDialogWindows(node.cloneNode(true));
+			}
+			else if (isNodeName(node, "INITIATOR"))
+			{
+				// parseInitiator(node.cloneNode(true));
+			}
+			else if (isNodeName(node, "STATE"))
+			{
+				// parseState(node.cloneNode(true));
+			}
+		}
+	}
+	
+	private void parseQuestDropList(Node dropList, String questID) throws NullPointerException
+	{
+		if (DEBUG)
+		{
+			System.out.println("Parsing Droplist.");
+		}
+		
+		for (Node node = dropList.getFirstChild(); node != null; node = node.getNextSibling())
+		{
+			if (isNodeName(node, "DROP"))
+			{
+				parseQuestDrop(node.cloneNode(true), questID);
+			}
+		}
+	}
+	
+	private void parseQuestDrop(Node drop, String questID)// throws NullPointerException
+	{
+		if (DEBUG)
+		{
+			System.out.println("Parsing Drop.");
+		}
+		
+		int npcID;
+		int itemID;
+		int min;
+		int max;
+		int chance;
+		String[] states;
+		try
+		{
+			npcID = getInt(attribute(drop, "NpcID"));
+			itemID = getInt(attribute(drop, "ItemID"));
+			min = getInt(attribute(drop, "Min"));
+			max = getInt(attribute(drop, "Max"));
+			chance = getInt(attribute(drop, "Chance"));
+			states = (attribute(drop, "States")).split(",");
+		}
+		catch (NullPointerException e)
+		{
+			throw new NullPointerException("Incorrect Drop Data");
+		}
+		
+		if (DEBUG)
+		{
+			System.out.println("Adding Drop to NpcID: " + npcID);
+		}
+		
+		_bridge.addQuestDrop(npcID, itemID, min, max, chance, questID, states);
+	}
+	
+	static class FaenorQuestParserFactory extends ParserFactory
+	{
+		@Override
 		public Parser create()
-        {
-            return(new FaenorQuestParser());
-        }
-    }
-
-    static
-    {
-        ScriptEngine.parserFactories.put(getParserName("Quest"), new FaenorQuestParserFactory());
-    }
+		{
+			return (new FaenorQuestParser());
+		}
+	}
+	
+	static
+	{
+		ScriptEngine.parserFactories.put(getParserName("Quest"), new FaenorQuestParserFactory());
+	}
 }

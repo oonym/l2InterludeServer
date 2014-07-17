@@ -18,7 +18,6 @@
  */
 package net.sf.l2j.gameserver.datatables;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,9 +33,9 @@ import net.sf.l2j.gameserver.model.L2PetDataTable;
 public class PetNameTable
 {
 	private static Logger _log = Logger.getLogger(PetNameTable.class.getName());
-
+	
 	private static PetNameTable _instance;
-
+	
 	public static PetNameTable getInstance()
 	{
 		if (_instance == null)
@@ -45,22 +44,25 @@ public class PetNameTable
 		}
 		return _instance;
 	}
-
+	
 	public boolean doesPetNameExist(String name, int petNpcId)
 	{
 		boolean result = true;
 		java.sql.Connection con = null;
-
+		
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT name FROM pets p, items i WHERE p.item_obj_id = i.object_id AND name=? AND i.item_id IN (?)");
 			statement.setString(1, name);
-
+			
 			String cond = "";
 			for (int it : L2PetDataTable.getPetItemsAsNpc(petNpcId))
 			{
-				if (cond != "") cond += ", ";
+				if (cond != "")
+				{
+					cond += ", ";
+				}
 				cond += it;
 			}
 			statement.setString(2, cond);
@@ -71,39 +73,48 @@ public class PetNameTable
 		}
 		catch (SQLException e)
 		{
-			_log.warning("could not check existing petname:"+e.getMessage());
+			_log.warning("could not check existing petname:" + e.getMessage());
 		}
 		finally
 		{
-			try { con.close(); } catch (Exception e) {}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 		return result;
 	}
-
-    public boolean isValidPetName(String name)
-    {
-        boolean result = true;
-
-        if (!isAlphaNumeric(name)) return result;
-
-        Pattern pattern;
-        try
-        {
-            pattern = Pattern.compile(Config.PET_NAME_TEMPLATE);
-        }
-        catch (PatternSyntaxException e) // case of illegal pattern
-        {
-        	_log.warning("ERROR : Pet name pattern of config is wrong!");
-            pattern = Pattern.compile(".*");
-        }
-        Matcher regexp = pattern.matcher(name);
-        if (!regexp.matches())
-        {
-            result = false;
-        }
-        return result;
-    }
-
+	
+	public boolean isValidPetName(String name)
+	{
+		boolean result = true;
+		
+		if (!isAlphaNumeric(name))
+		{
+			return result;
+		}
+		
+		Pattern pattern;
+		try
+		{
+			pattern = Pattern.compile(Config.PET_NAME_TEMPLATE);
+		}
+		catch (PatternSyntaxException e) // case of illegal pattern
+		{
+			_log.warning("ERROR : Pet name pattern of config is wrong!");
+			pattern = Pattern.compile(".*");
+		}
+		Matcher regexp = pattern.matcher(name);
+		if (!regexp.matches())
+		{
+			result = false;
+		}
+		return result;
+	}
+	
 	private boolean isAlphaNumeric(String text)
 	{
 		boolean result = true;

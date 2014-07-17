@@ -19,10 +19,10 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 import net.sf.l2j.gameserver.communitybbs.CommunityBoard;
+
 /**
  * Format SSSSSS
  * @author -Wooden-
- *
  */
 public class RequestBBSwrite extends L2GameClientPacket
 {
@@ -33,7 +33,7 @@ public class RequestBBSwrite extends L2GameClientPacket
 	private String _arg3;
 	private String _arg4;
 	private String _arg5;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -44,18 +44,19 @@ public class RequestBBSwrite extends L2GameClientPacket
 		_arg4 = readS();
 		_arg5 = readS();
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
 	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
-		CommunityBoard.getInstance().handleWriteCommands(getClient(),_url,_arg1,_arg2, _arg3, _arg4, _arg5);
+		CommunityBoard.getInstance().handleWriteCommands(getClient(), _url, _arg1, _arg2, _arg3, _arg4, _arg5);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override

@@ -23,42 +23,41 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PledgeShowMemberListAdd extends L2GameServerPacket
 {
 	private static final String _S__55_PLEDGESHOWMEMBERLISTADD = "[S] 55 PledgeShowMemberListAdd";
 	private String _name;
-    private int _lvl;
-    private int _classId;
-    private int _isOnline;
-    private int _pledgeType;
-
+	private int _lvl;
+	private int _classId;
+	private int _isOnline;
+	private int _pledgeType;
+	
 	public PledgeShowMemberListAdd(L2PcInstance player)
 	{
-        _name = player.getName();
-        _lvl = player.getLevel();
-        _classId = player.getClassId().getId();
-        _isOnline = (player.isOnline() == 1 ? player.getObjectId() : 0);
-        _pledgeType = player.getPledgeType();
+		_name = player.getName();
+		_lvl = player.getLevel();
+		_classId = player.getClassId().getId();
+		_isOnline = (player.isOnline() == 1 ? player.getObjectId() : 0);
+		_pledgeType = player.getPledgeType();
 	}
-
-    public PledgeShowMemberListAdd(L2ClanMember cm)
-    {
-        try
-        {
-        _name = cm.getName();
-        _lvl = cm.getLevel();
-        _classId = cm.getClassId();
-        _isOnline = (cm.isOnline() ? cm.getObjectId() : 0);
-        _pledgeType = cm.getPledgeType();
-        }
-        catch(Exception e)
-        {
-        }
-    }
-
+	
+	public PledgeShowMemberListAdd(L2ClanMember cm)
+	{
+		try
+		{
+			_name = cm.getName();
+			_lvl = cm.getLevel();
+			_classId = cm.getClassId();
+			_isOnline = (cm.isOnline() ? cm.getObjectId() : 0);
+			_pledgeType = cm.getPledgeType();
+		}
+		catch (Exception e)
+		{
+		}
+	}
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -71,8 +70,9 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		writeD(_isOnline); // 1=online 0=offline
 		writeD(_pledgeType);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override
@@ -80,5 +80,5 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 	{
 		return _S__55_PLEDGESHOWMEMBERLISTADD;
 	}
-
+	
 }

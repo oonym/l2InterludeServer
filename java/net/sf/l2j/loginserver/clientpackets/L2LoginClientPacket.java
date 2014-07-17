@@ -19,12 +19,12 @@ package net.sf.l2j.loginserver.clientpackets;
 
 import java.util.logging.Logger;
 
-import org.mmocore.network.ReceivablePacket;
-
 import net.sf.l2j.loginserver.L2LoginClient;
 
+import org.mmocore.network.ReceivablePacket;
+
 /**
- * @author  KenM
+ * @author KenM
  */
 public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient>
 {
@@ -39,11 +39,11 @@ public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient
 		}
 		catch (Exception e)
 		{
-			_log.severe("ERROR READING: "+this.getClass().getSimpleName());
+			_log.severe("ERROR READING: " + this.getClass().getSimpleName());
 			e.printStackTrace();
 			return false;
 		}
 	}
-
+	
 	protected abstract boolean readImpl();
 }

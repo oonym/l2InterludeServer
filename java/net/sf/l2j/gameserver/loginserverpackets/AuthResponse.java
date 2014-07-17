@@ -18,17 +18,15 @@
  */
 package net.sf.l2j.gameserver.loginserverpackets;
 
-
 /**
  * @author -Wooden-
- *
  */
 public class AuthResponse extends LoginServerBasePacket
 {
-
-	private int _serverId;
-	private String _serverName;
-
+	
+	private final int _serverId;
+	private final String _serverName;
+	
 	/**
 	 * @param decrypt
 	 */
@@ -38,7 +36,7 @@ public class AuthResponse extends LoginServerBasePacket
 		_serverId = readC();
 		_serverName = readS();
 	}
-
+	
 	/**
 	 * @return Returns the serverId.
 	 */
@@ -46,7 +44,7 @@ public class AuthResponse extends LoginServerBasePacket
 	{
 		return _serverId;
 	}
-
+	
 	/**
 	 * @return Returns the serverName.
 	 */
@@ -54,5 +52,5 @@ public class AuthResponse extends LoginServerBasePacket
 	{
 		return _serverName;
 	}
-
+	
 }

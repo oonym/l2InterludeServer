@@ -19,14 +19,13 @@ package net.sf.l2j.gameserver.clientpackets;
 
 /**
  * Format:(ch) h
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 {
 	private static final String _C__D0_26_REQUESTMPCCSHOWPARTYMEMBERINFO = "[C] D0:26 RequestExMPCCShowPartyMembersInfo";
 	private int _unk;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -36,7 +35,7 @@ public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: "+_unk);
+		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: " + _unk);
 	}
 	
 	@Override

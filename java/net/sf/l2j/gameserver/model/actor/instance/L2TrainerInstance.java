@@ -22,33 +22,32 @@ import net.sf.l2j.gameserver.templates.L2NpcTemplate;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.5.4.8 $ $Date: 2005/04/02 15:57:52 $
  */
 public final class L2TrainerInstance extends L2FolkInstance
 {
-    /**
-     * @param objectId 
-     * @param template
-     */
-    public L2TrainerInstance(int objectId, L2NpcTemplate template)
-    {
-        super(objectId, template);
-    }
-
-    @Override
-    public String getHtmlPath(int npcId, int val)
-    {
-        String pom = "";
-        if (val == 0)
-        {
-            pom = "" + npcId;
-        }
-        else
-        {
-            pom = npcId + "-" + val;
-        }
-
-        return "data/html/trainer/" + pom + ".htm";
-    }
+	/**
+	 * @param objectId
+	 * @param template
+	 */
+	public L2TrainerInstance(int objectId, L2NpcTemplate template)
+	{
+		super(objectId, template);
+	}
+	
+	@Override
+	public String getHtmlPath(int npcId, int val)
+	{
+		String pom = "";
+		if (val == 0)
+		{
+			pom = "" + npcId;
+		}
+		else
+		{
+			pom = npcId + "-" + val;
+		}
+		
+		return "data/html/trainer/" + pom + ".htm";
+	}
 }

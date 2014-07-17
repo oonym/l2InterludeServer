@@ -21,24 +21,19 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Character;
 
 /**
- * format  dddd
- *
- * sample
- * 0000: 3a  69 08 10 48  02 c1 00 00  f7 56 00 00  89 ea ff    :i..H.....V.....
- * 0010: ff  0c b2 d8 61                                     ....a
- *
+ * format dddd sample 0000: 3a 69 08 10 48 02 c1 00 00 f7 56 00 00 89 ea ff :i..H.....V..... 0010: ff 0c b2 d8 61 ....a
  * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class TargetUnselected extends L2GameServerPacket
 {
 	private static final String _S__3A_TARGETUNSELECTED = "[S] 2A TargetUnselected";
-	private int _targetObjId;
-	private int _x;
-	private int _y;
-	private int _z;
-
+	private final int _targetObjId;
+	private final int _x;
+	private final int _y;
+	private final int _z;
+	
 	/**
-	 * @param character 
+	 * @param character
 	 */
 	public TargetUnselected(L2Character character)
 	{
@@ -47,7 +42,7 @@ public class TargetUnselected extends L2GameServerPacket
 		_y = character.getY();
 		_z = character.getZ();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -56,7 +51,7 @@ public class TargetUnselected extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
-//		writeD(_target.getTargetId()); //??  probably not used in client
+		// writeD(_target.getTargetId()); //?? probably not used in client
 	}
 	
 	@Override

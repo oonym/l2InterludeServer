@@ -18,63 +18,61 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javolution.util.FastMap;
-
 import net.sf.l2j.gameserver.model.L2Object;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- * @param <T> 
+ * @param <T>
  */
 public class WorldObjectSet<T extends L2Object> extends L2ObjectSet<T>
 {
-    private Map<Integer, T> _objectMap;
-
-    public WorldObjectSet()
-    {
-        _objectMap = new FastMap<Integer, T>().shared();
-    }
-    
-    @Override
-    public int size()
-    {
-        return _objectMap.size();
-    }
-    
-    @Override
-    public boolean isEmpty()
-    {
-        return _objectMap.isEmpty();
-    }
-    
-    @Override
-    public void clear()
-    {
-        _objectMap.clear();
-    }
-    
-    @Override
-    public void put(T obj)
-    {
-        _objectMap.put(obj.getObjectId(), obj);
-    }
-    
-    @Override
-    public void remove(T obj)
-    {
-        _objectMap.remove(obj.getObjectId());
-    }
-    
-    @Override
-    public boolean contains(T obj)
-    {
-        return _objectMap.containsKey(obj.getObjectId());
-    }
-    
-    @Override
-    public Iterator<T> iterator()
-    {
-        return _objectMap.values().iterator();
-    }
+	private final Map<Integer, T> _objectMap;
+	
+	public WorldObjectSet()
+	{
+		_objectMap = new FastMap<Integer, T>().shared();
+	}
+	
+	@Override
+	public int size()
+	{
+		return _objectMap.size();
+	}
+	
+	@Override
+	public boolean isEmpty()
+	{
+		return _objectMap.isEmpty();
+	}
+	
+	@Override
+	public void clear()
+	{
+		_objectMap.clear();
+	}
+	
+	@Override
+	public void put(T obj)
+	{
+		_objectMap.put(obj.getObjectId(), obj);
+	}
+	
+	@Override
+	public void remove(T obj)
+	{
+		_objectMap.remove(obj.getObjectId());
+	}
+	
+	@Override
+	public boolean contains(T obj)
+	{
+		return _objectMap.containsKey(obj.getObjectId());
+	}
+	
+	@Override
+	public Iterator<T> iterator()
+	{
+		return _objectMap.values().iterator();
+	}
 }

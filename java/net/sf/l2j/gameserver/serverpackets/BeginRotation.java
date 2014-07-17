@@ -23,17 +23,17 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 public class BeginRotation extends L2GameServerPacket
 {
 	private static final String _S__77_BEGINROTATION = "[S] 62 BeginRotation";
-	private int _charObjId;
-	private int _degree;
-	private int _side;
-
+	private final int _charObjId;
+	private final int _degree;
+	private final int _side;
+	
 	public BeginRotation(L2PcInstance player, int degree, int side)
 	{
 		_charObjId = player.getObjectId();
 		_degree = degree;
 		_side = side;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -42,8 +42,9 @@ public class BeginRotation extends L2GameServerPacket
 		writeD(_degree);
 		writeD(_side);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

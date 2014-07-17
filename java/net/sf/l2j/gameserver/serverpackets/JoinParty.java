@@ -18,40 +18,33 @@
  */
 package net.sf.l2j.gameserver.serverpackets;
 
-
-
 /**
- *
  * sample
  * <p>
- * 4c
- * 01 00 00 00
+ * 4c 01 00 00 00
  * <p>
- *
- * format
- * cd
- *
+ * format cd
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class JoinParty extends L2GameServerPacket
 {
 	private static final String _S__4C_JOINPARTY = "[S] 3a JoinParty";
 	
-	private int _response;
-
+	private final int _response;
+	
 	/**
-	 * @param response 
+	 * @param response
 	 */
 	public JoinParty(int response)
 	{
 		_response = response;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x3a);
-
+		
 		writeD(_response);
 	}
 	

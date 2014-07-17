@@ -23,18 +23,17 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.7.2.2.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PrivateStoreListBuy extends L2GameServerPacket
 {
-//	private static final String _S__D1_PRIVATEBUYLISTBUY = "[S] b8 PrivateBuyListBuy";
+	// private static final String _S__D1_PRIVATEBUYLISTBUY = "[S] b8 PrivateBuyListBuy";
 	private static final String _S__D1_PRIVATESTORELISTBUY = "[S] b8 PrivateStoreListBuy";
-	private L2PcInstance _storePlayer;
-	private L2PcInstance _activeChar;
-	private int _playerAdena;
-	private TradeList.TradeItem[] _items;
-
+	private final L2PcInstance _storePlayer;
+	private final L2PcInstance _activeChar;
+	private final int _playerAdena;
+	private final TradeList.TradeItem[] _items;
+	
 	public PrivateStoreListBuy(L2PcInstance player, L2PcInstance storePlayer)
 	{
 		_storePlayer = storePlayer;
@@ -43,35 +42,36 @@ public class PrivateStoreListBuy extends L2GameServerPacket
 		_storePlayer.getSellList().updateItems(); // Update SellList for case inventory content has changed
 		_items = _storePlayer.getBuyList().getAvailableItems(_activeChar.getInventory());
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xb8);
 		writeD(_storePlayer.getObjectId());
 		writeD(_playerAdena);
-
+		
 		writeD(_items.length);
-
+		
 		for (TradeList.TradeItem item : _items)
 		{
 			writeD(item.getObjectId());
 			writeD(item.getItem().getItemId());
 			writeH(item.getEnchant());
-			writeD(item.getCount()); //give max possible sell amount
-
+			writeD(item.getCount()); // give max possible sell amount
+			
 			writeD(item.getItem().getReferencePrice());
 			writeH(0);
-
+			
 			writeD(item.getItem().getBodyPart());
 			writeH(item.getItem().getType2());
-			writeD(item.getPrice());//buyers price
-
-			writeD(item.getCount());  // maximum possible tradecount
+			writeD(item.getPrice());// buyers price
+			
+			writeD(item.getCount()); // maximum possible tradecount
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

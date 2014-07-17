@@ -19,23 +19,26 @@
 package net.sf.l2j.gameserver.skills.conditions;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.skills.Env;
 
-public class ConditionTargetClassIdRestriction extends Condition {
-
+public class ConditionTargetClassIdRestriction extends Condition
+{
+	
 	private final FastList<Integer> _classIds;
-
+	
 	public ConditionTargetClassIdRestriction(FastList<Integer> classId)
 	{
 		_classIds = classId;
 	}
-
+	
 	@Override
-	public boolean testImpl(Env env) {
+	public boolean testImpl(Env env)
+	{
 		if (!(env.target instanceof L2PcInstance))
+		{
 			return true;
-		return (!_classIds.contains(((L2PcInstance)env.target).getClassId().getId()));
+		}
+		return (!_classIds.contains(((L2PcInstance) env.target).getClassId().getId()));
 	}
 }

@@ -23,44 +23,45 @@ import net.sf.l2j.gameserver.serverpackets.MyTargetSelected;
 import net.sf.l2j.gameserver.skills.Env;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class EffectTargetMe extends L2Effect
 {
 	public EffectTargetMe(Env env, EffectTemplate template)
-    {
-        super(env, template);
-    }
-
-    @Override
+	{
+		super(env, template);
+	}
+	
+	@Override
 	public EffectType getEffectType()
-    {
-        return EffectType.TARGET_ME;
-    }
-
-    /** Notify started */
-    @Override
-	public void onStart() {
-    	//Should only work on PC?
-    	if (getEffected() instanceof L2PcInstance)
-    	{
-    		getEffected().setTarget(getEffector());
-    		MyTargetSelected my = new MyTargetSelected(getEffector().getObjectId(), 0);
-    		getEffected().sendPacket(my);
-    	}
-    }
-
-    /** Notify exited */
-    @Override
-	public void onExit() {
-        //nothing
-    }
-
-    @Override
+	{
+		return EffectType.TARGET_ME;
+	}
+	
+	/** Notify started */
+	@Override
+	public void onStart()
+	{
+		// Should only work on PC?
+		if (getEffected() instanceof L2PcInstance)
+		{
+			getEffected().setTarget(getEffector());
+			MyTargetSelected my = new MyTargetSelected(getEffector().getObjectId(), 0);
+			getEffected().sendPacket(my);
+		}
+	}
+	
+	/** Notify exited */
+	@Override
+	public void onExit()
+	{
+		// nothing
+	}
+	
+	@Override
 	public boolean onActionTime()
-    {
-    	//nothing
-        return false;
-    }
+	{
+		// nothing
+		return false;
+	}
 }

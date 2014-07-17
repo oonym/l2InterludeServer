@@ -29,10 +29,7 @@ import net.sf.l2j.gameserver.serverpackets.ItemList;
 import net.sf.l2j.gameserver.templates.L2Item;
 
 /**
- * This class handles following admin commands:
- * - itemcreate = show menu
- * - create_item <id> [num] = creates num items with respective id, if num is not specified, assumes 1.
- *
+ * This class handles following admin commands: - itemcreate = show menu - create_item <id> [num] = creates num items with respective id, if num is not specified, assumes 1.
  * @version $Revision: 1.2.2.2.2.3 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminCreateItem implements IAdminCommandHandler
@@ -43,18 +40,20 @@ public class AdminCreateItem implements IAdminCommandHandler
 		"admin_create_item"
 	};
 	private static final int REQUIRED_LEVEL = Config.GM_CREATE_ITEM;
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
 		{
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
+			{
 				return false;
+			}
 		}
-
-		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target"), "");
-
+		
+		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
+		
 		if (command.equals("admin_itemcreate"))
 		{
 			AdminHelpPage.showHelpPage(activeChar, "itemcreation.htm");
@@ -65,19 +64,19 @@ public class AdminCreateItem implements IAdminCommandHandler
 			{
 				String val = command.substring(17);
 				StringTokenizer st = new StringTokenizer(val);
-				if (st.countTokens()== 2)
+				if (st.countTokens() == 2)
 				{
 					String id = st.nextToken();
 					int idval = Integer.parseInt(id);
 					String num = st.nextToken();
 					int numval = Integer.parseInt(num);
-					createItem(activeChar,idval,numval);
+					createItem(activeChar, idval, numval);
 				}
-				else if (st.countTokens()== 1)
+				else if (st.countTokens() == 1)
 				{
 					String id = st.nextToken();
 					int idval = Integer.parseInt(id);
-					createItem(activeChar,idval,1);
+					createItem(activeChar, idval, 1);
 				}
 			}
 			catch (StringIndexOutOfBoundsException e)
@@ -92,18 +91,18 @@ public class AdminCreateItem implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	private boolean checkLevel(int level)
 	{
 		return (level >= REQUIRED_LEVEL);
 	}
-
+	
 	private void createItem(L2PcInstance activeChar, int id, int num)
 	{
 		if (num > 20)
@@ -115,12 +114,12 @@ public class AdminCreateItem implements IAdminCommandHandler
 				return;
 			}
 		}
-
+		
 		activeChar.getInventory().addItem("Admin", id, num, activeChar, null);
-
+		
 		ItemList il = new ItemList(activeChar, true);
 		activeChar.sendPacket(il);
-
+		
 		activeChar.sendMessage("You have spawned " + num + " item(s) number " + id + " in your inventory.");
 	}
 }

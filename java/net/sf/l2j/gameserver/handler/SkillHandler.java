@@ -26,17 +26,16 @@ import net.sf.l2j.gameserver.model.L2Skill.SkillType;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.1.4.4 $ $Date: 2005/04/03 15:55:06 $
  */
 public class SkillHandler
 {
-	//private static Logger _log = Logger.getLogger(SkillHandler.class.getName());
-
+	// private static Logger _log = Logger.getLogger(SkillHandler.class.getName());
+	
 	private static SkillHandler _instance;
-
-	private Map<L2Skill.SkillType, ISkillHandler> _datatable;
-
+	
+	private final Map<L2Skill.SkillType, ISkillHandler> _datatable;
+	
 	public static SkillHandler getInstance()
 	{
 		if (_instance == null)
@@ -45,12 +44,12 @@ public class SkillHandler
 		}
 		return _instance;
 	}
-
+	
 	private SkillHandler()
 	{
-		_datatable = new TreeMap<SkillType, ISkillHandler>();
+		_datatable = new TreeMap<>();
 	}
-
+	
 	public void registerSkillHandler(ISkillHandler handler)
 	{
 		SkillType[] types = handler.getSkillIds();
@@ -59,17 +58,17 @@ public class SkillHandler
 			_datatable.put(t, handler);
 		}
 	}
-
+	
 	public ISkillHandler getSkillHandler(SkillType skillType)
 	{
 		return _datatable.get(skillType);
 	}
-
-    /**
-     * @return
-     */
-    public int size()
-    {
-        return _datatable.size();
-    }
+	
+	/**
+	 * @return
+	 */
+	public int size()
+	{
+		return _datatable.size();
+	}
 }

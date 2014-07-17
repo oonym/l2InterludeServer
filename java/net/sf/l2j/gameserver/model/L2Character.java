@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastTable;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.GameTimeController;
 import net.sf.l2j.gameserver.GeoData;
@@ -1856,7 +1855,7 @@ public abstract class L2Character extends L2Object
 	{
 		if (_attackByList == null)
 		{
-			_attackByList = new FastList<L2Character>();
+			_attackByList = new FastList<>();
 		}
 		return _attackByList;
 	}
@@ -2830,12 +2829,12 @@ public abstract class L2Character extends L2Object
 		{
 			if (_effects == null)
 			{
-				_effects = new FastTable<L2Effect>();
+				_effects = new FastTable<>();
 			}
 			
 			if (_stackedEffects == null)
 			{
-				_stackedEffects = new FastMap<String, List<L2Effect>>();
+				_stackedEffects = new FastMap<>();
 			}
 		}
 		synchronized (_effects)
@@ -2905,7 +2904,7 @@ public abstract class L2Character extends L2Object
 			
 			if (stackQueue == null)
 			{
-				stackQueue = new FastList<L2Effect>();
+				stackQueue = new FastList<>();
 			}
 			
 			if (stackQueue.size() > 0)
@@ -4148,7 +4147,7 @@ public abstract class L2Character extends L2Object
 	private int _clientHeading;
 	
 	/** List of all QuestState instance that needs to be notified of this character's death. */
-	private List<QuestState> _NotifyQuestOfDeathList = new FastList<QuestState>();
+	private List<QuestState> _NotifyQuestOfDeathList = new FastList<>();
 	
 	/**
 	 * Add QuestState instance that is to be notified of character's death.<BR>
@@ -4174,7 +4173,7 @@ public abstract class L2Character extends L2Object
 	{
 		if (_NotifyQuestOfDeathList == null)
 		{
-			_NotifyQuestOfDeathList = new FastList<QuestState>();
+			_NotifyQuestOfDeathList = new FastList<>();
 		}
 		
 		return _NotifyQuestOfDeathList;
@@ -4249,7 +4248,7 @@ public abstract class L2Character extends L2Object
 	public final synchronized void addStatFuncs(Func[] funcs)
 	{
 		
-		FastList<Stats> modifiedStats = new FastList<Stats>();
+		FastList<Stats> modifiedStats = new FastList<>();
 		
 		for (Func f : funcs)
 		{
@@ -4337,7 +4336,7 @@ public abstract class L2Character extends L2Object
 	public final synchronized void removeStatFuncs(Func[] funcs)
 	{
 		
-		FastList<Stats> modifiedStats = new FastList<Stats>();
+		FastList<Stats> modifiedStats = new FastList<>();
 		
 		for (Func f : funcs)
 		{
@@ -6659,7 +6658,7 @@ public abstract class L2Character extends L2Object
 		
 		if (escapeRange > 0)
 		{
-			List<L2Character> targetList = new FastList<L2Character>();
+			List<L2Character> targetList = new FastList<>();
 			for (int i = 0; i < targets.length; i++)
 			{
 				if (targets[i] instanceof L2Character)

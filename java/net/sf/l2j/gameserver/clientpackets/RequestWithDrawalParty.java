@@ -20,40 +20,44 @@ package net.sf.l2j.gameserver.clientpackets;
 
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
- *
  * This class ...
- *
  * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestWithDrawalParty extends L2GameClientPacket
 {
 	private static final String _C__2B_REQUESTWITHDRAWALPARTY = "[C] 2B RequestWithDrawalParty";
-	//private static Logger _log = Logger.getLogger(RequestWithDrawalParty.class.getName());
-
+	
+	// private static Logger _log = Logger.getLogger(RequestWithDrawalParty.class.getName());
+	
 	@Override
 	protected void readImpl()
 	{
-		//trigger
+		// trigger
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
+		{
 			return;
-
+		}
+		
 		if (player.isInParty())
 		{
 			if (player.getParty().isInDimensionalRift() && !player.getParty().getDimensionalRift().getRevivedAtWaitingRoom().contains(player))
+			{
 				player.sendMessage("You can't exit party when you are in Dimensional Rift.");
+			}
 			else
+			{
 				player.getParty().oustPartyMember(player);
+			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

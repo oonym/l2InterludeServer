@@ -23,8 +23,7 @@ import net.sf.l2j.loginserver.serverpackets.GGAuth;
 import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 
 /**
- * @author -Wooden-
- * Format: ddddd
+ * @author -Wooden- Format: ddddd
  */
 public class AuthGameGuard extends L2LoginClientPacket
 {
@@ -33,32 +32,32 @@ public class AuthGameGuard extends L2LoginClientPacket
 	private int _data2;
 	private int _data3;
 	private int _data4;
-
+	
 	public int getSessionId()
 	{
 		return _sessionId;
 	}
-
+	
 	public int getData1()
 	{
 		return _data1;
 	}
-
+	
 	public int getData2()
 	{
 		return _data2;
 	}
-
+	
 	public int getData3()
 	{
 		return _data3;
 	}
-
+	
 	public int getData4()
 	{
 		return _data4;
 	}
-
+	
 	/**
 	 * @see net.sf.l2j.loginserver.clientpackets.L2LoginClientPacket#readImpl()
 	 */

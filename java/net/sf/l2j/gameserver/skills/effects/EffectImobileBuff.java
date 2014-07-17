@@ -22,41 +22,40 @@ import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.skills.Env;
 
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-final class EffectImobileBuff extends L2Effect {
-
+final class EffectImobileBuff extends L2Effect
+{
+	
 	public EffectImobileBuff(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
-
+	
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.BUFF;
 	}
-
+	
 	/** Notify started */
 	@Override
-	public void onStart() {
+	public void onStart()
+	{
 		getEffector().setIsImobilised(true);
 	}
-
+	
 	/** Notify exited */
 	@Override
-	public void onExit() {
+	public void onExit()
+	{
 		getEffector().setIsImobilised(false);
 	}
-
+	
 	@Override
 	public boolean onActionTime()
-    {
-    	// just stop this effect
-    	return false;
-    }
+	{
+		// just stop this effect
+		return false;
+	}
 }
-

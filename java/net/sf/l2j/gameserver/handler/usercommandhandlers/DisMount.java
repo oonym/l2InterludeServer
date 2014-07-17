@@ -31,40 +31,51 @@ import net.sf.l2j.gameserver.util.Broadcast;
  */
 public class DisMount implements IUserCommandHandler
 {
-    private static final int[] COMMAND_IDS = { 62 };
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
-     */
-    @Override
+	private static final int[] COMMAND_IDS =
+	{
+		62
+	};
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
+	 */
+	@Override
 	public synchronized boolean useUserCommand(int id, L2PcInstance activeChar)
-    {
-        if (id != COMMAND_IDS[0]) return false;
-
-        if (activeChar.isRentedPet())
-        {
-        	activeChar.stopRentPet();
-        }
-        else if (activeChar.isMounted())
-        {
-        	if (activeChar.setMountType(0))
-        	{
-	        	if (activeChar.isFlying())activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+	{
+		if (id != COMMAND_IDS[0])
+		{
+			return false;
+		}
+		
+		if (activeChar.isRentedPet())
+		{
+			activeChar.stopRentPet();
+		}
+		else if (activeChar.isMounted())
+		{
+			if (activeChar.setMountType(0))
+			{
+				if (activeChar.isFlying())
+				{
+					activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+				}
 				Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-				Broadcast.toSelfAndKnownPlayersInRadius(activeChar, dismount, 810000/*900*/);
-	            activeChar.setMountObjectID(0);
-        	}
-        }
-
-        return true;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
-     */
-    @Override
+				Broadcast.toSelfAndKnownPlayersInRadius(activeChar, dismount, 810000/* 900 */);
+				activeChar.setMountObjectID(0);
+			}
+		}
+		
+		return true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
+	 */
+	@Override
 	public int[] getUserCommandList()
-    {
-        return COMMAND_IDS;
-    }
+	{
+		return COMMAND_IDS;
+	}
 }

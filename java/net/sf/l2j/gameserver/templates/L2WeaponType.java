@@ -19,28 +19,29 @@
 package net.sf.l2j.gameserver.templates;
 
 /**
- * @author mkizub
- * <BR>Description of Weapon Type
+ * @author mkizub <BR>
+ *         Description of Weapon Type
  */
-public enum L2WeaponType {
-	NONE      ( 1, "Shield"), // Shields!!!
-	SWORD     ( 2, "Sword"),
-	BLUNT     ( 3, "Blunt"),
-	DAGGER    ( 4, "Dagger"),
-	BOW       ( 5, "Bow"),
-	POLE      ( 6, "Pole"),
-	ETC       ( 7, "Etc"),
-	FIST      ( 8, "Fist"),
-	DUAL      ( 9, "Dual Sword"),
-	DUALFIST  (10, "Dual Fist"),
-    BIGSWORD  (11, "Big Sword"), // Two Handed Swords
-    PET       (12, "Pet"),
-	ROD       (13, "Rod"),
-	BIGBLUNT  (14, "Big Blunt"); // Two handed blunt
-
+public enum L2WeaponType
+{
+	NONE(1, "Shield"), // Shields!!!
+	SWORD(2, "Sword"),
+	BLUNT(3, "Blunt"),
+	DAGGER(4, "Dagger"),
+	BOW(5, "Bow"),
+	POLE(6, "Pole"),
+	ETC(7, "Etc"),
+	FIST(8, "Fist"),
+	DUAL(9, "Dual Sword"),
+	DUALFIST(10, "Dual Fist"),
+	BIGSWORD(11, "Big Sword"), // Two Handed Swords
+	PET(12, "Pet"),
+	ROD(13, "Rod"),
+	BIGBLUNT(14, "Big Blunt"); // Two handed blunt
+	
 	private final int _id;
 	private final String _name;
-
+	
 	/**
 	 * Constructor of the L2WeaponType.
 	 * @param id : int designating the ID of the WeaponType
@@ -51,23 +52,24 @@ public enum L2WeaponType {
 		_id = id;
 		_name = name;
 	}
-
+	
 	/**
 	 * Returns the ID of the item after applying the mask.
 	 * @return int : ID of the item
 	 */
-	public int mask() {
-		return 1<<_id;
+	public int mask()
+	{
+		return 1 << _id;
 	}
-
-    /**
-     * Returns the name of the WeaponType
-     * @return String
-     */
+	
+	/**
+	 * Returns the name of the WeaponType
+	 * @return String
+	 */
 	@Override
 	public String toString()
 	{
 		return _name;
 	}
-
+	
 }

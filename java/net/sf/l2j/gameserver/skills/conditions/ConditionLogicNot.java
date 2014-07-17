@@ -20,36 +20,40 @@ package net.sf.l2j.gameserver.skills.conditions;
 
 import net.sf.l2j.gameserver.skills.Env;
 
-
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionLogicNot extends Condition {
-
-	private Condition _condition;
-
+public class ConditionLogicNot extends Condition
+{
+	
+	private final Condition _condition;
+	
 	public ConditionLogicNot(Condition condition)
 	{
 		_condition = condition;
 		if (getListener() != null)
+		{
 			_condition.setListener(this);
+		}
 	}
-
+	
 	@Override
 	void setListener(ConditionListener listener)
 	{
 		if (listener != null)
+		{
 			_condition.setListener(this);
+		}
 		else
+		{
 			_condition.setListener(null);
+		}
 		super.setListener(listener);
 	}
-
+	
 	@Override
-	public boolean testImpl(Env env) {
+	public boolean testImpl(Env env)
+	{
 		return !_condition.test(env);
 	}
 }

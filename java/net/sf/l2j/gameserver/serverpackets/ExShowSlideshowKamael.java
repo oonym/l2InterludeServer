@@ -18,15 +18,15 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- *
  * Format: ch
- * @author  devScarlet & mrTJO
+ * @author devScarlet & mrTJO
  */
 public class ExShowSlideshowKamael extends L2GameServerPacket
 {
 	private static final String _S__FE_5B_EXSHOWSLIDESHOWKAMAEL = "[S] FE:5B ExShowSlideshowKamael";
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#writeImpl()
 	 */
 	@Override
@@ -34,10 +34,11 @@ public class ExShowSlideshowKamael extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x5b);
-
+		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -45,5 +46,5 @@ public class ExShowSlideshowKamael extends L2GameServerPacket
 	{
 		return _S__FE_5B_EXSHOWSLIDESHOWKAMAEL;
 	}
-
+	
 }

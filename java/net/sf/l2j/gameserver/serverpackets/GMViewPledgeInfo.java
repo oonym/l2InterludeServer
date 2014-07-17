@@ -23,22 +23,21 @@ import net.sf.l2j.gameserver.model.L2ClanMember;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * format   SdSS dddddddd d (Sddddd)
- *
+ * format SdSS dddddddd d (Sddddd)
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class GMViewPledgeInfo extends L2GameServerPacket
 {
 	private static final String _S__A9_GMVIEWPLEDGEINFO = "[S] 90 GMViewPledgeInfo";
-	private L2Clan _clan;
-	private L2PcInstance _activeChar;
-
+	private final L2Clan _clan;
+	private final L2PcInstance _activeChar;
+	
 	public GMViewPledgeInfo(L2Clan clan, L2PcInstance activeChar)
 	{
 		_clan = clan;
 		_activeChar = activeChar;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -56,28 +55,29 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 		writeD(_clan.getReputationScore());
 		writeD(0);
 		writeD(0);
-
-		writeD(_clan.getAllyId()); //c2
-		writeS(_clan.getAllyName()); //c2
-		writeD(_clan.getAllyCrestId()); //c2
-		writeD(_clan.isAtWar()); //c3
-
+		
+		writeD(_clan.getAllyId()); // c2
+		writeS(_clan.getAllyName()); // c2
+		writeD(_clan.getAllyCrestId()); // c2
+		writeD(_clan.isAtWar()); // c3
+		
 		L2ClanMember[] members = _clan.getMembers();
 		writeD(members.length);
-
-		for (int i = 0; i < members.length; i++)
+		
+		for (L2ClanMember member : members)
 		{
-            writeS(members[i].getName());
-            writeD(members[i].getLevel());
-            writeD(members[i].getClassId());
-            writeD(0);
-            writeD(1);
-            writeD(members[i].isOnline() ? members[i].getObjectId() : 0);
-            writeD(0);
+			writeS(member.getName());
+			writeD(member.getLevel());
+			writeD(member.getClassId());
+			writeD(0);
+			writeD(1);
+			writeD(member.isOnline() ? member.getObjectId() : 0);
+			writeD(0);
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override
@@ -85,5 +85,5 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 	{
 		return _S__A9_GMVIEWPLEDGEINFO;
 	}
-
+	
 }

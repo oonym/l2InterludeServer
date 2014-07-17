@@ -33,69 +33,80 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 public class Recall implements ISkillHandler
 {
-	//private static Logger _log = Logger.getLogger(Recall.class.getName());
-	private static final SkillType[] SKILL_IDS = {SkillType.RECALL};
-
- 	@Override
+	// private static Logger _log = Logger.getLogger(Recall.class.getName());
+	private static final SkillType[] SKILL_IDS =
+	{
+		SkillType.RECALL
+	};
+	
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
-        if (activeChar instanceof L2PcInstance)
-        {
-        	// Thanks nbd
-        	if (!TvTEvent.onEscapeUse(((L2PcInstance)activeChar).getName()))
-        	{
-        		((L2PcInstance)activeChar).sendPacket(new ActionFailed());
-        		return;
-        	}
-
-            if (((L2PcInstance)activeChar).isInOlympiadMode())
-            {
-                ((L2PcInstance)activeChar).sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
-                return;
-            }
-        }
-
+		if (activeChar instanceof L2PcInstance)
+		{
+			// Thanks nbd
+			if (!TvTEvent.onEscapeUse(((L2PcInstance) activeChar).getName()))
+			{
+				((L2PcInstance) activeChar).sendPacket(new ActionFailed());
+				return;
+			}
+			
+			if (((L2PcInstance) activeChar).isInOlympiadMode())
+			{
+				((L2PcInstance) activeChar).sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+				return;
+			}
+		}
+		
 		try
-        {
+		{
 			for (int index = 0; index < targets.length; index++)
 			{
 				if (!(targets[index] instanceof L2Character))
+				{
 					continue;
-
-				L2Character target = (L2Character)targets[index];
-
-                if (target instanceof L2PcInstance)
-                {
-                    L2PcInstance targetChar = (L2PcInstance)target;
-
-                    // Check to see if the current player target is in a festival.
-                    if (targetChar.isFestivalParticipant()) {
-                        targetChar.sendPacket(SystemMessage.sendString("You may not use an escape skill in a festival."));
-                        continue;
-                    }
-
-                    // Check to see if player is in jail
-                    if (targetChar.isInJail())
-                    {
-                        targetChar.sendPacket(SystemMessage.sendString("You can not escape from jail."));
-                        continue;
-                    }
-
-                    // Check to see if player is in a duel
-                    if (targetChar.isInDuel())
-                    {
-                        targetChar.sendPacket(SystemMessage.sendString("You cannot use escape skills during a duel."));
-                        continue;
-                    }
-                }
-
-                target.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				}
+				
+				L2Character target = (L2Character) targets[index];
+				
+				if (target instanceof L2PcInstance)
+				{
+					L2PcInstance targetChar = (L2PcInstance) target;
+					
+					// Check to see if the current player target is in a festival.
+					if (targetChar.isFestivalParticipant())
+					{
+						targetChar.sendPacket(SystemMessage.sendString("You may not use an escape skill in a festival."));
+						continue;
+					}
+					
+					// Check to see if player is in jail
+					if (targetChar.isInJail())
+					{
+						targetChar.sendPacket(SystemMessage.sendString("You can not escape from jail."));
+						continue;
+					}
+					
+					// Check to see if player is in a duel
+					if (targetChar.isInDuel())
+					{
+						targetChar.sendPacket(SystemMessage.sendString("You cannot use escape skills during a duel."));
+						continue;
+					}
+				}
+				
+				target.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 			}
-        } catch (Throwable e) {
- 	 	 	if (Config.DEBUG) e.printStackTrace();
- 	 	}
- 	}
-
+		}
+		catch (Throwable e)
+		{
+			if (Config.DEBUG)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	@Override
 	public SkillType[] getSkillIds()
 	{

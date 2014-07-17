@@ -18,9 +18,8 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- * Format: ch
- * Trigger packet
- * @author  KenM
+ * Format: ch Trigger packet
+ * @author KenM
  */
 public class ExRequestHackShield extends L2GameServerPacket
 {

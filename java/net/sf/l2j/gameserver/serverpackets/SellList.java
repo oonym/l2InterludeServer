@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.L2ItemInstance;
 import net.sf.l2j.gameserver.model.actor.instance.L2MerchantInstance;
@@ -30,7 +29,6 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.4.2.3.2.4 $ $Date: 2005/03/27 15:29:39 $
  */
 public class SellList extends L2GameServerPacket
@@ -39,9 +37,9 @@ public class SellList extends L2GameServerPacket
 	private static Logger _log = Logger.getLogger(SellList.class.getName());
 	private final L2PcInstance _activeChar;
 	private final L2MerchantInstance _lease;
-	private int _money;
-	private List<L2ItemInstance> _selllist = new FastList<L2ItemInstance>();
-
+	private final int _money;
+	private final List<L2ItemInstance> _selllist = new FastList<>();
+	
 	public SellList(L2PcInstance player)
 	{
 		_activeChar = player;
@@ -49,7 +47,7 @@ public class SellList extends L2GameServerPacket
 		_money = _activeChar.getAdena();
 		doLease();
 	}
-
+	
 	public SellList(L2PcInstance player, L2MerchantInstance lease)
 	{
 		_activeChar = player;
@@ -57,35 +55,37 @@ public class SellList extends L2GameServerPacket
 		_money = _activeChar.getAdena();
 		doLease();
 	}
-
+	
 	private void doLease()
 	{
 		if (_lease == null)
 		{
 			for (L2ItemInstance item : _activeChar.getInventory().getItems())
 			{
-				if (!item.isEquipped() &&                                                      // Not equipped
-                        item.getItem().isSellable() &&                                         // Item is sellable
-                        (_activeChar.getPet() == null ||                                             // Pet not summoned or
-                                item.getObjectId() != _activeChar.getPet().getControlItemId()))      // Pet is summoned and not the item that summoned the pet
+				if (!item.isEquipped() && // Not equipped
+				item.getItem().isSellable() && // Item is sellable
+				((_activeChar.getPet() == null) || // Pet not summoned or
+				(item.getObjectId() != _activeChar.getPet().getControlItemId()))) // Pet is summoned and not the item that summoned the pet
 				{
 					_selllist.add(item);
 					if (Config.DEBUG)
+					{
 						_log.fine("item added to selllist: " + item.getItem().getName());
+					}
 				}
 			}
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x10);
 		writeD(_money);
 		writeD(_lease == null ? 0x00 : 1000000 + _lease.getTemplate().npcId);
-
+		
 		writeH(_selllist.size());
-
+		
 		for (L2ItemInstance item : _selllist)
 		{
 			writeH(item.getItem().getType1());
@@ -98,13 +98,16 @@ public class SellList extends L2GameServerPacket
 			writeH(item.getEnchantLevel());
 			writeH(0x00);
 			writeH(0x00);
-
+			
 			if (_lease == null)
-				writeD(item.getItem().getReferencePrice()/2); // wtf??? there is no conditional part in SellList!! this d should allways be here 0.o! fortunately the lease stuff are never ever use so the if allways exectues
+			{
+				writeD(item.getItem().getReferencePrice() / 2); // wtf??? there is no conditional part in SellList!! this d should allways be here 0.o! fortunately the lease stuff are never ever use so the if allways exectues
+			}
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

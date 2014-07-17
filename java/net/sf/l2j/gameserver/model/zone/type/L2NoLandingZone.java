@@ -23,8 +23,7 @@ import net.sf.l2j.gameserver.model.zone.L2ZoneType;
 
 /**
  * A no landing zone
- *
- * @author  durgus
+ * @author durgus
  */
 public class L2NoLandingZone extends L2ZoneType
 {
@@ -32,7 +31,7 @@ public class L2NoLandingZone extends L2ZoneType
 	{
 		super();
 	}
-
+	
 	@Override
 	protected void onEnter(L2Character character)
 	{
@@ -41,7 +40,7 @@ public class L2NoLandingZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_NOLANDING, true);
 		}
 	}
-
+	
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -50,11 +49,15 @@ public class L2NoLandingZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_NOLANDING, false);
 		}
 	}
-
+	
 	@Override
-	protected void onDieInside(L2Character character) {}
-
+	protected void onDieInside(L2Character character)
+	{
+	}
+	
 	@Override
-	protected void onReviveInside(L2Character character) {}
-
+	protected void onReviveInside(L2Character character)
+	{
+	}
+	
 }

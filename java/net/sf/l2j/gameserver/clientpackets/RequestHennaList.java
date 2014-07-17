@@ -25,40 +25,43 @@ import net.sf.l2j.gameserver.serverpackets.HennaEquipList;
 
 /**
  * RequestHennaList - 0xba
- *
  * @author Tempy
  */
 public final class RequestHennaList extends L2GameClientPacket
 {
-    private static final String _C__BA_RequestHennaList = "[C] ba RequestHennaList";
-
-    // This is just a trigger packet...
-    @SuppressWarnings("unused")
-    private int _unknown;
-
-    @Override
+	private static final String _C__BA_RequestHennaList = "[C] ba RequestHennaList";
+	
+	// This is just a trigger packet...
+	@SuppressWarnings("unused")
+	private int _unknown;
+	
+	@Override
 	protected void readImpl()
-    {
-        _unknown = readD(); // ??
-    }
-
-    @Override
+	{
+		_unknown = readD(); // ??
+	}
+	
+	@Override
 	protected void runImpl()
-    {
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if (activeChar == null) return;
-
-        L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId());
-        HennaEquipList he = new HennaEquipList(activeChar, henna);
-        activeChar.sendPacket(he);
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
-     */
-    @Override
+	{
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+		{
+			return;
+		}
+		
+		L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId());
+		HennaEquipList he = new HennaEquipList(activeChar, henna);
+		activeChar.sendPacket(he);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#getType()
+	 */
+	@Override
 	public String getType()
-    {
-        return _C__BA_RequestHennaList;
-    }
+	{
+		return _C__BA_RequestHennaList;
+	}
 }

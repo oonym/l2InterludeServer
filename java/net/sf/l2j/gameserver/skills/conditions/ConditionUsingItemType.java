@@ -23,26 +23,26 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.skills.Env;
 
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public final class ConditionUsingItemType extends Condition {
-
+public final class ConditionUsingItemType extends Condition
+{
+	
 	private final int _mask;
-
+	
 	public ConditionUsingItemType(int mask)
 	{
 		_mask = mask;
 	}
-
+	
 	@Override
 	public boolean testImpl(Env env)
 	{
 		if (!(env.player instanceof L2PcInstance))
+		{
 			return false;
-		Inventory inv = ((L2PcInstance)env.player).getInventory();
+		}
+		Inventory inv = ((L2PcInstance) env.player).getInventory();
 		return (_mask & inv.getWearedMask()) != 0;
 	}
 }

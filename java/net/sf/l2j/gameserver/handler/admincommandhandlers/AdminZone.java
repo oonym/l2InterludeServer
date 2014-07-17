@@ -26,73 +26,93 @@ import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminZone implements IAdminCommandHandler
 {
-    private static final int REQUIRED_LEVEL = Config.GM_TEST;
-    private static final String[] ADMIN_COMMANDS =
-    {
-        "admin_zone_check", "admin_zone_reload"
-    };
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
-     */
-    @Override
+	private static final int REQUIRED_LEVEL = Config.GM_TEST;
+	private static final String[] ADMIN_COMMANDS =
+	{
+		"admin_zone_check",
+		"admin_zone_reload"
+	};
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#useAdminCommand(java.lang.String, net.sf.l2j.gameserver.model.L2PcInstance)
+	 */
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
-    {
-        if (activeChar == null) return false;
-
-        if (!Config.ALT_PRIVILEGES_ADMIN)
-            if (activeChar.getAccessLevel() < REQUIRED_LEVEL) return false;
-
-        StringTokenizer st = new StringTokenizer(command, " ");
-        String actualCommand = st.nextToken(); // Get actual command
-
-        //String val = "";
-        //if (st.countTokens() >= 1) {val = st.nextToken();}
-
-        if (actualCommand.equalsIgnoreCase("admin_zone_check"))
-        {
-            if (activeChar.isInsideZone(L2Character.ZONE_PVP))
-            	activeChar.sendMessage("This is a PvP zone.");
-            else
-            	activeChar.sendMessage("This is NOT a PvP zone.");
-
-            if (activeChar.isInsideZone(L2Character.ZONE_NOLANDING))
-            	activeChar.sendMessage("This is a no landing zone.");
-            else
-            	activeChar.sendMessage("This is NOT a no landing zone.");
-
-            activeChar.sendMessage("MapRegion: x:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getX()) + " y:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getY()));
-
-            activeChar.sendMessage("Closest Town: " + MapRegionTable.getInstance().getClosestTownName(activeChar));
-
-            Location loc;
-
-            loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Castle);
-            activeChar.sendMessage("TeleToLocation (Castle): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
-
-            loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.ClanHall);
-            activeChar.sendMessage("TeleToLocation (ClanHall): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
-
-            loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.SiegeFlag);
-            activeChar.sendMessage("TeleToLocation (SiegeFlag): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
-
-            loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Town);
-            activeChar.sendMessage("TeleToLocation (Town): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
-        } else if (actualCommand.equalsIgnoreCase("admin_zone_reload"))
-        {
-        	//TODO: ZONETODO ZoneManager.getInstance().reload();
-        	GmListTable.broadcastMessageToGMs("Zones can not be reloaded in this version.");
-        }
-        return true;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
-     */
-    @Override
+	{
+		if (activeChar == null)
+		{
+			return false;
+		}
+		
+		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
+			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
+			{
+				return false;
+			}
+		}
+		
+		StringTokenizer st = new StringTokenizer(command, " ");
+		String actualCommand = st.nextToken(); // Get actual command
+		
+		// String val = "";
+		// if (st.countTokens() >= 1) {val = st.nextToken();}
+		
+		if (actualCommand.equalsIgnoreCase("admin_zone_check"))
+		{
+			if (activeChar.isInsideZone(L2Character.ZONE_PVP))
+			{
+				activeChar.sendMessage("This is a PvP zone.");
+			}
+			else
+			{
+				activeChar.sendMessage("This is NOT a PvP zone.");
+			}
+			
+			if (activeChar.isInsideZone(L2Character.ZONE_NOLANDING))
+			{
+				activeChar.sendMessage("This is a no landing zone.");
+			}
+			else
+			{
+				activeChar.sendMessage("This is NOT a no landing zone.");
+			}
+			
+			activeChar.sendMessage("MapRegion: x:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getX()) + " y:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getY()));
+			
+			activeChar.sendMessage("Closest Town: " + MapRegionTable.getInstance().getClosestTownName(activeChar));
+			
+			Location loc;
+			
+			loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Castle);
+			activeChar.sendMessage("TeleToLocation (Castle): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
+			
+			loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.ClanHall);
+			activeChar.sendMessage("TeleToLocation (ClanHall): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
+			
+			loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.SiegeFlag);
+			activeChar.sendMessage("TeleToLocation (SiegeFlag): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
+			
+			loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Town);
+			activeChar.sendMessage("TeleToLocation (Town): x:" + loc.getX() + " y:" + loc.getY() + " z:" + loc.getZ());
+		}
+		else if (actualCommand.equalsIgnoreCase("admin_zone_reload"))
+		{
+			// TODO: ZONETODO ZoneManager.getInstance().reload();
+			GmListTable.broadcastMessageToGMs("Zones can not be reloaded in this version.");
+		}
+		return true;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.sf.l2j.gameserver.handler.IAdminCommandHandler#getAdminCommandList()
+	 */
+	@Override
 	public String[] getAdminCommandList()
-    {
-        return ADMIN_COMMANDS;
-    }
-
+	{
+		return ADMIN_COMMANDS;
+	}
+	
 }

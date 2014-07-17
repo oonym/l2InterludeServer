@@ -29,37 +29,46 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.Formulas;
 import net.sf.l2j.gameserver.templates.StatsSet;
 
-public class L2SkillElemental extends L2Skill {
-
+public class L2SkillElemental extends L2Skill
+{
+	
 	private final int[] _seeds;
 	private final boolean _seedAny;
-
-	public L2SkillElemental(StatsSet set) {
+	
+	public L2SkillElemental(StatsSet set)
+	{
 		super(set);
-
+		
 		_seeds = new int[3];
-		_seeds[0] = set.getInteger("seed1",0);
-		_seeds[1] = set.getInteger("seed2",0);
-		_seeds[2] = set.getInteger("seed3",0);
-
-		if (set.getInteger("seed_any",0)==1)
+		_seeds[0] = set.getInteger("seed1", 0);
+		_seeds[1] = set.getInteger("seed2", 0);
+		_seeds[2] = set.getInteger("seed3", 0);
+		
+		if (set.getInteger("seed_any", 0) == 1)
+		{
 			_seedAny = true;
+		}
 		else
+		{
 			_seedAny = false;
+		}
 	}
-
+	
 	@Override
-	public void useSkill(L2Character activeChar, L2Object[] targets) {
+	public void useSkill(L2Character activeChar, L2Object[] targets)
+	{
 		if (activeChar.isAlikeDead())
+		{
 			return;
-
+		}
+		
 		boolean ss = false;
 		boolean bss = false;
-
+		
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-
+		
 		if (activeChar instanceof L2PcInstance)
-        {
+		{
 			if (weaponInst == null)
 			{
 				SystemMessage sm2 = new SystemMessage(SystemMessageId.S1_S2);
@@ -68,97 +77,107 @@ public class L2SkillElemental extends L2Skill {
 				return;
 			}
 		}
-
+		
 		if (weaponInst != null)
-        {
+		{
 			if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 			{
 				bss = true;
 				weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 			}
-	        else if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT)
+			else if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_SPIRITSHOT)
 			{
 				ss = true;
 				weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 			}
 		}
-        // If there is no weapon equipped, check for an active summon.
-        else if (activeChar instanceof L2Summon)
-        {
-            L2Summon activeSummon = (L2Summon)activeChar;
-
-            if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
-            {
-                bss = true;
-                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
-            }
-            else if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_SPIRITSHOT)
-            {
-                ss = true;
-                activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
-            }
-        }
-
-        for (int index = 0; index < targets.length; index++)
-        {
-			L2Character target = (L2Character)targets[index];
+		// If there is no weapon equipped, check for an active summon.
+		else if (activeChar instanceof L2Summon)
+		{
+			L2Summon activeSummon = (L2Summon) activeChar;
+			
+			if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
+			{
+				bss = true;
+				activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
+			}
+			else if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_SPIRITSHOT)
+			{
+				ss = true;
+				activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
+			}
+		}
+		
+		for (L2Object target2 : targets)
+		{
+			L2Character target = (L2Character) target2;
 			if (target.isAlikeDead())
+			{
 				continue;
-
+			}
+			
 			boolean charged = true;
-			if (!_seedAny){
-				for (int i=0;i<_seeds.length;i++){
-					if (_seeds[i]!=0){
-						L2Effect e = target.getFirstEffect(_seeds[i]);
-						if (e==null || !e.getInUse()){
+			if (!_seedAny)
+			{
+				for (int _seed : _seeds)
+				{
+					if (_seed != 0)
+					{
+						L2Effect e = target.getFirstEffect(_seed);
+						if ((e == null) || !e.getInUse())
+						{
 							charged = false;
 							break;
 						}
 					}
 				}
 			}
-			else {
+			else
+			{
 				charged = false;
-				for (int i=0;i<_seeds.length;i++){
-					if (_seeds[i]!=0){
-						L2Effect e = target.getFirstEffect(_seeds[i]);
-						if (e!=null && e.getInUse()){
+				for (int _seed : _seeds)
+				{
+					if (_seed != 0)
+					{
+						L2Effect e = target.getFirstEffect(_seed);
+						if ((e != null) && e.getInUse())
+						{
 							charged = true;
 							break;
 						}
 					}
 				}
 			}
-			if (!charged){
+			if (!charged)
+			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Target is not charged by elements.");
 				activeChar.sendPacket(sm);
 				continue;
 			}
-
+			
 			boolean mcrit = Formulas.getInstance().calcMCrit(activeChar.getMCriticalHit(target, this));
-
-			int damage = (int)Formulas.getInstance().calcMagicDam(
-					activeChar, target, this, ss, bss, mcrit);
-
+			
+			int damage = (int) Formulas.getInstance().calcMagicDam(activeChar, target, this, ss, bss, mcrit);
+			
 			if (damage > 0)
 			{
 				target.reduceCurrentHp(damage, activeChar);
-
-	            // Manage attack or cast break of the target (calculating rate, sending message...)
-	            if (!target.isRaid() && Formulas.getInstance().calcAtkBreak(target, damage))
-	            {
-	                target.breakAttack();
-	                target.breakCast();
-	            }
-
-            	activeChar.sendDamageMessage(target, damage, false, false, false);
-
+				
+				// Manage attack or cast break of the target (calculating rate, sending message...)
+				if (!target.isRaid() && Formulas.getInstance().calcAtkBreak(target, damage))
+				{
+					target.breakAttack();
+					target.breakCast();
+				}
+				
+				activeChar.sendDamageMessage(target, damage, false, false, false);
+				
 			}
-
+			
 			// activate attacked effects, if any
 			target.stopSkillEffects(getId());
-            getEffects(activeChar, target);
+			getEffects(activeChar, target);
 		}
 	}
 }

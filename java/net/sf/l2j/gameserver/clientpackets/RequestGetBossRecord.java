@@ -20,29 +20,29 @@ package net.sf.l2j.gameserver.clientpackets;
 
 /**
  * Format: (ch) d
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class RequestGetBossRecord extends L2GameClientPacket
 {
-    private static final String _C__D0_18_REQUESTGETBOSSRECORD = "[C] D0:18 RequestGetBossRecord";
-    private int _bossId;
-
-    @Override
+	private static final String _C__D0_18_REQUESTGETBOSSRECORD = "[C] D0:18 RequestGetBossRecord";
+	private int _bossId;
+	
+	@Override
 	protected void readImpl()
-    {
-        _bossId = readD();
-    }
-    
-    @Override
+	{
+		_bossId = readD();
+	}
+	
+	@Override
 	protected void runImpl()
-    {
-        // TODO
-        System.out.println("C5: RequestGetBossRecord: d: "+_bossId);
-    }
-    
-    @Override
-    public String getType()
-    {
-        return _C__D0_18_REQUESTGETBOSSRECORD;
-    }
+	{
+		// TODO
+		System.out.println("C5: RequestGetBossRecord: d: " + _bossId);
+	}
+	
+	@Override
+	public String getType()
+	{
+		return _C__D0_18_REQUESTGETBOSSRECORD;
+	}
 }

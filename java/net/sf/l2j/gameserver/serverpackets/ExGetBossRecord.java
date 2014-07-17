@@ -19,13 +19,13 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: ch ddd [ddd]
- * @author  KenM
+ * @author KenM
  */
 public class ExGetBossRecord extends L2GameServerPacket
 {
 	private static final String _S__FE_33_EXGETBOSSRECORD = "[S] FE:33 ExGetBossRecord";
-	private int _unk1, _unk2;
-
+	private final int _unk1, _unk2;
+	
 	public ExGetBossRecord(int val1, int val2)
 	{
 		_unk1 = val1;
@@ -39,7 +39,7 @@ public class ExGetBossRecord extends L2GameServerPacket
 		writeH(0x33);
 		writeD(_unk1);
 		writeD(_unk2);
-		writeD(0x00); //list size
+		writeD(0x00); // list size
 	}
 	
 	@Override

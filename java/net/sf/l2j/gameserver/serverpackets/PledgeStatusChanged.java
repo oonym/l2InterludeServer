@@ -21,40 +21,34 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Clan;
 
 /**
- *
- *
- * sample
- * 0000: cd b0 98 a0 48 1e 01 00 00 00 00 00 00 00 00 00    ....H...........
- * 0010: 00 00 00 00 00                                     .....
- *
- * format   ddddd
- *
+ * sample 0000: cd b0 98 a0 48 1e 01 00 00 00 00 00 00 00 00 00 ....H........... 0010: 00 00 00 00 00 ..... format ddddd
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
  */
 public class PledgeStatusChanged extends L2GameServerPacket
 {
 	private static final String _S__CD_PLEDGESTATUS_CHANGED = "[S] CD PledgeStatusChanged";
-	private L2Clan _clan;
-
+	private final L2Clan _clan;
+	
 	public PledgeStatusChanged(L2Clan clan)
 	{
 		_clan = clan;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xcd);
 		writeD(_clan.getLeaderId());
 		writeD(_clan.getClanId());
-        writeD(0);
-        writeD(_clan.getLevel());
-        writeD(0);
-        writeD(0);
-        writeD(0);
+		writeD(0);
+		writeD(_clan.getLevel());
+		writeD(0);
+		writeD(0);
+		writeD(0);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

@@ -19,37 +19,34 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 /**
- * Format chS
- * c: (id) 0x39
- * h: (subid) 0x00
- * S: the character name (or maybe cmd string ?)
+ * Format chS c: (id) 0x39 h: (subid) 0x00 S: the character name (or maybe cmd string ?)
  * @author -Wooden-
- *
  */
 public final class SuperCmdCharacterInfo extends L2GameClientPacket
 {
 	private static final String _C__39_00_SUPERCMDCHARACTERINFO = "[C] 39:00 SuperCmdCharacterInfo";
 	@SuppressWarnings("unused")
 	private String _characterName;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_characterName = readS();
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
 	 */
 	@Override
 	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
-
+		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -57,5 +54,5 @@ public final class SuperCmdCharacterInfo extends L2GameClientPacket
 	{
 		return _C__39_00_SUPERCMDCHARACTERINFO;
 	}
-
+	
 }

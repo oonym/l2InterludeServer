@@ -30,26 +30,31 @@ import net.sf.l2j.gameserver.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.serverpackets.BuyList;
 
 /**
- * This class handles following admin commands:
- * - gmshop = shows menu
- * - buy id = shows shop with respective id
+ * This class handles following admin commands: - gmshop = shows menu - buy id = shows shop with respective id
  * @version $Revision: 1.2.4.4 $ $Date: 2005/04/11 10:06:06 $
  */
-public class AdminShop implements IAdminCommandHandler {
+public class AdminShop implements IAdminCommandHandler
+{
 	private static Logger _log = Logger.getLogger(AdminShop.class.getName());
-
-	private static final String[] ADMIN_COMMANDS = {
+	
+	private static final String[] ADMIN_COMMANDS =
+	{
 		"admin_buy",
 		"admin_gmshop"
 	};
 	private static final int REQUIRED_LEVEL = Config.GM_CREATE_ITEM;
-
+	
 	@Override
-	public boolean useAdminCommand(String command, L2PcInstance activeChar) {
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
+	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
+		{
 			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
+			{
 				return false;
-
+			}
+		}
+		
 		if (command.startsWith("admin_buy"))
 		{
 			try
@@ -65,20 +70,22 @@ public class AdminShop implements IAdminCommandHandler {
 		{
 			AdminHelpPage.showHelpPage(activeChar, "gmshops.htm");
 		}
-		String target = (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target");
+		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
-
+	
 	@Override
-	public String[] getAdminCommandList() {
+	public String[] getAdminCommandList()
+	{
 		return ADMIN_COMMANDS;
 	}
-
-	private boolean checkLevel(int level) {
+	
+	private boolean checkLevel(int level)
+	{
 		return (level >= REQUIRED_LEVEL);
 	}
-
+	
 	private void handleBuyRequest(L2PcInstance activeChar, String command)
 	{
 		int val = -1;
@@ -88,21 +95,23 @@ public class AdminShop implements IAdminCommandHandler {
 		}
 		catch (Exception e)
 		{
-			_log.warning("admin buylist failed:"+command);
+			_log.warning("admin buylist failed:" + command);
 		}
-
+		
 		L2TradeList list = TradeController.getInstance().getBuyList(val);
-
+		
 		if (list != null)
 		{
 			activeChar.sendPacket(new BuyList(list, activeChar.getAdena()));
 			if (Config.DEBUG)
-				_log.fine("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") opened GM shop id "+val);
+			{
+				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") opened GM shop id " + val);
+			}
 		}
 		else
 		{
-			_log.warning("no buylist with id:" +val);
+			_log.warning("no buylist with id:" + val);
 		}
-		activeChar.sendPacket( new ActionFailed() );
+		activeChar.sendPacket(new ActionFailed());
 	}
 }

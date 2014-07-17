@@ -20,25 +20,24 @@ package net.sf.l2j.gameserver.loginserverpackets;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerAuthResponse extends LoginServerBasePacket
 {
-
-	private String _account;
-	private boolean _authed;
-
+	
+	private final String _account;
+	private final boolean _authed;
+	
 	/**
 	 * @param decrypt
 	 */
 	public PlayerAuthResponse(byte[] decrypt)
 	{
 		super(decrypt);
-
+		
 		_account = readS();
 		_authed = (readC() == 0 ? false : true);
 	}
-
+	
 	/**
 	 * @return Returns the account.
 	 */
@@ -46,7 +45,7 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 	{
 		return _account;
 	}
-
+	
 	/**
 	 * @return Returns the authed state.
 	 */
@@ -54,5 +53,5 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 	{
 		return _authed;
 	}
-
+	
 }

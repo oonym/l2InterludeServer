@@ -25,58 +25,71 @@ import net.sf.l2j.gameserver.network.SystemMessageId;
 import net.sf.l2j.gameserver.serverpackets.SystemMessage;
 
 /**
- *
  * @author KenM
  */
 public final class RequestJoinSiege extends L2GameClientPacket
 {
-    private static final String _C__A4_RequestJoinSiege = "[C] a4 RequestJoinSiege";
-    //private static Logger _log = Logger.getLogger(RequestJoinSiege.class.getName());
-
-    private int _castleId;
-    private int _isAttacker;
-    private int _isJoining;
-
-    @Override
+	private static final String _C__A4_RequestJoinSiege = "[C] a4 RequestJoinSiege";
+	// private static Logger _log = Logger.getLogger(RequestJoinSiege.class.getName());
+	
+	private int _castleId;
+	private int _isAttacker;
+	private int _isJoining;
+	
+	@Override
 	protected void readImpl()
-    {
-        _castleId = readD();
-        _isAttacker = readD();
-        _isJoining = readD();
-    }
-
-    @Override
+	{
+		_castleId = readD();
+		_isAttacker = readD();
+		_isJoining = readD();
+	}
+	
+	@Override
 	protected void runImpl()
-    {
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if(activeChar == null) return;
-        if (!activeChar.isClanLeader()) return;
-
-        Castle castle = CastleManager.getInstance().getCastleById(_castleId);
-        if (castle == null) return;
-
-        if (_isJoining == 1)
-        {
-        	if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
-        	{
-        		activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS));
-        		return;
-        	}
-            if (_isAttacker == 1)
-                castle.getSiege().registerAttacker(activeChar);
-            else
-                castle.getSiege().registerDefender(activeChar);
-        }
-        else
-            castle.getSiege().removeSiegeClan(activeChar);
-
-        castle.getSiege().listRegisterClan(activeChar);
-    }
-
-
-    @Override
+	{
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+		{
+			return;
+		}
+		if (!activeChar.isClanLeader())
+		{
+			return;
+		}
+		
+		Castle castle = CastleManager.getInstance().getCastleById(_castleId);
+		if (castle == null)
+		{
+			return;
+		}
+		
+		if (_isJoining == 1)
+		{
+			if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
+			{
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS));
+				return;
+			}
+			if (_isAttacker == 1)
+			{
+				castle.getSiege().registerAttacker(activeChar);
+			}
+			else
+			{
+				castle.getSiege().registerDefender(activeChar);
+			}
+		}
+		else
+		{
+			castle.getSiege().removeSiegeClan(activeChar);
+		}
+		
+		castle.getSiege().listRegisterClan(activeChar);
+	}
+	
+	@Override
 	public String getType()
-    {
-        return _C__A4_RequestJoinSiege;
-    }
+	{
+		return _C__A4_RequestJoinSiege;
+	}
 }

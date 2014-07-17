@@ -19,43 +19,46 @@
 package net.sf.l2j.gameserver.model;
 
 /**
- * This class describes a RecipeList componant (1 line of the recipe : Item-Quantity needed).<BR><BR>
+ * This class describes a RecipeList componant (1 line of the recipe : Item-Quantity needed).<BR>
+ * <BR>
  */
 public class L2RecipeInstance
 {
 	/** The Identifier of the item needed in the L2RecipeInstance */
-    private int _itemId;
-
+	private final int _itemId;
+	
 	/** The item quantity needed in the L2RecipeInstance */
-    private int _quantity;
-
-
+	private final int _quantity;
+	
 	/**
-	 * Constructor of L2RecipeInstance (create a new line in a RecipeList).<BR><BR>
-	 * @param itemId 
-	 * @param quantity 
+	 * Constructor of L2RecipeInstance (create a new line in a RecipeList).<BR>
+	 * <BR>
+	 * @param itemId
+	 * @param quantity
 	 */
-    public L2RecipeInstance(int itemId, int quantity)
-    {
-        _itemId = itemId;
-        _quantity = quantity;
-    }
-
+	public L2RecipeInstance(int itemId, int quantity)
+	{
+		_itemId = itemId;
+		_quantity = quantity;
+	}
+	
 	/**
-	 * Return the Identifier of the L2RecipeInstance Item needed.<BR><BR>
-	 * @return 
+	 * Return the Identifier of the L2RecipeInstance Item needed.<BR>
+	 * <BR>
+	 * @return
 	 */
-    public int getItemId()
-    {
-        return _itemId;
-    }
-
+	public int getItemId()
+	{
+		return _itemId;
+	}
+	
 	/**
-	 * Return the Item quantity needed of the L2RecipeInstance.<BR><BR>
-	 * @return 
+	 * Return the Item quantity needed of the L2RecipeInstance.<BR>
+	 * <BR>
+	 * @return
 	 */
-    public int getQuantity()
-    {
-        return _quantity;
-    }
+	public int getQuantity()
+	{
+		return _quantity;
+	}
 }

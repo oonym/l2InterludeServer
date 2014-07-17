@@ -19,23 +19,21 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- *
- * format  (c) dd
- *
+ * format (c) dd
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:40 $
  */
 public class SetSummonRemainTime extends L2GameServerPacket
 {
 	private static final String _S__D1_SET_SUMMON_REMAIN_TIME = "[S] d1 SetSummonRemainTime";
-	private int _maxTime;
-	private int _remainingTime;
-
+	private final int _maxTime;
+	private final int _remainingTime;
+	
 	public SetSummonRemainTime(int maxTime, int remainingTime)
 	{
 		_remainingTime = remainingTime;
 		_maxTime = maxTime;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -43,8 +41,9 @@ public class SetSummonRemainTime extends L2GameServerPacket
 		writeD(_maxTime);
 		writeD(_remainingTime);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override
@@ -52,5 +51,5 @@ public class SetSummonRemainTime extends L2GameServerPacket
 	{
 		return _S__D1_SET_SUMMON_REMAIN_TIME;
 	}
-
+	
 }

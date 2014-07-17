@@ -19,15 +19,14 @@ package net.sf.l2j.gameserver.serverpackets;
 
 /**
  * Format: (ch)ddd
- *
  */
 public class ExVariationCancelResult extends L2GameServerPacket
 {
 	private static final String _S__FE_57_EXVARIATIONCANCELRESULT = "[S] FE:57 ExVariationCancelResult";
-
-	private int _closeWindow;
-	private int _unk1;
-
+	
+	private final int _closeWindow;
+	private final int _unk1;
+	
 	public ExVariationCancelResult(int result)
 	{
 		_closeWindow = 1;

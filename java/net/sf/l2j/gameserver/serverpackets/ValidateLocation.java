@@ -21,22 +21,21 @@ package net.sf.l2j.gameserver.serverpackets;
 import net.sf.l2j.gameserver.model.L2Character;
 
 /**
- *
- * 0000: 76  7a 07 80 49  ea 01 00 00  c1 37 fe    uz..Ic'.J.....7. <p>
- * 0010: ff 9e c3 03 00 8f f3 ff ff                         .........<p>
+ * 0000: 76 7a 07 80 49 ea 01 00 00 c1 37 fe uz..Ic'.J.....7.
  * <p>
- *
- * format   dddddd		(player id, target id, distance, startx, starty, startz)<p>
- *
- *
+ * 0010: ff 9e c3 03 00 8f f3 ff ff .........
+ * <p>
+ * <p>
+ * format dddddd (player id, target id, distance, startx, starty, startz)
+ * <p>
  * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
  */
 public class ValidateLocation extends L2GameServerPacket
 {
 	private static final String _S__76_SETTOLOCATION = "[S] 61 ValidateLocation";
-	private int _charObjId;
-	private int _x, _y, _z, _heading;
-
+	private final int _charObjId;
+	private final int _x, _y, _z, _heading;
+	
 	public ValidateLocation(L2Character cha)
 	{
 		_charObjId = cha.getObjectId();
@@ -45,20 +44,21 @@ public class ValidateLocation extends L2GameServerPacket
 		_z = cha.getZ();
 		_heading = cha.getHeading();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x61);
-
+		
 		writeD(_charObjId);
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
 		writeD(_heading);
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

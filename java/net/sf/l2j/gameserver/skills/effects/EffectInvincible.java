@@ -27,18 +27,19 @@ public class EffectInvincible extends L2Effect
 	{
 		super(env, template);
 	}
-
+	
 	@Override
 	public EffectType getEffectType()
 	{
 		return L2Effect.EffectType.INVINCIBLE;
 	}
-
+	
 	@Override
-	public void onStart() {
+	public void onStart()
+	{
 		getEffected().setIsInvul(true);
 	}
-
+	
 	@Override
 	public boolean onActionTime()
 	{
@@ -46,8 +47,7 @@ public class EffectInvincible extends L2Effect
 		getEffected().setIsInvul(false);
 		return false;
 	}
-
-
+	
 	@Override
 	public void onExit()
 	{

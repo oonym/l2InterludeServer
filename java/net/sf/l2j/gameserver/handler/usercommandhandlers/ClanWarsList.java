@@ -35,33 +35,41 @@ import net.sf.l2j.gameserver.serverpackets.SystemMessage;
  */
 public class ClanWarsList implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = { 88, 89, 90 };
-
-	/* (non-Javadoc)
+	private static final int[] COMMAND_IDS =
+	{
+		88,
+		89,
+		90
+	};
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#useUserCommand(int, net.sf.l2j.gameserver.model.L2PcInstance)
 	 */
 	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
-		if (id != COMMAND_IDS[0] && id != COMMAND_IDS[1] && id != COMMAND_IDS[2])
-            return false;
-
+		if ((id != COMMAND_IDS[0]) && (id != COMMAND_IDS[1]) && (id != COMMAND_IDS[2]))
+		{
+			return false;
+		}
+		
 		L2Clan clan = activeChar.getClan();
-
+		
 		if (clan == null)
 		{
 			activeChar.sendMessage("You are not in a clan.");
 			return false;
 		}
-
+		
 		SystemMessage sm;
 		java.sql.Connection con = null;
-
+		
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-
+			
 			if (id == 88)
 			{
 				// Attack List
@@ -78,7 +86,8 @@ public class ClanWarsList implements IUserCommandHandler
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
 			}
-			else // ID = 90
+			else
+			// ID = 90
 			{
 				// War List
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.WAR_LIST));
@@ -86,14 +95,14 @@ public class ClanWarsList implements IUserCommandHandler
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
 			}
-
+			
 			ResultSet rset = statement.executeQuery();
-
+			
 			while (rset.next())
 			{
 				String clanName = rset.getString("clan_name");
 				int ally_id = rset.getInt("ally_id");
-
+				
 				if (ally_id > 0)
 				{
 					// Target With Ally
@@ -107,25 +116,34 @@ public class ClanWarsList implements IUserCommandHandler
 					sm = new SystemMessage(SystemMessageId.S1_NO_ALLI_EXISTS);
 					sm.addString(clanName);
 				}
-
+				
 				activeChar.sendPacket(sm);
 			}
-
+			
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
-
+			
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)	{ }
+		catch (Exception e)
+		{
+		}
 		finally
 		{
-			try {con.close();} catch (Exception e) {}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
-
+		
 		return true;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */
 	@Override

@@ -22,17 +22,14 @@ import net.sf.l2j.loginserver.serverpackets.LoginFail.LoginFailReason;
 import net.sf.l2j.loginserver.serverpackets.ServerList;
 
 /**
- * Format: ddc
- * d: fist part of session id
- * d: second part of session id
- * c: ?
+ * Format: ddc d: fist part of session id d: second part of session id c: ?
  */
 public class RequestServerList extends L2LoginClientPacket
 {
 	private int _skey1;
 	private int _skey2;
 	private int _data3;
-
+	
 	/**
 	 * @return
 	 */
@@ -40,7 +37,7 @@ public class RequestServerList extends L2LoginClientPacket
 	{
 		return _skey1;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -48,7 +45,7 @@ public class RequestServerList extends L2LoginClientPacket
 	{
 		return _skey2;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -56,14 +53,14 @@ public class RequestServerList extends L2LoginClientPacket
 	{
 		return _data3;
 	}
-
+	
 	@Override
 	public boolean readImpl()
 	{
 		if (_buf.remaining() >= 8)
 		{
-			_skey1  = readD(); // loginOk 1
-			_skey2  = readD(); // loginOk 2
+			_skey1 = readD(); // loginOk 1
+			_skey2 = readD(); // loginOk 2
 			return true;
 		}
 		return false;

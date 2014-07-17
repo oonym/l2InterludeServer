@@ -19,38 +19,34 @@
 package net.sf.l2j.gameserver.clientpackets;
 
 /**
- * Format chS
- * c: (id) 0x39
- * h: (subid) 0x01
- * S: the summon name (or maybe cmd string ?)
+ * Format chS c: (id) 0x39 h: (subid) 0x01 S: the summon name (or maybe cmd string ?)
  * @author -Wooden-
- *
  */
 public class SuperCmdSummonCmd extends L2GameClientPacket
 {
 	private static final String _C__39_01_SUPERCMDSUMMONCMD = "[C] 39:01 SuperCmdSummonCmd";
 	@SuppressWarnings("unused")
 	private String _summonName;
-
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_summonName = readS();
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.clientpackets.ClientBasePacket#runImpl()
 	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
 		// TODO Auto-generated method stub
-
+		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.BasePacket#getType()
 	 */
 	@Override
@@ -58,5 +54,5 @@ public class SuperCmdSummonCmd extends L2GameClientPacket
 	{
 		return _C__39_01_SUPERCMDSUMMONCMD;
 	}
-
+	
 }

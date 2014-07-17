@@ -26,14 +26,13 @@ import net.sf.l2j.gameserver.serverpackets.AllyCrest;
 
 /**
  * This class ...
- *
  * @version $Revision: 1.3.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestAllyCrest extends L2GameClientPacket
 {
 	private static final String _C__88_REQUESTALLYCREST = "[C] 88 RequestAllyCrest";
 	private static Logger _log = Logger.getLogger(RequestAllyCrest.class.getName());
-
+	
 	private int _crestId;
 	
 	/**
@@ -44,22 +43,28 @@ public final class RequestAllyCrest extends L2GameClientPacket
 	{
 		_crestId = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
-		if (Config.DEBUG) _log.fine("allycrestid " + _crestId + " requested");
-
-        byte[] data = CrestCache.getInstance().getAllyCrest(_crestId);
-
+		if (Config.DEBUG)
+		{
+			_log.fine("allycrestid " + _crestId + " requested");
+		}
+		
+		byte[] data = CrestCache.getInstance().getAllyCrest(_crestId);
+		
 		if (data != null)
 		{
-			AllyCrest ac = new AllyCrest(_crestId,data);
+			AllyCrest ac = new AllyCrest(_crestId, data);
 			sendPacket(ac);
 		}
 		else
 		{
-			if (Config.DEBUG) _log.fine("allycrest is missing:" + _crestId);
+			if (Config.DEBUG)
+			{
+				_log.fine("allycrest is missing:" + _crestId);
+			}
 		}
 	}
 	

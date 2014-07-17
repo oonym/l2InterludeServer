@@ -26,17 +26,14 @@ import net.sf.l2j.loginserver.serverpackets.PlayFail.PlayFailReason;
 import net.sf.l2j.loginserver.serverpackets.PlayOk;
 
 /**
- * Fromat is ddc
- * d: first part of session id
- * d: second part of session id
- * c: server ID
+ * Fromat is ddc d: first part of session id d: second part of session id c: server ID
  */
 public class RequestServerLogin extends L2LoginClientPacket
 {
 	private int _skey1;
 	private int _skey2;
 	private int _serverId;
-
+	
 	/**
 	 * @return
 	 */
@@ -44,7 +41,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	{
 		return _skey1;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -52,7 +49,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	{
 		return _skey2;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -60,7 +57,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	{
 		return _serverId;
 	}
-
+	
 	@Override
 	public boolean readImpl()
 	{
@@ -78,7 +75,7 @@ public class RequestServerLogin extends L2LoginClientPacket
 	public void run()
 	{
 		SessionKey sk = getClient().getSessionKey();
-
+		
 		// If we didn't showed the license we can't check these values
 		if (!Config.SHOW_LICENCE || sk.checkLoginPair(_skey1, _skey2))
 		{

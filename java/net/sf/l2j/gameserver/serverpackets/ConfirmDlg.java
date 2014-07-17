@@ -19,21 +19,20 @@
 package net.sf.l2j.gameserver.serverpackets;
 
 /**
- * @author Dezmond_snz
- * Format: cdddsdd
+ * @author Dezmond_snz Format: cdddsdd
  */
 public class ConfirmDlg extends L2GameServerPacket
 {
 	private static final String _S__ED_CONFIRMDLG = "[S] ed ConfirmDlg";
-	private int _requestId;
-	private String _name;
-
+	private final int _requestId;
+	private final String _name;
+	
 	public ConfirmDlg(int requestId, String requestorName)
 	{
 		_requestId = requestId;
 		_name = requestorName;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -45,8 +44,9 @@ public class ConfirmDlg extends L2GameServerPacket
 		writeD(0x01); // ??
 		writeD(0x00); // ??
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see net.sf.l2j.gameserver.serverpackets.ServerBasePacket#getType()
 	 */
 	@Override

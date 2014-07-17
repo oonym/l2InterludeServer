@@ -20,35 +20,45 @@ package net.sf.l2j.gameserver.pathfinding.utils;
 import net.sf.l2j.gameserver.pathfinding.Node;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class FastNodeList
 {
-	private Node[] _list;
+	private final Node[] _list;
 	private int _size;
-
+	
 	public FastNodeList(int size)
 	{
 		_list = new Node[size];
 	}
+	
 	public void add(Node n)
 	{
 		_list[_size] = n;
 		_size++;
 	}
+	
 	public boolean contains(Node n)
 	{
-		for (int i =0; i < _size; i++)
-			if(_list[i].equals(n))
+		for (int i = 0; i < _size; i++)
+		{
+			if (_list[i].equals(n))
+			{
 				return true;
+			}
+		}
 		return false;
 	}
+	
 	public boolean containsRev(Node n)
 	{
-		for (int i=_size-1; i >= 0; i--)
-			if(_list[i].equals(n))
+		for (int i = _size - 1; i >= 0; i--)
+		{
+			if (_list[i].equals(n))
+			{
 				return true;
+			}
+		}
 		return false;
 	}
 }

@@ -19,12 +19,12 @@
 package net.sf.l2j.gameserver;
 
 /**
- * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author mkizub TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public enum TaskPriority {
-	PR_NORMAL, PR_HIGH, PR_URGENT;
-
+public enum TaskPriority
+{
+	PR_NORMAL,
+	PR_HIGH,
+	PR_URGENT;
+	
 }
