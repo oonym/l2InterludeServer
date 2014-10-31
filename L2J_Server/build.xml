@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="L2_GameServer_It" default="dist" basedir=".">
+<project name="L2J_Server" default="dist" basedir=".">
 	<description>
 		This script will build the L2J Server.
 
